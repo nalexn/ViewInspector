@@ -28,7 +28,7 @@ extension Inspector {
         return "type: " + typeName(type: type)
     }
     
-    private static func typeName(type: Any.Type) -> String {
+    static func typeName(type: Any.Type) -> String {
         let typeName = String(describing: type)
         return (typeName.components(separatedBy: "<").first ?? typeName)
     }

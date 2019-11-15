@@ -29,6 +29,14 @@ public extension InspectableView where View: SingleViewContent {
         let content = try View.content(view: view)
         return try InspectableView<ViewType.Text>(content)
     }
+    
+    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.Custom>
+        where T: Inspectable {
+        let content = try View.content(view: view)
+        let prefix = Inspector.typeName(type: type)
+        try Inspector.guardType(value: content, prefix: prefix)
+        return try InspectableView<ViewType.Custom>(content)
+    }
 }
 
 // MARK: - MultipleViewContent
@@ -47,6 +55,14 @@ public extension InspectableView where View: MultipleViewContent {
     func text(index: Int) throws -> InspectableView<ViewType.Text> {
         let content = try contentView(at: index)
         return try InspectableView<ViewType.Text>(content)
+    }
+    
+    func view<T>(_ type: T.Type, index: Int) throws -> InspectableView<ViewType.Custom>
+        where T: Inspectable {
+        let content = try contentView(at: index)
+        let prefix = Inspector.typeName(type: type)
+        try Inspector.guardType(value: content, prefix: prefix)
+        return try InspectableView<ViewType.Custom>(content)
     }
     
     private func contentView(at index: Int) throws -> Any {
