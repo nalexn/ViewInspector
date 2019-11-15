@@ -8,7 +8,7 @@ extension Inspector {
         let children = mirror.children
         guard let child = children.first(where: { $0.label == label })?.value else {
             throw InspectionError.childAttributeNotFound(
-                label: label, type: debugDescription(value: value))
+                label: label, type: typeName(value: value))
         }
         return child
     }
@@ -20,12 +20,8 @@ extension Inspector {
         })
     }
     
-    static func debugDescription(value: Any) -> String {
-        return debugDescription(type: type(of: value))
-    }
-    
-    static func debugDescription(type: Any.Type) -> String {
-        return "type: " + typeName(type: type)
+    static func typeName(value: Any) -> String {
+        return typeName(type: type(of: value))
     }
     
     static func typeName(type: Any.Type) -> String {
@@ -36,7 +32,7 @@ extension Inspector {
     static func debugHierarchy(value: Any) -> [String: Any] {
         let mirror = Mirror(reflecting: value)
         var children: [Any] = mirror.children.map { child -> [String: Any] in
-            let childName = child.label.debugKeyDescription + debugDescription(value: child.value)
+            let childName = child.label.debugKeyDescription + "type: " + typeName(value: child.value)
             return [childName: debugHierarchy(value: child.value)]
         }
         if let inspectable = value as? Inspectable {
@@ -44,7 +40,7 @@ extension Inspector {
         }
         let description: Any = children.count > 0 ?
             children : String(describing: value)
-        return [debugDescription(value: value): description]
+        return ["type: " + typeName(value: value): description]
     }
 }
 
