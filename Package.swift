@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "ViewInspector",
+    platforms: [
+        .macOS(.v10_15), .iOS(.v13), .tvOS(.v9), .watchOS(.v3)
+    ],
     products: [
         .library(
             name: "ViewInspector", targets: ["ViewInspector"]),
