@@ -3,6 +3,7 @@ import SwiftUI
 internal struct Inspector { }
 
 extension Inspector {
+    
     static func attribute(label: String, value: Any) throws -> Any {
         let mirror = Mirror(reflecting: value)
         let children = mirror.children
@@ -47,6 +48,7 @@ extension Inspector {
 // MARK: - View Inspection
 
 extension Inspector {
+    
     static func isTupleView(_ view: Any) -> Bool {
         return String(describing: type(of: view)).hasPrefix("TupleView")
     }

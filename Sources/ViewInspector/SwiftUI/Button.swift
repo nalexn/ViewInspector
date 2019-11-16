@@ -1,20 +1,45 @@
 import SwiftUI
 
 public extension ViewType {
-    struct Button: KnownViewType, SingleViewContent {
+    
+    struct Button: KnownViewType {
         public static var typePrefix: String = "Button"
     }
 }
 
-public extension ViewType.Button {
-    static func content(view: Any) throws -> Any {
+public extension Button {
+    
+    func inspect() throws -> InspectableView<ViewType.Button> {
+        return try InspectableView<ViewType.Button>(self)
+    }
+}
+
+// MARK: - SingleViewContent
+
+extension ViewType.Button: SingleViewContent {
+    
+    public static func content(view: Any) throws -> Any {
         return try Inspector.attribute(label: "_label", value: view)
     }
 }
 
-public extension Button {
-    func inspect() throws -> InspectableView<ViewType.Button> {
-        return try InspectableView<ViewType.Button>(self)
+// MARK: - SingleViewContent
+
+public extension InspectableView where View: SingleViewContent {
+    
+    func button() throws -> InspectableView<ViewType.Button> {
+        let content = try View.content(view: view)
+        return try InspectableView<ViewType.Button>(content)
+    }
+}
+
+// MARK: - MultipleViewContent
+
+public extension InspectableView where View: MultipleViewContent {
+    
+    func button(_ index: Int) throws -> InspectableView<ViewType.Button> {
+        let content = try contentView(at: index)
+        return try InspectableView<ViewType.Button>(content)
     }
 }
 

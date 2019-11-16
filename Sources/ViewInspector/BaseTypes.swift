@@ -37,6 +37,7 @@ public enum InspectionError: Swift.Error {
 }
 
 extension InspectionError: LocalizedError {
+    
     public var errorDescription: String? {
         switch self {
         case let .typeMismatch(factual, expected):

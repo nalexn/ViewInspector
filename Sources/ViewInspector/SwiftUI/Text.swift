@@ -1,20 +1,43 @@
 import SwiftUI
 
 public extension ViewType {
+    
     struct Text: KnownViewType {
         public static let typePrefix: String = "Text"
     }
 }
 
 public extension Text {
+    
     func inspect() throws -> InspectableView<ViewType.Text> {
         return try InspectableView<ViewType.Text>(self)
+    }
+}
+
+// MARK: - SingleViewContent
+
+public extension InspectableView where View: SingleViewContent {
+    
+    func text() throws -> InspectableView<ViewType.Text> {
+        let content = try View.content(view: view)
+        return try InspectableView<ViewType.Text>(content)
+    }
+}
+
+// MARK: - MultipleViewContent
+
+public extension InspectableView where View: MultipleViewContent {
+    
+    func text(_ index: Int) throws -> InspectableView<ViewType.Text> {
+        let content = try contentView(at: index)
+        return try InspectableView<ViewType.Text>(content)
     }
 }
 
 // MARK: - Custom Attributes
 
 public extension InspectableView where View == ViewType.Text {
+    
     func string() throws -> String? {
         if let externalString = try? Inspector
             .attribute(path: "storage|verbatim", value: view) as? String {
