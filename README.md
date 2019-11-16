@@ -1,8 +1,9 @@
-# ViewInspector
+# ViewInspector for SwiftUI
 
 [![Build Status](https://travis-ci.com/nalexn/ViewInspector.svg?branch=master)](https://travis-ci.com/nalexn/ViewInspector) [![codecov](https://codecov.io/gh/nalexn/ViewInspector/branch/master/graph/badge.svg)](https://codecov.io/gh/nalexn/ViewInspector) ![Platform](https://img.shields.io/badge/platform-ios%20%7C%20tvos%20%7C%20watchos%20%7C%20macos-lightgrey)
 
-ViewInspector is a library for traversing SwiftUI view hierarchy in runtime.
+**ViewInspector** is a library for unit testing SwiftUI-based projects.
+It allows for traversing SwiftUI view hierarchy in runtime providing direct access to the underlying View structs.
 
 ## Why?
 
@@ -10,7 +11,7 @@ SwiftUI views are a function of state. We can provide the input, but couldn't ve
 
 ## Features
 
-### Verify the view's state
+#### 1. Verify the view's inner state
 
 ```swift
 let view = ContentView()
@@ -18,14 +19,14 @@ let value = try view.inspect().text().string()
 XCTAssertEqual(value, "Hello, world!")
 ```
 
-### Gain direct access to the views
+#### 2. Gain direct access to the views in hierarchy
 
 ```swift
 let customView = try view.inspect().hStack().view(CustomView.self, 0)
 XCTAssertTrue(customView.isToggleOn)
 ```
 
-### Trigger side effects
+#### 3. Trigger side effects
 
 ```swift
 let view = ContentView()
@@ -33,11 +34,11 @@ let button = try view.inspect().anyView().button()
 try button.tap()
 ```
 
-## Is it using private APIs?
+### Is it using private APIs?
 
-ViewInspector is using official Swift reflection API to dissect the view structures. So this library is production-friendly, although it's strongly recommended to use it for debugging and unit testing purposes only.
+**ViewInspector** is using official Swift reflection API to dissect the view structures. So this library is production-friendly, although it's strongly recommended to use it for debugging and unit testing purposes only.
 
-## Is it production ready?
+### Is it production ready?
 
 The library is already functional, but there are many views in SwiftUI that have not yet been fully anatomized.
 
