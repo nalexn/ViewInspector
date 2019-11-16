@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6602F4823809D3E00BDCAAC /* InspectorTests.swift */; };
 		OBJ_37 /* BaseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* BaseTypes.swift */; };
 		OBJ_38 /* InspectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* InspectableView.swift */; };
 		OBJ_39 /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Inspector.swift */; };
@@ -47,9 +48,18 @@
 			remoteGlobalIDString = "ViewInspector::ViewInspector";
 			remoteInfo = ViewInspector;
 		};
+		F6602F47238096DB00BDCAAC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ViewInspector::ViewInspectorTests";
+			remoteInfo = ViewInspectorTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F6602F4823809D3E00BDCAAC /* InspectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InspectorTests.swift; path = Tests/InspectorTests.swift; sourceTree = SOURCE_ROOT; };
+		F6F928A923809F55003FFAE8 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		OBJ_10 /* InspectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectableView.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		OBJ_13 /* AnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyView.swift; sourceTree = "<group>"; };
@@ -107,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_19 /* ViewInspectorTests */,
+				F6F928A923809F55003FFAE8 /* LinuxMain.swift */,
 			);
 			name = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -114,12 +125,13 @@
 		OBJ_19 /* ViewInspectorTests */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_25 /* XCTestManifests.swift */,
 				OBJ_20 /* AnyViewTests.swift */,
 				OBJ_21 /* ButtonTests.swift */,
 				OBJ_22 /* CustomViewTests.swift */,
+				F6602F4823809D3E00BDCAAC /* InspectorTests.swift */,
 				OBJ_23 /* HStackTests.swift */,
 				OBJ_24 /* TextTests.swift */,
-				OBJ_25 /* XCTestManifests.swift */,
 			);
 			name = ViewInspectorTests;
 			path = Tests/ViewInspectorTests;
@@ -134,7 +146,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -145,7 +157,6 @@
 				OBJ_30 /* LICENSE */,
 				OBJ_31 /* README.md */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -235,7 +246,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_26 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -303,6 +314,7 @@
 				OBJ_65 /* HStackTests.swift in Sources */,
 				OBJ_66 /* TextTests.swift in Sources */,
 				OBJ_67 /* XCTestManifests.swift in Sources */,
+				F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,7 +324,7 @@
 		OBJ_56 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "ViewInspector::ViewInspectorTests" /* ViewInspectorTests */;
-			targetProxy = "ViewInspector::ViewInspectorTests" /* ViewInspectorTests */;
+			targetProxy = F6602F47238096DB00BDCAAC /* PBXContainerItemProxy */;
 		};
 		OBJ_70 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

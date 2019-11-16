@@ -6,6 +6,7 @@ var tests = [XCTestCaseEntry]()
 tests += AnyViewTests.allTests
 tests += ButtonTests.allTests
 tests += CustomViewTests.allTests
+tests += InspectorTests.allTests
 tests += HStackTests.allTests
 tests += TextTests.allTests
 XCTMain(tests)

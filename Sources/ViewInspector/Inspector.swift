@@ -27,7 +27,7 @@ extension Inspector {
     
     static func typeName(type: Any.Type) -> String {
         let typeName = String(describing: type)
-        return (typeName.components(separatedBy: "<").first ?? typeName)
+        return typeName.components(separatedBy: "<").first!
     }
     
     static func attributesTree(value: Any) -> [String: Any] {
