@@ -77,7 +77,8 @@ public extension InspectableView where View: MultipleViewContent {
     private func contentView(at index: Int) throws -> Any {
         let viewes = try View.content(view: view)
         guard index >= 0 && index < viewes.count
-            else { throw InspectionError.childViewNotFound }
+            else { throw InspectionError.viewIndexOutOfBounds(
+                index: index, count: viewes.count) }
         return viewes[index]
     }
 }

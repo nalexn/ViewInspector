@@ -32,8 +32,8 @@ public struct ViewType { }
 
 public enum InspectionError: Swift.Error {
     case typeMismatch(factual: String, expected: String)
-    case childViewNotFound
-    case childAttributeNotFound(label: String, type: String)
+    case attributeNotFound(label: String, type: String)
+    case viewIndexOutOfBounds(index: Int, count: Int)
 }
 
 extension InspectionError: LocalizedError {
@@ -41,10 +41,10 @@ extension InspectionError: LocalizedError {
         switch self {
         case let .typeMismatch(factual, expected):
             return "Type mismatch: \(factual) is not \(expected)"
-        case .childViewNotFound:
-            return "Child view not found"
-        case let .childAttributeNotFound(label, type):
+        case let .attributeNotFound(label, type):
             return "\(type) does not have '\(label)' attribute"
+        case let .viewIndexOutOfBounds(index, count):
+            return "Enclosed view index '\(index)' is out of bounds: '0 ..< \(count)'"
         }
     }
 }

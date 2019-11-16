@@ -7,7 +7,7 @@ extension Inspector {
         let mirror = Mirror(reflecting: value)
         let children = mirror.children
         guard let child = children.first(where: { $0.label == label })?.value else {
-            throw InspectionError.childAttributeNotFound(
+            throw InspectionError.attributeNotFound(
                 label: label, type: typeName(value: value))
         }
         return child
