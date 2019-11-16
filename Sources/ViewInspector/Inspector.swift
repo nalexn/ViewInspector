@@ -32,7 +32,7 @@ extension Inspector {
     static func debugHierarchy(value: Any) -> [String: Any] {
         let mirror = Mirror(reflecting: value)
         var children: [Any] = mirror.children.map { child -> [String: Any] in
-            let childName = child.label.debugKeyDescription + "type: " + typeName(value: child.value)
+            let childName = child.label ?? ""
             return [childName: debugHierarchy(value: child.value)]
         }
         if let inspectable = value as? Inspectable {
@@ -40,16 +40,7 @@ extension Inspector {
         }
         let description: Any = children.count > 0 ?
             children : String(describing: value)
-        return ["type: " + typeName(value: value): description]
-    }
-}
-
-private extension Optional where Wrapped == String {
-    var debugKeyDescription: String {
-        switch self {
-        case .none: return ""
-        case let .some(string): return "key: \(string) "
-        }
+        return [">>> " + typeName(value: value) + " <<<": description]
     }
 }
 

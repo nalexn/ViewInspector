@@ -51,17 +51,6 @@
                BlueprintName = "ViewInspectorTests"
                ReferencedContainer = "container:">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "TextTests/testExternalStringValue()">
-               </Test>
-               <Test
-                  Identifier = "TextTests/testLocalizableStringWithMultipleParams()">
-               </Test>
-               <Test
-                  Identifier = "TextTests/testLocalizableStringWithOneParam()">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
