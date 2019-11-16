@@ -28,6 +28,10 @@ public protocol MultipleViewContent {
     static func content(view: Any) throws -> [Any]
 }
 
-public protocol ViewTypeGuard {
-    static var typePrefix: String? { get }
+public protocol KnownViewType {
+    static var typePrefix: String { get }
+}
+
+public protocol GenericViewType {
+    associatedtype T: Inspectable
 }

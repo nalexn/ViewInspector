@@ -1,12 +1,10 @@
 import SwiftUI
 
-public struct InspectableView<View> where View: ViewTypeGuard {
+public struct InspectableView<View> where View: KnownViewType {
     internal let view: Any
     
-    init(_ view: Any) throws {
-        if let prefix = View.typePrefix {
-            try Inspector.guardType(value: view, prefix: prefix)
-        }
+    internal init(_ view: Any) throws {
+        try Inspector.guardType(value: view, prefix: View.typePrefix)
         self.view = view
     }
 }
@@ -30,18 +28,19 @@ public extension InspectableView where View: SingleViewContent {
         return try InspectableView<ViewType.Text>(content)
     }
     
-    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.Custom>
+    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.Custom<T>>
         where T: Inspectable {
         let content = try View.content(view: view)
         let prefix = Inspector.typeName(type: type)
         try Inspector.guardType(value: content, prefix: prefix)
-        return try InspectableView<ViewType.Custom>(content)
+        return try InspectableView<ViewType.Custom<T>>(content)
     }
 }
 
 // MARK: - MultipleViewContent
 
 public extension InspectableView where View: MultipleViewContent {
+    
     func anyView(index: Int) throws -> InspectableView<ViewType.AnyView> {
         let content = try contentView(at: index)
         return try InspectableView<ViewType.AnyView>(content)
@@ -57,12 +56,12 @@ public extension InspectableView where View: MultipleViewContent {
         return try InspectableView<ViewType.Text>(content)
     }
     
-    func view<T>(_ type: T.Type, index: Int) throws -> InspectableView<ViewType.Custom>
+    func view<T>(_ type: T.Type, index: Int) throws -> InspectableView<ViewType.Custom<T>>
         where T: Inspectable {
         let content = try contentView(at: index)
         let prefix = Inspector.typeName(type: type)
         try Inspector.guardType(value: content, prefix: prefix)
-        return try InspectableView<ViewType.Custom>(content)
+        return try InspectableView<ViewType.Custom<T>>(content)
     }
     
     private func contentView(at index: Int) throws -> Any {

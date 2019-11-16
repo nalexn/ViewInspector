@@ -1,8 +1,8 @@
 import SwiftUI
 
 public extension ViewType {
-    struct HStack: ViewTypeGuard, MultipleViewContent {
-        public static let typePrefix: String? = "HStack"
+    struct HStack: KnownViewType, MultipleViewContent {
+        public static let typePrefix: String = "HStack"
     }
 }
 

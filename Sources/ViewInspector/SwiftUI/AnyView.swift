@@ -1,8 +1,8 @@
 import SwiftUI
 
 public extension ViewType {
-    struct AnyView: ViewTypeGuard, SingleViewContent {
-        public static var typePrefix: String? = "AnyView"
+    struct AnyView: KnownViewType, SingleViewContent {
+        public static var typePrefix: String = "AnyView"
     }
 }
 

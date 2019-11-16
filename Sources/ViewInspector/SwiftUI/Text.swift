@@ -1,8 +1,8 @@
 import SwiftUI
 
 public extension ViewType {
-    struct Text: ViewTypeGuard {
-        public static let typePrefix: String? = "Text"
+    struct Text: KnownViewType {
+        public static let typePrefix: String = "Text"
     }
 }
 
