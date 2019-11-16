@@ -19,7 +19,7 @@ let value = try view.inspect().text().string()
 XCTAssertEqual(value, "Hello, world!")
 ```
 
-#### 2. Gain direct access to the views in hierarchy
+#### 2. Gain direct access to views in the hierarchy
 
 ```swift
 let customView = try view.inspect().hStack().view(CustomView.self, 0)
