@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Inspector { }
+internal struct Inspector { }
 
 extension Inspector {
     static func attribute(label: String, value: Any) throws -> Any {
@@ -29,14 +29,14 @@ extension Inspector {
         return (typeName.components(separatedBy: "<").first ?? typeName)
     }
     
-    static func debugHierarchy(value: Any) -> [String: Any] {
+    static func attributesTree(value: Any) -> [String: Any] {
         let mirror = Mirror(reflecting: value)
         var children: [Any] = mirror.children.map { child -> [String: Any] in
             let childName = child.label ?? ""
-            return [childName: debugHierarchy(value: child.value)]
+            return [childName: attributesTree(value: child.value)]
         }
         if let inspectable = value as? Inspectable {
-            children.append(["body": debugHierarchy(value: inspectable.content)])
+            children.append(["body": attributesTree(value: inspectable.content)])
         }
         let description: Any = children.count > 0 ?
             children : String(describing: value)
