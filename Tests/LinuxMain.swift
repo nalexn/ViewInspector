@@ -4,6 +4,7 @@ import ViewInspectorTests
 
 var tests = [XCTestCaseEntry]()
 tests += AnyViewTests.allTests
+tests += BaseTypesTests.allTests
 tests += ButtonTests.allTests
 tests += CustomViewTests.allTests
 tests += InspectorTests.allTests

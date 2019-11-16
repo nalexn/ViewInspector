@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6602F4823809D3E00BDCAAC /* InspectorTests.swift */; };
+		F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */; };
 		OBJ_37 /* BaseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* BaseTypes.swift */; };
 		OBJ_38 /* InspectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* InspectableView.swift */; };
 		OBJ_39 /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Inspector.swift */; };
@@ -60,6 +61,7 @@
 /* Begin PBXFileReference section */
 		F6602F4823809D3E00BDCAAC /* InspectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InspectorTests.swift; path = Tests/InspectorTests.swift; sourceTree = SOURCE_ROOT; };
 		F6F928A923809F55003FFAE8 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
+		F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTypesTests.swift; sourceTree = "<group>"; };
 		OBJ_10 /* InspectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectableView.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		OBJ_13 /* AnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyView.swift; sourceTree = "<group>"; };
@@ -101,6 +103,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F6F928AE2380AFB4003FFAE8 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_20 /* AnyViewTests.swift */,
+				OBJ_21 /* ButtonTests.swift */,
+				OBJ_22 /* CustomViewTests.swift */,
+				OBJ_23 /* HStackTests.swift */,
+				OBJ_24 /* TextTests.swift */,
+			);
+			name = SwiftUI;
+			sourceTree = "<group>";
+		};
 		OBJ_12 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,13 +139,10 @@
 		OBJ_19 /* ViewInspectorTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_25 /* XCTestManifests.swift */,
-				OBJ_20 /* AnyViewTests.swift */,
-				OBJ_21 /* ButtonTests.swift */,
-				OBJ_22 /* CustomViewTests.swift */,
+				F6F928AE2380AFB4003FFAE8 /* SwiftUI */,
+				F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */,
 				F6602F4823809D3E00BDCAAC /* InspectorTests.swift */,
-				OBJ_23 /* HStackTests.swift */,
-				OBJ_24 /* TextTests.swift */,
+				OBJ_25 /* XCTestManifests.swift */,
 			);
 			name = ViewInspectorTests;
 			path = Tests/ViewInspectorTests;
@@ -310,6 +321,7 @@
 			files = (
 				OBJ_62 /* AnyViewTests.swift in Sources */,
 				OBJ_63 /* ButtonTests.swift in Sources */,
+				F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */,
 				OBJ_64 /* CustomViewTests.swift in Sources */,
 				OBJ_65 /* HStackTests.swift in Sources */,
 				OBJ_66 /* TextTests.swift in Sources */,
