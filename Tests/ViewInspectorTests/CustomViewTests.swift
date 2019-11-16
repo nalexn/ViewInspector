@@ -21,20 +21,49 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(text2, "true")
     }
     
+    func testExtractionFromSingleViewContainer() throws {
+        let view = AnyView(SimpleTestView())
+        XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self))
+    }
+    
+    func testExtractionFromMultipleViewContainer() throws {
+        let view = HStack { SimpleTestView(); SimpleTestView() }
+        XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self, 0))
+        XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self, 1))
+    }
+    
+    func testContentViewTypeMismatch() {
+        XCTAssertThrowsError(try ViewType.Custom<SimpleTestView>
+            .content(view: "abc"))
+    }
+    
     func testActualView() throws {
         let sut = try LocalStateTestView(flag: true).inspect()
         let flagValue = try sut.actualView().flag
         XCTAssertTrue(flagValue)
     }
     
+    func testActualViewTypeMismatch() throws {
+        let sut = try InspectableView<ViewType.Test<SimpleTestView>>("")
+        XCTAssertThrowsError(try sut.actualView())
+    }
+    
     static var allTests = [
         ("testLocalStateChanges", testLocalStateChanges),
         ("testExternalStateChanges", testExternalStateChanges),
+        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
+        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
+        ("testContentViewTypeMismatch", testContentViewTypeMismatch),
         ("testActualView", testActualView),
+        ("testActualViewTypeMismatch", testActualViewTypeMismatch),
     ]
 }
 
-// MARK: - LocalStateTestView
+private struct SimpleTestView: View, Inspectable {
+    var body: some View {
+        EmptyView()
+    }
+}
 
 private struct LocalStateTestView: View, Inspectable {
     
@@ -44,8 +73,6 @@ private struct LocalStateTestView: View, Inspectable {
         Text(flag ? "true" : "false")
     }
 }
-
-// MARK: - ExternalStateTestView
 
 private struct ExternalStateTestView: View, Inspectable {
     
@@ -59,5 +86,11 @@ private struct ExternalStateTestView: View, Inspectable {
 extension ExternalStateTestView {
     class ViewModel: ObservableObject {
         @Published var flag = false
+    }
+}
+
+extension ViewType {
+    struct Test<T>: KnownViewType, GenericViewType where T: Inspectable {
+        public static var typePrefix: String { "String" }
     }
 }
