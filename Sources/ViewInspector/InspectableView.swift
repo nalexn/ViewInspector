@@ -28,6 +28,11 @@ public extension InspectableView where View: SingleViewContent {
         return try InspectableView<ViewType.Text>(content)
     }
     
+    func button() throws -> InspectableView<ViewType.Button> {
+        let content = try View.content(view: view)
+        return try InspectableView<ViewType.Button>(content)
+    }
+    
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.Custom<T>>
         where T: Inspectable {
         let content = try View.content(view: view)
@@ -41,22 +46,27 @@ public extension InspectableView where View: SingleViewContent {
 
 public extension InspectableView where View: MultipleViewContent {
     
-    func anyView(index: Int) throws -> InspectableView<ViewType.AnyView> {
+    func anyView(_ index: Int) throws -> InspectableView<ViewType.AnyView> {
         let content = try contentView(at: index)
         return try InspectableView<ViewType.AnyView>(content)
     }
     
-    func hStack(index: Int) throws -> InspectableView<ViewType.HStack> {
+    func hStack(_ index: Int) throws -> InspectableView<ViewType.HStack> {
         let content = try contentView(at: index)
         return try InspectableView<ViewType.HStack>(content)
     }
     
-    func text(index: Int) throws -> InspectableView<ViewType.Text> {
+    func text(_ index: Int) throws -> InspectableView<ViewType.Text> {
         let content = try contentView(at: index)
         return try InspectableView<ViewType.Text>(content)
     }
     
-    func view<T>(_ type: T.Type, index: Int) throws -> InspectableView<ViewType.Custom<T>>
+    func button(_ index: Int) throws -> InspectableView<ViewType.Button> {
+        let content = try contentView(at: index)
+        return try InspectableView<ViewType.Button>(content)
+    }
+    
+    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.Custom<T>>
         where T: Inspectable {
         let content = try contentView(at: index)
         let prefix = Inspector.typeName(type: type)
