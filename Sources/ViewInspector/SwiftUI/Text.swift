@@ -50,20 +50,17 @@ public extension InspectableView where View == ViewType.Text {
             let hasFormatting = try Inspector
             .attribute(label: "hasFormatting", value: localizedStringKey) as? Bool
         else { return nil }
-        if hasFormatting {
-            guard let arguments = try Inspector
-                .attribute(label: "arguments", value: localizedStringKey) as? [Any]
-            else { return nil }
-            let values: [CVarArg] = try arguments.map {
-                String(describing: try Inspector.attribute(label: "value", value: $0))
-            }
-            let argPatterns = ["%lld", "%ld", "%d", "%lf", "%f"]
-            let format: String = argPatterns.reduce(baseString) { (format, pattern) in
-                format.replacingOccurrences(of: pattern, with: "%@")
-            }
-            return String(format: format, arguments: values)
-        } else {
-            return baseString
+        guard hasFormatting else { return baseString }
+        guard let arguments = try Inspector
+            .attribute(label: "arguments", value: localizedStringKey) as? [Any]
+        else { return nil }
+        let values: [CVarArg] = try arguments.map {
+            String(describing: try Inspector.attribute(label: "value", value: $0))
         }
+        let argPatterns = ["%lld", "%ld", "%d", "%lf", "%f"]
+        let format: String = argPatterns.reduce(baseString) { (format, pattern) in
+            format.replacingOccurrences(of: pattern, with: "%@")
+        }
+        return String(format: format, arguments: values)
     }
 }
