@@ -1,0 +1,11 @@
+os: osx
+language: swift
+osx_image: xcode11.2
+env:
+  - PROJECT_NAME=ViewInspector
+install: swift package update
+script:
+  - swift build
+  - swift test
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
