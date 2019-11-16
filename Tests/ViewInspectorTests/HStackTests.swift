@@ -36,4 +36,11 @@ final class HStackTests: XCTestCase {
         let view = HStack { sampleView1; sampleView2 }
         XCTAssertThrowsError(try view.inspect().text(index: 2))
     }
+    
+    static var allTests = [
+        ("testSingleEnclosedView", testSingleEnclosedView),
+        ("testSingleEnclosedViewIndexOutOfBounds", testSingleEnclosedViewIndexOutOfBounds),
+        ("testMultipleEnclosedViews", testMultipleEnclosedViews),
+        ("testMultipleEnclosedViewsIndexOutOfBounds", testMultipleEnclosedViewsIndexOutOfBounds),
+    ]
 }
