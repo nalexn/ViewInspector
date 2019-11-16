@@ -1,15 +1,5 @@
 import SwiftUI
 
-public struct ViewType { }
-
-// MARK: - Error
-
-public enum InspectionError: Swift.Error {
-    case typeMismatch(factual: String, expected: String)
-    case childViewNotFound
-    case childAttributeNotFound(label: String, type: String)
-}
-
 // MARK: - Protocols
 
 public protocol Inspectable {
@@ -34,4 +24,27 @@ public protocol KnownViewType {
 
 public protocol GenericViewType {
     associatedtype T: Inspectable
+}
+
+public struct ViewType { }
+
+// MARK: - Error
+
+public enum InspectionError: Swift.Error {
+    case typeMismatch(factual: String, expected: String)
+    case childViewNotFound
+    case childAttributeNotFound(label: String, type: String)
+}
+
+extension InspectionError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case let .typeMismatch(factual, expected):
+            return "Type mismatch: \(factual) is not \(expected)"
+        case .childViewNotFound:
+            return "Child view not found"
+        case let .childAttributeNotFound(label, type):
+            return "\(type) does not have '\(label)' attribute"
+        }
+    }
 }

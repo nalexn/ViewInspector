@@ -56,8 +56,8 @@ private extension Optional where Wrapped == String {
 // MARK: - View Inspection
 
 extension Inspector {
-    static func isToupleView(_ view: Any) -> Bool {
-        return String(describing: type(of: view)).hasPrefix("ToupleView")
+    static func isTupleView(_ view: Any) -> Bool {
+        return String(describing: type(of: view)).hasPrefix("TupleView")
     }
     
     static func guardType(value: Any, prefix: String) throws {
