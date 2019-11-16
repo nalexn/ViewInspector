@@ -37,10 +37,26 @@ final class HStackTests: XCTestCase {
         XCTAssertThrowsError(try view.inspect().text(2))
     }
     
+    func testExtractionFromSingleViewContainer() throws {
+        let view = AnyView(HStack { Text("Test") })
+        XCTAssertNoThrow(try view.inspect().hStack())
+    }
+    
+    func testExtractionFromMultipleViewContainer() throws {
+        let view = HStack {
+            HStack { Text("Test") }
+            HStack { Text("Test") }
+        }
+        XCTAssertNoThrow(try view.inspect().hStack(0))
+        XCTAssertNoThrow(try view.inspect().hStack(1))
+    }
+    
     static var allTests = [
         ("testSingleEnclosedView", testSingleEnclosedView),
         ("testSingleEnclosedViewIndexOutOfBounds", testSingleEnclosedViewIndexOutOfBounds),
         ("testMultipleEnclosedViews", testMultipleEnclosedViews),
         ("testMultipleEnclosedViewsIndexOutOfBounds", testMultipleEnclosedViewsIndexOutOfBounds),
+        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
+        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
     ]
 }
