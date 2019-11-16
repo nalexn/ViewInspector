@@ -50,10 +50,8 @@ public extension InspectableView where View == ViewType.Button {
     func tap() throws {
         let action = try Inspector.attribute(label: "action", value: view)
         typealias Callback = () -> Void
-        guard let callback = action as? Callback
-            else { throw InspectionError.typeMismatch(
-                factual: Inspector.typeName(value: action),
-                expected: Inspector.typeName(type: Callback.self)) }
-        callback()
+        if let callback = action as? Callback {
+            callback()
+        }
     }
 }

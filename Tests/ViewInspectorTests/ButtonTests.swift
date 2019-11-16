@@ -10,6 +10,20 @@ final class ButtonTests: XCTestCase {
         XCTAssertEqual(text, "Test")
     }
     
+    func testExtractionFromSingleViewContainer() throws {
+        let view = AnyView(Button(action: {}, label: { Text("") }))
+        XCTAssertNoThrow(try view.inspect().button())
+    }
+    
+    func testExtractionFromMultipleViewContainer() throws {
+        let view = HStack {
+            Button(action: {}, label: { Text("") })
+            Button(action: {}, label: { Text("") })
+        }
+        XCTAssertNoThrow(try view.inspect().button(0))
+        XCTAssertNoThrow(try view.inspect().button(1))
+    }
+    
     func testCallback() throws {
         let exp = XCTestExpectation(description: "Callback")
         let button = Button(action: {
@@ -21,6 +35,8 @@ final class ButtonTests: XCTestCase {
     
     static var allTests = [
         ("testEnclosedView", testEnclosedView),
+        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
+        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
         ("testCallback", testCallback),
     ]
 }
