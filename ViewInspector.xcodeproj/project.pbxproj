@@ -140,11 +140,11 @@
 				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
 				OBJ_23 /* HStackTests.swift */,
 				F67303CD2381FDE200A8DAD6 /* ImageTests.swift */,
-				OBJ_24 /* TextTests.swift */,
 				F6F928B1238160FD003FFAE8 /* VStackTests.swift */,
-				F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */,
 				F67303BE2381F93700A8DAD6 /* ScrollViewTests.swift */,
 				F67303C92381FD1500A8DAD6 /* SectionTests.swift */,
+				OBJ_24 /* TextTests.swift */,
+				F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */,
 			);
 			name = SwiftUI;
 			sourceTree = "<group>";
@@ -160,10 +160,10 @@
 				OBJ_16 /* HStack.swift */,
 				F67303CB2381FDCB00A8DAD6 /* Image.swift */,
 				F67303B82381EF6600A8DAD6 /* VStack.swift */,
-				F67303B62381EF4600A8DAD6 /* ZStack.swift */,
 				F67303BC2381F92000A8DAD6 /* ScrollView.swift */,
 				F67303C72381FD0000A8DAD6 /* Section.swift */,
 				OBJ_17 /* Text.swift */,
+				F67303B62381EF4600A8DAD6 /* ZStack.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";

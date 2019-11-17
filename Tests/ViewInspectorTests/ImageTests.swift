@@ -4,6 +4,8 @@ import SwiftUI
 
 final class ImageTests: XCTestCase {
     
+    let testImage = UIColor.red.image(CGSize(width: 100, height: 80))
+    
     // MARK: - string()
     
     func testImageByName() throws {
@@ -14,15 +16,27 @@ final class ImageTests: XCTestCase {
     }
     
     func testExternalImage() throws {
-        let image = UIColor.red.image(CGSize(width: 100, height: 80))
-        let view = Image(uiImage: image)
+        let view = Image(uiImage: testImage)
         let sut = try view.inspect().uiImage()
-        XCTAssertEqual(sut, image)
+        XCTAssertEqual(sut, testImage)
+    }
+    
+    func testExtractionFromSingleViewContainer() throws {
+        let view = AnyView(Image(uiImage: testImage))
+        XCTAssertNoThrow(try view.inspect().image())
+    }
+    
+    func testExtractionFromMultipleViewContainer() throws {
+        let view = HStack { Image(uiImage: testImage); Image(uiImage: testImage) }
+        XCTAssertNoThrow(try view.inspect().image(0))
+        XCTAssertNoThrow(try view.inspect().image(1))
     }
     
     static var allTests = [
         ("testImageByName", testImageByName),
         ("testExternalImage", testExternalImage),
+        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
+        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
     ]
 }
 

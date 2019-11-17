@@ -31,10 +31,23 @@ final class TextTests: XCTestCase {
         XCTAssertEqual(sut, string)
     }
     
+    func testExtractionFromSingleViewContainer() throws {
+        let view = AnyView(Text("Test"))
+        XCTAssertNoThrow(try view.inspect().text())
+    }
+    
+    func testExtractionFromMultipleViewContainer() throws {
+        let view = HStack { Text("Test"); Text("Test") }
+        XCTAssertNoThrow(try view.inspect().text(0))
+        XCTAssertNoThrow(try view.inspect().text(1))
+    }
+    
     static var allTests = [
         ("testLocalizableStringNoParams", testLocalizableStringNoParams),
         ("testLocalizableStringWithOneParam", testLocalizableStringWithOneParam),
         ("testLocalizableStringWithMultipleParams", testLocalizableStringWithMultipleParams),
         ("testExternalStringValue", testExternalStringValue),
+        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
+        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
     ]
 }
