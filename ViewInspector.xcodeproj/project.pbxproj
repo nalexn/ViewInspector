@@ -24,6 +24,8 @@
 		F67303B72381EF4600A8DAD6 /* ZStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303B62381EF4600A8DAD6 /* ZStack.swift */; };
 		F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303B82381EF6600A8DAD6 /* VStack.swift */; };
 		F67303BB2381EF8200A8DAD6 /* ZStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */; };
+		F67303BD2381F92000A8DAD6 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303BC2381F92000A8DAD6 /* ScrollView.swift */; };
+		F67303BF2381F93700A8DAD6 /* ScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303BE2381F93700A8DAD6 /* ScrollViewTests.swift */; };
 		F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6602F4823809D3E00BDCAAC /* InspectorTests.swift */; };
 		F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */; };
 		F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B1238160FD003FFAE8 /* VStackTests.swift */; };
@@ -69,6 +71,8 @@
 		F67303B62381EF4600A8DAD6 /* ZStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStack.swift; sourceTree = "<group>"; };
 		F67303B82381EF6600A8DAD6 /* VStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStack.swift; sourceTree = "<group>"; };
 		F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStackTests.swift; sourceTree = "<group>"; };
+		F67303BC2381F92000A8DAD6 /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
+		F67303BE2381F93700A8DAD6 /* ScrollViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewTests.swift; sourceTree = "<group>"; };
 		F6F928A923809F55003FFAE8 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTypesTests.swift; sourceTree = "<group>"; };
 		F6F928B1238160FD003FFAE8 /* VStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackTests.swift; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 				OBJ_24 /* TextTests.swift */,
 				F6F928B1238160FD003FFAE8 /* VStackTests.swift */,
 				F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */,
+				F67303BE2381F93700A8DAD6 /* ScrollViewTests.swift */,
 			);
 			name = SwiftUI;
 			sourceTree = "<group>";
@@ -140,6 +145,7 @@
 				OBJ_16 /* HStack.swift */,
 				F67303B82381EF6600A8DAD6 /* VStack.swift */,
 				F67303B62381EF4600A8DAD6 /* ZStack.swift */,
+				F67303BC2381F92000A8DAD6 /* ScrollView.swift */,
 				OBJ_17 /* Text.swift */,
 			);
 			path = SwiftUI;
@@ -319,6 +325,7 @@
 				F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */,
 				OBJ_39 /* Inspector.swift in Sources */,
 				F67303B72381EF4600A8DAD6 /* ZStack.swift in Sources */,
+				F67303BD2381F92000A8DAD6 /* ScrollView.swift in Sources */,
 				F6F928B623816212003FFAE8 /* Group.swift in Sources */,
 				OBJ_40 /* AnyView.swift in Sources */,
 				OBJ_41 /* Button.swift in Sources */,
@@ -341,6 +348,7 @@
 			buildActionMask = 0;
 			files = (
 				F67303BB2381EF8200A8DAD6 /* ZStackTests.swift in Sources */,
+				F67303BF2381F93700A8DAD6 /* ScrollViewTests.swift in Sources */,
 				F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */,
 				OBJ_62 /* AnyViewTests.swift in Sources */,
 				OBJ_63 /* ButtonTests.swift in Sources */,
