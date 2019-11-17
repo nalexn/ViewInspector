@@ -49,6 +49,16 @@ extension Inspector {
 
 extension Inspector {
     
+    static func viewsInContainer(view: Any) throws -> [Any] {
+        guard Inspector.isTupleView(view)
+            else { return [view] }
+        let tupleViews = try Inspector.attribute(label: "value", value: view)
+        let childrenCount = Mirror(reflecting: tupleViews).children.count
+        return try stride(from: 0, to: childrenCount, by: 1).map { index in
+            return try Inspector.attribute(label: ".\(index)", value: tupleViews)
+        }
+    }
+    
     static func isTupleView(_ view: Any) -> Bool {
         return String(describing: type(of: view)).hasPrefix("TupleView")
     }

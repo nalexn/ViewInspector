@@ -7,6 +7,7 @@ tests += AnyViewTests.allTests
 tests += BaseTypesTests.allTests
 tests += ButtonTests.allTests
 tests += CustomViewTests.allTests
+tests += GroupTests.allTests
 tests += InspectorTests.allTests
 tests += HStackTests.allTests
 tests += TextTests.allTests

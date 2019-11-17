@@ -25,6 +25,8 @@
 		F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */; };
 		F6F928B0238160DA003FFAE8 /* VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928AF238160DA003FFAE8 /* VStack.swift */; };
 		F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B1238160FD003FFAE8 /* VStackTests.swift */; };
+		F6F928B4238161EE003FFAE8 /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B3238161EE003FFAE8 /* GroupTests.swift */; };
+		F6F928B623816212003FFAE8 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B523816212003FFAE8 /* Group.swift */; };
 		OBJ_37 /* BaseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* BaseTypes.swift */; };
 		OBJ_38 /* InspectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* InspectableView.swift */; };
 		OBJ_39 /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Inspector.swift */; };
@@ -66,6 +68,8 @@
 		F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTypesTests.swift; sourceTree = "<group>"; };
 		F6F928AF238160DA003FFAE8 /* VStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VStack.swift; path = Sources/VStack.swift; sourceTree = SOURCE_ROOT; };
 		F6F928B1238160FD003FFAE8 /* VStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackTests.swift; sourceTree = "<group>"; };
+		F6F928B3238161EE003FFAE8 /* GroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
+		F6F928B523816212003FFAE8 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		OBJ_10 /* InspectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectableView.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		OBJ_13 /* AnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyView.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 				OBJ_23 /* HStackTests.swift */,
 				OBJ_24 /* TextTests.swift */,
 				F6F928B1238160FD003FFAE8 /* VStackTests.swift */,
+				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
 			);
 			name = SwiftUI;
 			sourceTree = "<group>";
@@ -126,6 +131,7 @@
 				OBJ_13 /* AnyView.swift */,
 				OBJ_14 /* Button.swift */,
 				OBJ_15 /* CustomView.swift */,
+				F6F928B523816212003FFAE8 /* Group.swift */,
 				OBJ_16 /* HStack.swift */,
 				F6F928AF238160DA003FFAE8 /* VStack.swift */,
 				OBJ_17 /* Text.swift */,
@@ -305,6 +311,7 @@
 				OBJ_37 /* BaseTypes.swift in Sources */,
 				OBJ_38 /* InspectableView.swift in Sources */,
 				OBJ_39 /* Inspector.swift in Sources */,
+				F6F928B623816212003FFAE8 /* Group.swift in Sources */,
 				OBJ_40 /* AnyView.swift in Sources */,
 				OBJ_41 /* Button.swift in Sources */,
 				OBJ_42 /* CustomView.swift in Sources */,
@@ -335,6 +342,7 @@
 				OBJ_66 /* TextTests.swift in Sources */,
 				OBJ_67 /* XCTestManifests.swift in Sources */,
 				F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */,
+				F6F928B4238161EE003FFAE8 /* GroupTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

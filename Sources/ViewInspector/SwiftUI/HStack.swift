@@ -20,13 +20,7 @@ extension ViewType.HStack: MultipleViewContent {
     
     public static func content(view: Any) throws -> [Any] {
         let content = try Inspector.attribute(path: "_tree|content", value: view)
-        guard Inspector.isTupleView(content)
-            else { return [content] }
-        let tupleViews = try Inspector.attribute(label: "value", value: content)
-        let childrenCount = Mirror(reflecting: tupleViews).children.count
-        return try stride(from: 0, to: childrenCount, by: 1).map { index in
-            return try Inspector.attribute(label: ".\(index)", value: tupleViews)
-        }
+        return try Inspector.viewsInContainer(view: content)
     }
 }
 
