@@ -126,6 +126,51 @@ let hiText = try hStack.text(0)
 let okText = try hStack.anyView(1).view(OtherView.self).text()
 ```
 
+## Library readiness
+
+- [ ] AngularGradient
+- [x] AnyView
+- [x] Button
+- [ ] ButtonStyleConfiguration.Label
+- [x] Custom view
+- [ ] DatePicker
+- [ ] Divider
+- [ ] EditButton
+- [ ] EquatableView
+- [ ] ForEach
+- [x] Form
+- [ ] GeometryReader
+- [x] Group
+- [ ] GroupBox
+- [ ] HSplitView
+- [x] HStack
+- [x] Image
+- [ ] LinearGradient
+- [ ] List
+- [ ] MenuButton
+- [ ] ModifiedContent
+- [ ] NavigationLink
+- [ ] NavigationView
+- [ ] PasteButton
+- [ ] Picker
+- [ ] PrimitiveButtonStyleConfiguration.Label
+- [ ] RadialGradient
+- [x] ScrollView
+- [x] Section
+- [ ] SecureField
+- [ ] Slider
+- [ ] Stepper
+- [ ] TabView
+- [x] Text
+- [ ] TextField
+- [ ] Toggle
+- [ ] ToggleStyleConfiguration.Label
+- [ ] VSplitView
+- [x] VStack
+- [x] ZStack
+
+## Contributions are welcomed!
+
 ---
 
 ![license](https://img.shields.io/badge/license-mit-brightgreen) [![Twitter](https://img.shields.io/badge/twitter-nallexn-blue)](https://twitter.com/nallexn) [![blog](https://img.shields.io/badge/blog-medium-red)](https://medium.com/@nalexn)
