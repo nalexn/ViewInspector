@@ -6,8 +6,7 @@ extension Inspector {
     
     static func attribute(label: String, value: Any) throws -> Any {
         let mirror = Mirror(reflecting: value)
-        let children = mirror.children
-        guard let child = children.first(where: { $0.label == label })?.value else {
+        guard let child = mirror.descendant(label) else {
             throw InspectionError.attributeNotFound(
                 label: label, type: typeName(value: value))
         }

@@ -60,7 +60,7 @@ final class InspectorTests: XCTestCase {
         let view = HStack { Text(""); Text("") }
         let content = try Inspector.attribute(path: "_tree|content", value: view)
         XCTAssertTrue(Inspector.isTupleView(content))
-        XCTAssertFalse(Inspector.isTupleView((0,2)))
+        XCTAssertFalse(Inspector.isTupleView((0, 2)))
     }
     
     func testGuardType() throws {
