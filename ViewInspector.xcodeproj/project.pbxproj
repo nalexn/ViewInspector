@@ -21,9 +21,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		F67303B72381EF4600A8DAD6 /* ZStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303B62381EF4600A8DAD6 /* ZStack.swift */; };
+		F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303B82381EF6600A8DAD6 /* VStack.swift */; };
+		F67303BB2381EF8200A8DAD6 /* ZStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */; };
 		F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6602F4823809D3E00BDCAAC /* InspectorTests.swift */; };
 		F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */; };
-		F6F928B0238160DA003FFAE8 /* VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928AF238160DA003FFAE8 /* VStack.swift */; };
 		F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B1238160FD003FFAE8 /* VStackTests.swift */; };
 		F6F928B4238161EE003FFAE8 /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B3238161EE003FFAE8 /* GroupTests.swift */; };
 		F6F928B623816212003FFAE8 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B523816212003FFAE8 /* Group.swift */; };
@@ -64,9 +66,11 @@
 
 /* Begin PBXFileReference section */
 		F6602F4823809D3E00BDCAAC /* InspectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InspectorTests.swift; path = Tests/InspectorTests.swift; sourceTree = SOURCE_ROOT; };
+		F67303B62381EF4600A8DAD6 /* ZStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStack.swift; sourceTree = "<group>"; };
+		F67303B82381EF6600A8DAD6 /* VStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStack.swift; sourceTree = "<group>"; };
+		F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStackTests.swift; sourceTree = "<group>"; };
 		F6F928A923809F55003FFAE8 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTypesTests.swift; sourceTree = "<group>"; };
-		F6F928AF238160DA003FFAE8 /* VStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VStack.swift; path = Sources/VStack.swift; sourceTree = SOURCE_ROOT; };
 		F6F928B1238160FD003FFAE8 /* VStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackTests.swift; sourceTree = "<group>"; };
 		F6F928B3238161EE003FFAE8 /* GroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
 		F6F928B523816212003FFAE8 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
@@ -117,10 +121,11 @@
 				OBJ_20 /* AnyViewTests.swift */,
 				OBJ_21 /* ButtonTests.swift */,
 				OBJ_22 /* CustomViewTests.swift */,
+				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
 				OBJ_23 /* HStackTests.swift */,
 				OBJ_24 /* TextTests.swift */,
 				F6F928B1238160FD003FFAE8 /* VStackTests.swift */,
-				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
+				F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */,
 			);
 			name = SwiftUI;
 			sourceTree = "<group>";
@@ -133,7 +138,8 @@
 				OBJ_15 /* CustomView.swift */,
 				F6F928B523816212003FFAE8 /* Group.swift */,
 				OBJ_16 /* HStack.swift */,
-				F6F928AF238160DA003FFAE8 /* VStack.swift */,
+				F67303B82381EF6600A8DAD6 /* VStack.swift */,
+				F67303B62381EF4600A8DAD6 /* ZStack.swift */,
 				OBJ_17 /* Text.swift */,
 			);
 			path = SwiftUI;
@@ -310,14 +316,15 @@
 			files = (
 				OBJ_37 /* BaseTypes.swift in Sources */,
 				OBJ_38 /* InspectableView.swift in Sources */,
+				F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */,
 				OBJ_39 /* Inspector.swift in Sources */,
+				F67303B72381EF4600A8DAD6 /* ZStack.swift in Sources */,
 				F6F928B623816212003FFAE8 /* Group.swift in Sources */,
 				OBJ_40 /* AnyView.swift in Sources */,
 				OBJ_41 /* Button.swift in Sources */,
 				OBJ_42 /* CustomView.swift in Sources */,
 				OBJ_43 /* HStack.swift in Sources */,
 				OBJ_44 /* Text.swift in Sources */,
-				F6F928B0238160DA003FFAE8 /* VStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				F67303BB2381EF8200A8DAD6 /* ZStackTests.swift in Sources */,
 				F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */,
 				OBJ_62 /* AnyViewTests.swift in Sources */,
 				OBJ_63 /* ButtonTests.swift in Sources */,

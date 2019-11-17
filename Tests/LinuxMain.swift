@@ -12,4 +12,5 @@ tests += InspectorTests.allTests
 tests += HStackTests.allTests
 tests += TextTests.allTests
 tests += VStackTests.allTests
+tests += ZStackTests.allTests
 XCTMain(tests)
