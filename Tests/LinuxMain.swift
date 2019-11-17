@@ -9,6 +9,7 @@ tests += ButtonTests.allTests
 tests += CustomViewTests.allTests
 tests += FormTests.allTests
 tests += GroupTests.allTests
+tests += ImageTests.allTests
 tests += InspectorTests.allTests
 tests += HStackTests.allTests
 tests += ScrollViewTests.allTests

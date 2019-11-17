@@ -30,6 +30,8 @@
 		F67303C52381FC6900A8DAD6 /* FormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303C42381FC6900A8DAD6 /* FormTests.swift */; };
 		F67303C82381FD0000A8DAD6 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303C72381FD0000A8DAD6 /* Section.swift */; };
 		F67303CA2381FD1500A8DAD6 /* SectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303C92381FD1500A8DAD6 /* SectionTests.swift */; };
+		F67303CC2381FDCB00A8DAD6 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303CB2381FDCB00A8DAD6 /* Image.swift */; };
+		F67303CE2381FDE200A8DAD6 /* ImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303CD2381FDE200A8DAD6 /* ImageTests.swift */; };
 		F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6602F4823809D3E00BDCAAC /* InspectorTests.swift */; };
 		F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */; };
 		F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B1238160FD003FFAE8 /* VStackTests.swift */; };
@@ -81,6 +83,8 @@
 		F67303C42381FC6900A8DAD6 /* FormTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTests.swift; sourceTree = "<group>"; };
 		F67303C72381FD0000A8DAD6 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		F67303C92381FD1500A8DAD6 /* SectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTests.swift; sourceTree = "<group>"; };
+		F67303CB2381FDCB00A8DAD6 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		F67303CD2381FDE200A8DAD6 /* ImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTests.swift; sourceTree = "<group>"; };
 		F6F928A923809F55003FFAE8 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTypesTests.swift; sourceTree = "<group>"; };
 		F6F928B1238160FD003FFAE8 /* VStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackTests.swift; sourceTree = "<group>"; };
@@ -99,12 +103,11 @@
 		OBJ_23 /* HStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackTests.swift; sourceTree = "<group>"; };
 		OBJ_24 /* TextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTests.swift; sourceTree = "<group>"; };
 		OBJ_25 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		OBJ_29 /* ViewInspector */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ViewInspector; sourceTree = SOURCE_ROOT; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* BaseTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTypes.swift; sourceTree = "<group>"; };
-		"ViewInspector::ViewInspector::Product" /* ViewInspector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ViewInspector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"ViewInspector::ViewInspector::Product" /* ViewInspector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ViewInspector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"ViewInspector::ViewInspectorTests::Product" /* ViewInspectorTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = ViewInspectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -136,6 +139,7 @@
 				F67303C42381FC6900A8DAD6 /* FormTests.swift */,
 				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
 				OBJ_23 /* HStackTests.swift */,
+				F67303CD2381FDE200A8DAD6 /* ImageTests.swift */,
 				OBJ_24 /* TextTests.swift */,
 				F6F928B1238160FD003FFAE8 /* VStackTests.swift */,
 				F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */,
@@ -154,6 +158,7 @@
 				F67303C22381FC4700A8DAD6 /* Form.swift */,
 				F6F928B523816212003FFAE8 /* Group.swift */,
 				OBJ_16 /* HStack.swift */,
+				F67303CB2381FDCB00A8DAD6 /* Image.swift */,
 				F67303B82381EF6600A8DAD6 /* VStack.swift */,
 				F67303B62381EF4600A8DAD6 /* ZStack.swift */,
 				F67303BC2381F92000A8DAD6 /* ScrollView.swift */,
@@ -200,7 +205,6 @@
 				OBJ_7 /* Sources */,
 				OBJ_18 /* Tests */,
 				OBJ_26 /* Products */,
-				OBJ_29 /* ViewInspector */,
 				OBJ_30 /* LICENSE */,
 				OBJ_31 /* README.md */,
 			);
@@ -336,6 +340,7 @@
 				OBJ_38 /* InspectableView.swift in Sources */,
 				F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */,
 				F67303C82381FD0000A8DAD6 /* Section.swift in Sources */,
+				F67303CC2381FDCB00A8DAD6 /* Image.swift in Sources */,
 				OBJ_39 /* Inspector.swift in Sources */,
 				F67303B72381EF4600A8DAD6 /* ZStack.swift in Sources */,
 				F67303BD2381F92000A8DAD6 /* ScrollView.swift in Sources */,
@@ -371,6 +376,7 @@
 				F67303CA2381FD1500A8DAD6 /* SectionTests.swift in Sources */,
 				OBJ_64 /* CustomViewTests.swift in Sources */,
 				OBJ_65 /* HStackTests.swift in Sources */,
+				F67303CE2381FDE200A8DAD6 /* ImageTests.swift in Sources */,
 				OBJ_66 /* TextTests.swift in Sources */,
 				OBJ_67 /* XCTestManifests.swift in Sources */,
 				F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */,
@@ -424,6 +430,7 @@
 		OBJ_34 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -452,6 +459,7 @@
 		OBJ_35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
