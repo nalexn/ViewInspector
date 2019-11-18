@@ -7,6 +7,7 @@ tests += AnyViewTests.allTests
 tests += BaseTypesTests.allTests
 tests += ButtonTests.allTests
 tests += CustomViewTests.allTests
+tests += DatePickerTests.allTests
 tests += ForEach.allTests
 tests += FormTests.allTests
 tests += GroupTests.allTests

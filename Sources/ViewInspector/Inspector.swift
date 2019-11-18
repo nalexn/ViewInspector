@@ -69,3 +69,11 @@ extension Inspector {
         }
     }
 }
+
+extension InspectionError {
+    static func typeMismatch<V, T>(_ value: V, _ expectedType: T.Type) -> InspectionError {
+        return .typeMismatch(
+            factual: Inspector.typeName(value: value),
+            expected: Inspector.typeName(type: expectedType))
+    }
+}

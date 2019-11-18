@@ -22,9 +22,7 @@ extension ViewType.Custom: SingleViewContent {
     
     public static func content(view: Any) throws -> Any {
         guard let body = (view as? Inspectable)?.content else {
-            throw InspectionError.typeMismatch(
-                factual: Inspector.typeName(value: view),
-                expected: Inspector.typeName(type: T.self))
+            throw InspectionError.typeMismatch(view, T.self)
         }
         return body
     }
@@ -62,9 +60,7 @@ public extension InspectableView where View: GenericViewType {
     
     func actualView() throws -> View.T {
         guard let casted = view as? View.T else {
-            throw InspectionError.typeMismatch(
-                factual: Inspector.typeName(value: view),
-                expected: Inspector.typeName(type: View.T.self))
+            throw InspectionError.typeMismatch(view, View.T.self)
         }
         return casted
     }

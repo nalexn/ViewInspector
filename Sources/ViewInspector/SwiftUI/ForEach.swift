@@ -22,15 +22,12 @@ extension ViewType.ForEach: MultipleViewContent {
     public static func content(view: Any) throws -> [Any] {
         let data = try Inspector.attribute(label: "data", value: view)
         let content = try Inspector.attribute(label: "content", value: view)
-        guard let dataArray = data as? [Data.Element]
-            else { throw InspectionError.typeMismatch(
-                factual: Inspector.typeName(value: data),
-                expected: Inspector.typeName(type: [Data.Element].self)) }
+        typealias Elements = [Data.Element]
+        guard let dataArray = data as? Elements
+            else { throw InspectionError.typeMismatch(data, Elements.self) }
         typealias Builder = (Data.Element) -> Content
         guard let builder = content as? Builder
-        else { throw InspectionError.typeMismatch(
-            factual: Inspector.typeName(value: content),
-            expected: Inspector.typeName(type: Builder.self)) }
+            else { throw InspectionError.typeMismatch(content, Builder.self) }
         return dataArray.map { builder($0) }
     }
 }

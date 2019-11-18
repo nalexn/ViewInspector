@@ -6,8 +6,6 @@ final class ImageTests: XCTestCase {
     
     let testImage = UIColor.red.image(CGSize(width: 100, height: 80))
     
-    // MARK: - string()
-    
     func testImageByName() throws {
         let imageName = "someImage"
         let view = Image(imageName)

@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		F60EEB8B2382E60F007DB53A /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEB8A2382E60F007DB53A /* DatePicker.swift */; };
+		F60EEB8D2382E629007DB53A /* DatePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEB8C2382E629007DB53A /* DatePickerTests.swift */; };
 		F67303B72381EF4600A8DAD6 /* ZStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303B62381EF4600A8DAD6 /* ZStack.swift */; };
 		F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303B82381EF6600A8DAD6 /* VStack.swift */; };
 		F67303BB2381EF8200A8DAD6 /* ZStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */; };
@@ -75,6 +77,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F60EEB8A2382E60F007DB53A /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
+		F60EEB8C2382E629007DB53A /* DatePickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTests.swift; sourceTree = "<group>"; };
 		F6602F4823809D3E00BDCAAC /* InspectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InspectorTests.swift; path = Tests/InspectorTests.swift; sourceTree = SOURCE_ROOT; };
 		F67303B62381EF4600A8DAD6 /* ZStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStack.swift; sourceTree = "<group>"; };
 		F67303B82381EF6600A8DAD6 /* VStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStack.swift; sourceTree = "<group>"; };
@@ -140,6 +144,7 @@
 				OBJ_20 /* AnyViewTests.swift */,
 				OBJ_21 /* ButtonTests.swift */,
 				OBJ_22 /* CustomViewTests.swift */,
+				F60EEB8C2382E629007DB53A /* DatePickerTests.swift */,
 				F6F928BB23816B50003FFAE8 /* ForEachTests.swift */,
 				F67303C42381FC6900A8DAD6 /* FormTests.swift */,
 				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
@@ -160,6 +165,7 @@
 				OBJ_13 /* AnyView.swift */,
 				OBJ_14 /* Button.swift */,
 				OBJ_15 /* CustomView.swift */,
+				F60EEB8A2382E60F007DB53A /* DatePicker.swift */,
 				F6F928B723816B12003FFAE8 /* ForEach.swift */,
 				F67303C22381FC4700A8DAD6 /* Form.swift */,
 				F6F928B523816212003FFAE8 /* Group.swift */,
@@ -343,6 +349,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_37 /* BaseTypes.swift in Sources */,
+				F60EEB8B2382E60F007DB53A /* DatePicker.swift in Sources */,
 				OBJ_38 /* InspectableView.swift in Sources */,
 				F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */,
 				F67303C82381FD0000A8DAD6 /* Section.swift in Sources */,
@@ -386,6 +393,7 @@
 				F67303CE2381FDE200A8DAD6 /* ImageTests.swift in Sources */,
 				F6F928BC23816B50003FFAE8 /* ForEachTests.swift in Sources */,
 				OBJ_66 /* TextTests.swift in Sources */,
+				F60EEB8D2382E629007DB53A /* DatePickerTests.swift in Sources */,
 				OBJ_67 /* XCTestManifests.swift in Sources */,
 				F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */,
 				F6F928B4238161EE003FFAE8 /* GroupTests.swift in Sources */,
