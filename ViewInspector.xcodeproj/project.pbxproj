@@ -21,8 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		F60EEB8D2382E629007DB53A /* DatePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEB8C2382E629007DB53A /* DatePickerTests.swift */; };
-		F60EEB912382EDDF007DB53A /* DividerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEB902382EDDF007DB53A /* DividerTests.swift */; };
 		F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBBA2382EED0007DB53A /* Inspector.swift */; };
 		F60EEBCE2382EED0007DB53A /* BaseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBBB2382EED0007DB53A /* BaseTypes.swift */; };
 		F60EEBCF2382EED0007DB53A /* InspectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBBC2382EED0007DB53A /* InspectableView.swift */; };
@@ -41,23 +39,24 @@
 		F60EEBDC2382EED0007DB53A /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBCA2382EED0007DB53A /* Text.swift */; };
 		F60EEBDD2382EED0007DB53A /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBCB2382EED0007DB53A /* Button.swift */; };
 		F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBCC2382EED0007DB53A /* ForEach.swift */; };
-		F67303BB2381EF8200A8DAD6 /* ZStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */; };
-		F67303BF2381F93700A8DAD6 /* ScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303BE2381F93700A8DAD6 /* ScrollViewTests.swift */; };
-		F67303C52381FC6900A8DAD6 /* FormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303C42381FC6900A8DAD6 /* FormTests.swift */; };
-		F67303CA2381FD1500A8DAD6 /* SectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303C92381FD1500A8DAD6 /* SectionTests.swift */; };
-		F67303CE2381FDE200A8DAD6 /* ImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303CD2381FDE200A8DAD6 /* ImageTests.swift */; };
-		F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6602F4823809D3E00BDCAAC /* InspectorTests.swift */; };
-		F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */; };
-		F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B1238160FD003FFAE8 /* VStackTests.swift */; };
-		F6F928B4238161EE003FFAE8 /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B3238161EE003FFAE8 /* GroupTests.swift */; };
-		F6F928BC23816B50003FFAE8 /* ForEachTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928BB23816B50003FFAE8 /* ForEachTests.swift */; };
+		F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBE42382F004007DB53A /* BaseTypesTests.swift */; };
+		F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBE52382F004007DB53A /* InspectorTests.swift */; };
+		F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBE72382F004007DB53A /* ZStackTests.swift */; };
+		F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBE82382F004007DB53A /* TextTests.swift */; };
+		F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBE92382F004007DB53A /* HStackTests.swift */; };
+		F60EEBFD2382F004007DB53A /* ImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBEA2382F004007DB53A /* ImageTests.swift */; };
+		F60EEBFE2382F004007DB53A /* FormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBEB2382F004007DB53A /* FormTests.swift */; };
+		F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBEC2382F004007DB53A /* DividerTests.swift */; };
+		F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBED2382F004007DB53A /* ForEachTests.swift */; };
+		F60EEC012382F004007DB53A /* ButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBEE2382F004007DB53A /* ButtonTests.swift */; };
+		F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBEF2382F004007DB53A /* CustomViewTests.swift */; };
+		F60EEC032382F004007DB53A /* VStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF02382F004007DB53A /* VStackTests.swift */; };
+		F60EEC042382F004007DB53A /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF12382F004007DB53A /* GroupTests.swift */; };
+		F60EEC052382F004007DB53A /* SectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF22382F004007DB53A /* SectionTests.swift */; };
+		F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF32382F004007DB53A /* DatePickerTests.swift */; };
+		F60EEC072382F004007DB53A /* ScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF42382F004007DB53A /* ScrollViewTests.swift */; };
+		F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF52382F004007DB53A /* AnyViewTests.swift */; };
 		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_62 /* AnyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* AnyViewTests.swift */; };
-		OBJ_63 /* ButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* ButtonTests.swift */; };
-		OBJ_64 /* CustomViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* CustomViewTests.swift */; };
-		OBJ_65 /* HStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* HStackTests.swift */; };
-		OBJ_66 /* TextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* TextTests.swift */; };
-		OBJ_67 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* XCTestManifests.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
 
@@ -79,8 +78,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F60EEB8C2382E629007DB53A /* DatePickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTests.swift; sourceTree = "<group>"; };
-		F60EEB902382EDDF007DB53A /* DividerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerTests.swift; sourceTree = "<group>"; };
 		F60EEBBA2382EED0007DB53A /* Inspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		F60EEBBB2382EED0007DB53A /* BaseTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTypes.swift; sourceTree = "<group>"; };
 		F60EEBBC2382EED0007DB53A /* InspectableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectableView.swift; sourceTree = "<group>"; };
@@ -99,23 +96,23 @@
 		F60EEBCA2382EED0007DB53A /* Text.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		F60EEBCB2382EED0007DB53A /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		F60EEBCC2382EED0007DB53A /* ForEach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForEach.swift; sourceTree = "<group>"; };
-		F6602F4823809D3E00BDCAAC /* InspectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InspectorTests.swift; path = Tests/InspectorTests.swift; sourceTree = SOURCE_ROOT; };
-		F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStackTests.swift; sourceTree = "<group>"; };
-		F67303BE2381F93700A8DAD6 /* ScrollViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewTests.swift; sourceTree = "<group>"; };
-		F67303C42381FC6900A8DAD6 /* FormTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTests.swift; sourceTree = "<group>"; };
-		F67303C92381FD1500A8DAD6 /* SectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTests.swift; sourceTree = "<group>"; };
-		F67303CD2381FDE200A8DAD6 /* ImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTests.swift; sourceTree = "<group>"; };
-		F6F928A923809F55003FFAE8 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
-		F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTypesTests.swift; sourceTree = "<group>"; };
-		F6F928B1238160FD003FFAE8 /* VStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackTests.swift; sourceTree = "<group>"; };
-		F6F928B3238161EE003FFAE8 /* GroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
-		F6F928BB23816B50003FFAE8 /* ForEachTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForEachTests.swift; sourceTree = "<group>"; };
-		OBJ_20 /* AnyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyViewTests.swift; sourceTree = "<group>"; };
-		OBJ_21 /* ButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTests.swift; sourceTree = "<group>"; };
-		OBJ_22 /* CustomViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewTests.swift; sourceTree = "<group>"; };
-		OBJ_23 /* HStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackTests.swift; sourceTree = "<group>"; };
-		OBJ_24 /* TextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTests.swift; sourceTree = "<group>"; };
-		OBJ_25 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		F60EEBE42382F004007DB53A /* BaseTypesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTypesTests.swift; sourceTree = "<group>"; };
+		F60EEBE52382F004007DB53A /* InspectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorTests.swift; sourceTree = "<group>"; };
+		F60EEBE72382F004007DB53A /* ZStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZStackTests.swift; sourceTree = "<group>"; };
+		F60EEBE82382F004007DB53A /* TextTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextTests.swift; sourceTree = "<group>"; };
+		F60EEBE92382F004007DB53A /* HStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HStackTests.swift; sourceTree = "<group>"; };
+		F60EEBEA2382F004007DB53A /* ImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTests.swift; sourceTree = "<group>"; };
+		F60EEBEB2382F004007DB53A /* FormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormTests.swift; sourceTree = "<group>"; };
+		F60EEBEC2382F004007DB53A /* DividerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerTests.swift; sourceTree = "<group>"; };
+		F60EEBED2382F004007DB53A /* ForEachTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForEachTests.swift; sourceTree = "<group>"; };
+		F60EEBEE2382F004007DB53A /* ButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonTests.swift; sourceTree = "<group>"; };
+		F60EEBEF2382F004007DB53A /* CustomViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViewTests.swift; sourceTree = "<group>"; };
+		F60EEBF02382F004007DB53A /* VStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStackTests.swift; sourceTree = "<group>"; };
+		F60EEBF12382F004007DB53A /* GroupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
+		F60EEBF22382F004007DB53A /* SectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionTests.swift; sourceTree = "<group>"; };
+		F60EEBF32382F004007DB53A /* DatePickerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerTests.swift; sourceTree = "<group>"; };
+		F60EEBF42382F004007DB53A /* ScrollViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViewTests.swift; sourceTree = "<group>"; };
+		F60EEBF52382F004007DB53A /* AnyViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -183,48 +180,45 @@
 			path = SwiftUI;
 			sourceTree = "<group>";
 		};
-		F6F928AE2380AFB4003FFAE8 /* SwiftUI */ = {
+		F60EEBE02382F004007DB53A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_20 /* AnyViewTests.swift */,
-				OBJ_21 /* ButtonTests.swift */,
-				OBJ_22 /* CustomViewTests.swift */,
-				F60EEB8C2382E629007DB53A /* DatePickerTests.swift */,
-				F60EEB902382EDDF007DB53A /* DividerTests.swift */,
-				F6F928BB23816B50003FFAE8 /* ForEachTests.swift */,
-				F67303C42381FC6900A8DAD6 /* FormTests.swift */,
-				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
-				OBJ_23 /* HStackTests.swift */,
-				F67303CD2381FDE200A8DAD6 /* ImageTests.swift */,
-				F67303BE2381F93700A8DAD6 /* ScrollViewTests.swift */,
-				F67303C92381FD1500A8DAD6 /* SectionTests.swift */,
-				OBJ_24 /* TextTests.swift */,
-				F6F928B1238160FD003FFAE8 /* VStackTests.swift */,
-				F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */,
+				F60EEBE32382F004007DB53A /* ViewInspectorTests */,
 			);
-			name = SwiftUI;
+			path = Tests;
 			sourceTree = "<group>";
 		};
-		OBJ_18 /* Tests */ = {
+		F60EEBE32382F004007DB53A /* ViewInspectorTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_19 /* ViewInspectorTests */,
-				F6F928A923809F55003FFAE8 /* LinuxMain.swift */,
+				F60EEBE42382F004007DB53A /* BaseTypesTests.swift */,
+				F60EEBE52382F004007DB53A /* InspectorTests.swift */,
+				F60EEBE62382F004007DB53A /* SwiftUI */,
 			);
-			name = Tests;
-			sourceTree = SOURCE_ROOT;
+			path = ViewInspectorTests;
+			sourceTree = "<group>";
 		};
-		OBJ_19 /* ViewInspectorTests */ = {
+		F60EEBE62382F004007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				F6F928AE2380AFB4003FFAE8 /* SwiftUI */,
-				F6F928AB2380AF99003FFAE8 /* BaseTypesTests.swift */,
-				F6602F4823809D3E00BDCAAC /* InspectorTests.swift */,
-				OBJ_25 /* XCTestManifests.swift */,
+				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
+				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
+				F60EEBEF2382F004007DB53A /* CustomViewTests.swift */,
+				F60EEBF32382F004007DB53A /* DatePickerTests.swift */,
+				F60EEBEC2382F004007DB53A /* DividerTests.swift */,
+				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
+				F60EEBED2382F004007DB53A /* ForEachTests.swift */,
+				F60EEBEB2382F004007DB53A /* FormTests.swift */,
+				F60EEBF12382F004007DB53A /* GroupTests.swift */,
+				F60EEBE92382F004007DB53A /* HStackTests.swift */,
+				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
+				F60EEBF22382F004007DB53A /* SectionTests.swift */,
+				F60EEBE82382F004007DB53A /* TextTests.swift */,
+				F60EEBF02382F004007DB53A /* VStackTests.swift */,
+				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
 			);
-			name = ViewInspectorTests;
-			path = Tests/ViewInspectorTests;
-			sourceTree = SOURCE_ROOT;
+			path = SwiftUI;
+			sourceTree = "<group>";
 		};
 		OBJ_26 /* Products */ = {
 			isa = PBXGroup;
@@ -240,7 +234,7 @@
 			children = (
 				OBJ_6 /* Package.swift */,
 				F60EEBB82382EED0007DB53A /* Sources */,
-				OBJ_18 /* Tests */,
+				F60EEBE02382F004007DB53A /* Tests */,
 				OBJ_26 /* Products */,
 				OBJ_30 /* LICENSE */,
 				OBJ_31 /* README.md */,
@@ -386,24 +380,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				F67303BB2381EF8200A8DAD6 /* ZStackTests.swift in Sources */,
-				F67303BF2381F93700A8DAD6 /* ScrollViewTests.swift in Sources */,
-				F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */,
-				OBJ_62 /* AnyViewTests.swift in Sources */,
-				F67303C52381FC6900A8DAD6 /* FormTests.swift in Sources */,
-				F60EEB912382EDDF007DB53A /* DividerTests.swift in Sources */,
-				OBJ_63 /* ButtonTests.swift in Sources */,
-				F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */,
-				F67303CA2381FD1500A8DAD6 /* SectionTests.swift in Sources */,
-				OBJ_64 /* CustomViewTests.swift in Sources */,
-				OBJ_65 /* HStackTests.swift in Sources */,
-				F67303CE2381FDE200A8DAD6 /* ImageTests.swift in Sources */,
-				F6F928BC23816B50003FFAE8 /* ForEachTests.swift in Sources */,
-				OBJ_66 /* TextTests.swift in Sources */,
-				F60EEB8D2382E629007DB53A /* DatePickerTests.swift in Sources */,
-				OBJ_67 /* XCTestManifests.swift in Sources */,
-				F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */,
-				F6F928B4238161EE003FFAE8 /* GroupTests.swift in Sources */,
+				F60EEC072382F004007DB53A /* ScrollViewTests.swift in Sources */,
+				F60EEBFD2382F004007DB53A /* ImageTests.swift in Sources */,
+				F60EEBFE2382F004007DB53A /* FormTests.swift in Sources */,
+				F60EEC012382F004007DB53A /* ButtonTests.swift in Sources */,
+				F60EEC042382F004007DB53A /* GroupTests.swift in Sources */,
+				F60EEC052382F004007DB53A /* SectionTests.swift in Sources */,
+				F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */,
+				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
+				F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */,
+				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
+				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
+				F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */,
+				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,
+				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
+				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
+				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
+				F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
