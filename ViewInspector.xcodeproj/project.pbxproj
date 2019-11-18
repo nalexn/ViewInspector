@@ -37,6 +37,8 @@
 		F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B1238160FD003FFAE8 /* VStackTests.swift */; };
 		F6F928B4238161EE003FFAE8 /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B3238161EE003FFAE8 /* GroupTests.swift */; };
 		F6F928B623816212003FFAE8 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B523816212003FFAE8 /* Group.swift */; };
+		F6F928B823816B12003FFAE8 /* ForEach.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928B723816B12003FFAE8 /* ForEach.swift */; };
+		F6F928BC23816B50003FFAE8 /* ForEachTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F928BB23816B50003FFAE8 /* ForEachTests.swift */; };
 		OBJ_37 /* BaseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* BaseTypes.swift */; };
 		OBJ_38 /* InspectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* InspectableView.swift */; };
 		OBJ_39 /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Inspector.swift */; };
@@ -90,6 +92,8 @@
 		F6F928B1238160FD003FFAE8 /* VStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackTests.swift; sourceTree = "<group>"; };
 		F6F928B3238161EE003FFAE8 /* GroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
 		F6F928B523816212003FFAE8 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		F6F928B723816B12003FFAE8 /* ForEach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForEach.swift; sourceTree = "<group>"; };
+		F6F928BB23816B50003FFAE8 /* ForEachTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForEachTests.swift; sourceTree = "<group>"; };
 		OBJ_10 /* InspectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectableView.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		OBJ_13 /* AnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyView.swift; sourceTree = "<group>"; };
@@ -136,6 +140,7 @@
 				OBJ_20 /* AnyViewTests.swift */,
 				OBJ_21 /* ButtonTests.swift */,
 				OBJ_22 /* CustomViewTests.swift */,
+				F6F928BB23816B50003FFAE8 /* ForEachTests.swift */,
 				F67303C42381FC6900A8DAD6 /* FormTests.swift */,
 				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
 				OBJ_23 /* HStackTests.swift */,
@@ -155,6 +160,7 @@
 				OBJ_13 /* AnyView.swift */,
 				OBJ_14 /* Button.swift */,
 				OBJ_15 /* CustomView.swift */,
+				F6F928B723816B12003FFAE8 /* ForEach.swift */,
 				F67303C22381FC4700A8DAD6 /* Form.swift */,
 				F6F928B523816212003FFAE8 /* Group.swift */,
 				OBJ_16 /* HStack.swift */,
@@ -341,6 +347,7 @@
 				F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */,
 				F67303C82381FD0000A8DAD6 /* Section.swift in Sources */,
 				F67303CC2381FDCB00A8DAD6 /* Image.swift in Sources */,
+				F6F928B823816B12003FFAE8 /* ForEach.swift in Sources */,
 				OBJ_39 /* Inspector.swift in Sources */,
 				F67303B72381EF4600A8DAD6 /* ZStack.swift in Sources */,
 				F67303BD2381F92000A8DAD6 /* ScrollView.swift in Sources */,
@@ -377,6 +384,7 @@
 				OBJ_64 /* CustomViewTests.swift in Sources */,
 				OBJ_65 /* HStackTests.swift in Sources */,
 				F67303CE2381FDE200A8DAD6 /* ImageTests.swift in Sources */,
+				F6F928BC23816B50003FFAE8 /* ForEachTests.swift in Sources */,
 				OBJ_66 /* TextTests.swift in Sources */,
 				OBJ_67 /* XCTestManifests.swift in Sources */,
 				F6F928AA23809F85003FFAE8 /* InspectorTests.swift in Sources */,
