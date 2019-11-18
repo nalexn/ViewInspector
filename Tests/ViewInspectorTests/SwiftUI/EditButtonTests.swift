@@ -19,9 +19,7 @@ final class EditButtonTests: XCTestCase {
     
     func testEditMode() throws {
         let data = ["abc", "123", "xyz"]
-        func delete(at offsets: IndexSet) {
-            print("!")
-        }
+        func delete(at offsets: IndexSet) { }
         let view = NavigationView {
             List {
                 ForEach(data, id: \.self) { Text($0) }
@@ -29,7 +27,8 @@ final class EditButtonTests: XCTestCase {
             }
             .navigationBarItems(trailing: EditButton())
         }
-//        view
+        // This should not throw. See Inspector.unwrap(view:) for more details
+        XCTAssertThrowsError(try view.inspect().list())
     }
     
     static var allTests = [

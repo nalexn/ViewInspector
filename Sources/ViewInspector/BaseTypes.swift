@@ -34,6 +34,7 @@ public enum InspectionError: Swift.Error {
     case typeMismatch(factual: String, expected: String)
     case attributeNotFound(label: String, type: String)
     case viewIndexOutOfBounds(index: Int, count: Int)
+    case notSupported(String)
 }
 
 extension InspectionError: LocalizedError {
@@ -46,6 +47,8 @@ extension InspectionError: LocalizedError {
             return "\(type) does not have '\(label)' attribute"
         case let .viewIndexOutOfBounds(index, count):
             return "Enclosed view index '\(index)' is out of bounds: '0 ..< \(count)'"
+        case let .notSupported(message):
+            return "ViewInspector: " + message
         }
     }
 }

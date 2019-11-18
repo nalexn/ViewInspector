@@ -28,6 +28,11 @@ extension Inspector {
         let typeName = String(describing: type)
         return typeName.components(separatedBy: "<").first!
     }
+}
+
+// MARK: - Attributes lookup
+
+extension Inspector {
     
     static func attributesTree(value: Any) -> [String: Any] {
         let mirror = Mirror(reflecting: value)
@@ -56,6 +61,18 @@ extension Inspector {
         return try stride(from: 0, to: childrenCount, by: 1).map { index in
             return try Inspector.attribute(label: ".\(index)", value: tupleViews)
         }
+    }
+    
+    static func unwrap(view: Any) throws -> Any {
+        /* Need to find a way to get through EnvironmentReaderView */
+        if Inspector.typeName(value: view) == "EnvironmentReaderView" {
+            throw InspectionError.notSupported("""
+                One of the enclosed views is using
+                Environment injection, which blocks inspection.
+                We're seeking for a workaround.
+            """)
+        }
+        return view
     }
     
     static func isTupleView(_ view: Any) -> Bool {
