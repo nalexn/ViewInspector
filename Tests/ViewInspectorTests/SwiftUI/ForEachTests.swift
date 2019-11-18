@@ -37,15 +37,15 @@ final class ForEachTests: XCTestCase {
     func testExtractionFromSingleViewContainer() throws {
         let data = ["0", "1"].map { TestStruct(id: $0) }
         let view = AnyView(ForEach(data) { Text($0.id) })
-        XCTAssertNoThrow(try view.inspect().forEach([TestStruct].self, Text.self))
+        XCTAssertNoThrow(try view.inspect().forEach())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
         let data = ["0", "1"].map { TestStruct(id: $0) }
         let forEach = ForEach(data) { Text($0.id) }
         let view = Group { forEach; forEach }
-        XCTAssertNoThrow(try view.inspect().forEach([TestStruct].self, Text.self, 0))
-        XCTAssertNoThrow(try view.inspect().forEach([TestStruct].self, Text.self, 1))
+        XCTAssertNoThrow(try view.inspect().forEach(0).text(1))
+        XCTAssertNoThrow(try view.inspect().forEach(1).text(0))
     }
     
     static var allTests = [
