@@ -60,6 +60,8 @@
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
 		F6DFD882238303C60028E84D /* NavigationViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD881238303C60028E84D /* NavigationViewTests.swift */; };
+		F6DFD88423830E9F0028E84D /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD88323830E9F0028E84D /* List.swift */; };
+		F6DFD88623830EB80028E84D /* ListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD88523830EB80028E84D /* ListTests.swift */; };
 		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
@@ -121,6 +123,8 @@
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		F6DFD881238303C60028E84D /* NavigationViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewTests.swift; sourceTree = "<group>"; };
+		F6DFD88323830E9F0028E84D /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		F6DFD88523830EB80028E84D /* ListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 				F60EEBC62382EED0007DB53A /* Group.swift */,
 				F60EEBC82382EED0007DB53A /* HStack.swift */,
 				F60EEBC02382EED0007DB53A /* Image.swift */,
+				F6DFD88323830E9F0028E84D /* List.swift */,
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
@@ -222,6 +227,7 @@
 				F60EEBF12382F004007DB53A /* GroupTests.swift */,
 				F60EEBE92382F004007DB53A /* HStackTests.swift */,
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
+				F6DFD88523830EB80028E84D /* ListTests.swift */,
 				F6DFD881238303C60028E84D /* NavigationViewTests.swift */,
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
@@ -361,6 +367,7 @@
 			files = (
 				F60EEBCE2382EED0007DB53A /* BaseTypes.swift in Sources */,
 				F60EEBD22382EED0007DB53A /* Image.swift in Sources */,
+				F6DFD88423830E9F0028E84D /* List.swift in Sources */,
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
@@ -407,6 +414,7 @@
 				F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */,
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
+				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
 				F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */,
 				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,
 				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
