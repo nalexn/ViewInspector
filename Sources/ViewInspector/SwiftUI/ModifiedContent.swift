@@ -21,7 +21,8 @@ public extension ModifiedContent {
 extension ViewType.ModifiedContent: SingleViewContent {
     
     public static func content(view: Any) throws -> Any {
-        return try Inspector.attribute(path: "content", value: view)
+        let view = try Inspector.attribute(path: "content", value: view)
+        return try Inspector.unwrap(view: view)
     }
 }
 

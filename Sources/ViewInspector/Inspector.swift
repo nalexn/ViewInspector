@@ -54,12 +54,14 @@ extension Inspector {
 extension Inspector {
     
     static func viewsInContainer(view: Any) throws -> [Any] {
+        let view = try Inspector.unwrap(view: view)
         guard Inspector.isTupleView(view)
             else { return [view] }
         let tupleViews = try Inspector.attribute(label: "value", value: view)
         let childrenCount = Mirror(reflecting: tupleViews).children.count
         return try stride(from: 0, to: childrenCount, by: 1).map { index in
-            return try Inspector.attribute(label: ".\(index)", value: tupleViews)
+            let child = try Inspector.attribute(label: ".\(index)", value: tupleViews)
+            return try Inspector.unwrap(view: child)
         }
     }
     

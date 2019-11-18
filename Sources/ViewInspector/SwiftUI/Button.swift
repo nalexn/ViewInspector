@@ -19,7 +19,8 @@ public extension Button {
 extension ViewType.Button: SingleViewContent {
     
     public static func content(view: Any) throws -> Any {
-        return try Inspector.attribute(label: "_label", value: view)
+        let view = try Inspector.attribute(label: "_label", value: view)
+        return try Inspector.unwrap(view: view)
     }
 }
 
