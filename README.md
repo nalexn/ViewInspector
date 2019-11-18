@@ -133,11 +133,11 @@ let okText = try hStack.anyView(1).view(OtherView.self).text()
 - [x] Button
 - [ ] ButtonStyleConfiguration.Label
 - [x] Custom view
-- [ ] DatePicker
-- [ ] Divider
-- [ ] EditButton
+- [x] DatePicker
+- [x] Divider
+- [x] EditButton
 - [ ] EquatableView
-- [ ] ForEach
+- [x] ForEach
 - [x] Form
 - [ ] GeometryReader
 - [x] Group
@@ -146,11 +146,11 @@ let okText = try hStack.anyView(1).view(OtherView.self).text()
 - [x] HStack
 - [x] Image
 - [ ] LinearGradient
-- [ ] List
+- [x] List
 - [ ] MenuButton
-- [ ] ModifiedContent
+- [x] ModifiedContent
 - [ ] NavigationLink
-- [ ] NavigationView
+- [x] NavigationView
 - [ ] PasteButton
 - [ ] Picker
 - [ ] PrimitiveButtonStyleConfiguration.Label
