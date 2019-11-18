@@ -8,6 +8,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(ButtonTests.allTests),
         testCase(CustomViewTests.allTests),
         testCase(DatePickerTests.allTests),
+        testCase(DividerTests.allTests),
         testCase(FormTests.allTests),
         testCase(ForEach.allTests),
         testCase(GroupTests.allTests),

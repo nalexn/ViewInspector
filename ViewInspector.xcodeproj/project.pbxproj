@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		F60EEB8B2382E60F007DB53A /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEB8A2382E60F007DB53A /* DatePicker.swift */; };
 		F60EEB8D2382E629007DB53A /* DatePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEB8C2382E629007DB53A /* DatePickerTests.swift */; };
+		F60EEB8F2382ED9E007DB53A /* Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEB8E2382ED9E007DB53A /* Divider.swift */; };
+		F60EEB912382EDDF007DB53A /* DividerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEB902382EDDF007DB53A /* DividerTests.swift */; };
 		F67303B72381EF4600A8DAD6 /* ZStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303B62381EF4600A8DAD6 /* ZStack.swift */; };
 		F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303B82381EF6600A8DAD6 /* VStack.swift */; };
 		F67303BB2381EF8200A8DAD6 /* ZStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67303BA2381EF8200A8DAD6 /* ZStackTests.swift */; };
@@ -79,6 +81,8 @@
 /* Begin PBXFileReference section */
 		F60EEB8A2382E60F007DB53A /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
 		F60EEB8C2382E629007DB53A /* DatePickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTests.swift; sourceTree = "<group>"; };
+		F60EEB8E2382ED9E007DB53A /* Divider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divider.swift; sourceTree = "<group>"; };
+		F60EEB902382EDDF007DB53A /* DividerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerTests.swift; sourceTree = "<group>"; };
 		F6602F4823809D3E00BDCAAC /* InspectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InspectorTests.swift; path = Tests/InspectorTests.swift; sourceTree = SOURCE_ROOT; };
 		F67303B62381EF4600A8DAD6 /* ZStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStack.swift; sourceTree = "<group>"; };
 		F67303B82381EF6600A8DAD6 /* VStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStack.swift; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 				OBJ_21 /* ButtonTests.swift */,
 				OBJ_22 /* CustomViewTests.swift */,
 				F60EEB8C2382E629007DB53A /* DatePickerTests.swift */,
+				F60EEB902382EDDF007DB53A /* DividerTests.swift */,
 				F6F928BB23816B50003FFAE8 /* ForEachTests.swift */,
 				F67303C42381FC6900A8DAD6 /* FormTests.swift */,
 				F6F928B3238161EE003FFAE8 /* GroupTests.swift */,
@@ -166,6 +171,7 @@
 				OBJ_14 /* Button.swift */,
 				OBJ_15 /* CustomView.swift */,
 				F60EEB8A2382E60F007DB53A /* DatePicker.swift */,
+				F60EEB8E2382ED9E007DB53A /* Divider.swift */,
 				F6F928B723816B12003FFAE8 /* ForEach.swift */,
 				F67303C22381FC4700A8DAD6 /* Form.swift */,
 				F6F928B523816212003FFAE8 /* Group.swift */,
@@ -351,6 +357,7 @@
 				OBJ_37 /* BaseTypes.swift in Sources */,
 				F60EEB8B2382E60F007DB53A /* DatePicker.swift in Sources */,
 				OBJ_38 /* InspectableView.swift in Sources */,
+				F60EEB8F2382ED9E007DB53A /* Divider.swift in Sources */,
 				F67303B92381EF6600A8DAD6 /* VStack.swift in Sources */,
 				F67303C82381FD0000A8DAD6 /* Section.swift in Sources */,
 				F67303CC2381FDCB00A8DAD6 /* Image.swift in Sources */,
@@ -385,6 +392,7 @@
 				F6F928B2238160FD003FFAE8 /* VStackTests.swift in Sources */,
 				OBJ_62 /* AnyViewTests.swift in Sources */,
 				F67303C52381FC6900A8DAD6 /* FormTests.swift in Sources */,
+				F60EEB912382EDDF007DB53A /* DividerTests.swift in Sources */,
 				OBJ_63 /* ButtonTests.swift in Sources */,
 				F6F928AD2380AF9E003FFAE8 /* BaseTypesTests.swift in Sources */,
 				F67303CA2381FD1500A8DAD6 /* SectionTests.swift in Sources */,

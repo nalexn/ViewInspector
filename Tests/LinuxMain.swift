@@ -8,6 +8,7 @@ tests += BaseTypesTests.allTests
 tests += ButtonTests.allTests
 tests += CustomViewTests.allTests
 tests += DatePickerTests.allTests
+tests += DividerTests.allTests
 tests += ForEach.allTests
 tests += FormTests.allTests
 tests += GroupTests.allTests
