@@ -8,6 +8,11 @@
 build/
 DerivedData/
 
+## Test manifests
+
+*XCTestManifests.swift
+*LinuxMain.swift
+
 ## Various settings
 *.pbxuser
 !default.pbxuser
