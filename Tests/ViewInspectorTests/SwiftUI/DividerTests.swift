@@ -4,6 +4,10 @@ import SwiftUI
 
 final class DividerTests: XCTestCase {
     
+    func testInspect() throws {
+        XCTAssertNoThrow(try Divider().inspect())
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Divider())
         XCTAssertNoThrow(try view.inspect().divider())
@@ -21,6 +25,7 @@ final class DividerTests: XCTestCase {
     }
     
     static var allTests = [
+        ("testInspect", testInspect),
         ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
         ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
     ]
