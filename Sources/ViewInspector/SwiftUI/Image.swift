@@ -42,9 +42,15 @@ public extension InspectableView where View == ViewType.Image {
         return try Inspector
             .attribute(path: "provider|base|name", value: view) as? String
     }
-    
+    #if os(iOS) || os(watchOS) || os(tvOS)
     func uiImage() throws -> UIImage? {
         return try Inspector
             .attribute(path: "provider|base", value: view) as? UIImage
     }
+    #else
+    func nsImage() throws -> NSImage? {
+        return try Inspector
+            .attribute(path: "provider|base", value: view) as? NSImage
+    }
+    #endif
 }

@@ -4,7 +4,7 @@ import SwiftUI
 
 final class ImageTests: XCTestCase {
     
-    let testImage = UIColor.red.image(CGSize(width: 100, height: 80))
+    let testImage = testColor.image(CGSize(width: 100, height: 80))
     
     func testImageByName() throws {
         let imageName = "someImage"
@@ -14,20 +14,33 @@ final class ImageTests: XCTestCase {
     }
     
     func testExternalImage() throws {
+        #if os(iOS) || os(watchOS) || os(tvOS)
         let view = Image(uiImage: testImage)
         let sut = try view.inspect().uiImage()
+        #else
+        let view = Image(nsImage: testImage)
+        let sut = try view.inspect().nsImage()
+        #endif
         XCTAssertEqual(sut, testImage)
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        let view = AnyView(Image(uiImage: testImage))
+        let view = AnyView(imageView())
         XCTAssertNoThrow(try view.inspect().image())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        let view = HStack { Image(uiImage: testImage); Image(uiImage: testImage) }
+        let view = HStack { imageView(); imageView() }
         XCTAssertNoThrow(try view.inspect().image(0))
         XCTAssertNoThrow(try view.inspect().image(1))
+    }
+    
+    private func imageView() -> Image {
+        #if os(iOS) || os(watchOS) || os(tvOS)
+        return Image(uiImage: testImage)
+        #else
+        return Image(nsImage: testImage)
+        #endif
     }
     
     static var allTests = [
@@ -38,6 +51,7 @@ final class ImageTests: XCTestCase {
     ]
 }
 
+#if os(iOS) || os(watchOS) || os(tvOS)
 private extension UIColor {
     func image(_ size: CGSize) -> UIImage {
         let format = UIGraphicsImageRendererFormat()
@@ -48,3 +62,20 @@ private extension UIColor {
         }
     }
 }
+#else
+private extension NSColor {
+    func image(_ size: CGSize) -> NSImage {
+        let image = NSImage(size: size)
+        image.lockFocus()
+        drawSwatch(in: NSRect(origin: .zero, size: size))
+        image.unlockFocus()
+        return image
+    }
+}
+#endif
+
+#if os(iOS) || os(watchOS) || os(tvOS)
+let testColor = UIColor.red
+#else
+let testColor = NSColor.red
+#endif
