@@ -15,8 +15,4 @@ final class BaseTypesTests: XCTestCase {
         XCTAssertEqual(desc2, "2 does not have '1' attribute")
         XCTAssertEqual(desc3, "Enclosed view index '5' is out of bounds: '0 ..< 3'")
     }
-    
-    static var allTests = [
-    ("testInspectionErrorDescription", testInspectionErrorDescription),
-    ]
 }

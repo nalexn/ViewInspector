@@ -32,11 +32,4 @@ final class ButtonTests: XCTestCase {
         try button.inspect().tap()
         wait(for: [exp], timeout: 0.5)
     }
-    
-    static var allTests = [
-        ("testEnclosedView", testEnclosedView),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-        ("testCallback", testCallback),
-    ]
 }

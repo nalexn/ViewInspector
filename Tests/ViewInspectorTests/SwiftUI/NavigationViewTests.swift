@@ -26,12 +26,6 @@ final class NavigationViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().navigationView(0))
         XCTAssertNoThrow(try view.inspect().navigationView(1))
     }
-    
-    static var allTests = [
-        ("testEnclosedView", testEnclosedView),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }
 
 #endif

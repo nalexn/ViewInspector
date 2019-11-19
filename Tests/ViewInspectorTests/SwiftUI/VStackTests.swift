@@ -50,13 +50,4 @@ final class VStackTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().vStack(0))
         XCTAssertNoThrow(try view.inspect().vStack(1))
     }
-    
-    static var allTests = [
-        ("testSingleEnclosedView", testSingleEnclosedView),
-        ("testSingleEnclosedViewIndexOutOfBounds", testSingleEnclosedViewIndexOutOfBounds),
-        ("testMultipleEnclosedViews", testMultipleEnclosedViews),
-        ("testMultipleEnclosedViewsIndexOutOfBounds", testMultipleEnclosedViewsIndexOutOfBounds),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }

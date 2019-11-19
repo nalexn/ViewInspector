@@ -42,13 +42,4 @@ final class DatePickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().datePicker(0))
         XCTAssertNoThrow(try view.inspect().datePicker(1))
     }
-    
-    static var allTests = [
-        ("testBindingValue", testBindingValue),
-        ("testEnclosedView", testEnclosedView),
-        ("testDatePickerExtractionFromSingleViewContainer",
-         testDatePickerExtractionFromSingleViewContainer),
-        ("testDatePickerExtractionFromMultipleViewContainer",
-         testDatePickerExtractionFromMultipleViewContainer),
-    ]
 }

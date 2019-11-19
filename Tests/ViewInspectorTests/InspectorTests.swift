@@ -78,7 +78,7 @@ final class InspectorTests: XCTestCase {
     }
     
     func testUnwrapOneModifier() throws {
-        let view = Text(testString).accentColor(.red)
+        let view = Text(testString).transition(.offset(.zero))
         let sut = try Inspector.unwrap(view: view)
         let text = try (sut as? Text)?.inspect().string()
         XCTAssertEqual(text, testString)
@@ -86,34 +86,21 @@ final class InspectorTests: XCTestCase {
     
     func testUnwrapTwoModifier() throws {
         let view = Text(testString)
-            .accentColor(.red).transition(.offset(.zero))
+            .transition(.offset(.zero)).accessibility(hint: Text(""))
         let sut = try Inspector.unwrap(view: view)
         let text = try (sut as? Text)?.inspect().string()
         XCTAssertEqual(text, testString)
     }
     
+    #if os(iOS)
     func testUnwrapEnvironmentReaderView() throws {
         let view = NavigationView {
             List { Text("") }
-            .navigationBarItems(trailing: EditButton())
+                .navigationBarItems(trailing: Text(""))
         }
         XCTAssertThrowsError(try view.inspect().list())
     }
-    
-    static var allTests = [
-        ("testAttributeLabel", testAttributeLabel),
-        ("testUnknownAttributeLabel", testUnknownAttributeLabel),
-        ("testAttributePath", testAttributePath),
-        ("testTypeNameValue", testTypeNameValue),
-        ("testTypeNameType", testTypeNameType),
-        ("testAttributesTree", testAttributesTree),
-        ("testTupleView", testTupleView),
-        ("testGuardType", testGuardType),
-        ("testUnwrapNoModifiers", testUnwrapNoModifiers),
-        ("testUnwrapOneModifier", testUnwrapOneModifier),
-        ("testUnwrapTwoModifier", testUnwrapTwoModifier),
-        ("testUnwrapEnvironmentReaderView", testUnwrapEnvironmentReaderView),
-    ]
+    #endif
 }
 
 private struct Test1 {

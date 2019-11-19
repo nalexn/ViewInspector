@@ -30,11 +30,4 @@ final class ScrollViewTests: XCTestCase {
         let contentInsets = try sut.inspect().contentInsets()
         XCTAssertEqual(contentInsets, EdgeInsets())
     }
-    
-    static var allTests = [
-        ("testEnclosedView", testEnclosedView),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-        ("testContentInsets", testContentInsets)
-    ]
 }

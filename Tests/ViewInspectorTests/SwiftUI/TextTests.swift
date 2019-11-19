@@ -41,13 +41,4 @@ final class TextTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().text(0))
         XCTAssertNoThrow(try view.inspect().text(1))
     }
-    
-    static var allTests = [
-        ("testLocalizableStringNoParams", testLocalizableStringNoParams),
-        ("testLocalizableStringWithOneParam", testLocalizableStringWithOneParam),
-        ("testLocalizableStringWithMultipleParams", testLocalizableStringWithMultipleParams),
-        ("testExternalStringValue", testExternalStringValue),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }

@@ -50,13 +50,4 @@ final class FormTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().form(0))
         XCTAssertNoThrow(try view.inspect().form(1))
     }
-    
-    static var allTests = [
-        ("testSingleEnclosedView", testSingleEnclosedView),
-        ("testSingleEnclosedViewIndexOutOfBounds", testSingleEnclosedViewIndexOutOfBounds),
-        ("testMultipleEnclosedViews", testMultipleEnclosedViews),
-        ("testMultipleEnclosedViewsIndexOutOfBounds", testMultipleEnclosedViewsIndexOutOfBounds),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }

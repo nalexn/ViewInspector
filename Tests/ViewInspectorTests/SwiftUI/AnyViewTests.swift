@@ -24,10 +24,4 @@ final class AnyViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().anyView(0))
         XCTAssertNoThrow(try view.inspect().anyView(1))
     }
-    
-    static var allTests = [
-        ("testEnclosedView", testEnclosedView),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }

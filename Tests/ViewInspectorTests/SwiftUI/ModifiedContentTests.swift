@@ -27,12 +27,6 @@ final class ModifiedContentTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().text(0))
         XCTAssertNoThrow(try view.inspect().text(1))
     }
-    
-    static var allTests = [
-        ("testEnclosedView", testEnclosedView),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }
 
 private struct TestModifier: ViewModifier {

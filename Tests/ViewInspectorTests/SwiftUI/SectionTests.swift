@@ -50,13 +50,4 @@ final class SectionTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().section(0))
         XCTAssertNoThrow(try view.inspect().section(1))
     }
-    
-    static var allTests = [
-        ("testSingleEnclosedView", testSingleEnclosedView),
-        ("testSingleEnclosedViewIndexOutOfBounds", testSingleEnclosedViewIndexOutOfBounds),
-        ("testMultipleEnclosedViews", testMultipleEnclosedViews),
-        ("testMultipleEnclosedViewsIndexOutOfBounds", testMultipleEnclosedViewsIndexOutOfBounds),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }

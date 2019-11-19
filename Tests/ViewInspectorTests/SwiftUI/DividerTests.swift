@@ -23,10 +23,4 @@ final class DividerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().divider(1))
         XCTAssertNoThrow(try view.inspect().divider(3))
     }
-    
-    static var allTests = [
-        ("testInspect", testInspect),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }

@@ -47,16 +47,6 @@ final class CustomViewTests: XCTestCase {
         let sut = try InspectableView<ViewType.Test<SimpleTestView>>("")
         XCTAssertThrowsError(try sut.actualView())
     }
-    
-    static var allTests = [
-        ("testLocalStateChanges", testLocalStateChanges),
-        ("testExternalStateChanges", testExternalStateChanges),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-        ("testContentViewTypeMismatch", testContentViewTypeMismatch),
-        ("testActualView", testActualView),
-        ("testActualViewTypeMismatch", testActualViewTypeMismatch),
-    ]
 }
 
 private struct SimpleTestView: View, Inspectable {

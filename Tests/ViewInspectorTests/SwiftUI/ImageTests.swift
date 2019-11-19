@@ -42,13 +42,6 @@ final class ImageTests: XCTestCase {
         return Image(nsImage: testImage)
         #endif
     }
-    
-    static var allTests = [
-        ("testImageByName", testImageByName),
-        ("testExternalImage", testExternalImage),
-        ("testExtractionFromSingleViewContainer", testExtractionFromSingleViewContainer),
-        ("testExtractionFromMultipleViewContainer", testExtractionFromMultipleViewContainer),
-    ]
 }
 
 #if os(iOS) || os(watchOS) || os(tvOS)
