@@ -4,6 +4,7 @@ import SwiftUI
 
 final class InspectorTests: XCTestCase {
     
+    private let testString = "abc"
     private let testValue = Test1(
         value1: "abc", value2:
         Test1.Test2(value3: 42), view: TestView())
@@ -69,6 +70,36 @@ final class InspectorTests: XCTestCase {
         XCTAssertThrowsError(try Inspector.guardType(value: value, prefix: "Int"))
     }
     
+    func testUnwrapNoModifiers() throws {
+        let view = Text(testString)
+        let sut = try Inspector.unwrap(view: view)
+        let text = try (sut as? Text)?.inspect().string()
+        XCTAssertEqual(text, testString)
+    }
+    
+    func testUnwrapOneModifier() throws {
+        let view = Text(testString).accentColor(.red)
+        let sut = try Inspector.unwrap(view: view)
+        let text = try (sut as? Text)?.inspect().string()
+        XCTAssertEqual(text, testString)
+    }
+    
+    func testUnwrapTwoModifier() throws {
+        let view = Text(testString)
+            .accentColor(.red).transition(.offset(.zero))
+        let sut = try Inspector.unwrap(view: view)
+        let text = try (sut as? Text)?.inspect().string()
+        XCTAssertEqual(text, testString)
+    }
+    
+    func testUnwrapEnvironmentReaderView() throws {
+        let view = NavigationView {
+            List { Text("") }
+            .navigationBarItems(trailing: EditButton())
+        }
+        XCTAssertThrowsError(try view.inspect().list())
+    }
+    
     static var allTests = [
         ("testAttributeLabel", testAttributeLabel),
         ("testUnknownAttributeLabel", testUnknownAttributeLabel),
@@ -77,7 +108,11 @@ final class InspectorTests: XCTestCase {
         ("testTypeNameType", testTypeNameType),
         ("testAttributesTree", testAttributesTree),
         ("testTupleView", testTupleView),
-        ("testGuardType", testGuardType)
+        ("testGuardType", testGuardType),
+        ("testUnwrapNoModifiers", testUnwrapNoModifiers),
+        ("testUnwrapOneModifier", testUnwrapOneModifier),
+        ("testUnwrapTwoModifier", testUnwrapTwoModifier),
+        ("testUnwrapEnvironmentReaderView", testUnwrapEnvironmentReaderView),
     ]
 }
 

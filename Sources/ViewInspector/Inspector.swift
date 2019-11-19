@@ -66,15 +66,20 @@ extension Inspector {
     }
     
     static func unwrap(view: Any) throws -> Any {
-        /* Need to find a way to get through EnvironmentReaderView */
-        if Inspector.typeName(value: view) == "EnvironmentReaderView" {
+        
+        switch Inspector.typeName(value: view) {
+        case "EnvironmentReaderView":
+            /* Need to find a way to get through EnvironmentReaderView */
             throw InspectionError.notSupported("""
                 One of the enclosed views is using
                 Environment injection, which blocks inspection.
                 We're seeking for a workaround.
             """)
+        case "ModifiedContent":
+            return try ViewType.ModifiedContent.content(view: view)
+        default:
+            return view
         }
-        return view
     }
     
     static func isTupleView(_ view: Any) -> Bool {

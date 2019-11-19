@@ -16,7 +16,7 @@ final class ModifiedContentTests: XCTestCase {
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(ModifiedContent(content: Text("Test"),
                                            modifier: TestModifier()))
-        XCTAssertNoThrow(try view.inspect().modifiedContent())
+        XCTAssertNoThrow(try view.inspect().text())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -24,8 +24,8 @@ final class ModifiedContentTests: XCTestCase {
             ModifiedContent(content: Text("Test"), modifier: TestModifier())
             ModifiedContent(content: Text("Test"), modifier: TestModifier())
         }
-        XCTAssertNoThrow(try view.inspect().modifiedContent(0))
-        XCTAssertNoThrow(try view.inspect().modifiedContent(1))
+        XCTAssertNoThrow(try view.inspect().text(0))
+        XCTAssertNoThrow(try view.inspect().text(1))
     }
     
     static var allTests = [
