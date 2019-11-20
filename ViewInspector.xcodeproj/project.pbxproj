@@ -74,6 +74,8 @@
 		F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B42385ED2700358E0E /* VSplitViewTests.swift */; };
 		F6D933B72385EDCB00358E0E /* Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B62385EDCB00358E0E /* Picker.swift */; };
 		F6D933B92385EDDF00358E0E /* PickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B82385EDDF00358E0E /* PickerTests.swift */; };
+		F6D933BB2385F42300358E0E /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933BA2385F42300358E0E /* Toggle.swift */; };
+		F6D933BD2385F45A00358E0E /* ToggleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933BC2385F45A00358E0E /* ToggleTests.swift */; };
 		F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87B2382FB510028E84D /* EditButton.swift */; };
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
@@ -155,6 +157,8 @@
 		F6D933B42385ED2700358E0E /* VSplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSplitViewTests.swift; sourceTree = "<group>"; };
 		F6D933B62385EDCB00358E0E /* Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; };
 		F6D933B82385EDDF00358E0E /* PickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerTests.swift; sourceTree = "<group>"; };
+		F6D933BA2385F42300358E0E /* Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toggle.swift; sourceTree = "<group>"; };
+		F6D933BC2385F45A00358E0E /* ToggleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleTests.swift; sourceTree = "<group>"; };
 		F6DFD87B2382FB510028E84D /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 				F60EEBC42382EED0007DB53A /* Section.swift */,
 				F6D933A22385DBFD00358E0E /* TabView.swift */,
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
+				F6D933BA2385F42300358E0E /* Toggle.swift */,
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
@@ -285,6 +290,7 @@
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
 				F6D933A42385DC0F00358E0E /* TabViewTests.swift */,
 				F60EEBE82382F004007DB53A /* TextTests.swift */,
+				F6D933BC2385F45A00358E0E /* ToggleTests.swift */,
 				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
@@ -432,6 +438,7 @@
 				F60EEBCF2382EED0007DB53A /* InspectableView.swift in Sources */,
 				F60EEBDB2382EED0007DB53A /* VStack.swift in Sources */,
 				F60EEBD62382EED0007DB53A /* Section.swift in Sources */,
+				F6D933BB2385F42300358E0E /* Toggle.swift in Sources */,
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
 				F60EEBDC2382EED0007DB53A /* Text.swift in Sources */,
 				F60EEBD42382EED0007DB53A /* ScrollView.swift in Sources */,
@@ -489,6 +496,7 @@
 				F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */,
 				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,
 				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
+				F6D933BD2385F45A00358E0E /* ToggleTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
 				F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */,
