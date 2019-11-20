@@ -66,6 +66,8 @@
 		F6D933A52385DC0F00358E0E /* TabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933A42385DC0F00358E0E /* TabViewTests.swift */; };
 		F6D933A72385E9E000358E0E /* EquatableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933A62385E9E000358E0E /* EquatableView.swift */; };
 		F6D933A92385E9F700358E0E /* EquatableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933A82385E9F700358E0E /* EquatableViewTests.swift */; };
+		F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933AA2385EAD400358E0E /* GroupBox.swift */; };
+		F6D933AD2385EB0100358E0E /* GroupBoxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */; };
 		F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87B2382FB510028E84D /* EditButton.swift */; };
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
@@ -139,6 +141,8 @@
 		F6D933A42385DC0F00358E0E /* TabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewTests.swift; sourceTree = "<group>"; };
 		F6D933A62385E9E000358E0E /* EquatableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableView.swift; sourceTree = "<group>"; };
 		F6D933A82385E9F700358E0E /* EquatableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableViewTests.swift; sourceTree = "<group>"; };
+		F6D933AA2385EAD400358E0E /* GroupBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBox.swift; sourceTree = "<group>"; };
+		F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxTests.swift; sourceTree = "<group>"; };
 		F6DFD87B2382FB510028E84D /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -204,6 +208,7 @@
 				F60EEBC52382EED0007DB53A /* Form.swift */,
 				F6D9339A2385AD9100358E0E /* GeometryReader.swift */,
 				F60EEBC62382EED0007DB53A /* Group.swift */,
+				F6D933AA2385EAD400358E0E /* GroupBox.swift */,
 				F60EEBC82382EED0007DB53A /* HStack.swift */,
 				F60EEBC02382EED0007DB53A /* Image.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
@@ -252,6 +257,7 @@
 				F60EEBEB2382F004007DB53A /* FormTests.swift */,
 				F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */,
 				F60EEBF12382F004007DB53A /* GroupTests.swift */,
+				F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */,
 				F60EEBE92382F004007DB53A /* HStackTests.swift */,
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
@@ -421,6 +427,7 @@
 				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
+				F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +462,7 @@
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
+				F6D933AD2385EB0100358E0E /* GroupBoxTests.swift in Sources */,
 				F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */,
 				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,
 				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
