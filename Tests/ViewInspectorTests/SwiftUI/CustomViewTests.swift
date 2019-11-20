@@ -32,6 +32,14 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(text2, "true")
     }
     
+    #if os(iOS) || os(tvOS)
+    func testExtractionOfUIKitView() throws {
+        let view = AnyView(UIKitTestView())
+        let sut = try view.inspect().view(UIKitTestView.self)
+        XCTAssertNoThrow(try sut.actualView())
+    }
+    #endif
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(SimpleTestView())
         XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self))
@@ -123,3 +131,15 @@ extension ViewType {
         public static var typePrefix: String { "String" }
     }
 }
+
+#if os(iOS) || os(tvOS)
+struct UIKitTestView: UIViewRepresentable, Inspectable {
+    func makeUIView(context: UIViewRepresentableContext<UIKitTestView>) -> UIView {
+        return UIView()
+    }
+    
+    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<UIKitTestView>) {
+        
+    }
+}
+#endif
