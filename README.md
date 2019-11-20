@@ -126,6 +126,59 @@ let hiText = try hStack.text(0)
 let okText = try hStack.anyView(1).view(OtherView.self).text()
 ```
 
+### Custom views using `@EnvironmentObject`
+
+Currently, **ViewInspector** does not support SwiftUI's native environment injection through `.environmentObject(_:)`, however you still can inspect such views by explicitely providing the environment object to every view that uses it. A small refactoring of the view's source code is required.
+
+Consider you have a view that has a `@EnvironmentObject` variable:
+
+```swift
+struct MyView: View {
+
+    @EnvironmentObject var state: GlobalState
+    
+    var body: some View {
+        Text(state.showHi ? "Hi" : "Bye")
+    }
+}
+```
+
+You can inspect it with **ViewInspector** after refactoring the following way:
+
+```swift
+struct MyView: View, InspectableWithEnvObject {
+
+    @EnvironmentObject var state: GlobalState
+    
+    var body: Body {
+        content(state)
+    }
+    
+    func content(_ state: GlobalState) -> some View {
+        Text(state.showHi ? "Hi" : "Bye")
+    }
+}
+```
+
+After that you can extract the view in tests by explicitely providing the environment object:
+
+```swift
+let envObject = GlobalState()
+let view = MyView()
+let value = try view.inspect(envObject).text().string()
+XCTAssertEqual(value, "Hi")
+```
+
+For the case when view is embedded in the hierarchy:
+
+```swift
+let envObject = GlobalState()
+let view = HStack { AnyView(MyView()) }
+try view.inspect().anyView(0).view(MyView.self, envObject)
+```
+
+Note that you don't need to call `.environmentObject(_:)` in these cases.
+
 ## Library readiness
 
 - [ ] AngularGradient
