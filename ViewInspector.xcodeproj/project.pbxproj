@@ -62,6 +62,8 @@
 		F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */; };
 		F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339E2385B46A00358E0E /* NavigationLink.swift */; };
 		F6D933A12385B48100358E0E /* NavigationLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933A02385B48100358E0E /* NavigationLinkTests.swift */; };
+		F6D933A32385DBFD00358E0E /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933A22385DBFD00358E0E /* TabView.swift */; };
+		F6D933A52385DC0F00358E0E /* TabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933A42385DC0F00358E0E /* TabViewTests.swift */; };
 		F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87B2382FB510028E84D /* EditButton.swift */; };
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
@@ -131,6 +133,8 @@
 		F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReaderTests.swift; sourceTree = "<group>"; };
 		F6D9339E2385B46A00358E0E /* NavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
 		F6D933A02385B48100358E0E /* NavigationLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLinkTests.swift; sourceTree = "<group>"; };
+		F6D933A22385DBFD00358E0E /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		F6D933A42385DC0F00358E0E /* TabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewTests.swift; sourceTree = "<group>"; };
 		F6DFD87B2382FB510028E84D /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
+				F6D933A22385DBFD00358E0E /* TabView.swift */,
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
@@ -249,6 +254,7 @@
 				F6DFD881238303C60028E84D /* NavigationViewTests.swift */,
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
+				F6D933A42385DC0F00358E0E /* TabViewTests.swift */,
 				F60EEBE82382F004007DB53A /* TextTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
@@ -403,6 +409,7 @@
 				F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */,
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
 				F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */,
+				F6D933A32385DBFD00358E0E /* TabView.swift in Sources */,
 				F60EEBD52382EED0007DB53A /* AnyView.swift in Sources */,
 				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
@@ -432,6 +439,7 @@
 				F60EEC052382F004007DB53A /* SectionTests.swift in Sources */,
 				F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */,
 				F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */,
+				F6D933A52385DC0F00358E0E /* TabViewTests.swift in Sources */,
 				F6D933A12385B48100358E0E /* NavigationLinkTests.swift in Sources */,
 				F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */,
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
