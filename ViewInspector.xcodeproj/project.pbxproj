@@ -82,6 +82,8 @@
 		F6D933C52385FB1D00358E0E /* SecureFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933C42385FB1D00358E0E /* SecureFieldTests.swift */; };
 		F6D933C72385FC0100358E0E /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933C62385FC0100358E0E /* Stepper.swift */; };
 		F6D933C92385FC1A00358E0E /* StepperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933C82385FC1A00358E0E /* StepperTests.swift */; };
+		F6D933CB2385FF8F00358E0E /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933CA2385FF8F00358E0E /* Slider.swift */; };
+		F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933CC2385FFA300358E0E /* SliderTests.swift */; };
 		F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87B2382FB510028E84D /* EditButton.swift */; };
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
@@ -171,6 +173,8 @@
 		F6D933C42385FB1D00358E0E /* SecureFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureFieldTests.swift; sourceTree = "<group>"; };
 		F6D933C62385FC0100358E0E /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		F6D933C82385FC1A00358E0E /* StepperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperTests.swift; sourceTree = "<group>"; };
+		F6D933CA2385FF8F00358E0E /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
+		F6D933CC2385FFA300358E0E /* SliderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderTests.swift; sourceTree = "<group>"; };
 		F6DFD87B2382FB510028E84D /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -248,6 +252,7 @@
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
 				F6D933C22385FA8B00358E0E /* SecureField.swift */,
+				F6D933CA2385FF8F00358E0E /* Slider.swift */,
 				F6D933C62385FC0100358E0E /* Stepper.swift */,
 				F6D933A22385DBFD00358E0E /* TabView.swift */,
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
@@ -304,6 +309,7 @@
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
 				F6D933C42385FB1D00358E0E /* SecureFieldTests.swift */,
+				F6D933CC2385FFA300358E0E /* SliderTests.swift */,
 				F6D933C82385FC1A00358E0E /* StepperTests.swift */,
 				F6D933A42385DC0F00358E0E /* TabViewTests.swift */,
 				F60EEBE82382F004007DB53A /* TextTests.swift */,
@@ -477,6 +483,7 @@
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
 				F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */,
+				F6D933CB2385FF8F00358E0E /* Slider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -522,6 +529,7 @@
 				F6D933BD2385F45A00358E0E /* ToggleTests.swift in Sources */,
 				F6D933C12385F62500358E0E /* TextFieldTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
+				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
 				F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */,
 				F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */,

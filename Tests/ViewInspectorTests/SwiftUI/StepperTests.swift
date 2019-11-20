@@ -5,6 +5,7 @@ import SwiftUI
 final class StepperTests: XCTestCase {
     
     @State var counter1: Int = 0
+    @State var counter2: Int = 0
     
     func testEnclosedView() throws {
         let view1 = Stepper("Title1", value: $counter1)
@@ -23,7 +24,7 @@ final class StepperTests: XCTestCase {
     func testExtractionFromMultipleViewContainer() throws {
         let view = HStack {
             Stepper("Test", value: $counter1)
-            Stepper("Test", value: $counter1)
+            Stepper("Test", value: $counter2)
         }
         XCTAssertNoThrow(try view.inspect().stepper(0))
         XCTAssertNoThrow(try view.inspect().stepper(1))
