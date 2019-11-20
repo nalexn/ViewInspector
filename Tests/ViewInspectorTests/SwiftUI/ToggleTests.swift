@@ -4,8 +4,13 @@ import SwiftUI
 
 final class ToggleTests: XCTestCase {
     
-    @State var isOn1 = true
-    @State var isOn2 = true
+    @State var isOn1 = false
+    @State var isOn2 = false
+    
+    override func setUp() {
+        isOn1 = false
+        isOn2 = false
+    }
     
     func testEnclosedView() throws {
         let view = Toggle(isOn: $isOn1) { Text("Test") }
