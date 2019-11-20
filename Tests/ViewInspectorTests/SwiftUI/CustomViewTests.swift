@@ -44,7 +44,7 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testContentViewTypeMismatch() {
-        XCTAssertThrowsError(try ViewType.Custom<SimpleTestView>
+        XCTAssertThrowsError(try ViewType.View<SimpleTestView>
             .content(view: "abc", envObject: Inspector.stubEnvObject))
     }
     

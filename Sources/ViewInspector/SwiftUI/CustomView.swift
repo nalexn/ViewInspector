@@ -2,7 +2,7 @@ import SwiftUI
 
 public extension ViewType {
     
-    struct Custom<T>: KnownViewType, CustomViewType where T: Inspectable {
+    struct View<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self)
         }
@@ -17,8 +17,8 @@ public extension ViewType {
 
 public extension View where Self: Inspectable {
     
-    func inspect() throws -> InspectableView<ViewType.Custom<Self>> {
-        return try InspectableView<ViewType.Custom<Self>>(self)
+    func inspect() throws -> InspectableView<ViewType.View<Self>> {
+        return try InspectableView<ViewType.View<Self>>(self)
     }
 }
 
@@ -31,7 +31,7 @@ public extension View where Self: InspectableWithEnvObject {
 
 // MARK: - SingleViewContent
 
-extension ViewType.Custom: SingleViewContent {
+extension ViewType.View: SingleViewContent {
     
     public static func content(view: Any, envObject: Any) throws -> Any {
         guard let body = (view as? Inspectable)?.content else {
@@ -55,12 +55,12 @@ extension ViewType.ViewWithEnvObject: SingleViewContent {
 
 public extension InspectableView where View: SingleViewContent {
     
-    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.Custom<T>>
+    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
         let content = try View.content(view: view, envObject: envObject)
         let prefix = Inspector.typeName(type: type)
         try Inspector.guardType(value: content, prefix: prefix)
-        return try InspectableView<ViewType.Custom<T>>(content)
+        return try InspectableView<ViewType.View<T>>(content)
     }
     
     func view<T>(_ type: T.Type, _ envObject: T.Object) throws ->
@@ -77,12 +77,12 @@ public extension InspectableView where View: SingleViewContent {
 
 public extension InspectableView where View: MultipleViewContent {
     
-    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.Custom<T>>
+    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
         let content = try contentView(at: index)
         let prefix = Inspector.typeName(type: type)
         try Inspector.guardType(value: content, prefix: prefix)
-        return try InspectableView<ViewType.Custom<T>>(content)
+        return try InspectableView<ViewType.View<T>>(content)
     }
     
     func view<T>(_ type: T.Type, _ envObject: T.Object, _ index: Int) throws ->
