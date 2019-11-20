@@ -60,6 +60,8 @@
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
 		F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */; };
+		F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339E2385B46A00358E0E /* NavigationLink.swift */; };
+		F6D933A12385B48100358E0E /* NavigationLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933A02385B48100358E0E /* NavigationLinkTests.swift */; };
 		F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87B2382FB510028E84D /* EditButton.swift */; };
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
@@ -127,6 +129,8 @@
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
 		F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReaderTests.swift; sourceTree = "<group>"; };
+		F6D9339E2385B46A00358E0E /* NavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
+		F6D933A02385B48100358E0E /* NavigationLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLinkTests.swift; sourceTree = "<group>"; };
 		F6DFD87B2382FB510028E84D /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -195,6 +199,7 @@
 				F60EEBC02382EED0007DB53A /* Image.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
 				F69C91C92383187D00515A91 /* ModifiedContent.swift */,
+				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
@@ -240,6 +245,7 @@
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
 				F69C91CB2383189200515A91 /* ModifiedContentTests.swift */,
+				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
 				F6DFD881238303C60028E84D /* NavigationViewTests.swift */,
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
@@ -398,6 +404,7 @@
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
 				F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */,
 				F60EEBD52382EED0007DB53A /* AnyView.swift in Sources */,
+				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
 			);
@@ -425,6 +432,7 @@
 				F60EEC052382F004007DB53A /* SectionTests.swift in Sources */,
 				F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */,
 				F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */,
+				F6D933A12385B48100358E0E /* NavigationLinkTests.swift in Sources */,
 				F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */,
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
 				F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */,

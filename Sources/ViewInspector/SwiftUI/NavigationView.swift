@@ -18,11 +18,11 @@ public extension NavigationView {
 
 // MARK: - SingleViewContent
 
-extension ViewType.NavigationView: SingleViewContent {
+extension ViewType.NavigationView: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(path: "content", value: view)
-        return try Inspector.unwrap(view: view)
+    public static func content(view: Any, envObject: Any) throws -> [Any] {
+        let content = try Inspector.attribute(path: "content", value: view)
+        return try Inspector.viewsInContainer(view: content)
     }
 }
 

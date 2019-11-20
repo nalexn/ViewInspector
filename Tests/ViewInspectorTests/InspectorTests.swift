@@ -98,7 +98,7 @@ final class InspectorTests: XCTestCase {
             List { Text("") }
                 .navigationBarItems(trailing: Text(""))
         }
-        XCTAssertThrowsError(try view.inspect().list())
+        XCTAssertThrowsError(try view.inspect().list(0))
     }
     #endif
 }
