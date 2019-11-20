@@ -13,36 +13,40 @@ SwiftUI views are a function of state. We can provide the input, but couldn't ve
 
 #### 1. Verify the view's inner state
 
+You can dig into the hierarchy and read actual state values on any SwiftUI View:
+
 ```swift
 let view = ContentView()
 let value = try view.inspect().text().string()
 XCTAssertEqual(value, "Hello, world!")
 ```
 
-#### 2. Gain direct access to views in the hierarchy
+#### 2. Extract your views from the hierarchy
+
+It is possible to obtain a copy of your custom view with actual state and references from the hierarchy of any depth:
 
 ```swift
-let customView = try view.inspect().hStack().view(CustomView.self, 0)
-XCTAssertTrue(customView.isToggleOn)
+let customView = try view.inspect().anyView().view(CustomView.self)
+let sut = customView.actualView()
+XCTAssertTrue(sut.isToggleOn)
 ```
 
 #### 3. Trigger side effects
 
+Simulate user interaction by programmatically triggering system controls callbacks:
+
 ```swift
 let view = ContentView()
-let button = try view.inspect().anyView().button()
+let button = try view.inspect().hStack().button(3)
 try button.tap()
+
+let textField = try view.inspect().hStack().textField(2)
+try textField.callOnCommit()
 ```
 
 ### Is it using private APIs?
 
 **ViewInspector** is using official Swift reflection API to dissect the view structures. So this library is production-friendly, although it's strongly recommended to use it for debugging and unit testing purposes only.
-
-### Is it production ready?
-
-The library is already functional, but there are many views in SwiftUI that have not yet been fully anatomized.
-
-**Contributions are welcomed!**
 
 ## How do I add it to my Xcode project?
 
@@ -185,44 +189,44 @@ Note that you don't need to call `.environmentObject(_:)` in these cases.
 - [x] AnyView
 - [x] Button
 - [ ] ButtonStyleConfiguration.Label
-- [x] Custom view
+- [x] Custom view (SwiftUI and UIKit)
 - [x] DatePicker
 - [x] Divider
 - [x] EditButton
-- [ ] EquatableView
+- [x] EquatableView
 - [x] ForEach
 - [x] Form
-- [ ] GeometryReader
+- [x] GeometryReader
 - [x] Group
-- [ ] GroupBox
-- [ ] HSplitView
+- [x] GroupBox
+- [x] HSplitView
 - [x] HStack
 - [x] Image
 - [ ] LinearGradient
 - [x] List
 - [ ] MenuButton
 - [x] ModifiedContent
-- [ ] NavigationLink
+- [x] NavigationLink
 - [x] NavigationView
 - [ ] PasteButton
-- [ ] Picker
+- [x] Picker
 - [ ] PrimitiveButtonStyleConfiguration.Label
 - [ ] RadialGradient
 - [x] ScrollView
 - [x] Section
-- [ ] SecureField
-- [ ] Slider
-- [ ] Stepper
-- [ ] TabView
+- [x] SecureField
+- [x] Slider
+- [x] Stepper
+- [x] TabView
 - [x] Text
-- [ ] TextField
-- [ ] Toggle
+- [x] TextField
+- [x] Toggle
 - [ ] ToggleStyleConfiguration.Label
-- [ ] VSplitView
+- [x] VSplitView
 - [x] VStack
 - [x] ZStack
 
-## Contributions are welcomed!
+### Contributions are welcomed!
 
 ---
 
