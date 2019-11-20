@@ -14,7 +14,7 @@ public extension VStack {
     }
 }
 
-// MARK: - MultipleViewContent
+// MARK: - Content Extraction
 
 extension ViewType.VStack: MultipleViewContent {
     
@@ -23,7 +23,7 @@ extension ViewType.VStack: MultipleViewContent {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {
     
@@ -33,7 +33,7 @@ public extension InspectableView where View: SingleViewContent {
     }
 }
 
-// MARK: - MultipleViewContent
+// MARK: - Extraction from MultipleViewContent parent
 
 public extension InspectableView where View: MultipleViewContent {
     

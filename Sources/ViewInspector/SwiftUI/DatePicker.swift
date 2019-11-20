@@ -14,7 +14,7 @@ public extension DatePicker {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Content Extraction
 
 extension ViewType.DatePicker: SingleViewContent {
     
@@ -24,7 +24,7 @@ extension ViewType.DatePicker: SingleViewContent {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {
     
@@ -34,7 +34,7 @@ public extension InspectableView where View: SingleViewContent {
     }
 }
 
-// MARK: - MultipleViewContent
+// MARK: - Extraction from MultipleViewContent parent
 
 public extension InspectableView where View: MultipleViewContent {
     

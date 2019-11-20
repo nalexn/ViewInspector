@@ -21,7 +21,7 @@ public extension ViewType.NavigationLink {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Content Extraction
 
 extension ViewType.NavigationLink: SingleViewContent {
     
@@ -39,7 +39,7 @@ extension ViewType.NavigationLink.Label: SingleViewContent {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {
     
@@ -49,7 +49,7 @@ public extension InspectableView where View: SingleViewContent {
     }
 }
 
-// MARK: - MultipleViewContent
+// MARK: - Extraction from MultipleViewContent parent
 
 public extension InspectableView where View: MultipleViewContent {
     

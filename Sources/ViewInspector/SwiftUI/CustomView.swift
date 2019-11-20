@@ -29,7 +29,7 @@ public extension View where Self: InspectableWithEnvObject {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Content Extraction
 
 extension ViewType.View: SingleViewContent {
     
@@ -51,7 +51,7 @@ extension ViewType.ViewWithEnvObject: SingleViewContent {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {
     
@@ -73,7 +73,7 @@ public extension InspectableView where View: SingleViewContent {
     }
 }
 
-// MARK: - MultipleViewContent
+// MARK: - Extraction from MultipleViewContent parent
 
 public extension InspectableView where View: MultipleViewContent {
     

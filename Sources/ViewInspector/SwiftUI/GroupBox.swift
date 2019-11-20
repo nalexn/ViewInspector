@@ -16,7 +16,7 @@ public extension GroupBox {
     }
 }
 
-// MARK: - MultipleViewContent
+// MARK: - Content Extraction
 
 extension ViewType.GroupBox: MultipleViewContent {
     
@@ -26,7 +26,7 @@ extension ViewType.GroupBox: MultipleViewContent {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {
     
@@ -36,7 +36,7 @@ public extension InspectableView where View: SingleViewContent {
     }
 }
 
-// MARK: - MultipleViewContent
+// MARK: - Extraction from MultipleViewContent parent
 
 public extension InspectableView where View: MultipleViewContent {
     

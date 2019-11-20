@@ -14,7 +14,7 @@ public extension GeometryReader {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Content Extraction
 
 extension ViewType.GeometryReader: SingleViewContent {
     
@@ -26,7 +26,7 @@ extension ViewType.GeometryReader: SingleViewContent {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {
     
@@ -36,7 +36,7 @@ public extension InspectableView where View: SingleViewContent {
     }
 }
 
-// MARK: - MultipleViewContent
+// MARK: - Extraction from MultipleViewContent parent
 
 public extension InspectableView where View: MultipleViewContent {
     

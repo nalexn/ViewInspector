@@ -16,7 +16,7 @@ public extension ModifiedContent {
     }
 }
 
-// MARK: - SingleViewContent
+// MARK: - Content Extraction
 
 extension ViewType.ModifiedContent: SingleViewContent {
     
