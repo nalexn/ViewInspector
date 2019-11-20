@@ -24,6 +24,16 @@ final class ImageTests: XCTestCase {
         XCTAssertEqual(sut, testImage)
     }
     
+    func testExtractionWithModifiers() throws {
+        let view = AnyView(imageView().resizable().interpolation(.low))
+        #if os(iOS) || os(watchOS) || os(tvOS)
+        let image = try view.inspect().image().uiImage()
+        #else
+        let image = try view.inspect().image().nsImage()
+        #endif
+        XCTAssertEqual(image, testImage)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(imageView())
         XCTAssertNoThrow(try view.inspect().image())
