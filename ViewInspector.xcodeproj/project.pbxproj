@@ -68,6 +68,10 @@
 		F6D933A92385E9F700358E0E /* EquatableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933A82385E9F700358E0E /* EquatableViewTests.swift */; };
 		F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933AA2385EAD400358E0E /* GroupBox.swift */; };
 		F6D933AD2385EB0100358E0E /* GroupBoxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */; };
+		F6D933AF2385EBD900358E0E /* HSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933AE2385EBD900358E0E /* HSplitView.swift */; };
+		F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B02385EC5F00358E0E /* HSplitViewTests.swift */; };
+		F6D933B32385ED1400358E0E /* VSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B22385ED1400358E0E /* VSplitView.swift */; };
+		F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B42385ED2700358E0E /* VSplitViewTests.swift */; };
 		F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87B2382FB510028E84D /* EditButton.swift */; };
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
@@ -143,6 +147,10 @@
 		F6D933A82385E9F700358E0E /* EquatableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableViewTests.swift; sourceTree = "<group>"; };
 		F6D933AA2385EAD400358E0E /* GroupBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBox.swift; sourceTree = "<group>"; };
 		F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxTests.swift; sourceTree = "<group>"; };
+		F6D933AE2385EBD900358E0E /* HSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSplitView.swift; sourceTree = "<group>"; };
+		F6D933B02385EC5F00358E0E /* HSplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSplitViewTests.swift; sourceTree = "<group>"; };
+		F6D933B22385ED1400358E0E /* VSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSplitView.swift; sourceTree = "<group>"; };
+		F6D933B42385ED2700358E0E /* VSplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSplitViewTests.swift; sourceTree = "<group>"; };
 		F6DFD87B2382FB510028E84D /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -209,6 +217,7 @@
 				F6D9339A2385AD9100358E0E /* GeometryReader.swift */,
 				F60EEBC62382EED0007DB53A /* Group.swift */,
 				F6D933AA2385EAD400358E0E /* GroupBox.swift */,
+				F6D933AE2385EBD900358E0E /* HSplitView.swift */,
 				F60EEBC82382EED0007DB53A /* HStack.swift */,
 				F60EEBC02382EED0007DB53A /* Image.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
@@ -219,6 +228,7 @@
 				F60EEBC42382EED0007DB53A /* Section.swift */,
 				F6D933A22385DBFD00358E0E /* TabView.swift */,
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
+				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
 			);
@@ -258,6 +268,7 @@
 				F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */,
 				F60EEBF12382F004007DB53A /* GroupTests.swift */,
 				F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */,
+				F6D933B02385EC5F00358E0E /* HSplitViewTests.swift */,
 				F60EEBE92382F004007DB53A /* HStackTests.swift */,
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
@@ -268,6 +279,7 @@
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
 				F6D933A42385DC0F00358E0E /* TabViewTests.swift */,
 				F60EEBE82382F004007DB53A /* TextTests.swift */,
+				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
 			);
@@ -420,9 +432,11 @@
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
 				F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */,
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
+				F6D933B32385ED1400358E0E /* VSplitView.swift in Sources */,
 				F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */,
 				F6D933A32385DBFD00358E0E /* TabView.swift in Sources */,
 				F6D933A72385E9E000358E0E /* EquatableView.swift in Sources */,
+				F6D933AF2385EBD900358E0E /* HSplitView.swift in Sources */,
 				F60EEBD52382EED0007DB53A /* AnyView.swift in Sources */,
 				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
@@ -459,6 +473,7 @@
 				F6D933A92385E9F700358E0E /* EquatableViewTests.swift in Sources */,
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
 				F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */,
+				F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */,
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
@@ -468,6 +483,7 @@
 				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
+				F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */,
 				F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
