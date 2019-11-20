@@ -10,20 +10,30 @@ public extension Inspectable where Self: View {
     var content: Any { body }
 }
 
+public protocol InspectableWithEnvObject: EnvironmentObjectInjection {
+    associatedtype Body
+    associatedtype Object: ObservableObject
+    func content(_ object: Object) -> Body
+}
+
+public protocol EnvironmentObjectInjection {
+    func content(_ object: Any) throws -> Any
+}
+
 public protocol SingleViewContent {
-    static func content(view: Any) throws -> Any
+    static func content(view: Any, envObject: Any) throws -> Any
 }
 
 public protocol MultipleViewContent {
-    static func content(view: Any) throws -> [Any]
+    static func content(view: Any, envObject: Any) throws -> [Any]
 }
 
 public protocol KnownViewType {
     static var typePrefix: String { get }
 }
 
-public protocol GenericViewType {
-    associatedtype T: Inspectable
+public protocol CustomViewType {
+    associatedtype T
 }
 
 public struct ViewType { }

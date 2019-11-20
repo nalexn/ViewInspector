@@ -18,7 +18,7 @@ public extension ForEach {
 
 extension ViewType.ForEach: MultipleViewContent {
     
-    public static func content(view: Any) throws -> [Any] {
+    public static func content(view: Any, envObject: Any) throws -> [Any] {
         guard let children = try (view as? ForEachContentProvider)?.content() else {
             throw InspectionError.typeMismatch(view, ForEachContentProvider.self)
         }
@@ -32,7 +32,7 @@ public extension InspectableView where View: SingleViewContent {
     
     func forEach() throws -> InspectableView<ViewType.ForEach> {
             
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.ForEach>(content)
     }
 }

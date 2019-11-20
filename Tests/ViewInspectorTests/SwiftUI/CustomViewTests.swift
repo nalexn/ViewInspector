@@ -1,5 +1,6 @@
 import XCTest
 import SwiftUI
+import UIKit
 @testable import ViewInspector
 
 final class CustomViewTests: XCTestCase {
@@ -11,13 +12,23 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(text2, "true")
     }
     
-    func testExternalStateChanges() throws {
-        let viewModel = ExternalStateTestView.ViewModel()
-        let view = ExternalStateTestView(viewModel: viewModel)
+    func testObservedStateChanges() throws {
+        let viewModel = ExternalState()
+        let view = ObservedStateTestView(viewModel: viewModel)
         let text1 = try view.inspect().text().string()
         XCTAssertEqual(text1, "false")
         viewModel.flag = true
         let text2 = try view.inspect().text().string()
+        XCTAssertEqual(text2, "true")
+    }
+    
+    func testEnvironmentStateChanges() throws {
+        let viewModel = ExternalState()
+        let view = EnvironmentStateTestView()
+        let text1 = try view.inspect(viewModel).text().string()
+        XCTAssertEqual(text1, "false")
+        viewModel.flag = true
+        let text2 = try view.inspect(viewModel).text().string()
         XCTAssertEqual(text2, "true")
     }
     
@@ -34,7 +45,7 @@ final class CustomViewTests: XCTestCase {
     
     func testContentViewTypeMismatch() {
         XCTAssertThrowsError(try ViewType.Custom<SimpleTestView>
-            .content(view: "abc"))
+            .content(view: "abc", envObject: Inspector.stubEnvObject))
     }
     
     func testActualView() throws {
@@ -64,23 +75,33 @@ private struct LocalStateTestView: View, Inspectable {
     }
 }
 
-private struct ExternalStateTestView: View, Inspectable {
+private struct ObservedStateTestView: View, Inspectable {
     
-    @ObservedObject var viewModel: ViewModel
+    @ObservedObject var viewModel: ExternalState
     
     var body: some View {
         Text(viewModel.flag ? "true" : "false")
     }
 }
 
-extension ExternalStateTestView {
-    class ViewModel: ObservableObject {
-        @Published var flag = false
+private struct EnvironmentStateTestView: View, InspectableWithEnvObject {
+    @EnvironmentObject var viewModel: ExternalState
+    
+    var body: Body {
+        content(viewModel)
+    }
+    
+    func content(_ viewModel: ExternalState) -> some View {
+        Text(viewModel.flag ? "true" : "false")
     }
 }
 
+class ExternalState: ObservableObject {
+    @Published var flag = false
+}
+
 extension ViewType {
-    struct Test<T>: KnownViewType, GenericViewType where T: Inspectable {
+    struct Test<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String { "String" }
     }
 }

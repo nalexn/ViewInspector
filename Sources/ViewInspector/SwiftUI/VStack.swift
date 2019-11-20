@@ -18,8 +18,8 @@ public extension VStack {
 
 extension ViewType.VStack: MultipleViewContent {
     
-    public static func content(view: Any) throws -> [Any] {
-        return try ViewType.HStack.content(view: view)
+    public static func content(view: Any, envObject: Any) throws -> [Any] {
+        return try ViewType.HStack.content(view: view, envObject: envObject)
     }
 }
 
@@ -28,7 +28,7 @@ extension ViewType.VStack: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func vStack() throws -> InspectableView<ViewType.VStack> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.VStack>(content)
     }
 }

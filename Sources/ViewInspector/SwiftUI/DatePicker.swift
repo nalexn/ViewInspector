@@ -18,7 +18,7 @@ public extension DatePicker {
 
 extension ViewType.DatePicker: SingleViewContent {
     
-    public static func content(view: Any) throws -> Any {
+    public static func content(view: Any, envObject: Any) throws -> Any {
         let view = try Inspector.attribute(label: "label", value: view)
         return try Inspector.unwrap(view: view)
     }
@@ -29,7 +29,7 @@ extension ViewType.DatePicker: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func datePicker() throws -> InspectableView<ViewType.DatePicker> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.DatePicker>(content)
     }
 }

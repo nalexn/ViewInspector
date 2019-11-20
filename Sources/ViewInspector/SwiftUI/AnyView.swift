@@ -18,7 +18,7 @@ public extension AnyView {
 
 extension ViewType.AnyView: SingleViewContent {
     
-    public static func content(view: Any) throws -> Any {
+    public static func content(view: Any, envObject: Any) throws -> Any {
         let view = try Inspector.attribute(path: "storage|view", value: view)
         return try Inspector.unwrap(view: view)
     }
@@ -29,7 +29,7 @@ extension ViewType.AnyView: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func anyView() throws -> InspectableView<ViewType.AnyView> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.AnyView>(content)
     }
 }

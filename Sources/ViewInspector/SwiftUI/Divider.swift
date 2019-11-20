@@ -19,7 +19,7 @@ public extension Divider {
 public extension InspectableView where View: SingleViewContent {
     
     func divider() throws -> InspectableView<ViewType.Divider> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.Divider>(content)
     }
 }

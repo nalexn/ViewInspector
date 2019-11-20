@@ -19,7 +19,7 @@ public extension Text {
 public extension InspectableView where View: SingleViewContent {
     
     func text() throws -> InspectableView<ViewType.Text> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.Text>(content)
     }
 }

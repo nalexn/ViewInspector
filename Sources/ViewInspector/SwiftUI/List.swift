@@ -18,7 +18,7 @@ public extension List {
 
 extension ViewType.List: MultipleViewContent {
     
-    public static func content(view: Any) throws -> [Any] {
+    public static func content(view: Any, envObject: Any) throws -> [Any] {
         let content = try Inspector.attribute(label: "content", value: view)
         return try Inspector.viewsInContainer(view: content)
     }
@@ -29,7 +29,7 @@ extension ViewType.List: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func list() throws -> InspectableView<ViewType.List> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.List>(content)
     }
 }

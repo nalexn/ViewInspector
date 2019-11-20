@@ -53,6 +53,8 @@ extension Inspector {
 
 extension Inspector {
     
+    static var stubEnvObject: Any { EnvironmentObjectNotSet() }
+    
     static func viewsInContainer(view: Any) throws -> [Any] {
         let view = try Inspector.unwrap(view: view)
         guard Inspector.isTupleView(view)
@@ -65,7 +67,7 @@ extension Inspector {
         }
     }
     
-    static func unwrap(view: Any) throws -> Any {
+    static func unwrap(view: Any, envObject: Any = stubEnvObject) throws -> Any {
         
         switch Inspector.typeName(value: view) {
         case "EnvironmentReaderView":
@@ -76,7 +78,7 @@ extension Inspector {
                 We're seeking for a workaround.
             """)
         case "ModifiedContent":
-            return try ViewType.ModifiedContent.content(view: view)
+            return try ViewType.ModifiedContent.content(view: view, envObject: envObject)
         default:
             return view
         }
@@ -100,4 +102,8 @@ extension InspectionError {
             factual: Inspector.typeName(value: value),
             expected: Inspector.typeName(type: expectedType))
     }
+}
+
+extension Inspector {
+    struct EnvironmentObjectNotSet { }
 }

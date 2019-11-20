@@ -20,7 +20,7 @@ public extension ModifiedContent {
 
 extension ViewType.ModifiedContent: SingleViewContent {
     
-    public static func content(view: Any) throws -> Any {
+    public static func content(view: Any, envObject: Any) throws -> Any {
         let view = try Inspector.attribute(path: "content", value: view)
         return try Inspector.unwrap(view: view)
     }
@@ -31,7 +31,7 @@ extension ViewType.ModifiedContent: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func modifiedContent() throws -> InspectableView<ViewType.ModifiedContent> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.ModifiedContent>(content)
     }
 }

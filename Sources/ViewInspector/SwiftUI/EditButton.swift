@@ -20,7 +20,7 @@ public extension EditButton {
 
 extension ViewType.EditButton: SingleViewContent {
     
-    public static func content(view: Any) throws -> Any {
+    public static func content(view: Any, envObject: Any) throws -> Any {
         let view = try Inspector.attribute(label: "_label", value: view)
         return try Inspector.unwrap(view: view)
     }
@@ -31,7 +31,7 @@ extension ViewType.EditButton: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func editButton() throws -> InspectableView<ViewType.EditButton> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.EditButton>(content)
     }
 }

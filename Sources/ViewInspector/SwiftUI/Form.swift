@@ -18,7 +18,7 @@ public extension Form {
 
 extension ViewType.Form: MultipleViewContent {
     
-    public static func content(view: Any) throws -> [Any] {
+    public static func content(view: Any, envObject: Any) throws -> [Any] {
         let content = try Inspector.attribute(label: "content", value: view)
         return try Inspector.viewsInContainer(view: content)
     }
@@ -29,7 +29,7 @@ extension ViewType.Form: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func form() throws -> InspectableView<ViewType.Form> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.Form>(content)
     }
 }

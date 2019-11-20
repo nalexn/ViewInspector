@@ -19,7 +19,7 @@ public extension Image {
 public extension InspectableView where View: SingleViewContent {
     
     func image() throws -> InspectableView<ViewType.Image> {
-        let content = try View.content(view: view)
+        let content = try View.content(view: view, envObject: envObject)
         return try InspectableView<ViewType.Image>(content)
     }
 }
