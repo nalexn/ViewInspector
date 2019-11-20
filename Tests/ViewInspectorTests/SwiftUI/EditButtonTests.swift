@@ -6,6 +6,10 @@ import SwiftUI
 
 final class EditButtonTests: XCTestCase {
     
+    func testInspect() throws {
+        XCTAssertNoThrow(try EditButton().inspect())
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(EditButton())
         XCTAssertNoThrow(try view.inspect().editButton())
@@ -15,6 +19,11 @@ final class EditButtonTests: XCTestCase {
         let view = HStack { EditButton(); EditButton() }
         XCTAssertNoThrow(try view.inspect().editButton(0))
         XCTAssertNoThrow(try view.inspect().editButton(1))
+    }
+    
+    func testEditMode() throws {
+        let view = EditButton()
+        XCTAssertNoThrow(try view.inspect().editMode())
     }
 }
 

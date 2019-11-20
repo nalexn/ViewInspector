@@ -1,6 +1,6 @@
 import XCTest
 import SwiftUI
-import UIKit
+
 @testable import ViewInspector
 
 final class CustomViewTests: XCTestCase {
@@ -41,6 +41,24 @@ final class CustomViewTests: XCTestCase {
         let view = HStack { SimpleTestView(); SimpleTestView() }
         XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self, 0))
         XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self, 1))
+    }
+    
+    func testExtractionEnvViewFromSingleViewContainer() throws {
+        let viewModel = ExternalState()
+        let view = AnyView(EnvironmentStateTestView())
+        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self, viewModel))
+    }
+    
+    func testExtractionEnvViewFromMultipleViewContainer() throws {
+        let viewModel = ExternalState()
+        let view = HStack { EnvironmentStateTestView(); EnvironmentStateTestView() }
+        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self, viewModel, 0))
+        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self, viewModel, 1))
+    }
+    
+    func testEnvObjectTypeMismatch() {
+        XCTAssertThrowsError(try ViewType.ViewWithEnvObject<EnvironmentStateTestView>
+            .content(view: "abc", envObject: Inspector.stubEnvObject))
     }
     
     func testContentViewTypeMismatch() {

@@ -18,16 +18,6 @@ public extension EditButton {
 
 // MARK: - SingleViewContent
 
-extension ViewType.EditButton: SingleViewContent {
-    
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "_label", value: view)
-        return try Inspector.unwrap(view: view)
-    }
-}
-
-// MARK: - SingleViewContent
-
 public extension InspectableView where View: SingleViewContent {
     
     func editButton() throws -> InspectableView<ViewType.EditButton> {
@@ -50,13 +40,10 @@ public extension InspectableView where View: MultipleViewContent {
 
 public extension InspectableView where View == ViewType.EditButton {
     
-    private func editMode() throws -> Binding<EditMode>? {
+    func editMode() throws -> Binding<EditMode>? {
         let editMode = try Inspector.attribute(label: "editMode", value: view)
         typealias Env = Environment<Binding<EditMode>?>
-        guard let environment = editMode as? Env else {
-            throw InspectionError.typeMismatch(editMode, Env.self)
-        }
-        return environment.wrappedValue
+        return (editMode as? Env)?.wrappedValue
     }
 }
 

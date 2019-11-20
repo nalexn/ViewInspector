@@ -26,24 +26,4 @@ extension ViewType.ModifiedContent: SingleViewContent {
     }
 }
 
-// MARK: - SingleViewContent
-
-public extension InspectableView where View: SingleViewContent {
-    
-    func modifiedContent() throws -> InspectableView<ViewType.ModifiedContent> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.ModifiedContent>(content)
-    }
-}
-
-// MARK: - MultipleViewContent
-
-public extension InspectableView where View: MultipleViewContent {
-    
-    func modifiedContent(_ index: Int) throws -> InspectableView<ViewType.ModifiedContent> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.ModifiedContent>(content)
-    }
-}
-
 #endif
