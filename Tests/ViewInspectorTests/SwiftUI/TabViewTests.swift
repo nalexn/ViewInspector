@@ -49,6 +49,6 @@ private struct TestView: View, Inspectable {
 
 extension TestView {
     class NavigationState: ObservableObject {
-        @Published var selection: String? = "tag1"
+        @Published var selection: String?
     }
 }

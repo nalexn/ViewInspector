@@ -72,6 +72,8 @@
 		F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B02385EC5F00358E0E /* HSplitViewTests.swift */; };
 		F6D933B32385ED1400358E0E /* VSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B22385ED1400358E0E /* VSplitView.swift */; };
 		F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B42385ED2700358E0E /* VSplitViewTests.swift */; };
+		F6D933B72385EDCB00358E0E /* Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B62385EDCB00358E0E /* Picker.swift */; };
+		F6D933B92385EDDF00358E0E /* PickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933B82385EDDF00358E0E /* PickerTests.swift */; };
 		F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87B2382FB510028E84D /* EditButton.swift */; };
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
@@ -151,6 +153,8 @@
 		F6D933B02385EC5F00358E0E /* HSplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSplitViewTests.swift; sourceTree = "<group>"; };
 		F6D933B22385ED1400358E0E /* VSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSplitView.swift; sourceTree = "<group>"; };
 		F6D933B42385ED2700358E0E /* VSplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSplitViewTests.swift; sourceTree = "<group>"; };
+		F6D933B62385EDCB00358E0E /* Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; };
+		F6D933B82385EDDF00358E0E /* PickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerTests.swift; sourceTree = "<group>"; };
 		F6DFD87B2382FB510028E84D /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -224,6 +228,7 @@
 				F69C91C92383187D00515A91 /* ModifiedContent.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
+				F6D933B62385EDCB00358E0E /* Picker.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
 				F6D933A22385DBFD00358E0E /* TabView.swift */,
@@ -275,6 +280,7 @@
 				F69C91CB2383189200515A91 /* ModifiedContentTests.swift */,
 				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
 				F6DFD881238303C60028E84D /* NavigationViewTests.swift */,
+				F6D933B82385EDDF00358E0E /* PickerTests.swift */,
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
 				F6D933A42385DC0F00358E0E /* TabViewTests.swift */,
@@ -426,6 +432,7 @@
 				F60EEBCF2382EED0007DB53A /* InspectableView.swift in Sources */,
 				F60EEBDB2382EED0007DB53A /* VStack.swift in Sources */,
 				F60EEBD62382EED0007DB53A /* Section.swift in Sources */,
+				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
 				F60EEBDC2382EED0007DB53A /* Text.swift in Sources */,
 				F60EEBD42382EED0007DB53A /* ScrollView.swift in Sources */,
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
@@ -472,6 +479,7 @@
 				F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */,
 				F6D933A92385E9F700358E0E /* EquatableViewTests.swift in Sources */,
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
+				F6D933B92385EDDF00358E0E /* PickerTests.swift in Sources */,
 				F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */,
 				F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */,
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
