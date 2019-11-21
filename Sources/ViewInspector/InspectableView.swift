@@ -7,6 +7,9 @@ public struct InspectableView<View> where View: KnownViewType {
     
     internal init(_ view: Any, envObject: Any = stub) throws {
         try Inspector.guardType(value: view, prefix: View.typePrefix)
+        if let inspectable = view as? Inspectable {
+            try Inspector.guardNoEnvObjects(inspectableView: inspectable)
+        }
         self.view = view
         self.envObject = envObject
     }

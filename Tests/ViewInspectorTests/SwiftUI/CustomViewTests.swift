@@ -32,6 +32,13 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(text2, "true")
     }
     
+    func testInspectableViewWithEnvironmentObject() throws {
+        let sut1 = IncorrectTestView().environmentObject(ExternalState())
+        XCTAssertThrowsError(try sut1.inspect(IncorrectTestView.self))
+        let sut2 = IncorrectTestView()
+        XCTAssertThrowsError(try sut2.inspect())
+    }
+    
     #if os(iOS) || os(tvOS)
     func testExtractionOfUIKitView() throws {
         let view = AnyView(UIKitTestView())
@@ -104,6 +111,15 @@ private struct LocalStateTestView: View, Inspectable {
 private struct ObservedStateTestView: View, Inspectable {
     
     @ObservedObject var viewModel: ExternalState
+    
+    var body: some View {
+        Text(viewModel.flag ? "true" : "false")
+    }
+}
+
+private struct IncorrectTestView: View, Inspectable {
+    
+    @EnvironmentObject var viewModel: ExternalState
     
     var body: some View {
         Text(viewModel.flag ? "true" : "false")
