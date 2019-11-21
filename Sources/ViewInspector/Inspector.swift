@@ -20,12 +20,13 @@ extension Inspector {
         })
     }
     
-    static func typeName(value: Any) -> String {
-        return typeName(type: type(of: value))
+    static func typeName(value: Any, prefixOnly: Bool = false) -> String {
+        return typeName(type: type(of: value), prefixOnly: prefixOnly)
     }
     
-    static func typeName(type: Any.Type) -> String {
+    static func typeName(type: Any.Type, prefixOnly: Bool = false) -> String {
         let typeName = String(describing: type)
+        guard prefixOnly else { return typeName }
         return typeName.components(separatedBy: "<").first!
     }
 }
@@ -69,7 +70,7 @@ extension Inspector {
     
     static func unwrap(view: Any, envObject: Any = stubEnvObject) throws -> Any {
         
-        switch Inspector.typeName(value: view) {
+        switch Inspector.typeName(value: view, prefixOnly: true) {
         case "EnvironmentReaderView":
             /* Need to find a way to get through EnvironmentReaderView */
             throw InspectionError.notSupported("""

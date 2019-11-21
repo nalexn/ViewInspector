@@ -27,14 +27,16 @@ final class InspectorTests: XCTestCase {
     
     func testTypeNameValue() {
         let name1 = Inspector.typeName(value: Test3<Int>())
-        XCTAssertEqual(name1, "Test3")
+        XCTAssertEqual(name1, "Test3<Int>")
         let name2 = Inspector.typeName(value: testValue)
         XCTAssertEqual(name2, "Test1")
+        let name3 = Inspector.typeName(value: Test3<Int>(), prefixOnly: true)
+        XCTAssertEqual(name3, "Test3")
     }
     
     func testTypeNameType() {
         let name1 = Inspector.typeName(type: Test3<Int>.self)
-        XCTAssertEqual(name1, "Test3")
+        XCTAssertEqual(name1, "Test3<Int>")
         let name2 = Inspector.typeName(type: Test1.self)
         XCTAssertEqual(name2, "Test1")
     }

@@ -109,7 +109,7 @@ public extension InspectableView where View: CustomViewType {
 
 // MARK: - 
 
-extension InspectableWithEnvObject {
+public extension InspectableWithEnvObject {
     func content(_ object: Any) throws -> Any {
         guard let castedObject = object as? Object else {
             throw InspectionError.typeMismatch(object, Object.self)
