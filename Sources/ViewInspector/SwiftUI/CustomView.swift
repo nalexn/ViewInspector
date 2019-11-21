@@ -37,7 +37,7 @@ extension ViewType.View: SingleViewContent {
         guard let body = (view as? Inspectable)?.content else {
             throw InspectionError.typeMismatch(view, T.self)
         }
-        return body
+        return try Inspector.unwrap(view: body)
     }
 }
 
@@ -47,7 +47,7 @@ extension ViewType.ViewWithEnvObject: SingleViewContent {
         guard let body = try (view as? EnvironmentObjectInjection)?.content(envObject) else {
             throw InspectionError.typeMismatch(view, T.self)
         }
-        return body
+        return try Inspector.unwrap(view: body)
     }
 }
 

@@ -22,7 +22,7 @@ extension ViewType.ForEach: MultipleViewContent {
         guard let children = try (view as? ForEachContentProvider)?.content() else {
             throw InspectionError.typeMismatch(view, ForEachContentProvider.self)
         }
-        return children
+        return try children.map { try Inspector.unwrap(view: $0) }
     }
 }
 
