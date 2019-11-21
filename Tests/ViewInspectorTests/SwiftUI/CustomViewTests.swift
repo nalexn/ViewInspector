@@ -32,6 +32,13 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(text2, "true")
     }
     
+    func testEnvironmentInjectedView() throws {
+        let viewModel = ExternalState()
+        let view = EnvironmentStateTestView().environmentObject(viewModel)
+        let text = try view.inspect(EnvironmentStateTestView.self, viewModel).text().string()
+        XCTAssertEqual(text, "false")
+    }
+    
     func testInspectableViewWithEnvironmentObject() throws {
         let sut1 = IncorrectTestView().environmentObject(ExternalState())
         XCTAssertThrowsError(try sut1.inspect(IncorrectTestView.self))
