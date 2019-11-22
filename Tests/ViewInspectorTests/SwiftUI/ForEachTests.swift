@@ -17,9 +17,20 @@ final class ForEachTests: XCTestCase {
         XCTAssertThrowsError(try view.inspect().text(1))
     }
     
-    func testMultipleEnclosedViews() throws {
+    func testMultipleIdentifiableEnclosedViews() throws {
         let data = ["0", "1", "2"].map { TestStruct(id: $0) }
         let view = ForEach(data) { Text($0.id) }
+        let value1 = try view.inspect().text(0).string()
+        let value2 = try view.inspect().text(1).string()
+        let value3 = try view.inspect().text(2).string()
+        XCTAssertEqual(value1, "0")
+        XCTAssertEqual(value2, "1")
+        XCTAssertEqual(value3, "2")
+    }
+    
+    func testMultipleNonIdentifiableEnclosedViews() throws {
+        let data = ["0", "1", "2"].map { NonIdentifiable(id: $0) }
+        let view = ForEach(data, id: \.id) { Text($0.id) }
         let value1 = try view.inspect().text(0).string()
         let value2 = try view.inspect().text(1).string()
         let value3 = try view.inspect().text(2).string()
@@ -49,6 +60,10 @@ final class ForEachTests: XCTestCase {
     }
 }
 
-struct TestStruct: Identifiable {
+private struct TestStruct: Identifiable {
+    var id: String
+}
+
+private struct NonIdentifiable {
     var id: String
 }
