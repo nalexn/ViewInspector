@@ -78,6 +78,8 @@ extension Inspector {
                 Environment injection, which blocks inspection.
                 We're seeking for a workaround.
             """)
+        case "_ConditionalContent":
+            return try ViewType.ConditionalContent.content(view: view, envObject: envObject)
         case "ModifiedContent":
             return try ViewType.ModifiedContent.content(view: view, envObject: envObject)
         default:

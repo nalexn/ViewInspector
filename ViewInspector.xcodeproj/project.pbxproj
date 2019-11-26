@@ -56,6 +56,7 @@
 		F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF32382F004007DB53A /* DatePickerTests.swift */; };
 		F60EEC072382F004007DB53A /* ScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF42382F004007DB53A /* ScrollViewTests.swift */; };
 		F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF52382F004007DB53A /* AnyViewTests.swift */; };
+		F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057EC238DB1530029D9BA /* ConditionalContent.swift */; };
 		F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91C92383187D00515A91 /* ModifiedContent.swift */; };
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
@@ -149,6 +150,7 @@
 		F60EEBF32382F004007DB53A /* DatePickerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerTests.swift; sourceTree = "<group>"; };
 		F60EEBF42382F004007DB53A /* ScrollViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViewTests.swift; sourceTree = "<group>"; };
 		F60EEBF52382F004007DB53A /* AnyViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewTests.swift; sourceTree = "<group>"; };
+		F64057EC238DB1530029D9BA /* ConditionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalContent.swift; sourceTree = "<group>"; };
 		F69C91C92383187D00515A91 /* ModifiedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContent.swift; sourceTree = "<group>"; };
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				F6E4B4032386E2E2003E1534 /* OpaqueView.swift */,
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
+				F64057EC238DB1530029D9BA /* ConditionalContent.swift */,
 				F60EEBBE2382EED0007DB53A /* CustomView.swift */,
 				F60EEBBF2382EED0007DB53A /* DatePicker.swift */,
 				F60EEBC72382EED0007DB53A /* Divider.swift */,
@@ -461,6 +464,7 @@
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
+				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
 				F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				F6D933C32385FA8B00358E0E /* SecureField.swift in Sources */,
