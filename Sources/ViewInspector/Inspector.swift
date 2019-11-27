@@ -82,6 +82,8 @@ extension Inspector {
             return try ViewType.ConditionalContent.content(view: view, envObject: envObject)
         case "ModifiedContent":
             return try ViewType.ModifiedContent.content(view: view, envObject: envObject)
+        case "Optional":
+            return try ViewType.OptionalContent.content(view: view, envObject: envObject)
         default:
             return view
         }

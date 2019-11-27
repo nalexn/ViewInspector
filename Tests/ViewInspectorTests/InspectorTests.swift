@@ -102,6 +102,14 @@ final class InspectorTests: XCTestCase {
         let string2 = try view.inspect().group().image(0).imageName()
         XCTAssertEqual(string2, "Image")
     }
+
+    func testOptionalView() throws {
+        let view = HStack {
+            if true { Text("ABC") }
+        }
+        let string = try view.inspect().hStack().text(0).string()
+        XCTAssertEqual(string, "ABC")
+    }
     
     #if os(iOS)
     func testUnwrapEnvironmentReaderView() throws {
