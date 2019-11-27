@@ -2,6 +2,8 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(macOS)
+
 final class DatePickerTests: XCTestCase {
     
     class StateObject: ObservableObject {
@@ -43,3 +45,5 @@ final class DatePickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().datePicker(1))
     }
 }
+
+#endif

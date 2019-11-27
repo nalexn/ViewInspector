@@ -2,6 +2,8 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(macOS)
+
 final class StepperTests: XCTestCase {
     
     @State var counter1: Int = 0
@@ -58,3 +60,5 @@ final class StepperTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 }
+
+#endif

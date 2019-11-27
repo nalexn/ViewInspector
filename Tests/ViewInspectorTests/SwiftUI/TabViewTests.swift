@@ -2,6 +2,8 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if !os(watchOS)
+
 final class TabViewTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -52,3 +54,5 @@ extension TestView {
         @Published var selection: String?
     }
 }
+
+#endif

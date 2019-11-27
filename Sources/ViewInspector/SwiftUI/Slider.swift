@@ -1,5 +1,7 @@
 import SwiftUI
 
+#if !os(tvOS)
+
 public extension ViewType {
     
     struct Slider: KnownViewType {
@@ -56,3 +58,5 @@ public extension InspectableView where View == ViewType.Slider {
         }
     }
 }
+
+#endif

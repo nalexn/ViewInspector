@@ -1,5 +1,7 @@
 import SwiftUI
 
+#if os(iOS) || os(macOS)
+
 public extension ViewType {
     
     struct Stepper: KnownViewType {
@@ -72,3 +74,5 @@ public extension InspectableView where View == ViewType.Stepper {
         }
     }
 }
+
+#endif

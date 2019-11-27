@@ -1,5 +1,7 @@
 import SwiftUI
 
+#if !os(watchOS)
+
 public extension ViewType {
     
     struct TabView: KnownViewType {
@@ -43,3 +45,5 @@ public extension InspectableView where View: MultipleViewContent {
         return try InspectableView<ViewType.TabView>(content)
     }
 }
+
+#endif

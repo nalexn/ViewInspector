@@ -1,5 +1,7 @@
 import SwiftUI
 
+#if os(iOS) || os(macOS)
+
 public extension ViewType {
     
     struct DatePicker: KnownViewType {
@@ -57,3 +59,5 @@ public extension InspectableView where View == ViewType.DatePicker {
         return binding
     }
 }
+
+#endif

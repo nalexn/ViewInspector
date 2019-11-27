@@ -2,6 +2,8 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if !os(tvOS)
+
 final class SliderTests: XCTestCase {
     
     @State var value1: Float = 0
@@ -33,3 +35,5 @@ final class SliderTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 }
+
+#endif

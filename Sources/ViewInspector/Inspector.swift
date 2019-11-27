@@ -80,8 +80,10 @@ extension Inspector {
             """)
         case "_ConditionalContent":
             return try ViewType.ConditionalContent.content(view: view, envObject: envObject)
+        #if !os(watchOS)
         case "ModifiedContent":
             return try ViewType.ModifiedContent.content(view: view, envObject: envObject)
+        #endif
         case "Optional":
             return try ViewType.OptionalContent.content(view: view, envObject: envObject)
         default:
