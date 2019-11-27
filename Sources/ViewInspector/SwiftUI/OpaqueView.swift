@@ -2,7 +2,12 @@ import SwiftUI
 
 extension View {
     func inspect() throws -> InspectableView<ViewType.AnyView> {
-        try AnyView(self).inspect()
+        let unwrapped = try Inspector.unwrap(view: self)
+        if String(describing: unwrapped) == String(describing: self),
+            !(self is Inspectable) && !(self is EnvironmentObjectInjection) {
+            throw InspectionError.notSupported("View should conform to `Inspectable` or `InspectableWithEnvObject`.")
+        }
+        return try AnyView(self).inspect()
     }
     
     func inspect<T>(_ view: T.Type) throws -> InspectableView<ViewType.View<T>>
