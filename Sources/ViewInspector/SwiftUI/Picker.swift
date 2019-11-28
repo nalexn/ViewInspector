@@ -26,7 +26,7 @@ public extension ViewType.Picker {
 extension ViewType.Picker: MultipleViewContent {
     
     public static func content(view: Any, envObject: Any) throws -> [Any] {
-        let content = try Inspector.attribute(path: "content", value: view)
+        let content = try Inspector.attribute(label: "content", value: view)
         return try Inspector.viewsInContainer(view: content)
     }
 }

@@ -19,7 +19,7 @@ public extension SecureField {
 extension ViewType.SecureField: SingleViewContent {
     
     public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(path: "label", value: view)
+        let view = try Inspector.attribute(label: "label", value: view)
         return try Inspector.unwrap(view: view)
     }
 }
