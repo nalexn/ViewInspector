@@ -78,7 +78,7 @@ public struct LazyGroup<T> {
         self.access = access
     }
     
-    func elementAt(_ index: Int) throws -> T {
+    func element(at index: Int) throws -> T {
         try access(index)
     }
 }

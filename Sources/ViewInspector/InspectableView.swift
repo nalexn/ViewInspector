@@ -24,6 +24,6 @@ internal extension InspectableView where View: MultipleViewContent {
         guard index >= 0 && index < viewes.count else {
             throw InspectionError.viewIndexOutOfBounds(
                 index: index, count: viewes.count) }
-        return try viewes.elementAt(index)
+        return try viewes.element(at: index)
     }
 }
