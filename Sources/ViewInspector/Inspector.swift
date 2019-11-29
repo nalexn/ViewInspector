@@ -56,13 +56,14 @@ extension Inspector {
     
     static var stubEnvObject: Any { EnvironmentObjectNotSet() }
     
-    static func viewsInContainer(view: Any) throws -> [Any] {
+    static func viewsInContainer(view: Any) throws -> LazyGroup<Any> {
         let view = try Inspector.unwrap(view: view)
-        guard Inspector.isTupleView(view)
-            else { return [view] }
+        guard Inspector.isTupleView(view) else {
+            return LazyGroup(count: 1) { _ in view }
+        }
         let tupleViews = try Inspector.attribute(label: "value", value: view)
         let childrenCount = Mirror(reflecting: tupleViews).children.count
-        return try stride(from: 0, to: childrenCount, by: 1).map { index in
+        return LazyGroup(count: childrenCount) { index in
             let child = try Inspector.attribute(label: ".\(index)", value: tupleViews)
             return try Inspector.unwrap(view: child)
         }

@@ -25,7 +25,7 @@ public protocol SingleViewContent {
 }
 
 public protocol MultipleViewContent {
-    static func content(view: Any, envObject: Any) throws -> [Any]
+    static func content(view: Any, envObject: Any) throws -> LazyGroup<Any>
 }
 
 public protocol KnownViewType {
@@ -63,5 +63,22 @@ extension InspectionError: LocalizedError {
         case let .notSupported(message):
             return "ViewInspector: " + message
         }
+    }
+}
+
+// MARK: - LazyGroup
+
+public struct LazyGroup<T> {
+    
+    private let access: (Int) throws -> T
+    let count: Int
+    
+    init(count: Int, _ access: @escaping (Int) throws -> T) {
+        self.count = count
+        self.access = access
+    }
+    
+    func elementAt(_ index: Int) throws -> T {
+        try access(index)
     }
 }

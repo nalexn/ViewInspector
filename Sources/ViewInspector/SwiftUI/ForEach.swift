@@ -18,11 +18,13 @@ public extension ForEach {
 
 extension ViewType.ForEach: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> [Any] {
+    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
         guard let children = try (view as? ForEachContentProvider)?.content() else {
             throw InspectionError.typeMismatch(view, ForEachContentProvider.self)
         }
-        return try children.map { try Inspector.unwrap(view: $0) }
+        return LazyGroup(count: children.count) { index in
+            try Inspector.unwrap(view: try children.elementAt(index))
+        }
     }
 }
 
@@ -51,11 +53,11 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Private
 
 private protocol ForEachContentProvider {
-    func content() throws -> [Any]
+    func content() throws -> LazyGroup<Any>
 }
 
 extension ForEach: ForEachContentProvider {
-    func content() throws -> [Any] {
+    func content() throws -> LazyGroup<Any> {
         let data = try Inspector.attribute(label: "data", value: self)
         let content = try Inspector.attribute(label: "content", value: self)
         typealias Elements = [Data.Element]
@@ -64,6 +66,8 @@ extension ForEach: ForEachContentProvider {
         typealias Builder = (Data.Element) -> Content
         guard let builder = content as? Builder
             else { throw InspectionError.typeMismatch(content, Builder.self) }
-        return dataArray.map { builder($0) } as [Any]
+        return LazyGroup(count: dataArray.count) { index in
+            builder(dataArray[index])
+        }
     }
 }

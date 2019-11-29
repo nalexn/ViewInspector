@@ -18,7 +18,7 @@ public extension HStack {
 
 extension ViewType.HStack: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> [Any] {
+    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
         let content = try Inspector.attribute(path: "_tree|content", value: view)
         return try Inspector.viewsInContainer(view: content)
     }

@@ -20,7 +20,7 @@ public extension HSplitView {
 
 extension ViewType.HSplitView: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> [Any] {
+    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
         return try ViewType.HStack.content(view: view, envObject: envObject)
     }
 }
