@@ -1,6 +1,6 @@
 import SwiftUI
 
-public extension ViewType {
+internal extension ViewType {
     struct ConditionalContent { }
 }
 
@@ -8,7 +8,7 @@ public extension ViewType {
 
 extension ViewType.ConditionalContent: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
+    static func content(view: Any, envObject: Any) throws -> Any {
         let storage = try Inspector.attribute(label: "storage", value: view)
         if let trueContent = try? Inspector.attribute(label: "trueContent", value: storage) {
             return try Inspector.unwrap(view: trueContent)

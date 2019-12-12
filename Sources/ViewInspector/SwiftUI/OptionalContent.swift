@@ -1,12 +1,12 @@
 import SwiftUI
 
-public extension ViewType {
+internal extension ViewType {
     struct OptionalContent {}
 }
 
 extension ViewType.OptionalContent: SingleViewContent {
 
-    public static func content(view: Any, envObject: Any) throws -> Any {
+    static func content(view: Any, envObject: Any) throws -> Any {
         guard let content = try (view as? OptionalViewContentProvider)?.content() else {
             throw InspectionError.typeMismatch(view, OptionalViewContentProvider.self)
         }
