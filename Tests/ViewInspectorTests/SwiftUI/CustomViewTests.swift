@@ -98,6 +98,13 @@ final class CustomViewTests: XCTestCase {
         let sut = try InspectableView<ViewType.Test<SimpleTestView>>("")
         XCTAssertThrowsError(try sut.actualView())
     }
+    
+    func testTestViews() {
+        XCTAssertNoThrow(SimpleTestView().body)
+        XCTAssertNoThrow(LocalStateTestView(flag: true).body)
+        XCTAssertNoThrow(ObservedStateTestView(viewModel: ExternalState()).body)
+        XCTAssertNoThrow(IncorrectTestView().body)
+    }
 }
 
 private struct SimpleTestView: View, Inspectable {
@@ -129,7 +136,7 @@ private struct IncorrectTestView: View, Inspectable {
     @EnvironmentObject var viewModel: ExternalState
     
     var body: some View {
-        Text(viewModel.flag ? "true" : "false")
+        EmptyView()
     }
 }
 

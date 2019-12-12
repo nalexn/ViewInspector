@@ -27,6 +27,11 @@ final class OpaqueViewTests: XCTestCase {
         let view = NonInspectableView()
         XCTAssertThrowsError(try view.inspect())
     }
+    
+    func testInspectableTestViews() {
+        XCTAssertNoThrow(InspectableTestView().body)
+        XCTAssertNoThrow(EnvInspectableTestView().body)
+    }
 }
 
 private struct InspectableTestView: View, Inspectable {

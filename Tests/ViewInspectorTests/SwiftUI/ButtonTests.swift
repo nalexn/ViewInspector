@@ -5,7 +5,7 @@ import SwiftUI
 final class ButtonTests: XCTestCase {
     
     func testEnclosedView() throws {
-        let button = Button(action: { }, label: { Text("Test") })
+        let button = Button(action: {}, label: { Text("Test") })
         let text = try button.inspect().text().string()
         XCTAssertEqual(text, "Test")
     }

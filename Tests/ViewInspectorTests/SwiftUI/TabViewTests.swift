@@ -35,24 +35,4 @@ final class TabViewTests: XCTestCase {
     }
 }
 
-private struct TestView: View, Inspectable {
-    @ObservedObject var state = NavigationState()
-    
-    var tag1: String { "tag1" }
-    var tag2: String { "tag2" }
-    
-    var body: some View {
-        TabView(selection: $state.selection) {
-            Text("First View").tabItem({ Text("First") }).tag(tag1)
-            Text("Second View").tabItem({ Text("Second") }).tag(tag2)
-        }
-    }
-}
-
-extension TestView {
-    class NavigationState: ObservableObject {
-        @Published var selection: String?
-    }
-}
-
 #endif

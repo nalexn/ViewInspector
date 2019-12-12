@@ -12,14 +12,14 @@ final class GeometryReaderTests: XCTestCase {
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        let view = AnyView(GeometryReader { _ in Text("Test") })
+        let view = AnyView(GeometryReader { _ in EmptyView() })
         XCTAssertNoThrow(try view.inspect().geometryReader())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
         let view = HStack {
-            GeometryReader { _ in Text("Test") }
-            GeometryReader { _ in Text("Test") }
+            GeometryReader { _ in EmptyView() }
+            GeometryReader { _ in EmptyView() }
         }
         XCTAssertNoThrow(try view.inspect().geometryReader(0))
         XCTAssertNoThrow(try view.inspect().geometryReader(1))

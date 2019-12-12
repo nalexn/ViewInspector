@@ -43,23 +43,3 @@ final class PickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().picker(1))
     }
 }
-
-private struct TestView: View, Inspectable {
-    @ObservedObject var state = State()
-    
-    var tag1: String { "tag1" }
-    var tag2: String { "tag2" }
-    
-    var body: some View {
-        Picker(selection: $state.selection, label: Text("Title")) {
-            Text("First Option").tag(tag1)
-            Text("Second Option").tag(tag2)
-        }
-    }
-}
-
-extension TestView {
-    class State: ObservableObject {
-        @Published var selection: String?
-    }
-}
