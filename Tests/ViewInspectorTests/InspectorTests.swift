@@ -1,5 +1,6 @@
 import XCTest
 import SwiftUI
+import Combine
 @testable import ViewInspector
 
 final class InspectorTests: XCTestCase {
@@ -87,20 +88,13 @@ final class InspectorTests: XCTestCase {
     }
     
     func testUnwrapTwoModifier() throws {
+        let publisher = PassthroughSubject<Bool, Never>()
         let view = Text(testString)
-            .transition(.offset(.zero)).accessibility(hint: Text(""))
+            .transition(.offset(.zero))
+            .onReceive(publisher) { _ in }
         let sut = try Inspector.unwrap(view: view)
         let text = try (sut as? Text)?.inspect().string()
         XCTAssertEqual(text, testString)
-    }
-    
-    func testConditionalView() throws {
-        let view = ConditionalView()
-        let string1 = try view.inspect().group().text(0).string()
-        XCTAssertEqual(string1, "Text")
-        view.viewModel.flag.toggle()
-        let string2 = try view.inspect().group().image(0).imageName()
-        XCTAssertEqual(string2, "Image")
     }
     
     #if os(iOS)
@@ -133,18 +127,3 @@ private struct TestView: View, Inspectable {
 }
 
 private struct Test3<T> { }
-
-private struct ConditionalView: View, Inspectable {
-    
-    @ObservedObject var viewModel = ViewModel()
-    var body: some View {
-        Group {
-            if viewModel.flag { Text("Text")
-            } else { Image("Image") }
-        }
-    }
-    
-    class ViewModel: ObservableObject {
-        @Published var flag: Bool = true
-    }
-}
