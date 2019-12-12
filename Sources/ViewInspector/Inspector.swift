@@ -69,29 +69,28 @@ extension Inspector {
         }
     }
     
+    static func isTupleView(_ view: Any) -> Bool {
+        return Inspector.typeName(value: view, prefixOnly: true) == "TupleView"
+    }
+    
     static func unwrap(view: Any, envObject: Any = stubEnvObject) throws -> Any {
         
         switch Inspector.typeName(value: view, prefixOnly: true) {
-        case "EnvironmentReaderView":
-            return try ViewType.EnvironmentReaderView
-                .content(view: view, envObject: envObject)
-        case "_ConditionalContent":
-            return try ViewType.ConditionalContent.content(view: view, envObject: envObject)
+        case "Optional":
+            return try ViewType.OptionalContent.content(view: view, envObject: envObject)
         #if !os(watchOS)
         case "ModifiedContent":
             return try ViewType.ModifiedContent.content(view: view, envObject: envObject)
         #endif
-        case "Optional":
-            return try ViewType.OptionalContent.content(view: view, envObject: envObject)
         case "SubscriptionView":
             return try ViewType.SubscriptionView.content(view: view, envObject: envObject)
+        case "_ConditionalContent":
+            return try ViewType.ConditionalContent.content(view: view, envObject: envObject)
+        case "EnvironmentReaderView":
+            return try ViewType.EnvironmentReaderView.content(view: view, envObject: envObject)
         default:
             return view
         }
-    }
-    
-    static func isTupleView(_ view: Any) -> Bool {
-        return String(describing: type(of: view)).hasPrefix("TupleView")
     }
     
     static func guardType(value: Any, prefix: String) throws {
