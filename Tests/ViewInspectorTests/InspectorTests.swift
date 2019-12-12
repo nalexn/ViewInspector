@@ -96,16 +96,6 @@ final class InspectorTests: XCTestCase {
         let text = try (sut as? Text)?.inspect().string()
         XCTAssertEqual(text, testString)
     }
-    
-    #if os(iOS)
-    func testUnwrapEnvironmentReaderView() throws {
-        let view = NavigationView {
-            List { Text("") }
-                .navigationBarItems(trailing: Text(""))
-        }
-        XCTAssertThrowsError(try view.inspect().list(0))
-    }
-    #endif
 }
 
 private struct Test1 {

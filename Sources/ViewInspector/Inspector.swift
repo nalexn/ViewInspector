@@ -73,12 +73,8 @@ extension Inspector {
         
         switch Inspector.typeName(value: view, prefixOnly: true) {
         case "EnvironmentReaderView":
-            /* Need to find a way to get through EnvironmentReaderView */
-            throw InspectionError.notSupported("""
-                One of the enclosed views is using
-                Environment injection, which blocks inspection.
-                We're seeking for a workaround.
-            """)
+            return try ViewType.EnvironmentReaderView
+                .content(view: view, envObject: envObject)
         case "_ConditionalContent":
             return try ViewType.ConditionalContent.content(view: view, envObject: envObject)
         #if !os(watchOS)

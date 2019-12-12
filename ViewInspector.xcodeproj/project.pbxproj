@@ -100,6 +100,8 @@
 		F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */; };
 		F6F08E6623A29FE4001F04DF /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */; };
 		F6F08E6B23A2A849001F04DF /* ConditionalContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */; };
+		F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */; };
+		F6F08E6F23A2AA64001F04DF /* EnvironmentReaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */; };
 		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
@@ -201,6 +203,8 @@
 		F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewTests.swift; sourceTree = "<group>"; };
 		F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConditionalContentTests.swift; path = Sources/ViewInspector/SwiftUI/ConditionalContentTests.swift; sourceTree = SOURCE_ROOT; };
+		F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentReaderView.swift; sourceTree = "<group>"; };
+		F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentReaderViewTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -258,6 +262,7 @@
 				F60EEBC72382EED0007DB53A /* Divider.swift */,
 				F6DFD87B2382FB510028E84D /* EditButton.swift */,
 				F64057EE238DBA800029D9BA /* EmptyView.swift */,
+				F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */,
 				F6D933A62385E9E000358E0E /* EquatableView.swift */,
 				F60EEBCC2382EED0007DB53A /* ForEach.swift */,
 				F60EEBC52382EED0007DB53A /* Form.swift */,
@@ -321,6 +326,7 @@
 				F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */,
 				F6D933A82385E9F700358E0E /* EquatableViewTests.swift */,
 				F64057F0238DBB120029D9BA /* EmptyViewTests.swift */,
+				F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */,
 				F60EEBED2382F004007DB53A /* ForEachTests.swift */,
 				F60EEBEB2382F004007DB53A /* FormTests.swift */,
 				F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */,
@@ -481,6 +487,7 @@
 			files = (
 				F60EEBCE2382EED0007DB53A /* BaseTypes.swift in Sources */,
 				F60EEBD22382EED0007DB53A /* Image.swift in Sources */,
+				F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */,
 				F6DFD88423830E9F0028E84D /* List.swift in Sources */,
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
@@ -544,6 +551,7 @@
 				F6DFD882238303C60028E84D /* NavigationViewTests.swift in Sources */,
 				F60EEC052382F004007DB53A /* SectionTests.swift in Sources */,
 				F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */,
+				F6F08E6F23A2AA64001F04DF /* EnvironmentReaderViewTests.swift in Sources */,
 				F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */,
 				F6D933A52385DC0F00358E0E /* TabViewTests.swift in Sources */,
 				F6D933A12385B48100358E0E /* NavigationLinkTests.swift in Sources */,
