@@ -97,6 +97,8 @@
 		F6DFD88623830EB80028E84D /* ListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD88523830EB80028E84D /* ListTests.swift */; };
 		F6E4B4042386E2E2003E1534 /* OpaqueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E4B4032386E2E2003E1534 /* OpaqueView.swift */; };
 		F6E4B4062386F511003E1534 /* OpaqueViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */; };
+		F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */; };
+		F6F08E6623A29FE4001F04DF /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */; };
 		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
@@ -195,6 +197,8 @@
 		F6DFD88523830EB80028E84D /* ListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTests.swift; sourceTree = "<group>"; };
 		F6E4B4032386E2E2003E1534 /* OpaqueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpaqueView.swift; sourceTree = "<group>"; };
 		F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpaqueViewTests.swift; sourceTree = "<group>"; };
+		F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewTests.swift; sourceTree = "<group>"; };
+		F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -272,6 +276,7 @@
 				F6D933C22385FA8B00358E0E /* SecureField.swift */,
 				F6D933CA2385FF8F00358E0E /* Slider.swift */,
 				F6D933C62385FC0100358E0E /* Stepper.swift */,
+				F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */,
 				F6D933A22385DBFD00358E0E /* TabView.swift */,
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
 				F6D933BE2385F5CB00358E0E /* TextField.swift */,
@@ -332,6 +337,7 @@
 				F6D933C42385FB1D00358E0E /* SecureFieldTests.swift */,
 				F6D933CC2385FFA300358E0E /* SliderTests.swift */,
 				F6D933C82385FC1A00358E0E /* StepperTests.swift */,
+				F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */,
 				F6D933A42385DC0F00358E0E /* TabViewTests.swift */,
 				F60EEBE82382F004007DB53A /* TextTests.swift */,
 				F6D933C02385F62500358E0E /* TextFieldTests.swift */,
@@ -503,6 +509,7 @@
 				F6D933A72385E9E000358E0E /* EquatableView.swift in Sources */,
 				F6D933AF2385EBD900358E0E /* HSplitView.swift in Sources */,
 				F60EEBD52382EED0007DB53A /* AnyView.swift in Sources */,
+				F6F08E6623A29FE4001F04DF /* SubscriptionView.swift in Sources */,
 				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
 				F6E4B4042386E2E2003E1534 /* OpaqueView.swift in Sources */,
@@ -547,6 +554,7 @@
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
+				F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */,
 				F6D933AD2385EB0100358E0E /* GroupBoxTests.swift in Sources */,
 				F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */,
 				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,

@@ -87,6 +87,8 @@ extension Inspector {
         #endif
         case "Optional":
             return try ViewType.OptionalContent.content(view: view, envObject: envObject)
+        case "SubscriptionView":
+            return try ViewType.SubscriptionView.content(view: view, envObject: envObject)
         default:
             return view
         }
