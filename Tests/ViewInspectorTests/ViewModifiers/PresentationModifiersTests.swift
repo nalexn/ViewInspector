@@ -136,3 +136,18 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
+
+// MARK: - ViewHidingTests
+
+final class ViewHidingTests: XCTestCase {
+    
+    func testHidden() throws {
+        let sut = EmptyView().hidden()
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testDisabled() throws {
+        let sut = EmptyView().disabled(true)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}

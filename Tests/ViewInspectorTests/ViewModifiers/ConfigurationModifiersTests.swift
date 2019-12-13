@@ -139,9 +139,124 @@ final class ViewStylingTests: XCTestCase {
         let sut = EmptyView().toggleStyle(DefaultToggleStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+}
+
+// MARK: - ViewListConfigurationTests
+
+final class ViewListConfigurationTests: XCTestCase {
+    
+    func testListRowInsets() throws {
+        let sut = EmptyView().listRowInsets(EdgeInsets())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testListRowBackground() throws {
+        let sut = EmptyView().listRowBackground(Text(""))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    #if os(watchOS)
+    func testListRowPlatterColor() throws {
+        let sut = EmptyView().listRowPlatterColor(.red)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+    
+    func testTag() throws {
+        let sut = EmptyView().tag(0)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}
+
+// MARK: - ViewNavigationConfigurationTests
+
+final class ViewNavigationConfigurationTests: XCTestCase {
     
     func testNavigationViewStyle() throws {
         let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    #if !os(macOS)
+    func testNavigationBarTitle() throws {
+        let sut = EmptyView().navigationBarTitle("")
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testNavigationBarHidden() throws {
+        let sut = EmptyView().navigationBarHidden(false)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+    
+    #if os(iOS)
+    func testStatusBarHidden() throws {
+        let sut = EmptyView().statusBar(hidden: false)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+    
+    #if !os(macOS)
+    func testNavigationBarBackButtonHidden() throws {
+        let sut = EmptyView().navigationBarBackButtonHidden(false)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+    
+    #if os(iOS) || os(tvOS)
+    func testNavigationBarItems() throws {
+        let sut = EmptyView().navigationBarItems(leading: Text(""), trailing: Text(""))
+        // Not supported
+        XCTAssertThrowsError(try sut.inspect().emptyView())
+    }
+    #endif
+}
+
+// MARK: - ViewTabConfigurationTests
+
+final class ViewTabConfigurationTests: XCTestCase {
+    
+    func testTabItem() throws {
+        let sut = EmptyView().tabItem { Text("") }
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}
+
+// MARK: - ViewContextMenuTests
+
+final class ViewContextMenuTests: XCTestCase {
+    
+    #if !os(tvOS)
+    func testContextMenu() throws {
+        let sut = EmptyView().contextMenu(ContextMenu(menuItems: { Text("") }))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+}
+
+// MARK: - ViewTouchBarTests
+
+final class ViewTouchBarTests: XCTestCase {
+    
+    #if os(macOS)
+    func testTouchBar() throws {
+        let sut = EmptyView().touchBar(TouchBar(content: { Text("") }))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTouchBarItemPrincipal() throws {
+        let sut = EmptyView().touchBarItemPrincipal(true)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTouchBarCustomizationLabel() throws {
+        let sut = EmptyView().touchBarCustomizationLabel(Text(""))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTouchBarItemPresence() throws {
+        let sut = EmptyView().touchBarItemPresence(.required(""))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
 }
