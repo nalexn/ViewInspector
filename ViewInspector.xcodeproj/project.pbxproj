@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
+		F609EFBD23A40B8800B9256A /* DelayedPreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */; };
 		F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBBA2382EED0007DB53A /* Inspector.swift */; };
 		F60EEBCE2382EED0007DB53A /* BaseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBBB2382EED0007DB53A /* BaseTypes.swift */; };
 		F60EEBCF2382EED0007DB53A /* InspectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBBC2382EED0007DB53A /* InspectableView.swift */; };
@@ -131,6 +132,7 @@
 
 /* Begin PBXFileReference section */
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
+		F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedPreferenceView.swift; sourceTree = "<group>"; };
 		F60EEBBA2382EED0007DB53A /* Inspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		F60EEBBB2382EED0007DB53A /* BaseTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTypes.swift; sourceTree = "<group>"; };
 		F60EEBBC2382EED0007DB53A /* InspectableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectableView.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 				F64057EC238DB1530029D9BA /* ConditionalContent.swift */,
 				F60EEBBE2382EED0007DB53A /* CustomView.swift */,
 				F60EEBBF2382EED0007DB53A /* DatePicker.swift */,
+				F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */,
 				F60EEBC72382EED0007DB53A /* Divider.swift */,
 				F6DFD87B2382FB510028E84D /* EditButton.swift */,
 				F64057EE238DBA800029D9BA /* EmptyView.swift */,
@@ -536,6 +539,7 @@
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
 				F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */,
+				F609EFBD23A40B8800B9256A /* DelayedPreferenceView.swift in Sources */,
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
 				F64A2C6823A3FD3A00A4853A /* TreeView.swift in Sources */,
 				F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */,

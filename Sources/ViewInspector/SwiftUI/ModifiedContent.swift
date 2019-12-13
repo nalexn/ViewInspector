@@ -1,7 +1,5 @@
 import SwiftUI
 
-#if !os(watchOS)
-
 public extension ViewType {
     
     struct ModifiedContent: KnownViewType {
@@ -25,5 +23,3 @@ extension ViewType.ModifiedContent: SingleViewContent {
         return try Inspector.unwrap(view: view)
     }
 }
-
-#endif

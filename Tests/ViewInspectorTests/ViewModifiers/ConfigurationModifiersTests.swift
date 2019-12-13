@@ -2,6 +2,57 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+// MARK: - ViewPreferenceTests
+
+final class ViewPreferenceTests: XCTestCase {
+    
+    func testPreference() throws {
+        let sut = EmptyView().preference(key: Key.self, value: "test")
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTransformPreference() throws {
+        let sut = EmptyView().transformPreference(Key.self) { _ in }
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testAnchorPreference() throws {
+        let source = Anchor.Source([Anchor<String>.Source]())
+        let sut = EmptyView().anchorPreference(key: Key.self, value: source, transform: { _ in "" })
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTransformAnchorPreference() throws {
+        let source = Anchor.Source([Anchor<String>.Source]())
+        let sut = EmptyView().transformAnchorPreference(key: Key.self, value: source, transform: { _, _ in })
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testOnPreferenceChange() throws {
+        let sut = EmptyView().onPreferenceChange(Key.self) { _ in }
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testBackgroundPreferenceValue() throws {
+        let sut = EmptyView().backgroundPreferenceValue(Key.self) { _ in Text("") }
+        // Not supported
+        XCTAssertThrowsError(try sut.inspect().emptyView())
+    }
+    
+    func testOverlayPreferenceValue() throws {
+        let sut = EmptyView().overlayPreferenceValue(Key.self) { _ in Text("") }
+        // Not supported
+        XCTAssertThrowsError(try sut.inspect().emptyView())
+    }
+    
+    struct Key: PreferenceKey {
+        static var defaultValue: String = "abc"
+        static func reduce(value: inout String, nextValue: () -> String) {
+            value = nextValue()
+        }
+    }
+}
+
 // MARK: - ViewTextAdjustingTests
 
 final class ViewTextAdjustingTests: XCTestCase {

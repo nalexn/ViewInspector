@@ -80,16 +80,16 @@ extension Inspector {
             return try ViewType.TreeView.content(view: view, envObject: envObject)
         case "Optional":
             return try ViewType.OptionalContent.content(view: view, envObject: envObject)
-        #if !os(watchOS)
         case "ModifiedContent":
             return try ViewType.ModifiedContent.content(view: view, envObject: envObject)
-        #endif
         case "SubscriptionView":
             return try ViewType.SubscriptionView.content(view: view, envObject: envObject)
         case "_ConditionalContent":
             return try ViewType.ConditionalContent.content(view: view, envObject: envObject)
         case "EnvironmentReaderView":
             return try ViewType.EnvironmentReaderView.content(view: view, envObject: envObject)
+        case "_DelayedPreferenceView":
+            return try ViewType.DelayedPreferenceView.content(view: view, envObject: envObject)
         default:
             return view
         }
