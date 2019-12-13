@@ -76,6 +76,8 @@ extension Inspector {
     static func unwrap(view: Any, envObject: Any = stubEnvObject) throws -> Any {
         
         switch Inspector.typeName(value: view, prefixOnly: true) {
+        case "Tree":
+            return try ViewType.TreeView.content(view: view, envObject: envObject)
         case "Optional":
             return try ViewType.OptionalContent.content(view: view, envObject: envObject)
         #if !os(watchOS)

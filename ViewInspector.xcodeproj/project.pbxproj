@@ -63,6 +63,8 @@
 		F64057F3238E9F600029D9BA /* OptionalViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057F2238E9F600029D9BA /* OptionalViewTests.swift */; };
 		F64A2C6423A3E74E00A4853A /* PresentationModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */; };
 		F64A2C6623A3F0A900A4853A /* ConfigurationModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6523A3F0A900A4853A /* ConfigurationModifiersTests.swift */; };
+		F64A2C6823A3FD3A00A4853A /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6723A3FD3A00A4853A /* TreeView.swift */; };
+		F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */; };
 		F67540EF23A3D8B30022AC33 /* LayoutModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67540EE23A3D8B20022AC33 /* LayoutModifiersTests.swift */; };
 		F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91C92383187D00515A91 /* ModifiedContent.swift */; };
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
@@ -170,6 +172,8 @@
 		F64057F2238E9F600029D9BA /* OptionalViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalViewTests.swift; sourceTree = "<group>"; };
 		F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationModifiersTests.swift; sourceTree = "<group>"; };
 		F64A2C6523A3F0A900A4853A /* ConfigurationModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationModifiersTests.swift; sourceTree = "<group>"; };
+		F64A2C6723A3FD3A00A4853A /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
+		F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewTests.swift; sourceTree = "<group>"; };
 		F67540EE23A3D8B20022AC33 /* LayoutModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutModifiersTests.swift; sourceTree = "<group>"; };
 		F69C91C92383187D00515A91 /* ModifiedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContent.swift; sourceTree = "<group>"; };
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
@@ -296,6 +300,7 @@
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
 				F6D933BE2385F5CB00358E0E /* TextField.swift */,
 				F6D933BA2385F42300358E0E /* Toggle.swift */,
+				F64A2C6723A3FD3A00A4853A /* TreeView.swift */,
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
@@ -328,6 +333,7 @@
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
 				F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */,
+				F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */,
 				F60EEBEF2382F004007DB53A /* CustomViewTests.swift */,
 				F60EEBF32382F004007DB53A /* DatePickerTests.swift */,
 				F60EEBEC2382F004007DB53A /* DividerTests.swift */,
@@ -531,6 +537,7 @@
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
 				F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */,
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
+				F64A2C6823A3FD3A00A4853A /* TreeView.swift in Sources */,
 				F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */,
 				F6D933B32385ED1400358E0E /* VSplitView.swift in Sources */,
 				F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */,
@@ -598,6 +605,7 @@
 				F6F08E7123A3BD0C001F04DF /* InteractionModifiersTests.swift in Sources */,
 				F6D933C12385F62500358E0E /* TextFieldTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
+				F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */,
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
 				F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */,
