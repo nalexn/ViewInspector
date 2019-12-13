@@ -102,6 +102,7 @@
 		F6F08E6B23A2A849001F04DF /* ConditionalContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */; };
 		F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */; };
 		F6F08E6F23A2AA64001F04DF /* EnvironmentReaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */; };
+		F6F08E7123A3BD0C001F04DF /* ViewModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E7023A3BD0C001F04DF /* ViewModifiersTests.swift */; };
 		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
@@ -205,6 +206,7 @@
 		F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConditionalContentTests.swift; path = Sources/ViewInspector/SwiftUI/ConditionalContentTests.swift; sourceTree = SOURCE_ROOT; };
 		F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentReaderView.swift; sourceTree = "<group>"; };
 		F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentReaderViewTests.swift; sourceTree = "<group>"; };
+		F6F08E7023A3BD0C001F04DF /* ViewModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiersTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -253,7 +255,6 @@
 		F60EEBBD2382EED0007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				F6E4B4032386E2E2003E1534 /* OpaqueView.swift */,
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
 				F64057EC238DB1530029D9BA /* ConditionalContent.swift */,
@@ -276,6 +277,7 @@
 				F69C91C92383187D00515A91 /* ModifiedContent.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
+				F6E4B4032386E2E2003E1534 /* OpaqueView.swift */,
 				79069A6A238E8490000F6B58 /* OptionalContent.swift */,
 				F6D933B62385EDCB00358E0E /* Picker.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
@@ -308,6 +310,7 @@
 			children = (
 				F60EEBE42382F004007DB53A /* BaseTypesTests.swift */,
 				F60EEBE52382F004007DB53A /* InspectorTests.swift */,
+				F6F08E7023A3BD0C001F04DF /* ViewModifiersTests.swift */,
 				F60EEBE62382F004007DB53A /* SwiftUI */,
 			);
 			path = ViewInspectorTests;
@@ -316,7 +319,6 @@
 		F60EEBE62382F004007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */,
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
 				F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */,
@@ -339,6 +341,7 @@
 				F69C91CB2383189200515A91 /* ModifiedContentTests.swift */,
 				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
 				F6DFD881238303C60028E84D /* NavigationViewTests.swift */,
+				F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */,
 				F64057F2238E9F600029D9BA /* OptionalViewTests.swift */,
 				F6D933B82385EDDF00358E0E /* PickerTests.swift */,
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
@@ -572,6 +575,7 @@
 				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,
 				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
 				F6D933BD2385F45A00358E0E /* ToggleTests.swift in Sources */,
+				F6F08E7123A3BD0C001F04DF /* ViewModifiersTests.swift in Sources */,
 				F6D933C12385F62500358E0E /* TextFieldTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
