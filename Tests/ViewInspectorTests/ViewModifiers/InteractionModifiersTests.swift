@@ -274,3 +274,18 @@ final class ViewAccessibilityTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
+
+// MARK: - ViewHitTestingTests
+
+final class ViewHitTestingTests: XCTestCase {
+    
+    func testAllowsHitTesting() throws {
+        let sut = EmptyView().allowsHitTesting(true)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testContentShape() throws {
+        let sut = EmptyView().contentShape(Capsule(), eoFill: true)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}

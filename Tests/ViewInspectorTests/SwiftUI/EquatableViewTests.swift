@@ -6,14 +6,14 @@ final class EquatableViewTests: XCTestCase {
     
     func testEnclosedView() throws {
         let sampleView = Text("Test")
-        let view = EquatableView(content: sampleView)
+        let view = sampleView.equatable()
         let sut = try view.inspect().text().view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(EquatableView(content: Text("")))
-        XCTAssertNoThrow(try view.inspect().equatableView())
+        XCTAssertNoThrow(try view.inspect().text())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -21,7 +21,7 @@ final class EquatableViewTests: XCTestCase {
             EquatableView(content: Text(""))
             EquatableView(content: Text(""))
         }
-        XCTAssertNoThrow(try view.inspect().equatableView(0))
-        XCTAssertNoThrow(try view.inspect().equatableView(1))
+        XCTAssertNoThrow(try view.inspect().text(0))
+        XCTAssertNoThrow(try view.inspect().text(1))
     }
 }

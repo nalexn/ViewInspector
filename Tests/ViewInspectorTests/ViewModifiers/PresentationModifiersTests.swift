@@ -151,3 +151,23 @@ final class ViewHidingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
+
+// MARK: - ViewPreviewTests
+
+final class ViewPreviewTests: XCTestCase {
+    
+    func testPreviewDevice() throws {
+        let sut = EmptyView().previewDevice(PreviewDevice(stringLiteral: "iPhone 8"))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testPreviewDisplayName() throws {
+        let sut = EmptyView().previewDisplayName("")
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testPreviewLayout() throws {
+        let sut = EmptyView().previewLayout(.fixed(width: 5, height: 5))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}

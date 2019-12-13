@@ -1,12 +1,12 @@
 import SwiftUI
 
 internal extension ViewType {
-    struct EquatableView { }
+    struct IDView { }
 }
 
 // MARK: - Content Extraction
 
-extension ViewType.EquatableView: SingleViewContent {
+extension ViewType.IDView: SingleViewContent {
     
     static func content(view: Any, envObject: Any) throws -> Any {
         let view = try Inspector.attribute(label: "content", value: view)

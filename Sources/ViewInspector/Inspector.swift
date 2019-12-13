@@ -78,8 +78,12 @@ extension Inspector {
         switch Inspector.typeName(value: view, prefixOnly: true) {
         case "Tree":
             return try ViewType.TreeView.content(view: view, envObject: envObject)
+        case "IDView":
+            return try ViewType.IDView.content(view: view, envObject: envObject)
         case "Optional":
             return try ViewType.OptionalContent.content(view: view, envObject: envObject)
+        case "EquatableView":
+            return try ViewType.EquatableView.content(view: view, envObject: envObject)
         case "ModifiedContent":
             return try ViewType.ModifiedContent.content(view: view, envObject: envObject)
         case "SubscriptionView":
