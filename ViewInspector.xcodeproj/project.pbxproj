@@ -61,6 +61,9 @@
 		F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057EE238DBA800029D9BA /* EmptyView.swift */; };
 		F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057F0238DBB120029D9BA /* EmptyViewTests.swift */; };
 		F64057F3238E9F600029D9BA /* OptionalViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057F2238E9F600029D9BA /* OptionalViewTests.swift */; };
+		F64A2C6423A3E74E00A4853A /* PresentationModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */; };
+		F64A2C6623A3F0A900A4853A /* ConfigurationModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6523A3F0A900A4853A /* ConfigurationModifiersTests.swift */; };
+		F67540EF23A3D8B30022AC33 /* LayoutModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67540EE23A3D8B20022AC33 /* LayoutModifiersTests.swift */; };
 		F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91C92383187D00515A91 /* ModifiedContent.swift */; };
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
@@ -102,7 +105,7 @@
 		F6F08E6B23A2A849001F04DF /* ConditionalContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */; };
 		F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */; };
 		F6F08E6F23A2AA64001F04DF /* EnvironmentReaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */; };
-		F6F08E7123A3BD0C001F04DF /* ViewModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E7023A3BD0C001F04DF /* ViewModifiersTests.swift */; };
+		F6F08E7123A3BD0C001F04DF /* InteractionModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E7023A3BD0C001F04DF /* InteractionModifiersTests.swift */; };
 		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
@@ -165,6 +168,9 @@
 		F64057EE238DBA800029D9BA /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		F64057F0238DBB120029D9BA /* EmptyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewTests.swift; sourceTree = "<group>"; };
 		F64057F2238E9F600029D9BA /* OptionalViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalViewTests.swift; sourceTree = "<group>"; };
+		F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationModifiersTests.swift; sourceTree = "<group>"; };
+		F64A2C6523A3F0A900A4853A /* ConfigurationModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationModifiersTests.swift; sourceTree = "<group>"; };
+		F67540EE23A3D8B20022AC33 /* LayoutModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutModifiersTests.swift; sourceTree = "<group>"; };
 		F69C91C92383187D00515A91 /* ModifiedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContent.swift; sourceTree = "<group>"; };
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
@@ -206,7 +212,7 @@
 		F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConditionalContentTests.swift; path = Sources/ViewInspector/SwiftUI/ConditionalContentTests.swift; sourceTree = SOURCE_ROOT; };
 		F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentReaderView.swift; sourceTree = "<group>"; };
 		F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentReaderViewTests.swift; sourceTree = "<group>"; };
-		F6F08E7023A3BD0C001F04DF /* ViewModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiersTests.swift; sourceTree = "<group>"; };
+		F6F08E7023A3BD0C001F04DF /* InteractionModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionModifiersTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -310,7 +316,7 @@
 			children = (
 				F60EEBE42382F004007DB53A /* BaseTypesTests.swift */,
 				F60EEBE52382F004007DB53A /* InspectorTests.swift */,
-				F6F08E7023A3BD0C001F04DF /* ViewModifiersTests.swift */,
+				F67540ED23A3D8820022AC33 /* ViewModifiers */,
 				F60EEBE62382F004007DB53A /* SwiftUI */,
 			);
 			path = ViewInspectorTests;
@@ -359,6 +365,17 @@
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
 			);
 			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		F67540ED23A3D8820022AC33 /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				F67540EE23A3D8B20022AC33 /* LayoutModifiersTests.swift */,
+				F6F08E7023A3BD0C001F04DF /* InteractionModifiersTests.swift */,
+				F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */,
+				F64A2C6523A3F0A900A4853A /* ConfigurationModifiersTests.swift */,
+			);
+			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 		OBJ_26 /* Products */ = {
@@ -563,9 +580,12 @@
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
 				F6D933C52385FB1D00358E0E /* SecureFieldTests.swift in Sources */,
 				F6D933B92385EDDF00358E0E /* PickerTests.swift in Sources */,
+				F64A2C6623A3F0A900A4853A /* ConfigurationModifiersTests.swift in Sources */,
 				F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */,
+				F67540EF23A3D8B30022AC33 /* LayoutModifiersTests.swift in Sources */,
 				F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */,
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
+				F64A2C6423A3E74E00A4853A /* PresentationModifiersTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
 				F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */,
@@ -575,7 +595,7 @@
 				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,
 				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
 				F6D933BD2385F45A00358E0E /* ToggleTests.swift in Sources */,
-				F6F08E7123A3BD0C001F04DF /* ViewModifiersTests.swift in Sources */,
+				F6F08E7123A3BD0C001F04DF /* InteractionModifiersTests.swift in Sources */,
 				F6D933C12385F62500358E0E /* TextFieldTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,

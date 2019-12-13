@@ -125,16 +125,6 @@ final class ViewLayeringTests: XCTestCase {
     }
 }
 
-// MARK: - ViewBorderTests
-
-final class ViewBorderTests: XCTestCase {
-    
-    func testBorder() throws {
-        let sut = EmptyView().border(Color.primary, width: 5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
-
 // MARK: - ViewMaskingTests
 
 final class ViewMaskingTests: XCTestCase {
@@ -233,77 +223,6 @@ final class ViewTransformingTests: XCTestCase {
     }
 }
 
-// MARK: - ViewTextAdjustingTests
-
-final class ViewTextAdjustingTests: XCTestCase {
-    
-    #if os(iOS) || os(tvOS)
-    func testKeyboardType() throws {
-        let sut = EmptyView().keyboardType(.namePhonePad)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
-    func testFont() throws {
-        let sut = EmptyView().font(.body)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testLineLimit() throws {
-        let sut = EmptyView().lineLimit(5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testLineSpacing() throws {
-        let sut = EmptyView().lineSpacing(5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testMultilineTextAlignment() throws {
-        let sut = EmptyView().multilineTextAlignment(.center)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testMinimumScaleFactor() throws {
-        let sut = EmptyView().minimumScaleFactor(5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testTruncationMode() throws {
-        let sut = EmptyView().truncationMode(.tail)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testAllowsTightening() throws {
-        let sut = EmptyView().allowsTightening(true)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    #if !os(macOS)
-    func testTextContentType() throws {
-        let sut = EmptyView().textContentType(.emailAddress)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
-    func testFlipsForRightToLeftLayoutDirection() throws {
-        let sut = EmptyView().flipsForRightToLeftLayoutDirection(true)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    #if os(iOS) || os(tvOS)
-    func testAutocapitalization() throws {
-        let sut = EmptyView().autocapitalization(.words)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
-    func testDisableAutocorrection() throws {
-        let sut = EmptyView().disableAutocorrection(false)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
-
 // MARK: - ViewAnimationsTests
 
 final class ViewAnimationsTests: XCTestCase {
@@ -320,57 +239,6 @@ final class ViewAnimationsTests: XCTestCase {
     
     func testTransition() throws {
         let sut = EmptyView().transition(.slide)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
-
-// MARK: - ViewGesturesTests
-
-final class ViewGesturesTests: XCTestCase {
-    
-    @State private var floatValue: Float = 0
-    
-    func testOnTapGesture() throws {
-        let sut = EmptyView().onTapGesture(count: 5, perform: { })
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testOnLongPressGesture() throws {
-        let sut = EmptyView().onLongPressGesture { }
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testGesture() throws {
-        let sut = EmptyView().gesture(MagnificationGesture(), including: .subviews)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testHighPriorityGesture() throws {
-        let sut = EmptyView().highPriorityGesture(MagnificationGesture(), including: .subviews)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testSimultaneousGesture() throws {
-        let sut = EmptyView().simultaneousGesture(MagnificationGesture(), including: .subviews)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    #if os(watchOS)
-    func testDigitalCrownRotation() throws {
-        let sut = EmptyView().digitalCrownRotation(self.$floatValue)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testDigitalCrownRotationExtended() throws {
-        let sut = EmptyView().digitalCrownRotation(
-            self.$floatValue, from: 5, through: 5, by: 5, sensitivity: .low,
-            isContinuous: true, isHapticFeedbackEnabled: true)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
-    func testTransaction() throws {
-        let sut = EmptyView().transaction { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
