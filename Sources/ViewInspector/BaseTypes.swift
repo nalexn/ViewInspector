@@ -55,6 +55,7 @@ public enum InspectionError: Swift.Error {
     case attributeNotFound(label: String, type: String)
     case viewIndexOutOfBounds(index: Int, count: Int)
     case viewNotFound(parent: String)
+    case modifierNotFound(parent: String, modifier: String)
     case notSupported(String)
 }
 
@@ -70,6 +71,8 @@ extension InspectionError: LocalizedError {
             return "Enclosed view index '\(index)' is out of bounds: '0 ..< \(count)'"
         case let .viewNotFound(parent):
             return "View for \(parent) is absent"
+        case let .modifierNotFound(parent, modifier):
+            return "\(parent) does not have '\(modifier)' modifier"
         case let .notSupported(message):
             return "ViewInspector: " + message
         }

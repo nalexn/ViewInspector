@@ -34,6 +34,8 @@ internal extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Start of inspection for Opaque View
+
 extension View {
     func inspect() throws -> InspectableView<ViewType.AnyView> {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
@@ -54,5 +56,52 @@ extension View {
         where T: InspectableWithEnvObject {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
         return try InspectableView<ViewType.ViewWithEnvObject<T>>(unwrapped, envObject: object)
+    }
+}
+
+// MARK: - Modifiers
+
+public extension InspectableView {
+    
+    func callOnAppear() throws {
+        let onAppear = try attribute("_AppearanceActionModifier", path: "modifier|appear",
+                                     type: (() -> Void).self, call: "onAppear")
+        onAppear()
+    }
+    
+    func callOnDisappear() throws {
+        let onDisappear = try attribute("_AppearanceActionModifier", path: "modifier|disappear",
+                                        type: (() -> Void).self, call: "onDisappear")
+        onDisappear()
+    }
+}
+
+internal extension InspectableView {
+    
+    func attribute<Type>(_ modifierType: String, path: String,
+                         type: Type.Type, call: String) throws -> Type {
+        let foundModifier = content.modifiers.lazy
+            .compactMap { $0 as? ModifierNameProvider }
+            .first(where: { modifier in
+                guard modifier.modifierType == modifierType else { return false }
+                return (try? Inspector.attribute(path: path, value: modifier) as? Type) != nil
+            })
+        guard let modifier = foundModifier,
+            let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
+        else {
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: content.view), modifier: call)
+        }
+        return attribute
+    }
+}
+
+internal protocol ModifierNameProvider {
+    var modifierType: String { get }
+}
+
+extension ModifiedContent: ModifierNameProvider {
+    var modifierType: String {
+        return Inspector.typeName(type: Modifier.self)
     }
 }
