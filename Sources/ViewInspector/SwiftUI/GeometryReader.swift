@@ -22,7 +22,7 @@ extension ViewType.GeometryReader: SingleViewContent {
         guard let child = try (content.view as? GeometryReaderContentProvider)?.view() else {
             throw InspectionError.typeMismatch(content.view, GeometryReaderContentProvider.self)
         }
-        return try Inspector.unwrap(view: child)
+        return try Inspector.unwrap(view: child, modifiers: [])
     }
 }
 

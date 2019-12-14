@@ -45,6 +45,13 @@ final class ForEachTests: XCTestCase {
         XCTAssertThrowsError(try view.inspect().text(2))
     }
     
+    func testResetsModifiers() throws {
+        let view = ForEach(Array(0 ... 10), id: \.self) { Text("\($0)") }
+            .padding()
+        let sut = try view.inspect().forEach().text(5)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let data = ["0", "1"].map { TestStruct(id: $0) }
         let view = AnyView(ForEach(data) { Text($0.id) })

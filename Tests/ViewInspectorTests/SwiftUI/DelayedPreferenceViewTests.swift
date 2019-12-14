@@ -13,6 +13,18 @@ final class DelayedPreferenceViewTests: XCTestCase {
         // Not supported
         XCTAssertThrowsError(try view.inspect().text(0))
     }
+    
+    func testRetainsModifiers() throws {
+        /* Disabled until supported
+         
+        let view = Text("Test")
+            .padding()
+            .backgroundPreferenceValue(Key.self) { _ in EmptyView() }
+            .padding().padding()
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.modifiers.count, 3)
+        */
+    }
     #endif
     
     struct Key: PreferenceKey {

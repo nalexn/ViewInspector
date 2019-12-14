@@ -39,6 +39,12 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertThrowsError(try view.inspect().text(2))
     }
     
+    func testResetsModifiers() throws {
+        let view = GroupBox { Text("Test") }.padding()
+        let sut = try view.inspect().groupBox().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(GroupBox { Text("Test") })
         XCTAssertNoThrow(try view.inspect().groupBox())

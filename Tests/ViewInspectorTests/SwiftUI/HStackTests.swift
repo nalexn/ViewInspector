@@ -37,6 +37,12 @@ final class HStackTests: XCTestCase {
         XCTAssertThrowsError(try view.inspect().text(2))
     }
     
+    func testResetsModifiers() throws {
+        let view = HStack { Text("Test") }.padding()
+        let sut = try view.inspect().hStack().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(HStack { Text("Test") })
         XCTAssertNoThrow(try view.inspect().hStack())

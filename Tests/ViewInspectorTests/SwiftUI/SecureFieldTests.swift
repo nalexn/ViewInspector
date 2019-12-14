@@ -18,6 +18,12 @@ final class SecureFieldTests: XCTestCase {
         XCTAssertEqual(text, "Title")
     }
     
+    func testResetsModifiers() throws {
+        let view = SecureField("Title", text: $text1).padding()
+        let sut = try view.inspect().secureField().text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(SecureField("Test", text: $text1))
         XCTAssertNoThrow(try view.inspect().secureField())

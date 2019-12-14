@@ -11,6 +11,13 @@ final class IDViewTests: XCTestCase {
         XCTAssertEqual(sut, sampleView)
     }
     
+    func testRetainsModifiers() throws {
+        let view = Text("Test")
+            .padding().id(0).padding().padding()
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.modifiers.count, 3)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Text("").id(""))
         XCTAssertNoThrow(try view.inspect().text())

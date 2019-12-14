@@ -35,7 +35,7 @@ extension ViewType.Picker.Label: SingleViewContent {
     
     public static func child(_ content: Content, envObject: Any) throws -> Content {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try Inspector.unwrap(view: view)
+        return try Inspector.unwrap(view: view, modifiers: [])
     }
 }
 

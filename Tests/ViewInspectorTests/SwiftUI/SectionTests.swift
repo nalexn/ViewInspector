@@ -37,6 +37,12 @@ final class SectionTests: XCTestCase {
         XCTAssertThrowsError(try view.inspect().text(2))
     }
     
+    func testResetsModifiers() throws {
+        let view = Section { Text("Test") }.padding()
+        let sut = try view.inspect().section().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Section { Text("Test") })
         XCTAssertNoThrow(try view.inspect().section())

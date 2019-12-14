@@ -18,6 +18,15 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertEqual(text, "GoTo 1")
     }
     
+    func testResetsModifiers() throws {
+        let view = NavigationLink(
+            destination: Text("Screen 1")) { Text("GoTo 1") }.padding()
+        let sut1 = try view.inspect().navigationLink().text()
+        XCTAssertEqual(sut1.content.modifiers.count, 0)
+        let sut2 = try view.inspect().navigationLink().label().text()
+        XCTAssertEqual(sut2.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(NavigationLink(
             destination: Text("Screen 1")) { Text("GoTo 1") })

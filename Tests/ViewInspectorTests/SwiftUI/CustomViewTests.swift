@@ -46,6 +46,19 @@ final class CustomViewTests: XCTestCase {
         XCTAssertThrowsError(try sut2.inspect())
     }
     
+    func testResetsModifiers() throws {
+        let view = SimpleTestView().padding()
+        let sut = try view.inspect().view(SimpleTestView.self).emptyView()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testEnvViewResetsModifiers() throws {
+        let viewModel = ExternalState()
+        let view = EnvironmentStateTestView().padding()
+        let sut = try view.inspect().view(EnvironmentStateTestView.self, viewModel).text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     #if os(iOS) || os(tvOS)
     func testExtractionOfUIKitView() throws {
         let view = AnyView(UIKitTestView())

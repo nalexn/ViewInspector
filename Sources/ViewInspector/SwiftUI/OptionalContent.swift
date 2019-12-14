@@ -10,7 +10,7 @@ extension ViewType.OptionalContent: SingleViewContent {
         guard let child = try (content.view as? OptionalViewContentProvider)?.view() else {
             throw InspectionError.typeMismatch(content.view, OptionalViewContentProvider.self)
         }
-        return try Inspector.unwrap(view: child)
+        return try Inspector.unwrap(view: child, modifiers: [])
     }
 }
 

@@ -11,6 +11,12 @@ final class AnyViewTests: XCTestCase {
         XCTAssertEqual(sut, sampleView)
     }
     
+    func testResetsModifiers() throws {
+        let view = AnyView(Text("")).padding()
+        let sut = try view.inspect().anyView().text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = Button(action: { }, label: { AnyView(Text("")) })
         XCTAssertNoThrow(try view.inspect().anyView())

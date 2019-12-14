@@ -26,6 +26,12 @@ final class NavigationViewTests: XCTestCase {
         XCTAssertEqual(view3, sampleView3)
     }
     
+    func testResetsModifiers() throws {
+        let view = NavigationView { Text("Test") }.padding()
+        let sut = try view.inspect().navigationView().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(NavigationView { Text("") })
         XCTAssertNoThrow(try view.inspect().navigationView())

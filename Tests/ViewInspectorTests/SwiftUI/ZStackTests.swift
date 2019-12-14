@@ -11,6 +11,12 @@ final class ZStackTests: XCTestCase {
         XCTAssertEqual(sut, sampleView)
     }
     
+    func testResetsModifiers() throws {
+        let view = ZStack { Text("Test") }.padding()
+        let sut = try view.inspect().zStack().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testSingleEnclosedViewIndexOutOfBounds() throws {
         let sampleView = Text("Test")
         let view = ZStack { sampleView }

@@ -13,6 +13,12 @@ final class VSplitViewTests: XCTestCase {
         XCTAssertEqual(sut, sampleView)
     }
     
+    func testResetsModifiers() throws {
+        let view = VSplitView { Text("Test") }.padding()
+        let sut = try view.inspect().vSplitView().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testSingleEnclosedViewIndexOutOfBounds() throws {
         let sampleView = Text("Test")
         let view = VSplitView { sampleView }

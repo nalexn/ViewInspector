@@ -18,6 +18,12 @@ final class ToggleTests: XCTestCase {
         XCTAssertEqual(text, "Test")
     }
     
+    func testResetsModifiers() throws {
+        let view = Toggle(isOn: $isOn1) { Text("Test") }.padding()
+        let sut = try view.inspect().toggle().text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Toggle(isOn: $isOn1) { Text("Test") })
         XCTAssertNoThrow(try view.inspect().toggle())

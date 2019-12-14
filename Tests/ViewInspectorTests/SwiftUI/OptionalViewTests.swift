@@ -29,6 +29,14 @@ final class OptionalViewTests: XCTestCase {
         let string = try view.inspect().hStack().text(1).string()
         XCTAssertEqual(string, "XYZ")
     }
+    
+    func testResetsModifiers() throws {
+        let view = Group {
+            if true { Text("ABC") }
+        }.padding()
+        let sut = try view.inspect().group().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
 }
 
 private struct OptionalView: View, Inspectable {

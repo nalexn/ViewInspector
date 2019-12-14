@@ -15,6 +15,12 @@ final class SliderTests: XCTestCase {
         XCTAssertEqual(text, "Title")
     }
     
+    func testResetsModifiers() throws {
+        let view = Slider(value: $value1, label: { Text("Title") }).padding()
+        let sut = try view.inspect().slider().text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Slider(value: $value1))
         XCTAssertNoThrow(try view.inspect().slider())

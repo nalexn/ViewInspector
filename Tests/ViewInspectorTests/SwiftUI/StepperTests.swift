@@ -18,6 +18,12 @@ final class StepperTests: XCTestCase {
         XCTAssertEqual(text2, "Title2")
     }
     
+    func testResetsModifiers() throws {
+        let view = Stepper("Title1", value: $counter1).padding()
+        let sut = try view.inspect().stepper().text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Stepper("Test", value: $counter1))
         XCTAssertNoThrow(try view.inspect().stepper())

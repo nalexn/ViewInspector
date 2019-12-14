@@ -11,6 +11,12 @@ final class GeometryReaderTests: XCTestCase {
         XCTAssertEqual(value, "Test")
     }
     
+    func testResetsModifiers() throws {
+        let view = GeometryReader { _ in Text("Test") }.padding()
+        let sut = try view.inspect().geometryReader().text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(GeometryReader { _ in EmptyView() })
         XCTAssertNoThrow(try view.inspect().geometryReader())

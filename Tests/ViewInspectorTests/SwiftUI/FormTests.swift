@@ -37,6 +37,12 @@ final class FormTests: XCTestCase {
         XCTAssertThrowsError(try view.inspect().text(2))
     }
     
+    func testResetsModifiers() throws {
+        let view = Form { Text("Test") }.padding()
+        let sut = try view.inspect().form().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Form { Text("Test") })
         XCTAssertNoThrow(try view.inspect().form())

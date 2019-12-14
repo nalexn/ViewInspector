@@ -18,6 +18,12 @@ final class TextFieldTests: XCTestCase {
         XCTAssertEqual(text, "Title")
     }
     
+    func testResetsModifiers() throws {
+        let view = TextField("Title", text: $text1).padding()
+        let sut = try view.inspect().textField().text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(TextField("Test", text: $text1))
         XCTAssertNoThrow(try view.inspect().textField())

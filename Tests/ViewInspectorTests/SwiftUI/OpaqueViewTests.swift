@@ -4,23 +4,26 @@ import SwiftUI
 
 final class OpaqueViewTests: XCTestCase {
     
-    func testOpaqueAnyView() throws {
+    func testOpaqueStandardView() throws {
         let view = Text("Test").padding()
-        let string = try view.inspect().text().string()
-        XCTAssertEqual(string, "Test")
+        let sut = try view.inspect().text()
+        XCTAssertEqual(try sut.string(), "Test")
+        XCTAssertEqual(sut.content.modifiers.count, 1)
     }
     
     func testOpaqueInspectableView() throws {
         let view = InspectableTestView().padding()
-        let string = try view.inspect(InspectableTestView.self).text().string()
-        XCTAssertEqual(string, "Test")
+        let sut = try view.inspect(InspectableTestView.self).text()
+        XCTAssertEqual(try sut.string(), "Test")
+        XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
     func testOpaqueEnvInspectableView() throws {
         let view = EnvInspectableTestView().padding()
         let state = EnvInspectableTestView.State()
-        let string = try view.inspect(EnvInspectableTestView.self, state).text().string()
-        XCTAssertEqual(string, "Test")
+        let sut = try view.inspect(EnvInspectableTestView.self, state).text()
+        XCTAssertEqual(try sut.string(), "Test")
+        XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
     func testNonInspectableView() throws {

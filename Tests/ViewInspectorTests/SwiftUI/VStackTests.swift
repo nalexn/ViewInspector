@@ -11,6 +11,12 @@ final class VStackTests: XCTestCase {
         XCTAssertEqual(sut, sampleView)
     }
     
+    func testResetsModifiers() throws {
+        let view = VStack { Text("Test") }.padding()
+        let sut = try view.inspect().vStack().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testSingleEnclosedViewIndexOutOfBounds() throws {
         let sampleView = Text("Test")
         let view = VStack { sampleView }

@@ -23,7 +23,7 @@ extension ViewType.ForEach: MultipleViewContent {
             throw InspectionError.typeMismatch(content.view, ForEachContentProvider.self)
         }
         return LazyGroup(count: children.count) { index in
-            try Inspector.unwrap(view: try children.element(at: index))
+            try Inspector.unwrap(view: try children.element(at: index), modifiers: [])
         }
     }
 }

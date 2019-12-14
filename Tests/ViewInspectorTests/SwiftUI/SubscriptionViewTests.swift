@@ -11,6 +11,16 @@ final class SubscriptionViewTests: XCTestCase {
         let string = try view.inspect().text().string()
         XCTAssertEqual(string, "XYZ")
     }
+    
+    func testRetainsModifiers() throws {
+        let subject = PassthroughSubject<Void, Never>()
+        let view = Text("Test")
+            .padding()
+            .onReceive(subject, perform: { })
+            .padding().padding()
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.modifiers.count, 3)
+    }
 }
 
 private struct SubscriptionTestView: View, Inspectable {

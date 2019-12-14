@@ -37,6 +37,12 @@ final class ListTests: XCTestCase {
         XCTAssertThrowsError(try view.inspect().text(2))
     }
     
+    func testResetsModifiers() throws {
+        let view = List { Text("Test") }.padding()
+        let sut = try view.inspect().list().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(List { Text("Test") })
         XCTAssertNoThrow(try view.inspect().list())

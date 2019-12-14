@@ -12,6 +12,12 @@ final class ConditionalContentTests: XCTestCase {
         let string2 = try view.inspect().group().image(0).imageName()
         XCTAssertEqual(string2, "Image")
     }
+    
+    func testResetsModifiers() throws {
+        let view = ConditionalView().padding()
+        let sut = try view.inspect().view(ConditionalView.self).group()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
 }
 
 private struct ConditionalView: View, Inspectable {

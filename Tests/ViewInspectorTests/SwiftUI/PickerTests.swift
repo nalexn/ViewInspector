@@ -24,6 +24,15 @@ final class PickerTests: XCTestCase {
         XCTAssertEqual(text, "Title")
     }
     
+    func testResetsModifiers() throws {
+        let view = Picker(selection: $selection, label: Text("Title")) {
+            Text("First Option").tag(0)
+            Text("Second Option").tag(1)
+        }.padding().padding()
+        let sut = try view.inspect().picker().text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 1)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let picker = Picker(selection: $selection, label: Text("Title")) {
             Text("First Option").tag(0)

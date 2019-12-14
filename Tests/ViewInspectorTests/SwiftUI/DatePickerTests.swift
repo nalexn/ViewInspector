@@ -31,12 +31,18 @@ final class DatePickerTests: XCTestCase {
         XCTAssertEqual(sut, sampleView)
     }
     
-    func testDatePickerExtractionFromSingleViewContainer() throws {
+    func testResetsModifiers() throws {
+        let view = DatePicker("Test", selection: $state.selectedDate1).padding()
+        let sut = try view.inspect().datePicker().text()
+        XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(DatePicker("Test", selection: $state.selectedDate1))
         XCTAssertNoThrow(try view.inspect().datePicker())
     }
     
-    func testDatePickerExtractionFromMultipleViewContainer() throws {
+    func testExtractionFromMultipleViewContainer() throws {
         let view = HStack {
             DatePicker("Test", selection: $state.selectedDate1)
             DatePicker("Test", selection: $state.selectedDate2)
