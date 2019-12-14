@@ -15,9 +15,27 @@ final class ViewGesturesTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testOnTapGestureInspection() throws {
+        let exp = XCTestExpectation(description: "onAppear")
+        let sut = EmptyView().onTapGesture {
+            exp.fulfill()
+        }.onLongPressGesture { }
+        try sut.inspect().emptyView().callOnTapGesture()
+        wait(for: [exp], timeout: 0.1)
+    }
+    
     func testOnLongPressGesture() throws {
         let sut = EmptyView().onLongPressGesture { }
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testOnLongPressGestureInspection() throws {
+        let exp = XCTestExpectation(description: "onLongPressGesture")
+        let sut = EmptyView().onLongPressGesture {
+            exp.fulfill()
+        }.onTapGesture { }
+        try sut.inspect().emptyView().callOnLongPressGesture()
+        wait(for: [exp], timeout: 0.1)
     }
     
     func testGesture() throws {
