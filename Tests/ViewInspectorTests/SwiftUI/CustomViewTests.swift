@@ -80,12 +80,12 @@ final class CustomViewTests: XCTestCase {
     
     func testEnvObjectTypeMismatch() {
         XCTAssertThrowsError(try ViewType.ViewWithEnvObject<EnvironmentStateTestView>
-            .content(view: "abc", envObject: Inspector.stubEnvObject))
+            .child(Content("abc"), envObject: Inspector.stubEnvObject))
     }
     
     func testContentViewTypeMismatch() {
         XCTAssertThrowsError(try ViewType.View<SimpleTestView>
-            .content(view: "abc", envObject: Inspector.stubEnvObject))
+            .child(Content("abc"), envObject: Inspector.stubEnvObject))
     }
     
     func testActualView() throws {
@@ -95,7 +95,7 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testActualViewTypeMismatch() throws {
-        let sut = try InspectableView<ViewType.Test<SimpleTestView>>("")
+        let sut = try InspectableView<ViewType.Test<SimpleTestView>>(Content(""))
         XCTAssertThrowsError(try sut.actualView())
     }
     

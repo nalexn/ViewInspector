@@ -10,7 +10,7 @@ public extension ViewType {
 public extension List {
     
     func inspect() throws -> InspectableView<ViewType.List> {
-        return try InspectableView<ViewType.List>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,8 +18,8 @@ public extension List {
 
 extension ViewType.List: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
-        let content = try Inspector.attribute(label: "content", value: view)
+    public static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content> {
+        let content = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.viewsInContainer(view: content)
     }
 }
@@ -29,8 +29,7 @@ extension ViewType.List: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func list() throws -> InspectableView<ViewType.List> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.List>(content)
+        return try .init(try child())
     }
 }
 
@@ -39,8 +38,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func list(_ index: Int) throws -> InspectableView<ViewType.List> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.List>(content)
+        return try .init(try child(at: index))
     }
 }
 

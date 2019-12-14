@@ -105,7 +105,6 @@
 		F6DFD882238303C60028E84D /* NavigationViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD881238303C60028E84D /* NavigationViewTests.swift */; };
 		F6DFD88423830E9F0028E84D /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD88323830E9F0028E84D /* List.swift */; };
 		F6DFD88623830EB80028E84D /* ListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD88523830EB80028E84D /* ListTests.swift */; };
-		F6E4B4042386E2E2003E1534 /* OpaqueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E4B4032386E2E2003E1534 /* OpaqueView.swift */; };
 		F6E4B4062386F511003E1534 /* OpaqueViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */; };
 		F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */; };
 		F6F08E6623A29FE4001F04DF /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */; };
@@ -219,7 +218,6 @@
 		F6DFD881238303C60028E84D /* NavigationViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewTests.swift; sourceTree = "<group>"; };
 		F6DFD88323830E9F0028E84D /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		F6DFD88523830EB80028E84D /* ListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTests.swift; sourceTree = "<group>"; };
-		F6E4B4032386E2E2003E1534 /* OpaqueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpaqueView.swift; sourceTree = "<group>"; };
 		F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpaqueViewTests.swift; sourceTree = "<group>"; };
 		F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewTests.swift; sourceTree = "<group>"; };
 		F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
@@ -299,7 +297,6 @@
 				F69C91C92383187D00515A91 /* ModifiedContent.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
-				F6E4B4032386E2E2003E1534 /* OpaqueView.swift */,
 				79069A6A238E8490000F6B58 /* OptionalContent.swift */,
 				F6D933B62385EDCB00358E0E /* Picker.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
@@ -345,7 +342,6 @@
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
 				F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */,
-				F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */,
 				F60EEBEF2382F004007DB53A /* CustomViewTests.swift */,
 				F60EEBF32382F004007DB53A /* DatePickerTests.swift */,
 				F609EFC223A4342400B9256A /* DelayedPreferenceViewTests.swift */,
@@ -380,6 +376,7 @@
 				F60EEBE82382F004007DB53A /* TextTests.swift */,
 				F6D933C02385F62500358E0E /* TextFieldTests.swift */,
 				F6D933BC2385F45A00358E0E /* ToggleTests.swift */,
+				F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */,
 				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
@@ -566,7 +563,6 @@
 				F6F08E6623A29FE4001F04DF /* SubscriptionView.swift in Sources */,
 				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
-				F6E4B4042386E2E2003E1534 /* OpaqueView.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
 				F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */,
 				F6D933CB2385FF8F00358E0E /* Slider.swift in Sources */,

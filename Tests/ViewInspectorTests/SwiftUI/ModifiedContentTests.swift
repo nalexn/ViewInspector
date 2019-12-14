@@ -9,7 +9,7 @@ final class ModifiedContentTests: XCTestCase {
     func testEnclosedView() throws {
         let sampleView = Text("Test")
         let view = ModifiedContent(content: sampleView, modifier: TestModifier())
-        let sut = try view.inspect().text().view as? Text
+        let sut = try view.inspect().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     
@@ -30,7 +30,7 @@ final class ModifiedContentTests: XCTestCase {
 }
 
 private struct TestModifier: ViewModifier {
-    func body(content: Content) -> some View {
+    func body(content: Self.Content) -> some View {
         content
     }
 }

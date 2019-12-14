@@ -7,7 +7,7 @@ final class ScrollViewTests: XCTestCase {
     func testEnclosedView() throws {
         let sampleView = Text("Test")
         let view = ScrollView { sampleView }
-        let sut = try view.inspect().text().view as? Text
+        let sut = try view.inspect().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     

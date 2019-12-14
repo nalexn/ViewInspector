@@ -10,7 +10,7 @@ public extension ViewType {
 public extension Text {
     
     func inspect() throws -> InspectableView<ViewType.Text> {
-        return try InspectableView<ViewType.Text>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -19,8 +19,7 @@ public extension Text {
 public extension InspectableView where View: SingleViewContent {
     
     func text() throws -> InspectableView<ViewType.Text> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.Text>(content)
+        return try .init(try child())
     }
 }
 
@@ -29,8 +28,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func text(_ index: Int) throws -> InspectableView<ViewType.Text> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.Text>(content)
+        return try .init(try child(at: index))
     }
 }
 
@@ -40,11 +38,11 @@ public extension InspectableView where View == ViewType.Text {
     
     func string() throws -> String? {
         if let externalString = try? Inspector
-            .attribute(path: "storage|verbatim", value: view) as? String {
+            .attribute(path: "storage|verbatim", value: content.view) as? String {
             return externalString
         }
         let localizedStringKey = try Inspector
-            .attribute(path: "storage|anyTextStorage|key", value: view)
+            .attribute(path: "storage|anyTextStorage|key", value: content.view)
         guard let baseString = try Inspector
             .attribute(label: "key", value: localizedStringKey) as? String,
             let hasFormatting = try Inspector

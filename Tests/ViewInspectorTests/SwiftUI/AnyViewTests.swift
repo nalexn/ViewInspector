@@ -7,7 +7,7 @@ final class AnyViewTests: XCTestCase {
     func testEnclosedView() throws {
         let sampleView = Text("Test")
         let view = AnyView(sampleView)
-        let sut = try view.inspect().text().view as? Text
+        let sut = try view.inspect().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     

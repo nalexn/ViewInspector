@@ -12,7 +12,7 @@ public extension ViewType {
 public extension DatePicker {
     
     func inspect() throws -> InspectableView<ViewType.DatePicker> {
-        return try InspectableView<ViewType.DatePicker>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -20,8 +20,8 @@ public extension DatePicker {
 
 extension ViewType.DatePicker: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "label", value: view)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }
@@ -31,8 +31,7 @@ extension ViewType.DatePicker: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func datePicker() throws -> InspectableView<ViewType.DatePicker> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.DatePicker>(content)
+        return try .init(try child())
     }
 }
 
@@ -41,8 +40,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func datePicker(_ index: Int) throws -> InspectableView<ViewType.DatePicker> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.DatePicker>(content)
+        return try .init(try child(at: index))
     }
 }
 
@@ -51,7 +49,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.DatePicker {
     
     func date() throws -> Binding<Date> {
-        let selection = try? Inspector.attribute(label: "selection", value: view)
+        let selection = try? Inspector.attribute(label: "selection", value: content.view)
         typealias Result = Binding<Date>
         guard let binding = selection as? Result else {
             throw InspectionError.typeMismatch(selection, Result.self)

@@ -12,7 +12,7 @@ public extension ViewType {
 public extension EditButton {
     
     func inspect() throws -> InspectableView<ViewType.EditButton> {
-        return try InspectableView<ViewType.EditButton>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -21,8 +21,7 @@ public extension EditButton {
 public extension InspectableView where View: SingleViewContent {
     
     func editButton() throws -> InspectableView<ViewType.EditButton> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.EditButton>(content)
+        return try .init(try child())
     }
 }
 
@@ -31,8 +30,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func editButton(_ index: Int) throws -> InspectableView<ViewType.EditButton> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.EditButton>(content)
+        return try .init(try child(at: index))
     }
 }
 
@@ -41,7 +39,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.EditButton {
     
     func editMode() throws -> Binding<EditMode>? {
-        let editMode = try Inspector.attribute(label: "editMode", value: view)
+        let editMode = try Inspector.attribute(label: "editMode", value: content.view)
         typealias Env = Environment<Binding<EditMode>?>
         return (editMode as? Env)?.wrappedValue
     }

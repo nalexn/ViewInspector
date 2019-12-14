@@ -288,7 +288,7 @@ private struct TestView: View, Equatable, Inspectable {
 }
 
 private struct TestModifier: ViewModifier {
-    func body(content: Content) -> some View {
+    func body(content: Self.Content) -> some View {
         content
     }
 }

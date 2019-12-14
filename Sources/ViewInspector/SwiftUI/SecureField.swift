@@ -10,7 +10,7 @@ public extension ViewType {
 public extension SecureField {
     
     func inspect() throws -> InspectableView<ViewType.SecureField> {
-        return try InspectableView<ViewType.SecureField>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,8 +18,8 @@ public extension SecureField {
 
 extension ViewType.SecureField: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "label", value: view)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }
@@ -29,8 +29,7 @@ extension ViewType.SecureField: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func secureField() throws -> InspectableView<ViewType.SecureField> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.SecureField>(content)
+        return try .init(try child())
     }
 }
 
@@ -39,8 +38,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func secureField(_ index: Int) throws -> InspectableView<ViewType.SecureField> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.SecureField>(content)
+        return try .init(try child(at: index))
     }
 }
 
@@ -49,7 +47,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.SecureField {
     
     func callOnCommit() throws {
-        let action = try Inspector.attribute(label: "onCommit", value: view)
+        let action = try Inspector.attribute(label: "onCommit", value: content.view)
         typealias Callback = () -> Void
         if let callback = action as? Callback {
             callback()

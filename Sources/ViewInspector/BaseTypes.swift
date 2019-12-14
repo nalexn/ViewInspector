@@ -21,11 +21,11 @@ public protocol EnvironmentObjectInjection {
 }
 
 public protocol SingleViewContent {
-    static func content(view: Any, envObject: Any) throws -> Any
+    static func child(_ content: Content, envObject: Any) throws -> Content
 }
 
 public protocol MultipleViewContent {
-    static func content(view: Any, envObject: Any) throws -> LazyGroup<Any>
+    static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content>
 }
 
 public protocol KnownViewType {
@@ -37,6 +37,16 @@ public protocol CustomViewType {
 }
 
 public struct ViewType { }
+
+public struct Content {
+    let view: Any
+    let modifiers: [Any]
+    
+    internal init(_ view: Any, modifiers: [Any] = []) {
+        self.view = view
+        self.modifiers = modifiers
+    }
+}
 
 // MARK: - Error
 

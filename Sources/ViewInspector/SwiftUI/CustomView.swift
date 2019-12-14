@@ -18,14 +18,14 @@ public extension ViewType {
 public extension View where Self: Inspectable {
     
     func inspect() throws -> InspectableView<ViewType.View<Self>> {
-        return try InspectableView<ViewType.View<Self>>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
 public extension View where Self: InspectableWithEnvObject {
     
     func inspect(_ object: Object) throws -> InspectableView<ViewType.ViewWithEnvObject<Self>> {
-        return try InspectableView<ViewType.ViewWithEnvObject<Self>>(self, envObject: object)
+        return try .init(Content(self), envObject: object)
     }
 }
 
@@ -33,9 +33,9 @@ public extension View where Self: InspectableWithEnvObject {
 
 extension ViewType.View: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        guard let body = (view as? Inspectable)?.content else {
-            throw InspectionError.typeMismatch(view, T.self)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        guard let body = (content.view as? Inspectable)?.content else {
+            throw InspectionError.typeMismatch(content.view, T.self)
         }
         return try Inspector.unwrap(view: body)
     }
@@ -43,9 +43,9 @@ extension ViewType.View: SingleViewContent {
 
 extension ViewType.ViewWithEnvObject: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        guard let body = try (view as? EnvironmentObjectInjection)?.content(envObject) else {
-            throw InspectionError.typeMismatch(view, T.self)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        guard let body = try (content.view as? EnvironmentObjectInjection)?.content(envObject) else {
+            throw InspectionError.typeMismatch(content.view, T.self)
         }
         return try Inspector.unwrap(view: body)
     }
@@ -57,19 +57,19 @@ public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
-        let content = try View.content(view: view, envObject: envObject)
+        let child = try View.child(content, envObject: envObject)
         let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: content, prefix: prefix)
-        return try InspectableView<ViewType.View<T>>(content)
+        try Inspector.guardType(value: child.view, prefix: prefix)
+        return try InspectableView<ViewType.View<T>>(child)
     }
     
     func view<T>(_ type: T.Type, _ envObject: T.Object) throws ->
         InspectableView<ViewType.ViewWithEnvObject<T>>
         where T: InspectableWithEnvObject {
-        let content = try View.content(view: view, envObject: envObject)
+        let child = try View.child(content, envObject: envObject)
         let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: content, prefix: prefix)
-        return try InspectableView<ViewType.ViewWithEnvObject<T>>(content, envObject: envObject)
+        try Inspector.guardType(value: child.view, prefix: prefix)
+        return try InspectableView<ViewType.ViewWithEnvObject<T>>(child, envObject: envObject)
     }
 }
 
@@ -79,18 +79,18 @@ public extension InspectableView where View: MultipleViewContent {
     
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
-        let content = try contentView(at: index)
+        let content = try child(at: index)
         let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: content, prefix: prefix)
+            try Inspector.guardType(value: content.view, prefix: prefix)
         return try InspectableView<ViewType.View<T>>(content)
     }
     
     func view<T>(_ type: T.Type, _ envObject: T.Object, _ index: Int) throws ->
         InspectableView<ViewType.ViewWithEnvObject<T>>
         where T: InspectableWithEnvObject {
-        let content = try contentView(at: index)
+        let content = try child(at: index)
         let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: content, prefix: prefix)
+        try Inspector.guardType(value: content.view, prefix: prefix)
         return try InspectableView<ViewType.ViewWithEnvObject<T>>(content, envObject: envObject)
     }
 }
@@ -100,8 +100,8 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View: CustomViewType {
     
     func actualView() throws -> View.T {
-        guard let casted = view as? View.T else {
-            throw InspectionError.typeMismatch(view, View.T.self)
+        guard let casted = content.view as? View.T else {
+            throw InspectionError.typeMismatch(content.view, View.T.self)
         }
         return casted
     }

@@ -10,7 +10,7 @@ public extension ViewType {
 public extension Toggle {
     
     func inspect() throws -> InspectableView<ViewType.Toggle> {
-        return try InspectableView<ViewType.Toggle>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,8 +18,8 @@ public extension Toggle {
 
 extension ViewType.Toggle: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "_label", value: view)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "_label", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }
@@ -29,8 +29,7 @@ extension ViewType.Toggle: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func toggle() throws -> InspectableView<ViewType.Toggle> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.Toggle>(content)
+        return try .init(try child())
     }
 }
 
@@ -39,7 +38,6 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func toggle(_ index: Int) throws -> InspectableView<ViewType.Toggle> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.Toggle>(content)
+        return try .init(try child(at: index))
     }
 }

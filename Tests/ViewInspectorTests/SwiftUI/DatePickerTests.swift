@@ -27,7 +27,7 @@ final class DatePickerTests: XCTestCase {
     func testEnclosedView() throws {
         let sampleView = Text("Test")
         let view = DatePicker(selection: $state.selectedDate1, label: { sampleView })
-        let sut = try view.inspect().text().view as? Text
+        let sut = try view.inspect().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     

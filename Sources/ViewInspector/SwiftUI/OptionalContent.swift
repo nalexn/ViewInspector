@@ -6,26 +6,26 @@ internal extension ViewType {
 
 extension ViewType.OptionalContent: SingleViewContent {
 
-    static func content(view: Any, envObject: Any) throws -> Any {
-        guard let content = try (view as? OptionalViewContentProvider)?.content() else {
-            throw InspectionError.typeMismatch(view, OptionalViewContentProvider.self)
+    static func child(_ content: Content, envObject: Any) throws -> Content {
+        guard let child = try (content.view as? OptionalViewContentProvider)?.view() else {
+            throw InspectionError.typeMismatch(content.view, OptionalViewContentProvider.self)
         }
-        return try Inspector.unwrap(view: content)
+        return try Inspector.unwrap(view: child)
     }
 }
 
 // MARK: - Private
 
 private protocol OptionalViewContentProvider {
-    func content() throws -> Any
+    func view() throws -> Any
 }
 
 extension Optional: OptionalViewContentProvider {
     
-    func content() throws -> Any {
+    func view() throws -> Any {
         switch self {
         case let .some(view):
-            return try Inspector.unwrap(view: view)
+            return view
         case .none:
             throw InspectionError.viewNotFound(parent: Inspector.typeName(value: self as Any))
         }

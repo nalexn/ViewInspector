@@ -10,7 +10,7 @@ public extension ViewType {
 public extension EmptyView {
     
     func inspect() throws -> InspectableView<ViewType.EmptyView> {
-        return try InspectableView<ViewType.EmptyView>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -19,8 +19,7 @@ public extension EmptyView {
 public extension InspectableView where View: SingleViewContent {
     
     func emptyView() throws -> InspectableView<ViewType.EmptyView> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.EmptyView>(content)
+        return try .init(try child())
     }
 }
 
@@ -29,7 +28,6 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func emptyView(_ index: Int) throws -> InspectableView<ViewType.EmptyView> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.EmptyView>(content)
+        return try .init(try child(at: index))
     }
 }

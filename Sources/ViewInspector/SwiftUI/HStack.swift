@@ -10,7 +10,7 @@ public extension ViewType {
 public extension HStack {
     
     func inspect() throws -> InspectableView<ViewType.HStack> {
-        return try InspectableView<ViewType.HStack>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,9 +18,9 @@ public extension HStack {
 
 extension ViewType.HStack: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
-        let content = try Inspector.attribute(path: "_tree|content", value: view)
-        return try Inspector.viewsInContainer(view: content)
+    public static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content> {
+        let container = try Inspector.attribute(path: "_tree|content", value: content.view)
+        return try Inspector.viewsInContainer(view: container)
     }
 }
 
@@ -29,8 +29,7 @@ extension ViewType.HStack: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func hStack() throws -> InspectableView<ViewType.HStack> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.HStack>(content)
+        return try .init(try child())
     }
 }
 
@@ -39,7 +38,6 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func hStack(_ index: Int) throws -> InspectableView<ViewType.HStack> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.HStack>(content)
+        return try .init(try child(at: index))
     }
 }

@@ -10,7 +10,7 @@ public extension ViewType {
 public extension VStack {
     
     func inspect() throws -> InspectableView<ViewType.VStack> {
-        return try InspectableView<ViewType.VStack>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,8 +18,8 @@ public extension VStack {
 
 extension ViewType.VStack: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
-        return try ViewType.HStack.content(view: view, envObject: envObject)
+    public static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content> {
+        return try ViewType.HStack.children(content, envObject: envObject)
     }
 }
 
@@ -28,8 +28,7 @@ extension ViewType.VStack: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func vStack() throws -> InspectableView<ViewType.VStack> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.VStack>(content)
+        return try .init(try child())
     }
 }
 
@@ -38,7 +37,6 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func vStack(_ index: Int) throws -> InspectableView<ViewType.VStack> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.VStack>(content)
+        return try .init(try child(at: index))
     }
 }

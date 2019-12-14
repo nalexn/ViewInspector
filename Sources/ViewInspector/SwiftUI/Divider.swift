@@ -10,7 +10,7 @@ public extension ViewType {
 public extension Divider {
     
     func inspect() throws -> InspectableView<ViewType.Divider> {
-        return try InspectableView<ViewType.Divider>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -19,8 +19,7 @@ public extension Divider {
 public extension InspectableView where View: SingleViewContent {
     
     func divider() throws -> InspectableView<ViewType.Divider> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.Divider>(content)
+        return try .init(try child())
     }
 }
 
@@ -29,7 +28,6 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func divider(_ index: Int) throws -> InspectableView<ViewType.Divider> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.Divider>(content)
+        return try .init(try child(at: index))
     }
 }

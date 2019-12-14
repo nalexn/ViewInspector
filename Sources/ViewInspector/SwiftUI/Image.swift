@@ -10,7 +10,7 @@ public extension ViewType {
 public extension Image {
     
     func inspect() throws -> InspectableView<ViewType.Image> {
-        return try InspectableView<ViewType.Image>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -19,8 +19,7 @@ public extension Image {
 public extension InspectableView where View: SingleViewContent {
     
     func image() throws -> InspectableView<ViewType.Image> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.Image>(content)
+        return try .init(try child())
     }
 }
 
@@ -29,8 +28,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func image(_ index: Int) throws -> InspectableView<ViewType.Image> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.Image>(content)
+        return try .init(try child(at: index))
     }
 }
 
@@ -53,7 +51,7 @@ public extension InspectableView where View == ViewType.Image {
     #endif
     
     private func image() throws -> Any {
-        return try Inspector.attribute(path: "provider|base", value: unwrap(view: view))
+        return try Inspector.attribute(path: "provider|base", value: unwrap(view: content.view))
     }
     
     private func unwrap(view: Any) -> Any {

@@ -10,7 +10,7 @@ public extension ViewType {
 public extension NavigationLink {
     
     func inspect() throws -> InspectableView<ViewType.NavigationLink> {
-        return try InspectableView<ViewType.NavigationLink>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -25,16 +25,16 @@ public extension ViewType.NavigationLink {
 
 extension ViewType.NavigationLink: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "destination", value: view)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "destination", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }
 
 extension ViewType.NavigationLink.Label: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "label", value: view)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }
@@ -44,8 +44,7 @@ extension ViewType.NavigationLink.Label: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func navigationLink() throws -> InspectableView<ViewType.NavigationLink> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.NavigationLink>(content)
+        return try .init(try child())
     }
 }
 
@@ -54,8 +53,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func navigationLink(_ index: Int) throws -> InspectableView<ViewType.NavigationLink> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.NavigationLink>(content)
+        return try .init(try child(at: index))
     }
 }
 
@@ -64,7 +62,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.NavigationLink {
     
     func label() throws -> InspectableView<ViewType.NavigationLink.Label> {
-        return try InspectableView<ViewType.NavigationLink.Label>(view)
+        return try .init(content)
     }
     
     func isActive() throws -> Bool {
@@ -96,7 +94,7 @@ public extension InspectableView where View == ViewType.NavigationLink {
 
 private extension InspectableView where View == ViewType.NavigationLink {
     func internalIsActive() throws -> State<Bool> {
-        let isActive = try Inspector.attribute(label: "__internalIsActive", value: view)
+        let isActive = try Inspector.attribute(label: "__internalIsActive", value: content.view)
         typealias ExpectedType = State<Bool>
         guard let casted = isActive as? ExpectedType else {
             throw InspectionError.typeMismatch(isActive, ExpectedType.self)
@@ -105,7 +103,7 @@ private extension InspectableView where View == ViewType.NavigationLink {
     }
     
     func externalIsActive() throws -> Binding<Bool>? {
-        let isActive = try Inspector.attribute(label: "_externalIsActive", value: view)
+        let isActive = try Inspector.attribute(label: "_externalIsActive", value: content.view)
         typealias ExpectedType = Binding<Bool>
         return isActive as? ExpectedType
     }

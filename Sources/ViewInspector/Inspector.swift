@@ -56,16 +56,16 @@ extension Inspector {
     
     static var stubEnvObject: Any { EnvironmentObjectNotSet() }
     
-    static func viewsInContainer(view: Any) throws -> LazyGroup<Any> {
-        let view = try Inspector.unwrap(view: view)
-        guard Inspector.isTupleView(view) else {
-            return LazyGroup(count: 1) { _ in view }
+    static func viewsInContainer(view: Any) throws -> LazyGroup<Content> {
+        let unwrappedContainer = try Inspector.unwrap(content: Content(view))
+        guard Inspector.isTupleView(unwrappedContainer.view) else {
+            return LazyGroup(count: 1) { _ in unwrappedContainer }
         }
-        let tupleViews = try Inspector.attribute(label: "value", value: view)
+        let tupleViews = try Inspector.attribute(label: "value", value: unwrappedContainer.view)
         let childrenCount = Mirror(reflecting: tupleViews).children.count
         return LazyGroup(count: childrenCount) { index in
             let child = try Inspector.attribute(label: ".\(index)", value: tupleViews)
-            return try Inspector.unwrap(view: child)
+            return try Inspector.unwrap(content: Content(child))
         }
     }
     
@@ -73,29 +73,33 @@ extension Inspector {
         return Inspector.typeName(value: view, prefixOnly: true) == "TupleView"
     }
     
-    static func unwrap(view: Any, envObject: Any = stubEnvObject) throws -> Any {
+    static func unwrap(view: Any, envObject: Any = stubEnvObject) throws -> Content {
+        return try unwrap(content: Content(view), envObject: envObject)
+    }
+    
+    static func unwrap(content: Content, envObject: Any = stubEnvObject) throws -> Content {
         
-        switch Inspector.typeName(value: view, prefixOnly: true) {
+        switch Inspector.typeName(value: content.view, prefixOnly: true) {
         case "Tree":
-            return try ViewType.TreeView.content(view: view, envObject: envObject)
+            return try ViewType.TreeView.child(content, envObject: envObject)
         case "IDView":
-            return try ViewType.IDView.content(view: view, envObject: envObject)
+            return try ViewType.IDView.child(content, envObject: envObject)
         case "Optional":
-            return try ViewType.OptionalContent.content(view: view, envObject: envObject)
+            return try ViewType.OptionalContent.child(content, envObject: envObject)
         case "EquatableView":
-            return try ViewType.EquatableView.content(view: view, envObject: envObject)
+            return try ViewType.EquatableView.child(content, envObject: envObject)
         case "ModifiedContent":
-            return try ViewType.ModifiedContent.content(view: view, envObject: envObject)
+            return try ViewType.ModifiedContent.child(content, envObject: envObject)
         case "SubscriptionView":
-            return try ViewType.SubscriptionView.content(view: view, envObject: envObject)
+            return try ViewType.SubscriptionView.child(content, envObject: envObject)
         case "_ConditionalContent":
-            return try ViewType.ConditionalContent.content(view: view, envObject: envObject)
+            return try ViewType.ConditionalContent.child(content, envObject: envObject)
         case "EnvironmentReaderView":
-            return try ViewType.EnvironmentReaderView.content(view: view, envObject: envObject)
+            return try ViewType.EnvironmentReaderView.child(content, envObject: envObject)
         case "_DelayedPreferenceView":
-            return try ViewType.DelayedPreferenceView.content(view: view, envObject: envObject)
+            return try ViewType.DelayedPreferenceView.child(content, envObject: envObject)
         default:
-            return view
+            return content
         }
     }
     

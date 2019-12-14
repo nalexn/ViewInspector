@@ -10,7 +10,7 @@ public extension ViewType {
 public extension Button {
     
     func inspect() throws -> InspectableView<ViewType.Button> {
-        return try InspectableView<ViewType.Button>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,8 +18,8 @@ public extension Button {
 
 extension ViewType.Button: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "_label", value: view)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "_label", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }
@@ -29,8 +29,7 @@ extension ViewType.Button: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func button() throws -> InspectableView<ViewType.Button> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.Button>(content)
+        return try .init(try child())
     }
 }
 
@@ -39,8 +38,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func button(_ index: Int) throws -> InspectableView<ViewType.Button> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.Button>(content)
+        return try .init(try child(at: index))
     }
 }
 
@@ -49,7 +47,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Button {
     
     func tap() throws {
-        let action = try Inspector.attribute(label: "action", value: view)
+        let action = try Inspector.attribute(label: "action", value: content.view)
         typealias Callback = () -> Void
         if let callback = action as? Callback {
             callback()

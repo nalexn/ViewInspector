@@ -8,8 +8,8 @@ internal extension ViewType {
 
 extension ViewType.EquatableView: SingleViewContent {
     
-    static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "content", value: view)
+    static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }

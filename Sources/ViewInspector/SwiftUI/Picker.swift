@@ -10,7 +10,7 @@ public extension ViewType {
 public extension Picker {
     
     func inspect() throws -> InspectableView<ViewType.Picker> {
-        return try InspectableView<ViewType.Picker>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -25,16 +25,16 @@ public extension ViewType.Picker {
 
 extension ViewType.Picker: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
-        let content = try Inspector.attribute(label: "content", value: view)
+    public static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content> {
+        let content = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.viewsInContainer(view: content)
     }
 }
 
 extension ViewType.Picker.Label: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "label", value: view)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }
@@ -44,8 +44,7 @@ extension ViewType.Picker.Label: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func picker() throws -> InspectableView<ViewType.Picker> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.Picker>(content)
+        return try .init(try child())
     }
 }
 
@@ -54,8 +53,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func picker(_ index: Int) throws -> InspectableView<ViewType.Picker> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.Picker>(content)
+        return try .init(try child(at: index))
     }
 }
 
@@ -64,6 +62,6 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Picker {
     
     func label() throws -> InspectableView<ViewType.Picker.Label> {
-        return try InspectableView<ViewType.Picker.Label>(view)
+        return try .init(content)
     }
 }

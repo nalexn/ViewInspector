@@ -10,7 +10,7 @@ public extension ViewType {
 public extension ForEach {
     
     func inspect() throws -> InspectableView<ViewType.ForEach> {
-        return try InspectableView<ViewType.ForEach>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,9 +18,9 @@ public extension ForEach {
 
 extension ViewType.ForEach: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
-        guard let children = try (view as? ForEachContentProvider)?.content() else {
-            throw InspectionError.typeMismatch(view, ForEachContentProvider.self)
+    public static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content> {
+        guard let children = try (content.view as? ForEachContentProvider)?.views() else {
+            throw InspectionError.typeMismatch(content.view, ForEachContentProvider.self)
         }
         return LazyGroup(count: children.count) { index in
             try Inspector.unwrap(view: try children.element(at: index))
@@ -33,9 +33,7 @@ extension ViewType.ForEach: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func forEach() throws -> InspectableView<ViewType.ForEach> {
-            
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.ForEach>(content)
+        return try .init(try child())
     }
 }
 
@@ -44,20 +42,18 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func forEach(_ index: Int) throws -> InspectableView<ViewType.ForEach> {
-            
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.ForEach>(content)
+        return try .init(try child(at: index))
     }
 }
 
 // MARK: - Private
 
 private protocol ForEachContentProvider {
-    func content() throws -> LazyGroup<Any>
+    func views() throws -> LazyGroup<Any>
 }
 
 extension ForEach: ForEachContentProvider {
-    func content() throws -> LazyGroup<Any> {
+    func views() throws -> LazyGroup<Any> {
         let data = try Inspector.attribute(label: "data", value: self)
         let content = try Inspector.attribute(label: "content", value: self)
         typealias Elements = [Data.Element]

@@ -12,7 +12,7 @@ public extension ViewType {
 public extension VSplitView {
     
     func inspect() throws -> InspectableView<ViewType.VSplitView> {
-        return try InspectableView<ViewType.VSplitView>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -20,8 +20,8 @@ public extension VSplitView {
 
 extension ViewType.VSplitView: MultipleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> LazyGroup<Any> {
-        return try ViewType.HSplitView.content(view: view, envObject: envObject)
+    public static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content> {
+        return try ViewType.HSplitView.children(content, envObject: envObject)
     }
 }
 
@@ -30,8 +30,7 @@ extension ViewType.VSplitView: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func vSplitView() throws -> InspectableView<ViewType.VSplitView> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.VSplitView>(content)
+        return try .init(try child())
     }
 }
 
@@ -40,8 +39,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func vSplitView(_ index: Int) throws -> InspectableView<ViewType.VSplitView> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.VSplitView>(content)
+        return try .init(try child(at: index))
     }
 }
 

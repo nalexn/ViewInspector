@@ -8,8 +8,8 @@ internal extension ViewType {
 
 extension ViewType.ConditionalContent: SingleViewContent {
     
-    static func content(view: Any, envObject: Any) throws -> Any {
-        let storage = try Inspector.attribute(label: "storage", value: view)
+    static func child(_ content: Content, envObject: Any) throws -> Content {
+        let storage = try Inspector.attribute(label: "storage", value: content.view)
         if let trueContent = try? Inspector.attribute(label: "trueContent", value: storage) {
             return try Inspector.unwrap(view: trueContent)
         }

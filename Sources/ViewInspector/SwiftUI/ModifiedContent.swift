@@ -10,7 +10,7 @@ public extension ViewType {
 public extension ModifiedContent {
     
     func inspect() throws -> InspectableView<ViewType.ModifiedContent> {
-        return try InspectableView<ViewType.ModifiedContent>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,8 +18,8 @@ public extension ModifiedContent {
 
 extension ViewType.ModifiedContent: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        let view = try Inspector.attribute(label: "content", value: view)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        let view = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.unwrap(view: view)
     }
 }

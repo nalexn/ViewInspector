@@ -2,28 +2,57 @@ import SwiftUI
 
 public struct InspectableView<View> where View: KnownViewType {
     
-    internal let view: Any
+    internal let content: Content
     internal let envObject: Any
     
-    internal init(_ view: Any, envObject: Any = stub) throws {
-        try Inspector.guardType(value: view, prefix: View.typePrefix)
-        if let inspectable = view as? Inspectable {
+    internal init(_ content: Content, envObject: Any = stub) throws {
+        try Inspector.guardType(value: content.view, prefix: View.typePrefix)
+        if let inspectable = content.view as? Inspectable {
             try Inspector.guardNoEnvObjects(inspectableView: inspectable)
         }
-        self.view = view
+        self.content = content
         self.envObject = envObject
     }
     
     private static var stub: Any { Inspector.stubEnvObject }
 }
 
+internal extension InspectableView where View: SingleViewContent {
+    func child() throws -> Content {
+        return try View.child(content, envObject: envObject)
+    }
+}
+
 internal extension InspectableView where View: MultipleViewContent {
     
-    func contentView(at index: Int) throws -> Any {
-        let viewes = try View.content(view: view, envObject: envObject)
+    func child(at index: Int) throws -> Content {
+        let viewes = try View.children(content, envObject: envObject)
         guard index >= 0 && index < viewes.count else {
             throw InspectionError.viewIndexOutOfBounds(
                 index: index, count: viewes.count) }
         return try viewes.element(at: index)
+    }
+}
+
+extension View {
+    func inspect() throws -> InspectableView<ViewType.AnyView> {
+        let unwrapped = try Inspector.unwrap(view: self)
+        if String(describing: unwrapped.view) == String(describing: self),
+            !(self is Inspectable) && !(self is EnvironmentObjectInjection) {
+            throw InspectionError.notSupported("View should conform to `Inspectable` or `InspectableWithEnvObject`.")
+        }
+        return try AnyView(self).inspect()
+    }
+    
+    func inspect<T>(_ view: T.Type) throws -> InspectableView<ViewType.View<T>>
+        where T: Inspectable {
+        let unwrapped = try Inspector.unwrap(view: self)
+        return try InspectableView<ViewType.View<T>>(unwrapped)
+    }
+    
+    func inspect<T>(_ view: T.Type, _ object: T.Object) throws -> InspectableView<ViewType.ViewWithEnvObject<T>>
+        where T: InspectableWithEnvObject {
+        let unwrapped = try Inspector.unwrap(view: self)
+        return try InspectableView<ViewType.ViewWithEnvObject<T>>(unwrapped, envObject: object)
     }
 }

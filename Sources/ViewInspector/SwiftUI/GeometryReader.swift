@@ -10,7 +10,7 @@ public extension ViewType {
 public extension GeometryReader {
     
     func inspect() throws -> InspectableView<ViewType.GeometryReader> {
-        return try InspectableView<ViewType.GeometryReader>(self)
+        return try .init(ViewInspector.Content(self))
     }
 }
 
@@ -18,11 +18,11 @@ public extension GeometryReader {
 
 extension ViewType.GeometryReader: SingleViewContent {
     
-    public static func content(view: Any, envObject: Any) throws -> Any {
-        guard let children = try (view as? GeometryReaderContentProvider)?.content() else {
-            throw InspectionError.typeMismatch(view, GeometryReaderContentProvider.self)
+    public static func child(_ content: Content, envObject: Any) throws -> Content {
+        guard let child = try (content.view as? GeometryReaderContentProvider)?.view() else {
+            throw InspectionError.typeMismatch(content.view, GeometryReaderContentProvider.self)
         }
-        return try Inspector.unwrap(view: children)
+        return try Inspector.unwrap(view: child)
     }
 }
 
@@ -31,8 +31,7 @@ extension ViewType.GeometryReader: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func geometryReader() throws -> InspectableView<ViewType.GeometryReader> {
-        let content = try View.content(view: view, envObject: envObject)
-        return try InspectableView<ViewType.GeometryReader>(content)
+        return try .init(try child())
     }
 }
 
@@ -41,19 +40,18 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func geometryReader(_ index: Int) throws -> InspectableView<ViewType.GeometryReader> {
-        let content = try contentView(at: index)
-        return try InspectableView<ViewType.GeometryReader>(content)
+        return try .init(try child(at: index))
     }
 }
 
 // MARK: - Private
 
 private protocol GeometryReaderContentProvider {
-    func content() throws -> Any
+    func view() throws -> Any
 }
 
 extension GeometryReader: GeometryReaderContentProvider {
-    func content() throws -> Any {
+    func view() throws -> Any {
         let content = try Inspector.attribute(label: "content", value: self)
         typealias Builder = (GeometryProxy) -> Content
         guard let builder = content as? Builder
