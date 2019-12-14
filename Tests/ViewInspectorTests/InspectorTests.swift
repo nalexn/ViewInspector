@@ -98,6 +98,19 @@ final class InspectorTests: XCTestCase {
     }
 }
 
+final class InspectableViewModifiersTests: XCTestCase {
+    
+    func testModifierIsNotPresent() throws {
+        let sut = EmptyView().padding()
+        XCTAssertThrowsError(try sut.inspect().emptyView().callOnAppear())
+    }
+    
+    func testModifierAttributeIsNotPresent() throws {
+        let sut = EmptyView().onDisappear().padding()
+        XCTAssertThrowsError(try sut.inspect().emptyView().callOnAppear())
+    }
+}
+
 private struct Test1 {
     var value1: String
     var value2: Test2
