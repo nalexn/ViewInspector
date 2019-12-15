@@ -87,3 +87,28 @@ internal extension InspectableView {
     }
 }
 #endif
+
+// MARK: - ViewHover
+
+public extension InspectableView {
+    
+    /* Not supported
+    #if os(macOS)
+    func callOnHover(_ inside: Bool = true) throws {
+        let callback = try modifierAttribute(
+            modifierName: "_HoverRegionModifier", path: "modifier|callback",
+            type: ((Bool) -> Void).self, call: "onHover")
+        callback(inside)
+    }
+    #endif
+    */
+    
+    #if !os(iOS)
+    func callFocusable() throws {
+        let callback = try modifierAttribute(
+            modifierName: "_FocusableModifier", path: "modifier|onFocusChange",
+            type: ((Bool) -> Void).self, call: "focusable")
+        callback(true)
+    }
+    #endif
+}

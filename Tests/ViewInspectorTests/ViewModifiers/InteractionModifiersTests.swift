@@ -158,12 +158,35 @@ final class ViewHoverTests: XCTestCase {
         let sut = EmptyView().onHover { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+
+    /* Not supported
+    func testOnHoverInspection() throws {
+        let exp = XCTestExpectation(description: "onHover")
+        let sut = EmptyView().onHover { value in
+            XCTAssertTrue(value)
+            exp.fulfill()
+        }
+        try sut.inspect().emptyView().callOnHover()
+        wait(for: [exp], timeout: 0.1)
+    }
+    */
     #endif
     
     #if !os(iOS)
     func testFocusable() throws {
         let sut = EmptyView().focusable(true) { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testFocusableInspection() throws {
+        let exp = XCTestExpectation(description: "focusable")
+        let sut = EmptyView().focusable(true) { value in
+            // value is always false
+            // XCTAssertTrue(value)
+            exp.fulfill()
+        }
+        try sut.inspect().emptyView().callFocusable()
+        wait(for: [exp], timeout: 0.1)
     }
     #endif
 }
