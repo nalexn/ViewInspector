@@ -85,26 +85,6 @@ final class ViewAligningTests: XCTestCase {
     }
 }
 
-// MARK: - ViewPaddingTests
-
-final class ViewPaddingTests: XCTestCase {
-    
-    func testPadding() throws {
-        let sut = EmptyView().padding(5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testPaddingEdgeInsets() throws {
-        let sut = EmptyView().padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testPaddingEdgeSet() throws {
-        let sut = EmptyView().padding([.top], 5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
-
 // MARK: - ViewLayeringTests
 
 final class ViewLayeringTests: XCTestCase {
