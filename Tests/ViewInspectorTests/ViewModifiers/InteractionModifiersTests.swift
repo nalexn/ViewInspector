@@ -72,6 +72,15 @@ final class ViewGesturesTests: XCTestCase {
         let sut = EmptyView().transaction { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testTransactionInspection() throws {
+        let exp = XCTestExpectation(description: "transaction")
+        let sut = EmptyView().transaction { _ in
+            exp.fulfill()
+        }
+        try sut.inspect().emptyView().callTransaction()
+        wait(for: [exp], timeout: 0.1)
+    }
 }
 
 // MARK: - ViewEventsTests
@@ -113,15 +122,47 @@ final class ViewEventsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testOnCutCommandInspection() throws {
+        let exp = XCTestExpectation(description: "onCutCommand")
+        let sut = EmptyView().onCutCommand {
+            exp.fulfill()
+            return []
+        }.onCopyCommand { [] }
+        try sut.inspect().emptyView().callOnCutCommand()
+        wait(for: [exp], timeout: 0.1)
+    }
+    
     func testOnCopyCommand() throws {
         let sut = EmptyView().onCopyCommand { [] }
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testOnCopyCommandInspection() throws {
+        let exp = XCTestExpectation(description: "onCopyCommand")
+        let sut = EmptyView().onCopyCommand {
+            exp.fulfill()
+            return []
+        }.onCutCommand { [] }
+        try sut.inspect().emptyView().callOnCopyCommand()
+        wait(for: [exp], timeout: 0.1)
     }
     
     func testOnPasteCommand() throws {
         let sut = EmptyView().onPasteCommand(of: []) { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    /* Not Supported:
+     
+    func testOnPasteCommandInspection() throws {
+        let exp = XCTestExpectation(description: "onPasteCommand")
+        let sut = EmptyView().onPasteCommand(of: []) { _ in
+            exp.fulfill()
+        }
+        try sut.inspect().emptyView().callOnPasteCommand()
+        wait(for: [exp], timeout: 0.1)
+    }
+    */
     
     func testOnPasteCommandPayload() throws {
         let sut = EmptyView()
@@ -133,6 +174,15 @@ final class ViewEventsTests: XCTestCase {
         let sut = EmptyView().onDeleteCommand { }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testOnDeleteCommandInspection() throws {
+        let exp = XCTestExpectation(description: "onDeleteCommand")
+        let sut = EmptyView().onDeleteCommand {
+            exp.fulfill()
+        }.onCutCommand { [] }
+        try sut.inspect().emptyView().callOnDeleteCommand()
+        wait(for: [exp], timeout: 0.1)
+    }
     #endif
     
     #if os(tvOS) || os(macOS)
@@ -141,9 +191,36 @@ final class ViewEventsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testOnMoveCommandInspection() throws {
+        let exp = XCTestExpectation(description: "onMoveCommand")
+        let directions: [MoveCommandDirection] = [.left, .right, .up, .down]
+        var moves: [MoveCommandDirection] = []
+        let sut = EmptyView().onMoveCommand { move in
+            moves.append(move)
+            if moves.count == directions.count {
+                XCTAssertEqual(moves, directions)
+                exp.fulfill()
+            }
+        }
+        let view = try sut.inspect().emptyView()
+        try directions.forEach {
+            try view.callOnMoveCommand($0)
+        }
+        wait(for: [exp], timeout: 0.1)
+    }
+    
     func testOnExitCommand() throws {
         let sut = EmptyView().onExitCommand { }
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testOnExitCommandInspection() throws {
+        let exp = XCTestExpectation(description: "onExitCommand")
+        let sut = EmptyView().onExitCommand {
+            exp.fulfill()
+        }
+        try sut.inspect().emptyView().callOnExitCommand()
+        wait(for: [exp], timeout: 0.1)
     }
     #endif
     
@@ -158,6 +235,15 @@ final class ViewEventsTests: XCTestCase {
     func testOnCommand() throws {
         let sut = EmptyView().onCommand(#selector(setUp)) { }
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testOnCommandInspection() throws {
+        let exp = XCTestExpectation(description: "onCommand")
+        let sut = EmptyView().onCommand(#selector(setUp)) {
+            exp.fulfill()
+        }
+        try sut.inspect().emptyView().callOnCommand(#selector(setUp))
+        wait(for: [exp], timeout: 0.1)
     }
     #endif
     
