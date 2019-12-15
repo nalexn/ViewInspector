@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Padding
+// MARK: - ViewPadding
 
 public extension InspectableView {
     

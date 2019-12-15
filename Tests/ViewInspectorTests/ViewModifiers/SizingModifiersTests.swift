@@ -2,6 +2,39 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+// MARK: - ViewSizingTests
+
+final class ViewSizingTests: XCTestCase {
+    
+    func testFrameWidthHeightAlignment() throws {
+        let sut = EmptyView().frame(width: 5, height: 5, alignment:
+            Alignment(horizontal: .center, vertical: .center))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testFrameMinIdealMax() throws {
+        let sut = EmptyView().frame(minWidth: 5, idealWidth: 5, maxWidth: 5,
+                                    minHeight: 5, idealHeight: 5, maxHeight: 5,
+                                    alignment: Alignment(horizontal: .center, vertical: .center))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testFixedSize() throws {
+        let sut = EmptyView().fixedSize()
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testFixedSizeHorizontalVertical() throws {
+        let sut = EmptyView().fixedSize(horizontal: true, vertical: false)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testLayoutPriority() throws {
+        let sut = EmptyView().layoutPriority(5)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}
+
 // MARK: - ViewPaddingTests
 
 final class ViewPaddingTests: XCTestCase {
