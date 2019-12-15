@@ -12,11 +12,32 @@ final class ViewSizingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testFrameWidthHeightAlignmentInspection() throws {
+        let frame = FixedFrameLayout(width: 5, height: 6, alignment:
+            Alignment(horizontal: .center, vertical: .center))
+        let sut = try EmptyView().frame(width: frame.width, height: frame.height,
+                                        alignment: frame.alignment)
+            .inspect().emptyView().fixedFrame()
+        XCTAssertEqual(sut, frame)
+    }
+    
     func testFrameMinIdealMax() throws {
         let sut = EmptyView().frame(minWidth: 5, idealWidth: 5, maxWidth: 5,
                                     minHeight: 5, idealHeight: 5, maxHeight: 5,
-                                    alignment: Alignment(horizontal: .center, vertical: .center))
+                                    alignment: .topTrailing)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testFrameMinIdealMaxInspection() throws {
+        let frame = FlexFrameLayout(minWidth: 1, idealWidth: 2, maxWidth: 3,
+                                    minHeight: 4, idealHeight: 5, maxHeight: 6,
+                                    alignment: .bottomLeading)
+        let sut = try EmptyView().frame(
+            minWidth: frame.minWidth, idealWidth: frame.idealWidth, maxWidth: frame.maxWidth,
+            minHeight: frame.minHeight, idealHeight: frame.idealHeight, maxHeight: frame.maxHeight,
+            alignment: frame.alignment)
+            .inspect().emptyView().flexFrame()
+        XCTAssertEqual(sut, frame)
     }
     
     func testFixedSize() throws {
