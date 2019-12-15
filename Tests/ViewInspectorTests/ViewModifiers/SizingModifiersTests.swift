@@ -45,14 +45,33 @@ final class ViewSizingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testFixedSizeInspection() throws {
+        let sut = try EmptyView().fixedSize().inspect().emptyView().fixedSize()
+        XCTAssertEqual(sut, FixedSize(horizontal: true, vertical: true))
+    }
+    
     func testFixedSizeHorizontalVertical() throws {
         let sut = EmptyView().fixedSize(horizontal: true, vertical: false)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testFixedSizeHorizontalVerticalInspection() throws {
+        let fixed = FixedSize(horizontal: true, vertical: false)
+        let sut = try EmptyView().fixedSize(horizontal: fixed.horizontal, vertical: fixed.vertical)
+            .inspect().emptyView().fixedSize()
+        XCTAssertEqual(sut, fixed)
+    }
+    
     func testLayoutPriority() throws {
         let sut = EmptyView().layoutPriority(5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testLayoutPriorityInspection() throws {
+        let priority: Double = 10
+        let sut = try EmptyView().layoutPriority(priority)
+            .inspect().emptyView().layoutPriority()
+        XCTAssertEqual(sut, priority)
     }
 }
 

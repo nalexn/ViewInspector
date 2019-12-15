@@ -12,6 +12,10 @@ public struct FlexFrameLayout: Equatable {
     public let alignment: Alignment
 }
 
+public struct FixedSize: Equatable {
+    public let horizontal: Bool, vertical: Bool
+}
+
 public extension InspectableView {
     func fixedFrame() throws -> FixedFrameLayout {
         let width = try modifierAttribute(
@@ -41,6 +45,22 @@ public extension InspectableView {
         return FlexFrameLayout(minWidth: floats[0], idealWidth: floats[1], maxWidth: floats[2],
                                minHeight: floats[3], idealHeight: floats[4], maxHeight: floats[5],
                                alignment: alignment)
+    }
+    
+    func fixedSize() throws -> FixedSize {
+        let horizontal = try modifierAttribute(
+            modifierName: "_FixedSizeLayout", path: "modifier|horizontal",
+            type: Bool.self, call: "fixedSize")
+        let vertical = try modifierAttribute(
+            modifierName: "_FixedSizeLayout", path: "modifier|vertical",
+            type: Bool.self, call: "fixedSize")
+        return FixedSize(horizontal: horizontal, vertical: vertical)
+    }
+    
+    func layoutPriority() throws -> Double {
+        return try modifierAttribute(
+            modifierName: "LayoutPriorityTraitKey", path: "modifier|value",
+            type: Double.self, call: "layoutPriority")
     }
 }
 
