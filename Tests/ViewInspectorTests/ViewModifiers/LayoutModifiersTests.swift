@@ -222,23 +222,3 @@ final class ViewTransformingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
-
-// MARK: - ViewAnimationsTests
-
-final class ViewAnimationsTests: XCTestCase {
-    
-    func testAnimation() throws {
-        let sut = EmptyView().animation(.easeInOut)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testAnimationValue() throws {
-        let sut = EmptyView().animation(.easeInOut, value: 5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testTransition() throws {
-        let sut = EmptyView().transition(.slide)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
