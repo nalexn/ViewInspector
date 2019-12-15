@@ -75,7 +75,7 @@ internal extension InspectableView {
                                  type: Type.Type, call: String) throws -> Type {
         let foundModifier = content.modifiers.lazy
             .compactMap { $0 as? ModifierNameProvider }
-            .first(where: modifierLookup)
+            .last(where: modifierLookup)
         guard let modifier = foundModifier,
             let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
