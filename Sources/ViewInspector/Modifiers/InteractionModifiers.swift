@@ -74,6 +74,7 @@ internal extension MoveCommandDirection {
 }
 #endif
 
+#if os(tvOS) || os(macOS)
 internal extension InspectableView {
     func onCommandModifier<Type>(_ selector: String, path: String = "modifier|action|action",
                                  type: Type.Type, call: String) throws -> Type {
@@ -85,3 +86,4 @@ internal extension InspectableView {
         }, path: path, type: type, call: call)
     }
 }
+#endif
