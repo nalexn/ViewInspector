@@ -101,14 +101,34 @@ final class ViewLayeringTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testOverlayInspection() throws {
+        let text = "Abc"
+        let sut = try EmptyView().overlay(Text(text), alignment: .center)
+            .inspect().emptyView().overlay().text().string()
+        XCTAssertEqual(sut, text)
+    }
+    
     func testBackground() throws {
         let sut = EmptyView().background(Text(""), alignment: .center)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testBackgroundInspection() throws {
+        let text = "Abc"
+        let sut = try EmptyView().background(Text(text), alignment: .center)
+            .inspect().emptyView().background().text().string()
+        XCTAssertEqual(sut, text)
+    }
+    
     func testZIndex() throws {
         let sut = EmptyView().zIndex(5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testZIndexInspection() throws {
+        let index: Double = 6
+        let sut = try EmptyView().zIndex(index).inspect().emptyView().zIndex()
+        XCTAssertEqual(sut, index)
     }
 }
 

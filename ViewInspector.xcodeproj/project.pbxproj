@@ -118,6 +118,7 @@
 		F6ECF6D023A67D11000FC591 /* SizingModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECF6CF23A67D11000FC591 /* SizingModifiersTests.swift */; };
 		F6ECF6D223A680DA000FC591 /* TransformingModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECF6D123A680DA000FC591 /* TransformingModifiersTests.swift */; };
 		F6ECF6D423A68BA4000FC591 /* PositioningModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECF6D323A68BA4000FC591 /* PositioningModifiers.swift */; };
+		F6ECF6D623A695FB000FC591 /* ClassifiedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECF6D523A695FB000FC591 /* ClassifiedView.swift */; };
 		F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */; };
 		F6F08E6623A29FE4001F04DF /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */; };
 		F6F08E6B23A2A849001F04DF /* ConditionalContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */; };
@@ -243,6 +244,7 @@
 		F6ECF6CF23A67D11000FC591 /* SizingModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizingModifiersTests.swift; sourceTree = "<group>"; };
 		F6ECF6D123A680DA000FC591 /* TransformingModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformingModifiersTests.swift; sourceTree = "<group>"; };
 		F6ECF6D323A68BA4000FC591 /* PositioningModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositioningModifiers.swift; sourceTree = "<group>"; };
+		F6ECF6D523A695FB000FC591 /* ClassifiedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassifiedView.swift; sourceTree = "<group>"; };
 		F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewTests.swift; sourceTree = "<group>"; };
 		F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConditionalContentTests.swift; path = Sources/ViewInspector/SwiftUI/ConditionalContentTests.swift; sourceTree = SOURCE_ROOT; };
@@ -300,6 +302,7 @@
 			children = (
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
+				F6ECF6D523A695FB000FC591 /* ClassifiedView.swift */,
 				F64057EC238DB1530029D9BA /* ConditionalContent.swift */,
 				F60EEBBE2382EED0007DB53A /* CustomView.swift */,
 				F60EEBBF2382EED0007DB53A /* DatePicker.swift */,
@@ -572,6 +575,7 @@
 				F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */,
 				F6DFD88423830E9F0028E84D /* List.swift in Sources */,
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,
+				F6ECF6D623A695FB000FC591 /* ClassifiedView.swift in Sources */,
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
