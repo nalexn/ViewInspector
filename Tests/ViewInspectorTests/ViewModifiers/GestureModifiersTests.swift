@@ -78,8 +78,27 @@ final class ViewHitTestingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testAllowsHitTestingInspection() throws {
+        let sut = try EmptyView().allowsHitTesting(false)
+            .inspect().emptyView().allowsHitTesting()
+        XCTAssertFalse(sut)
+    }
+    
     func testContentShape() throws {
         let sut = EmptyView().contentShape(Capsule(), eoFill: true)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testContentShapeInspection() throws {
+        let box = ContentShape(shape: Capsule(), eoFill: true)
+        let sut = try EmptyView().contentShape(box.shape, eoFill: box.eoFill)
+            .inspect().emptyView().contentShape(Capsule.self)
+        XCTAssertEqual(sut, box)
+    }
+    
+    func testContentShapeInspectionError() throws {
+        let box = ContentShape(shape: Capsule(), eoFill: true)
+        let sut = try EmptyView().contentShape(box.shape, eoFill: box.eoFill).inspect().emptyView()
+        XCTAssertThrowsError(try sut.contentShape(Circle.self))
     }
 }
