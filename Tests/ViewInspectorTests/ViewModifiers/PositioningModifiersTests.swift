@@ -11,9 +11,22 @@ final class ViewPositioningTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testPositionInspection() throws {
+        let point = CGPoint(x: 5, y: 6)
+        let sut = try EmptyView().position(point).inspect().emptyView().position()
+        XCTAssertEqual(sut, point)
+    }
+    
     func testPositionXY() throws {
         let sut = EmptyView().position(x: 5, y: 5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testPositionXYInspection() throws {
+        let point = CGPoint(x: 5, y: 6)
+        let sut = try EmptyView().position(x: point.x, y: point.y)
+            .inspect().emptyView().position()
+        XCTAssertEqual(sut, point)
     }
     
     func testOffset() throws {
@@ -21,9 +34,22 @@ final class ViewPositioningTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testOffsetInspection() throws {
+        let size = CGSize(width: 5, height: 6)
+        let sut = try EmptyView().offset(size).inspect().emptyView().offset()
+        XCTAssertEqual(sut, size)
+    }
+    
     func testOffsetXY() throws {
         let sut = EmptyView().offset(x: 5, y: 5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testOffsetXYInspection() throws {
+        let size = CGSize(width: 5, height: 6)
+        let sut = try EmptyView().offset(x: size.width, y: size.height)
+            .inspect().emptyView().offset()
+        XCTAssertEqual(sut, size)
     }
     
     func testEdgesIgnoringSafeArea() throws {
@@ -31,9 +57,23 @@ final class ViewPositioningTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testEdgesIgnoringSafeAreaInspection() throws {
+        let edges: Edge.Set = [.leading]
+        let sut = try EmptyView().edgesIgnoringSafeArea(edges)
+            .inspect().emptyView().edgesIgnoringSafeArea()
+        XCTAssertEqual(sut, edges)
+    }
+    
     func testCoordinateSpace() throws {
         let sut = EmptyView().coordinateSpace(name: "")
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testCoordinateSpaceInspection() throws {
+        let name = "abc"
+        let sut = try EmptyView().coordinateSpace(name: name)
+            .inspect().emptyView().coordinateSpaceName()
+        XCTAssertEqual(sut, name)
     }
 }
 
