@@ -131,28 +131,3 @@ final class ViewLayeringTests: XCTestCase {
         XCTAssertEqual(sut, index)
     }
 }
-
-// MARK: - ViewMaskingTests
-
-final class ViewMaskingTests: XCTestCase {
-    
-    func testClipped() throws {
-        let sut = EmptyView().clipped(antialiased: false)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testClipShape() throws {
-        let sut = EmptyView().clipShape(Capsule(), style: FillStyle())
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testCornerRadius() throws {
-        let sut = EmptyView().cornerRadius(5, antialiased: false)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testMask() throws {
-        let sut = EmptyView().mask(Text(""))
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
