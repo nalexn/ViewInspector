@@ -64,6 +64,8 @@
 		F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF52382F004007DB53A /* AnyViewTests.swift */; };
 		F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */; };
 		F639DBBF23A6CF03003A6FED /* AccessibilityModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBBE23A6CF03003A6FED /* AccessibilityModifiers.swift */; };
+		F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBC223A7DDA2003A6FED /* TouchBar.swift */; };
+		F639DBC523A7DFA6003A6FED /* TouchBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBC423A7DFA6003A6FED /* TouchBarTests.swift */; };
 		F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057EC238DB1530029D9BA /* ConditionalContent.swift */; };
 		F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057EE238DBA800029D9BA /* EmptyView.swift */; };
 		F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057F0238DBB120029D9BA /* EmptyViewTests.swift */; };
@@ -193,6 +195,8 @@
 		F60EEBF52382F004007DB53A /* AnyViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewTests.swift; sourceTree = "<group>"; };
 		F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewModifiers.swift; sourceTree = "<group>"; };
 		F639DBBE23A6CF03003A6FED /* AccessibilityModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityModifiers.swift; sourceTree = "<group>"; };
+		F639DBC223A7DDA2003A6FED /* TouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBar.swift; sourceTree = "<group>"; };
+		F639DBC423A7DFA6003A6FED /* TouchBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarTests.swift; sourceTree = "<group>"; };
 		F64057EC238DB1530029D9BA /* ConditionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalContent.swift; sourceTree = "<group>"; };
 		F64057EE238DBA800029D9BA /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		F64057F0238DBB120029D9BA /* EmptyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewTests.swift; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
 				F6D933BE2385F5CB00358E0E /* TextField.swift */,
 				F6D933BA2385F42300358E0E /* Toggle.swift */,
+				F639DBC223A7DDA2003A6FED /* TouchBar.swift */,
 				F64A2C6723A3FD3A00A4853A /* TreeView.swift */,
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
@@ -410,6 +415,7 @@
 				F60EEBE82382F004007DB53A /* TextTests.swift */,
 				F6D933C02385F62500358E0E /* TextFieldTests.swift */,
 				F6D933BC2385F45A00358E0E /* ToggleTests.swift */,
+				F639DBC423A7DFA6003A6FED /* TouchBarTests.swift */,
 				F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */,
 				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
@@ -590,6 +596,7 @@
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
 				F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */,
 				F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */,
+				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				F6ECF6CE23A67C64000FC591 /* SizingModifiers.swift in Sources */,
 				F6D933C32385FA8B00358E0E /* SecureField.swift in Sources */,
@@ -671,6 +678,7 @@
 				F64A2C6623A3F0A900A4853A /* ConfigurationModifiersTests.swift in Sources */,
 				F6ECF6D023A67D11000FC591 /* SizingModifiersTests.swift in Sources */,
 				F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */,
+				F639DBC523A7DFA6003A6FED /* TouchBarTests.swift in Sources */,
 				F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */,
 				F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */,
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,

@@ -95,3 +95,17 @@ public struct LazyGroup<T> {
         try access(index)
     }
 }
+
+// MARK: - BinaryEquatable
+
+public protocol BinaryEquatable: Equatable { }
+
+extension BinaryEquatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        withUnsafeBytes(of: lhs) { lhsBytes -> Bool in
+            withUnsafeBytes(of: rhs) { rhsBytes -> Bool in
+                lhsBytes.elementsEqual(rhsBytes)
+            }
+        }
+    }
+}

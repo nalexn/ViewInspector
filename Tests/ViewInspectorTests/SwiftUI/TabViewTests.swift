@@ -2,10 +2,9 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(watchOS)
-
 final class TabViewTests: XCTestCase {
     
+    #if !os(watchOS)
     func testEnclosedView() throws {
         let view = TabView {
             Text("First View").tabItem({ Text("First") }).tag(0)
@@ -42,6 +41,36 @@ final class TabViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().tabView(0))
         XCTAssertNoThrow(try view.inspect().tabView(1))
     }
+    #endif
 }
 
-#endif
+// MARK: - View Modifiers
+
+final class GlobalModifiersForTabView: XCTestCase {
+    
+    func testTag() throws {
+        let sut = EmptyView().tag(0)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTagInspection() throws {
+        let tag = "abc"
+        let sut = try EmptyView().tag(tag).inspect().emptyView().tag(String.self)
+        XCTAssertEqual(sut, tag)
+    }
+    
+    #if !os(watchOS)
+    func testTabItem() throws {
+        let sut = EmptyView().tabItem { Text("") }
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTabItemInspection() throws {
+        let string = "abc"
+        let tabItem = try EmptyView().tabItem { Text(string) }
+            .inspect().emptyView().tabItem()
+        let sut = try tabItem.text().string()
+        XCTAssertEqual(sut, string)
+    }
+    #endif
+}

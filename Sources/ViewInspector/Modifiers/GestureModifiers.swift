@@ -47,9 +47,7 @@ public extension InspectableView {
             modifierName: "_ContentShapeModifier", path: "modifier|shape",
             type: Any.self, call: "contentShape")
         guard let casted = shapeValue as? S else {
-            let factual = Inspector.typeName(value: shapeValue)
-            let expected = Inspector.typeName(type: S.self)
-            throw InspectionError.typeMismatch(factual: factual, expected: expected)
+            throw InspectionError.typeMismatch(shapeValue, S.self)
         }
         let eoFill = try modifierAttribute(
             modifierName: "_ContentShapeModifier", path: "modifier|eoFill",

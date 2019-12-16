@@ -102,12 +102,4 @@ final class ViewPreviewTests: XCTestCase {
     }
 }
 
-extension PreviewLayout: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        return withUnsafeBytes(of: lhs) { lhsBytes -> Bool in
-            withUnsafeBytes(of: rhs) { rhsBytes -> Bool in
-                return lhsBytes.elementsEqual(rhsBytes)
-            }
-        }
-    }
-}
+extension PreviewLayout: BinaryEquatable { }

@@ -161,11 +161,6 @@ final class ViewListConfigurationTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif
-    
-    func testTag() throws {
-        let sut = EmptyView().tag(0)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
 }
 
 // MARK: - ViewNavigationConfigurationTests
@@ -212,16 +207,6 @@ final class ViewNavigationConfigurationTests: XCTestCase {
     #endif
 }
 
-// MARK: - ViewTabConfigurationTests
-
-final class ViewTabConfigurationTests: XCTestCase {
-    
-    func testTabItem() throws {
-        let sut = EmptyView().tabItem { Text("") }
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
-
 // MARK: - ViewContextMenuTests
 
 final class ViewContextMenuTests: XCTestCase {
@@ -229,33 +214,6 @@ final class ViewContextMenuTests: XCTestCase {
     #if !os(tvOS)
     func testContextMenu() throws {
         let sut = EmptyView().contextMenu(ContextMenu(menuItems: { Text("") }))
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-}
-
-// MARK: - ViewTouchBarTests
-
-final class ViewTouchBarTests: XCTestCase {
-    
-    #if os(macOS)
-    func testTouchBar() throws {
-        let sut = EmptyView().touchBar(TouchBar(content: { Text("") }))
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testTouchBarItemPrincipal() throws {
-        let sut = EmptyView().touchBarItemPrincipal(true)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testTouchBarCustomizationLabel() throws {
-        let sut = EmptyView().touchBarCustomizationLabel(Text(""))
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testTouchBarItemPresence() throws {
-        let sut = EmptyView().touchBarItemPresence(.required(""))
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif

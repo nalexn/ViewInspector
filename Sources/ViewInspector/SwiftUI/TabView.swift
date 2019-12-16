@@ -45,3 +45,24 @@ public extension InspectableView where View: MultipleViewContent {
 }
 
 #endif
+
+// MARK: - Global View Modifiers
+
+public extension InspectableView {
+    
+    func tag<T>(_ type: T.Type) throws -> T {
+        let name = String(describing: type)
+        return try modifierAttribute(
+            modifierName: "TagValueTraitKey<\(name)>",
+            path: "modifier|value|tagged", type: T.self, call: "tag(\(name))")
+    }
+    
+    #if !os(watchOS)
+    func tabItem() throws -> InspectableView<ViewType.ClassifiedView> {
+        let rootView = try modifierAttribute(
+            modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
+            type: Any.self, call: "tabItem")
+        return try .init(Content(rootView))
+    }
+    #endif
+}
