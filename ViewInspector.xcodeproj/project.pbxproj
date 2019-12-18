@@ -75,6 +75,7 @@
 		F64A2C6823A3FD3A00A4853A /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6723A3FD3A00A4853A /* TreeView.swift */; };
 		F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */; };
 		F6684BEE23AA4CF400DECCB3 /* MenuButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */; };
+		F6684BF023AA504500DECCB3 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BEF23AA504500DECCB3 /* MenuButton.swift */; };
 		F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */; };
 		F68108A623A5835E00B32145 /* EventsModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A523A5835E00B32145 /* EventsModifiers.swift */; };
 		F68108A823A667A400B32145 /* GestureModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A723A667A300B32145 /* GestureModifiers.swift */; };
@@ -207,6 +208,7 @@
 		F64A2C6723A3FD3A00A4853A /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewTests.swift; sourceTree = "<group>"; };
 		F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonTests.swift; sourceTree = "<group>"; };
+		F6684BEF23AA504500DECCB3 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositioningModifiersTests.swift; sourceTree = "<group>"; };
 		F68108A523A5835E00B32145 /* EventsModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModifiers.swift; sourceTree = "<group>"; };
 		F68108A723A667A300B32145 /* GestureModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifiers.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				F609EFC023A432AA00B9256A /* IDView.swift */,
 				F60EEBC02382EED0007DB53A /* Image.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
+				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
 				F69C91C92383187D00515A91 /* ModifiedContent.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
@@ -602,6 +605,7 @@
 				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				F6ECF6CE23A67C64000FC591 /* SizingModifiers.swift in Sources */,
+				F6684BF023AA504500DECCB3 /* MenuButton.swift in Sources */,
 				F6D933C32385FA8B00358E0E /* SecureField.swift in Sources */,
 				79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */,
 				F60EEBD82382EED0007DB53A /* Group.swift in Sources */,
