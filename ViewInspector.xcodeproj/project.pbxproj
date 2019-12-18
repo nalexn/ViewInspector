@@ -80,6 +80,8 @@
 		F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */; };
 		F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF523AA587700DECCB3 /* AngularGradient.swift */; };
 		F6684BF823AA58F200DECCB3 /* AngularGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */; };
+		F6684BFA23AA809300DECCB3 /* LinearGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF923AA809300DECCB3 /* LinearGradient.swift */; };
+		F6684BFC23AA842000DECCB3 /* LinearGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */; };
 		F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */; };
 		F68108A623A5835E00B32145 /* EventsModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A523A5835E00B32145 /* EventsModifiers.swift */; };
 		F68108A823A667A400B32145 /* GestureModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A723A667A300B32145 /* GestureModifiers.swift */; };
@@ -217,6 +219,8 @@
 		F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteButtonTests.swift; sourceTree = "<group>"; };
 		F6684BF523AA587700DECCB3 /* AngularGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngularGradient.swift; sourceTree = "<group>"; };
 		F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngularGradientTests.swift; sourceTree = "<group>"; };
+		F6684BF923AA809300DECCB3 /* LinearGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearGradient.swift; sourceTree = "<group>"; };
+		F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearGradientTests.swift; sourceTree = "<group>"; };
 		F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositioningModifiersTests.swift; sourceTree = "<group>"; };
 		F68108A523A5835E00B32145 /* EventsModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModifiers.swift; sourceTree = "<group>"; };
 		F68108A723A667A300B32145 /* GestureModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifiers.swift; sourceTree = "<group>"; };
@@ -344,6 +348,7 @@
 				F60EEBC82382EED0007DB53A /* HStack.swift */,
 				F609EFC023A432AA00B9256A /* IDView.swift */,
 				F60EEBC02382EED0007DB53A /* Image.swift */,
+				F6684BF923AA809300DECCB3 /* LinearGradient.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
 				F69C91C92383187D00515A91 /* ModifiedContent.swift */,
@@ -414,6 +419,7 @@
 				F60EEBE92382F004007DB53A /* HStackTests.swift */,
 				F609EFC423A4350700B9256A /* IDViewTests.swift */,
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
+				F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
 				F69C91CB2383189200515A91 /* ModifiedContentTests.swift */,
@@ -628,6 +634,7 @@
 				F60EEBD62382EED0007DB53A /* Section.swift in Sources */,
 				F6D933BB2385F42300358E0E /* Toggle.swift in Sources */,
 				F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */,
+				F6684BFA23AA809300DECCB3 /* LinearGradient.swift in Sources */,
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
 				F609EFC123A432AA00B9256A /* IDView.swift in Sources */,
 				F6ECF6C823A66E54000FC591 /* InteractionModifiers.swift in Sources */,
@@ -730,6 +737,7 @@
 				F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */,
 				F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */,
 				F64057F3238E9F600029D9BA /* OptionalViewTests.swift in Sources */,
+				F6684BFC23AA842000DECCB3 /* LinearGradientTests.swift in Sources */,
 				F6E4B4062386F511003E1534 /* OpaqueViewTests.swift in Sources */,
 				F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */,
 				F6684BEE23AA4CF400DECCB3 /* MenuButtonTests.swift in Sources */,
