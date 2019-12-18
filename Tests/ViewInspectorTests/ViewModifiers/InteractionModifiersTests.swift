@@ -81,7 +81,9 @@ final class InteractionTests: XCTestCase {
         let sut = EmptyView().onMoveCommand { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    #endif
     
+    #if os(macOS)
     func testOnMoveCommandInspection() throws {
         let exp = XCTestExpectation(description: "onMoveCommand")
         let directions: [MoveCommandDirection] = [.left, .right, .up, .down]
@@ -99,12 +101,16 @@ final class InteractionTests: XCTestCase {
         }
         wait(for: [exp], timeout: 0.1)
     }
+    #endif
     
+    #if os(tvOS) || os(macOS)
     func testOnExitCommand() throws {
         let sut = EmptyView().onExitCommand { }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    #endif
     
+    #if os(macOS)
     func testOnExitCommandInspection() throws {
         let exp = XCTestExpectation(description: "onExitCommand")
         let sut = EmptyView().onExitCommand {

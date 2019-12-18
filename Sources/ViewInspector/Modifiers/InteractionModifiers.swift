@@ -37,7 +37,7 @@ public extension InspectableView {
     }
     #endif
     
-    #if os(tvOS) || os(macOS)
+    #if os(macOS)
     func callOnMoveCommand(_ direction: MoveCommandDirection = .up) throws {
         let callback = try onCommandModifier(
             direction.selector, type: (() -> Void).self, call: "onMoveCommand")
@@ -49,6 +49,24 @@ public extension InspectableView {
             "cancelOperation:", type: (() -> Void).self, call: "onExitCommand")
         callback()
     }
+    #elseif os(tvOS)
+    /* Not supported
+    func callOnMoveCommand(_ direction: MoveCommandDirection = .up) throws {
+        typealias Callback = (ButtonType) -> ()
+        let callback = try modifierAttribute(
+            modifierName: "PhysicalButtonPressGesture", path: "modifier|gesture|_body|modifier|callbacks|ended",
+            type: Callback.self, call: "callOnMoveCommand")
+        callback()
+    }
+    
+    func callOnExitCommand() throws {
+        typealias Callback = (ButtonType) -> ()
+        let callback = try modifierAttribute(
+            modifierName: "PhysicalButtonPressGesture", path: "modifier|gesture|_body|modifier|callbacks|ended",
+            type: Callback.self, call: "callOnMoveCommand")
+        callback()
+    }
+    */
     #endif
     
     #if os(macOS)
