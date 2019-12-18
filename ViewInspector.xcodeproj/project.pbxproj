@@ -76,6 +76,8 @@
 		F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */; };
 		F6684BEE23AA4CF400DECCB3 /* MenuButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */; };
 		F6684BF023AA504500DECCB3 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BEF23AA504500DECCB3 /* MenuButton.swift */; };
+		F6684BF223AA554500DECCB3 /* PasteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF123AA554500DECCB3 /* PasteButton.swift */; };
+		F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */; };
 		F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */; };
 		F68108A623A5835E00B32145 /* EventsModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A523A5835E00B32145 /* EventsModifiers.swift */; };
 		F68108A823A667A400B32145 /* GestureModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A723A667A300B32145 /* GestureModifiers.swift */; };
@@ -209,6 +211,8 @@
 		F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewTests.swift; sourceTree = "<group>"; };
 		F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonTests.swift; sourceTree = "<group>"; };
 		F6684BEF23AA504500DECCB3 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		F6684BF123AA554500DECCB3 /* PasteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteButton.swift; sourceTree = "<group>"; };
+		F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteButtonTests.swift; sourceTree = "<group>"; };
 		F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositioningModifiersTests.swift; sourceTree = "<group>"; };
 		F68108A523A5835E00B32145 /* EventsModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModifiers.swift; sourceTree = "<group>"; };
 		F68108A723A667A300B32145 /* GestureModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifiers.swift; sourceTree = "<group>"; };
@@ -341,6 +345,7 @@
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
 				79069A6A238E8490000F6B58 /* OptionalContent.swift */,
+				F6684BF123AA554500DECCB3 /* PasteButton.swift */,
 				F6D933B62385EDCB00358E0E /* Picker.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
@@ -410,6 +415,7 @@
 				F6DFD881238303C60028E84D /* NavigationViewTests.swift */,
 				F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */,
 				F64057F2238E9F600029D9BA /* OptionalViewTests.swift */,
+				F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */,
 				F6D933B82385EDDF00358E0E /* PickerTests.swift */,
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
@@ -625,6 +631,7 @@
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
 				F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */,
 				F609EFBD23A40B8800B9256A /* DelayedPreferenceView.swift in Sources */,
+				F6684BF223AA554500DECCB3 /* PasteButton.swift in Sources */,
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
 				F64A2C6823A3FD3A00A4853A /* TreeView.swift in Sources */,
 				F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */,
@@ -707,6 +714,7 @@
 				F6D933C12385F62500358E0E /* TextFieldTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F609EFC523A4350700B9256A /* IDViewTests.swift in Sources */,
+				F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */,
 				F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */,
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
 				F6ECF6CC23A6702B000FC591 /* AnimationModifiersTests.swift in Sources */,
