@@ -16,14 +16,6 @@ final class DatePickerTests: XCTestCase {
         state = StateObject()
     }
     
-    func testBindingValue() throws {
-        let view = DatePicker("Test", selection: $state.selectedDate1)
-        let binding = try view.inspect().date()
-        let selectDate = Date(timeIntervalSinceNow: 1000)
-        binding.wrappedValue = selectDate
-        XCTAssertEqual(state.selectedDate1, selectDate)
-    }
-    
     func testEnclosedView() throws {
         let sampleView = Text("Test")
         let view = DatePicker(selection: $state.selectedDate1, label: { sampleView })

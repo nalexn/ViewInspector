@@ -41,9 +41,3 @@ public extension InspectableView where View: MultipleViewContent {
         return try .init(try child(at: index))
     }
 }
-
-// MARK: - Custom Attributes
-
-public extension InspectableView where View == ViewType.List {
-    //selection
-}

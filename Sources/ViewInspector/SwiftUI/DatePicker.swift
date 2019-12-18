@@ -44,14 +44,4 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
-// MARK: - Custom Attributes
-
-public extension InspectableView where View == ViewType.DatePicker {
-    
-    func date() throws -> Binding<Date> {
-        return try Inspector
-            .attribute(label: "selection", value: content.view, type: Binding<Date>.self)
-    }
-}
-
 #endif
