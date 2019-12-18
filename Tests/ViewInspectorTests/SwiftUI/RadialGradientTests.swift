@@ -38,7 +38,7 @@ final class RadialGradientTests: XCTestCase {
         XCTAssertEqual(sut, center)
     }
     
-    func startRadius() throws {
+    func testStartRadius() throws {
         let radius: CGFloat = 0.5
         let sut = try RadialGradient(gradient: gradient, center: .center,
                                      startRadius: radius, endRadius: 1)
@@ -46,11 +46,11 @@ final class RadialGradientTests: XCTestCase {
         XCTAssertEqual(sut, radius)
     }
     
-    func engRadius() throws {
+    func testEndRadius() throws {
         let radius: CGFloat = 0.5
         let sut = try RadialGradient(gradient: gradient, center: .center,
                                      startRadius: 0, endRadius: radius)
-            .inspect().startRadius()
+            .inspect().endRadius()
         XCTAssertEqual(sut, radius)
     }
 }
