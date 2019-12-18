@@ -38,3 +38,13 @@ final class ToggleTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().toggle(1))
     }
 }
+
+// MARK: - View Modifiers
+
+final class GlobalModifiersForToggle: XCTestCase {
+    
+    func testToggleStyle() throws {
+        let sut = EmptyView().toggleStyle(DefaultToggleStyle())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}

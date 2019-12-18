@@ -57,3 +57,25 @@ final class ListTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().list(1))
     }
 }
+
+// MARK: - View Modifiers
+
+final class GlobalModifiersForList: XCTestCase {
+    
+    func testListRowInsets() throws {
+        let sut = EmptyView().listRowInsets(EdgeInsets())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testListRowBackground() throws {
+        let sut = EmptyView().listRowBackground(Text(""))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    #if os(watchOS)
+    func testListRowPlatterColor() throws {
+        let sut = EmptyView().listRowPlatterColor(.red)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+}

@@ -52,3 +52,13 @@ final class PickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().picker(1))
     }
 }
+
+// MARK: - View Modifiers
+
+final class GlobalModifiersForPicker: XCTestCase {
+    
+    func testPickerStyle() throws {
+        let sut = EmptyView().pickerStyle(DefaultPickerStyle())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}

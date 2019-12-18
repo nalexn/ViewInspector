@@ -21,3 +21,15 @@ final class TreeViewTests: XCTestCase {
     }
     #endif
 }
+
+// MARK: - View Modifiers
+
+final class GlobalModifiersForTreeView: XCTestCase {
+    
+    #if !os(tvOS)
+    func testContextMenu() throws {
+        let sut = EmptyView().contextMenu(ContextMenu(menuItems: { Text("") }))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+}

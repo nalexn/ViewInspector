@@ -39,3 +39,13 @@ final class ButtonTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 }
+
+// MARK: - View Modifiers
+
+final class GlobalModifiersForButton: XCTestCase {
+    
+    func testButtonStyle() throws {
+        let sut = EmptyView().buttonStyle(PlainButtonStyle())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}

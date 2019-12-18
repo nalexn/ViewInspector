@@ -48,3 +48,40 @@ final class NavigationViewTests: XCTestCase {
 }
 
 #endif
+
+// MARK: - View Modifiers
+
+final class GlobalModifiersForNavigationView: XCTestCase {
+    
+    func testNavigationViewStyle() throws {
+        let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    #if !os(macOS)
+    func testNavigationBarTitle() throws {
+        let sut = EmptyView().navigationBarTitle("")
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testNavigationBarHidden() throws {
+        let sut = EmptyView().navigationBarHidden(false)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+    
+    #if !os(macOS)
+    func testNavigationBarBackButtonHidden() throws {
+        let sut = EmptyView().navigationBarBackButtonHidden(false)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+    
+    #if os(iOS) || os(tvOS)
+    func testNavigationBarItems() throws {
+        let sut = EmptyView().navigationBarItems(leading: Text(""), trailing: Text(""))
+        // Not supported
+        XCTAssertThrowsError(try sut.inspect().emptyView())
+    }
+    #endif
+}

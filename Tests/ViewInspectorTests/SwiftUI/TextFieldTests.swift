@@ -56,3 +56,37 @@ final class TextFieldTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 }
+
+// MARK: - View Modifiers
+
+final class GlobalModifiersForTextField: XCTestCase {
+    
+    func testTextFieldStyle() throws {
+        let sut = EmptyView().textFieldStyle(DefaultTextFieldStyle())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    #if !os(macOS)
+    func testTextContentType() throws {
+        let sut = EmptyView().textContentType(.emailAddress)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+    
+    #if os(iOS) || os(tvOS)
+    func testKeyboardType() throws {
+        let sut = EmptyView().keyboardType(.namePhonePad)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testAutocapitalization() throws {
+        let sut = EmptyView().autocapitalization(.words)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    #endif
+    
+    func testDisableAutocorrection() throws {
+        let sut = EmptyView().disableAutocorrection(false)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}
