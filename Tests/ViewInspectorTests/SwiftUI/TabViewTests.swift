@@ -2,9 +2,10 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if !os(watchOS)
+
 final class TabViewTests: XCTestCase {
     
-    #if !os(watchOS)
     func testEnclosedView() throws {
         let view = TabView {
             Text("First View").tabItem({ Text("First") }).tag(0)
@@ -41,8 +42,9 @@ final class TabViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().tabView(0))
         XCTAssertNoThrow(try view.inspect().tabView(1))
     }
-    #endif
 }
+
+#endif
 
 // MARK: - View Modifiers
 

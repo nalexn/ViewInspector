@@ -2,9 +2,10 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(macOS)
+
 final class DatePickerTests: XCTestCase {
     
-    #if os(iOS) || os(macOS)
     class StateObject: ObservableObject {
         @Published var selectedDate1 = Date()
         @Published var selectedDate2 = Date()
@@ -49,17 +50,16 @@ final class DatePickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().datePicker(0))
         XCTAssertNoThrow(try view.inspect().datePicker(1))
     }
-    #endif
 }
 
 // MARK: - View Modifiers
 
 final class GlobalModifiersForDatePicker: XCTestCase {
     
-    #if os(iOS) || os(macOS)
     func testDatePickerStyle() throws {
         let sut = EmptyView().datePickerStyle(DefaultDatePickerStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
-    #endif
 }
+
+#endif

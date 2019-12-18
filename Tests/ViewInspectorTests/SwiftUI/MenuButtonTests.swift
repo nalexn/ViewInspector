@@ -2,6 +2,8 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(macOS)
+
 final class MenuButtonTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -40,10 +42,10 @@ final class MenuButtonTests: XCTestCase {
 
 final class GlobalModifiersForMenuMenuButton: XCTestCase {
     
-    #if os(macOS)
     func testMenuButtonStyle() throws {
         let sut = EmptyView().menuButtonStyle(PullDownMenuButtonStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
-    #endif
 }
+
+#endif

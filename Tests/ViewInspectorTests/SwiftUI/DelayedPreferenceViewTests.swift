@@ -2,9 +2,10 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(tvOS)
+
 final class DelayedPreferenceViewTests: XCTestCase {
     
-    #if os(iOS) || os(tvOS)
     func testUnwrapDelayedPreferenceView() throws {
         let view = NavigationView {
             Text("Test")
@@ -25,7 +26,6 @@ final class DelayedPreferenceViewTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 3)
         */
     }
-    #endif
     
     struct Key: PreferenceKey {
         static var defaultValue: String = "test"
@@ -34,3 +34,5 @@ final class DelayedPreferenceViewTests: XCTestCase {
         }
     }
 }
+
+#endif

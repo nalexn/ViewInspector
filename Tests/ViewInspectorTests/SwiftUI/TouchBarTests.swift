@@ -2,9 +2,10 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(macOS)
+
 final class TouchBarTests: XCTestCase {
     
-    #if os(macOS)
     func testEnclosedView() throws {
         let view = TouchBar(content: { Text("Test") })
         let sut = try view.inspect().text().string()
@@ -16,14 +17,12 @@ final class TouchBarTests: XCTestCase {
         let sut = try view.inspect().emptyView().touchBar().touchBarID()
         XCTAssertEqual(sut, "abc")
     }
-    #endif
 }
 
 // MARK: - View Modifiers
 
 final class GlobalModifiersForTouchBar: XCTestCase {
     
-    #if os(macOS)
     func testTouchBar() throws {
         let sut = EmptyView().touchBar(TouchBar(content: { Text("") }))
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -71,9 +70,8 @@ final class GlobalModifiersForTouchBar: XCTestCase {
             .inspect().emptyView().touchBarItemPresence()
         XCTAssertEqual(sut, presence)
     }
-    #endif
 }
 
-#if os(macOS)
 extension TouchBarItemPresence: BinaryEquatable { }
+
 #endif

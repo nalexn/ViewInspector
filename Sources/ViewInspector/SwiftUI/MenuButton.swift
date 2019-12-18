@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if os(macOS)
 public extension ViewType {
     
     struct MenuButton: KnownViewType {
@@ -65,3 +66,4 @@ public extension InspectableView where View == ViewType.MenuButton {
         return try .init(content)
     }
 }
+#endif
