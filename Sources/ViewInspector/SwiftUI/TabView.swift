@@ -50,11 +50,10 @@ public extension InspectableView where View: MultipleViewContent {
 
 public extension InspectableView {
     
-    func tag<T>(_ type: T.Type) throws -> T {
-        let name = String(describing: type)
+    func tag() throws -> AnyHashable {
         return try modifierAttribute(
-            modifierName: "TagValueTraitKey<\(name)>",
-            path: "modifier|value|tagged", type: T.self, call: "tag(\(name))")
+            modifierName: "TagValueTraitKey",
+            path: "modifier|value|tagged", type: AnyHashable.self, call: "tag")
     }
     
     #if !os(watchOS)

@@ -55,7 +55,7 @@ final class GlobalModifiersForTabView: XCTestCase {
     
     func testTagInspection() throws {
         let tag = "abc"
-        let sut = try EmptyView().tag(tag).inspect().emptyView().tag(String.self)
+        let sut = try EmptyView().tag(tag).inspect().emptyView().tag()
         XCTAssertEqual(sut, tag)
     }
     

@@ -2,8 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(watchOS)
-
 final class ModifiedContentTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -43,4 +41,12 @@ private struct TestModifier: ViewModifier {
     }
 }
 
-#endif
+// MARK: - View Modifiers
+
+final class GlobalModifiersForModifiedContent: XCTestCase {
+    
+    func testModifier() throws {
+        let sut = EmptyView().modifier(TestModifier())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}

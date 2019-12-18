@@ -218,35 +218,3 @@ final class ViewContextMenuTests: XCTestCase {
     }
     #endif
 }
-
-// MARK: - ViewIdentificationTests
-
-final class ViewIdentificationTests: XCTestCase {
-    
-    func testID() throws {
-        let sut = EmptyView().id(5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testEquatable() throws {
-        let sut = AnyView(TestView().equatable())
-        XCTAssertNoThrow(try sut.inspect().view(TestView.self))
-    }
-    
-    func testModifier() throws {
-        let sut = EmptyView().modifier(TestModifier())
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
-
-private struct TestView: View, Equatable, Inspectable {
-    
-    var body: some View { EmptyView() }
-    static func == (lhs: Self, rhs: Self) -> Bool { true }
-}
-
-private struct TestModifier: ViewModifier {
-    func body(content: Self.Content) -> some View {
-        content
-    }
-}

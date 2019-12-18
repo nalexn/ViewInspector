@@ -11,11 +11,11 @@ final class IDViewTests: XCTestCase {
         XCTAssertEqual(sut, sampleView)
     }
     
-    func testRetainsModifiers() throws {
+    func testAccumulatesModifiers() throws {
         let view = Text("Test")
             .padding().id(0).padding().padding()
         let sut = try view.inspect().text()
-        XCTAssertEqual(sut.content.modifiers.count, 3)
+        XCTAssertEqual(sut.content.modifiers.count, 4)
     }
     
     func testExtractionFromSingleViewContainer() throws {
@@ -30,5 +30,21 @@ final class IDViewTests: XCTestCase {
         }
         XCTAssertNoThrow(try view.inspect().text(0))
         XCTAssertNoThrow(try view.inspect().text(1))
+    }
+    
+    func testID() throws {
+        let id = "abc"
+        let sut = try EmptyView().id(id).inspect().emptyView().id()
+        XCTAssertEqual(sut, id)
+    }
+}
+
+// MARK: - View Modifiers
+
+final class GlobalModifiersForIDView: XCTestCase {
+    
+    func testID() throws {
+        let sut = EmptyView().id(5)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
