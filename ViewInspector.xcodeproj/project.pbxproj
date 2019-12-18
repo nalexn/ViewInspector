@@ -78,6 +78,8 @@
 		F6684BF023AA504500DECCB3 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BEF23AA504500DECCB3 /* MenuButton.swift */; };
 		F6684BF223AA554500DECCB3 /* PasteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF123AA554500DECCB3 /* PasteButton.swift */; };
 		F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */; };
+		F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF523AA587700DECCB3 /* AngularGradient.swift */; };
+		F6684BF823AA58F200DECCB3 /* AngularGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */; };
 		F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */; };
 		F68108A623A5835E00B32145 /* EventsModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A523A5835E00B32145 /* EventsModifiers.swift */; };
 		F68108A823A667A400B32145 /* GestureModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A723A667A300B32145 /* GestureModifiers.swift */; };
@@ -213,6 +215,8 @@
 		F6684BEF23AA504500DECCB3 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		F6684BF123AA554500DECCB3 /* PasteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteButton.swift; sourceTree = "<group>"; };
 		F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteButtonTests.swift; sourceTree = "<group>"; };
+		F6684BF523AA587700DECCB3 /* AngularGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngularGradient.swift; sourceTree = "<group>"; };
+		F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngularGradientTests.swift; sourceTree = "<group>"; };
 		F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositioningModifiersTests.swift; sourceTree = "<group>"; };
 		F68108A523A5835E00B32145 /* EventsModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModifiers.swift; sourceTree = "<group>"; };
 		F68108A723A667A300B32145 /* GestureModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifiers.swift; sourceTree = "<group>"; };
@@ -318,6 +322,7 @@
 		F60EEBBD2382EED0007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				F6684BF523AA587700DECCB3 /* AngularGradient.swift */,
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
 				F6ECF6D523A695FB000FC591 /* ClassifiedView.swift */,
@@ -388,6 +393,7 @@
 		F60EEBE62382F004007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */,
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
 				F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */,
@@ -621,6 +627,7 @@
 				F60EEBDB2382EED0007DB53A /* VStack.swift in Sources */,
 				F60EEBD62382EED0007DB53A /* Section.swift in Sources */,
 				F6D933BB2385F42300358E0E /* Toggle.swift in Sources */,
+				F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */,
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
 				F609EFC123A432AA00B9256A /* IDView.swift in Sources */,
 				F6ECF6C823A66E54000FC591 /* InteractionModifiers.swift in Sources */,
@@ -688,6 +695,7 @@
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
 				F6D933C52385FB1D00358E0E /* SecureFieldTests.swift in Sources */,
 				F609EFBF23A424D800B9256A /* EnvironmentModifiersTests.swift in Sources */,
+				F6684BF823AA58F200DECCB3 /* AngularGradientTests.swift in Sources */,
 				F6D933B92385EDDF00358E0E /* PickerTests.swift in Sources */,
 				F64A2C6623A3F0A900A4853A /* ConfigurationModifiersTests.swift in Sources */,
 				F6ECF6D023A67D11000FC591 /* SizingModifiersTests.swift in Sources */,
