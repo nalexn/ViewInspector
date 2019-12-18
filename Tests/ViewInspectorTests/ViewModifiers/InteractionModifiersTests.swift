@@ -191,7 +191,7 @@ final class ViewHoverTests: XCTestCase {
             // XCTAssertTrue(value)
             exp.fulfill()
         }
-        try sut.inspect().emptyView().callFocusable()
+        try sut.inspect().emptyView().callOnFocusChange()
         wait(for: [exp], timeout: 0.1)
     }
     #endif

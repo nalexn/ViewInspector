@@ -122,7 +122,7 @@ public extension InspectableView {
     */
     
     #if !os(iOS)
-    func callFocusable() throws {
+    func callOnFocusChange() throws {
         let callback = try modifierAttribute(
             modifierName: "_FocusableModifier", path: "modifier|onFocusChange",
             type: ((Bool) -> Void).self, call: "focusable")
