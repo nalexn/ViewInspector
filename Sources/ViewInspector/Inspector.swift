@@ -5,19 +5,34 @@ internal struct Inspector { }
 extension Inspector {
     
     static func attribute(label: String, value: Any) throws -> Any {
+        return try attribute(label: label, value: value, type: Any.self)
+    }
+    
+    static func attribute<T>(label: String, value: Any, type: T.Type) throws -> T {
         let mirror = Mirror(reflecting: value)
         guard let child = mirror.descendant(label) else {
             throw InspectionError.attributeNotFound(
                 label: label, type: typeName(value: value))
         }
-        return child
+        guard let casted = child as? T else {
+            throw InspectionError.typeMismatch(child, T.self)
+        }
+        return casted
     }
     
     static func attribute(path: String, value: Any) throws -> Any {
+        return try attribute(path: path, value: value, type: Any.self)
+    }
+    
+    static func attribute<T>(path: String, value: Any, type: T.Type) throws -> T {
         let labels = path.components(separatedBy: "|")
-        return try labels.reduce(value, { (value, label) -> Any in
+        let child = try labels.reduce(value, { (value, label) -> Any in
             try attribute(label: label, value: value)
         })
+        guard let casted = child as? T else {
+            throw InspectionError.typeMismatch(child, T.self)
+        }
+        return casted
     }
     
     static func typeName(value: Any, prefixOnly: Bool = false) -> String {

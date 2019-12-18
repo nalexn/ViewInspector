@@ -42,11 +42,8 @@ public extension InspectableView where View == ViewType.PasteButton {
     */
     
     func supportedTypes() throws -> [String] {
-        let types = try Inspector.attribute(label: "supportedTypes", value: content.view)
-        guard let array = types as? [String] else {
-            throw InspectionError.typeMismatch(types, [String].self)
-        }
-        return array
+        return try Inspector
+            .attribute(label: "supportedTypes", value: content.view, type: [String].self)
     }
 }
 #endif

@@ -30,11 +30,8 @@ extension ViewType.TouchBar: SingleViewContent {
 public extension InspectableView where View == ViewType.TouchBar {
     
     func touchBarID() throws -> String {
-        let value = try Inspector.attribute(path: "container|id", value: content.view)
-        guard let barID = value as? String else {
-            throw InspectionError.typeMismatch(value, String.self)
-        }
-        return barID
+        return try Inspector
+            .attribute(path: "container|id", value: content.view, type: String.self)
     }
 }
 

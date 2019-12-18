@@ -52,10 +52,9 @@ private protocol GeometryReaderContentProvider {
 
 extension GeometryReader: GeometryReaderContentProvider {
     func view() throws -> Any {
-        let content = try Inspector.attribute(label: "content", value: self)
         typealias Builder = (GeometryProxy) -> Content
-        guard let builder = content as? Builder
-            else { throw InspectionError.typeMismatch(content, Builder.self) }
+        let builder = try Inspector
+            .attribute(label: "content", value: self, type: Builder.self)
         return builder(GeometryProxy.stub())
     }
 }

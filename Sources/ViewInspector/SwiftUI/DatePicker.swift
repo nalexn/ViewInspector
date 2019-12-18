@@ -49,12 +49,8 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.DatePicker {
     
     func date() throws -> Binding<Date> {
-        let selection = try? Inspector.attribute(label: "selection", value: content.view)
-        typealias Result = Binding<Date>
-        guard let binding = selection as? Result else {
-            throw InspectionError.typeMismatch(selection, Result.self)
-        }
-        return binding
+        return try Inspector
+            .attribute(label: "selection", value: content.view, type: Binding<Date>.self)
     }
 }
 

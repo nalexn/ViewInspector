@@ -94,17 +94,12 @@ public extension InspectableView where View == ViewType.NavigationLink {
 
 private extension InspectableView where View == ViewType.NavigationLink {
     func internalIsActive() throws -> State<Bool> {
-        let isActive = try Inspector.attribute(label: "__internalIsActive", value: content.view)
-        typealias ExpectedType = State<Bool>
-        guard let casted = isActive as? ExpectedType else {
-            throw InspectionError.typeMismatch(isActive, ExpectedType.self)
-        }
-        return casted
+        return try Inspector
+            .attribute(label: "__internalIsActive", value: content.view, type: State<Bool>.self)
     }
     
     func externalIsActive() throws -> Binding<Bool>? {
         let isActive = try Inspector.attribute(label: "_externalIsActive", value: content.view)
-        typealias ExpectedType = Binding<Bool>
-        return isActive as? ExpectedType
+        return isActive as? Binding<Bool>
     }
 }

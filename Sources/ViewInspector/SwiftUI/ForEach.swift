@@ -54,14 +54,12 @@ private protocol ForEachContentProvider {
 
 extension ForEach: ForEachContentProvider {
     func views() throws -> LazyGroup<Any> {
-        let data = try Inspector.attribute(label: "data", value: self)
-        let content = try Inspector.attribute(label: "content", value: self)
         typealias Elements = [Data.Element]
-        guard let dataArray = data as? Elements
-            else { throw InspectionError.typeMismatch(data, Elements.self) }
         typealias Builder = (Data.Element) -> Content
-        guard let builder = content as? Builder
-            else { throw InspectionError.typeMismatch(content, Builder.self) }
+        let dataArray = try Inspector
+            .attribute(label: "data", value: self, type: Elements.self)
+        let builder = try Inspector
+            .attribute(label: "content", value: self, type: Builder.self)
         return LazyGroup(count: dataArray.count) { index in
             builder(dataArray[index])
         }
