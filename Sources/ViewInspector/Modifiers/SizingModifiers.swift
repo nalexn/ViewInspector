@@ -20,20 +20,20 @@ public extension InspectableView {
     func fixedFrame() throws -> FixedFrameLayout {
         let width = try modifierAttribute(
             modifierName: "_FrameLayout", path: "modifier|width",
-            type: CGFloat.self, call: "frame(width: height: alignment:")
+            type: CGFloat.self, call: "frame(width: height: alignment:)")
         let height = try modifierAttribute(
             modifierName: "_FrameLayout", path: "modifier|height",
-            type: CGFloat.self, call: "frame(width: height: alignment:")
+            type: CGFloat.self, call: "frame(width: height: alignment:)")
         let alignment = try modifierAttribute(
             modifierName: "_FrameLayout", path: "modifier|alignment",
-            type: Alignment.self, call: "frame(width: height: alignment:")
+            type: Alignment.self, call: "frame(width: height: alignment:)")
         return FixedFrameLayout(width: width, height: height, alignment: alignment)
     }
     
     func flexFrame() throws -> FlexFrameLayout {
         let floatAttrNames = ["minWidth", "idealWidth", "maxWidth",
                               "minHeight", "idealHeight", "maxHeight"]
-        let call = "frame(minWidth: idealWidth: maxWidth: minHeight: idealHeight: maxHeight: alignment:"
+        let call = "frame(minWidth: idealWidth: maxWidth: minHeight: idealHeight: maxHeight: alignment:)"
         let floats = try floatAttrNames.map { name in
             return try modifierAttribute(
                 modifierName: "_FlexFrameLayout", path: "modifier|\(name)",
