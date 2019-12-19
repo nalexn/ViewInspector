@@ -11,9 +11,21 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testBlurInspection() throws {
+        let sut = try EmptyView().blur(radius: 5, opaque: true)
+            .inspect().emptyView().blur()
+        XCTAssertEqual(sut.radius, 5)
+        XCTAssertTrue(sut.isOpaque)
+    }
+    
     func testOpacity() throws {
         let sut = EmptyView().opacity(5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testOpacityInspection() throws {
+        let sut = try EmptyView().opacity(5).inspect().emptyView().opacity()
+        XCTAssertEqual(sut, 5)
     }
     
     func testBrightness() throws {
@@ -21,9 +33,19 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testBrightnessInspection() throws {
+        let sut = try EmptyView().brightness(5).inspect().emptyView().brightness()
+        XCTAssertEqual(sut, 5)
+    }
+    
     func testContrast() throws {
         let sut = EmptyView().contrast(5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testContrastInspection() throws {
+        let sut = try EmptyView().contrast(5).inspect().emptyView().contrast()
+        XCTAssertEqual(sut, 5)
     }
     
     func testColorInvert() throws {
@@ -31,9 +53,19 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testColorInvertInspection() throws {
+        XCTAssertNoThrow(try EmptyView().colorInvert().inspect().emptyView().colorInvert())
+        XCTAssertThrowsError(try EmptyView().padding().inspect().emptyView().colorInvert())
+    }
+    
     func testColorMultiply() throws {
         let sut = EmptyView().colorMultiply(.red)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testColorMultiplyInspection() throws {
+        let sut = try EmptyView().colorMultiply(.red).inspect().emptyView().colorMultiply()
+        XCTAssertEqual(sut, .red)
     }
     
     func testSaturation() throws {
@@ -41,9 +73,19 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testSaturationInspection() throws {
+        let sut = try EmptyView().saturation(5).inspect().emptyView().saturation()
+        XCTAssertEqual(sut, 5)
+    }
+    
     func testGrayscale() throws {
         let sut = EmptyView().grayscale(5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testGrayscaleInspection() throws {
+        let sut = try EmptyView().grayscale(5).inspect().emptyView().grayscale()
+        XCTAssertEqual(sut, 5)
     }
     
     func testHueRotation() throws {
@@ -51,9 +93,20 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testHueRotationInspection() throws {
+        let angle = Angle(degrees: 5)
+        let sut = try EmptyView().hueRotation(angle).inspect().emptyView().hueRotation()
+        XCTAssertEqual(sut, angle)
+    }
+    
     func testLuminanceToAlpha() throws {
         let sut = EmptyView().luminanceToAlpha()
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testLuminanceToAlphaInspection() throws {
+        XCTAssertNoThrow(try EmptyView().luminanceToAlpha().inspect().emptyView().luminanceToAlpha())
+        XCTAssertThrowsError(try EmptyView().padding().inspect().emptyView().luminanceToAlpha())
     }
     
     func testShadow() throws {
@@ -61,9 +114,26 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testShadowInspection() throws {
+        let sut = try EmptyView().shadow(color: .red, radius: 5, x: 6, y: 7)
+            .inspect().emptyView().shadow()
+        XCTAssertEqual(sut.color, .red)
+        XCTAssertEqual(sut.radius, 5)
+        XCTAssertEqual(sut.offset, CGSize(width: 6, height: 7))
+    }
+    
     func testBorder() throws {
         let sut = EmptyView().border(Color.primary, width: 5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testBorderInspection() throws {
+        let gradient = LinearGradient(gradient: Gradient(colors: [.red]),
+                                      startPoint: .bottom, endPoint: .top)
+        let sut = try EmptyView().border(gradient, width: 7)
+            .inspect().emptyView().border(LinearGradient.self)
+        XCTAssertEqual(sut.content, gradient)
+        XCTAssertEqual(sut.width, 7)
     }
     
     func testBlendMode() throws {
@@ -71,11 +141,23 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testBlendModeInspection() throws {
+        let sut = try EmptyView().blendMode(.darken).inspect().emptyView().blendMode()
+        XCTAssertEqual(sut, .darken)
+    }
+    
     func testCompositingGroup() throws {
         let sut = EmptyView().compositingGroup()
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testCompositingGroupInspection() throws {
+        XCTAssertNoThrow(try EmptyView().compositingGroup().inspect().emptyView().compositingGroup())
+        XCTAssertThrowsError(try EmptyView().padding().inspect().emptyView().compositingGroup())
+    }
 }
+
+extension LinearGradient: BinaryEquatable { }
 
 // MARK: - ViewMaskingTests
 
@@ -86,9 +168,24 @@ final class ViewMaskingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testClippedInspection() throws {
+        let sut = try EmptyView().clipped(antialiased: false).inspect().emptyView()
+        XCTAssertNoThrow(try sut.clipShape(Rectangle.self))
+        let isAntialiased = try sut.clipStyle().isAntialiased
+        XCTAssertFalse(isAntialiased)
+    }
+    
     func testClipShape() throws {
         let sut = EmptyView().clipShape(Capsule(), style: FillStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testClipShapeInspection() throws {
+        let style = FillStyle()
+        let sut = try EmptyView().clipShape(Capsule(), style: style).inspect().emptyView()
+        XCTAssertNoThrow(try sut.clipShape(Capsule.self))
+        let sutStyle = try sut.clipStyle()
+        XCTAssertEqual(sutStyle, style)
     }
     
     func testCornerRadius() throws {
@@ -96,9 +193,22 @@ final class ViewMaskingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testCornerRadiusInspection() throws {
+        let sut = try EmptyView().cornerRadius(5, antialiased: false)
+            .inspect().emptyView().cornerRadius()
+        XCTAssertEqual(sut, 5)
+    }
+    
     func testMask() throws {
         let sut = EmptyView().mask(Text(""))
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testMaskInspection() throws {
+        let string = "abc"
+        let sut = try EmptyView().mask(Text(string))
+            .inspect().emptyView().mask().text().string()
+        XCTAssertEqual(sut, string)
     }
 }
 
@@ -109,6 +219,13 @@ final class ViewHidingTests: XCTestCase {
     func testHidden() throws {
         let sut = EmptyView().hidden()
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testHiddenInspection() throws {
+        let sut1 = try EmptyView().hidden().inspect().emptyView()
+        XCTAssertTrue(sut1.isHidden())
+        let sut2 = try EmptyView().padding().inspect().emptyView()
+        XCTAssertFalse(sut2.isHidden())
     }
     
     func testDisabled() throws {

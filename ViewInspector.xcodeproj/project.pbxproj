@@ -89,6 +89,7 @@
 		F68108A823A667A400B32145 /* GestureModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A723A667A300B32145 /* GestureModifiers.swift */; };
 		F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91C92383187D00515A91 /* ModifiedContent.swift */; };
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
+		F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
 		F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */; };
 		F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339E2385B46A00358E0E /* NavigationLink.swift */; };
@@ -230,6 +231,7 @@
 		F68108A723A667A300B32145 /* GestureModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifiers.swift; sourceTree = "<group>"; };
 		F69C91C92383187D00515A91 /* ModifiedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContent.swift; sourceTree = "<group>"; };
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
+		F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectModifiers.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
 		F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReaderTests.swift; sourceTree = "<group>"; };
 		F6D9339E2385B46A00358E0E /* NavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
@@ -484,6 +486,7 @@
 				F6ECF6D323A68BA4000FC591 /* PositioningModifiers.swift */,
 				F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */,
 				F6ECF6CD23A67C64000FC591 /* SizingModifiers.swift */,
+				F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -668,6 +671,7 @@
 				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F6ECF6D423A68BA4000FC591 /* PositioningModifiers.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
+				F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
 				F6ECF6CA23A66FE2000FC591 /* AnimationModifiers.swift in Sources */,
 				F639DBBF23A6CF03003A6FED /* AccessibilityModifiers.swift in Sources */,
