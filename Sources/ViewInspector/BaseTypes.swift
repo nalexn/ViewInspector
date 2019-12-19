@@ -11,13 +11,36 @@ public extension Inspectable where Self: View {
 }
 
 public protocol InspectableWithEnvObject: EnvironmentObjectInjection {
-    associatedtype Body
+    associatedtype InspectableBody
     associatedtype Object: ObservableObject
-    func content(_ object: Object) -> Body
+    func body(_ object: Object) -> InspectableBody
+}
+
+public protocol InspectableWithEnvObject2: EnvironmentObjectInjection2 {
+    associatedtype InspectableBody
+    associatedtype Object1: ObservableObject
+    associatedtype Object2: ObservableObject
+    func body(_ object1: Object1, _ object2: Object2) -> InspectableBody
+}
+
+public protocol InspectableWithEnvObject3: EnvironmentObjectInjection3 {
+    associatedtype InspectableBody
+    associatedtype Object1: ObservableObject
+    associatedtype Object2: ObservableObject
+    associatedtype Object3: ObservableObject
+    func body(_ object1: Object1, _ object2: Object2, _ object3: Object3) -> InspectableBody
 }
 
 public protocol EnvironmentObjectInjection {
-    func content(_ object: Any) throws -> Any
+    func inject(_ object: Any) throws -> Any
+}
+
+public protocol EnvironmentObjectInjection2 {
+    func inject(_ object1: Any, _ object2: Any) throws -> Any
+}
+
+public protocol EnvironmentObjectInjection3 {
+    func inject(_ object1: Any, _ object2: Any, _ object2: Any) throws -> Any
 }
 
 public protocol SingleViewContent {

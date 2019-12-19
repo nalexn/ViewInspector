@@ -13,34 +13,54 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testObservedStateChanges() throws {
-        let viewModel = ExternalState()
+        let viewModel = ExternalState1()
         let view = ObservedStateTestView(viewModel: viewModel)
         let text1 = try view.inspect().text().string()
-        XCTAssertEqual(text1, "false")
-        viewModel.flag = true
+        XCTAssertEqual(text1, "obj1")
+        viewModel.value = "abc"
         let text2 = try view.inspect().text().string()
-        XCTAssertEqual(text2, "true")
+        XCTAssertEqual(text2, "abc")
     }
     
-    func testEnvironmentStateChanges() throws {
-        let viewModel = ExternalState()
-        let view = EnvironmentStateTestView()
+    func testEnvironmentStateChanges1() throws {
+        let viewModel = ExternalState1()
+        let view = EnvironmentStateTestView1()
         let text1 = try view.inspect(viewModel).text().string()
-        XCTAssertEqual(text1, "false")
-        viewModel.flag = true
+        XCTAssertEqual(text1, "obj1")
+        viewModel.value = "abc"
         let text2 = try view.inspect(viewModel).text().string()
-        XCTAssertEqual(text2, "true")
+        XCTAssertEqual(text2, "abc")
     }
     
-    func testEnvironmentInjectedView() throws {
-        let viewModel = ExternalState()
-        let view = EnvironmentStateTestView().environmentObject(viewModel)
-        let text = try view.inspect(EnvironmentStateTestView.self, viewModel).text().string()
-        XCTAssertEqual(text, "false")
+    func testEnvironmentStateChanges2() throws {
+        let object1 = ExternalState1(), object2 = ExternalState2()
+        let view = EnvironmentStateTestView2()
+        let text1 = try view.inspect(object1, object2).text().string()
+        XCTAssertEqual(text1, "obj1obj2")
+        object2.value = "abc"
+        let text2 = try view.inspect(object1, object2).text().string()
+        XCTAssertEqual(text2, "obj1abc")
+    }
+    
+    func testEnvironmentStateChanges3() throws {
+        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = ExternalState3()
+        let view = EnvironmentStateTestView3()
+        let text1 = try view.inspect(object1, object2, object3).text().string()
+        XCTAssertEqual(text1, "obj1obj2obj3")
+        object3.value = "abc"
+        let text2 = try view.inspect(object1, object2, object3).text().string()
+        XCTAssertEqual(text2, "obj1obj2abc")
+    }
+    
+    func testEnvironmentObjectModifier() throws {
+        let viewModel = ExternalState1()
+        let view = EnvironmentStateTestView1().environmentObject(viewModel)
+        let text = try view.inspect(EnvironmentStateTestView1.self, viewModel).text().string()
+        XCTAssertEqual(text, "obj1")
     }
     
     func testInspectableViewWithEnvironmentObject() throws {
-        let sut1 = IncorrectTestView().environmentObject(ExternalState())
+        let sut1 = IncorrectTestView().environmentObject(ExternalState1())
         XCTAssertThrowsError(try sut1.inspect(IncorrectTestView.self))
         let sut2 = IncorrectTestView()
         XCTAssertThrowsError(try sut2.inspect())
@@ -53,9 +73,9 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testEnvViewResetsModifiers() throws {
-        let viewModel = ExternalState()
-        let view = EnvironmentStateTestView().padding()
-        let sut = try view.inspect().view(EnvironmentStateTestView.self, viewModel).text()
+        let viewModel = ExternalState1()
+        let view = EnvironmentStateTestView1().padding()
+        let sut = try view.inspect().view(EnvironmentStateTestView1.self, viewModel).text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
@@ -78,21 +98,49 @@ final class CustomViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self, 1))
     }
     
-    func testExtractionEnvViewFromSingleViewContainer() throws {
-        let viewModel = ExternalState()
-        let view = AnyView(EnvironmentStateTestView())
-        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self, viewModel))
+    func testExtractionEnvView1FromSingleViewContainer() throws {
+        let viewModel = ExternalState1()
+        let view = AnyView(EnvironmentStateTestView1())
+        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView1.self, viewModel))
     }
     
-    func testExtractionEnvViewFromMultipleViewContainer() throws {
-        let viewModel = ExternalState()
-        let view = HStack { EnvironmentStateTestView(); EnvironmentStateTestView() }
-        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self, viewModel, 0))
-        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self, viewModel, 1))
+    func testExtractionEnvView2FromSingleViewContainer() throws {
+        let object1 = ExternalState1(), object2 = ExternalState2()
+        let view = AnyView(EnvironmentStateTestView2())
+        XCTAssertNoThrow(try view.inspect()
+            .view(EnvironmentStateTestView2.self, object1, object2))
+    }
+    
+    func testExtractionEnvView3FromSingleViewContainer() throws {
+        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = ExternalState3()
+        let view = AnyView(EnvironmentStateTestView3())
+        XCTAssertNoThrow(try view.inspect()
+            .view(EnvironmentStateTestView3.self, object1, object2, object3))
+    }
+    
+    func testExtractionEnvView1FromMultipleViewContainer() throws {
+        let viewModel = ExternalState1()
+        let view = HStack { EnvironmentStateTestView1(); EnvironmentStateTestView1() }
+        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView1.self, viewModel, 0))
+        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView1.self, viewModel, 1))
+    }
+    
+    func testExtractionEnvView2FromMultipleViewContainer() throws {
+        let object1 = ExternalState1(), object2 = ExternalState2()
+        let view = HStack { EnvironmentStateTestView2() }
+        XCTAssertNoThrow(try view.inspect()
+            .view(EnvironmentStateTestView2.self, object1, object2, 0))
+    }
+    
+    func testExtractionEnvView3FromMultipleViewContainer() throws {
+        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = ExternalState3()
+        let view = HStack { EnvironmentStateTestView3() }
+        XCTAssertNoThrow(try view.inspect()
+            .view(EnvironmentStateTestView3.self, object1, object2, object3, 0))
     }
     
     func testEnvObjectTypeMismatch() {
-        XCTAssertThrowsError(try ViewType.ViewWithEnvObject<EnvironmentStateTestView>
+        XCTAssertThrowsError(try ViewType.ViewWithEnvObject<EnvironmentStateTestView1>
             .child(Content("abc"), envObject: Inspector.stubEnvObject))
     }
     
@@ -115,7 +163,7 @@ final class CustomViewTests: XCTestCase {
     func testTestViews() {
         XCTAssertNoThrow(SimpleTestView().body)
         XCTAssertNoThrow(LocalStateTestView(flag: true).body)
-        XCTAssertNoThrow(ObservedStateTestView(viewModel: ExternalState()).body)
+        XCTAssertNoThrow(ObservedStateTestView(viewModel: ExternalState1()).body)
         XCTAssertNoThrow(IncorrectTestView().body)
     }
 }
@@ -137,36 +185,72 @@ private struct LocalStateTestView: View, Inspectable {
 
 private struct ObservedStateTestView: View, Inspectable {
     
-    @ObservedObject var viewModel: ExternalState
+    @ObservedObject var viewModel: ExternalState1
     
     var body: some View {
-        Text(viewModel.flag ? "true" : "false")
+        Text(viewModel.value)
     }
 }
 
 private struct IncorrectTestView: View, Inspectable {
     
-    @EnvironmentObject var viewModel: ExternalState
+    @EnvironmentObject var viewModel: ExternalState1
     
     var body: some View {
         EmptyView()
     }
 }
 
-private struct EnvironmentStateTestView: View, InspectableWithEnvObject {
-    @EnvironmentObject var viewModel: ExternalState
+private struct EnvironmentStateTestView1: View, InspectableWithEnvObject {
+    @EnvironmentObject var viewModel: ExternalState1
     
-    var body: Body {
-        content(viewModel)
+    var body: some View {
+        body(viewModel)
     }
     
-    func content(_ viewModel: ExternalState) -> some View {
-        Text(viewModel.flag ? "true" : "false")
+    func body(_ viewModel: ExternalState1) -> some View {
+        Text(viewModel.value)
     }
 }
 
-class ExternalState: ObservableObject {
-    @Published var flag = false
+private struct EnvironmentStateTestView2: View, InspectableWithEnvObject2 {
+    @EnvironmentObject var object1: ExternalState1
+    @EnvironmentObject var object2: ExternalState2
+    
+    var body: some View {
+        body(object1, object2)
+    }
+    
+    func body(_ object1: ExternalState1, _ object2: ExternalState2) -> some View {
+        Text(object1.value + object2.value)
+    }
+}
+
+private struct EnvironmentStateTestView3: View, InspectableWithEnvObject3 {
+    @EnvironmentObject var object1: ExternalState1
+    @EnvironmentObject var object2: ExternalState2
+    @EnvironmentObject var object3: ExternalState3
+    
+    var body: some View {
+        body(object1, object2, object3)
+    }
+    
+    func body(_ object1: ExternalState1, _ object2: ExternalState2,
+              _ object3: ExternalState3) -> some View {
+        Text(object1.value + object2.value + object3.value)
+    }
+}
+
+private class ExternalState1: ObservableObject {
+    @Published var value = "obj1"
+}
+
+private class ExternalState2: ObservableObject {
+    @Published var value = "obj2"
+}
+
+private class ExternalState3: ObservableObject {
+    @Published var value = "obj3"
 }
 
 extension ViewType {

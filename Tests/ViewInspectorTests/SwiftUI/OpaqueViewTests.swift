@@ -45,11 +45,11 @@ private struct InspectableTestView: View, Inspectable {
 
 private struct EnvInspectableTestView: View, InspectableWithEnvObject {
     
-    var body: Body {
-        content(State())
+    var body: some View {
+        body(State())
     }
     
-    func content(_ state: State) -> some View {
+    func body(_ state: State) -> some View {
         Text("Test")
     }
     
