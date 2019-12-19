@@ -113,36 +113,36 @@ public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
-        let child = try View.child(content, envObject: envObject)
-        let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: child.view, prefix: prefix)
+            let child = try View.child(content, envObject: envObject)
+            let prefix = Inspector.typeName(type: type)
+            try Inspector.guardType(value: child.view, prefix: prefix)
             return try .init(child)
     }
     
     func view<T>(_ type: T.Type, _ object: T.Object)
         throws -> InspectableView<ViewType.ViewWithEnvObject<T>>
         where T: InspectableWithEnvObject {
-        let child = try View.child(content, envObject: object)
-        let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: child.view, prefix: prefix)
+            let child = try View.child(content, envObject: object)
+            let prefix = Inspector.typeName(type: type)
+            try Inspector.guardType(value: child.view, prefix: prefix)
             return try .init(child, envObject: object)
     }
     
     func view<T>(_ type: T.Type, _ object1: T.Object1, _ object2: T.Object2)
         throws -> InspectableView<ViewType.ViewWithEnvObject2<T>>
         where T: InspectableWithEnvObject2 {
-        let child = try View.child(content, envObject: envObject)
-        let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: child.view, prefix: prefix)
+            let child = try View.child(content, envObject: envObject)
+            let prefix = Inspector.typeName(type: type)
+            try Inspector.guardType(value: child.view, prefix: prefix)
             return try .init(child, envObject: EnvObjectsContainer([object1, object2]))
     }
     
     func view<T>(_ type: T.Type, _ object1: T.Object1, _ object2: T.Object2, _ object3: T.Object3)
         throws -> InspectableView<ViewType.ViewWithEnvObject3<T>>
         where T: InspectableWithEnvObject3 {
-        let child = try View.child(content, envObject: envObject)
-        let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: child.view, prefix: prefix)
+            let child = try View.child(content, envObject: envObject)
+            let prefix = Inspector.typeName(type: type)
+            try Inspector.guardType(value: child.view, prefix: prefix)
             return try .init(child, envObject: EnvObjectsContainer([object1, object2, object3]))
     }
 }
@@ -153,8 +153,8 @@ public extension InspectableView where View: MultipleViewContent {
     
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
-        let content = try child(at: index)
-        let prefix = Inspector.typeName(type: type)
+            let content = try child(at: index)
+            let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: content.view, prefix: prefix)
             return try .init(content)
     }
@@ -162,18 +162,18 @@ public extension InspectableView where View: MultipleViewContent {
     func view<T>(_ type: T.Type, _ object: T.Object, _ index: Int)
         throws -> InspectableView<ViewType.ViewWithEnvObject<T>>
         where T: InspectableWithEnvObject {
-        let content = try child(at: index)
-        let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: content.view, prefix: prefix)
+            let content = try child(at: index)
+            let prefix = Inspector.typeName(type: type)
+            try Inspector.guardType(value: content.view, prefix: prefix)
             return try .init(content, envObject: object)
     }
     
     func view<T>(_ type: T.Type, _ object1: T.Object1, _ object2: T.Object2, _ index: Int)
         throws -> InspectableView<ViewType.ViewWithEnvObject2<T>>
         where T: InspectableWithEnvObject2 {
-        let content = try child(at: index)
-        let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: content.view, prefix: prefix)
+            let content = try child(at: index)
+            let prefix = Inspector.typeName(type: type)
+            try Inspector.guardType(value: content.view, prefix: prefix)
             return try .init(content, envObject: EnvObjectsContainer([object1, object2]))
     }
     
@@ -181,9 +181,9 @@ public extension InspectableView where View: MultipleViewContent {
                  _ object3: T.Object3, _ index: Int)
         throws -> InspectableView<ViewType.ViewWithEnvObject3<T>>
         where T: InspectableWithEnvObject3 {
-        let content = try child(at: index)
-        let prefix = Inspector.typeName(type: type)
-        try Inspector.guardType(value: content.view, prefix: prefix)
+            let content = try child(at: index)
+            let prefix = Inspector.typeName(type: type)
+            try Inspector.guardType(value: content.view, prefix: prefix)
             return try .init(content, envObject: EnvObjectsContainer([object1, object2, object3]))
     }
 }
