@@ -2,12 +2,12 @@
 
 [![Build Status](https://travis-ci.com/nalexn/ViewInspector.svg?branch=master)](https://travis-ci.com/nalexn/ViewInspector) [![codecov](https://codecov.io/gh/nalexn/ViewInspector/branch/master/graph/badge.svg)](https://codecov.io/gh/nalexn/ViewInspector) ![Platform](https://img.shields.io/badge/platform-ios%20%7C%20tvos%20%7C%20watchos%20%7C%20macos-lightgrey)
 
-**ViewInspector** is a library for unit testing SwiftUI-based projects.
-It allows for traversing SwiftUI view hierarchy in runtime providing direct access to the underlying View structs.
+**ViewInspector** is a library for unit testing SwiftUI views.
+It allows for traversing the view hierarchy in runtime providing direct access to the underlying View structs.
 
 ## Why?
 
-SwiftUI views are a function of state. We can provide the input, but couldn't verify the output. Until now.
+SwiftUI views are a function of state. We can provide the input, but couldn't verify the output. Until now!
 
 ## Features
 
@@ -21,41 +21,52 @@ let value = try view.inspect().text().string()
 XCTAssertEqual(value, "Hello, world!")
 ```
 
-#### 2. Extract your views from the hierarchy
-
-It is possible to obtain a copy of your custom view with actual state and references from the hierarchy of any depth:
-
-```swift
-let customView = try view.inspect().anyView().view(CustomView.self)
-let sut = customView.actualView()
-XCTAssertTrue(sut.isToggleOn)
-```
-
-#### 3. Trigger side effects
+#### 2. Trigger side effects
 
 Simulate user interaction by programmatically triggering system controls callbacks:
 
 ```swift
-let view = ContentView()
 let button = try view.inspect().hStack().button(3)
 try button.tap()
 
-let textField = try view.inspect().hStack().textField(2)
-try textField.callOnCommit()
+let view = try view.inspect().list().view(ItemView.self, 15)
+try view.callOnAppear()
 ```
+
+#### 3. Extract custom views from the hierarchy of any depth
+
+It is possible to obtain a copy of your custom view with actual state and references from the hierarchy of any depth:
+
+```swift
+let sut = try view.inspect().tabView().navigationView()
+    .overlay().anyView().view(CustomView.self).actualView()
+XCTAssertTrue(sut.isUserLoggedIn)
+```
+
+## FAQs
+
+### Which views and modifiers are supported?
+
+Pretty much all! Check out the [detailed list](readiness.md).
+
+The framework is still expanding, as there are hundreds of inspectable attributes in SwiftUI that are not included yet.
+
+Contributions are welcomed! To get some inspiration, read the [story](https://nalexn.github.io/swiftui-unit-testing/?utm_source=nalexn_github) behind creating this framework.
 
 ### Is it using private APIs?
 
-**ViewInspector** is using official Swift reflection API to dissect the view structures. So this library is production-friendly, although it's strongly recommended to use it for debugging and unit testing purposes only.
+**ViewInspector** is using official Swift reflection API to dissect the view structures.
 
-## How do I add it to my Xcode project?
+So this framework is production-friendly for the case if you accidentally (or intentionally) linked it with the build target.
+
+### How do I add it to my Xcode project?
 
 1. In Xcode select **File ⭢ Swift Packages ⭢ Add Package Dependency...**
 2. Copy-paste repository URL: **https://github.com/nalexn/ViewInspector**
-3. Hit **Next** two times, under **Add to Target** select your test target
+3. Hit **Next** two times, under **Add to Target** select your test target. There is no need to add it to the build target.
 4. Hit **Finish**
 
-## How do I use it in my project?
+### How do I use it in my project?
 
 Cosidering you have a view:
 
@@ -150,24 +161,34 @@ struct MyView: View {
 You can inspect it with **ViewInspector** after refactoring the following way:
 
 ```swift
-struct MyView: View, InspectableWithEnvObject {
+struct MyView: View {
 
-    @EnvironmentObject var state: GlobalState
+    @EnvironmentObject var state: AppState
     
     var body: Body {
         content(state)
     }
     
-    func content(_ state: GlobalState) -> some View {
+    func content(_ state: AppState) -> some View {
         Text(state.showHi ? "Hi" : "Bye")
     }
 }
+```
+In the test target extend the view to conform to `InspectableWithEnvObject` protocol:
+
+```swift
+import XCTest
+import ViewInspector
+@testable import MyApp
+
+extension MyView: InspectableWithEnvObject { }
+
 ```
 
 After that you can extract the view in tests by explicitely providing the environment object:
 
 ```swift
-let envObject = GlobalState()
+let envObject = AppState()
 let view = MyView()
 let value = try view.inspect(envObject).text().string()
 XCTAssertEqual(value, "Hi")
@@ -176,57 +197,16 @@ XCTAssertEqual(value, "Hi")
 For the case when view is embedded in the hierarchy:
 
 ```swift
-let envObject = GlobalState()
+let envObject = AppState()
 let view = HStack { AnyView(MyView()) }
 try view.inspect().anyView(0).view(MyView.self, envObject)
 ```
 
 Note that you don't need to call `.environmentObject(_:)` in these cases.
 
-## Library readiness
+## Questions, concerns, suggestions?
 
-- [ ] AngularGradient
-- [x] AnyView
-- [x] Button
-- [ ] ButtonStyleConfiguration.Label
-- [x] Custom view (SwiftUI and UIKit)
-- [x] DatePicker
-- [x] Divider
-- [x] EditButton
-- [x] EquatableView
-- [x] ForEach
-- [x] Form
-- [x] GeometryReader
-- [x] Group
-- [x] GroupBox
-- [x] HSplitView
-- [x] HStack
-- [x] Image
-- [ ] LinearGradient
-- [x] List
-- [ ] MenuButton
-- [x] ModifiedContent
-- [x] NavigationLink
-- [x] NavigationView
-- [ ] PasteButton
-- [x] Picker
-- [ ] PrimitiveButtonStyleConfiguration.Label
-- [ ] RadialGradient
-- [x] ScrollView
-- [x] Section
-- [x] SecureField
-- [x] Slider
-- [x] Stepper
-- [x] TabView
-- [x] Text
-- [x] TextField
-- [x] Toggle
-- [ ] ToggleStyleConfiguration.Label
-- [x] VSplitView
-- [x] VStack
-- [x] ZStack
-
-### Contributions are welcomed!
+Feel free to contact me on [Twitter](https://twitter.com/nallexn) or just submit an issue or a pull request on Github.
 
 ---
 
