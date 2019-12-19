@@ -150,7 +150,7 @@ Consider you have a view that has a `@EnvironmentObject` variable:
 ```swift
 struct MyView: View {
 
-    @EnvironmentObject var state: GlobalState
+    @EnvironmentObject var state: AppState
     
     var body: some View {
         Text(state.showHi ? "Hi" : "Bye")
@@ -166,10 +166,10 @@ struct MyView: View {
     @EnvironmentObject var state: AppState
     
     var body: Body {
-        content(state)
+        body(state)
     }
     
-    func content(_ state: AppState) -> some View {
+    func body(_ state: AppState) -> some View {
         Text(state.showHi ? "Hi" : "Bye")
     }
 }
@@ -203,6 +203,31 @@ try view.inspect().anyView(0).view(MyView.self, envObject)
 ```
 
 Note that you don't need to call `.environmentObject(_:)` in these cases.
+
+Use `InspectableWithEnvObject2` and `InspectableWithEnvObject3` protocols for injecting two and three environment objects as needed:
+
+```swift
+struct MyView: View {
+
+    @EnvironmentObject var object1: AppState1
+    @EnvironmentObject var object2: AppState2
+    
+    var body: Body {
+        body(object1, object2)
+    }
+    
+    func body(_ object1: AppState1, _ object2: AppState2) -> some View {
+        ...
+    }
+}
+
+// Test Target:
+
+extension MyView: InspectableWithEnvObject2 { }
+
+let object1 = AppState1(), object2 = AppState2()
+try view.inspect(object1, object2)
+```
 
 ## Questions, concerns, suggestions?
 
