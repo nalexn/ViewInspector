@@ -165,7 +165,7 @@ struct MyView: View {
 
     @EnvironmentObject var state: AppState
     
-    var body: Body {
+    var body: some View {
         body(state)
     }
     
@@ -197,7 +197,7 @@ let value = try view.inspect(envObject).text().string()
 XCTAssertEqual(value, "Hi")
 ```
 
-For the case when view is embedded in the hierarchy:
+For the case when the view is embedded in the hierarchy:
 
 ```swift
 let envObject = AppState()
@@ -207,7 +207,7 @@ try view.inspect().anyView(0).view(MyView.self, envObject)
 
 Note that you don't need to call `.environmentObject(_:)` in these cases.
 
-Use `InspectableWithEnvObject2` and `InspectableWithEnvObject3` protocols for injecting two and three environment objects as needed:
+Use `InspectableWithEnvObject2` and `InspectableWithEnvObject3` protocols for injecting two and three parameters as needed:
 
 ```swift
 struct MyView: View {
@@ -232,7 +232,7 @@ let object1 = AppState1(), object2 = AppState2()
 try view.inspect(object1, object2)
 ```
 
-You are not bound to injecting only the `ObservableObject`. Any typed parameters, including those injected with `@Environment`, would also work.
+You are not bound to injecting only the `@EnvironmentObject`. Any typed parameters, including those injected with `@Environment`, would also work.
 
 ## Questions, concerns, suggestions?
 
