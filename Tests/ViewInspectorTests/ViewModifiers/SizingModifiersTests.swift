@@ -13,12 +13,12 @@ final class ViewSizingTests: XCTestCase {
     }
     
     func testFrameWidthHeightAlignmentInspection() throws {
-        let frame = FixedFrameLayout(width: 5, height: 6, alignment:
-            Alignment(horizontal: .center, vertical: .center))
-        let sut = try EmptyView().frame(width: frame.width, height: frame.height,
-                                        alignment: frame.alignment)
+        let frame: (CGFloat, CGFloat, Alignment) = (5, 6, .center)
+        let sut = try EmptyView().frame(width: frame.0, height: frame.1, alignment: frame.2)
             .inspect().emptyView().fixedFrame()
-        XCTAssertEqual(sut, frame)
+        XCTAssertEqual(sut.width, frame.0)
+        XCTAssertEqual(sut.height, frame.1)
+        XCTAssertEqual(sut.alignment, frame.2)
     }
     
     func testFrameMinIdealMax() throws {
@@ -29,15 +29,17 @@ final class ViewSizingTests: XCTestCase {
     }
     
     func testFrameMinIdealMaxInspection() throws {
-        let frame = FlexFrameLayout(minWidth: 1, idealWidth: 2, maxWidth: 3,
-                                    minHeight: 4, idealHeight: 5, maxHeight: 6,
-                                    alignment: .bottomLeading)
+        let frame: (CGFloat, CGFloat, CGFloat, CGFloat, CGFloat, CGFloat, Alignment) =
+            (1, 2, 3, 4, 5, 6, .bottomLeading)
         let sut = try EmptyView().frame(
-            minWidth: frame.minWidth, idealWidth: frame.idealWidth, maxWidth: frame.maxWidth,
-            minHeight: frame.minHeight, idealHeight: frame.idealHeight, maxHeight: frame.maxHeight,
-            alignment: frame.alignment)
+            minWidth: frame.0, idealWidth: frame.1, maxWidth: frame.2,
+            minHeight: frame.3, idealHeight: frame.4, maxHeight: frame.5,
+            alignment: frame.6)
             .inspect().emptyView().flexFrame()
-        XCTAssertEqual(sut, frame)
+        XCTAssertEqual(sut.minWidth, frame.0); XCTAssertEqual(sut.idealWidth, frame.1)
+        XCTAssertEqual(sut.maxWidth, frame.2); XCTAssertEqual(sut.minHeight, frame.3)
+        XCTAssertEqual(sut.idealHeight, frame.4); XCTAssertEqual(sut.maxHeight, frame.5)
+        XCTAssertEqual(sut.alignment, frame.6)
     }
     
     func testFixedSize() throws {
@@ -47,7 +49,7 @@ final class ViewSizingTests: XCTestCase {
     
     func testFixedSizeInspection() throws {
         let sut = try EmptyView().fixedSize().inspect().emptyView().fixedSize()
-        XCTAssertEqual(sut, FixedSize(horizontal: true, vertical: true))
+        XCTAssertTrue(sut.horizontal); XCTAssertTrue(sut.vertical)
     }
     
     func testFixedSizeHorizontalVertical() throws {
@@ -56,10 +58,10 @@ final class ViewSizingTests: XCTestCase {
     }
     
     func testFixedSizeHorizontalVerticalInspection() throws {
-        let fixed = FixedSize(horizontal: true, vertical: false)
+        let fixed = (horizontal: true, vertical: false)
         let sut = try EmptyView().fixedSize(horizontal: fixed.horizontal, vertical: fixed.vertical)
             .inspect().emptyView().fixedSize()
-        XCTAssertEqual(sut, fixed)
+        XCTAssertTrue(sut.horizontal); XCTAssertFalse(sut.vertical)
     }
     
     func testLayoutPriority() throws {
