@@ -12,22 +12,22 @@ public extension Inspectable where Self: View {
 
 public protocol InspectableWithEnvObject: EnvironmentObjectInjection {
     associatedtype InspectableBody
-    associatedtype Object: ObservableObject
+    associatedtype Object
     func body(_ object: Object) -> InspectableBody
 }
 
 public protocol InspectableWithEnvObject2: EnvironmentObjectInjection2 {
     associatedtype InspectableBody
-    associatedtype Object1: ObservableObject
-    associatedtype Object2: ObservableObject
+    associatedtype Object1
+    associatedtype Object2
     func body(_ object1: Object1, _ object2: Object2) -> InspectableBody
 }
 
 public protocol InspectableWithEnvObject3: EnvironmentObjectInjection3 {
     associatedtype InspectableBody
-    associatedtype Object1: ObservableObject
-    associatedtype Object2: ObservableObject
-    associatedtype Object3: ObservableObject
+    associatedtype Object1
+    associatedtype Object2
+    associatedtype Object3
     func body(_ object1: Object1, _ object2: Object2, _ object3: Object3) -> InspectableBody
 }
 
