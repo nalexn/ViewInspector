@@ -174,6 +174,9 @@ struct MyView: View {
     }
 }
 ```
+
+In the `body(_:)`, make sure to reference the injected parameter instead of the variable from `self`. The error message *"Fatal error: No ObservableObject of type ... found. A View.environmentObject(_:) for ... may be missing as an ancestor of this view."* is the indicator that you still do. See [this issue](https://github.com/nalexn/ViewInspector/issues/4) for more info.
+
 In the test target extend the view to conform to `InspectableWithEnvObject` protocol:
 
 ```swift
@@ -228,6 +231,8 @@ extension MyView: InspectableWithEnvObject2 { }
 let object1 = AppState1(), object2 = AppState2()
 try view.inspect(object1, object2)
 ```
+
+You are not bound to injecting only the `ObservableObject`. Any typed parameters, including those injected with `@Environment`, would also work.
 
 ## Questions, concerns, suggestions?
 
