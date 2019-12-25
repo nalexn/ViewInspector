@@ -1,4 +1,5 @@
 import XCTest
+import Combine
 import SwiftUI
 
 @testable import ViewInspector
@@ -43,11 +44,11 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testEnvironmentStateChanges3() throws {
-        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = ExternalState3()
+        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = EnvironmentParameter()
         let view = EnvironmentStateTestView3()
         let text1 = try view.inspect(object1, object2, object3).text().string()
         XCTAssertEqual(text1, "obj1obj2obj3")
-        object3.value = "abc"
+        object3.state.value = "abc"
         let text2 = try view.inspect(object1, object2, object3).text().string()
         XCTAssertEqual(text2, "obj1obj2abc")
     }
@@ -112,7 +113,7 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testExtractionEnvView3FromSingleViewContainer() throws {
-        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = ExternalState3()
+        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = EnvironmentParameter()
         let view = AnyView(EnvironmentStateTestView3())
         XCTAssertNoThrow(try view.inspect()
             .view(EnvironmentStateTestView3.self, object1, object2, object3))
@@ -133,7 +134,7 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testExtractionEnvView3FromMultipleViewContainer() throws {
-        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = ExternalState3()
+        let object1 = ExternalState1(), object2 = ExternalState2(), object3 = EnvironmentParameter()
         let view = HStack { EnvironmentStateTestView3() }
         XCTAssertNoThrow(try view.inspect()
             .view(EnvironmentStateTestView3.self, object1, object2, object3, 0))
@@ -229,15 +230,15 @@ private struct EnvironmentStateTestView2: View, InspectableWithEnvObject2 {
 private struct EnvironmentStateTestView3: View, InspectableWithEnvObject3 {
     @EnvironmentObject var object1: ExternalState1
     @EnvironmentObject var object2: ExternalState2
-    @EnvironmentObject var object3: ExternalState3
+    @Environment(\.state3) var object3: EnvironmentParameter.EnvKey
     
     var body: some View {
-        body(object1, object2, object3)
+        body(object1, object2, object3.state)
     }
     
     func body(_ object1: ExternalState1, _ object2: ExternalState2,
-              _ object3: ExternalState3) -> some View {
-        Text(object1.value + object2.value + object3.value)
+              _ object3: EnvironmentParameter) -> some View {
+        Text(object1.value + object2.value + object3.state.value)
     }
 }
 
@@ -249,8 +250,22 @@ private class ExternalState2: ObservableObject {
     @Published var value = "obj2"
 }
 
-private class ExternalState3: ObservableObject {
-    @Published var value = "obj3"
+private struct EnvironmentParameter {
+    let state = CurrentValueSubject<String, Never>("obj3")
+}
+
+extension EnvironmentParameter {
+    struct EnvKey: EnvironmentKey {
+        let state: EnvironmentParameter
+        static var defaultValue: Self { .init(state: EnvironmentParameter()) }
+    }
+}
+
+extension EnvironmentValues {
+    fileprivate var state3: EnvironmentParameter.EnvKey {
+        get { self[EnvironmentParameter.EnvKey.self] }
+        set { self[EnvironmentParameter.EnvKey.self] = newValue }
+    }
 }
 
 extension ViewType {
