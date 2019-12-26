@@ -202,7 +202,7 @@ private struct IncorrectTestView: View, Inspectable {
     }
 }
 
-private struct EnvironmentStateTestView1: View, InspectableWithEnvObject {
+private struct EnvironmentStateTestView1: View, InspectableWithOneParam {
     @EnvironmentObject var viewModel: ExternalState1
     
     var body: some View {
@@ -214,7 +214,7 @@ private struct EnvironmentStateTestView1: View, InspectableWithEnvObject {
     }
 }
 
-private struct EnvironmentStateTestView2: View, InspectableWithEnvObject2 {
+private struct EnvironmentStateTestView2: View, InspectableWithTwoParam {
     @EnvironmentObject var object1: ExternalState1
     @EnvironmentObject var object2: ExternalState2
     
@@ -227,7 +227,7 @@ private struct EnvironmentStateTestView2: View, InspectableWithEnvObject2 {
     }
 }
 
-private struct EnvironmentStateTestView3: View, InspectableWithEnvObject3 {
+private struct EnvironmentStateTestView3: View, InspectableWithThreeParam {
     @EnvironmentObject var object1: ExternalState1
     @EnvironmentObject var object2: ExternalState2
     @Environment(\.state3) var object3: EnvironmentParameter.EnvKey

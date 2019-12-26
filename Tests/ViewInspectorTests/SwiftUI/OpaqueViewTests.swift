@@ -43,7 +43,7 @@ private struct InspectableTestView: View, Inspectable {
     }
 }
 
-private struct EnvInspectableTestView: View, InspectableWithEnvObject {
+private struct EnvInspectableTestView: View, InspectableWithOneParam {
     
     var body: some View {
         body(State())

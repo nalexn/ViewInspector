@@ -10,37 +10,38 @@ public extension Inspectable where Self: View {
     var content: Any { body }
 }
 
-public protocol InspectableWithEnvObject: EnvironmentObjectInjection {
+public protocol InspectableWithOneParam: SingleParameterInjection {
     associatedtype InspectableBody
-    associatedtype Object
-    func body(_ object: Object) -> InspectableBody
+    associatedtype Parameter
+    func body(_ parameter: Parameter) -> InspectableBody
 }
 
-public protocol InspectableWithEnvObject2: EnvironmentObjectInjection2 {
+public protocol InspectableWithTwoParam: DualParameterInjection {
     associatedtype InspectableBody
-    associatedtype Object1
-    associatedtype Object2
-    func body(_ object1: Object1, _ object2: Object2) -> InspectableBody
+    associatedtype Parameter1
+    associatedtype Parameter2
+    func body(_ parameter1: Parameter1, _ parameter2: Parameter2) -> InspectableBody
 }
 
-public protocol InspectableWithEnvObject3: EnvironmentObjectInjection3 {
+public protocol InspectableWithThreeParam: TripleParameterInjection {
     associatedtype InspectableBody
-    associatedtype Object1
-    associatedtype Object2
-    associatedtype Object3
-    func body(_ object1: Object1, _ object2: Object2, _ object3: Object3) -> InspectableBody
+    associatedtype Parameter1
+    associatedtype Parameter2
+    associatedtype Parameter3
+    func body(_ parameter1: Parameter1, _ parameter2: Parameter2,
+              _ parameter3: Parameter3) -> InspectableBody
 }
 
-public protocol EnvironmentObjectInjection {
-    func inject(_ object: Any) throws -> Any
+public protocol SingleParameterInjection {
+    func inject(_ parameter: Any) throws -> Any
 }
 
-public protocol EnvironmentObjectInjection2 {
-    func inject(_ object1: Any, _ object2: Any) throws -> Any
+public protocol DualParameterInjection {
+    func inject(_ parameter1: Any, _ parameter2: Any) throws -> Any
 }
 
-public protocol EnvironmentObjectInjection3 {
-    func inject(_ object1: Any, _ object2: Any, _ object2: Any) throws -> Any
+public protocol TripleParameterInjection {
+    func inject(_ parameter1: Any, _ parameter2: Any, _ parameter3: Any) throws -> Any
 }
 
 public protocol SingleViewContent {
@@ -132,3 +133,14 @@ extension BinaryEquatable {
         }
     }
 }
+
+// MARK: - Deprecated
+
+@available(*, deprecated, renamed: "InspectableWithOneParam")
+public typealias InspectableWithEnvObject = InspectableWithOneParam
+
+@available(*, deprecated, renamed: "InspectableWithTwoParam")
+public typealias InspectableWithEnvObject2 = InspectableWithTwoParam
+
+@available(*, deprecated, renamed: "InspectableWithThreeParam")
+public typealias InspectableWithEnvObject3 = InspectableWithThreeParam
