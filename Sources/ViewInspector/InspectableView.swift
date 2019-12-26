@@ -11,10 +11,8 @@ public struct InspectableView<View> where View: KnownViewType {
             try Inspector.guardNoEnvObjects(inspectableView: inspectable)
         }
         self.content = content
-        self.injection = injection ?? InjectionParameters([])
+        self.injection = injection ?? .init()
     }
-    
-    private static var stub: Any { InjectionParameters([]) }
 }
 
 internal extension InspectableView where View: SingleViewContent {
@@ -56,21 +54,21 @@ extension View {
     }
     
     func inspect<T>(_ view: T.Type, _ param: T.Parameter)
-        throws -> InspectableView<ViewType.ViewWithEnvObject<T>>
+        throws -> InspectableView<ViewType.ViewWithOneParam<T>>
         where T: InspectableWithOneParam {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
             return try .init(unwrapped, injection: InjectionParameters([param]))
     }
     
     func inspect<T>(_ view: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2)
-        throws -> InspectableView<ViewType.ViewWithEnvObject2<T>>
+        throws -> InspectableView<ViewType.ViewWithTwoParam<T>>
         where T: InspectableWithTwoParam {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
             return try .init(unwrapped, injection: InjectionParameters([param1, param2]))
     }
     
     func inspect<T>(_ view: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2, _ param3: T.Parameter3)
-        throws -> InspectableView<ViewType.ViewWithEnvObject3<T>>
+        throws -> InspectableView<ViewType.ViewWithThreeParam<T>>
         where T: InspectableWithThreeParam {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
             return try .init(unwrapped, injection: InjectionParameters([param1, param2, param3]))
@@ -81,7 +79,7 @@ internal struct InjectionParameters {
     
     let params: [Any]
     
-    init(_ params: [Any]) {
+    init(_ params: [Any] = []) {
         self.params = params
     }
 }

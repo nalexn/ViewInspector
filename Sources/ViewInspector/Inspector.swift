@@ -92,7 +92,7 @@ extension Inspector {
     }
     
     static func unwrap(content: Content, injection: InjectionParameters? = nil) throws -> Content {
-        let injection = injection ?? InjectionParameters([])
+        let injection = injection ?? .init()
         switch Inspector.typeName(value: content.view, prefixOnly: true) {
         case "Tree":
             return try ViewType.TreeView.child(content, injection: injection)

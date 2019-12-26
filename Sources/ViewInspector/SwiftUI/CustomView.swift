@@ -8,19 +8,19 @@ public extension ViewType {
         }
     }
     
-    struct ViewWithEnvObject<T>: KnownViewType, CustomViewType where T: InspectableWithOneParam {
+    struct ViewWithOneParam<T>: KnownViewType, CustomViewType where T: InspectableWithOneParam {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self)
         }
     }
     
-    struct ViewWithEnvObject2<T>: KnownViewType, CustomViewType where T: InspectableWithTwoParam {
+    struct ViewWithTwoParam<T>: KnownViewType, CustomViewType where T: InspectableWithTwoParam {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self)
         }
     }
     
-    struct ViewWithEnvObject3<T>: KnownViewType, CustomViewType where T: InspectableWithThreeParam {
+    struct ViewWithThreeParam<T>: KnownViewType, CustomViewType where T: InspectableWithThreeParam {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self)
         }
@@ -36,7 +36,7 @@ public extension View where Self: Inspectable {
 
 public extension View where Self: InspectableWithOneParam {
     
-    func inspect(_ param: Parameter) throws -> InspectableView<ViewType.ViewWithEnvObject<Self>> {
+    func inspect(_ param: Parameter) throws -> InspectableView<ViewType.ViewWithOneParam<Self>> {
         return try .init(Content(self), injection: InjectionParameters([param]))
     }
 }
@@ -44,7 +44,7 @@ public extension View where Self: InspectableWithOneParam {
 public extension View where Self: InspectableWithTwoParam {
     
     func inspect(_ param1: Parameter1, _ param2: Parameter2)
-        throws -> InspectableView<ViewType.ViewWithEnvObject2<Self>> {
+        throws -> InspectableView<ViewType.ViewWithTwoParam<Self>> {
         return try .init(Content(self), injection: InjectionParameters([param1, param2]))
     }
 }
@@ -52,7 +52,7 @@ public extension View where Self: InspectableWithTwoParam {
 public extension View where Self: InspectableWithThreeParam {
     
     func inspect(_ param1: Parameter1, _ param2: Parameter2, _ param3: Parameter3)
-        throws -> InspectableView<ViewType.ViewWithEnvObject3<Self>> {
+        throws -> InspectableView<ViewType.ViewWithThreeParam<Self>> {
         return try .init(Content(self), injection: InjectionParameters([param1, param2, param3]))
     }
 }
@@ -69,7 +69,7 @@ extension ViewType.View: SingleViewContent {
     }
 }
 
-extension ViewType.ViewWithEnvObject: SingleViewContent {
+extension ViewType.ViewWithOneParam: SingleViewContent {
     
     public static func child(_ content: Content, injection: Any) throws -> Content {
         guard let container = injection as? InjectionParameters,
@@ -83,7 +83,7 @@ extension ViewType.ViewWithEnvObject: SingleViewContent {
     }
 }
 
-extension ViewType.ViewWithEnvObject2: SingleViewContent {
+extension ViewType.ViewWithTwoParam: SingleViewContent {
     
     public static func child(_ content: Content, injection: Any) throws -> Content {
         guard let container = injection as? InjectionParameters,
@@ -97,7 +97,7 @@ extension ViewType.ViewWithEnvObject2: SingleViewContent {
     }
 }
 
-extension ViewType.ViewWithEnvObject3: SingleViewContent {
+extension ViewType.ViewWithThreeParam: SingleViewContent {
     
     public static func child(_ content: Content, injection: Any) throws -> Content {
         guard let container = injection as? InjectionParameters,
@@ -124,7 +124,7 @@ public extension InspectableView where View: SingleViewContent {
     }
     
     func view<T>(_ type: T.Type, _ param: T.Parameter)
-        throws -> InspectableView<ViewType.ViewWithEnvObject<T>>
+        throws -> InspectableView<ViewType.ViewWithOneParam<T>>
         where T: InspectableWithOneParam {
             let child = try View.child(content, injection: injection)
             let prefix = Inspector.typeName(type: type)
@@ -133,7 +133,7 @@ public extension InspectableView where View: SingleViewContent {
     }
     
     func view<T>(_ type: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2)
-        throws -> InspectableView<ViewType.ViewWithEnvObject2<T>>
+        throws -> InspectableView<ViewType.ViewWithTwoParam<T>>
         where T: InspectableWithTwoParam {
             let child = try View.child(content, injection: injection)
             let prefix = Inspector.typeName(type: type)
@@ -142,7 +142,7 @@ public extension InspectableView where View: SingleViewContent {
     }
     
     func view<T>(_ type: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2, _ param3: T.Parameter3)
-        throws -> InspectableView<ViewType.ViewWithEnvObject3<T>>
+        throws -> InspectableView<ViewType.ViewWithThreeParam<T>>
         where T: InspectableWithThreeParam {
             let child = try View.child(content, injection: injection)
             let prefix = Inspector.typeName(type: type)
@@ -164,7 +164,7 @@ public extension InspectableView where View: MultipleViewContent {
     }
     
     func view<T>(_ type: T.Type, _ param: T.Parameter, _ index: Int)
-        throws -> InspectableView<ViewType.ViewWithEnvObject<T>>
+        throws -> InspectableView<ViewType.ViewWithOneParam<T>>
         where T: InspectableWithOneParam {
             let content = try child(at: index)
             let prefix = Inspector.typeName(type: type)
@@ -173,7 +173,7 @@ public extension InspectableView where View: MultipleViewContent {
     }
     
     func view<T>(_ type: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2, _ index: Int)
-        throws -> InspectableView<ViewType.ViewWithEnvObject2<T>>
+        throws -> InspectableView<ViewType.ViewWithTwoParam<T>>
         where T: InspectableWithTwoParam {
             let content = try child(at: index)
             let prefix = Inspector.typeName(type: type)
@@ -183,7 +183,7 @@ public extension InspectableView where View: MultipleViewContent {
     
     func view<T>(_ type: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2,
                  _ param3: T.Parameter3, _ index: Int)
-        throws -> InspectableView<ViewType.ViewWithEnvObject3<T>>
+        throws -> InspectableView<ViewType.ViewWithThreeParam<T>>
         where T: InspectableWithThreeParam {
             let content = try child(at: index)
             let prefix = Inspector.typeName(type: type)
