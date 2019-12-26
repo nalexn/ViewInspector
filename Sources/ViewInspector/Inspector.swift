@@ -132,7 +132,7 @@ extension Inspector {
                 let viewType = Inspector.typeName(value: inspectableView)
                 throw InspectionError.notSupported("""
                     \(viewType) references `EnvironmentObject`, but conforms to `Inspectable`
-                    Please use `InspectableWithEnvObject` instead. More info in README:
+                    Please use `InspectableWithOneParam` instead. More info in README:
                     https://github.com/nalexn/ViewInspector#custom-views-using-environmentobject
                     """)
             }

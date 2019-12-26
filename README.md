@@ -177,59 +177,59 @@ struct MyView: View {
 
 In the `body(_:)`, make sure to reference the injected parameter instead of the variable from `self`. The error message *"Fatal error: No ObservableObject of type ... found. A View.environmentObject(_:) for ... may be missing as an ancestor of this view."* is the indicator that you still do. See [this issue](https://github.com/nalexn/ViewInspector/issues/4) for more info.
 
-In the test target extend the view to conform to `InspectableWithEnvObject` protocol:
+In the test target extend the view to conform to `InspectableWithOneParam` protocol:
 
 ```swift
 import XCTest
 import ViewInspector
 @testable import MyApp
 
-extension MyView: InspectableWithEnvObject { }
+extension MyView: InspectableWithOneParam { }
 
 ```
 
 After that you can extract the view in tests by explicitely providing the environment object:
 
 ```swift
-let envObject = AppState()
+let appState = AppState()
 let view = MyView()
-let value = try view.inspect(envObject).text().string()
+let value = try view.inspect(appState).text().string()
 XCTAssertEqual(value, "Hi")
 ```
 
 For the case when the view is embedded in the hierarchy:
 
 ```swift
-let envObject = AppState()
+let appState = AppState()
 let view = HStack { AnyView(MyView()) }
-try view.inspect().anyView(0).view(MyView.self, envObject)
+try view.inspect().anyView(0).view(MyView.self, appState)
 ```
 
 Note that you don't need to call `.environmentObject(_:)` in these cases.
 
-Use `InspectableWithEnvObject2` and `InspectableWithEnvObject3` protocols for injecting two and three parameters as needed:
+Use `InspectableWithTwoParam` and `InspectableWithThreeParam` protocols for injecting two and three parameters as needed:
 
 ```swift
 struct MyView: View {
 
-    @EnvironmentObject var object1: AppState1
-    @EnvironmentObject var object2: AppState2
+    @EnvironmentObject var appState: AppState
+    @Environment(\.workers) var workers: Workers
     
-    var body: Body {
-        body(object1, object2)
+    var body: some View {
+        body(appState, workers)
     }
     
-    func body(_ object1: AppState1, _ object2: AppState2) -> some View {
+    func body(_ appState: AppState, _ workers: Workers) -> some View {
         ...
     }
 }
 
 // Test Target:
 
-extension MyView: InspectableWithEnvObject2 { }
+extension MyView: InspectableWithTwoParam { }
 
-let object1 = AppState1(), object2 = AppState2()
-try view.inspect(object1, object2)
+let appState = AppState(), workers = Workers()
+try view.inspect(appState, workers)
 ```
 
 You are not bound to injecting only the `@EnvironmentObject`. Any typed parameters, including those injected with `@Environment`, would also work.
