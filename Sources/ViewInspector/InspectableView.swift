@@ -34,7 +34,7 @@ internal extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Start of inspection for Opaque View
 
-extension View {
+public extension View {
     func inspect() throws -> InspectableView<ViewType.AnyView> {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
         let isInspectable = self is Inspectable ||
