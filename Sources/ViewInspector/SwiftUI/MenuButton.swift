@@ -26,7 +26,7 @@ public extension ViewType.MenuButton {
 
 extension ViewType.MenuButton: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
+    public static func child(_ content: Content, injection: Any) throws -> Content {
         let view = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }
@@ -43,7 +43,7 @@ public extension InspectableView where View: SingleViewContent {
 
 extension ViewType.MenuButton.Label: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
+    public static func child(_ content: Content, injection: Any) throws -> Content {
         let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }

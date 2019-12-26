@@ -69,8 +69,6 @@ extension Inspector {
 
 extension Inspector {
     
-    static var stubEnvObject: Any { EnvironmentObjectNotSet() }
-    
     static func viewsInContainer(view: Any) throws -> LazyGroup<Content> {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view))
         guard Inspector.isTupleView(unwrappedContainer.view) else {
@@ -88,31 +86,32 @@ extension Inspector {
         return Inspector.typeName(value: view, prefixOnly: true) == "TupleView"
     }
     
-    static func unwrap(view: Any, modifiers: [Any], envObject: Any = stubEnvObject) throws -> Content {
-        return try unwrap(content: Content(view, modifiers: modifiers), envObject: envObject)
+    static func unwrap(view: Any, modifiers: [Any], injection: InjectionParameters? = nil)
+        throws -> Content {
+        return try unwrap(content: Content(view, modifiers: modifiers), injection: injection)
     }
     
-    static func unwrap(content: Content, envObject: Any = stubEnvObject) throws -> Content {
-        
+    static func unwrap(content: Content, injection: InjectionParameters? = nil) throws -> Content {
+        let injection = injection ?? InjectionParameters([])
         switch Inspector.typeName(value: content.view, prefixOnly: true) {
         case "Tree":
-            return try ViewType.TreeView.child(content, envObject: envObject)
+            return try ViewType.TreeView.child(content, injection: injection)
         case "IDView":
-            return try ViewType.IDView.child(content, envObject: envObject)
+            return try ViewType.IDView.child(content, injection: injection)
         case "Optional":
-            return try ViewType.OptionalContent.child(content, envObject: envObject)
+            return try ViewType.OptionalContent.child(content, injection: injection)
         case "EquatableView":
-            return try ViewType.EquatableView.child(content, envObject: envObject)
+            return try ViewType.EquatableView.child(content, injection: injection)
         case "ModifiedContent":
-            return try ViewType.ModifiedContent.child(content, envObject: envObject)
+            return try ViewType.ModifiedContent.child(content, injection: injection)
         case "SubscriptionView":
-            return try ViewType.SubscriptionView.child(content, envObject: envObject)
+            return try ViewType.SubscriptionView.child(content, injection: injection)
         case "_ConditionalContent":
-            return try ViewType.ConditionalContent.child(content, envObject: envObject)
+            return try ViewType.ConditionalContent.child(content, injection: injection)
         case "EnvironmentReaderView":
-            return try ViewType.EnvironmentReaderView.child(content, envObject: envObject)
+            return try ViewType.EnvironmentReaderView.child(content, injection: injection)
         case "_DelayedPreferenceView":
-            return try ViewType.DelayedPreferenceView.child(content, envObject: envObject)
+            return try ViewType.DelayedPreferenceView.child(content, injection: injection)
         default:
             return content
         }
@@ -147,8 +146,4 @@ extension InspectionError {
             factual: Inspector.typeName(value: value),
             expected: Inspector.typeName(type: expectedType))
     }
-}
-
-extension Inspector {
-    struct EnvironmentObjectNotSet { }
 }

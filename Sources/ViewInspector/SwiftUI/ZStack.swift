@@ -18,8 +18,8 @@ public extension ZStack {
 
 extension ViewType.ZStack: MultipleViewContent {
     
-    public static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content> {
-        return try ViewType.HStack.children(content, envObject: envObject)
+    public static func children(_ content: Content, injection: Any) throws -> LazyGroup<Content> {
+        return try ViewType.HStack.children(content, injection: injection)
     }
 }
 

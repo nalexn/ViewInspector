@@ -18,7 +18,7 @@ public extension AnyView {
 
 extension ViewType.AnyView: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
+    public static func child(_ content: Content, injection: Any) throws -> Content {
         let view = try Inspector.attribute(path: "storage|view", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }

@@ -8,7 +8,7 @@ internal extension ViewType {
 
 extension ViewType.ConditionalContent: SingleViewContent {
     
-    static func child(_ content: Content, envObject: Any) throws -> Content {
+    static func child(_ content: Content, injection: Any) throws -> Content {
         let storage = try Inspector.attribute(label: "storage", value: content.view)
         if let trueContent = try? Inspector.attribute(label: "trueContent", value: storage) {
             return try Inspector.unwrap(view: trueContent, modifiers: [])

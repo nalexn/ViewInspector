@@ -142,12 +142,12 @@ final class CustomViewTests: XCTestCase {
     
     func testEnvObjectTypeMismatch() {
         XCTAssertThrowsError(try ViewType.ViewWithEnvObject<EnvironmentStateTestView1>
-            .child(Content("abc"), envObject: Inspector.stubEnvObject))
+            .child(Content("abc"), injection: InjectionParameters([])))
     }
     
     func testContentViewTypeMismatch() {
         XCTAssertThrowsError(try ViewType.View<SimpleTestView>
-            .child(Content("abc"), envObject: Inspector.stubEnvObject))
+            .child(Content("abc"), injection: InjectionParameters([])))
     }
     
     func testActualView() throws {

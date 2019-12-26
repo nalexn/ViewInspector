@@ -25,7 +25,7 @@ public extension ViewType.NavigationLink {
 
 extension ViewType.NavigationLink: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
+    public static func child(_ content: Content, injection: Any) throws -> Content {
         let view = try Inspector.attribute(label: "destination", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }
@@ -33,7 +33,7 @@ extension ViewType.NavigationLink: SingleViewContent {
 
 extension ViewType.NavigationLink.Label: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
+    public static func child(_ content: Content, injection: Any) throws -> Content {
         let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }

@@ -37,7 +37,7 @@ public extension View where Self: Inspectable {
 public extension View where Self: InspectableWithOneParam {
     
     func inspect(_ param: Parameter) throws -> InspectableView<ViewType.ViewWithEnvObject<Self>> {
-        return try .init(Content(self), envObject: InjectionParameters([param]))
+        return try .init(Content(self), injection: InjectionParameters([param]))
     }
 }
 
@@ -45,7 +45,7 @@ public extension View where Self: InspectableWithTwoParam {
     
     func inspect(_ param1: Parameter1, _ param2: Parameter2)
         throws -> InspectableView<ViewType.ViewWithEnvObject2<Self>> {
-        return try .init(Content(self), envObject: InjectionParameters([param1, param2]))
+        return try .init(Content(self), injection: InjectionParameters([param1, param2]))
     }
 }
 
@@ -53,7 +53,7 @@ public extension View where Self: InspectableWithThreeParam {
     
     func inspect(_ param1: Parameter1, _ param2: Parameter2, _ param3: Parameter3)
         throws -> InspectableView<ViewType.ViewWithEnvObject3<Self>> {
-        return try .init(Content(self), envObject: InjectionParameters([param1, param2, param3]))
+        return try .init(Content(self), injection: InjectionParameters([param1, param2, param3]))
     }
 }
 
@@ -61,7 +61,7 @@ public extension View where Self: InspectableWithThreeParam {
 
 extension ViewType.View: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
+    public static func child(_ content: Content, injection: Any) throws -> Content {
         guard let body = (content.view as? Inspectable)?.content else {
             throw InspectionError.typeMismatch(content.view, T.self)
         }
@@ -71,8 +71,8 @@ extension ViewType.View: SingleViewContent {
 
 extension ViewType.ViewWithEnvObject: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
-        guard let container = envObject as? InjectionParameters,
+    public static func child(_ content: Content, injection: Any) throws -> Content {
+        guard let container = injection as? InjectionParameters,
             container.params.count == 1
             else { throw InspectionError.injection }
         guard let body = try (content.view as? SingleParameterInjection)?
@@ -85,8 +85,8 @@ extension ViewType.ViewWithEnvObject: SingleViewContent {
 
 extension ViewType.ViewWithEnvObject2: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
-        guard let container = envObject as? InjectionParameters,
+    public static func child(_ content: Content, injection: Any) throws -> Content {
+        guard let container = injection as? InjectionParameters,
             container.params.count == 2
             else { throw InspectionError.injection }
         guard let body = try (content.view as? DualParameterInjection)?
@@ -99,8 +99,8 @@ extension ViewType.ViewWithEnvObject2: SingleViewContent {
 
 extension ViewType.ViewWithEnvObject3: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
-        guard let container = envObject as? InjectionParameters,
+    public static func child(_ content: Content, injection: Any) throws -> Content {
+        guard let container = injection as? InjectionParameters,
             container.params.count == 3
             else { throw InspectionError.injection }
         guard let body = try (content.view as? TripleParameterInjection)?
@@ -117,7 +117,7 @@ public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
-            let child = try View.child(content, envObject: envObject)
+            let child = try View.child(content, injection: injection)
             let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: child.view, prefix: prefix)
             return try .init(child)
@@ -126,28 +126,28 @@ public extension InspectableView where View: SingleViewContent {
     func view<T>(_ type: T.Type, _ param: T.Parameter)
         throws -> InspectableView<ViewType.ViewWithEnvObject<T>>
         where T: InspectableWithOneParam {
-            let child = try View.child(content, envObject: param)
+            let child = try View.child(content, injection: injection)
             let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: child.view, prefix: prefix)
-            return try .init(child, envObject: InjectionParameters([param]))
+            return try .init(child, injection: InjectionParameters([param]))
     }
     
     func view<T>(_ type: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2)
         throws -> InspectableView<ViewType.ViewWithEnvObject2<T>>
         where T: InspectableWithTwoParam {
-            let child = try View.child(content, envObject: envObject)
+            let child = try View.child(content, injection: injection)
             let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: child.view, prefix: prefix)
-            return try .init(child, envObject: InjectionParameters([param1, param2]))
+            return try .init(child, injection: InjectionParameters([param1, param2]))
     }
     
     func view<T>(_ type: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2, _ param3: T.Parameter3)
         throws -> InspectableView<ViewType.ViewWithEnvObject3<T>>
         where T: InspectableWithThreeParam {
-            let child = try View.child(content, envObject: envObject)
+            let child = try View.child(content, injection: injection)
             let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: child.view, prefix: prefix)
-            return try .init(child, envObject: InjectionParameters([param1, param2, param3]))
+            return try .init(child, injection: InjectionParameters([param1, param2, param3]))
     }
 }
 
@@ -169,7 +169,7 @@ public extension InspectableView where View: MultipleViewContent {
             let content = try child(at: index)
             let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: content.view, prefix: prefix)
-            return try .init(content, envObject: InjectionParameters([param]))
+            return try .init(content, injection: InjectionParameters([param]))
     }
     
     func view<T>(_ type: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2, _ index: Int)
@@ -178,7 +178,7 @@ public extension InspectableView where View: MultipleViewContent {
             let content = try child(at: index)
             let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: content.view, prefix: prefix)
-            return try .init(content, envObject: InjectionParameters([param1, param2]))
+            return try .init(content, injection: InjectionParameters([param1, param2]))
     }
     
     func view<T>(_ type: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2,
@@ -188,7 +188,7 @@ public extension InspectableView where View: MultipleViewContent {
             let content = try child(at: index)
             let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: content.view, prefix: prefix)
-            return try .init(content, envObject: InjectionParameters([param1, param2, param3]))
+            return try .init(content, injection: InjectionParameters([param1, param2, param3]))
     }
 }
 

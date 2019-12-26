@@ -45,11 +45,11 @@ public protocol TripleParameterInjection {
 }
 
 public protocol SingleViewContent {
-    static func child(_ content: Content, envObject: Any) throws -> Content
+    static func child(_ content: Content, injection: Any) throws -> Content
 }
 
 public protocol MultipleViewContent {
-    static func children(_ content: Content, envObject: Any) throws -> LazyGroup<Content>
+    static func children(_ content: Content, injection: Any) throws -> LazyGroup<Content>
 }
 
 public protocol KnownViewType {

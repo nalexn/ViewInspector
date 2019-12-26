@@ -11,7 +11,7 @@ public extension ViewType {
 
 extension ViewType.ClassifiedView: SingleViewContent {
     
-    public static func child(_ content: Content, envObject: Any) throws -> Content {
+    public static func child(_ content: Content, injection: Any) throws -> Content {
         return content
     }
 }

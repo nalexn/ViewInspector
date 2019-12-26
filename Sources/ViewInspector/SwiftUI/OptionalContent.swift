@@ -6,7 +6,7 @@ internal extension ViewType {
 
 extension ViewType.OptionalContent: SingleViewContent {
 
-    static func child(_ content: Content, envObject: Any) throws -> Content {
+    static func child(_ content: Content, injection: Any) throws -> Content {
         guard let child = try (content.view as? OptionalViewContentProvider)?.view() else {
             throw InspectionError.typeMismatch(content.view, OptionalViewContentProvider.self)
         }
