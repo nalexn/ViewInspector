@@ -3,7 +3,7 @@
 ![Platform](https://img.shields.io/badge/platform-ios%20%7C%20tvos%20%7C%20watchos%20%7C%20macos-lightgrey) [![Build Status](https://travis-ci.com/nalexn/ViewInspector.svg?branch=master)](https://travis-ci.com/nalexn/ViewInspector) [![codecov](https://codecov.io/gh/nalexn/ViewInspector/branch/master/graph/badge.svg)](https://codecov.io/gh/nalexn/ViewInspector)
 
 **ViewInspector** is a library for unit testing SwiftUI views.
-It allows for traversing the view hierarchy in runtime providing direct access to the underlying View structs.
+It allows for traversing a view hierarchy at runtime providing direct access to the underlying `View` structs.
 
 ## Why?
 
@@ -23,7 +23,7 @@ XCTAssertEqual(value, "Hello, world!")
 
 #### 2. Trigger side effects
 
-Simulate user interaction by programmatically triggering system controls callbacks:
+You can simulate user interaction by programmatically triggering system-controls callbacks:
 
 ```swift
 let button = try view.inspect().hStack().button(3)
