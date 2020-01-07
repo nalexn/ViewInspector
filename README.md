@@ -154,12 +154,12 @@ Inspection of these views requires a small refactoring of the view's source code
 ```swift
 struct ContentView: View {
 
-    @State var showHi: Bool = false
+    @State var flag: Bool = false
     
     var body: some View {
         Button(action: {
             self.flag.toggle()
-        }, label: { Text(showHi ? "Hi" : "Bye") })
+        }, label: { Text(flag ? "True" : "False") })
     }
 }
 ```
@@ -175,7 +175,7 @@ struct ContentView: View {
     var body: some View {
         Button(action: {
             self.flag.toggle()
-        }, label: { Text(flag ? "Set to false" : "Set to true") })
+        }, label: { Text(flag ? "True" : "False") })
         .onAppear { self.didAppear?(self) } // 2.
     }
 }
