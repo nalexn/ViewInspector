@@ -31,6 +31,18 @@ final class CustomViewTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
+    func testStateMutationOnPublisherUpdate() throws {
+        var sut = LocalStateTestView(flag: false)
+        let exp = sut.on(\.didReceiveValue) { view in
+            XCTAssertTrue(view.flag)
+            let text = try view.inspect().button().text().string()
+            XCTAssertEqual(text, "true")
+        }
+        ViewHosting.host(view: sut)
+        sut.publisher.send(true)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
     func testObservedStateChanges() throws {
         let viewModel = ExternalState()
         let view = ObservedStateTestView(viewModel: viewModel)
@@ -141,12 +153,18 @@ private struct SimpleTestView: View, Inspectable {
 private struct LocalStateTestView: View, Inspectable {
     
     @State private(set) var flag: Bool
+    let publisher = CurrentValueSubject<Bool, Never>(false)
+    var didReceiveValue: ((Self) -> Void)?
     var didAppear: ((Self) -> Void)?
     
     var body: some View {
         Button(action: {
             self.flag.toggle()
         }, label: { Text(flag ? "true" : "false") })
+        .onReceive(publisher) { flag in
+            self.flag = flag
+            self.didReceiveValue?(self)
+        }
         .onAppear { self.didAppear?(self) }
     }
 }
