@@ -6,11 +6,29 @@ import SwiftUI
 
 final class CustomViewTests: XCTestCase {
     
-    func testLocalStateChanges() throws {
-        let text1 = try LocalStateTestView(flag: false).inspect().text().string()
-        XCTAssertEqual(text1, "false")
-        let text2 = try LocalStateTestView(flag: true).inspect().text().string()
-        XCTAssertEqual(text2, "true")
+    func testLocalStateChangesOnView() throws {
+        var sut = LocalStateTestView(flag: false)
+        let exp = sut.on(\.didAppear) { view in
+            XCTAssertFalse(view.flag)
+            try view.inspect().button().tap()
+            XCTAssertTrue(view.flag)
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testLocalStateChangesOnMirror() throws {
+        var sut = LocalStateTestView(flag: false)
+        let exp = sut.on(\.didAppear) { view in
+            let mirror = try view.inspect()
+            let text1 = try mirror.button().text().string()
+            XCTAssertEqual(text1, "false")
+            try mirror.button().tap()
+            let text2 = try mirror.button().text().string()
+            XCTAssertEqual(text2, "true")
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
     }
     
     func testObservedStateChanges() throws {
@@ -178,9 +196,13 @@ private struct SimpleTestView: View, Inspectable {
 private struct LocalStateTestView: View, Inspectable {
     
     @State private(set) var flag: Bool
+    var didAppear: ((Self) -> Void)?
     
     var body: some View {
-        Text(flag ? "true" : "false")
+        Button(action: {
+            self.flag.toggle()
+        }, label: { Text(flag ? "true" : "false") })
+        .onAppear { self.didAppear?(self) }
     }
 }
 

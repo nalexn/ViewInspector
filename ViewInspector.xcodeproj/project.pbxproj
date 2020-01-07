@@ -90,6 +90,7 @@
 		F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91C92383187D00515A91 /* ModifiedContent.swift */; };
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
 		F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */; };
+		F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
 		F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */; };
 		F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339E2385B46A00358E0E /* NavigationLink.swift */; };
@@ -232,6 +233,7 @@
 		F69C91C92383187D00515A91 /* ModifiedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContent.swift; sourceTree = "<group>"; };
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
 		F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectModifiers.swift; sourceTree = "<group>"; };
+		F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHosting.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
 		F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReaderTests.swift; sourceTree = "<group>"; };
 		F6D9339E2385B46A00358E0E /* NavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 				F60EEBBB2382EED0007DB53A /* BaseTypes.swift */,
 				F60EEBBA2382EED0007DB53A /* Inspector.swift */,
 				F60EEBBC2382EED0007DB53A /* InspectableView.swift */,
+				F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */,
 				F68108A423A5833D00B32145 /* Modifiers */,
 				F60EEBBD2382EED0007DB53A /* SwiftUI */,
 			);
@@ -629,6 +632,7 @@
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
 				F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */,
 				F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */,
+				F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */,
 				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				F6ECF6CE23A67C64000FC591 /* SizingModifiers.swift in Sources */,
