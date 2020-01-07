@@ -1,6 +1,6 @@
 # ViewInspector for SwiftUI
 
-![Platform](https://img.shields.io/badge/platform-ios%20%7C%20tvos%20%7C%20watchos%20%7C%20macos-lightgrey) [![Build Status](https://travis-ci.com/nalexn/ViewInspector.svg?branch=master)](https://travis-ci.com/nalexn/ViewInspector) [![codecov](https://codecov.io/gh/nalexn/ViewInspector/branch/master/graph/badge.svg)](https://codecov.io/gh/nalexn/ViewInspector)
+![Platform](https://img.shields.io/badge/platform-ios%20%7C%20tvos%20%7C%20watchos%20%7C%20macos-lightgrey) [![Build Status](https://travis-ci.com/nalexn/ViewInspector.svg?branch=master)](https://travis-ci.com/nalexn/ViewInspector) [![codecov](https://codecov.io/gh/nalexn/ViewInspector/branch/master/graph/badge.svg)](https://codecov.io/gh/nalexn/ViewInspector) [![venmo](https://img.shields.io/badge/%F0%9F%8D%BA-Venmo-brightgreen)](https://venmo.com/nallexn)
 
 **ViewInspector** is a library for unit testing SwiftUI views.
 It allows for traversing a view hierarchy at runtime providing direct access to the underlying `View` structs.
@@ -141,98 +141,122 @@ let hiText = try hStack.text(0)
 let okText = try hStack.anyView(1).view(OtherView.self).text()
 ```
 
-### Custom views using `@EnvironmentObject`
+### Custom views using `@ObservedObject`
 
-Currently, **ViewInspector** does not support SwiftUI's native environment injection through `.environmentObject(_:)`, however you still can inspect such views by explicitely providing the environment object to every view that uses it. A small refactoring of the view's source code is required.
+**ViewInspector** provides full support of such views, so you can inspect them without any intervention to the source code.
 
-Consider you have a view that has a `@EnvironmentObject` variable:
+Unlike the views using `@State`, `@Environment` or `@EnvironmentObject`, the state changes inside `@ObservedObject` can be evaluated with synchronous tests. You may consider, however, use the asynchronous approach described below, just for the sake of the tests consistency.
+
+### Custom views using `@State`, `@Environment` or `@EnvironmentObject`
+
+Inspection of these views requires a small refactoring of the view's source code. Consider we have a view with a `@State` variable:
 
 ```swift
-struct MyView: View {
+struct ContentView: View {
 
-    @EnvironmentObject var state: AppState
+    @State var showHi: Bool = false
     
     var body: some View {
-        Text(state.showHi ? "Hi" : "Bye")
+        Button(action: {
+            self.flag.toggle()
+        }, label: { Text(showHi ? "Hi" : "Bye") })
     }
 }
 ```
 
-You can inspect it with **ViewInspector** after refactoring the following way:
+We can inspect it after adding these two lines:
 
 ```swift
-struct MyView: View {
+struct ContentView: View {
 
-    @EnvironmentObject var state: AppState
+    @State var flag: Bool = false
+    var didAppear: ((Self) -> Void)? // 1.
     
     var body: some View {
-        body(state)
-    }
-    
-    func body(_ state: AppState) -> some View {
-        Text(state.showHi ? "Hi" : "Bye")
+        Button(action: {
+            self.flag.toggle()
+        }, label: { Text(flag ? "Set to false" : "Set to true") })
+        .onAppear { self.didAppear?(self) } // 2.
     }
 }
 ```
 
-In the `body(_:)`, make sure to reference the injected parameter instead of the variable from `self`. The error message *"Fatal error: No ObservableObject of type ... found. A View.environmentObject(_:) for ... may be missing as an ancestor of this view."* is the indicator that you still do. See [this issue](https://github.com/nalexn/ViewInspector/issues/4) for more info.
-
-In the test target extend the view to conform to `InspectableWithOneParam` protocol:
+The inspection will be fully functional inside the `didAppear` callback (which is called asynchronously):
 
 ```swift
-import XCTest
-import ViewInspector
-@testable import MyApp
+final class ContentViewTests: XCTestCase {
 
-extension MyView: InspectableWithOneParam { }
-
-```
-
-After that you can extract the view in tests by explicitely providing the environment object:
-
-```swift
-let appState = AppState()
-let view = MyView()
-let value = try view.inspect(appState).text().string()
-XCTAssertEqual(value, "Hi")
-```
-
-For the case when the view is embedded in the hierarchy:
-
-```swift
-let appState = AppState()
-let view = HStack { AnyView(MyView()) }
-try view.inspect().anyView(0).view(MyView.self, appState)
-```
-
-Note that you don't need to call `.environmentObject(_:)` in these cases.
-
-Use `InspectableWithTwoParam` and `InspectableWithThreeParam` protocols for injecting two and three parameters as needed:
-
-```swift
-struct MyView: View {
-
-    @EnvironmentObject var appState: AppState
-    @Environment(\.workers) var workers: Workers
-    
-    var body: some View {
-        body(appState, workers)
-    }
-    
-    func body(_ appState: AppState, _ workers: Workers) -> some View {
-        ...
+    func testStringValue() {
+        var sut = ContentView()
+        let exp = sut.on(\.didAppear) { view in
+            XCTAssertFalse(view.flag)
+            try view.inspect().button().tap()
+            XCTAssertTrue(view.flag)
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
     }
 }
-
-// Test Target:
-
-extension MyView: InspectableWithTwoParam { }
-
-let appState = AppState(), workers = Workers()
-try view.inspect(appState, workers)
 ```
 
-You are not bound to injecting only the `@EnvironmentObject`. Any typed parameters, including those injected with `@Environment`, would also work.
+For the case of `@Environment` or `@EnvironmentObject`, perform the injection before hosting the view:
+
+```swift
+ViewHosting.host(view: sut.environmentObject(...))
+```
+
+You can introduce multiple points for inspection. For example, inside the `.onReceive(publisher) { ... }`:
+
+```swift
+struct ContentView: View {
+
+    @State var flag: Bool = false
+    var didAppear: ((Self) -> Void)?
+    var didReceiveValue: ((Self) -> Void)?
+    
+    var body: some View {
+        Text(flag ? "True" : "False")
+        .onReceive(publisher) { value in
+            self.flag = value
+            self.didReceiveValue(self)
+        }
+        .onAppear { self.didAppear?(self) }
+    }
+}
+```
+
+The test may look like this:
+
+```swift
+final class ContentViewTests: XCTestCase {
+
+    func testStringValue() {
+        var sut = ContentView()
+        let exp1 = sut.on(\.didAppear) { view in
+            let text = try sut.inspect().text().string()
+            XCTAssertEqual(text, "False")
+        }
+        let exp2 = sut.on(\.didReceiveValue) { view in
+            let text = try sut.inspect().text().string()
+            XCTAssertEqual(text, "True")
+        }
+        ViewHosting.host(view: sut)
+        sut.publisher.send(true)
+        wait(for: [exp1, exp2], timeout: 0.1)
+    }
+}
+```
+
+The `.on(_ keyPath:)` function is a convenience method for `XCTest` framework. You are free to use your favorite third-party testing framework and configure the callback directly, just make sure to unmount the view in the end by calling `ViewHosting.expel()`
+
+```swift
+var sut = ContentView()
+sut.didAppear = { view in
+    // inspect the view here
+    ViewHosting.expel()
+}
+ViewHosting.host(view: sut)
+```
 
 ## Questions, concerns, suggestions?
 
@@ -240,4 +264,4 @@ Feel free to contact me on [Twitter](https://twitter.com/nallexn) or just submit
 
 ---
 
-![license](https://img.shields.io/badge/license-mit-brightgreen) [![Twitter](https://img.shields.io/badge/twitter-nallexn-blue)](https://twitter.com/nallexn) [![blog](https://img.shields.io/badge/blog-medium-red)](https://medium.com/@nalexn)
+[![blog](https://img.shields.io/badge/blog-github-blue)](https://nalexn.github.io/?utm_source=nalexn_github) [![venmo](https://img.shields.io/badge/%F0%9F%8D%BA-Venmo-brightgreen)](https://venmo.com/nallexn)
