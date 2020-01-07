@@ -7,9 +7,6 @@ public struct InspectableView<View> where View: KnownViewType {
     
     internal init(_ content: Content, injection: InjectionParameters? = nil) throws {
         try Inspector.guardType(value: content.view, prefix: View.typePrefix)
-        if let inspectable = content.view as? Inspectable {
-            try Inspector.guardNoEnvObjects(inspectableView: inspectable)
-        }
         self.content = content
         self.injection = injection ?? .init()
     }
@@ -37,12 +34,9 @@ internal extension InspectableView where View: MultipleViewContent {
 public extension View {
     func inspect() throws -> InspectableView<ViewType.AnyView> {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
-        let isInspectable = self is Inspectable ||
-            self is SingleParameterInjection ||
-            self is DualParameterInjection ||
-            self is TripleParameterInjection
+        let isInspectable = self is Inspectable
         if !isInspectable && String(describing: unwrapped.view) == String(describing: self) {
-            throw InspectionError.notSupported("View should conform to `Inspectable` or `InspectableWithParam`")
+            throw InspectionError.notSupported("Please extend \(String(describing: self)) to conform to `Inspectable`")
         }
         return try AnyView(self).inspect()
     }
@@ -51,27 +45,6 @@ public extension View {
         where T: Inspectable {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
         return try InspectableView<ViewType.View<T>>(unwrapped)
-    }
-    
-    func inspect<T>(_ view: T.Type, _ param: T.Parameter)
-        throws -> InspectableView<ViewType.ViewWithOneParam<T>>
-        where T: InspectableWithOneParam {
-        let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
-            return try .init(unwrapped, injection: InjectionParameters([param]))
-    }
-    
-    func inspect<T>(_ view: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2)
-        throws -> InspectableView<ViewType.ViewWithTwoParam<T>>
-        where T: InspectableWithTwoParam {
-        let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
-            return try .init(unwrapped, injection: InjectionParameters([param1, param2]))
-    }
-    
-    func inspect<T>(_ view: T.Type, _ param1: T.Parameter1, _ param2: T.Parameter2, _ param3: T.Parameter3)
-        throws -> InspectableView<ViewType.ViewWithThreeParam<T>>
-        where T: InspectableWithThreeParam {
-        let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
-            return try .init(unwrapped, injection: InjectionParameters([param1, param2, param3]))
     }
 }
 

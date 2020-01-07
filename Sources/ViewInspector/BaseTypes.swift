@@ -10,40 +10,6 @@ public extension Inspectable where Self: View {
     var content: Any { body }
 }
 
-public protocol InspectableWithOneParam: SingleParameterInjection {
-    associatedtype InspectableBody
-    associatedtype Parameter
-    func body(_ parameter: Parameter) -> InspectableBody
-}
-
-public protocol InspectableWithTwoParam: DualParameterInjection {
-    associatedtype InspectableBody
-    associatedtype Parameter1
-    associatedtype Parameter2
-    func body(_ parameter1: Parameter1, _ parameter2: Parameter2) -> InspectableBody
-}
-
-public protocol InspectableWithThreeParam: TripleParameterInjection {
-    associatedtype InspectableBody
-    associatedtype Parameter1
-    associatedtype Parameter2
-    associatedtype Parameter3
-    func body(_ parameter1: Parameter1, _ parameter2: Parameter2,
-              _ parameter3: Parameter3) -> InspectableBody
-}
-
-public protocol SingleParameterInjection {
-    func inject(_ parameter: Any) throws -> Any
-}
-
-public protocol DualParameterInjection {
-    func inject(_ parameter1: Any, _ parameter2: Any) throws -> Any
-}
-
-public protocol TripleParameterInjection {
-    func inject(_ parameter1: Any, _ parameter2: Any, _ parameter3: Any) throws -> Any
-}
-
 public protocol SingleViewContent {
     static func child(_ content: Content, injection: Any) throws -> Content
 }
@@ -133,14 +99,3 @@ extension BinaryEquatable {
         }
     }
 }
-
-// MARK: - Deprecated
-
-@available(*, deprecated, renamed: "InspectableWithOneParam")
-public typealias InspectableWithEnvObject = InspectableWithOneParam
-
-@available(*, deprecated, renamed: "InspectableWithTwoParam")
-public typealias InspectableWithEnvObject2 = InspectableWithTwoParam
-
-@available(*, deprecated, renamed: "InspectableWithThreeParam")
-public typealias InspectableWithEnvObject3 = InspectableWithThreeParam

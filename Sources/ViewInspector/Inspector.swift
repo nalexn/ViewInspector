@@ -123,21 +123,6 @@ extension Inspector {
             throw InspectionError.typeMismatch(factual: name, expected: prefix)
         }
     }
-    
-    static func guardNoEnvObjects(inspectableView: Inspectable) throws {
-        let mirror = Mirror(reflecting: inspectableView)
-        try mirror.children.forEach { attribute in
-            let attributeType = Inspector.typeName(value: attribute.value, prefixOnly: true)
-            if attributeType == "EnvironmentObject" {
-                let viewType = Inspector.typeName(value: inspectableView)
-                throw InspectionError.notSupported("""
-                    \(viewType) references `EnvironmentObject`, but conforms to `Inspectable`
-                    Please use `InspectableWithOneParam` instead. More info in README:
-                    https://github.com/nalexn/ViewInspector#custom-views-using-environmentobject
-                    """)
-            }
-        }
-    }
 }
 
 extension InspectionError {

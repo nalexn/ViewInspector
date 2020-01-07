@@ -19,9 +19,10 @@ final class OpaqueViewTests: XCTestCase {
     }
     
     func testOpaqueEnvInspectableView() throws {
-        let view = EnvInspectableTestView().padding()
-        let state = EnvInspectableTestView.State()
-        let sut = try view.inspect(EnvInspectableTestView.self, state).text()
+        let view = EnvInspectableTestView()
+            .environmentObject(EnvInspectableTestView.State())
+            .padding()
+        let sut = try view.inspect(EnvInspectableTestView.self).text()
         XCTAssertEqual(try sut.string(), "Test")
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
@@ -43,7 +44,7 @@ private struct InspectableTestView: View, Inspectable {
     }
 }
 
-private struct EnvInspectableTestView: View, InspectableWithOneParam {
+private struct EnvInspectableTestView: View, Inspectable {
     
     var body: some View {
         body(State())
