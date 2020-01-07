@@ -2,12 +2,6 @@ import SwiftUI
 
 // MARK: - ViewSizing
 
-public struct FlexFrameLayout: Equatable {
-    public let minWidth: CGFloat, idealWidth: CGFloat, maxWidth: CGFloat
-    public let minHeight: CGFloat, idealHeight: CGFloat, maxHeight: CGFloat
-    public let alignment: Alignment
-}
-
 public extension InspectableView {
     func fixedFrame() throws -> (width: CGFloat, height: CGFloat, alignment: Alignment) {
         let width = try modifierAttribute(
