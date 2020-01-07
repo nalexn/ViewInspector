@@ -12,7 +12,7 @@ extension ViewType.EnvironmentReaderView: SingleViewContent {
         /* Need to find a way to get through EnvironmentReaderView */
         throw InspectionError.notSupported("""
             "navigationBarItems" modifier is currently not supported.
-            Consider moving the modifier for direct inspection of the base view.
+            Consider moving the modifier for inspection of the target view.
         """)
     }
 }
