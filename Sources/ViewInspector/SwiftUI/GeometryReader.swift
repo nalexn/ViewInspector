@@ -18,7 +18,7 @@ public extension GeometryReader {
 
 extension ViewType.GeometryReader: SingleViewContent {
     
-    public static func child(_ content: Content, injection: Any) throws -> Content {
+    public static func child(_ content: Content) throws -> Content {
         guard let child = try (content.view as? GeometryReaderContentProvider)?.view() else {
             throw InspectionError.typeMismatch(content.view, GeometryReaderContentProvider.self)
         }

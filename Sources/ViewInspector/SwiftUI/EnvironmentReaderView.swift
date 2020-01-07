@@ -8,7 +8,7 @@ internal extension ViewType {
 
 extension ViewType.EnvironmentReaderView: SingleViewContent {
     
-    static func child(_ content: Content, injection: Any) throws -> Content {
+    static func child(_ content: Content) throws -> Content {
         /* Need to find a way to get through EnvironmentReaderView */
         throw InspectionError.notSupported("""
             "navigationBarItems" modifier is currently not supported.

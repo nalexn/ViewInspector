@@ -20,7 +20,7 @@ public extension GroupBox {
 
 extension ViewType.GroupBox: MultipleViewContent {
     
-    public static func children(_ content: Content, injection: Any) throws -> LazyGroup<Content> {
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let content = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.viewsInContainer(view: content)
     }

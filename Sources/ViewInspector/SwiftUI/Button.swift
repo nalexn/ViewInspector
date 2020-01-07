@@ -18,7 +18,7 @@ public extension Button {
 
 extension ViewType.Button: SingleViewContent {
     
-    public static func child(_ content: Content, injection: Any) throws -> Content {
+    public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "_label", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }

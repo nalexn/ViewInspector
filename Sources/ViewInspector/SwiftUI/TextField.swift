@@ -18,7 +18,7 @@ public extension TextField {
 
 extension ViewType.TextField: SingleViewContent {
     
-    public static func child(_ content: Content, injection: Any) throws -> Content {
+    public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }

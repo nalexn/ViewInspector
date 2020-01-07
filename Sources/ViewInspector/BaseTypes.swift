@@ -11,11 +11,11 @@ public extension Inspectable where Self: View {
 }
 
 public protocol SingleViewContent {
-    static func child(_ content: Content, injection: Any) throws -> Content
+    static func child(_ content: Content) throws -> Content
 }
 
 public protocol MultipleViewContent {
-    static func children(_ content: Content, injection: Any) throws -> LazyGroup<Content>
+    static func children(_ content: Content) throws -> LazyGroup<Content>
 }
 
 public protocol KnownViewType {

@@ -110,8 +110,7 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testContentViewTypeMismatch() {
-        XCTAssertThrowsError(try ViewType.View<SimpleTestView>
-            .child(Content("abc"), injection: InjectionParameters()))
+        XCTAssertThrowsError(try ViewType.View<SimpleTestView>.child(Content("abc")))
     }
     
     func testActualView() throws {

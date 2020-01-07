@@ -20,8 +20,8 @@ public extension HSplitView {
 
 extension ViewType.HSplitView: MultipleViewContent {
     
-    public static func children(_ content: Content, injection: Any) throws -> LazyGroup<Content> {
-        return try ViewType.HStack.children(content, injection: injection)
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
+        return try ViewType.HStack.children(content)
     }
 }
 

@@ -25,7 +25,7 @@ public extension ViewType.Picker {
 
 extension ViewType.Picker: MultipleViewContent {
     
-    public static func children(_ content: Content, injection: Any) throws -> LazyGroup<Content> {
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let content = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.viewsInContainer(view: content)
     }
@@ -33,7 +33,7 @@ extension ViewType.Picker: MultipleViewContent {
 
 extension ViewType.Picker.Label: SingleViewContent {
     
-    public static func child(_ content: Content, injection: Any) throws -> Content {
+    public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }

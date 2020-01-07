@@ -8,7 +8,7 @@ internal extension ViewType {
 
 extension ViewType.IDView: SingleViewContent {
     
-    static func child(_ content: Content, injection: Any) throws -> Content {
+    static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: content.modifiers +
             [IDViewModifier(view: content.view)])

@@ -3,25 +3,23 @@ import SwiftUI
 public struct InspectableView<View> where View: KnownViewType {
     
     internal let content: Content
-    internal let injection: InjectionParameters
     
-    internal init(_ content: Content, injection: InjectionParameters? = nil) throws {
+    internal init(_ content: Content) throws {
         try Inspector.guardType(value: content.view, prefix: View.typePrefix)
         self.content = content
-        self.injection = injection ?? .init()
     }
 }
 
 internal extension InspectableView where View: SingleViewContent {
     func child() throws -> Content {
-        return try View.child(content, injection: injection)
+        return try View.child(content)
     }
 }
 
 internal extension InspectableView where View: MultipleViewContent {
     
     func child(at index: Int) throws -> Content {
-        let viewes = try View.children(content, injection: injection)
+        let viewes = try View.children(content)
         guard index >= 0 && index < viewes.count else {
             throw InspectionError.viewIndexOutOfBounds(
                 index: index, count: viewes.count) }
@@ -45,15 +43,6 @@ public extension View {
         where T: Inspectable {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
         return try InspectableView<ViewType.View<T>>(unwrapped)
-    }
-}
-
-internal struct InjectionParameters {
-    
-    let params: [Any]
-    
-    init(_ params: [Any] = []) {
-        self.params = params
     }
 }
 

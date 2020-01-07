@@ -20,7 +20,7 @@ public extension View where Self: Inspectable {
 
 extension ViewType.View: SingleViewContent {
     
-    public static func child(_ content: Content, injection: Any) throws -> Content {
+    public static func child(_ content: Content) throws -> Content {
         guard let body = (content.view as? Inspectable)?.content else {
             throw InspectionError.typeMismatch(content.view, T.self)
         }
@@ -34,7 +34,7 @@ public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
-            let child = try View.child(content, injection: injection)
+            let child = try View.child(content)
             let prefix = Inspector.typeName(type: type)
             try Inspector.guardType(value: child.view, prefix: prefix)
             return try .init(child)

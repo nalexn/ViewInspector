@@ -86,32 +86,31 @@ extension Inspector {
         return Inspector.typeName(value: view, prefixOnly: true) == "TupleView"
     }
     
-    static func unwrap(view: Any, modifiers: [Any], injection: InjectionParameters? = nil)
+    static func unwrap(view: Any, modifiers: [Any])
         throws -> Content {
-        return try unwrap(content: Content(view, modifiers: modifiers), injection: injection)
+        return try unwrap(content: Content(view, modifiers: modifiers))
     }
     
-    static func unwrap(content: Content, injection: InjectionParameters? = nil) throws -> Content {
-        let injection = injection ?? .init()
+    static func unwrap(content: Content) throws -> Content {
         switch Inspector.typeName(value: content.view, prefixOnly: true) {
         case "Tree":
-            return try ViewType.TreeView.child(content, injection: injection)
+            return try ViewType.TreeView.child(content)
         case "IDView":
-            return try ViewType.IDView.child(content, injection: injection)
+            return try ViewType.IDView.child(content)
         case "Optional":
-            return try ViewType.OptionalContent.child(content, injection: injection)
+            return try ViewType.OptionalContent.child(content)
         case "EquatableView":
-            return try ViewType.EquatableView.child(content, injection: injection)
+            return try ViewType.EquatableView.child(content)
         case "ModifiedContent":
-            return try ViewType.ModifiedContent.child(content, injection: injection)
+            return try ViewType.ModifiedContent.child(content)
         case "SubscriptionView":
-            return try ViewType.SubscriptionView.child(content, injection: injection)
+            return try ViewType.SubscriptionView.child(content)
         case "_ConditionalContent":
-            return try ViewType.ConditionalContent.child(content, injection: injection)
+            return try ViewType.ConditionalContent.child(content)
         case "EnvironmentReaderView":
-            return try ViewType.EnvironmentReaderView.child(content, injection: injection)
+            return try ViewType.EnvironmentReaderView.child(content)
         case "_DelayedPreferenceView":
-            return try ViewType.DelayedPreferenceView.child(content, injection: injection)
+            return try ViewType.DelayedPreferenceView.child(content)
         default:
             return content
         }
