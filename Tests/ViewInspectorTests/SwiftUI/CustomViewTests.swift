@@ -33,11 +33,7 @@ final class CustomViewTests: XCTestCase {
     
     func testStateMutationOnPublisherUpdate() throws {
         var sut = LocalStateTestView(flag: false)
-        var didSkipInitialUpdate = false
         let exp = sut.on(\.didReceiveValue) { view in
-            if !didSkipInitialUpdate {
-                didSkipInitialUpdate = true; return
-            }
             XCTAssertTrue(view.flag)
             let text = try view.inspect().button().text().string()
             XCTAssertEqual(text, "true")
@@ -157,7 +153,7 @@ private struct SimpleTestView: View, Inspectable {
 private struct LocalStateTestView: View, Inspectable {
     
     @State private(set) var flag: Bool
-    let publisher = CurrentValueSubject<Bool, Never>(false)
+    let publisher = PassthroughSubject<Bool, Never>()
     var didReceiveValue: ((Self) -> Void)?
     var didAppear: ((Self) -> Void)?
     

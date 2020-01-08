@@ -211,7 +211,7 @@ You can introduce multiple points for inspection. For example, inside the `.onRe
 struct ContentView: View {
 
     @State var flag: Bool = false
-    let publisher: CurrentValueSubject<Bool, Never>
+    let publisher: PassthroughSubject<Bool, Never>
     
     var didAppear: ((Self) -> Void)?
     var didReceiveValue: ((Self) -> Void)?
@@ -233,7 +233,7 @@ The test may look like this:
 final class ContentViewTests: XCTestCase {
 
     func testPublisherChangesText() {
-        let publisher = CurrentValueSubject<Bool, Never>(false)
+        let publisher = PassthroughSubject<Bool, Never>()
         var sut = ContentView(publisher: publisher)
         let exp1 = sut.on(\.didAppear) { view in
             let text = try sut.inspect().text().string()
