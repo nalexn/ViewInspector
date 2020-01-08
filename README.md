@@ -145,11 +145,11 @@ let okText = try hStack.anyView(1).view(OtherView.self).text()
 
 **ViewInspector** provides full support of such views, so you can inspect them without any intervention to the source code.
 
-Unlike the views using `@State`, `@Environment` or `@EnvironmentObject`, the state changes inside `@ObservedObject` can be evaluated with synchronous tests. You may consider, however, use the asynchronous approach described below, just for the sake of the tests consistency.
+Unlike the views using `@State`, `@Environment` or `@EnvironmentObject`, the state changes inside `@ObservedObject` can be evaluated with synchronous tests. You may consider, however, using the asynchronous approach described below, just for the sake of the tests consistency.
 
 ### Custom views using `@State`, `@Environment` or `@EnvironmentObject`
 
-Inspection of these views requires a small refactoring of the view's source code. Consider we have a view with a `@State` variable:
+Inspection of these views requires a small refactoring of the view's source code. Consider you have a view with a `@State` variable:
 
 ```swift
 struct ContentView: View {
@@ -164,7 +164,7 @@ struct ContentView: View {
 }
 ```
 
-We can inspect it after adding these two lines:
+You can inspect it after adding these two lines:
 
 ```swift
 struct ContentView: View {
@@ -186,7 +186,7 @@ The inspection will be fully functional inside the `didAppear` callback (which i
 ```swift
 final class ContentViewTests: XCTestCase {
 
-    func testStringValue() {
+    func testButtonTogglesFlag() {
         var sut = ContentView()
         let exp = sut.on(\.didAppear) { view in
             XCTAssertFalse(view.flag)
@@ -211,6 +211,8 @@ You can introduce multiple points for inspection. For example, inside the `.onRe
 struct ContentView: View {
 
     @State var flag: Bool = false
+    let publisher: CurrentValueSubject<Bool, Never>
+    
     var didAppear: ((Self) -> Void)?
     var didReceiveValue: ((Self) -> Void)?
     
@@ -230,8 +232,9 @@ The test may look like this:
 ```swift
 final class ContentViewTests: XCTestCase {
 
-    func testStringValue() {
-        var sut = ContentView()
+    func testPublisherChangesText() {
+        let publisher = CurrentValueSubject<Bool, Never>(false)
+        var sut = ContentView(publisher: publisher)
         let exp1 = sut.on(\.didAppear) { view in
             let text = try sut.inspect().text().string()
             XCTAssertEqual(text, "False")
@@ -241,7 +244,7 @@ final class ContentViewTests: XCTestCase {
             XCTAssertEqual(text, "True")
         }
         ViewHosting.host(view: sut)
-        sut.publisher.send(true)
+        publisher.send(true)
         wait(for: [exp1, exp2], timeout: 0.1)
     }
 }
