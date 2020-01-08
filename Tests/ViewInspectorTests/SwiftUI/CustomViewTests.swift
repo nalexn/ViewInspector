@@ -33,7 +33,11 @@ final class CustomViewTests: XCTestCase {
     
     func testStateMutationOnPublisherUpdate() throws {
         var sut = LocalStateTestView(flag: false)
+        var didSkipInitialUpdate = false
         let exp = sut.on(\.didReceiveValue) { view in
+            if !didSkipInitialUpdate {
+                didSkipInitialUpdate = true; return
+            }
             XCTAssertTrue(view.flag)
             let text = try view.inspect().button().text().string()
             XCTAssertEqual(text, "true")

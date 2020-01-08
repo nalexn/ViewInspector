@@ -25,6 +25,7 @@ extension ViewHosting {
             childVC.view.heightAnchor.constraint(equalToConstant: size.height).priority(.defaultHigh)
         ])
         didMove(childVC, to: parentVC)
+        window.layoutIfNeeded()
     }
     
     public static func expel(viewId: String = #function) {
@@ -82,6 +83,7 @@ private extension ViewHosting {
             defer: false)
         window.contentViewController = RootViewController()
         window.makeKeyAndOrderFront(window)
+        window.layoutIfNeeded()
         return window
     }
     #else
@@ -90,6 +92,7 @@ private extension ViewHosting {
         window.rootViewController = UIViewController()
         window.rootViewController?.view.translatesAutoresizingMaskIntoConstraints = false
         window.makeKeyAndVisible()
+        window.layoutIfNeeded()
         return window
     }
     #endif
