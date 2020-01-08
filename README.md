@@ -220,7 +220,7 @@ struct ContentView: View {
         Text(flag ? "True" : "False")
         .onReceive(publisher) { value in
             self.flag = value
-            self.didReceiveValue(self)
+            self.didReceiveValue?(self)
         }
         .onAppear { self.didAppear?(self) }
     }
