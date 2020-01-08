@@ -250,16 +250,21 @@ final class ContentViewTests: XCTestCase {
 }
 ```
 
-The `.on(_ keyPath:)` function is a convenience method for `XCTest` framework. You are free to use your favorite third-party testing framework and configure the callback directly, just make sure to unmount the view in the end by calling `ViewHosting.expel()`
+The `.on(_ keyPath:)` function is a convenience method for `XCTest` framework. Alternatively, if you need more control, you can configure the callback directly on the view:
 
 ```swift
 var sut = ContentView()
 sut.didAppear = { view in
     // inspect the view here
     ViewHosting.expel()
+    expectation.fulfill()
 }
 ViewHosting.host(view: sut)
 ```
+
+Note that in this case you'd need to handle the inspection exceptions, remove the view with `ViewHosting.expel()` and complete the async test with `.fulfill()`.
+
+I should warn that async dispatch from inside the callback disconnects the `view` struct from the SwiftUI state context, so any asynchronous access to the state won't work as expected (except for the `@ObservedObject`, which is immune to this effect).
 
 ## Questions, concerns, suggestions?
 
