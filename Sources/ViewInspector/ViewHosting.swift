@@ -21,8 +21,8 @@ extension ViewHosting {
         NSLayoutConstraint.activate([
             childVC.view.leadingAnchor.constraint(equalTo: parentVC.view.leadingAnchor),
             childVC.view.topAnchor.constraint(equalTo: parentVC.view.topAnchor),
-            childVC.view.widthAnchor.constraint(equalToConstant: size.width),
-            childVC.view.heightAnchor.constraint(equalToConstant: size.height)
+            childVC.view.widthAnchor.constraint(equalToConstant: size.width).priority(.defaultHigh),
+            childVC.view.heightAnchor.constraint(equalToConstant: size.height).priority(.defaultHigh)
         ])
         didMove(childVC, to: parentVC)
     }
@@ -44,7 +44,7 @@ public extension View {
                      file: StaticString = #file, line: UInt = #line,
                      viewId: String = #function,
                      perform: @escaping ((Self) throws -> Void)) -> XCTestExpectation {
-        let description = Inspector.typeName(value: self) + " callback on line #\(line)"
+        let description = Inspector.typeName(value: self) + " callback at line #\(line)"
         let expectation = XCTestExpectation(description: description)
         self[keyPath: keyPath] = { view in
             do {
@@ -143,6 +143,20 @@ private extension ViewHosting {
     }
     static func extractViewController(viewId: String) -> UIViewController? {
         return viewControllers.removeValue(forKey: viewId)
+    }
+    #endif
+}
+
+private extension NSLayoutConstraint {
+    #if os(macOS)
+    func priority(_ value: NSLayoutConstraint.Priority) -> NSLayoutConstraint {
+        priority = value
+        return self
+    }
+    #else
+    func priority(_ value: UILayoutPriority) -> NSLayoutConstraint {
+        priority = value
+        return self
     }
     #endif
 }
