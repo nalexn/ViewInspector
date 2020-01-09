@@ -270,6 +270,52 @@ Note that in this case you'd need to handle the inspection exceptions, remove th
 
 I should warn that async dispatch from inside the callback disconnects the `view` struct from the SwiftUI state context, so any asynchronous access to the state won't work as expected (except for the `@ObservedObject`, which is immune to this effect).
 
+### Custom views using `@Binding`
+
+There is no need to touch the original view:
+
+```swift
+struct ContentView: View {
+
+    @Binding var flag: Bool
+    
+    var body: some View {
+        ...
+    }
+}
+```
+
+But in the tests you can use the following trick to inspect the `@Binding` mutation:
+
+```swift
+final class ContentViewTests: XCTestCase {
+
+    func testBinding() {
+        var sut = WrapperView(flag: false)
+        let exp = sut.on(\.didAppear) { wrapper in
+            let view = try wrapper.inspect().view(ContentView.self)
+            // make `view` change the Binding value
+            // verify the @State on `wrapper`
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
+    }
+}
+
+private struct WrapperView: View, Inspectable {
+
+    @State var flag: Bool
+    var didAppear: ((Self) -> Void)?
+    
+    var body: some View {
+        ContentView(flag: $flag)
+            .onAppear { self.didAppear?(self) }
+    }
+}
+```
+
+Here is a practical [example](https://github.com/nalexn/clean-architecture-swiftui/blob/master/UnitTests/UI/ModalDetailsViewTests.swift) of using this technique.
+
 ## Questions, concerns, suggestions?
 
 Feel free to contact me on [Twitter](https://twitter.com/nallexn) or just submit an issue or a pull request on Github.
