@@ -59,6 +59,10 @@ Contributions are welcomed! To get some inspiration, read the [story](https://na
 
 So this framework is production-friendly for the case if you accidentally (or intentionally) linked it with the build target.
 
+### Sample integration
+
+Check out this [project](https://github.com/nalexn/clean-architecture-swiftui) that harnesses the **ViewInspector** for testing the entire UI.
+
 ### How do I add it to my Xcode project?
 
 1. In Xcode select **File ⭢ Swift Packages ⭢ Add Package Dependency...**
