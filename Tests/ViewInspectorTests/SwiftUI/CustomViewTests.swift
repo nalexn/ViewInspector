@@ -17,6 +17,22 @@ final class CustomViewTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
+    func testManualCallbackConfiguration() throws {
+        var sut = LocalStateTestView(flag: false)
+        let exp = XCTestExpectation(description: "didAppear")
+        sut.didAppear = { view in
+            view.inspect { content in
+                XCTAssertFalse(try content.actualView().flag)
+                try content.button().tap()
+                XCTAssertTrue(try content.actualView().flag)
+                ViewHosting.expel()
+                exp.fulfill()
+            }
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
     func testLocalStateChangesOnMirror() throws {
         var sut = LocalStateTestView(flag: false)
         let exp = sut.on(\.didAppear) { view in

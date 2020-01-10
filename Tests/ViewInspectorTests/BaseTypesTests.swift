@@ -21,4 +21,11 @@ final class BaseTypesTests: XCTestCase {
         XCTAssertEqual(desc5, "Text does not have 'onAppear' modifier")
         XCTAssertEqual(desc6, "ViewInspector: Not supported")
     }
+    
+    func testBindingExtension() {
+        let sut = Binding(wrappedValue: false)
+        XCTAssertFalse(sut.wrappedValue)
+        sut.wrappedValue = true
+        XCTAssertTrue(sut.wrappedValue)
+    }
 }

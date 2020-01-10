@@ -37,7 +37,7 @@ extension ViewHosting {
     }
 }
 
-// MARK: - XCTest helper
+// MARK: - XCTest helpers
 
 public extension View {
     

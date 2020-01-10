@@ -38,6 +38,13 @@ public struct Content {
     }
 }
 
+public extension Binding {
+    init(wrappedValue: Value) {
+        var value = wrappedValue
+        self.init(get: { value }, set: { value = $0 })
+    }
+}
+
 // MARK: - Error
 
 public enum InspectionError: Swift.Error {

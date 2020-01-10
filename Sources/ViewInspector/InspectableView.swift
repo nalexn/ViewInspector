@@ -1,4 +1,5 @@
 import SwiftUI
+import XCTest
 
 public struct InspectableView<View> where View: KnownViewType {
     
@@ -27,7 +28,7 @@ internal extension InspectableView where View: MultipleViewContent {
     }
 }
 
-// MARK: - Start of inspection for Opaque View
+// MARK: - Inspection of a Custom View
 
 public extension View {
     func inspect() throws -> InspectableView<ViewType.AnyView> {
@@ -43,6 +44,17 @@ public extension View {
         where T: Inspectable {
         let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
         return try InspectableView<ViewType.View<T>>(unwrapped)
+    }
+}
+
+public extension View where Self: Inspectable {
+    func inspect(file: StaticString = #file, line: UInt = #line,
+                 traverse: (InspectableView<ViewType.View<Self>>) throws -> Void) {
+        do {
+            try traverse(try inspect())
+        } catch let error {
+            XCTFail("\(error.localizedDescription)", file: file, line: line)
+        }
     }
 }
 
