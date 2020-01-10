@@ -1,14 +1,14 @@
 # Inspection guide
 
 
-- [Basics](#basics)
+- [The Basics](#the-basics)
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
 - [Views using **@Binding**](#views-using-binding)
 - [More fine-grained test configuration](#more-fine-grained-test-configuration)
 - [Views using multiple state sources](#views-using-multiple-state-sources)
 
-## Basics
+## The Basics
 
 Cosidering you have a view:
 
@@ -85,7 +85,7 @@ Alternatively, you can use the subscript syntax: `hStack[1].anyView()`. All the 
 
 ## Views using `@ObservedObject`
 
-**ViewInspector** provides full support of such views, so you can inspect them without any intervention to the source code.
+**ViewInspector** provides full support for such views, so you can inspect them without any intervention in the source code.
 
 Unlike the views using `@State`, `@Environment` or `@EnvironmentObject`, the state changes inside `@ObservedObject` can be evaluated with synchronous tests. You may consider, however, using the asynchronous approach described below, just for the sake of the tests consistency.
 
