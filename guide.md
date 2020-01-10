@@ -2,9 +2,9 @@
 
 
 - [Basics](#basics)
-- [Views using **@ObservedObject**](#custom-views-using-observedobject)
-- [Views using **@State**, **@Environment** or **@EnvironmentObject**](#custom-views-using-state-environment-or-environmentobject)
-- [Views using **@Binding**](#custom-views-using-binding)
+- [Views using **@ObservedObject**](#views-using-observedobject)
+- [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
+- [Views using **@Binding**](#views-using-binding)
 - [More fine-grained test configuration](#more-fine-grained-test-configuration)
 
 ## Basics
