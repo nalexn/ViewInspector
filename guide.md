@@ -178,11 +178,11 @@ final class ContentViewTests: XCTestCase {
         let publisher = PassthroughSubject<Bool, Never>()
         var sut = ContentView(publisher: publisher)
         let exp1 = sut.on(\.didAppear) { view in
-            let text = try sut.inspect().text().string()
+            let text = try view.inspect().text().string()
             XCTAssertEqual(text, "False")
         }
         let exp2 = sut.on(\.didReceiveValue) { view in
-            let text = try sut.inspect().text().string()
+            let text = try view.inspect().text().string()
             XCTAssertEqual(text, "True")
         }
         ViewHosting.host(view: sut)
@@ -223,7 +223,7 @@ func testBindingValueChanges() {
     var sut = ContentView(flag: flag)
     let exp = sut.on(\.didAppear) { view in
         XCTAssertFalse(flag.wrappedValue)
-        try sut.inspect().button().tap()
+        try view.inspect().button().tap()
         XCTAssertTrue(flag.wrappedValue)
     }
     ViewHosting.host(view: sut)
