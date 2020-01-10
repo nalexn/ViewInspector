@@ -77,7 +77,7 @@ So this framework is production-friendly for the case if you accidentally (or in
 
 Please refer to the [Inspection guide](guide.md). You can also check out my other [project](https://github.com/nalexn/clean-architecture-swiftui) that harnesses the **ViewInspector** for testing the entire UI.
 
-## Questions, concerns, suggestions?
+### Other questions, concerns or suggestions?
 
 Feel free to contact me on [Twitter](https://twitter.com/nallexn) or just submit an issue or a pull request on Github.
 
