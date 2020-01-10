@@ -58,6 +58,32 @@ extension InspectableView: Sequence where View: MultipleViewContent {
     }
 }
 
+extension InspectableView: Collection, BidirectionalCollection, RandomAccessCollection
+    where View: MultipleViewContent {
+    
+    public typealias Index = Int
+    public var startIndex: Index { 0 }
+    public var endIndex: Index { count }
+    public var count: Int { (try? View.children(content))?.count ?? 0 }
+    
+    public subscript(index: Index) -> Iterator.Element {
+        do {
+            let viewes = try View.children(content)
+            return try .init(try viewes.element(at: index))
+        } catch let error {
+            fatalError("\(error.localizedDescription)")
+        }
+    }
+
+    public func index(after index: Index) -> Index {
+        return index + 1
+    }
+
+    public func index(before index: Index) -> Index {
+        return index - 1
+    }
+}
+
 // MARK: - Inspection of a Custom View
 
 public extension View {
