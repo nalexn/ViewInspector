@@ -29,3 +29,28 @@ final class BaseTypesTests: XCTestCase {
         XCTAssertTrue(sut.wrappedValue)
     }
 }
+
+final class SequenceTests: XCTestCase {
+    
+    func testLazyGroupSequence() {
+        let count = 3
+        let sut = LazyGroup<Int>(count: count) { index -> Int in
+            if index < count { return index }
+            throw InspectionError.viewIndexOutOfBounds(index: index, count: count)
+        }
+        XCTAssertEqual(sut.map { $0 }, [0, 1, 2])
+        var iterator = sut.makeIterator()
+        for _ in 0 ..< count {
+            XCTAssertNotNil(iterator.next())
+        }
+        XCTAssertNil(iterator.next())
+    }
+    
+    func testMultipleViewContentSequence() throws {
+        let view = HStack {
+            Text("1").padding(); Text("2"); Text("3")
+        }
+        let sut = try view.inspect().map { try $0.text().string() }
+        XCTAssertEqual(sut, ["1", "2", "3"])
+    }
+}

@@ -28,6 +28,36 @@ internal extension InspectableView where View: MultipleViewContent {
     }
 }
 
+extension InspectableView: Sequence where View: MultipleViewContent {
+    
+    public typealias Element = InspectableView<ViewType.ClassifiedView>
+    
+    public struct Iterator: IteratorProtocol {
+        
+        private var groupIterator: LazyGroup<Content>.Iterator
+        
+        init(_ group: LazyGroup<Content>) {
+            groupIterator = group.makeIterator()
+        }
+        
+        mutating public func next() -> Element? {
+            guard let content = groupIterator.next()
+                else { return nil }
+            return try? .init(content)
+        }
+    }
+
+    public func makeIterator() -> Iterator {
+        let group: LazyGroup<Content> = (try? View.children(content)) ??
+            .init(count: 0, { _ in Content("") })
+        return .init(group)
+    }
+
+    public var underestimatedCount: Int {
+        return (try? View.children(content))?.count ?? 0
+    }
+}
+
 // MARK: - Inspection of a Custom View
 
 public extension View {

@@ -93,6 +93,34 @@ public struct LazyGroup<T> {
     }
 }
 
+extension LazyGroup: Sequence {
+    
+    public struct Iterator: IteratorProtocol {
+        public typealias Element = T
+        private var index = -1
+        private var group: LazyGroup<Element>
+        
+        init(group: LazyGroup<Element>) {
+            self.group = group
+        }
+        
+        mutating public func next() -> Element? {
+            index += 1
+            do {
+                return try group.element(at: index)
+            } catch _ {
+                return nil
+            }
+        }
+    }
+
+    public func makeIterator() -> Iterator {
+        .init(group: self)
+    }
+
+    public var underestimatedCount: Int { count }
+}
+
 // MARK: - BinaryEquatable
 
 internal protocol BinaryEquatable: Equatable { }
