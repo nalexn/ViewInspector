@@ -6,6 +6,7 @@
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
 - [Views using **@Binding**](#views-using-binding)
 - [More fine-grained test configuration](#more-fine-grained-test-configuration)
+- [Views using multiple state sources](#views-using-multiple-state-sources)
 
 ## Basics
 
@@ -235,7 +236,7 @@ func testBindingValueChanges() {
 The `.on(_ keyPath:)` function is a convenience method for `XCTest` framework. Alternatively, if you need more control, you can configure the callback directly on the view:
 
 ```swift
-let exp = XCTestExpectation(description: "onAppear")
+let exp = XCTestExpectation(description: "didAppear")
 var sut = ContentView()
 sut.didAppear = { view in
     view.inspect { content in
@@ -251,3 +252,64 @@ wait(for: [exp], timeout: 0.1)
 Note that in this case you'd need to remove the view with `ViewHosting.expel()` and complete the async test with `.fulfill()`.
 
 The `.inspect { ... }` under the hood starts the inspection and wraps the code in the `do { ... } catch { ... }` allowing for writing more compact tests. The closure is called synchronously.
+
+## Views using multiple state sources
+
+For complex views relying on a combination of `@State`, `@Binding`, `@ObservedObject`, `@EnvironmentObject` or Combine's `publishers` it might be hard to catch the final view state in the `didAppear` or other callback you add. In this case you can introduce a custom view modifier that captures the view state on every view update (call of the `body`). Include the following code snippet in your build target:
+
+```swift
+extension View {
+    func onUpdate<V>(_ viewCapture: @autoclosure @escaping () -> V,
+                     _ callbackKeyPath: KeyPath<V, ((V) -> Void)?>) -> some View where V: View {
+        modifier(ContextCatcher(viewCapture: viewCapture, callbackKeyPath: callbackKeyPath))
+    }
+}
+
+private struct ContextCatcher<V>: ViewModifier where V: View {
+    
+    let viewCapture: () -> V
+    let callbackKeyPath: KeyPath<V, ((V) -> Void)?>
+    
+    func body(content: Self.Content) -> some View {
+        let view = viewCapture()
+        view[keyPath: callbackKeyPath]?(view)
+        return content.onAppear()
+    }
+}
+```
+
+And apply it to the target view:
+
+```swift
+struct ContentView: View {
+
+    var didUpdate: ((Self) -> Void)?
+    
+    var body: some View {
+        ...
+        .onUpdate(self, \.didUpdate)
+    }
+}
+```
+
+In the tests you'll have the full control over the view on every `body` update:
+
+```swift
+let exp = XCTestExpectation(description: "didUpdate")
+exp.expectedFulfillmentCount = 3
+exp.assertForOverFulfill = true
+var sut = ContentView()
+var updateNumber = 0
+sut.didUpdate = { view in
+    updateNumber += 1
+    view.inspect { content in
+        // inspect the content here considering the updateNumber
+    }
+    if updateNumber == exp.expectedFulfillmentCount {
+        ViewHosting.expel()
+    }
+    exp.fulfill()
+}
+ViewHosting.host(view: sut)
+wait(for: [exp], timeout: 0.1)
+```
