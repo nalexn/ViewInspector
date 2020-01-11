@@ -13,7 +13,7 @@ SwiftUI views are a function of state. We can provide the input, but couldn't ve
 
 #### 1. Verify the view's inner state
 
-You can dig into the hierarchy and read actual state values on any SwiftUI View:
+You can dig into the hierarchy and read the actual state values on any SwiftUI View:
 
 ```swift
 func testVStackOfTexts() throws {
@@ -33,12 +33,14 @@ func testVStackOfTexts() throws {
 You can simulate user interaction by programmatically triggering system-controls callbacks:
 
 ```swift
-let button = try view.inspect().hStack().button(3)
+let button = try view.inspect().hStack().button(1)
 try button.tap()
 
-let view = try view.inspect().list().view(ItemView.self, 15)
-try view.callOnAppear()
+let list = try view.inspect().list()
+try list[5].view(RowItemView.self).callOnAppear()
 ```
+
+
 
 #### 3. Extract custom views from the hierarchy of any depth
 
@@ -47,8 +49,10 @@ It is possible to obtain a copy of your custom view with actual state and refere
 ```swift
 let sut = try view.inspect().tabView().navigationView()
     .overlay().anyView().view(CustomView.self).actualView()
-XCTAssertTrue(sut.isUserLoggedIn)
+XCTAssertTrue(sut.viewModel.isUserLoggedIn)
 ```
+
+The library can operate with all types of the View's state: `@Binding`, `@State`, `@ObservedObject` and `@EnvironmentObject`.
 
 ## FAQs
 
@@ -56,9 +60,7 @@ XCTAssertTrue(sut.isUserLoggedIn)
 
 Pretty much all! Check out the [detailed list](readiness.md).
 
-The framework is still expanding, as there are hundreds of inspectable attributes in SwiftUI that are not included yet.
-
-Contributions are welcomed! To get some inspiration, read the [story](https://nalexn.github.io/swiftui-unit-testing/?utm_source=nalexn_github) behind creating this framework.
+The framework is still expanding, as there are hundreds of inspectable attributes in SwiftUI that are not included yet. Contributions are welcomed!
 
 ### Is it using private APIs?
 
@@ -79,7 +81,7 @@ Please refer to the [Inspection guide](guide.md). You can also check out my othe
 
 ### Other questions, concerns or suggestions?
 
-Feel free to contact me on [Twitter](https://twitter.com/nallexn) or just submit an issue or a pull request on Github.
+Ping me on [Twitter](https://twitter.com/nallexn) or just submit an issue or a pull request on Github.
 
 ---
 
