@@ -292,7 +292,7 @@ struct ContentView: View {
 }
 ```
 
-In the tests you'll have the full control over the view on every `body` update:
+In the tests you'll have the full access to the view's state on every `body` update:
 
 ```swift
 let exp = XCTestExpectation(description: "didUpdate")
