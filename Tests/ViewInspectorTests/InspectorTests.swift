@@ -42,24 +42,6 @@ final class InspectorTests: XCTestCase {
         XCTAssertEqual(name2, "Test1")
     }
     
-    func testAttributesTree() {
-        let tree = Inspector.attributesTree(value: testValue)
-        let expected: [String: Any] = [
-            ">>> Test1 <<<": [
-            ["value1":
-                [">>> String <<<": "abc"]],
-            ["value2":
-                [">>> Test2 <<<": [
-                    ["value3":
-                        [">>> Int <<<": "42"]]]]],
-            ["view":
-                [">>> TestView <<<": [
-                    ["body":
-                        [">>> EmptyView <<<": "EmptyView()"]]]]]
-            ]]
-        XCTAssertEqual("\(tree)", "\(expected)")
-    }
-    
     func testTupleView() throws {
         let view = HStack { Text(""); Text("") }
         let content = try Inspector.attribute(path: "_tree|content", value: view)
