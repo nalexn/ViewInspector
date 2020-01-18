@@ -2,11 +2,9 @@
 
 
 - [The Basics](#the-basics)
+- [Views using **@Binding**](#views-using-binding)
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
-- [Views using **@Binding**](#views-using-binding)
-- [More fine-grained test configuration](#more-fine-grained-test-configuration)
-- [Views using multiple state sources](#views-using-multiple-state-sources)
 
 ## The Basics
 
@@ -83,15 +81,60 @@ let okText = try hStack.anyView(1).view(OtherView.self).text()
 
 Alternatively, you can use the subscript syntax: `hStack[1].anyView()`. All the multiple-descendants views, such as `hStack`, provide the standard set of functions available for a `RandomAccessCollection`, including `count`, `map`, `first(where: )`, etc.
 
+## Views using `@Binding`
+
+**ViewInspector** provides a helper initializer for the `Binding` that you can use to test such views without the need to define a `@State` variable:
+
+```swift
+func testBindingValueChanges() throws {
+    let flag = Binding<Bool>(wrappedValue: false)
+    let sut = ContentView(binding: flag)
+    
+    XCTAssertFalse(flag.wrappedValue)
+    try sut.inspect().button().tap()
+    XCTAssertTrue(flag.wrappedValue)
+}
+```
+
 ## Views using `@ObservedObject`
 
 **ViewInspector** provides full support for such views, so you can inspect them without any intervention in the source code.
 
-Unlike the views using `@State`, `@Environment` or `@EnvironmentObject`, the state changes inside `@ObservedObject` can be evaluated with synchronous tests. You may consider, however, using the asynchronous approach described below, just for the sake of the tests consistency.
+Unlike the views using `@State`, `@Environment` or `@EnvironmentObject`, the state changes inside `@Binding` and `@ObservedObject` can be evaluated with synchronous tests. You may consider, however, using the asynchronous approach described below, just for the sake of the tests consistency.
 
 ## Views using `@State`, `@Environment` or `@EnvironmentObject`
 
-Inspection of these views requires a small refactoring of the view's source code. Consider you have a view with a `@State` variable:
+Inspection of these views requires a tiny refactoring of the view's source code and adding a couple of code snippets, that are intentionally not included in the **ViewInspector** so that your build target could remain independent from it.
+
+--
+
+Here is the snippet to be added to the **build target**:
+
+```swift
+class Inspection<V> where V: View {
+
+    let notice = PassthroughSubject<UInt, Never>()
+    var callbacks = [UInt: (V) -> Void]()
+
+    func visit(_ view: V, _ line: UInt) {
+        if let callback = callbacks.removeValue(forKey: line) {
+            callback(view)
+        }
+    }
+}
+```
+
+... and this one for the **test target**:
+
+```swift
+extension Inspection: InspectionEmissary where V: Inspectable { }
+```
+
+--
+
+Once you add these two snippets, the **ViewInstector** will be fully armed for inspecting any custom views with all types of the state.
+
+Consider you have a view with a `@State` variable:
 
 ```swift
 struct ContentView: View {
@@ -112,31 +155,58 @@ You can inspect it after adding these two lines:
 struct ContentView: View {
 
     @State var flag: Bool = false
-    var didAppear: ((Self) -> Void)? // 1.
+    let inspection = Inspection<Self>() // 1.
     
     var body: some View {
         Button(action: {
             self.flag.toggle()
         }, label: { Text(flag ? "True" : "False") })
-        .onAppear { self.didAppear?(self) } // 2.
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) } // 2.
     }
 }
 ```
 
-The inspection will be fully functional inside the `didAppear` callback (which is called asynchronously):
+The test for this view would look like this:
 
 ```swift
 final class ContentViewTests: XCTestCase {
 
     func testButtonTogglesFlag() {
-        var sut = ContentView()
-        let exp = sut.on(\.didAppear) { view in
-            XCTAssertFalse(view.flag)
-            try view.inspect().button().tap()
-            XCTAssertTrue(view.flag)
+        let sut = ContentView()
+        let exp = sut.inspection.inspect { view in
+            XCTAssertFalse(try view.actualView().flag)
+            try view.button().tap()
+            XCTAssertTrue(try view.actualView().flag)
         }
         ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 0.1)
+    }
+}
+```
+
+The `inspect` function is always called asynchronously and returns an `XCTestExpectation` that it automatically fulfills after the closure is executed.
+
+You can have multiple inspections distributed in time within one test:
+
+```swift
+final class ContentViewTests: XCTestCase {
+
+    func testPublisherChangingValue() {
+        let publisher = PassthroughSubject<Bool, Never>()
+        let sut = ContentView(publisher: publisher)
+        let exp1 = sut.inspection.inspect { view in
+            XCTAssertFalse(try view.actualView().flag)
+            publisher.send(true)
+        }
+        let exp2 = sut.inspection.inspect(after: 0.1) { view in
+            XCTAssertTrue(try view.actualView().flag)
+            publisher.send(false)
+        }
+        let exp3 = sut.inspection.inspect(after: 0.2) { view in
+            XCTAssertFalse(try view.actualView().flag)
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp1, exp2, exp3], timeout: 0.3)
     }
 }
 ```
@@ -145,171 +215,4 @@ For the case of `@Environment` or `@EnvironmentObject`, perform the injection be
 
 ```swift
 ViewHosting.host(view: sut.environmentObject(...))
-```
-
-You can introduce multiple points for inspection. For example, inside the `.onReceive(publisher) { ... }`:
-
-```swift
-struct ContentView: View {
-
-    @State var flag: Bool = false
-    let publisher: PassthroughSubject<Bool, Never>
-    
-    var didAppear: ((Self) -> Void)?
-    var didReceiveValue: ((Self) -> Void)?
-    
-    var body: some View {
-        Text(flag ? "True" : "False")
-        .onReceive(publisher) { value in
-            self.flag = value
-            self.didReceiveValue?(self)
-        }
-        .onAppear { self.didAppear?(self) }
-    }
-}
-```
-
-The test may look like this:
-
-```swift
-final class ContentViewTests: XCTestCase {
-
-    func testPublisherChangesText() {
-        let publisher = PassthroughSubject<Bool, Never>()
-        var sut = ContentView(publisher: publisher)
-        let exp1 = sut.on(\.didAppear) { view in
-            let text = try view.inspect().text().string()
-            XCTAssertEqual(text, "False")
-        }
-        let exp2 = sut.on(\.didReceiveValue) { view in
-            let text = try view.inspect().text().string()
-            XCTAssertEqual(text, "True")
-        }
-        ViewHosting.host(view: sut)
-        publisher.send(true)
-        wait(for: [exp1, exp2], timeout: 0.1)
-    }
-}
-```
-
-I should warn that async dispatch from inside the callback disconnects the `view` struct from the SwiftUI state context, so any asynchronous access to the state won't work as expected (except for the `@ObservedObject`, which is immune to this effect).
-
-## Views using `@Binding`
-
-For the views using the `@Binding` property wrapper:
-
-```swift
-struct ContentView: View {
-
-    @Binding var flag: Bool
-    var didAppear: ((Self) -> Void)?
-    
-    var body: some View {
-        Button(action: {
-            self.flag.toggle()
-        }, label: { Text(flag ? "True" : "False") })
-        .onAppear { self.didAppear?(self) }
-    }
-}
-```
-
-**ViewInspector** provides a helper initializer that you can use for testing such views:
-
-```swift
-func testBindingValueChanges() {
-
-    let flag = Binding<Bool>(wrappedValue: false)
-    
-    var sut = ContentView(flag: flag)
-    let exp = sut.on(\.didAppear) { view in
-        XCTAssertFalse(flag.wrappedValue)
-        try view.inspect().button().tap()
-        XCTAssertTrue(flag.wrappedValue)
-    }
-    ViewHosting.host(view: sut)
-    wait(for: [exp], timeout: 0.1)
-}
-```
-
-## More fine-grained test configuration
-
-The `.on(_ keyPath:)` function is a convenience method for `XCTest` framework. Alternatively, if you need more control, you can configure the callback directly on the view:
-
-```swift
-let exp = XCTestExpectation(description: "didAppear")
-var sut = ContentView()
-sut.didAppear = { view in
-    view.inspect { content in
-        // inspect the content here
-    }
-    ViewHosting.expel()
-    exp.fulfill()
-}
-ViewHosting.host(view: sut)
-wait(for: [exp], timeout: 0.1)
-```
-
-Note that in this case you'd need to remove the view with `ViewHosting.expel()` and complete the async test with `.fulfill()`.
-
-The `.inspect { ... }` under the hood starts the inspection and wraps the code in the `do { ... } catch { ... }` allowing for writing more compact tests. The closure is called synchronously.
-
-## Views using multiple state sources
-
-For complex views relying on a combination of `@State`, `@Binding`, `@ObservedObject`, `@EnvironmentObject` or Combine's `publishers` it might be hard to catch the final view state in the `didAppear` or other callback you add. In this case you can introduce a custom view modifier that captures the view state on every view update (call of the `body`). Include the following code snippet in your build target:
-
-```swift
-extension View {
-    func onUpdate<V>(_ viewCapture: @autoclosure @escaping () -> V,
-                     _ callbackKeyPath: KeyPath<V, ((V) -> Void)?>) -> some View where V: View {
-        modifier(ContextCatcher(viewCapture: viewCapture, callbackKeyPath: callbackKeyPath))
-    }
-}
-
-private struct ContextCatcher<V>: ViewModifier where V: View {
-    
-    let viewCapture: () -> V
-    let callbackKeyPath: KeyPath<V, ((V) -> Void)?>
-    
-    func body(content: Self.Content) -> some View {
-        let view = viewCapture()
-        view[keyPath: callbackKeyPath]?(view)
-        return content.onAppear()
-    }
-}
-```
-
-And apply it to the target view:
-
-```swift
-struct ContentView: View {
-
-    var didUpdate: ((Self) -> Void)?
-    
-    var body: some View {
-        ...
-        .onUpdate(self, \.didUpdate)
-    }
-}
-```
-
-In the tests you'll have the full access to the view's state on every `body` update:
-
-```swift
-let exp = XCTestExpectation(description: "didUpdate")
-exp.expectedFulfillmentCount = 3
-exp.assertForOverFulfill = true
-var sut = ContentView()
-var updateNumber = 0
-sut.didUpdate = { view in
-    updateNumber += 1
-    view.inspect { content in
-        // inspect the content here considering the updateNumber
-    }
-    if updateNumber == exp.expectedFulfillmentCount {
-        ViewHosting.expel()
-    }
-    exp.fulfill()
-}
-ViewHosting.host(view: sut)
-wait(for: [exp], timeout: 0.1)
 ```
