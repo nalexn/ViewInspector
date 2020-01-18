@@ -22,6 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
+		F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D423D3C74B008F31BD /* InspectionEmissary.swift */; };
+		F60385D723D3CDED008F31BD /* InspectionEmissaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D623D3CDED008F31BD /* InspectionEmissaryTests.swift */; };
 		F609EFBD23A40B8800B9256A /* DelayedPreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */; };
 		F609EFBF23A424D800B9256A /* EnvironmentModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFBE23A424D800B9256A /* EnvironmentModifiersTests.swift */; };
 		F609EFC123A432AA00B9256A /* IDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFC023A432AA00B9256A /* IDView.swift */; };
@@ -165,6 +167,8 @@
 
 /* Begin PBXFileReference section */
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
+		F60385D423D3C74B008F31BD /* InspectionEmissary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissary.swift; sourceTree = "<group>"; };
+		F60385D623D3CDED008F31BD /* InspectionEmissaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissaryTests.swift; sourceTree = "<group>"; };
 		F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedPreferenceView.swift; sourceTree = "<group>"; };
 		F609EFBE23A424D800B9256A /* EnvironmentModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiersTests.swift; sourceTree = "<group>"; };
 		F609EFC023A432AA00B9256A /* IDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDView.swift; sourceTree = "<group>"; };
@@ -325,6 +329,7 @@
 				F60EEBBB2382EED0007DB53A /* BaseTypes.swift */,
 				F60EEBBA2382EED0007DB53A /* Inspector.swift */,
 				F60EEBBC2382EED0007DB53A /* InspectableView.swift */,
+				F60385D423D3C74B008F31BD /* InspectionEmissary.swift */,
 				F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */,
 				F68108A423A5833D00B32145 /* Modifiers */,
 				F60EEBBD2382EED0007DB53A /* SwiftUI */,
@@ -399,6 +404,7 @@
 			children = (
 				F60EEBE42382F004007DB53A /* BaseTypesTests.swift */,
 				F60EEBE52382F004007DB53A /* InspectorTests.swift */,
+				F60385D623D3CDED008F31BD /* InspectionEmissaryTests.swift */,
 				F67540ED23A3D8820022AC33 /* ViewModifiers */,
 				F60EEBE62382F004007DB53A /* SwiftUI */,
 			);
@@ -681,6 +687,7 @@
 				F639DBBF23A6CF03003A6FED /* AccessibilityModifiers.swift in Sources */,
 				F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */,
 				F6D933CB2385FF8F00358E0E /* Slider.swift in Sources */,
+				F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,6 +707,7 @@
 				F60EEBFD2382F004007DB53A /* ImageTests.swift in Sources */,
 				F60EEBFE2382F004007DB53A /* FormTests.swift in Sources */,
 				F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */,
+				F60385D723D3CDED008F31BD /* InspectionEmissaryTests.swift in Sources */,
 				F6D933C92385FC1A00358E0E /* StepperTests.swift in Sources */,
 				F60EEC012382F004007DB53A /* ButtonTests.swift in Sources */,
 				F60EEC042382F004007DB53A /* GroupTests.swift in Sources */,

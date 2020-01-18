@@ -1,5 +1,4 @@
 import SwiftUI
-import Combine
 import XCTest
 
 public struct InspectableView<View> where View: KnownViewType {
@@ -112,42 +111,6 @@ public extension View where Self: Inspectable {
         } catch let error {
             XCTFail("\(error.localizedDescription)", file: file, line: line)
         }
-    }
-}
-
-public protocol InspectionEmissary: class {
-    associatedtype V: View, Inspectable
-    
-    var notice: PassthroughSubject<UInt, Never> { get }
-    var callbacks: [UInt: (V) -> Void] { get set }
-    
-    func inspect(after delay: TimeInterval,
-                 file: StaticString, line: UInt, function: String,
-                 callback: @escaping (InspectableView<ViewType.View<V>>) throws -> Void
-    ) -> XCTestExpectation
-}
-
-public extension InspectionEmissary {
-    func inspect(after delay: TimeInterval = 0,
-                 file: StaticString = #file, line: UInt = #line, function: String = #function,
-                 callback: @escaping (InspectableView<ViewType.View<V>>) throws -> Void
-    ) -> XCTestExpectation {
-        let exp = XCTestExpectation(description: "Inspection at line \(line)")
-        callbacks[line] = { [weak self] view in
-            do {
-                try callback(try view.inspect())
-            } catch let error {
-                XCTFail("\(error.localizedDescription)", file: file, line: line)
-            }
-            if self?.callbacks.count == 0 {
-                ViewHosting.expel(viewId: function)
-            }
-            exp.fulfill()
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak notice] in
-            notice?.send(line)
-        }
-        return exp
     }
 }
 

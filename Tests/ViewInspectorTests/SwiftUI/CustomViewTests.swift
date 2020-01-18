@@ -6,30 +6,17 @@ import SwiftUI
 
 final class CustomViewTests: XCTestCase {
     
-    func testDeprecatedOnFunction() throws {
-        var sut = LocalStateTestView(flag: false)
-        let exp = sut.on(\.didAppear) { view in
-            XCTAssertFalse(view.flag)
-            try view.inspect().button().tap()
-            XCTAssertTrue(view.flag)
+    func testLocalStateChanges() throws {
+        let sut = LocalStateTestView(flag: false)
+        let exp = sut.inspection.inspect { view in
+            let text1 = try view.button().text().string()
+            XCTAssertEqual(text1, "false")
+            try view.button().tap()
+            let text2 = try view.button().text().string()
+            XCTAssertEqual(text2, "true")
         }
         ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 0.1)
-    }
-    
-    func testStateMutationOnPublisherUpdate() throws {
-        let sut = LocalStateTestView(flag: false)
-        let exp1 = sut.inspection.inspect { view in
-            let text = try view.button().text().string()
-            XCTAssertEqual(text, "false")
-            sut.publisher.send(true)
-        }
-        let exp2 = sut.inspection.inspect(after: 0.1) { view in
-            let text = try view.button().text().string()
-            XCTAssertEqual(text, "true")
-        }
-        ViewHosting.host(view: sut)
-        wait(for: [exp1, exp2], timeout: 0.2)
     }
     
     func testObservedStateChanges() throws {
@@ -42,7 +29,7 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(text2, "abc")
     }
     
-    func testEnvironmentStateChanges1() throws {
+    func testEnvironmentStateChanges() throws {
         let sut = EnvironmentStateTestView()
         let viewModel = ExternalState()
         let exp = sut.inspection.inspect { view in
@@ -128,7 +115,6 @@ final class CustomViewTests: XCTestCase {
         XCTAssertNoThrow(SimpleTestView().body)
         XCTAssertNoThrow(LocalStateTestView(flag: true).body)
         XCTAssertNoThrow(ObservedStateTestView(viewModel: ExternalState()).body)
-        XCTAssertNoThrow(IncorrectTestView().body)
     }
 }
 
@@ -143,17 +129,13 @@ private struct SimpleTestView: View, Inspectable {
 private struct LocalStateTestView: View, Inspectable {
     
     @State private(set) var flag: Bool
-    let publisher = PassthroughSubject<Bool, Never>()
     let inspection = Inspection<Self>()
-    var didAppear: ((Self) -> Void)?
     
     var body: some View {
         Button(action: {
             self.flag.toggle()
         }, label: { Text(flag ? "true" : "false") })
-        .onReceive(publisher) { self.flag = $0 }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
-        .onAppear { self.didAppear?(self) }
     }
 }
 
@@ -163,15 +145,6 @@ private struct ObservedStateTestView: View, Inspectable {
     
     var body: some View {
         Text(viewModel.value)
-    }
-}
-
-private struct IncorrectTestView: View, Inspectable {
-    
-    @EnvironmentObject var viewModel: ExternalState
-    
-    var body: some View {
-        EmptyView()
     }
 }
 
@@ -225,16 +198,5 @@ extension EnvironmentValues {
 extension ViewType {
     struct Test<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String { "String" }
-    }
-}
-
-private class Inspection<V>: InspectionEmissary where V: View & Inspectable {
-    let notice = PassthroughSubject<UInt, Never>()
-    var callbacks = [UInt: (V) -> Void]()
-    
-    func visit(_ view: V, _ line: UInt) {
-        if let callback = callbacks.removeValue(forKey: line) {
-            callback(view)
-        }
     }
 }
