@@ -59,6 +59,19 @@ final class CustomViewTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
+    func testViewWithInspection() throws {
+        let sut = TestViewWithInspection(flag: false)
+        let exp1 = sut.inspection.inspect { view in
+            XCTAssertFalse(try view.actualView().flag)
+            try view.button().tap()
+        }
+        let exp2 = sut.inspection.inspect(after: 0.1) { view in
+            XCTAssertTrue(try view.actualView().flag)
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp1, exp2], timeout: 0.2)
+    }
+    
     func testObservedStateChanges() throws {
         let viewModel = ExternalState()
         let view = ObservedStateTestView(viewModel: viewModel)
@@ -160,6 +173,8 @@ final class CustomViewTests: XCTestCase {
     }
 }
 
+// MARK: - Test Views
+
 private struct SimpleTestView: View, Inspectable {
     var body: some View {
         EmptyView()
@@ -182,6 +197,19 @@ private struct LocalStateTestView: View, Inspectable {
             self.didReceiveValue?(self)
         }
         .onAppear { self.didAppear?(self) }
+    }
+}
+
+private struct TestViewWithInspection: View, Inspectable {
+    
+    @State private(set) var flag: Bool
+    let inspection = Inspection<Self>()
+    
+    var body: some View {
+        Button(action: {
+            self.flag.toggle()
+        }, label: { Text(flag ? "true" : "false") })
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
 }
 
@@ -214,6 +242,20 @@ private struct EnvironmentStateTestView: View, Inspectable {
     }
 }
 
+#if os(iOS) || os(tvOS)
+struct UIKitTestView: UIViewRepresentable, Inspectable {
+    func makeUIView(context: UIViewRepresentableContext<UIKitTestView>) -> UIView {
+        return UIView()
+    }
+    
+    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<UIKitTestView>) {
+        
+    }
+}
+#endif
+
+// MARK: - Misc
+
 private class ExternalState: ObservableObject {
     @Published var value = "obj1"
 }
@@ -242,14 +284,15 @@ extension ViewType {
     }
 }
 
-#if os(iOS) || os(tvOS)
-struct UIKitTestView: UIViewRepresentable, Inspectable {
-    func makeUIView(context: UIViewRepresentableContext<UIKitTestView>) -> UIView {
-        return UIView()
-    }
+private class Inspection<V>: InspectionEmissary where V: View & Inspectable {
+    typealias Callback = (V) -> Void
     
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<UIKitTestView>) {
-        
+    let notice = PassthroughSubject<UInt, Never>()
+    var callbacks = [UInt: Callback]()
+    
+    func visit(_ view: V, _ line: UInt) {
+        if let callback = callbacks.removeValue(forKey: line) {
+            callback(view)
+        }
     }
 }
-#endif
