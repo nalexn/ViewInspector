@@ -6,9 +6,7 @@ import Combine
 final class InspectorTests: XCTestCase {
     
     private let testString = "abc"
-    private let testValue = Test1(
-        value1: "abc", value2:
-        Test1.Test2(value3: 42), view: TestView())
+    private let testValue = Struct1(value1: "abc", value2: .init(value3: 42))
     
     func testAttributeLabel() throws {
         guard let value = try Inspector.attribute(label: "value1", value: testValue) as? String
@@ -27,19 +25,19 @@ final class InspectorTests: XCTestCase {
     }
     
     func testTypeNameValue() {
-        let name1 = Inspector.typeName(value: Test3<Int>())
-        XCTAssertEqual(name1, "Test3<Int>")
+        let name1 = Inspector.typeName(value: Struct3<Int>())
+        XCTAssertEqual(name1, "Struct3<Int>")
         let name2 = Inspector.typeName(value: testValue)
-        XCTAssertEqual(name2, "Test1")
-        let name3 = Inspector.typeName(value: Test3<Int>(), prefixOnly: true)
-        XCTAssertEqual(name3, "Test3")
+        XCTAssertEqual(name2, "Struct1")
+        let name3 = Inspector.typeName(value: Struct3<Int>(), prefixOnly: true)
+        XCTAssertEqual(name3, "Struct3")
     }
     
     func testTypeNameType() {
-        let name1 = Inspector.typeName(type: Test3<Int>.self)
-        XCTAssertEqual(name1, "Test3<Int>")
-        let name2 = Inspector.typeName(type: Test1.self)
-        XCTAssertEqual(name2, "Test1")
+        let name1 = Inspector.typeName(type: Struct3<Int>.self)
+        XCTAssertEqual(name1, "Struct3<Int>")
+        let name2 = Inspector.typeName(type: Struct1.self)
+        XCTAssertEqual(name2, "Struct1")
     }
     
     func testTupleView() throws {
@@ -93,22 +91,15 @@ final class InspectableViewModifiersTests: XCTestCase {
     }
 }
 
-private struct Test1 {
-    var value1: String
-    var value2: Test2
-    var view: TestView
-}
+// MARK: - Helpers
 
-private extension Test1 {
-    struct Test2 {
+private struct Struct1 {
+    var value1: String
+    var value2: Struct2
+    
+    struct Struct2 {
         var value3: Int
     }
 }
 
-private struct TestView: View, Inspectable {
-    var body: some View {
-        EmptyView()
-    }
-}
-
-private struct Test3<T> { }
+private struct Struct3<T> { }
