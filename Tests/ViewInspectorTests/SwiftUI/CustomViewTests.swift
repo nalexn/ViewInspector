@@ -6,7 +6,7 @@ import SwiftUI
 
 final class CustomViewTests: XCTestCase {
     
-    func testLocalStateChangesOnView() throws {
+    func testDeprecatedOnFunction() throws {
         var sut = LocalStateTestView(flag: false)
         let exp = sut.on(\.didAppear) { view in
             XCTAssertFalse(view.flag)
@@ -17,56 +17,16 @@ final class CustomViewTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
-    func testManualCallbackConfiguration() throws {
-        var sut = LocalStateTestView(flag: false)
-        let exp = XCTestExpectation(description: "didAppear")
-        sut.didAppear = { view in
-            view.inspect { content in
-                XCTAssertFalse(try content.actualView().flag)
-                try content.button().tap()
-                XCTAssertTrue(try content.actualView().flag)
-                ViewHosting.expel()
-                exp.fulfill()
-            }
-        }
-        ViewHosting.host(view: sut)
-        wait(for: [exp], timeout: 0.1)
-    }
-    
-    func testLocalStateChangesOnMirror() throws {
-        var sut = LocalStateTestView(flag: false)
-        let exp = sut.on(\.didAppear) { view in
-            let mirror = try view.inspect()
-            let text1 = try mirror.button().text().string()
-            XCTAssertEqual(text1, "false")
-            try mirror.button().tap()
-            let text2 = try mirror.button().text().string()
-            XCTAssertEqual(text2, "true")
-        }
-        ViewHosting.host(view: sut)
-        wait(for: [exp], timeout: 0.1)
-    }
-    
     func testStateMutationOnPublisherUpdate() throws {
-        var sut = LocalStateTestView(flag: false)
-        let exp = sut.on(\.didReceiveValue) { view in
-            XCTAssertTrue(view.flag)
-            let text = try view.inspect().button().text().string()
-            XCTAssertEqual(text, "true")
-        }
-        ViewHosting.host(view: sut)
-        sut.publisher.send(true)
-        wait(for: [exp], timeout: 0.1)
-    }
-    
-    func testViewWithInspection() throws {
-        let sut = TestViewWithInspection(flag: false)
+        let sut = LocalStateTestView(flag: false)
         let exp1 = sut.inspection.inspect { view in
-            XCTAssertFalse(try view.actualView().flag)
-            try view.button().tap()
+            let text = try view.button().text().string()
+            XCTAssertEqual(text, "false")
+            sut.publisher.send(true)
         }
         let exp2 = sut.inspection.inspect(after: 0.1) { view in
-            XCTAssertTrue(try view.actualView().flag)
+            let text = try view.button().text().string()
+            XCTAssertEqual(text, "true")
         }
         ViewHosting.host(view: sut)
         wait(for: [exp1, exp2], timeout: 0.2)
@@ -83,13 +43,13 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testEnvironmentStateChanges1() throws {
-        var sut = EnvironmentStateTestView()
+        let sut = EnvironmentStateTestView()
         let viewModel = ExternalState()
-        let exp = sut.on(\.didAppear) { view in
-            let text1 = try view.inspect().text().string()
+        let exp = sut.inspection.inspect { view in
+            let text1 = try view.text().string()
             XCTAssertEqual(text1, "obj1")
             viewModel.value = "abc"
-            let text2 = try view.inspect().text().string()
+            let text2 = try view.text().string()
             XCTAssertEqual(text2, "abc")
         }
         ViewHosting.host(view: sut.environmentObject(viewModel))
@@ -109,11 +69,10 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testEnvViewResetsModifiers() throws {
-        var sut = EnvironmentStateTestView()
-        let exp = sut.on(\.didAppear) { view in
-            let sut = try view.inspect().text()
-            // There is an inner 1 modifier "onAppear"
-            XCTAssertEqual(sut.content.modifiers.count, 1)
+        let sut = EnvironmentStateTestView()
+        let exp = sut.inspection.inspect { view in
+            let sut = try view.text()
+            XCTAssertEqual(sut.content.modifiers.count, 0)
         }
         ViewHosting.host(view: sut.environmentObject(ExternalState()).padding())
         wait(for: [exp], timeout: 0.1)
@@ -185,31 +144,16 @@ private struct LocalStateTestView: View, Inspectable {
     
     @State private(set) var flag: Bool
     let publisher = PassthroughSubject<Bool, Never>()
-    var didReceiveValue: ((Self) -> Void)?
+    let inspection = Inspection<Self>()
     var didAppear: ((Self) -> Void)?
     
     var body: some View {
         Button(action: {
             self.flag.toggle()
         }, label: { Text(flag ? "true" : "false") })
-        .onReceive(publisher) { flag in
-            self.flag = flag
-            self.didReceiveValue?(self)
-        }
-        .onAppear { self.didAppear?(self) }
-    }
-}
-
-private struct TestViewWithInspection: View, Inspectable {
-    
-    @State private(set) var flag: Bool
-    let inspection = Inspection<Self>()
-    
-    var body: some View {
-        Button(action: {
-            self.flag.toggle()
-        }, label: { Text(flag ? "true" : "false") })
+        .onReceive(publisher) { self.flag = $0 }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .onAppear { self.didAppear?(self) }
     }
 }
 
@@ -234,11 +178,11 @@ private struct IncorrectTestView: View, Inspectable {
 private struct EnvironmentStateTestView: View, Inspectable {
     
     @EnvironmentObject var viewModel: ExternalState
-    var didAppear: ((Self) -> Void)?
+    let inspection = Inspection<Self>()
     
     var body: some View {
         Text(viewModel.value)
-            .onAppear { self.didAppear?(self) }
+            .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
 }
 
@@ -285,10 +229,8 @@ extension ViewType {
 }
 
 private class Inspection<V>: InspectionEmissary where V: View & Inspectable {
-    typealias Callback = (V) -> Void
-    
     let notice = PassthroughSubject<UInt, Never>()
-    var callbacks = [UInt: Callback]()
+    var callbacks = [UInt: (V) -> Void]()
     
     func visit(_ view: V, _ line: UInt) {
         if let callback = callbacks.removeValue(forKey: line) {
