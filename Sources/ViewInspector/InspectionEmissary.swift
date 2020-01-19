@@ -70,3 +70,29 @@ public extension InspectionEmissary {
         }
     }
 }
+
+// MARK: - Deprecated API
+
+public extension View {
+    @available(*, deprecated, message: """
+    Use 'Inspection' instead. See the guide for more info:
+    https://github.com/nalexn/ViewInspector/blob/master/guide.md#views-using-state-environment-or-environmentobject
+    """)
+    mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
+                     file: StaticString = #file, line: UInt = #line,
+                     viewId: String = #function,
+                     perform: @escaping ((Self) throws -> Void)) -> XCTestExpectation {
+        let description = Inspector.typeName(value: self) + " callback at line #\(line)"
+        let expectation = XCTestExpectation(description: description)
+        self[keyPath: keyPath] = { view in
+            do {
+                try perform(view)
+                ViewHosting.expel(viewId: viewId)
+                expectation.fulfill()
+            } catch let error {
+                XCTFail("\(error.localizedDescription)", file: file, line: line)
+            }
+        }
+        return expectation
+    }
+}
