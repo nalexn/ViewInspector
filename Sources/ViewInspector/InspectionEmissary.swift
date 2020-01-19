@@ -4,17 +4,19 @@ import XCTest
 
 public protocol InspectionEmissary: class {
     
-    associatedtype V: View, Inspectable
+    associatedtype V: View & Inspectable
     typealias Inspection = (InspectableView<ViewType.View<V>>) throws -> Void
     
     var notice: PassthroughSubject<UInt, Never> { get }
     var callbacks: [UInt: (V) -> Void] { get set }
     
+    @discardableResult
     func inspect(after delay: TimeInterval,
                  file: StaticString, line: UInt, function: String,
                  _ inspection: @escaping Inspection
     ) -> XCTestExpectation
     
+    @discardableResult
     func inspect<P>(onReceive publisher: P,
                     file: StaticString, line: UInt, function: String,
                     _ inspection: @escaping Inspection
@@ -25,6 +27,7 @@ public protocol InspectionEmissary: class {
 
 public extension InspectionEmissary {
     
+    @discardableResult
     func inspect(after delay: TimeInterval = 0,
                  file: StaticString = #file, line: UInt = #line, function: String = #function,
                  _ inspection: @escaping Inspection
@@ -37,6 +40,7 @@ public extension InspectionEmissary {
         return exp
     }
     
+    @discardableResult
     func inspect<P>(onReceive publisher: P,
                     file: StaticString = #file, line: UInt = #line, function: String = #function,
                     _ inspection: @escaping Inspection
