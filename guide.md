@@ -104,9 +104,9 @@ Unlike the views using `@State`, `@Environment` or `@EnvironmentObject`, the sta
 
 ## Views using `@State`, `@Environment` or `@EnvironmentObject`
 
-Inspection of these views requires a tiny refactoring of the view's source code and adding a couple of code snippets, that are intentionally not included in the **ViewInspector** so that your build target could remain independent from it.
+Inspection of these views requires a tiny refactoring of the view's source code and adding a couple of code snippets, that are intentionally not included in the **ViewInspector** so that your build target could remain independent from the framework.
 
---
+---
 
 Here is the snippet to be added to the **build target**:
 
@@ -130,7 +130,7 @@ class Inspection<V> where V: View {
 extension Inspection: InspectionEmissary where V: Inspectable { }
 ```
 
---
+---
 
 Once you add these two snippets, the **ViewInstector** will be fully armed for inspecting any custom views with all types of the state.
 
@@ -184,9 +184,38 @@ final class ContentViewTests: XCTestCase {
 }
 ```
 
-The `inspect` function is always called asynchronously and returns an `XCTestExpectation` that it automatically fulfills after the closure is executed.
+The `inspect` function is always called asynchronously and returns an `XCTestExpectation` that it automatically fulfills after the closure is executed (if you're using a third-party testing framework you can ignore the returned `XCTestExpectation` and manage the async test yourself).
 
-You can have multiple inspections distributed in time within one test:
+---
+
+You can introduce a delay for the inspection:
+
+```swift
+let exp = sut.inspection.inspect(after: 0.5) { view in
+    ...
+}
+```
+
+Or inspect right after a `Publisher` emits a value:
+
+```swift
+let exp = sut.inspection.inspect(onReceive: publisher) { view in
+    ...
+}
+```
+
+Note that the inspection callbacks are **one-time-use**. So if you need to inspect the view for multiple emitted values, you can configure the test the following way:
+
+```swift
+let exp1 = sut.inspection.inspect(onReceive: publisher) { view in
+    // First value received
+}
+let exp2 = sut.inspection.inspect(onReceive: publisher.dropFirst()) { view in
+    // Second value received
+}
+```
+
+You can run multiple inspections within one test:
 
 ```swift
 final class ContentViewTests: XCTestCase {
@@ -194,17 +223,21 @@ final class ContentViewTests: XCTestCase {
     func testPublisherChangingValue() {
         let publisher = PassthroughSubject<Bool, Never>()
         let sut = ContentView(publisher: publisher)
+        
         let exp1 = sut.inspection.inspect { view in
             XCTAssertFalse(try view.actualView().flag)
             publisher.send(true)
         }
-        let exp2 = sut.inspection.inspect(after: 0.1) { view in
+        
+        let exp2 = sut.inspection.inspect(onReceive: publisher) { view in
             XCTAssertTrue(try view.actualView().flag)
             publisher.send(false)
         }
+        
         let exp3 = sut.inspection.inspect(after: 0.2) { view in
             XCTAssertFalse(try view.actualView().flag)
         }
+        
         ViewHosting.host(view: sut)
         wait(for: [exp1, exp2, exp3], timeout: 0.3)
     }
