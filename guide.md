@@ -111,7 +111,7 @@ Inspection of these views requires a tiny refactoring of the view's source code 
 Here is the snippet to be added to the **build target**:
 
 ```swift
-class Inspection<V> where V: View {
+final class Inspection<V> where V: View {
 
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
