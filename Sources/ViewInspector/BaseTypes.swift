@@ -91,6 +91,10 @@ public struct LazyGroup<T> {
     func element(at index: Int) throws -> T {
         try access(index)
     }
+    
+    static var empty: Self {
+        return .init(count: 0) { _ in fatalError() }
+    }
 }
 
 extension LazyGroup: Sequence {

@@ -48,8 +48,7 @@ extension InspectableView: Sequence where View: MultipleViewContent {
     }
 
     public func makeIterator() -> Iterator {
-        let group: LazyGroup<Content> = (try? View.children(content)) ??
-            .init(count: 0, { _ in Content("") })
+        let group: LazyGroup<Content> = (try? View.children(content)) ?? .empty
         return .init(group)
     }
 
@@ -71,7 +70,7 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
             let viewes = try View.children(content)
             return try .init(try viewes.element(at: index))
         } catch let error {
-            fatalError("\(error.localizedDescription)")
+            fatalError("\(error)")
         }
     }
 

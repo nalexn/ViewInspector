@@ -32,6 +32,11 @@ final class BaseTypesTests: XCTestCase {
 
 final class SequenceTests: XCTestCase {
     
+    func testLazyGroupEmpty() {
+        let sut = LazyGroup<Int>.empty
+        XCTAssertEqual(sut.count, 0)
+    }
+    
     func testLazyGroupSequence() {
         let count = 3
         let sut = LazyGroup<Int>(count: count) { index -> Int in

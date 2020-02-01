@@ -6,11 +6,24 @@ import SwiftUI
 
 final class InspectionEmissaryTests: XCTestCase {
     
-    func testDeprecatedOnFunction() throws {
+    func testOnFunction() throws {
         var sut = TestView(flag: false)
         let exp = sut.on(\.didAppear) { view in
             XCTAssertFalse(view.flag)
             try view.inspect().button().tap()
+            XCTAssertTrue(view.flag)
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testInspectWithClosure() throws {
+        var sut = TestView(flag: false)
+        let exp = sut.on(\.didAppear) { view in
+            XCTAssertFalse(view.flag)
+            view.inspect { content in
+                try content.button().tap()
+            }
             XCTAssertTrue(view.flag)
         }
         ViewHosting.host(view: sut)
