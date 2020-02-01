@@ -75,13 +75,7 @@ public extension InspectionEmissary {
     }
 }
 
-// MARK: - Deprecated API
-
 public extension View {
-    @available(*, deprecated, message: """
-    Use 'Inspection' instead. See the guide for more info:
-    https://github.com/nalexn/ViewInspector/blob/master/guide.md#views-using-state-environment-or-environmentobject
-    """)
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      file: StaticString = #file, line: UInt = #line,
                      viewId: String = #function,
