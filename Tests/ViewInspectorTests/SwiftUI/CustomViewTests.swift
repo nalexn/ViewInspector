@@ -67,9 +67,24 @@ final class CustomViewTests: XCTestCase {
     
     #if os(iOS) || os(tvOS)
     func testExtractionOfUIKitView() throws {
-        let view = AnyView(UIKitTestView())
+        let flag = Binding(wrappedValue: false)
+        let view = AnyView(UIKitTestView(flag: flag, didUpdate: { }))
         let sut = try view.inspect().view(UIKitTestView.self)
         XCTAssertNoThrow(try sut.actualView())
+    }
+    
+    func testUIKitViewUpdateIsCalled() throws {
+        let exp = XCTestExpectation(description: "updateUIView")
+        exp.expectedFulfillmentCount = 3
+        exp.assertForOverFulfill = true
+        var sut = UIKitTestView.WrapperView(flag: false) {
+            exp.fulfill()
+        }
+        sut.didAppear = { view in
+            view.flag.toggle()
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
     }
     #endif
     
@@ -161,12 +176,32 @@ private struct EnvironmentStateTestView: View, Inspectable {
 
 #if os(iOS) || os(tvOS)
 struct UIKitTestView: UIViewRepresentable, Inspectable {
-    func makeUIView(context: UIViewRepresentableContext<UIKitTestView>) -> UIView {
+    
+    typealias UpdateContext = UIViewRepresentableContext<Self>
+    
+    @Binding var flag: Bool
+    var didUpdate: () -> Void
+    
+    func makeUIView(context: UpdateContext) -> UIView {
         return UIView()
     }
     
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<UIKitTestView>) {
+    func updateUIView(_ uiView: UIView, context: UpdateContext) {
+        didUpdate()
+    }
+}
+
+extension UIKitTestView {
+    struct WrapperView: View {
         
+        @State var flag: Bool
+        var didAppear: ((Self) -> Void)?
+        var didUpdate: () -> Void
+        
+        var body: some View {
+            UIKitTestView(flag: $flag, didUpdate: didUpdate)
+                .onAppear { self.didAppear?(self) }
+        }
     }
 }
 #endif
