@@ -67,8 +67,7 @@ extension Inspector {
         return Inspector.typeName(value: view, prefixOnly: true) == "TupleView"
     }
     
-    static func unwrap(view: Any, modifiers: [Any])
-        throws -> Content {
+    static func unwrap(view: Any, modifiers: [Any]) throws -> Content {
         return try unwrap(content: Content(view, modifiers: modifiers))
     }
     
