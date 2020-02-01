@@ -104,35 +104,9 @@ Unlike the views using `@State`, `@Environment` or `@EnvironmentObject`, the sta
 
 ## Views using `@State`, `@Environment` or `@EnvironmentObject`
 
-Inspection of these views requires a tiny refactoring of the view's source code and adding a couple of code snippets, that are intentionally not included in the **ViewInspector** so that your build target could remain independent from the framework.
+Inspection of these views requires a tiny refactoring of the view's source code, and you can choose between two approaches: the first one is more lightweight, the second one is more flexible.
 
----
-
-Here is the snippet to be added to the **build target**:
-
-```swift
-final class Inspection<V> where V: View {
-
-    let notice = PassthroughSubject<UInt, Never>()
-    var callbacks = [UInt: (V) -> Void]()
-
-    func visit(_ view: V, _ line: UInt) {
-        if let callback = callbacks.removeValue(forKey: line) {
-            callback(view)
-        }
-    }
-}
-```
-
-... and this one for the **test target**:
-
-```swift
-extension Inspection: InspectionEmissary where V: Inspectable { }
-```
-
----
-
-Once you add these two snippets, the **ViewInstector** will be fully armed for inspecting any custom views with all types of the state.
+### Approach #1
 
 Consider you have a view with a `@State` variable:
 
@@ -155,7 +129,73 @@ You can inspect it after adding these two lines:
 struct ContentView: View {
 
     @State var flag: Bool = false
-    let inspection = Inspection<Self>() // 1.
+    internal var didAppear: ((Self) -> Void)? // 1.
+    
+    var body: some View {
+        Button(action: {
+            self.flag.toggle()
+        }, label: { Text(flag ? "True" : "False") })
+        .onAppear { self.didAppear?(self) } // 2.
+    }
+}
+```
+
+The inspection will be fully functional inside the `didAppear` callback. You can configure the `didAppear` manually, or use a convenience function `on(_ keyPath:)`:
+
+```swift
+func testStateValueChanges() {
+    var sut = ContentView()
+    let exp = sut.on(\.didAppear) { view in
+        XCTAssertFalse(try view.actualView().flag)
+        try view.button().tap()
+        XCTAssertTrue(try view.actualView().flag)
+    }
+    ViewHosting.host(view: sut)
+    wait(for: [exp], timeout: 0.1)
+}
+```
+
+An advantage of this variant is simplicity and a minimal intrusion in the source code. The downside is lack of flexibility: it is impossible to inspect the view in an arbitrary moment after `onAppear`.
+
+### Approach #2
+
+This one works for a more complex test scenarios where we want to inspect the view after a time span or when it receives an update from a publisher.
+
+Here is a code snippet that you need to include in the **build** target to make it work:
+
+```swift
+internal final class Inspection<V> where V: View {
+
+    let notice = PassthroughSubject<UInt, Never>()
+    var callbacks = [UInt: (V) -> Void]()
+
+    func visit(_ view: V, _ line: UInt) {
+        if let callback = callbacks.removeValue(forKey: line) {
+            callback(view)
+        }
+    }
+}
+```
+
+This code is intentionally not included in the **ViewInspector** so that your build target could remain independent from the framework, and since it requires `internal` access level it doesn't leave a trace.
+
+After you add that `class Inspection<V>` to the build target, you should extend it in the **test target** with conformance to `InspectionEmissary` protocol:
+
+```swift
+extension Inspection: InspectionEmissary where V: Inspectable { }
+```
+
+Once you add these two snippets, the **ViewInstector** will be fully armed for inspecting any custom views with all types of the state.
+
+---
+
+For the same sample view we considered in the approach #1, instead of `onAppear / didAppear` dance we should use another two lines:
+
+```swift
+struct ContentView: View {
+
+    @State var flag: Bool = false
+    internal let inspection = Inspection<Self>() // 1.
     
     var body: some View {
         Button(action: {
@@ -166,7 +206,7 @@ struct ContentView: View {
 }
 ```
 
-The test for this view would look like this:
+This allows us not only to repeat the original test case functionality:
 
 ```swift
 final class ContentViewTests: XCTestCase {
@@ -184,11 +224,7 @@ final class ContentViewTests: XCTestCase {
 }
 ```
 
-The `inspect` function is always called asynchronously and returns an `XCTestExpectation` that it automatically fulfills after the closure is executed (if you're using a third-party testing framework you can ignore the returned `XCTestExpectation` and manage the async test yourself).
-
----
-
-You can introduce a delay for the inspection:
+... but also to gain the ability to delay the inspection:
 
 ```swift
 let exp = sut.inspection.inspect(after: 0.5) { view in
@@ -196,7 +232,7 @@ let exp = sut.inspection.inspect(after: 0.5) { view in
 }
 ```
 
-Or inspect right after a `Publisher` emits a value:
+... inspect right after a `Publisher` emits a value:
 
 ```swift
 let exp = sut.inspection.inspect(onReceive: publisher) { view in
@@ -204,18 +240,7 @@ let exp = sut.inspection.inspect(onReceive: publisher) { view in
 }
 ```
 
-Note that the inspection callbacks are **one-time-use**. So if you need to inspect the view for multiple emitted values, you can configure the test the following way:
-
-```swift
-let exp1 = sut.inspection.inspect(onReceive: publisher) { view in
-    // First value received
-}
-let exp2 = sut.inspection.inspect(onReceive: publisher.dropFirst()) { view in
-    // Second value received
-}
-```
-
-You can run multiple inspections within one test:
+... and run multiple inspections within a single test:
 
 ```swift
 final class ContentViewTests: XCTestCase {
@@ -244,7 +269,18 @@ final class ContentViewTests: XCTestCase {
 }
 ```
 
-For the case of `@Environment` or `@EnvironmentObject`, perform the injection before hosting the view:
+Note that the inspection callbacks are **one-time-use**. So if you need to inspect the view for multiple values emitted by a publisher, you can configure the test the following way:
+
+```swift
+let exp1 = sut.inspection.inspect(onReceive: publisher) { view in
+    // First value received
+}
+let exp2 = sut.inspection.inspect(onReceive: publisher.dropFirst()) { view in
+    // Second value received
+}
+```
+
+For the case of `@Environment` or `@EnvironmentObject`, you can perform the injection before hosting the view:
 
 ```swift
 ViewHosting.host(view: sut.environmentObject(...))
