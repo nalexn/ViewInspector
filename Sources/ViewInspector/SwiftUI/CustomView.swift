@@ -65,3 +65,17 @@ public extension InspectableView where View: CustomViewType {
         return casted
     }
 }
+
+#if os(macOS)
+public extension NSViewRepresentable where Self: Inspectable {
+    func nsView() throws -> NSViewType {
+        return try ViewHosting.lookup(Self.self)
+    }
+}
+#else
+public extension UIViewRepresentable where Self: Inspectable {
+    func uiView() throws -> UIViewType {
+        return try ViewHosting.lookup(Self.self)
+    }
+}
+#endif

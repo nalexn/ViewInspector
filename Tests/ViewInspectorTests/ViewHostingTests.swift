@@ -1,0 +1,195 @@
+import XCTest
+import SwiftUI
+#if !os(macOS)
+import UIKit
+#endif
+
+@testable import ViewInspector
+
+#if os(macOS)
+final class ViewHostingTests: XCTestCase {
+
+    func testNSViewUpdate() throws {
+        let exp = XCTestExpectation(description: "updateNSView")
+        exp.expectedFulfillmentCount = 2
+        exp.assertForOverFulfill = true
+        var sut = NSTestView.WrapperView(flag: false, didUpdate: {
+            exp.fulfill()
+        })
+        sut.didAppear = { view in
+            view.flag.toggle()
+            ViewHosting.expel()
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testNSViewExtraction() throws {
+        let exp = XCTestExpectation(description: "extractNSView")
+        let flag = Binding(wrappedValue: false)
+        let sut = NSTestView(flag: flag, didUpdate: { })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            sut.inspect { view in
+                let nsView = try view.actualView().nsView()
+                XCTAssertEqual(nsView.viewTag, NSViewWithTag.offTag)
+                ViewHosting.expel()
+                exp.fulfill()
+            }
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.2)
+    }
+    
+    func testNSViewExtractionAfterStateUpdate() throws {
+        let exp = XCTestExpectation(description: "extractNSView")
+        var sut = NSTestView.WrapperView(flag: false, didUpdate: { })
+        sut.didAppear = { wrapper in
+            wrapper.inspect { wrapper in
+                let view = try wrapper.view(NSTestView.self)
+                XCTAssertThrowsError(try view.actualView().nsView())
+                try wrapper.actualView().flag.toggle()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    let uiView = try? view.actualView().nsView()
+                    XCTAssertNotNil(uiView)
+                    XCTAssertEqual(uiView?.viewTag, NSViewWithTag.onTag)
+                    ViewHosting.expel()
+                    exp.fulfill()
+                }
+            }
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.2)
+    }
+}
+#else
+final class ViewHostingTests: XCTestCase {
+    
+    func testUIViewUpdate() throws {
+        let exp = XCTestExpectation(description: "updateUIView")
+        exp.expectedFulfillmentCount = 3
+        exp.assertForOverFulfill = true
+        var sut = UIKitTestView.WrapperView(flag: false, didUpdate: {
+            exp.fulfill()
+        })
+        sut.didAppear = { view in
+            view.flag.toggle()
+            ViewHosting.expel()
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
+    }
+
+    func testUIViewExtraction() throws {
+        let exp = XCTestExpectation(description: "extractUIView")
+        let flag = Binding(wrappedValue: false)
+        let sut = UIKitTestView(flag: flag, didUpdate: { })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            sut.inspect { view in
+                let uiView = try view.actualView().uiView()
+                XCTAssertEqual(uiView.tag, UIKitTestView.offTag)
+                ViewHosting.expel()
+                exp.fulfill()
+            }
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.2)
+    }
+    
+    func testUIViewExtractionAfterStateUpdate() throws {
+        let exp = XCTestExpectation(description: "extractUIView")
+        var sut = UIKitTestView.WrapperView(flag: false, didUpdate: { })
+        sut.didAppear = { wrapper in
+            wrapper.inspect { wrapper in
+                let view = try wrapper.view(UIKitTestView.self)
+                XCTAssertThrowsError(try view.actualView().uiView())
+                try wrapper.actualView().flag.toggle()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    let uiView = try? view.actualView().uiView()
+                    XCTAssertNotNil(uiView)
+                    XCTAssertEqual(uiView?.tag, UIKitTestView.onTag)
+                    ViewHosting.expel()
+                    exp.fulfill()
+                }
+            }
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.2)
+    }
+}
+#endif
+
+// MARK: - Test Views
+
+#if os(macOS)
+private class NSViewWithTag: NSView {
+    var viewTag: Int = NSViewWithTag.offTag
+    
+    static let offTag: Int = 42
+    static let onTag: Int = 43
+}
+
+private struct NSTestView: NSViewRepresentable, Inspectable {
+    
+    typealias UpdateContext = NSViewRepresentableContext<Self>
+    
+    @Binding var flag: Bool
+    var didUpdate: () -> Void
+    
+    func makeNSView(context: UpdateContext) -> NSViewWithTag {
+        return NSViewWithTag()
+    }
+    
+    func updateNSView(_ nsView: NSViewWithTag, context: UpdateContext) {
+        nsView.viewTag = flag ? NSViewWithTag.onTag : NSViewWithTag.offTag
+        didUpdate()
+    }
+}
+
+extension NSTestView {
+    struct WrapperView: View, Inspectable {
+        
+        @State var flag: Bool
+        var didAppear: ((Self) -> Void)?
+        var didUpdate: () -> Void
+        
+        var body: some View {
+            NSTestView(flag: $flag, didUpdate: didUpdate)
+                .onAppear { self.didAppear?(self) }
+        }
+    }
+}
+#else
+private struct UIKitTestView: UIViewRepresentable, Inspectable {
+    
+    typealias UpdateContext = UIViewRepresentableContext<Self>
+    
+    @Binding var flag: Bool
+    var didUpdate: () -> Void
+    
+    func makeUIView(context: UpdateContext) -> UIView {
+        return UIView()
+    }
+    
+    func updateUIView(_ uiView: UIView, context: UpdateContext) {
+        uiView.tag = flag ? UIKitTestView.onTag : UIKitTestView.offTag
+        didUpdate()
+    }
+    
+    static let offTag: Int = 42
+    static let onTag: Int = 43
+}
+
+extension UIKitTestView {
+    struct WrapperView: View, Inspectable {
+        
+        @State var flag: Bool
+        var didAppear: ((Self) -> Void)?
+        var didUpdate: () -> Void
+        
+        var body: some View {
+            UIKitTestView(flag: $flag, didUpdate: didUpdate)
+                .onAppear { self.didAppear?(self) }
+        }
+    }
+}
+#endif

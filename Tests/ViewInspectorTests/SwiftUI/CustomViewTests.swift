@@ -65,26 +65,17 @@ final class CustomViewTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
-    #if os(iOS) || os(tvOS)
-    func testExtractionOfUIKitView() throws {
-        let flag = Binding(wrappedValue: false)
-        let view = AnyView(UIKitTestView(flag: flag, didUpdate: { }))
-        let sut = try view.inspect().view(UIKitTestView.self)
+    #if os(macOS)
+    func testExtractionOfNSTestView() throws {
+        let view = AnyView(NSTestView())
+        let sut = try view.inspect().view(NSTestView.self)
         XCTAssertNoThrow(try sut.actualView())
     }
-    
-    func testUIKitViewUpdateIsCalled() throws {
-        let exp = XCTestExpectation(description: "updateUIView")
-        exp.expectedFulfillmentCount = 3
-        exp.assertForOverFulfill = true
-        var sut = UIKitTestView.WrapperView(flag: false) {
-            exp.fulfill()
-        }
-        sut.didAppear = { view in
-            view.flag.toggle()
-        }
-        ViewHosting.host(view: sut)
-        wait(for: [exp], timeout: 0.1)
+    #else
+    func testExtractionOfUITestView() throws {
+        let view = AnyView(UITestView())
+        let sut = try view.inspect().view(UITestView.self)
+        XCTAssertNoThrow(try sut.actualView())
     }
     #endif
     
@@ -174,34 +165,28 @@ private struct EnvironmentStateTestView: View, Inspectable {
     }
 }
 
-#if os(iOS) || os(tvOS)
-struct UIKitTestView: UIViewRepresentable, Inspectable {
+#if os(macOS)
+private struct NSTestView: NSViewRepresentable, Inspectable {
     
-    typealias UpdateContext = UIViewRepresentableContext<Self>
-    
-    @Binding var flag: Bool
-    var didUpdate: () -> Void
-    
-    func makeUIView(context: UpdateContext) -> UIView {
-        return UIView()
+    func makeNSView(context: NSViewRepresentableContext<Self>) -> NSView {
+        let view = NSView()
+        updateNSView(view, context: context)
+        return view
     }
     
-    func updateUIView(_ uiView: UIView, context: UpdateContext) {
-        didUpdate()
+    func updateNSView(_ nsView: NSView, context: NSViewRepresentableContext<Self>) {
     }
 }
-
-extension UIKitTestView {
-    struct WrapperView: View {
-        
-        @State var flag: Bool
-        var didAppear: ((Self) -> Void)?
-        var didUpdate: () -> Void
-        
-        var body: some View {
-            UIKitTestView(flag: $flag, didUpdate: didUpdate)
-                .onAppear { self.didAppear?(self) }
-        }
+#else
+private struct UITestView: UIViewRepresentable, Inspectable {
+    
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIView {
+        let view = UIView()
+        updateUIView(view, context: context)
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<Self>) {
     }
 }
 #endif

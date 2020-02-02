@@ -5,9 +5,9 @@ import UIKit
 
 public struct ViewHosting { }
 
-extension ViewHosting {
+public extension ViewHosting {
     
-    public static func host<V>(view: V, size: CGSize? = nil, viewId: String = #function) where V: View {
+    static func host<V>(view: V, size: CGSize? = nil, viewId: String = #function) where V: View {
         let parentVC = rootViewController
         let childVC = hostVC(view)
         let size = size ?? parentVC.view.bounds.size
@@ -27,7 +27,7 @@ extension ViewHosting {
         window.layoutIfNeeded()
     }
     
-    public static func expel(viewId: String = #function) {
+    static func expel(viewId: String = #function) {
         guard let childVC = extractViewController(viewId: viewId) else { return }
         willMove(childVC, to: nil)
         childVC.view.removeFromSuperview()
@@ -156,5 +156,57 @@ private class RootViewController: NSViewController {
    required init?(coder: NSCoder) {
       fatalError()
    }
+}
+#endif
+
+// MARK: - UIView lookup
+
+internal extension ViewHosting {
+    #if os(macOS)
+    static func lookup<V>(_ view: V.Type) throws -> V.NSViewType
+        where V: Inspectable & NSViewRepresentable {
+            let name = Inspector.typeName(type: view)
+            let viewHost = rootViewController.view.descendant(nameTraits: ["ViewHost", name])
+            guard let view = viewHost?.subviews.compactMap({ $0 as? V.NSViewType }).first else {
+                throw InspectionError.viewNotFound(parent: name)
+            }
+            return view
+    }
+    #else
+    static func lookup<V>(_ view: V.Type) throws -> V.UIViewType
+        where V: Inspectable & UIViewRepresentable {
+            let name = Inspector.typeName(type: view)
+            let viewHost = window.descendant(nameTraits: ["ViewHost", name])
+            guard let view = viewHost?.subviews.compactMap({ $0 as? V.UIViewType }).first else {
+                throw InspectionError.viewNotFound(parent: name)
+            }
+            return view
+    }
+    #endif
+}
+
+#if os(macOS)
+private extension NSView {
+    func descendant(nameTraits: [String]) -> NSView? {
+        let name = Inspector.typeName(value: self)
+        if !nameTraits.contains(where: { !name.contains($0) }) {
+            return self
+        }
+        return subviews.lazy
+            .compactMap { $0.descendant(nameTraits: nameTraits) }
+            .first
+    }
+}
+#else
+private extension UIView {
+    func descendant(nameTraits: [String]) -> UIView? {
+        let name = Inspector.typeName(value: self)
+        if !nameTraits.contains(where: { !name.contains($0) }) {
+            return self
+        }
+        return subviews.lazy
+            .compactMap { $0.descendant(nameTraits: nameTraits) }
+            .first
+    }
 }
 #endif
