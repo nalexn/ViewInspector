@@ -18,7 +18,9 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| AnyView | `contained view` |
 |:white_check_mark:| Button | `contained view`, `tap()` |
 |:white_check_mark:| ConditionalContent | `contained view` |
-|:white_check_mark:| CustomView | `full access` |
+|:white_check_mark:| SwiftUI CustomView | `actualView: CustomView` |
+|:white_check_mark:| UIViewRepresentable | `uiView: UIView` |
+|:white_check_mark:| UIViewControllerRepresentable | `viewController: UIViewController` |
 |:white_check_mark:| DatePicker | `contained view` |
 |:white_check_mark:| Divider | |
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
