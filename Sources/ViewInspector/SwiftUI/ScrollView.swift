@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension ScrollView {
-    
-    func inspect() throws -> InspectableView<ViewType.ScrollView> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.ScrollView: SingleViewContent {

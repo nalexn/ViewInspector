@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension Picker {
-    
-    func inspect() throws -> InspectableView<ViewType.Picker> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 public extension ViewType.Picker {
     
     struct Label: KnownViewType {

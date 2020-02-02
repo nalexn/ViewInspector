@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension TabView {
-    
-    func inspect() throws -> InspectableView<ViewType.TabView> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.TabView: MultipleViewContent {

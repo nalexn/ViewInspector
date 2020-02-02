@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension Toggle {
-    
-    func inspect() throws -> InspectableView<ViewType.Toggle> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.Toggle: SingleViewContent {

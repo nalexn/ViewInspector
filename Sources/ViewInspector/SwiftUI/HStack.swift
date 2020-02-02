@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension HStack {
-    
-    func inspect() throws -> InspectableView<ViewType.HStack> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.HStack: MultipleViewContent {

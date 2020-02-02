@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension Slider {
-    
-    func inspect() throws -> InspectableView<ViewType.Slider> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.Slider: SingleViewContent {

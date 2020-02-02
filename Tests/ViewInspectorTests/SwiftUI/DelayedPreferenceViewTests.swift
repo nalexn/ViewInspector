@@ -12,7 +12,7 @@ final class DelayedPreferenceViewTests: XCTestCase {
                 .backgroundPreferenceValue(Key.self) { _ in EmptyView() }
         }
         // Not supported
-        XCTAssertThrowsError(try view.inspect().text(0))
+        XCTAssertThrowsError(try view.inspect().navigationView().text(0))
     }
     
     func testRetainsModifiers() throws {

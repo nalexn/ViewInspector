@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension NavigationView {
-    
-    func inspect() throws -> InspectableView<ViewType.NavigationView> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.NavigationView: MultipleViewContent {

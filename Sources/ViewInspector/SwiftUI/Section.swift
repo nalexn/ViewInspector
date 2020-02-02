@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension Section {
-    
-    func inspect() throws -> InspectableView<ViewType.Section> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.Section: MultipleViewContent {

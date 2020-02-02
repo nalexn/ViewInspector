@@ -19,7 +19,7 @@ final class EquatableViewTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(EquatableView(content: Text("")))
-        XCTAssertNoThrow(try view.inspect().text())
+        XCTAssertNoThrow(try view.inspect().anyView().text())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -27,8 +27,8 @@ final class EquatableViewTests: XCTestCase {
             EquatableView(content: Text(""))
             EquatableView(content: Text(""))
         }
-        XCTAssertNoThrow(try view.inspect().text(0))
-        XCTAssertNoThrow(try view.inspect().text(1))
+        XCTAssertNoThrow(try view.inspect().hStack().text(0))
+        XCTAssertNoThrow(try view.inspect().hStack().text(1))
     }
 }
 
@@ -38,7 +38,7 @@ final class GlobalModifiersForEquatableView: XCTestCase {
     
     func testEquatable() throws {
         let sut = AnyView(TestView().equatable())
-        XCTAssertNoThrow(try sut.inspect().view(TestView.self))
+        XCTAssertNoThrow(try sut.inspect().anyView().view(TestView.self))
     }
 }
 

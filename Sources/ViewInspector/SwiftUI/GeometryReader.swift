@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension GeometryReader {
-    
-    func inspect() throws -> InspectableView<ViewType.GeometryReader> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.GeometryReader: SingleViewContent {

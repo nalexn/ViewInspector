@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension EditButton {
-    
-    func inspect() throws -> InspectableView<ViewType.EditButton> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {

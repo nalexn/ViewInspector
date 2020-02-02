@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension EmptyView {
-    
-    func inspect() throws -> InspectableView<ViewType.EmptyView> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {

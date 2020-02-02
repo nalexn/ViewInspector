@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension TextField {
-    
-    func inspect() throws -> InspectableView<ViewType.TextField> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.TextField: SingleViewContent {

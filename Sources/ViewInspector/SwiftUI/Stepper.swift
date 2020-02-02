@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension Stepper {
-    
-    func inspect() throws -> InspectableView<ViewType.Stepper> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.Stepper: SingleViewContent {

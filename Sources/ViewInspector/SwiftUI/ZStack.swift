@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension ZStack {
-    
-    func inspect() throws -> InspectableView<ViewType.ZStack> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.ZStack: MultipleViewContent {

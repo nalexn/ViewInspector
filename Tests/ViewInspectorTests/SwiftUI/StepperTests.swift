@@ -12,8 +12,8 @@ final class StepperTests: XCTestCase {
     func testEnclosedView() throws {
         let view1 = Stepper("Title1", value: $counter1)
         let view2 = Stepper(value: $counter1, label: { Text("Title2") })
-        let text1 = try view1.inspect().text().string()
-        let text2 = try view2.inspect().text().string()
+        let text1 = try view1.inspect().stepper().text().string()
+        let text2 = try view2.inspect().stepper().text().string()
         XCTAssertEqual(text1, "Title1")
         XCTAssertEqual(text2, "Title2")
     }
@@ -26,7 +26,7 @@ final class StepperTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Stepper("Test", value: $counter1))
-        XCTAssertNoThrow(try view.inspect().stepper())
+        XCTAssertNoThrow(try view.inspect().anyView().stepper())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -34,8 +34,8 @@ final class StepperTests: XCTestCase {
             Stepper("Test", value: $counter1)
             Stepper("Test", value: $counter2)
         }
-        XCTAssertNoThrow(try view.inspect().stepper(0))
-        XCTAssertNoThrow(try view.inspect().stepper(1))
+        XCTAssertNoThrow(try view.inspect().hStack().stepper(0))
+        XCTAssertNoThrow(try view.inspect().hStack().stepper(1))
     }
     
     func testIncrement() throws {
@@ -43,7 +43,7 @@ final class StepperTests: XCTestCase {
         let view = Stepper("", onIncrement: {
             exp.fulfill()
         }, onDecrement: nil, onEditingChanged: { _ in })
-        try view.inspect().increment()
+        try view.inspect().stepper().increment()
         wait(for: [exp], timeout: 0.5)
     }
     
@@ -52,7 +52,7 @@ final class StepperTests: XCTestCase {
         let view = Stepper("", onIncrement: nil, onDecrement: {
             exp.fulfill()
         }, onEditingChanged: { _ in })
-        try view.inspect().decrement()
+        try view.inspect().stepper().decrement()
         wait(for: [exp], timeout: 0.5)
     }
     
@@ -62,7 +62,7 @@ final class StepperTests: XCTestCase {
                            onEditingChanged: { _ in
             exp.fulfill()
         })
-        try view.inspect().callOnEditingChanged()
+        try view.inspect().stepper().callOnEditingChanged()
         wait(for: [exp], timeout: 0.5)
     }
 }

@@ -10,7 +10,7 @@ final class DividerTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Divider())
-        XCTAssertNoThrow(try view.inspect().divider())
+        XCTAssertNoThrow(try view.inspect().anyView().divider())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -20,7 +20,7 @@ final class DividerTests: XCTestCase {
             Text("")
             Divider()
         }
-        XCTAssertNoThrow(try view.inspect().divider(1))
-        XCTAssertNoThrow(try view.inspect().divider(3))
+        XCTAssertNoThrow(try view.inspect().hStack().divider(1))
+        XCTAssertNoThrow(try view.inspect().hStack().divider(3))
     }
 }

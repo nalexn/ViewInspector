@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension Form {
-    
-    func inspect() throws -> InspectableView<ViewType.Form> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.Form: MultipleViewContent {

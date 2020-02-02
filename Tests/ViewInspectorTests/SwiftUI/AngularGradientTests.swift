@@ -13,7 +13,7 @@ final class AngularGradientTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(AngularGradient(gradient: gradient, center: .center))
-        XCTAssertNoThrow(try view.inspect().angularGradient())
+        XCTAssertNoThrow(try view.inspect().anyView().angularGradient())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -21,20 +21,20 @@ final class AngularGradientTests: XCTestCase {
             AngularGradient(gradient: gradient, center: .center)
             AngularGradient(gradient: gradient, center: .center)
         }
-        XCTAssertNoThrow(try view.inspect().angularGradient(0))
-        XCTAssertNoThrow(try view.inspect().angularGradient(1))
+        XCTAssertNoThrow(try view.inspect().hStack().angularGradient(0))
+        XCTAssertNoThrow(try view.inspect().hStack().angularGradient(1))
     }
     
     func testGradient() throws {
         let sut = try AngularGradient(gradient: gradient, center: .center)
-            .inspect().gradient()
+            .inspect().angularGradient().gradient()
         XCTAssertEqual(sut, gradient)
     }
     
     func testCenter() throws {
         let center: UnitPoint = .topLeading
         let sut = try AngularGradient(gradient: gradient, center: center)
-            .inspect().center()
+            .inspect().angularGradient().center()
         XCTAssertEqual(sut, center)
     }
     
@@ -42,7 +42,7 @@ final class AngularGradientTests: XCTestCase {
         let angle = Angle(degrees: 123)
         let sut = try AngularGradient(gradient: gradient, center: .center,
                                       startAngle: angle, endAngle: Angle())
-            .inspect().startAngle()
+            .inspect().angularGradient().startAngle()
         XCTAssertEqual(sut, angle)
     }
     
@@ -50,7 +50,7 @@ final class AngularGradientTests: XCTestCase {
         let angle = Angle(degrees: 123)
         let sut = try AngularGradient(gradient: gradient, center: .center,
                                       startAngle: Angle(), endAngle: angle)
-            .inspect().endAngle()
+            .inspect().angularGradient().endAngle()
         XCTAssertEqual(sut, angle)
     }
 }

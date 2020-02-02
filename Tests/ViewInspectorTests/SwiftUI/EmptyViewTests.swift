@@ -10,7 +10,7 @@ final class EmptyViewTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(EmptyView())
-        XCTAssertNoThrow(try view.inspect().emptyView())
+        XCTAssertNoThrow(try view.inspect().anyView().emptyView())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -20,7 +20,7 @@ final class EmptyViewTests: XCTestCase {
             Text("")
             EmptyView()
         }
-        XCTAssertNoThrow(try view.inspect().emptyView(1))
-        XCTAssertNoThrow(try view.inspect().emptyView(3))
+        XCTAssertNoThrow(try view.inspect().hStack().emptyView(1))
+        XCTAssertNoThrow(try view.inspect().hStack().emptyView(3))
     }
 }

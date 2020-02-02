@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension View where Self: Inspectable {
-    
-    func inspect() throws -> InspectableView<ViewType.View<Self>> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.View: SingleViewContent {

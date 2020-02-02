@@ -22,7 +22,7 @@ final class ModifiedContentTests: XCTestCase {
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(ModifiedContent(content: Text("Test"),
                                            modifier: TestModifier()))
-        XCTAssertEqual(try view.inspect().text().content.modifiers.count, 1)
+        XCTAssertEqual(try view.inspect().anyView().text().content.modifiers.count, 1)
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -30,8 +30,8 @@ final class ModifiedContentTests: XCTestCase {
             ModifiedContent(content: Text("Test"), modifier: TestModifier())
             ModifiedContent(content: Text("Test"), modifier: TestModifier())
         }
-        XCTAssertEqual(try view.inspect().text(0).content.modifiers.count, 1)
-        XCTAssertEqual(try view.inspect().text(1).content.modifiers.count, 1)
+        XCTAssertEqual(try view.inspect().hStack().text(0).content.modifiers.count, 1)
+        XCTAssertEqual(try view.inspect().hStack().text(1).content.modifiers.count, 1)
     }
 }
 

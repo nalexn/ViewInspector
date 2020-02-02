@@ -14,7 +14,7 @@ final class TextFieldTests: XCTestCase {
     
     func testEnclosedView() throws {
         let view = TextField("Title", text: $text1)
-        let text = try view.inspect().text().string()
+        let text = try view.inspect().textField().text().string()
         XCTAssertEqual(text, "Title")
     }
     
@@ -26,7 +26,7 @@ final class TextFieldTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(TextField("Test", text: $text1))
-        XCTAssertNoThrow(try view.inspect().textField())
+        XCTAssertNoThrow(try view.inspect().anyView().textField())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -34,8 +34,8 @@ final class TextFieldTests: XCTestCase {
             TextField("Test", text: $text1)
             TextField("Test", text: $text2)
         }
-        XCTAssertNoThrow(try view.inspect().textField(0))
-        XCTAssertNoThrow(try view.inspect().textField(1))
+        XCTAssertNoThrow(try view.inspect().hStack().textField(0))
+        XCTAssertNoThrow(try view.inspect().hStack().textField(1))
     }
     
     func testCallOnEditingChanged() throws {
@@ -43,7 +43,7 @@ final class TextFieldTests: XCTestCase {
         let view = TextField("", text: $text1, onEditingChanged: { _ in
             exp.fulfill()
         }, onCommit: { })
-        try view.inspect().callOnEditingChanged()
+        try view.inspect().textField().callOnEditingChanged()
         wait(for: [exp], timeout: 0.5)
     }
     
@@ -52,7 +52,7 @@ final class TextFieldTests: XCTestCase {
         let view = TextField("", text: $text1, onEditingChanged: { _ in }, onCommit: {
             exp.fulfill()
         })
-        try view.inspect().callOnCommit()
+        try view.inspect().textField().callOnCommit()
         wait(for: [exp], timeout: 0.5)
     }
 }

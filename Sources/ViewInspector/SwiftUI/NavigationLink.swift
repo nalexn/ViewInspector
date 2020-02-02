@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension NavigationLink {
-    
-    func inspect() throws -> InspectableView<ViewType.NavigationLink> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 public extension ViewType.NavigationLink {
     
     struct Label: KnownViewType {

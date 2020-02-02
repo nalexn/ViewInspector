@@ -55,7 +55,7 @@ final class SequenceTests: XCTestCase {
         let view = HStack {
             Text("1").padding(); Text("2"); Text("3")
         }
-        let sut = try view.inspect()
+        let sut = try view.inspect().hStack()
         let array = try sut.map { try $0.text().string() }
         XCTAssertEqual(array, ["1", "2", "3"])
         var iterator = sut.makeIterator()
@@ -73,7 +73,7 @@ final class RandomAccessCollectionTests: XCTestCase {
         let view = HStack {
             Text("1").padding(); AnyView(EmptyView())
         }
-        let sut = try view.inspect()
+        let sut = try view.inspect().hStack()
         XCTAssertEqual(sut.count, 2)
         XCTAssertEqual(sut.reversed().map({ _ in 0 }).count, 2)
         XCTAssertNoThrow(try sut[1].anyView().emptyView())

@@ -9,7 +9,7 @@ final class NavigationViewTests: XCTestCase {
     func testSingleEnclosedView() throws {
         let sampleView = Text("Test")
         let view = NavigationView { sampleView }
-        let sut = try view.inspect().text(0).content.view as? Text
+        let sut = try view.inspect().navigationView().text(0).content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     
@@ -18,9 +18,9 @@ final class NavigationViewTests: XCTestCase {
         let sampleView2 = Text("Abc")
         let sampleView3 = Text("XYZ")
         let view = Group { sampleView1; sampleView2; sampleView3 }
-        let view1 = try view.inspect().text(0).content.view as? Text
-        let view2 = try view.inspect().text(1).content.view as? Text
-        let view3 = try view.inspect().text(2).content.view as? Text
+        let view1 = try view.inspect().group().text(0).content.view as? Text
+        let view2 = try view.inspect().group().text(1).content.view as? Text
+        let view3 = try view.inspect().group().text(2).content.view as? Text
         XCTAssertEqual(view1, sampleView1)
         XCTAssertEqual(view2, sampleView2)
         XCTAssertEqual(view3, sampleView3)
@@ -34,7 +34,7 @@ final class NavigationViewTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(NavigationView { Text("") })
-        XCTAssertNoThrow(try view.inspect().navigationView())
+        XCTAssertNoThrow(try view.inspect().anyView().navigationView())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -42,8 +42,8 @@ final class NavigationViewTests: XCTestCase {
             NavigationView { Text("") }
             NavigationView { Text("") }
         }
-        XCTAssertNoThrow(try view.inspect().navigationView(0))
-        XCTAssertNoThrow(try view.inspect().navigationView(1))
+        XCTAssertNoThrow(try view.inspect().hStack().navigationView(0))
+        XCTAssertNoThrow(try view.inspect().hStack().navigationView(1))
     }
 }
 

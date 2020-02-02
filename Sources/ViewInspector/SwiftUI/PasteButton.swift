@@ -8,13 +8,6 @@ public extension ViewType {
     }
 }
 
-public extension PasteButton {
-    
-    func inspect() throws -> InspectableView<ViewType.PasteButton> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {

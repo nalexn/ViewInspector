@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension DatePicker {
-    
-    func inspect() throws -> InspectableView<ViewType.DatePicker> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.DatePicker: SingleViewContent {

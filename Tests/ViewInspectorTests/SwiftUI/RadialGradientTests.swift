@@ -13,7 +13,7 @@ final class RadialGradientTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(RadialGradient(gradient: gradient, center: .top, startRadius: 0, endRadius: 1))
-        XCTAssertNoThrow(try view.inspect().radialGradient())
+        XCTAssertNoThrow(try view.inspect().anyView().radialGradient())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -21,20 +21,20 @@ final class RadialGradientTests: XCTestCase {
             RadialGradient(gradient: gradient, center: .top, startRadius: 0, endRadius: 1)
             RadialGradient(gradient: gradient, center: .top, startRadius: 0, endRadius: 1)
         }
-        XCTAssertNoThrow(try view.inspect().radialGradient(0))
-        XCTAssertNoThrow(try view.inspect().radialGradient(1))
+        XCTAssertNoThrow(try view.inspect().hStack().radialGradient(0))
+        XCTAssertNoThrow(try view.inspect().hStack().radialGradient(1))
     }
     
     func testGradient() throws {
         let sut = try RadialGradient(gradient: gradient, center: .top, startRadius: 0, endRadius: 1)
-            .inspect().gradient()
+            .inspect().radialGradient().gradient()
         XCTAssertEqual(sut, gradient)
     }
     
     func testCenter() throws {
         let center: UnitPoint = .topLeading
         let sut = try RadialGradient(gradient: gradient, center: center, startRadius: 0, endRadius: 1)
-            .inspect().center()
+            .inspect().radialGradient().center()
         XCTAssertEqual(sut, center)
     }
     
@@ -42,7 +42,7 @@ final class RadialGradientTests: XCTestCase {
         let radius: CGFloat = 0.5
         let sut = try RadialGradient(gradient: gradient, center: .center,
                                      startRadius: radius, endRadius: 1)
-            .inspect().startRadius()
+            .inspect().radialGradient().startRadius()
         XCTAssertEqual(sut, radius)
     }
     
@@ -50,7 +50,7 @@ final class RadialGradientTests: XCTestCase {
         let radius: CGFloat = 0.5
         let sut = try RadialGradient(gradient: gradient, center: .center,
                                      startRadius: 0, endRadius: radius)
-            .inspect().endRadius()
+            .inspect().radialGradient().endRadius()
         XCTAssertEqual(sut, radius)
     }
 }

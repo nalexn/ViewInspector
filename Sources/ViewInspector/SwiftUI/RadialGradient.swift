@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension RadialGradient {
-    
-    func inspect() throws -> InspectableView<ViewType.RadialGradient> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 public extension InspectableView where View: SingleViewContent {

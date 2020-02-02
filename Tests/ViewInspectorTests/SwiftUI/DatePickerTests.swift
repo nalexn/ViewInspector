@@ -19,7 +19,7 @@ final class DatePickerTests: XCTestCase {
     func testEnclosedView() throws {
         let sampleView = Text("Test")
         let view = DatePicker(selection: $state.selectedDate1, label: { sampleView })
-        let sut = try view.inspect().text().content.view as? Text
+        let sut = try view.inspect().datePicker().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     
@@ -31,7 +31,7 @@ final class DatePickerTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(DatePicker("Test", selection: $state.selectedDate1))
-        XCTAssertNoThrow(try view.inspect().datePicker())
+        XCTAssertNoThrow(try view.inspect().anyView().datePicker())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -39,8 +39,8 @@ final class DatePickerTests: XCTestCase {
             DatePicker("Test", selection: $state.selectedDate1)
             DatePicker("Test", selection: $state.selectedDate2)
         }
-        XCTAssertNoThrow(try view.inspect().datePicker(0))
-        XCTAssertNoThrow(try view.inspect().datePicker(1))
+        XCTAssertNoThrow(try view.inspect().hStack().datePicker(0))
+        XCTAssertNoThrow(try view.inspect().hStack().datePicker(1))
     }
 }
 

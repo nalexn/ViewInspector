@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension ForEach {
-    
-    func inspect() throws -> InspectableView<ViewType.ForEach> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.ForEach: MultipleViewContent {

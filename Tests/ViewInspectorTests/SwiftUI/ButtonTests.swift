@@ -5,8 +5,8 @@ import SwiftUI
 final class ButtonTests: XCTestCase {
     
     func testEnclosedView() throws {
-        let button = Button(action: {}, label: { Text("Test") })
-        let text = try button.inspect().text().string()
+        let sut = Button(action: {}, label: { Text("Test") })
+        let text = try sut.inspect().button().text().string()
         XCTAssertEqual(text, "Test")
     }
     
@@ -18,7 +18,7 @@ final class ButtonTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Button(action: {}, label: { Text("") }))
-        XCTAssertNoThrow(try view.inspect().button())
+        XCTAssertNoThrow(try view.inspect().anyView().button())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -26,8 +26,8 @@ final class ButtonTests: XCTestCase {
             Button(action: {}, label: { Text("") })
             Button(action: {}, label: { Text("") })
         }
-        XCTAssertNoThrow(try view.inspect().button(0))
-        XCTAssertNoThrow(try view.inspect().button(1))
+        XCTAssertNoThrow(try view.inspect().hStack().button(0))
+        XCTAssertNoThrow(try view.inspect().hStack().button(1))
     }
     
     func testCallback() throws {
@@ -35,7 +35,7 @@ final class ButtonTests: XCTestCase {
         let button = Button(action: {
             exp.fulfill()
         }, label: { Text("Test") })
-        try button.inspect().tap()
+        try button.inspect().button().tap()
         wait(for: [exp], timeout: 0.5)
     }
 }

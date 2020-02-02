@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension GroupBox {
-    
-    func inspect() throws -> InspectableView<ViewType.GroupBox> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.GroupBox: MultipleViewContent {

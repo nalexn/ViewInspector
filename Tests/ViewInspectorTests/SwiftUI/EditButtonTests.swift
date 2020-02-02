@@ -12,18 +12,18 @@ final class EditButtonTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(EditButton())
-        XCTAssertNoThrow(try view.inspect().editButton())
+        XCTAssertNoThrow(try view.inspect().anyView().editButton())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
         let view = HStack { EditButton(); EditButton() }
-        XCTAssertNoThrow(try view.inspect().editButton(0))
-        XCTAssertNoThrow(try view.inspect().editButton(1))
+        XCTAssertNoThrow(try view.inspect().hStack().editButton(0))
+        XCTAssertNoThrow(try view.inspect().hStack().editButton(1))
     }
     
     func testEditMode() throws {
         let view = EditButton()
-        XCTAssertNoThrow(try view.inspect().editMode())
+        XCTAssertNoThrow(try view.inspect().editButton().editMode())
     }
 }
 

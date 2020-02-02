@@ -7,8 +7,8 @@ import SwiftUI
 final class TouchBarTests: XCTestCase {
     
     func testEnclosedView() throws {
-        let view = TouchBar(content: { Text("Test") })
-        let sut = try view.inspect().text().string()
+        let view = EmptyView().touchBar(TouchBar(content: { Text("Test") }))
+        let sut = try view.inspect().emptyView().touchBar().text().string()
         XCTAssertEqual(sut, "Test")
     }
     

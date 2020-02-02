@@ -8,13 +8,6 @@ public extension ViewType {
     }
 }
 
-public extension TouchBar {
-    
-    func inspect() throws -> InspectableView<ViewType.TouchBar> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.TouchBar: SingleViewContent {

@@ -7,7 +7,7 @@ final class ScrollViewTests: XCTestCase {
     func testEnclosedView() throws {
         let sampleView = Text("Test")
         let view = ScrollView { sampleView }
-        let sut = try view.inspect().text().content.view as? Text
+        let sut = try view.inspect().scrollView().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     
@@ -19,7 +19,7 @@ final class ScrollViewTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(ScrollView { Text("") })
-        XCTAssertNoThrow(try view.inspect().scrollView())
+        XCTAssertNoThrow(try view.inspect().anyView().scrollView())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -27,13 +27,13 @@ final class ScrollViewTests: XCTestCase {
             ScrollView { Text("") }
             ScrollView { Text("") }
         }
-        XCTAssertNoThrow(try view.inspect().scrollView(0))
-        XCTAssertNoThrow(try view.inspect().scrollView(1))
+        XCTAssertNoThrow(try view.inspect().hStack().scrollView(0))
+        XCTAssertNoThrow(try view.inspect().hStack().scrollView(1))
     }
     
     func testContentInsets() throws {
         let sut = ScrollView { Text("") }
-        let contentInsets = try sut.inspect().contentInsets()
+        let contentInsets = try sut.inspect().scrollView().contentInsets()
         XCTAssertEqual(contentInsets, EdgeInsets())
     }
 }

@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension ModifiedContent {
-    
-    func inspect() throws -> InspectableView<ViewType.ModifiedContent> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.ModifiedContent: SingleViewContent {

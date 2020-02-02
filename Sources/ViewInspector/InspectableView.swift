@@ -86,23 +86,17 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
 // MARK: - Inspection of a Custom View
 
 public extension View {
-    func inspect() throws -> InspectableView<ViewType.AnyView> {
-        let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
-        let isInspectable = self is Inspectable
-        if !isInspectable && String(describing: unwrapped.view) == String(describing: self) {
-            throw InspectionError.notSupported("Please extend \(String(describing: self)) to conform to `Inspectable`")
-        }
-        return try AnyView(self).inspect()
-    }
-    
-    func inspect<T>(_ view: T.Type) throws -> InspectableView<ViewType.View<T>>
-        where T: Inspectable {
-        let unwrapped = try Inspector.unwrap(view: self, modifiers: [])
-        return try InspectableView<ViewType.View<T>>(unwrapped)
+    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try .init(try Inspector.unwrap(view: self, modifiers: []))
     }
 }
 
 public extension View where Self: Inspectable {
+    
+    func inspect() throws -> InspectableView<ViewType.View<Self>> {
+        return try .init(Content(self))
+    }
+    
     func inspect(file: StaticString = #file, line: UInt = #line,
                  traverse: (InspectableView<ViewType.View<Self>>) throws -> Void) {
         do {

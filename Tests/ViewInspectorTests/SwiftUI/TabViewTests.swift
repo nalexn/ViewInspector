@@ -11,7 +11,7 @@ final class TabViewTests: XCTestCase {
             Text("First View").tabItem({ Text("First") }).tag(0)
             Text("Second View").tabItem({ Text("Second") }).tag(1)
         }
-        let text = try view.inspect().text(0).string()
+        let text = try view.inspect().tabView().text(0).string()
         XCTAssertEqual(text, "First View")
     }
     
@@ -30,7 +30,7 @@ final class TabViewTests: XCTestCase {
             Text("Second View").tabItem({ Text("Second") }).tag(1)
         }
         let view = AnyView(tabView)
-        XCTAssertNoThrow(try view.inspect().tabView())
+        XCTAssertNoThrow(try view.inspect().anyView().tabView())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -39,8 +39,8 @@ final class TabViewTests: XCTestCase {
             Text("Second View").tabItem({ Text("Second") }).tag(1)
         }
         let view = HStack { tabView; tabView }
-        XCTAssertNoThrow(try view.inspect().tabView(0))
-        XCTAssertNoThrow(try view.inspect().tabView(1))
+        XCTAssertNoThrow(try view.inspect().hStack().tabView(0))
+        XCTAssertNoThrow(try view.inspect().hStack().tabView(1))
     }
 }
 

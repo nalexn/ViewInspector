@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension SecureField {
-    
-    func inspect() throws -> InspectableView<ViewType.SecureField> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.SecureField: SingleViewContent {

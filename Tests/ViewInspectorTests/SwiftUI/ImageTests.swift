@@ -9,17 +9,17 @@ final class ImageTests: XCTestCase {
     func testImageByName() throws {
         let imageName = "someImage"
         let view = Image(imageName)
-        let sut = try view.inspect().imageName()
+        let sut = try view.inspect().image().imageName()
         XCTAssertEqual(sut, imageName)
     }
     
     func testExternalImage() throws {
         #if os(iOS) || os(watchOS) || os(tvOS)
         let view = Image(uiImage: testImage)
-        let sut = try view.inspect().uiImage()
+        let sut = try view.inspect().image().uiImage()
         #else
         let view = Image(nsImage: testImage)
-        let sut = try view.inspect().nsImage()
+        let sut = try view.inspect().image().nsImage()
         #endif
         XCTAssertEqual(sut, testImage)
     }
@@ -27,22 +27,22 @@ final class ImageTests: XCTestCase {
     func testExtractionWithModifiers() throws {
         let view = AnyView(imageView().resizable().interpolation(.low))
         #if os(iOS) || os(watchOS) || os(tvOS)
-        let image = try view.inspect().image().uiImage()
+        let image = try view.inspect().anyView().image().uiImage()
         #else
-        let image = try view.inspect().image().nsImage()
+        let image = try view.inspect().anyView().image().nsImage()
         #endif
         XCTAssertEqual(image, testImage)
     }
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(imageView())
-        XCTAssertNoThrow(try view.inspect().image())
+        XCTAssertNoThrow(try view.inspect().anyView().image())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
         let view = HStack { imageView(); imageView() }
-        XCTAssertNoThrow(try view.inspect().image(0))
-        XCTAssertNoThrow(try view.inspect().image(1))
+        XCTAssertNoThrow(try view.inspect().hStack().image(0))
+        XCTAssertNoThrow(try view.inspect().hStack().image(1))
     }
     
     private func imageView() -> Image {

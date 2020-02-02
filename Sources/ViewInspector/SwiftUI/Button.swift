@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension Button {
-    
-    func inspect() throws -> InspectableView<ViewType.Button> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.Button: SingleViewContent {

@@ -20,7 +20,7 @@ final class IDViewTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Text("").id(""))
-        XCTAssertNoThrow(try view.inspect().text())
+        XCTAssertNoThrow(try view.inspect().anyView().text())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -28,8 +28,8 @@ final class IDViewTests: XCTestCase {
             Text("").id(5)
             Text("").id("test")
         }
-        XCTAssertNoThrow(try view.inspect().text(0))
-        XCTAssertNoThrow(try view.inspect().text(1))
+        XCTAssertNoThrow(try view.inspect().hStack().text(0))
+        XCTAssertNoThrow(try view.inspect().hStack().text(1))
     }
     
     func testID() throws {

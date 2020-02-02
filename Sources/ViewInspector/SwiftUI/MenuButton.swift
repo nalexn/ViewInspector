@@ -8,13 +8,6 @@ public extension ViewType {
     }
 }
 
-public extension MenuButton {
-    
-    func inspect() throws -> InspectableView<ViewType.MenuButton> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 public extension ViewType.MenuButton {
     
     struct Label: KnownViewType {

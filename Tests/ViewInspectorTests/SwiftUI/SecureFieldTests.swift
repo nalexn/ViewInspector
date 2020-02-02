@@ -14,7 +14,7 @@ final class SecureFieldTests: XCTestCase {
     
     func testEnclosedView() throws {
         let view = SecureField("Title", text: $text1)
-        let text = try view.inspect().text().string()
+        let text = try view.inspect().secureField().text().string()
         XCTAssertEqual(text, "Title")
     }
     
@@ -26,7 +26,7 @@ final class SecureFieldTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(SecureField("Test", text: $text1))
-        XCTAssertNoThrow(try view.inspect().secureField())
+        XCTAssertNoThrow(try view.inspect().anyView().secureField())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -34,8 +34,8 @@ final class SecureFieldTests: XCTestCase {
             SecureField("Test", text: $text1)
             SecureField("Test", text: $text2)
         }
-        XCTAssertNoThrow(try view.inspect().secureField(0))
-        XCTAssertNoThrow(try view.inspect().secureField(1))
+        XCTAssertNoThrow(try view.inspect().hStack().secureField(0))
+        XCTAssertNoThrow(try view.inspect().hStack().secureField(1))
     }
     
     func testCallOnCommit() throws {
@@ -43,7 +43,7 @@ final class SecureFieldTests: XCTestCase {
         let view = SecureField("", text: $text1, onCommit: {
             exp.fulfill()
         })
-        try view.inspect().callOnCommit()
+        try view.inspect().secureField().callOnCommit()
         wait(for: [exp], timeout: 0.5)
     }
 }

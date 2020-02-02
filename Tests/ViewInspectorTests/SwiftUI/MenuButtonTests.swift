@@ -8,7 +8,7 @@ final class MenuButtonTests: XCTestCase {
     
     func testEnclosedView() throws {
         let sut = MenuButton(label: Text("")) { EmptyView() }
-        XCTAssertNoThrow(try sut.inspect().emptyView())
+        XCTAssertNoThrow(try sut.inspect().menuButton().emptyView())
     }
     
     func testResetsModifiers() throws {
@@ -19,7 +19,7 @@ final class MenuButtonTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(MenuButton(label: Text("")) { EmptyView() })
-        XCTAssertNoThrow(try view.inspect().menuButton())
+        XCTAssertNoThrow(try view.inspect().anyView().menuButton())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -27,13 +27,13 @@ final class MenuButtonTests: XCTestCase {
             MenuButton(label: Text("")) { EmptyView() }
             MenuButton(label: Text("")) { EmptyView() }
         }
-        XCTAssertNoThrow(try view.inspect().menuButton(0))
-        XCTAssertNoThrow(try view.inspect().menuButton(1))
+        XCTAssertNoThrow(try view.inspect().hStack().menuButton(0))
+        XCTAssertNoThrow(try view.inspect().hStack().menuButton(1))
     }
     
     func testLabelView() throws {
         let sut = MenuButton(label: Text("abc")) { EmptyView() }
-        let text = try sut.inspect().label().text().string()
+        let text = try sut.inspect().menuButton().label().text().string()
         XCTAssertEqual(text, "abc")
     }
 }

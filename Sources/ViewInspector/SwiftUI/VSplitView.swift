@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension VSplitView {
-    
-    func inspect() throws -> InspectableView<ViewType.VSplitView> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.VSplitView: MultipleViewContent {

@@ -9,13 +9,6 @@ public extension ViewType {
     }
 }
 
-public extension HSplitView {
-    
-    func inspect() throws -> InspectableView<ViewType.HSplitView> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.HSplitView: MultipleViewContent {

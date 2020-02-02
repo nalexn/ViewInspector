@@ -46,7 +46,7 @@ final class CustomViewTests: XCTestCase {
     func testEnvironmentObjectModifier() throws {
         let viewModel = ExternalState()
         let view = EnvironmentStateTestView().environmentObject(viewModel)
-        XCTAssertNoThrow(try view.inspect(EnvironmentStateTestView.self))
+        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self))
     }
     
     func testResetsModifiers() throws {
@@ -68,38 +68,38 @@ final class CustomViewTests: XCTestCase {
     #if os(macOS)
     func testExtractionOfNSTestView() throws {
         let view = AnyView(NSTestView())
-        let sut = try view.inspect().view(NSTestView.self)
+        let sut = try view.inspect().anyView().view(NSTestView.self)
         XCTAssertNoThrow(try sut.actualView())
     }
     #else
     func testExtractionOfUITestView() throws {
         let view = AnyView(UITestView())
-        let sut = try view.inspect().view(UITestView.self)
+        let sut = try view.inspect().anyView().view(UITestView.self)
         XCTAssertNoThrow(try sut.actualView())
     }
     #endif
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(SimpleTestView())
-        XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self))
+        XCTAssertNoThrow(try view.inspect().anyView().view(SimpleTestView.self))
     }
     
     func testExtractionFromMultipleViewContainer() throws {
         let view = HStack { SimpleTestView(); SimpleTestView() }
-        XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self, 0))
-        XCTAssertNoThrow(try view.inspect().view(SimpleTestView.self, 1))
+        XCTAssertNoThrow(try view.inspect().hStack().view(SimpleTestView.self, 0))
+        XCTAssertNoThrow(try view.inspect().hStack().view(SimpleTestView.self, 1))
     }
     
     func testExtractionEnvView1FromSingleViewContainer() throws {
         let viewModel = ExternalState()
         let view = AnyView(EnvironmentStateTestView().environmentObject(viewModel))
-        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self))
+        XCTAssertNoThrow(try view.inspect().anyView().view(EnvironmentStateTestView.self))
     }
     
     func testExtractionEnvViewFromMultipleViewContainer() throws {
         let view = HStack { EnvironmentStateTestView(); EnvironmentStateTestView() }
-        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self, 0))
-        XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self, 1))
+        XCTAssertNoThrow(try view.inspect().hStack().view(EnvironmentStateTestView.self, 0))
+        XCTAssertNoThrow(try view.inspect().hStack().view(EnvironmentStateTestView.self, 1))
     }
     
     func testContentViewTypeMismatch() {

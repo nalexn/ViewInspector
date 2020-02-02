@@ -7,7 +7,7 @@ final class GeometryReaderTests: XCTestCase {
     func testEnclosedView() throws {
         let sampleView = Text("Test")
         let view = GeometryReader { _ in sampleView }
-        let value = try view.inspect().text().string()
+        let value = try view.inspect().geometryReader().text().string()
         XCTAssertEqual(value, "Test")
     }
     
@@ -19,7 +19,7 @@ final class GeometryReaderTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(GeometryReader { _ in EmptyView() })
-        XCTAssertNoThrow(try view.inspect().geometryReader())
+        XCTAssertNoThrow(try view.inspect().anyView().geometryReader())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -27,7 +27,7 @@ final class GeometryReaderTests: XCTestCase {
             GeometryReader { _ in EmptyView() }
             GeometryReader { _ in EmptyView() }
         }
-        XCTAssertNoThrow(try view.inspect().geometryReader(0))
-        XCTAssertNoThrow(try view.inspect().geometryReader(1))
+        XCTAssertNoThrow(try view.inspect().hStack().geometryReader(0))
+        XCTAssertNoThrow(try view.inspect().hStack().geometryReader(1))
     }
 }

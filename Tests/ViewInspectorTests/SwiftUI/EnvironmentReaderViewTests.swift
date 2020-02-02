@@ -11,7 +11,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
                 .navigationBarItems(trailing: Text(""))
         }
         // Not supported
-        XCTAssertThrowsError(try view.inspect().list(0))
+        XCTAssertThrowsError(try view.inspect().navigationView().list(0))
     }
     
     func testRetainsModifiers() throws {

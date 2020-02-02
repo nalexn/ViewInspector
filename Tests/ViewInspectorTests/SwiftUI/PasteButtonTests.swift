@@ -8,7 +8,7 @@ final class PasteButtonTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(PasteButton(supportedTypes: [], payloadAction: { _ in }))
-        XCTAssertNoThrow(try view.inspect().pasteButton())
+        XCTAssertNoThrow(try view.inspect().anyView().pasteButton())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -16,14 +16,14 @@ final class PasteButtonTests: XCTestCase {
             PasteButton(supportedTypes: [], payloadAction: { _ in })
             PasteButton(supportedTypes: [], payloadAction: { _ in })
         }
-        XCTAssertNoThrow(try view.inspect().pasteButton(0))
-        XCTAssertNoThrow(try view.inspect().pasteButton(1))
+        XCTAssertNoThrow(try view.inspect().hStack().pasteButton(0))
+        XCTAssertNoThrow(try view.inspect().hStack().pasteButton(1))
     }
     
     func testSupportedTypes() throws {
         let types = ["abc", "def"]
         let view = PasteButton(supportedTypes: types, payloadAction: { _ in })
-        let sut = try view.inspect().supportedTypes()
+        let sut = try view.inspect().pasteButton().supportedTypes()
         XCTAssertEqual(sut, types)
     }
 }

@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension Group {
-    
-    func inspect() throws -> InspectableView<ViewType.Group> {
-        return try .init(ViewInspector.Content(self))
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.Group: MultipleViewContent {

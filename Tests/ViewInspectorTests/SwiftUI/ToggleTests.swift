@@ -14,7 +14,7 @@ final class ToggleTests: XCTestCase {
     
     func testEnclosedView() throws {
         let view = Toggle(isOn: $isOn1) { Text("Test") }
-        let text = try view.inspect().text().string()
+        let text = try view.inspect().toggle().text().string()
         XCTAssertEqual(text, "Test")
     }
     
@@ -26,7 +26,7 @@ final class ToggleTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Toggle(isOn: $isOn1) { Text("Test") })
-        XCTAssertNoThrow(try view.inspect().toggle())
+        XCTAssertNoThrow(try view.inspect().anyView().toggle())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -34,8 +34,8 @@ final class ToggleTests: XCTestCase {
             Toggle(isOn: $isOn1) { Text("Test") }
             Toggle(isOn: $isOn2) { Text("Test") }
         }
-        XCTAssertNoThrow(try view.inspect().toggle(0))
-        XCTAssertNoThrow(try view.inspect().toggle(1))
+        XCTAssertNoThrow(try view.inspect().hStack().toggle(0))
+        XCTAssertNoThrow(try view.inspect().hStack().toggle(1))
     }
 }
 
