@@ -72,9 +72,21 @@ public extension NSViewRepresentable where Self: Inspectable {
         return try ViewHosting.lookup(Self.self)
     }
 }
+
+public extension NSViewControllerRepresentable where Self: Inspectable {
+    func viewController() throws -> NSViewControllerType {
+        return try ViewHosting.lookup(Self.self)
+    }
+}
 #else
 public extension UIViewRepresentable where Self: Inspectable {
     func uiView() throws -> UIViewType {
+        return try ViewHosting.lookup(Self.self)
+    }
+}
+
+public extension UIViewControllerRepresentable where Self: Inspectable {
+    func viewController() throws -> UIViewControllerType {
         return try ViewHosting.lookup(Self.self)
     }
 }

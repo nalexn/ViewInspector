@@ -172,6 +172,20 @@ internal extension ViewHosting {
             }
             return view
     }
+    
+    static func lookup<V>(_ viewController: V.Type) throws -> V.NSViewControllerType
+        where V: Inspectable & NSViewControllerRepresentable {
+            let name = Inspector.typeName(type: viewController)
+            let hostVC = rootViewController.descendant(nameTraits: ["NSHostingController", name])
+            if let vc = hostVC?.descendants.compactMap({ $0 as? V.NSViewControllerType }).first {
+                return vc
+            }
+            let viewHost = rootViewController.view.descendant(nameTraits: ["ViewHost"])
+            guard let vc = viewHost?.subviews
+                .compactMap({ $0.nextResponder as? V.NSViewControllerType }).first
+            else { throw InspectionError.viewNotFound(parent: name) }
+            return vc
+    }
     #else
     static func lookup<V>(_ view: V.Type) throws -> V.UIViewType
         where V: Inspectable & UIViewRepresentable {
@@ -181,6 +195,15 @@ internal extension ViewHosting {
                 throw InspectionError.viewNotFound(parent: name)
             }
             return view
+    }
+    
+    static func lookup<V>(_ viewController: V.Type) throws -> V.UIViewControllerType
+        where V: Inspectable & UIViewControllerRepresentable {
+            let name = Inspector.typeName(type: viewController)
+            let hostVC = window.rootViewController?.descendant(nameTraits: ["UIHostingController", name])
+            guard let vc = hostVC?.descendants.compactMap({ $0 as? V.UIViewControllerType })
+                .first else { throw InspectionError.viewNotFound(parent: name) }
+            return vc
     }
     #endif
 }
@@ -197,6 +220,23 @@ private extension NSView {
             .first
     }
 }
+
+private extension NSViewController {
+    func descendant(nameTraits: [String]) -> NSViewController? {
+        let name = Inspector.typeName(value: self)
+        if !nameTraits.contains(where: { !name.contains($0) }) {
+            return self
+        }
+        return descendants.lazy
+            .compactMap { $0.descendant(nameTraits: nameTraits) }
+            .first
+    }
+    
+    var descendants: [NSViewController] {
+        let presented = presentedViewControllers ?? []
+        return presented + children
+    }
+}
 #else
 private extension UIView {
     func descendant(nameTraits: [String]) -> UIView? {
@@ -207,6 +247,25 @@ private extension UIView {
         return subviews.lazy
             .compactMap { $0.descendant(nameTraits: nameTraits) }
             .first
+    }
+}
+
+private extension UIViewController {
+    func descendant(nameTraits: [String]) -> UIViewController? {
+        let name = Inspector.typeName(value: self)
+        if !nameTraits.contains(where: { !name.contains($0) }) {
+            return self
+        }
+        return descendants.lazy
+            .compactMap { $0.descendant(nameTraits: nameTraits) }
+            .first
+    }
+    
+    var descendants: [UIViewController] {
+        let navChildren = (self as? UINavigationController)?.viewControllers ?? []
+        let tabChildren = (self as? UITabBarController)?.viewControllers ?? []
+        let presented = [presentedViewController].compactMap { $0 }
+        return navChildren + tabChildren + presented + children
     }
 }
 #endif
