@@ -5,11 +5,14 @@ internal struct Inspector { }
 extension Inspector {
     
     static func attribute(label: String, value: Any) throws -> Any {
+        if label == "super", let superclass = Mirror(reflecting: value).superclassMirror {
+            return superclass
+        }
         return try attribute(label: label, value: value, type: Any.self)
     }
     
     static func attribute<T>(label: String, value: Any, type: T.Type) throws -> T {
-        let mirror = Mirror(reflecting: value)
+        let mirror = (value as? Mirror) ?? Mirror(reflecting: value)
         guard let child = mirror.descendant(label) else {
             throw InspectionError.attributeNotFound(
                 label: label, type: typeName(value: value))

@@ -91,16 +91,26 @@ private extension InspectableView {
     
     func accessibilityElement<T>(_ name: String, path: String = "value|some",
                                  type: T.Type, call: String) throws -> T {
-        let element = try modifierAttribute(
+        let item = try modifierAttribute(
             modifierName: "AccessibilityAttachmentModifier",
             path: "modifier|attachment|some|properties|plist|elements|some",
             type: Any.self, call: call)
-        guard Inspector.typeName(value: element).contains(name),
-            let value = try? Inspector.attribute(path: path, value: element) as? T else {
+        guard let attribute = lookupAttributeWithName(name, item: item),
+            let value = try? Inspector.attribute(path: path, value: attribute) as? T else {
             throw InspectionError.modifierNotFound(parent:
                 Inspector.typeName(value: content.view), modifier: call)
         }
         return value
+    }
+    
+    func lookupAttributeWithName(_ name: String, item: Any) -> Any? {
+        if Inspector.typeName(value: item).contains(name) {
+            return item
+        }
+        if let nextItem = try? Inspector.attribute(path: "super|after|some", value: item) {
+            return lookupAttributeWithName(name, item: nextItem)
+        }
+        return nil
     }
     
     func accessibilityAction<T>(name: String, path: String, type: T.Type, call: String) throws -> T {

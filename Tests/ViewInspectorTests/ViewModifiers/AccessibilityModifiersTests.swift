@@ -188,15 +188,23 @@ final class ViewAccessibilityTests: XCTestCase {
     }
 
     func testAccessibilityMultipleAttributes() throws {
-        let label = "letters"
-        let value = "abc"
-
+        let label = "abc"
+        let value = "xyz"
         let sut = try EmptyView()
             .accessibility(label: Text(label))
             .accessibility(value: Text(value))
+            .accessibility(addTraits: [.isImage])
             .inspect().emptyView()
 
-        XCTAssertEqual(try sut.accessibilityValue().string(), value)
         XCTAssertEqual(try sut.accessibilityLabel().string(), label)
+        XCTAssertEqual(try sut.accessibilityValue().string(), value)
+    }
+    
+    func testMissingAccessibilityAttribute() throws {
+        let sut = try EmptyView()
+            .accessibility(label: Text("test"))
+            .accessibility(addTraits: [.isImage])
+            .inspect().emptyView()
+        XCTAssertThrowsError(try sut.accessibilityValue())
     }
 }
