@@ -54,7 +54,7 @@ public extension InspectableView {
         let rootView = try modifierAttribute(
             modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
             type: Any.self, call: "tabItem")
-        return try .init(Content(rootView))
+        return try .init(try Inspector.unwrap(content: Content(rootView)))
     }
     #endif
 }

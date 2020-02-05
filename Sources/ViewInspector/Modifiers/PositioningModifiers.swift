@@ -37,14 +37,14 @@ public extension InspectableView {
         let rootView = try modifierAttribute(
             modifierName: "_OverlayModifier", path: "modifier|overlay",
             type: Any.self, call: "overlay")
-        return try .init(Content(rootView))
+        return try .init(try Inspector.unwrap(content: Content(rootView)))
     }
     
     func background() throws -> InspectableView<ViewType.ClassifiedView> {
         let rootView = try modifierAttribute(
             modifierName: "_BackgroundModifier", path: "modifier|background",
             type: Any.self, call: "background")
-        return try .init(Content(rootView))
+        return try .init(try Inspector.unwrap(content: Content(rootView)))
     }
     
     func zIndex() throws -> Double {

@@ -103,7 +103,7 @@ final class ViewLayeringTests: XCTestCase {
     
     func testOverlayInspection() throws {
         let text = "Abc"
-        let sut = try EmptyView().overlay(Text(text), alignment: .center)
+        let sut = try EmptyView().overlay(Text(text).padding(), alignment: .center)
             .inspect().emptyView().overlay().text().string()
         XCTAssertEqual(sut, text)
     }
