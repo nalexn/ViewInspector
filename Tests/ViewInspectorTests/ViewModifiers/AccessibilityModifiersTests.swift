@@ -186,4 +186,17 @@ final class ViewAccessibilityTests: XCTestCase {
             .inspect().emptyView().accessibilitySortPriority()
         XCTAssertEqual(sut, 6)
     }
+
+    func testAccessibilityMultipleAttributes() throws {
+        let label = "letters"
+        let value = "abc"
+
+        let sut = try EmptyView()
+            .accessibility(label: Text(label))
+            .accessibility(value: Text(value))
+            .inspect().emptyView()
+
+        XCTAssertEqual(try sut.accessibilityValue().string(), value)
+        XCTAssertEqual(try sut.accessibilityLabel().string(), label)
+    }
 }
