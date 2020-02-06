@@ -312,9 +312,9 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:heavy_check_mark:| `func navigationBarBackButtonHidden(Bool) -> View` |
-|:x:| `func navigationBarItems<L>(leading: L) -> View` |
-|:x:| `func navigationBarItems<L, T>(leading: L, trailing: T) -> View` |
-|:x:| `func navigationBarItems<T>(trailing: T) -> View` |
+|:heavy_check_mark:| `func navigationBarItems<L>(leading: L) -> View` |
+|:heavy_check_mark:| `func navigationBarItems<L, T>(leading: L, trailing: T) -> View` |
+|:heavy_check_mark:| `func navigationBarItems<T>(trailing: T) -> View` |
 |:white_check_mark:| `func tabItem<V>(() -> V) -> View` |
 
 ### Configuring Context Menu Views
