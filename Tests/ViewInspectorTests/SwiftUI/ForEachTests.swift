@@ -65,6 +65,16 @@ final class ForEachTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().group().forEach(0).text(1))
         XCTAssertNoThrow(try view.inspect().group().forEach(1).text(0))
     }
+
+    func testRangeBased() throws {
+        let range = 0..<5
+        let view = ForEach(range) { Text(verbatim: "\($0)") }
+
+        let sut = try view.inspect().forEach()
+        XCTAssertEqual(sut.count, 5)
+        XCTAssertEqual(try sut.text(4).string(), "\(range.upperBound - 1)")
+        XCTAssertThrowsError(try sut.text(range.upperBound))
+    }
 }
 
 private struct TestStruct: Identifiable {
