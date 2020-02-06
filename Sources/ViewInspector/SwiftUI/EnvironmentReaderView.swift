@@ -9,10 +9,77 @@ internal extension ViewType {
 extension ViewType.EnvironmentReaderView: SingleViewContent {
     
     static func child(_ content: Content) throws -> Content {
-        /* Need to find a way to get through EnvironmentReaderView */
-        throw InspectionError.notSupported("""
-            "navigationBarItems" modifier is currently not supported.
-            Consider moving the modifier for inspection of the target view.
-        """)
+        return content
     }
+}
+
+// MARK: - Extraction from SingleViewContent parent
+
+public extension InspectableView where View: SingleViewContent {
+    
+    func navigationBarItems() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try navigationBarItems(AnyView.self)
+    }
+    
+    func navigationBarItems<V>(_ viewType: V.Type) throws ->
+        InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
+        return try navigationBarItems(viewType: viewType, content: try child())
+    }
+}
+
+// MARK: - Extraction from MultipleViewContent parent
+
+public extension InspectableView where View: MultipleViewContent {
+    
+    func navigationBarItems(_ index: Int = 0) throws -> InspectableView<ViewType.ClassifiedView> {
+        return try navigationBarItems(AnyView.self, index)
+    }
+    
+    func navigationBarItems<V>(_ viewType: V.Type, _ index: Int = 0) throws ->
+        InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
+        return try navigationBarItems(viewType: viewType, content: try child(at: index))
+    }
+}
+
+// MARK: - Unwrapping the EnvironmentReaderView
+
+private extension InspectableView {
+    
+    func navigationBarItems<V>(viewType: V.Type, content: Content) throws ->
+        InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
+        
+        typealias Closure = (EnvironmentValues) -> ModifiedContent<V,
+            _PreferenceWritingModifier<FakeNavigationBarItemsKey>>
+        let closure = try Inspector.attribute(label: "content", value: content.view)
+        let closureDesc = Inspector.typeName(value: closure)
+        guard closureDesc.contains("_PreferenceWritingModifier<NavigationBarItemsKey>>") else {
+            throw InspectionError.modifierNotFound(parent:
+                Inspector.typeName(value: content), modifier: "navigationBarItems")
+        }
+        let expectedViewType = closureDesc.navigationBarItemsWrappedViewType
+        let actualViewType = Inspector.typeName(type: viewType)
+        guard actualViewType == expectedViewType else {
+            throw InspectionError.notSupported(
+                "Please substitute '\(expectedViewType)' as the parameter for 'navigationBarItems()' inspection call")
+        }
+        guard let typedClosure = withUnsafeBytes(of: closure, {
+            $0.bindMemory(to: Closure.self).first
+        }) else { throw InspectionError.typeMismatch(closure, Closure.self) }
+        let view = typedClosure(EnvironmentValues())
+        return try .init(try Inspector.unwrap(view: view, modifiers: content.modifiers))
+    }
+}
+
+private extension String {
+    var navigationBarItemsWrappedViewType: String {
+        let prefix = "(EnvironmentValues) -> ModifiedContent<"
+        let suffix = ", _PreferenceWritingModifier<NavigationBarItemsKey>>"
+        return components(separatedBy: prefix).last?
+            .components(separatedBy: suffix).first ?? self
+    }
+}
+
+private struct FakeNavigationBarItemsKey: PreferenceKey {
+    static var defaultValue: String = ""
+    static func reduce(value: inout String, nextValue: () -> String) { }
 }
