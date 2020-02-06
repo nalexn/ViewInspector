@@ -4,35 +4,31 @@ import SwiftUI
 
 final class ToggleTests: XCTestCase {
     
-    @State var isOn1 = false
-    @State var isOn2 = false
-    
-    override func setUp() {
-        isOn1 = false
-        isOn2 = false
-    }
-    
     func testEnclosedView() throws {
-        let view = Toggle(isOn: $isOn1) { Text("Test") }
+        let binding = Binding(wrappedValue: false)
+        let view = Toggle(isOn: binding) { Text("Test") }
         let text = try view.inspect().toggle().text().string()
         XCTAssertEqual(text, "Test")
     }
     
     func testResetsModifiers() throws {
-        let view = Toggle(isOn: $isOn1) { Text("Test") }.padding()
+        let binding = Binding(wrappedValue: false)
+        let view = Toggle(isOn: binding) { Text("Test") }.padding()
         let sut = try view.inspect().toggle().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        let view = AnyView(Toggle(isOn: $isOn1) { Text("Test") })
+        let binding = Binding(wrappedValue: false)
+        let view = AnyView(Toggle(isOn: binding) { Text("Test") })
         XCTAssertNoThrow(try view.inspect().anyView().toggle())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        let binding = Binding(wrappedValue: false)
         let view = HStack {
-            Toggle(isOn: $isOn1) { Text("Test") }
-            Toggle(isOn: $isOn2) { Text("Test") }
+            Toggle(isOn: binding) { Text("Test") }
+            Toggle(isOn: binding) { Text("Test") }
         }
         XCTAssertNoThrow(try view.inspect().hStack().toggle(0))
         XCTAssertNoThrow(try view.inspect().hStack().toggle(1))

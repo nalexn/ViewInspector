@@ -4,10 +4,9 @@ import SwiftUI
 
 final class PickerTests: XCTestCase {
     
-    @State private var selection: Int?
-    
     func testEnclosedView() throws {
-        let view = Picker(selection: $selection, label: Text("Title")) {
+        let binding = Binding<Int?>(wrappedValue: nil)
+        let view = Picker(selection: binding, label: Text("Title")) {
             Text("First Option").tag(0)
             Text("Second Option").tag(1)
         }
@@ -16,7 +15,8 @@ final class PickerTests: XCTestCase {
     }
     
     func testLabelView() throws {
-        let view = Picker(selection: $selection, label: Text("Title")) {
+        let binding = Binding<Int?>(wrappedValue: nil)
+        let view = Picker(selection: binding, label: Text("Title")) {
             Text("First Option").tag(0)
             Text("Second Option").tag(1)
         }
@@ -25,7 +25,8 @@ final class PickerTests: XCTestCase {
     }
     
     func testResetsModifiers() throws {
-        let view = Picker(selection: $selection, label: Text("Title")) {
+        let binding = Binding<Int?>(wrappedValue: nil)
+        let view = Picker(selection: binding, label: Text("Title")) {
             Text("First Option").tag(0)
             Text("Second Option").tag(1)
         }.padding().padding()
@@ -34,7 +35,8 @@ final class PickerTests: XCTestCase {
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        let picker = Picker(selection: $selection, label: Text("Title")) {
+        let binding = Binding<Int?>(wrappedValue: nil)
+        let picker = Picker(selection: binding, label: Text("Title")) {
             Text("First Option").tag(0)
             Text("Second Option").tag(1)
         }
@@ -43,7 +45,8 @@ final class PickerTests: XCTestCase {
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        let picker = Picker(selection: $selection, label: Text("Title")) {
+        let binding = Binding<Int?>(wrappedValue: nil)
+        let picker = Picker(selection: binding, label: Text("Title")) {
             Text("First Option").tag(0)
             Text("Second Option").tag(1)
         }

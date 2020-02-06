@@ -7,8 +7,6 @@ import Combine
 
 final class ViewGesturesTests: XCTestCase {
     
-    @State private var floatValue: Float = 0
-    
     #if !os(tvOS)
     func testOnTapGesture() throws {
         let sut = EmptyView().onTapGesture(count: 5, perform: { })

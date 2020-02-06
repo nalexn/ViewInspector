@@ -6,12 +6,10 @@ import SwiftUI
 
 final class StepperTests: XCTestCase {
     
-    @State var counter1: Int = 0
-    @State var counter2: Int = 0
-    
     func testEnclosedView() throws {
-        let view1 = Stepper("Title1", value: $counter1)
-        let view2 = Stepper(value: $counter1, label: { Text("Title2") })
+        let binding = Binding<Int>(wrappedValue: 0)
+        let view1 = Stepper("Title1", value: binding)
+        let view2 = Stepper(value: binding, label: { Text("Title2") })
         let text1 = try view1.inspect().stepper().text().string()
         let text2 = try view2.inspect().stepper().text().string()
         XCTAssertEqual(text1, "Title1")
@@ -19,20 +17,23 @@ final class StepperTests: XCTestCase {
     }
     
     func testResetsModifiers() throws {
-        let view = Stepper("Title1", value: $counter1).padding()
+        let binding = Binding<Int>(wrappedValue: 0)
+        let view = Stepper("Title1", value: binding).padding()
         let sut = try view.inspect().stepper().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        let view = AnyView(Stepper("Test", value: $counter1))
+        let binding = Binding<Int>(wrappedValue: 0)
+        let view = AnyView(Stepper("Test", value: binding))
         XCTAssertNoThrow(try view.inspect().anyView().stepper())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        let binding = Binding<Int>(wrappedValue: 0)
         let view = HStack {
-            Stepper("Test", value: $counter1)
-            Stepper("Test", value: $counter2)
+            Stepper("Test", value: binding)
+            Stepper("Test", value: binding)
         }
         XCTAssertNoThrow(try view.inspect().hStack().stepper(0))
         XCTAssertNoThrow(try view.inspect().hStack().stepper(1))

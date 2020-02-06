@@ -6,35 +6,37 @@ import SwiftUI
 
 final class SliderTests: XCTestCase {
     
-    @State var value1: Float = 0
-    @State var value2: Float = 0
-    
     func testEnclosedView() throws {
-        let view = Slider(value: $value1, label: { Text("Title") })
+        let binding = Binding<Float>(wrappedValue: 0)
+        let view = Slider(value: binding, label: { Text("Title") })
         let text = try view.inspect().slider().text().string()
         XCTAssertEqual(text, "Title")
     }
     
     func testResetsModifiers() throws {
-        let view = Slider(value: $value1, label: { Text("Title") }).padding()
+        let binding = Binding<Float>(wrappedValue: 0)
+        let view = Slider(value: binding, label: { Text("Title") }).padding()
         let sut = try view.inspect().slider().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        let view = AnyView(Slider(value: $value1))
+        let binding = Binding<Float>(wrappedValue: 0)
+        let view = AnyView(Slider(value: binding))
         XCTAssertNoThrow(try view.inspect().anyView().slider())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        let view = HStack { Slider(value: $value1); Slider(value: $value2) }
+        let binding = Binding<Float>(wrappedValue: 0)
+        let view = HStack { Slider(value: binding); Slider(value: binding) }
         XCTAssertNoThrow(try view.inspect().hStack().slider(0))
         XCTAssertNoThrow(try view.inspect().hStack().slider(1))
     }
     
     func testEditingChanged() throws {
         let exp = XCTestExpectation(description: "Callback")
-        let view = Slider(value: $value1, in: 0...100, step: 1) { _ in
+        let binding = Binding<Float>(wrappedValue: 0)
+        let view = Slider(value: binding, in: 0...100, step: 1) { _ in
             exp.fulfill()
         }
         try view.inspect().slider().callOnEditingChanged()

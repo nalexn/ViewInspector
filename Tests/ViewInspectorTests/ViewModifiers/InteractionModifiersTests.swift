@@ -201,8 +201,6 @@ final class ViewHoverTests: XCTestCase {
 
 final class ViewDragDropTests: XCTestCase {
     
-    @State private var value: Bool = false
-    
     #if os(macOS)
     func testOnDrag() throws {
         let sut = EmptyView().onDrag { NSItemProvider() }

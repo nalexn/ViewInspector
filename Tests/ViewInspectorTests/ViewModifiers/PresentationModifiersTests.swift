@@ -6,28 +6,30 @@ import SwiftUI
 
 final class ViewPresentationTests: XCTestCase {
     
-    @State private var value: Bool = true
-    
     func testSheet() throws {
-        let sut = EmptyView().sheet(isPresented: $value) { Text("") }
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().sheet(isPresented: binding) { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     #if !os(macOS)
     func testActionSheet() throws {
-        let sut = EmptyView().actionSheet(isPresented: $value) { ActionSheet(title: Text("")) }
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().actionSheet(isPresented: binding) { ActionSheet(title: Text("")) }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif
     
     func testAlert() throws {
-        let sut = EmptyView().alert(isPresented: $value) { Alert(title: Text("")) }
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().alert(isPresented: binding) { Alert(title: Text("")) }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     #if !os(tvOS)
     func testPopover() throws {
-        let sut = EmptyView().popover(isPresented: $value) { Text("") }
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().popover(isPresented: binding) { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif
