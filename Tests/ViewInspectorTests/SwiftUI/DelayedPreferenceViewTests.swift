@@ -2,17 +2,28 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if os(iOS) || os(tvOS)
-
 final class DelayedPreferenceViewTests: XCTestCase {
     
-    func testUnwrapDelayedPreferenceView() throws {
-        let view = NavigationView {
-            Text("Test")
-                .backgroundPreferenceValue(Key.self) { _ in EmptyView() }
+    func testIncorrectUnwrap() throws {
+        let view = Group {
+            Text("").overlayPreferenceValue(Key.self) { _ in EmptyView() }
         }
-        // Not supported
-        XCTAssertThrowsError(try view.inspect().navigationView().text(0))
+        XCTAssertThrowsError(try view.inspect().group().text(0))
+    }
+    
+    func testUnknownHierarchyTypeUnwrap() throws {
+        let view = Group {
+            Text("").overlayPreferenceValue(Key.self) { _ in EmptyView() }
+        }
+        XCTAssertThrowsError(try view.inspect().group().preferenceValue(Key.self))
+    }
+    
+    func testKnownHierarchyTypeUnwrap() throws {
+        let view = Group {
+            Text("").overlayPreferenceValue(Key.self) { _ in EmptyView() }
+        }
+        XCTAssertNoThrow(try view.inspect().group()
+            .preferenceValue(Key.self, base: Text.self, overlay: EmptyView.self).emptyView())
     }
     
     func testRetainsModifiers() throws {
@@ -34,5 +45,3 @@ final class DelayedPreferenceViewTests: XCTestCase {
         }
     }
 }
-
-#endif

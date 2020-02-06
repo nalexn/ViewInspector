@@ -105,6 +105,10 @@ extension Inspector {
             throw InspectionError.notSupported(
                 "Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
         }
+        if name.hasPrefix("_DelayedPreferenceView") {
+            throw InspectionError.notSupported(
+                "Please use 'preferenceValue(Key.self)' for unwrapping the underlying view hierarchy.")
+        }
         guard name.hasPrefix(prefix) else {
             throw InspectionError.typeMismatch(factual: name, expected: prefix)
         }
