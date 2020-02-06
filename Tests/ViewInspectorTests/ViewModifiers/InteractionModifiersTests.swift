@@ -213,7 +213,8 @@ final class ViewDragDropTests: XCTestCase {
     }
     
     func testOnDropCallback() throws {
-        let sut = EmptyView().onDrop(of: [], isTargeted: $value, perform: { _ in false })
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().onDrop(of: [], isTargeted: binding, perform: { _ in false })
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif
