@@ -18,10 +18,18 @@ final class InspectorTests: XCTestCase {
         XCTAssertThrowsError(try Inspector.attribute(label: "other", value: testValue))
     }
     
+    func testAttributeLabelTypeMismatch() throws {
+        XCTAssertThrowsError(try Inspector.attribute(label: "value1", value: testValue, type: Int.self))
+    }
+    
     func testAttributePath() throws {
         guard let value = try Inspector.attribute(path: "value2|value3", value: testValue) as? Int
             else { XCTFail(); return }
         XCTAssertEqual(value, 42)
+    }
+    
+    func testAttributePathTypeMismatch() throws {
+        XCTAssertThrowsError(try Inspector.attribute(path: "value1", value: testValue, type: Int.self))
     }
     
     func testTypeNameValue() {
