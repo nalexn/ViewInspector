@@ -46,29 +46,21 @@ private protocol ForEachContentProvider {
 }
 
 extension ForEach: ForEachContentProvider {
-
+    
     func views() throws -> LazyGroup<Any> {
-        typealias RangeBuilder = (Int) -> Content
-        typealias CollectionBuilder = (Data.Element) -> Content
-
-        let children: LazyGroup<Any>
-
-        if Data.self is Range<Int>.Type {
-            let range = try Inspector.attribute(label: "data", value: self, type: Range<Int>.self)
-            let builder = try Inspector.attribute(label: "content", value: self, type: RangeBuilder.self)
-
-            children = LazyGroup(count: range.upperBound - range.lowerBound) {
-                builder($0)
+        
+        typealias Builder = (Data.Element) -> Content
+        let data = try Inspector
+            .attribute(label: "data", value: self, type: Data.self)
+        let builder = try Inspector
+            .attribute(label: "content", value: self, type: Builder.self)
+        
+        return LazyGroup(count: data.count) { int in
+            var index = data.startIndex
+            for _ in 0 ..< int {
+                index = data.index(after: index)
             }
-        } else {
-            let dataArray = try Inspector.attribute(label: "data", value: self, type: [Data.Element].self)
-            let builder = try Inspector.attribute(label: "content", value: self, type: CollectionBuilder.self)
-
-            children = LazyGroup(count: dataArray.count) {
-                builder(dataArray[$0])
-            }
+            return builder(data[index])
         }
-
-        return children
     }
 }

@@ -71,7 +71,7 @@ final class ForEachTests: XCTestCase {
         let view = ForEach(range) { Text(verbatim: "\($0)") }
 
         let sut = try view.inspect().forEach()
-        XCTAssertEqual(sut.underestimatedCount, 5)
+        XCTAssertEqual(sut.count, 5)
         XCTAssertEqual(try sut.text(4).string(), "\(range.upperBound - 1)")
         XCTAssertThrowsError(try sut.text(range.upperBound))
     }
