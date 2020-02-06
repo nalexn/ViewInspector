@@ -50,18 +50,21 @@ private extension InspectableView {
         
         typealias Closure = (EnvironmentValues) -> ModifiedContent<V,
             _PreferenceWritingModifier<FakeNavigationBarItemsKey>>
-        let closure = try Inspector.attribute(label: "content", value: content.view)
-        let closureDesc = Inspector.typeName(value: closure)
-        guard closureDesc.contains("_PreferenceWritingModifier<NavigationBarItemsKey>>") else {
+        guard let closure = try? Inspector.attribute(label: "content", value: content.view),
+            let closureDesc = Inspector.typeName(value: closure) as String?,
+            closureDesc.contains("_PreferenceWritingModifier<NavigationBarItemsKey>>") else {
             throw InspectionError.modifierNotFound(parent:
                 Inspector.typeName(value: content), modifier: "navigationBarItems")
         }
+        
         let expectedViewType = closureDesc.navigationBarItemsWrappedViewType
-        let actualViewType = Inspector.typeName(type: viewType)
-        guard actualViewType == expectedViewType else {
+        guard Inspector.typeName(type: viewType) == expectedViewType else {
+            //swiftlint:disable line_length
             throw InspectionError.notSupported(
-                "Please substitute '\(expectedViewType)' as the parameter for 'navigationBarItems()' inspection call")
+                "Please substitute '\(expectedViewType).self' as the parameter for 'navigationBarItems()' inspection call")
+            //swiftlint:enable line_length
         }
+        
         guard let typedClosure = withUnsafeBytes(of: closure, {
             $0.bindMemory(to: Closure.self).first
         }) else { throw InspectionError.typeMismatch(closure, Closure.self) }

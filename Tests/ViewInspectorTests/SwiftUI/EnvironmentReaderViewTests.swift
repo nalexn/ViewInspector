@@ -48,11 +48,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testMissingModifier() throws {
-        struct TestView: View {
-            let content = 0
-            var body: some View { EmptyView() }
-        }
-        let sut = TestView()
+        let sut = EmptyView().padding()
         XCTAssertThrowsError(try sut.inspect().navigationBarItems())
     }
     #endif
