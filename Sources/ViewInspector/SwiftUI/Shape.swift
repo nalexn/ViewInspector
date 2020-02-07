@@ -45,13 +45,33 @@ public extension InspectableView where View == ViewType.Shape {
     func path(in rect: CGRect) throws -> Path {
         guard let shape = content.view as? InspectableShape else {
             throw InspectionError.notSupported(
-                "Please put a void '.offset()' modifier after '.inset(by:)'")
+                "Please put a void '.offset()' modifier before or after '.inset(by:)'")
         }
         return shape.path(in: rect)
     }
     
     func inset() throws -> CGFloat {
         return try shapeAttribute(content.view, "_Inset", "amount", CGFloat.self)
+    }
+    
+    func offset() throws -> CGSize {
+        return try shapeAttribute(content.view, "OffsetShape", "offset", CGSize.self)
+    }
+    
+    func scale() throws -> (x: CGFloat, y: CGFloat, anchor: UnitPoint) {
+        let size = try shapeAttribute(content.view, "ScaledShape", "scale", CGSize.self)
+        let anchor = try shapeAttribute(content.view, "ScaledShape", "anchor", UnitPoint.self)
+        return (size.width, size.height, anchor)
+    }
+    
+    func rotation() throws -> (angle: Angle, anchor: UnitPoint) {
+        let angle = try shapeAttribute(content.view, "RotatedShape", "angle", Angle.self)
+        let anchor = try shapeAttribute(content.view, "RotatedShape", "anchor", UnitPoint.self)
+        return (angle, anchor)
+    }
+    
+    func transform() throws -> CGAffineTransform {
+        return try shapeAttribute(content.view, "TransformedShape", "transform", CGAffineTransform.self)
     }
     
     func size() throws -> CGSize {

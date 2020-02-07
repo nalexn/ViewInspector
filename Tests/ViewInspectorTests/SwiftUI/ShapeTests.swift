@@ -55,10 +55,48 @@ final class ShapeTests: XCTestCase {
     }
     
     func testInsetBlockingInspection() throws {
-        let shape = Ellipse().inset(by: 5)
-        let sut = try shape.inspect().shape()
-        XCTAssertThrowsError(try sut.path(in: CGRect(x: 0, y: 0, width: 5, height: 5)))
-        XCTAssertThrowsError(try sut.actualShape(Ellipse.self))
+        let shape1 = Ellipse().inset(by: 5)
+        let shape2 = Ellipse().offset().inset(by: 5)
+        let sut1 = try shape1.inspect().shape()
+        let sut2 = try shape2.inspect().shape()
+        let rect = CGRect(x: 0, y: 0, width: 5, height: 5)
+        XCTAssertThrowsError(try sut1.path(in: rect))
+        XCTAssertThrowsError(try sut1.actualShape(Ellipse.self))
+        XCTAssertNoThrow(try sut2.path(in: rect))
+        XCTAssertThrowsError(try sut2.actualShape(Ellipse.self))
+    }
+    
+    func testOffset() throws {
+        let offset = CGSize(width: 10, height: 20)
+        let view = Ellipse().offset(offset)
+        let sut = try view.inspect().shape().offset()
+        XCTAssertEqual(sut, offset)
+    }
+    
+    func testScale() throws {
+        let scaleFactor = CGPoint(x: 0.4, y: 0.9)
+        let anchor = UnitPoint.topLeading
+        let view = Ellipse().scale(x: scaleFactor.x, y: scaleFactor.y, anchor: anchor)
+        let sut = try view.inspect().shape().scale()
+        XCTAssertEqual(sut.x, scaleFactor.x)
+        XCTAssertEqual(sut.y, scaleFactor.y)
+        XCTAssertEqual(sut.anchor, anchor)
+    }
+    
+    func testRotation() throws {
+        let angle = Angle(degrees: 35)
+        let anchor = UnitPoint.topLeading
+        let view = Ellipse().rotation(angle, anchor: anchor)
+        let sut = try view.inspect().shape().rotation()
+        XCTAssertEqual(sut.angle, angle)
+        XCTAssertEqual(sut.anchor, anchor)
+    }
+    
+    func testTransform() throws {
+        let transform = CGAffineTransform(translationX: 40, y: -3)
+        let view = Ellipse().transform(transform)
+        let sut = try view.inspect().shape().transform()
+        XCTAssertEqual(sut, transform)
     }
     
     func testSize() throws {
@@ -102,5 +140,16 @@ final class ShapeTests: XCTestCase {
     func testMissingAttribute() throws {
         let sut = Ellipse().offset()
         XCTAssertThrowsError(try sut.inspect().shape().size())
+    }
+    
+    func testMultipleModifiers() throws {
+        let angle = Angle(degrees: 20)
+        let offset = CGSize(width: 10, height: 30)
+        let inset: CGFloat = 5
+        let shape = Ellipse().rotation(angle).offset(offset).inset(by: inset)
+        let sut = try shape.inspect().shape()
+        XCTAssertEqual(try sut.offset(), offset)
+        XCTAssertEqual(try sut.inset(), inset)
+        XCTAssertEqual(try sut.rotation().angle, angle)
     }
 }
