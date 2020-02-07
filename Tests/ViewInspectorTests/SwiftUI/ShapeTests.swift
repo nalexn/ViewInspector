@@ -7,14 +7,18 @@ final class ShapeTests: XCTestCase {
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Rectangle())
         XCTAssertNoThrow(try view.inspect().anyView().shape())
-        XCTAssertThrowsError(try EmptyView().inspect().shape())
+        XCTAssertThrows(
+            try EmptyView().inspect().shape(),
+            "Type mismatch: EmptyView is not InspectableShape")
     }
     
     func testExtractionFromMultipleViewContainer() throws {
         let view = HStack { Rectangle(); Circle() }
         XCTAssertNoThrow(try view.inspect().hStack().shape(0))
         XCTAssertNoThrow(try view.inspect().hStack().shape(1))
-        XCTAssertThrowsError(try HStack { EmptyView() }.inspect().hStack().shape(0))
+        XCTAssertThrows(
+            try HStack { EmptyView() }.inspect().hStack().shape(0),
+            "Type mismatch: EmptyView is not InspectableShape")
     }
     
     func testActualShape() throws {
@@ -22,7 +26,9 @@ final class ShapeTests: XCTestCase {
             .offset().rotation(.init(degrees: 30))
         let sut = try shape.inspect().shape().actualShape(RoundedRectangle.self)
         XCTAssertEqual(sut.cornerSize, CGSize(width: 3, height: 3))
-        XCTAssertThrowsError(try shape.inspect().shape().actualShape(Circle.self))
+        XCTAssertThrows(
+            try shape.inspect().shape().actualShape(Circle.self),
+            "Type mismatch: RoundedRectangle is not Circle")
     }
     
     func testShapeModifiers() throws {
@@ -60,10 +66,16 @@ final class ShapeTests: XCTestCase {
         let sut1 = try shape1.inspect().shape()
         let sut2 = try shape2.inspect().shape()
         let rect = CGRect(x: 0, y: 0, width: 5, height: 5)
-        XCTAssertThrowsError(try sut1.path(in: rect))
-        XCTAssertThrowsError(try sut1.actualShape(Ellipse.self))
+        XCTAssertThrows(
+            try sut1.path(in: rect),
+            "ViewInspector: Please put a void '.offset()' modifier before or after '.inset(by:)'")
+        XCTAssertThrows(
+            try sut1.actualShape(Ellipse.self),
+            "ViewInspector: Modifier '.inset(by:)' is blocking Shape inspection")
         XCTAssertNoThrow(try sut2.path(in: rect))
-        XCTAssertThrowsError(try sut2.actualShape(Ellipse.self))
+        XCTAssertThrows(
+            try sut2.actualShape(Ellipse.self),
+            "ViewInspector: Modifier '.inset(by:)' is blocking Shape inspection")
     }
     
     func testOffset() throws {
@@ -139,7 +151,9 @@ final class ShapeTests: XCTestCase {
     
     func testMissingAttribute() throws {
         let sut = Ellipse().offset()
-        XCTAssertThrowsError(try sut.inspect().shape().size())
+        XCTAssertThrows(
+            try sut.inspect().shape().size(),
+            "Ellipse does not have 'size' attribute")
     }
     
     func testMultipleModifiers() throws {

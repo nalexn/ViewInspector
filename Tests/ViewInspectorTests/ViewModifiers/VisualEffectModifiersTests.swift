@@ -55,7 +55,9 @@ final class ViewGraphicalEffectsTests: XCTestCase {
     
     func testColorInvertInspection() throws {
         XCTAssertNoThrow(try EmptyView().colorInvert().inspect().emptyView().colorInvert())
-        XCTAssertThrowsError(try EmptyView().padding().inspect().emptyView().colorInvert())
+        XCTAssertThrows(
+            try EmptyView().padding().inspect().emptyView().colorInvert(),
+            "EmptyView does not have 'colorInvert' modifier")
     }
     
     func testColorMultiply() throws {
@@ -106,7 +108,9 @@ final class ViewGraphicalEffectsTests: XCTestCase {
     
     func testLuminanceToAlphaInspection() throws {
         XCTAssertNoThrow(try EmptyView().luminanceToAlpha().inspect().emptyView().luminanceToAlpha())
-        XCTAssertThrowsError(try EmptyView().padding().inspect().emptyView().luminanceToAlpha())
+        XCTAssertThrows(
+            try EmptyView().padding().inspect().emptyView().luminanceToAlpha(),
+            "EmptyView does not have 'luminanceToAlpha' modifier")
     }
     
     func testShadow() throws {
@@ -153,7 +157,9 @@ final class ViewGraphicalEffectsTests: XCTestCase {
     
     func testCompositingGroupInspection() throws {
         XCTAssertNoThrow(try EmptyView().compositingGroup().inspect().emptyView().compositingGroup())
-        XCTAssertThrowsError(try EmptyView().padding().inspect().emptyView().compositingGroup())
+        XCTAssertThrows(
+            try EmptyView().padding().inspect().emptyView().compositingGroup(),
+            "EmptyView does not have 'compositingGroup' modifier")
     }
 }
 

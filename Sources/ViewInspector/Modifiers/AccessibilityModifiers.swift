@@ -56,7 +56,7 @@ public extension InspectableView {
         let shortName = kindString
             .components(separatedBy: CharacterSet(charactersIn: ".)"))
             .filter { $0.count > 0 }.last!
-        let call = "callAccessibilityAction(.\(shortName))"
+        let call = "accessibilityAction(.\(shortName))"
         typealias Callback = (()) -> Void
         let callback = try accessibilityAction(name: kindString, path: "box|action|kind",
                                                type: Callback.self, call: call)

@@ -11,7 +11,9 @@ final class EnvironmentReaderViewTests: XCTestCase {
             List { Text("") }
                 .navigationBarItems(trailing: Text(""))
         }
-        XCTAssertThrowsError(try view.inspect().navigationView().list(0))
+        XCTAssertThrows(
+            try view.inspect().navigationView().list(0),
+            "ViewInspector: Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
     }
     
     func testUnknownHierarchyTypeUnwrap() throws {
@@ -19,7 +21,11 @@ final class EnvironmentReaderViewTests: XCTestCase {
             List { Text("") }
                 .navigationBarItems(trailing: Text(""))
         }
-        XCTAssertThrowsError(try view.inspect().navigationView().navigationBarItems().list())
+        //swiftlint:disable line_length
+        XCTAssertThrows(
+            try view.inspect().navigationView().navigationBarItems().list(),
+            "ViewInspector: Please substitute 'List<Never, Text>.self' as the parameter for 'navigationBarItems()' inspection call")
+        //swiftlint:enable line_length
     }
     
     func testKnownHierarchyTypeUnwrap() throws {
@@ -49,7 +55,9 @@ final class EnvironmentReaderViewTests: XCTestCase {
     
     func testMissingModifier() throws {
         let sut = EmptyView().padding()
-        XCTAssertThrowsError(try sut.inspect().navigationBarItems())
+        XCTAssertThrows(
+            try sut.inspect().navigationBarItems(),
+            "EmptyView does not have 'navigationBarItems' modifier")
     }
     #endif
 }

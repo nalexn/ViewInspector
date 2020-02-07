@@ -46,7 +46,9 @@ final class ViewHostingTests: XCTestCase {
         sut.didAppear = { wrapper in
             wrapper.inspect { wrapper in
                 let view = try wrapper.view(NSTestView.self)
-                XCTAssertThrowsError(try view.actualView().nsView())
+                XCTAssertThrows(
+                    try view.actualView().nsView(),
+                    "View for NSTestView is absent")
                 try wrapper.actualView().flag.toggle()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     let uiView = try? view.actualView().nsView()
@@ -115,7 +117,9 @@ final class ViewHostingTests: XCTestCase {
         sut.didAppear = { wrapper in
             wrapper.inspect { wrapper in
                 let view = try wrapper.view(UITestView.self)
-                XCTAssertThrowsError(try view.actualView().uiView())
+                XCTAssertThrows(
+                    try view.actualView().uiView(),
+                    "View for UITestView is absent")
                 try wrapper.actualView().flag.toggle()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     let uiView = try? view.actualView().uiView()

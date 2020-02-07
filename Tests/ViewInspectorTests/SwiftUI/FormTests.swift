@@ -14,7 +14,9 @@ final class FormTests: XCTestCase {
     func testSingleEnclosedViewIndexOutOfBounds() throws {
         let sampleView = Text("Test")
         let view = Form { sampleView }
-        XCTAssertThrowsError(try view.inspect().form().text(1))
+        XCTAssertThrows(
+            try view.inspect().form().text(1),
+            "Enclosed view index '1' is out of bounds: '0 ..< 1'")
     }
     
     func testMultipleEnclosedViews() throws {
@@ -34,7 +36,9 @@ final class FormTests: XCTestCase {
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
         let view = Form { sampleView1; sampleView2 }
-        XCTAssertThrowsError(try view.inspect().form().text(2))
+        XCTAssertThrows(
+            try view.inspect().form().text(2),
+            "Enclosed view index '2' is out of bounds: '0 ..< 2'")
     }
     
     func testResetsModifiers() throws {

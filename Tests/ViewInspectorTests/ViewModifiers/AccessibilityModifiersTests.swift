@@ -109,7 +109,9 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityActionInspectionError() throws {
         let sut = EmptyView().accessibilityAction(.escape) { }
-        XCTAssertThrowsError(try sut.inspect().emptyView().callAccessibilityAction(.default))
+        XCTAssertThrows(
+            try sut.inspect().emptyView().callAccessibilityAction(.default),
+            "EmptyView does not have 'accessibilityAction(.default)' modifier")
     }
     
     func testAccessibilityActionInspectionMultipleCallbacks() throws {
@@ -205,6 +207,8 @@ final class ViewAccessibilityTests: XCTestCase {
             .accessibility(label: Text("test"))
             .accessibility(addTraits: [.isImage])
             .inspect().emptyView()
-        XCTAssertThrowsError(try sut.accessibilityValue())
+        XCTAssertThrows(
+            try sut.accessibilityValue(),
+            "EmptyView does not have 'accessibilityValue' modifier")
     }
 }

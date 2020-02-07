@@ -15,11 +15,15 @@ final class InspectorTests: XCTestCase {
     }
     
     func testUnknownAttributeLabel() throws {
-        XCTAssertThrowsError(try Inspector.attribute(label: "other", value: testValue))
+        XCTAssertThrows(
+            try Inspector.attribute(label: "other", value: testValue),
+            "Struct1 does not have 'other' attribute")
     }
     
     func testAttributeLabelTypeMismatch() throws {
-        XCTAssertThrowsError(try Inspector.attribute(label: "value1", value: testValue, type: Int.self))
+        XCTAssertThrows(
+            try Inspector.attribute(label: "value1", value: testValue, type: Int.self),
+            "Type mismatch: String is not Int")
     }
     
     func testAttributePath() throws {
@@ -29,7 +33,9 @@ final class InspectorTests: XCTestCase {
     }
     
     func testAttributePathTypeMismatch() throws {
-        XCTAssertThrowsError(try Inspector.attribute(path: "value1", value: testValue, type: Int.self))
+        XCTAssertThrows(
+            try Inspector.attribute(path: "value1", value: testValue, type: Int.self),
+            "Type mismatch: String is not Int")
     }
     
     func testTypeNameValue() {
@@ -58,7 +64,9 @@ final class InspectorTests: XCTestCase {
     func testGuardType() throws {
         let value = "abc"
         XCTAssertNoThrow(try Inspector.guardType(value: value, prefix: "String"))
-        XCTAssertThrowsError(try Inspector.guardType(value: value, prefix: "Int"))
+        XCTAssertThrows(
+            try Inspector.guardType(value: value, prefix: "Int"),
+            "Type mismatch: String is not Int")
     }
     
     func testUnwrapNoModifiers() throws {
@@ -90,12 +98,16 @@ final class InspectableViewModifiersTests: XCTestCase {
     
     func testModifierIsNotPresent() throws {
         let sut = EmptyView().padding()
-        XCTAssertThrowsError(try sut.inspect().emptyView().callOnAppear())
+        XCTAssertThrows(
+            try sut.inspect().emptyView().callOnAppear(),
+            "EmptyView does not have 'onAppear' modifier")
     }
     
     func testModifierAttributeIsNotPresent() throws {
         let sut = EmptyView().onDisappear().padding()
-        XCTAssertThrowsError(try sut.inspect().emptyView().callOnAppear())
+        XCTAssertThrows(
+            try sut.inspect().emptyView().callOnAppear(),
+            "EmptyView does not have 'onAppear' modifier")
     }
 }
 

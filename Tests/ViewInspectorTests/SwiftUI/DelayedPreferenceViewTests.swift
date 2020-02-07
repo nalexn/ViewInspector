@@ -12,7 +12,11 @@ final class DelayedPreferenceViewTests: XCTestCase {
                 .backgroundPreferenceValue(Key.self) { _ in EmptyView() }
         }
         // Not supported
-        XCTAssertThrowsError(try view.inspect().navigationView().text(0))
+        //swiftlint:disable line_length
+        XCTAssertThrows(
+            try view.inspect().navigationView().text(0),
+            "ViewInspector: 'PreferenceValue' modifiers are currently not supported. Consider extracting the enclosed view for direct inspection.")
+        //swiftlint:enable line_length
     }
     
     func testRetainsModifiers() throws {

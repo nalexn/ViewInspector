@@ -126,8 +126,8 @@ private extension InspectableView {
         guard let containedShape = try? Inspector.attribute(label: "shape", value: view) else {
             switch lookupMode {
             case let .attribute(label):
-                let originalType = Inspector.typeName(value: content.view)
-                throw InspectionError.attributeNotFound(label: label, type: originalType)
+                let typeName = Inspector.typeName(value: view)
+                throw InspectionError.attributeNotFound(label: label, type: typeName)
             case .shape:
                 let factualName = Inspector.typeName(value: view)
                 if factualName == "_Inset" {

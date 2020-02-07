@@ -76,12 +76,4 @@ final class GlobalModifiersForNavigationView: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif
-    
-    #if os(iOS) || os(tvOS)
-    func testNavigationBarItems() throws {
-        let sut = EmptyView().navigationBarItems(leading: Text(""), trailing: Text(""))
-        // Not supported
-        XCTAssertThrowsError(try sut.inspect().emptyView())
-    }
-    #endif
 }

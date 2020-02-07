@@ -97,6 +97,8 @@ final class ViewHitTestingTests: XCTestCase {
     func testContentShapeInspectionError() throws {
         let box = ContentShape(shape: Capsule(), eoFill: true)
         let sut = try EmptyView().contentShape(box.shape, eoFill: box.eoFill).inspect().emptyView()
-        XCTAssertThrowsError(try sut.contentShape(Circle.self))
+        XCTAssertThrows(
+            try sut.contentShape(Circle.self),
+            "Type mismatch: Capsule is not Circle")
     }
 }

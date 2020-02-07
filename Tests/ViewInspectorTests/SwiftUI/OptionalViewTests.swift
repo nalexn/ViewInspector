@@ -12,7 +12,9 @@ final class OptionalViewTests: XCTestCase {
     
     func testOptionalViewWhenIsAbsent() throws {
         let view = OptionalView(flag: false)
-        XCTAssertThrowsError(try view.inspect().hStack().text(0))
+        XCTAssertThrows(
+            try view.inspect().hStack().text(0),
+            "View for Optional<Text> is absent")
     }
     
     func testMixedOptionalViewWhenExists() throws {
@@ -25,7 +27,9 @@ final class OptionalViewTests: XCTestCase {
     
     func testMixedOptionalViewWhenIsAbsent() throws {
         let view = MixedOptionalView(flag: false)
-        XCTAssertThrowsError(try view.inspect().hStack().text(0))
+        XCTAssertThrows(
+            try view.inspect().hStack().text(0),
+            "View for Optional<Text> is absent")
         let string = try view.inspect().hStack().text(1).string()
         XCTAssertEqual(string, "XYZ")
     }

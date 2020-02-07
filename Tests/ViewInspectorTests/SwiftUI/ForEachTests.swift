@@ -14,7 +14,9 @@ final class ForEachTests: XCTestCase {
     func testSingleEnclosedViewIndexOutOfBounds() throws {
         let data = [TestStruct(id: "0")]
         let view = ForEach(data) { Text($0.id) }
-        XCTAssertThrowsError(try view.inspect().forEach().text(1))
+        XCTAssertThrows(
+            try view.inspect().forEach().text(1),
+            "Enclosed view index '1' is out of bounds: '0 ..< 1'")
     }
     
     func testMultipleIdentifiableEnclosedViews() throws {
@@ -42,7 +44,9 @@ final class ForEachTests: XCTestCase {
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
         let data = ["0", "1"].map { TestStruct(id: $0) }
         let view = ForEach(data) { Text($0.id) }
-        XCTAssertThrowsError(try view.inspect().forEach().text(2))
+        XCTAssertThrows(
+            try view.inspect().forEach().text(2),
+            "Enclosed view index '2' is out of bounds: '0 ..< 2'")
     }
     
     func testResetsModifiers() throws {
@@ -73,7 +77,9 @@ final class ForEachTests: XCTestCase {
         let sut = try view.inspect().forEach()
         XCTAssertEqual(sut.count, 5)
         XCTAssertEqual(try sut.text(4).string(), "\(range.upperBound - 1)")
-        XCTAssertThrowsError(try sut.text(range.upperBound))
+        XCTAssertThrows(
+            try sut.text(range.upperBound),
+            "Enclosed view index '5' is out of bounds: '0 ..< 5'")
     }
 }
 

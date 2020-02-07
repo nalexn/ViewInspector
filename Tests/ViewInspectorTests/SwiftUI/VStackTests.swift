@@ -20,7 +20,9 @@ final class VStackTests: XCTestCase {
     func testSingleEnclosedViewIndexOutOfBounds() throws {
         let sampleView = Text("Test")
         let view = VStack { sampleView }
-        XCTAssertThrowsError(try view.inspect().vStack().text(1))
+        XCTAssertThrows(
+            try view.inspect().vStack().text(1),
+            "Enclosed view index '1' is out of bounds: '0 ..< 1'")
     }
     
     func testMultipleEnclosedViews() throws {
@@ -40,7 +42,9 @@ final class VStackTests: XCTestCase {
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
         let view = VStack { sampleView1; sampleView2 }
-        XCTAssertThrowsError(try view.inspect().vStack().text(2))
+        XCTAssertThrows(
+            try view.inspect().vStack().text(2),
+            "Enclosed view index '2' is out of bounds: '0 ..< 2'")
     }
     
     func testExtractionFromSingleViewContainer() throws {

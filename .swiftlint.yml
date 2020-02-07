@@ -37,3 +37,11 @@ excluded: # paths to ignore during linting. overridden by `included`.
 
 identifier_name:
   min_length: 2
+
+custom_rules:
+  assert_throws_error:
+    name: 'API usage'
+    regex: '(XCTAssertThrowsError)'
+    match_kinds:
+      - identifier
+    message: 'Please use XCTAssertThrows instead of XCTAssertThrowsError'

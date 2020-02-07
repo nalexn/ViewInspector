@@ -79,3 +79,13 @@ final class RandomAccessCollectionTests: XCTestCase {
         XCTAssertNoThrow(try sut[1].anyView().emptyView())
     }
 }
+
+func XCTAssertThrows<T>(_ expression: @autoclosure () throws -> T, _ message: String,
+                        file: StaticString = #file, line: UInt = #line) {
+    do {
+        _ = try expression()
+        XCTFail("Expression did not throw any error")
+    } catch let error {
+        XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
+    }
+}

@@ -103,7 +103,9 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testContentViewTypeMismatch() {
-        XCTAssertThrowsError(try ViewType.View<SimpleTestView>.child(Content("abc")))
+        XCTAssertThrows(
+            try ViewType.View<SimpleTestView>.child(Content("abc")),
+            "Type mismatch: String is not SimpleTestView")
     }
     
     func testActualView() throws {
@@ -114,7 +116,9 @@ final class CustomViewTests: XCTestCase {
     
     func testActualViewTypeMismatch() throws {
         let sut = try InspectableView<ViewType.Test<SimpleTestView>>(Content(""))
-        XCTAssertThrowsError(try sut.actualView())
+        XCTAssertThrows(
+            try sut.actualView(),
+            "Type mismatch: String is not SimpleTestView")
     }
     
     func testTestViews() {

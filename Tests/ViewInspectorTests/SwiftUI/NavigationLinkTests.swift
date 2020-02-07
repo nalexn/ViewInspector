@@ -51,7 +51,9 @@ final class NavigationLinkTests: XCTestCase {
         }
         let isActive = try view.inspect().navigationView().navigationLink(0).isActive()
         XCTAssertFalse(isActive)
-        XCTAssertThrowsError(try view.inspect().navigationView().navigationLink(0).activate())
+        XCTAssertThrows(
+            try view.inspect().navigationView().navigationLink(0).activate(),
+            "ViewInspector: Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
     }
     
     func testNavigationWithBindingActivation() throws {

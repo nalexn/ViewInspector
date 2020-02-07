@@ -70,13 +70,21 @@ final class ViewPreferenceTests: XCTestCase {
     func testBackgroundPreferenceValue() throws {
         let sut = EmptyView().backgroundPreferenceValue(Key.self) { _ in Text("") }
         // Not supported
-        XCTAssertThrowsError(try sut.inspect().emptyView())
+        //swiftlint:disable line_length
+        XCTAssertThrows(
+            try sut.inspect().emptyView(),
+            "ViewInspector: 'PreferenceValue' modifiers are currently not supported. Consider extracting the enclosed view for direct inspection.")
+        //swiftlint:enable line_length
     }
     
     func testOverlayPreferenceValue() throws {
         let sut = EmptyView().overlayPreferenceValue(Key.self) { _ in Text("") }
         // Not supported
-        XCTAssertThrowsError(try sut.inspect().emptyView())
+        //swiftlint:disable line_length
+        XCTAssertThrows(
+            try sut.inspect().emptyView(),
+            "ViewInspector: 'PreferenceValue' modifiers are currently not supported. Consider extracting the enclosed view for direct inspection.")
+        //swiftlint:enable line_length
     }
     
     struct Key: PreferenceKey {
