@@ -38,4 +38,54 @@ final class ShapeTests: XCTestCase {
         let sut = try shape.inspect().shape().path(in: rect)
         XCTAssertEqual(sut, shape.path(in: rect))
     }
+    
+    func testPathForFilledShape() throws {
+        let shape = Ellipse()
+        let rect = CGRect(x: 0, y: 0, width: 100, height: 100)
+        let sut = (shape.fill() as? InspectableShape)?.path(in: rect)
+        XCTAssertEqual(sut, shape.path(in: rect))
+    }
+    
+    func testSize() throws {
+        let size = CGSize(width: 10, height: 20)
+        let view = Ellipse().size(size).offset()
+        let sut = try view.inspect().shape().size()
+        XCTAssertEqual(sut, size)
+    }
+    
+    func testStrokeStyle() throws {
+        let style = StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .miter,
+                                miterLimit: 4, dash: [3, 2], dashPhase: 1)
+        let view = Ellipse().stroke(style: style).offset()
+        let sut = try view.inspect().shape().strokeStyle()
+        XCTAssertEqual(sut, style)
+    }
+    
+    func testTrim() throws {
+        let view = Ellipse().trim(from: 0.25, to: 0.9).offset()
+        let sut = try view.inspect().shape().trim()
+        XCTAssertEqual(sut.from, 0.25)
+        XCTAssertEqual(sut.to, 0.9)
+    }
+    
+    func testShapeStyle() throws {
+        let view = Ellipse().fill(LinearGradient(gradient: Gradient(colors: []),
+            startPoint: .top, endPoint: .bottomLeading))
+        let gradient = try view.inspect().shape().fillShapeStyle(LinearGradient.self)
+        let sut = try gradient.inspect().linearGradient()
+        XCTAssertEqual(try sut.startPoint(), UnitPoint.top)
+        XCTAssertEqual(try sut.endPoint(), UnitPoint.bottomLeading)
+    }
+    
+    func testFillStyle() throws {
+        let fillStyle = FillStyle(eoFill: true, antialiased: false)
+        let view = Ellipse().fill(style: fillStyle)
+        let sut = try view.inspect().shape().fillStyle()
+        XCTAssertEqual(sut, fillStyle)
+    }
+    
+    func testMissingAttribute() throws {
+        let sut = Ellipse().offset()
+        XCTAssertThrowsError(try sut.inspect().shape().size())
+    }
 }
