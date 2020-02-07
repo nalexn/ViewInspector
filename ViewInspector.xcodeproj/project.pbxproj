@@ -87,6 +87,8 @@
 		F6684BFC23AA842000DECCB3 /* LinearGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */; };
 		F6684BFE23AA863400DECCB3 /* RadialGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BFD23AA863400DECCB3 /* RadialGradient.swift */; };
 		F6684C0023AA864F00DECCB3 /* RadialGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BFF23AA864F00DECCB3 /* RadialGradientTests.swift */; };
+		F66EDB5723ED6EA200A01B9F /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66EDB5623ED6EA200A01B9F /* Shape.swift */; };
+		F66EDB5923ED72B800A01B9F /* ShapeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66EDB5823ED72B800A01B9F /* ShapeTests.swift */; };
 		F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */; };
 		F68108A623A5835E00B32145 /* EventsModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A523A5835E00B32145 /* EventsModifiers.swift */; };
 		F68108A823A667A400B32145 /* GestureModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A723A667A300B32145 /* GestureModifiers.swift */; };
@@ -233,6 +235,8 @@
 		F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearGradientTests.swift; sourceTree = "<group>"; };
 		F6684BFD23AA863400DECCB3 /* RadialGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialGradient.swift; sourceTree = "<group>"; };
 		F6684BFF23AA864F00DECCB3 /* RadialGradientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialGradientTests.swift; sourceTree = "<group>"; };
+		F66EDB5623ED6EA200A01B9F /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		F66EDB5823ED72B800A01B9F /* ShapeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeTests.swift; sourceTree = "<group>"; };
 		F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositioningModifiersTests.swift; sourceTree = "<group>"; };
 		F68108A523A5835E00B32145 /* EventsModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModifiers.swift; sourceTree = "<group>"; };
 		F68108A723A667A300B32145 /* GestureModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifiers.swift; sourceTree = "<group>"; };
@@ -377,6 +381,7 @@
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
 				F6D933C22385FA8B00358E0E /* SecureField.swift */,
+				F66EDB5623ED6EA200A01B9F /* Shape.swift */,
 				F6D933CA2385FF8F00358E0E /* Slider.swift */,
 				F6D933C62385FC0100358E0E /* Stepper.swift */,
 				F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */,
@@ -452,6 +457,7 @@
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
 				F6D933C42385FB1D00358E0E /* SecureFieldTests.swift */,
+				F66EDB5823ED72B800A01B9F /* ShapeTests.swift */,
 				F6D933CC2385FFA300358E0E /* SliderTests.swift */,
 				F6D933C82385FC1A00358E0E /* StepperTests.swift */,
 				F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */,
@@ -667,6 +673,7 @@
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
 				F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */,
+				F66EDB5723ED6EA200A01B9F /* Shape.swift in Sources */,
 				F609EFBD23A40B8800B9256A /* DelayedPreferenceView.swift in Sources */,
 				F6684BF223AA554500DECCB3 /* PasteButton.swift in Sources */,
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
@@ -753,6 +760,7 @@
 				F6D933BD2385F45A00358E0E /* ToggleTests.swift in Sources */,
 				F6ECF6C623A66D98000FC591 /* InteractionModifiersTests.swift in Sources */,
 				F6F08E7123A3BD0C001F04DF /* AccessibilityModifiersTests.swift in Sources */,
+				F66EDB5923ED72B800A01B9F /* ShapeTests.swift in Sources */,
 				F6D933C12385F62500358E0E /* TextFieldTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F609EFC523A4350700B9256A /* IDViewTests.swift in Sources */,
