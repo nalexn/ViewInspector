@@ -33,6 +33,15 @@ public extension InspectableView where View: MultipleViewContent {
 
 public extension InspectableView where View == ViewType.Shape {
     
+    func actualShape<S>(_ shapeType: S.Type) throws -> S where S: Shape {
+        let name = Inspector.typeName(type: S.self)
+        let shape = try lookupShape(content.view, typeName: name, lookupMode: .shape)
+        guard let typedShape = shape as? S else {
+            throw InspectionError.typeMismatch(shape, S.self)
+        }
+        return typedShape
+    }
+    
     func path(in rect: CGRect) throws -> Path {
         let shape = try guardShapeIsInspectable(content)
         return shape.path(in: rect)
@@ -69,7 +78,7 @@ private extension InspectableView {
         guard let shape = content.view as? InspectableShape else {
             if Inspector.typeName(value: content.view) == "_Inset" {
                 throw InspectionError.notSupported(
-                    "Please move .inset(by:) modifier to be not the last. Alternatively, add void .offset() after it")
+                    "Please add .offset() modifier after .inset(by:) to make the shape inspectable")
             }
             throw InspectionError.typeMismatch(content.view, InspectableShape.self)
         }
@@ -78,15 +87,31 @@ private extension InspectableView {
     
     func shapeAttribute<T>(_ view: Any, _ shapeType: String, _ label: String, _ attributeType: T.Type
     ) throws -> T {
+        let shape = try lookupShape(view, typeName: shapeType, lookupMode: .attribute(label: label))
+        return try Inspector.attribute(label: label, value: shape, type: attributeType)
+    }
+    
+    enum ShapeLookupMode {
+        case attribute(label: String)
+        case shape
+    }
+    
+    func lookupShape(_ view: Any, typeName: String, lookupMode: ShapeLookupMode) throws -> Any {
         let name = Inspector.typeName(value: view, prefixOnly: true)
-        if name.hasPrefix(shapeType) {
-            return try Inspector.attribute(label: label, value: view, type: attributeType)
+        if name.hasPrefix(typeName) {
+            return view
         }
         guard let containedShape = try? Inspector.attribute(label: "shape", value: view) else {
-            let originalType = Inspector.typeName(value: content.view)
-            throw InspectionError.attributeNotFound(label: label, type: originalType)
+            switch lookupMode {
+            case let .attribute(label):
+                let originalType = Inspector.typeName(value: content.view)
+                throw InspectionError.attributeNotFound(label: label, type: originalType)
+            case .shape:
+                throw InspectionError.typeMismatch(factual: Inspector.typeName(value: view),
+                                                   expected: typeName)
+            }
         }
-        return try shapeAttribute(containedShape, shapeType, label, attributeType)
+        return try lookupShape(containedShape, typeName: typeName, lookupMode: lookupMode)
     }
 }
 

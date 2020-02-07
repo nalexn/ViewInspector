@@ -17,6 +17,14 @@ final class ShapeTests: XCTestCase {
         XCTAssertThrowsError(try HStack { EmptyView() }.inspect().hStack().shape(0))
     }
     
+    func testActualShape() throws {
+        let shape = RoundedRectangle(cornerRadius: 3, style: .continuous)
+            .offset().rotation(.init(degrees: 30))
+        let sut = try shape.inspect().shape().actualShape(RoundedRectangle.self)
+        XCTAssertEqual(sut.cornerSize, CGSize(width: 3, height: 3))
+        XCTAssertThrowsError(try shape.inspect().shape().actualShape(Circle.self))
+    }
+    
     func testInsetShape() throws {
         let sut1 = Rectangle().inset(by: 10)
         let sut2 = HStack { Rectangle().inset(by: 10) }
