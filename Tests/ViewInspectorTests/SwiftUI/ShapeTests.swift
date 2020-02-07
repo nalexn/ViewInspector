@@ -25,14 +25,8 @@ final class ShapeTests: XCTestCase {
         XCTAssertThrowsError(try shape.inspect().shape().actualShape(Circle.self))
     }
     
-    func testInsetShape() throws {
-        let sut1 = Rectangle().inset(by: 10)
-        let sut2 = HStack { Rectangle().inset(by: 10) }
-        XCTAssertThrowsError(try sut1.inspect().shape())
-        XCTAssertThrowsError(try sut2.inspect().hStack().shape(0))
-    }
-    
-    func testSpecialShapes() throws {
+    func testShapeModifiers() throws {
+        XCTAssertNoThrow(try Ellipse().inset(by: 5).inspect().shape()) // _Inset
         XCTAssertNoThrow(try Ellipse().size(width: 10, height: 20).inspect().shape()) // _SizedShape
         XCTAssertNoThrow(try Ellipse().stroke().inspect().shape()) // _StrokedShape
         XCTAssertNoThrow(try Ellipse().trim(from: 5, to: 10).inspect().shape()) // _TrimmedShape
@@ -52,6 +46,19 @@ final class ShapeTests: XCTestCase {
         let rect = CGRect(x: 0, y: 0, width: 100, height: 100)
         let sut = (shape.fill() as? InspectableShape)?.path(in: rect)
         XCTAssertEqual(sut, shape.path(in: rect))
+    }
+    
+    func testInset() throws {
+        let shape = Ellipse().inset(by: 10)
+        let sut = try shape.inspect().shape().inset()
+        XCTAssertEqual(sut, 10)
+    }
+    
+    func testInsetBlockingInspection() throws {
+        let shape = Ellipse().inset(by: 5)
+        let sut = try shape.inspect().shape()
+        XCTAssertThrowsError(try sut.path(in: CGRect(x: 0, y: 0, width: 5, height: 5)))
+        XCTAssertThrowsError(try sut.actualShape(Ellipse.self))
     }
     
     func testSize() throws {

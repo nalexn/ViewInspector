@@ -13,7 +13,7 @@ public extension InspectableView where View: SingleViewContent {
     
     func shape() throws -> InspectableView<ViewType.Shape> {
         let content = try child()
-        try guardShapeIsInspectable(content)
+        try guardShapeIsInspectable(content.view)
         return try .init(content)
     }
 }
@@ -24,7 +24,7 @@ public extension InspectableView where View: MultipleViewContent {
     
     func shape(_ index: Int) throws -> InspectableView<ViewType.Shape> {
         let content = try child(at: index)
-        try guardShapeIsInspectable(content)
+        try guardShapeIsInspectable(content.view)
         return try .init(content)
     }
 }
@@ -43,8 +43,15 @@ public extension InspectableView where View == ViewType.Shape {
     }
     
     func path(in rect: CGRect) throws -> Path {
-        let shape = try guardShapeIsInspectable(content)
+        guard let shape = content.view as? InspectableShape else {
+            throw InspectionError.notSupported(
+                "Please put a void '.offset()' modifier after '.inset(by:)'")
+        }
         return shape.path(in: rect)
+    }
+    
+    func inset() throws -> CGFloat {
+        return try shapeAttribute(content.view, "_Inset", "amount", CGFloat.self)
     }
     
     func size() throws -> CGSize {
@@ -73,16 +80,11 @@ public extension InspectableView where View == ViewType.Shape {
 // MARK: - Private
 
 private extension InspectableView {
-    @discardableResult
-    func guardShapeIsInspectable(_ content: Content) throws -> InspectableShape {
-        guard let shape = content.view as? InspectableShape else {
-            if Inspector.typeName(value: content.view) == "_Inset" {
-                throw InspectionError.notSupported(
-                    "Please add .offset() modifier after .inset(by:) to make the shape inspectable")
-            }
-            throw InspectionError.typeMismatch(content.view, InspectableShape.self)
+    
+    func guardShapeIsInspectable(_ view: Any) throws {
+        guard view is InspectableShape || Inspector.typeName(value: view) == "_Inset" else {
+            throw InspectionError.typeMismatch(view, InspectableShape.self)
         }
-        return shape
     }
     
     func shapeAttribute<T>(_ view: Any, _ shapeType: String, _ label: String, _ attributeType: T.Type
@@ -107,8 +109,13 @@ private extension InspectableView {
                 let originalType = Inspector.typeName(value: content.view)
                 throw InspectionError.attributeNotFound(label: label, type: originalType)
             case .shape:
-                throw InspectionError.typeMismatch(factual: Inspector.typeName(value: view),
-                                                   expected: typeName)
+                let factualName = Inspector.typeName(value: view)
+                if factualName == "_Inset" {
+                    throw InspectionError.notSupported(
+                        "Modifier '.inset(by:)' is blocking Shape inspection")
+                } else {
+                    throw InspectionError.typeMismatch(factual: factualName, expected: typeName)
+                }
             }
         }
         return try lookupShape(containedShape, typeName: typeName, lookupMode: lookupMode)
