@@ -56,10 +56,7 @@ extension ForEach: ForEachContentProvider {
             .attribute(label: "content", value: self, type: Builder.self)
         
         return LazyGroup(count: data.count) { int in
-            var index = data.startIndex
-            for _ in 0 ..< int {
-                index = data.index(after: index)
-            }
+            let index = data.index(data.startIndex, offsetBy: int)
             return builder(data[index])
         }
     }
