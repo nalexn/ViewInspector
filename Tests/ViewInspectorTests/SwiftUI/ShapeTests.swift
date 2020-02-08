@@ -23,7 +23,7 @@ final class ShapeTests: XCTestCase {
     
     func testActualShape() throws {
         let shape = RoundedRectangle(cornerRadius: 3, style: .continuous)
-            .offset().rotation(.init(degrees: 30))
+            .offset().rotation(.degrees(30))
         let sut = try shape.inspect().shape().actualShape(RoundedRectangle.self)
         XCTAssertEqual(sut.cornerSize, CGSize(width: 3, height: 3))
         XCTAssertThrows(
@@ -41,7 +41,7 @@ final class ShapeTests: XCTestCase {
     
     func testPath() throws {
         let shape = Ellipse().inset(by: 50)
-            .offset(x: 10, y: 20).rotation(.init(degrees: 30))
+            .offset(x: 10, y: 20).rotation(.degrees(30))
         let rect = CGRect(x: 0, y: 0, width: 100, height: 100)
         let sut = try shape.inspect().shape().path(in: rect)
         XCTAssertEqual(sut, shape.path(in: rect))

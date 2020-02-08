@@ -91,7 +91,7 @@ final class ViewGraphicalEffectsTests: XCTestCase {
     }
     
     func testHueRotation() throws {
-        let sut = EmptyView().hueRotation(Angle(degrees: 5))
+        let sut = EmptyView().hueRotation(.degrees(5))
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     

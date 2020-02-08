@@ -7,12 +7,12 @@ import SwiftUI
 final class ViewTransformingTests: XCTestCase {
     
     func testRotationEffect() throws {
-        let sut = EmptyView().rotationEffect(Angle(degrees: 5), anchor: .center)
+        let sut = EmptyView().rotationEffect(.degrees(5), anchor: .center)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testRotation3DEffect() throws {
-        let sut = EmptyView().rotation3DEffect(Angle(degrees: 5), axis: (5, 5, 5),
+        let sut = EmptyView().rotation3DEffect(.degrees(5), axis: (5, 5, 5),
                                                anchor: .center, anchorZ: 5, perspective: 5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
