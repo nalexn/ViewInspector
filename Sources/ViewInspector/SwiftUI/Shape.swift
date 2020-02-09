@@ -33,15 +33,6 @@ public extension InspectableView where View: MultipleViewContent {
 
 public extension InspectableView where View == ViewType.Shape {
     
-    func actualShape<S>(_ shapeType: S.Type) throws -> S where S: Shape {
-        let name = Inspector.typeName(type: S.self)
-        let shape = try lookupShape(content.view, typeName: name, lookupMode: .shape)
-        guard let typedShape = shape as? S else {
-            throw InspectionError.typeMismatch(shape, S.self)
-        }
-        return typedShape
-    }
-    
     func path(in rect: CGRect) throws -> Path {
         guard let shape = content.view as? InspectableShape else {
             throw InspectionError.notSupported(

@@ -47,7 +47,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
 |:white_check_mark:| Section | `contained view` |
 |:white_check_mark:| SecureField | `contained view`, `callOnCommit()` |
-|:white_check_mark:| Shape | `actualShape: S`, `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
+|:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
 |:white_check_mark:| Slider | `contained view`, `callOnEditingChanged()` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
 |:white_check_mark:| Stepper | `contained view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
