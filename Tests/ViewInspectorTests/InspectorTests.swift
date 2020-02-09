@@ -9,8 +9,8 @@ final class InspectorTests: XCTestCase {
     private let testValue = Struct1(value1: "abc", value2: .init(value3: 42))
     
     func testAttributeLabel() throws {
-        guard let value = try Inspector.attribute(label: "value1", value: testValue) as? String
-            else { XCTFail(); return }
+        let value = try XCTUnwrap(try Inspector
+            .attribute(label: "value1", value: testValue) as? String)
         XCTAssertEqual(value, "abc")
     }
     
@@ -27,8 +27,8 @@ final class InspectorTests: XCTestCase {
     }
     
     func testAttributePath() throws {
-        guard let value = try Inspector.attribute(path: "value2|value3", value: testValue) as? Int
-            else { XCTFail(); return }
+        let value = try XCTUnwrap(try Inspector
+            .attribute(path: "value2|value3", value: testValue) as? Int)
         XCTAssertEqual(value, 42)
     }
     
