@@ -40,8 +40,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.ScrollView {
     
     func contentInsets() throws -> EdgeInsets {
-        let value = try Inspector
-            .attribute(path: "configuration|contentInsets", value: content.view)
-        return (value as? EdgeInsets) ?? EdgeInsets()
+        return try Inspector.attribute(path: "configuration|contentInsets",
+                                       value: content.view, type: EdgeInsets.self)
     }
 }
