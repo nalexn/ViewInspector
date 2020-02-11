@@ -51,6 +51,13 @@ final class SequenceTests: XCTestCase {
         XCTAssertNil(iterator.next())
     }
     
+    func testLazyGroupIteratorForSingleElement() throws {
+        let view = HStack { Text("Test") }
+        var sut = try view.inspect().hStack().makeIterator()
+        XCTAssertNotNil(sut.next())
+        XCTAssertNil(sut.next())
+    }
+    
     func testMultipleViewContentSequence() throws {
         let view = HStack {
             Text("1").padding(); Text("2"); Text("3")
