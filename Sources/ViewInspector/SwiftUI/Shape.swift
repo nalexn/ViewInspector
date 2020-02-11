@@ -100,36 +100,20 @@ private extension InspectableView {
     
     func shapeAttribute<T>(_ view: Any, _ shapeType: String, _ label: String, _ attributeType: T.Type
     ) throws -> T {
-        let shape = try lookupShape(view, typeName: shapeType, lookupMode: .attribute(label: label))
+        let shape = try lookupShape(view, typeName: shapeType, label: label)
         return try Inspector.attribute(label: label, value: shape, type: attributeType)
     }
     
-    enum ShapeLookupMode {
-        case attribute(label: String)
-        case shape
-    }
-    
-    func lookupShape(_ view: Any, typeName: String, lookupMode: ShapeLookupMode) throws -> Any {
+    func lookupShape(_ view: Any, typeName: String, label: String) throws -> Any {
         let name = Inspector.typeName(value: view, prefixOnly: true)
         if name.hasPrefix(typeName) {
             return view
         }
         guard let containedShape = try? Inspector.attribute(label: "shape", value: view) else {
-            switch lookupMode {
-            case let .attribute(label):
-                let typeName = Inspector.typeName(value: view)
-                throw InspectionError.attributeNotFound(label: label, type: typeName)
-            case .shape:
-                let factualName = Inspector.typeName(value: view)
-                if factualName == "_Inset" {
-                    throw InspectionError.notSupported(
-                        "Modifier '.inset(by:)' is blocking Shape inspection")
-                } else {
-                    throw InspectionError.typeMismatch(factual: factualName, expected: typeName)
-                }
-            }
+            let typeName = Inspector.typeName(value: view)
+            throw InspectionError.attributeNotFound(label: label, type: typeName)
         }
-        return try lookupShape(containedShape, typeName: typeName, lookupMode: lookupMode)
+        return try lookupShape(containedShape, typeName: typeName, label: label)
     }
 }
 
