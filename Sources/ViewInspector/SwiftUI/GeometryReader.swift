@@ -54,7 +54,7 @@ extension GeometryReader: GeometryReaderContentProvider {
 
 private extension GeometryProxy {
     struct Allocator {
-        let data: (Double, Double, Double, Double, Double, Double) = (0, 0, 0, 0, 0, 0)
+        let data: (Int64, Int64, Int64, Int64, Int64, Int64) = (0, 0, 0, 0, 0, 0)
     }
     
     static func stub() -> GeometryProxy {
