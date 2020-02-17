@@ -268,7 +268,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func blendMode(BlendMode) -> View` |
-|:white_check_mark:| `func compositingGroup() -> View` |
+|:heavy_check_mark:| `func compositingGroup() -> View` |
 |:heavy_check_mark:| `func drawingGroup(opaque: Bool, colorMode: ColorRenderingMode) -> View` |
 |:heavy_check_mark:| `func labelsHidden() -> View` |
 |:heavy_check_mark:| `func defaultWheelPickerItemHeight(CGFloat) -> View` |

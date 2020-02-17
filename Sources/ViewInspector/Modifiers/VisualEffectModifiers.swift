@@ -99,12 +99,6 @@ public extension InspectableView {
             modifierName: "_BlendModeEffect", path: "modifier|blendMode",
             type: BlendMode.self, call: "blendMode")
     }
-    
-    func compositingGroup() throws {
-        _ = try modifierAttribute(
-            modifierName: "_CompositingGroupEffect", path: "modifier",
-            type: Any.self, call: "compositingGroup")
-    }
 }
 
 // MARK: - ViewMasking

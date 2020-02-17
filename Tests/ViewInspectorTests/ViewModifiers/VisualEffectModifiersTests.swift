@@ -155,11 +155,9 @@ final class ViewGraphicalEffectsTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
-    func testCompositingGroupInspection() throws {
-        XCTAssertNoThrow(try EmptyView().compositingGroup().inspect().emptyView().compositingGroup())
-        XCTAssertThrows(
-            try EmptyView().padding().inspect().emptyView().compositingGroup(),
-            "EmptyView does not have 'compositingGroup' modifier")
+    func testDrawingGroup() throws {
+        let sut = Rectangle().drawingGroup()
+        XCTAssertNoThrow(try sut.inspect().shape())
     }
 }
 
