@@ -42,7 +42,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Stepper {
     
     func increment() throws {
-        let action = try Inspector.attribute(label: "onIncrement", value: content.view)
+        let action = try Inspector.attribute(path: path(to: "onIncrement"), value: content.view)
         typealias Callback = () -> Void
         if let callback = action as? Callback {
             callback()
@@ -50,7 +50,7 @@ public extension InspectableView where View == ViewType.Stepper {
     }
     
     func decrement() throws {
-        let action = try Inspector.attribute(label: "onDecrement", value: content.view)
+        let action = try Inspector.attribute(path: path(to: "onDecrement"), value: content.view)
         typealias Callback = () -> Void
         if let callback = action as? Callback {
             callback()
@@ -58,11 +58,20 @@ public extension InspectableView where View == ViewType.Stepper {
     }
     
     func callOnEditingChanged() throws {
-        let action = try Inspector.attribute(label: "onEditingChanged", value: content.view)
+        let action = try Inspector.attribute(path: path(to: "onEditingChanged"), value: content.view)
         typealias Callback = (Bool) -> Void
         if let callback = action as? Callback {
             callback(false)
         }
+    }
+    
+    private func path(to attribute: String) -> String {
+        #if os(iOS)
+        if #available(iOS 13.4, *) {
+            return "configuration|\(attribute)"
+        }
+        #endif
+        return attribute
     }
 }
 
