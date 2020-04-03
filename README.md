@@ -22,8 +22,8 @@ func testVStackOfTexts() throws {
         Text("2")
         Text("3")
     }
-    let values = try view.inspect().map { try $0.text().string() }
-    XCTAssertEqual(values, ["1", "2", "3"])
+    let text = try view.inspect().hStack().text(2).string()
+    XCTAssertEqual(text, "3")
 }
 ```
 
