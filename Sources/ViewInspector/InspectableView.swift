@@ -89,6 +89,15 @@ public extension View {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         return try .init(try Inspector.unwrap(view: self, modifiers: []))
     }
+    
+    func inspect(file: StaticString = #file, line: UInt = #line,
+                 traverse: (InspectableView<ViewType.ClassifiedView>) throws -> Void) {
+        do {
+            try traverse(try inspect())
+        } catch let error {
+            XCTFail("\(error.localizedDescription)", file: file, line: line)
+        }
+    }
 }
 
 public extension View where Self: Inspectable {

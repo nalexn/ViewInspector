@@ -5,6 +5,7 @@
 - [Views using **@Binding**](#views-using-binding)
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
+- [ViewModifiers](#viewmodifiers)
 
 ## The Basics
 
@@ -285,3 +286,51 @@ For the case of `@Environment` or `@EnvironmentObject`, you can perform the inje
 ```swift
 ViewHosting.host(view: sut.environmentObject(...))
 ```
+
+## ViewModifiers
+
+Custom `ViewModifier` has to be tested independently from the main hierarchy. An example:
+
+```swift
+struct MyViewModifier: ViewModifier {
+    
+    func body(content: Self.Content) -> some View {
+        content
+            .padding(.top, 15)
+    }
+}
+```
+
+We can take a slightly modified approach #1 described above:
+
+```swift
+struct MyViewModifier: ViewModifier {
+    
+    var didAppear: ((Self.Body) -> Void)? // 1.
+    
+    func body(content: Self.Content) -> some View {
+        content
+            .padding(.top, 15)
+            .onAppear { self.didAppear?(self.body(content: content)) } // 2.
+    }
+}
+```
+
+There is no need for the `ViewModifier` to conform to `Inspectable` in the tests. Here is how you'd verify that `MyViewModifier` applies the padding:
+
+```swift
+func testViewModifier() {
+    var sut = MyViewModifier()
+    let exp = XCTestExpectation(description: #function)
+    sut.didAppear = { body in
+        body.inspect { view in
+            XCTAssertEqual(try view.padding().top, 15)
+        }
+        exp.fulfill()
+    }
+    let view = EmptyView().modifier(sut)
+    ViewHosting.host(view: view)
+    wait(for: [exp], timeout: 0.1)
+}
+```
+Please note that you cannot get access to the hierarchy behind the `content` of `ViewModifier`, that is `try view.emptyView()` in this test would not work: the outer hierarchy has to be inspected from the parent's view.

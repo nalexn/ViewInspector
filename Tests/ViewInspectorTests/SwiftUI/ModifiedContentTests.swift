@@ -32,11 +32,36 @@ final class ModifiedContentTests: XCTestCase {
         XCTAssertEqual(try view.inspect().hStack().text(0).content.modifiers.count, 1)
         XCTAssertEqual(try view.inspect().hStack().text(1).content.modifiers.count, 1)
     }
+    
+    func testModifiedContent() throws {
+        var sut = InspectableTestModifier()
+        let exp = XCTestExpectation(description: #function)
+        sut.didAppear = { body in
+            body.inspect { view in
+                XCTAssertEqual(try view.padding().top, 15)
+            }
+            exp.fulfill()
+        }
+        let view = EmptyView().modifier(sut)
+        ViewHosting.host(view: view)
+        wait(for: [exp], timeout: 0.1)
+    }
 }
 
 private struct TestModifier: ViewModifier {
     func body(content: Self.Content) -> some View {
-        EmptyView().onAppear()
+        content.onAppear()
+    }
+}
+
+private struct InspectableTestModifier: ViewModifier {
+    
+    var didAppear: ((Self.Body) -> Void)?
+    
+    func body(content: Self.Content) -> some View {
+        content
+            .padding(.top, 15)
+            .onAppear { self.didAppear?(self.body(content: content)) }
     }
 }
 
