@@ -6,22 +6,21 @@ final class ModifiedContentTests: XCTestCase {
     
     func testEnclosedView() throws {
         let sampleView = Text("Test")
-        let view = ModifiedContent(content: sampleView, modifier: TestModifier())
+        let view = sampleView.modifier(TestModifier())
         let sut = try view.inspect().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     
     func testAccumulatesModifiers() throws {
-        let view = ModifiedContent(content: Text("Test").padding(),
-                                   modifier: TestModifier())
+        let view = Text("Test")
+            .padding().modifier(TestModifier())
             .padding().padding()
         let sut = try view.inspect().text()
         XCTAssertEqual(sut.content.modifiers.count, 4)
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        let view = AnyView(ModifiedContent(content: Text("Test"),
-                                           modifier: TestModifier()))
+        let view = AnyView(Text("Test").modifier(TestModifier()))
         XCTAssertEqual(try view.inspect().anyView().text().content.modifiers.count, 1)
     }
     
@@ -37,7 +36,7 @@ final class ModifiedContentTests: XCTestCase {
 
 private struct TestModifier: ViewModifier {
     func body(content: Self.Content) -> some View {
-        content
+        EmptyView().onAppear()
     }
 }
 
