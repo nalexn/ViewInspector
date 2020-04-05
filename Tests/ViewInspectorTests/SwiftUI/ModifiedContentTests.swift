@@ -40,6 +40,7 @@ final class ModifiedContentTests: XCTestCase {
             body.inspect { view in
                 XCTAssertEqual(try view.padding().top, 15)
             }
+            ViewHosting.expel()
             exp.fulfill()
         }
         let view = EmptyView().modifier(sut)
