@@ -335,3 +335,5 @@ func testViewModifier() {
 }
 ```
 Please note that you cannot get access to the hierarchy behind the `content` of `ViewModifier`, that is `try view.emptyView()` in this test would not work: the outer hierarchy has to be inspected from the parent's view.
+
+An example of an asynchronous `ViewModifier` inspection can be found in the sample project: [ViewModifier](https://github.com/nalexn/clean-architecture-swiftui/blob/master/CountriesSwiftUI/UI/RootViewModifier.swift) | [Tests](https://github.com/nalexn/clean-architecture-swiftui/blob/master/UnitTests/UI/RootViewAppearanceTests.swift)
