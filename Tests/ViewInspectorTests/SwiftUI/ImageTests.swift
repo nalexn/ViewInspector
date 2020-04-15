@@ -36,15 +36,15 @@ final class ImageTests: XCTestCase {
     
     func testExtractionCGImage() throws {
         let cgImage = testImage.cgImage!
-        let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage"))
+        let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage").bold())
         let image = try view.inspect().image().cgImage()
         let scale = try view.inspect().image().scale()
         let orientation = try view.inspect().image().orientation()
-        let label = try view.inspect().image().label()
+        let label = try view.inspect().image().label().string()
         XCTAssertEqual(image, cgImage)
         XCTAssertEqual(scale, 2.0)
         XCTAssertEqual(orientation, .down)
-        XCTAssertEqual(label, Text("CGImage"))
+        XCTAssertEqual(label, "CGImage")
         #if os(iOS) || os(watchOS) || os(tvOS)
         let uiImage = try view.inspect().image().uiImage()
         XCTAssertNil(uiImage)
