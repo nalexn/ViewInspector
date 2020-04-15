@@ -66,8 +66,8 @@ public extension InspectableView where View == ViewType.Stepper {
     }
     
     private func path(to attribute: String) -> String {
-        #if os(iOS)
-        if #available(iOS 13.4, *) {
+        #if os(iOS) || os(macOS)
+        if #available(iOS 13.4, macOS 10.15.4, *) {
             return "configuration|\(attribute)"
         }
         #endif
