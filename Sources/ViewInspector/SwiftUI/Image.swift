@@ -43,6 +43,15 @@ public extension InspectableView where View == ViewType.Image {
     }
     #endif
     
+    func cgImage() throws -> CGImage? {
+        let image = try Inspector.attribute(path: "provider|base|image", value: unwrap(view: content.view)) as CFTypeRef
+        if CFGetTypeID(image) == CGImage.typeID {
+            return (image as! CGImage)
+        } else {
+            return nil
+        }
+    }
+    
     private func image() throws -> Any {
         return try Inspector.attribute(path: "provider|base", value: unwrap(view: content.view))
     }
