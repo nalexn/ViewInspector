@@ -45,11 +45,10 @@ public extension InspectableView where View == ViewType.Image {
     
     func cgImage() throws -> CGImage? {
         let image = try Inspector.attribute(path: "provider|base|image", value: unwrap(view: content.view)) as CFTypeRef
-        if CFGetTypeID(image) == CGImage.typeID {
-            return unsafeDowncast(image, to: CGImage.self)
-        } else {
+        guard CFGetTypeID(image) == CGImage.typeID else {
             return nil
         }
+        return unsafeDowncast(image, to: CGImage.self)
     }
     
     func orientation() throws -> Image.Orientation {
@@ -64,8 +63,7 @@ public extension InspectableView where View == ViewType.Image {
     }
     
     func label() throws -> Text? {
-        let text = try Inspector.attribute(path: "provider|base|label", value: unwrap(view: content.view)) as? Text
-        return text
+        return try Inspector.attribute(path: "provider|base|label", value: unwrap(view: content.view)) as? Text
     }
     
     private func image() throws -> Any {

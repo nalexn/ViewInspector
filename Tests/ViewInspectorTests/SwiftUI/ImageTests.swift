@@ -54,6 +54,12 @@ final class ImageTests: XCTestCase {
         #endif
     }
     
+    func testExtractionNilCGImage() throws {
+        let cgImage = unsafeBitCast(testColor.cgColor, to: CGImage.self)
+        let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage"))
+        XCTAssertNil(try view.inspect().image().cgImage())
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(imageView())
         XCTAssertNoThrow(try view.inspect().anyView().image())
