@@ -53,7 +53,8 @@ public extension InspectableView where View == ViewType.Image {
     }
     
     func orientation() throws -> Image.Orientation {
-        let orientation = try Inspector.attribute(path: "provider|base|orientation", value: unwrap(view: content.view)) as? Image.Orientation
+        let orientation = try Inspector.attribute(path: "provider|base|orientation", value: unwrap(view: content.view))
+            as? Image.Orientation
         return orientation ?? .up
     }
     
