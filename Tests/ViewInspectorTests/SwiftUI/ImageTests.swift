@@ -34,6 +34,32 @@ final class ImageTests: XCTestCase {
         XCTAssertEqual(image, testImage)
     }
     
+    func testExtractionCGImage() throws {
+        let cgImage = testImage.cgImage!
+        let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage"))
+        let image = try view.inspect().image().cgImage()
+        let scale = try view.inspect().image().scale()
+        let orientation = try view.inspect().image().orientation()
+        let label = try view.inspect().image().label()
+        XCTAssertEqual(image, cgImage)
+        XCTAssertEqual(scale, 2.0)
+        XCTAssertEqual(orientation, .down)
+        XCTAssertEqual(label, Text("CGImage"))
+        #if os(iOS) || os(watchOS) || os(tvOS)
+        let uiImage = try view.inspect().image().uiImage()
+        XCTAssertNil(uiImage)
+        #else
+        let nsImage = try view.inspect().image().nsImage()
+        XCTAssertNil(nsImage)
+        #endif
+    }
+    
+    func testExtractionNilCGImage() throws {
+        let cgImage = unsafeBitCast(testColor.cgColor, to: CGImage.self)
+        let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage"))
+        XCTAssertNil(try view.inspect().image().cgImage())
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(imageView())
         XCTAssertNoThrow(try view.inspect().anyView().image())
@@ -73,6 +99,11 @@ private extension NSColor {
         drawSwatch(in: NSRect(origin: .zero, size: size))
         image.unlockFocus()
         return image
+    }
+}
+private extension NSImage {
+    var cgImage: CGImage? {
+        cgImage(forProposedRect: nil, context: nil, hints: nil)
     }
 }
 #endif
