@@ -22,7 +22,7 @@ func testVStackOfTexts() throws {
         Text("2")
         Text("3")
     }
-    let text = try view.inspect().hStack().text(2).string()
+    let text = try view.inspect().vStack().text(2).string()
     XCTAssertEqual(text, "3")
 }
 ```
