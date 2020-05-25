@@ -4,6 +4,7 @@ import SwiftUI
 
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class CustomViewTests: XCTestCase {
     
     func testLocalStateChanges() throws {
@@ -130,12 +131,14 @@ final class CustomViewTests: XCTestCase {
 
 // MARK: - Test Views
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct SimpleTestView: View, Inspectable {
     var body: some View {
         EmptyView()
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct LocalStateTestView: View, Inspectable {
     
     @State private(set) var flag: Bool
@@ -149,6 +152,7 @@ private struct LocalStateTestView: View, Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct ObservedStateTestView: View, Inspectable {
     
     @ObservedObject var viewModel: ExternalState
@@ -158,6 +162,7 @@ private struct ObservedStateTestView: View, Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct EnvironmentStateTestView: View, Inspectable {
     
     @EnvironmentObject var viewModel: ExternalState
@@ -182,6 +187,7 @@ private struct NSTestView: NSViewRepresentable, Inspectable {
     }
 }
 #else
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct UITestView: UIViewRepresentable, Inspectable {
     
     func makeUIView(context: UIViewRepresentableContext<Self>) -> UIView {
@@ -197,14 +203,17 @@ private struct UITestView: UIViewRepresentable, Inspectable {
 
 // MARK: - Misc
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private class ExternalState: ObservableObject {
     @Published var value = "obj1"
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct EnvironmentParameter {
     let state = CurrentValueSubject<String, Never>("obj2")
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension EnvironmentParameter {
     struct EnvKey: EnvironmentKey {
         let state: EnvironmentParameter
@@ -212,6 +221,7 @@ extension EnvironmentParameter {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension EnvironmentValues {
     fileprivate var state3: EnvironmentParameter.EnvKey {
         get { self[EnvironmentParameter.EnvKey.self] }

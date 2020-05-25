@@ -5,6 +5,7 @@ import Combine
 
 // MARK: - ViewEventsTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewEventsTests: XCTestCase {
     
     func testOnAppear() throws {
@@ -39,6 +40,7 @@ final class ViewEventsTests: XCTestCase {
 
 // MARK: - ViewPublisherEventsTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewPublisherEventsTests: XCTestCase {
     
     func testOnReceive() throws {

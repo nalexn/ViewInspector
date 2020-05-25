@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - ViewGestures
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     func callOnTapGesture() throws {
         typealias Callback = ((()) -> Void)
@@ -23,6 +24,7 @@ public extension InspectableView {
 
 // MARK: - ViewHitTesting
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct ContentShape<S>: Equatable where S: Shape {
     public let shape: S
     public let eoFill: Bool
@@ -34,6 +36,7 @@ public struct ContentShape<S>: Equatable where S: Shape {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func allowsHitTesting() throws -> Bool {

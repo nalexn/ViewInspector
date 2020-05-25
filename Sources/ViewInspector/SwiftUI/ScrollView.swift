@@ -19,6 +19,7 @@ extension ViewType.ScrollView: SingleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func scrollView() throws -> InspectableView<ViewType.ScrollView> {
@@ -28,6 +29,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func scrollView(_ index: Int) throws -> InspectableView<ViewType.ScrollView> {
@@ -37,6 +39,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.ScrollView {
     
     func contentInsets() throws -> EdgeInsets {

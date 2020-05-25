@@ -23,6 +23,7 @@ extension ViewType.View: SingleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>>
@@ -36,6 +37,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>>
@@ -49,6 +51,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: CustomViewType {
     
     func actualView() throws -> View.T {
@@ -72,12 +75,14 @@ public extension NSViewControllerRepresentable where Self: Inspectable {
     }
 }
 #else
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension UIViewRepresentable where Self: Inspectable {
     func uiView() throws -> UIViewType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension UIViewControllerRepresentable where Self: Inspectable {
     func viewController() throws -> UIViewControllerType {
         return try ViewHosting.lookup(Self.self)

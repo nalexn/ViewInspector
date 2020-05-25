@@ -4,6 +4,7 @@ import SwiftUI
 
 #if !os(tvOS)
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TreeViewTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -24,6 +25,7 @@ final class TreeViewTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForTreeView: XCTestCase {
     
     func testContextMenu() throws {

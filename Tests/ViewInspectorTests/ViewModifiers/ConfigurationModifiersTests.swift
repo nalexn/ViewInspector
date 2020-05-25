@@ -4,6 +4,7 @@ import SwiftUI
 
 // MARK: - ViewControlAttributesTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewControlAttributesTests: XCTestCase {
     
     func testLabelsHidden() throws {
@@ -33,6 +34,7 @@ final class ViewControlAttributesTests: XCTestCase {
 
 // MARK: - StatusBarConfigurationTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class StatusBarConfigurationTests: XCTestCase {
     
     #if os(iOS)

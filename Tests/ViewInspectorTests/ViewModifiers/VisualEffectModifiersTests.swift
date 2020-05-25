@@ -4,6 +4,7 @@ import SwiftUI
 
 // MARK: - ViewGraphicalEffectsTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewGraphicalEffectsTests: XCTestCase {
     
     func testBlur() throws {
@@ -161,10 +162,12 @@ final class ViewGraphicalEffectsTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension LinearGradient: BinaryEquatable { }
 
 // MARK: - ViewMaskingTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewMaskingTests: XCTestCase {
     
     func testClipped() throws {
@@ -218,6 +221,7 @@ final class ViewMaskingTests: XCTestCase {
 
 // MARK: - ViewHidingTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewHidingTests: XCTestCase {
     
     func testHidden() throws {

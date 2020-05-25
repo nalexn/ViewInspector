@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ConditionalContentTests: XCTestCase {
     
     func testConditionalView() throws {
@@ -20,6 +21,7 @@ final class ConditionalContentTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct ConditionalView: View, Inspectable {
     
     @ObservedObject var viewModel = ViewModel()

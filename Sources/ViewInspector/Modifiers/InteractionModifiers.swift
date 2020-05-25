@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - InteractionEvents
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     #if os(macOS)
@@ -108,6 +109,7 @@ internal extension InspectableView {
 
 // MARK: - ViewHover
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     /* Not supported

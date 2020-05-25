@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ToggleTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -37,6 +38,7 @@ final class ToggleTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForToggle: XCTestCase {
     
     func testToggleStyle() throws {

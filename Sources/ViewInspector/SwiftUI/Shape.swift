@@ -9,6 +9,7 @@ public extension ViewType {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func shape() throws -> InspectableView<ViewType.Shape> {
@@ -20,6 +21,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func shape(_ index: Int) throws -> InspectableView<ViewType.Shape> {
@@ -31,6 +33,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Shape {
     
     func path(in rect: CGRect) throws -> Path {
@@ -90,6 +93,7 @@ public extension InspectableView where View == ViewType.Shape {
 
 // MARK: - Private
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension InspectableView {
     
     func guardShapeIsInspectable(_ view: Any) throws {
@@ -119,23 +123,51 @@ private extension InspectableView {
 
 // MARK: - InspectableShape
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol InspectableShape {
     func path(in rect: CGRect) -> Path
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Rectangle: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Circle: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Ellipse: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Capsule: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Path: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension RoundedRectangle: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension TransformedShape: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension OffsetShape: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension RotatedShape: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ScaledShape: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension _SizedShape: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension _StrokedShape: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension _TrimmedShape: InspectableShape { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension _ShapeView: InspectableShape {
     public func path(in rect: CGRect) -> Path {
         return shape.path(in: rect)

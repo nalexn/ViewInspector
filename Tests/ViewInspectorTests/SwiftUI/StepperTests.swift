@@ -4,6 +4,7 @@ import SwiftUI
 
 #if os(iOS) || os(macOS)
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class StepperTests: XCTestCase {
     
     func testEnclosedView() throws {

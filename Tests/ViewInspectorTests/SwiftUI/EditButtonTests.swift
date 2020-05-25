@@ -4,6 +4,7 @@ import SwiftUI
 
 #if os(iOS)
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class EditButtonTests: XCTestCase {
     
     func testInspect() throws {

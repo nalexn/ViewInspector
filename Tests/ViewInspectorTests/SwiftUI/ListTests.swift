@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ListTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
@@ -64,6 +65,7 @@ final class ListTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForList: XCTestCase {
     
     func testListRowInsets() throws {

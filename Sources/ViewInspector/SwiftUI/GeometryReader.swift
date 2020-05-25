@@ -21,6 +21,7 @@ extension ViewType.GeometryReader: SingleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func geometryReader() throws -> InspectableView<ViewType.GeometryReader> {
@@ -30,6 +31,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func geometryReader(_ index: Int) throws -> InspectableView<ViewType.GeometryReader> {
@@ -43,6 +45,7 @@ private protocol GeometryReaderContentProvider {
     func view() throws -> Any
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension GeometryReader: GeometryReaderContentProvider {
     func view() throws -> Any {
         typealias Builder = (GeometryProxy) -> Content
@@ -52,6 +55,7 @@ extension GeometryReader: GeometryReaderContentProvider {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension GeometryProxy {
     struct Allocator {
         let data: (Int64, Int64, Int64, Int64, Int64, Int64) = (0, 0, 0, 0, 0, 0)

@@ -6,6 +6,7 @@ public protocol Inspectable {
     var content: Any { get }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: View {
     var content: Any { body }
 }
@@ -26,8 +27,10 @@ public protocol CustomViewType {
     associatedtype T
 }
 
+@available(iOS 11.0, macOS 10.15, tvOS 13.0, *)
 public struct ViewType { }
 
+@available(iOS 11.0, macOS 10.15, tvOS 13.0, *)
 public struct Content {
     let view: Any
     let modifiers: [Any]
@@ -38,6 +41,7 @@ public struct Content {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Binding {
     init(wrappedValue: Value) {
         var value = wrappedValue

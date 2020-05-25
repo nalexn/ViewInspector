@@ -4,6 +4,7 @@ import SwiftUI
 
 // MARK: - ViewEnvironmentTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewEnvironmentTests: XCTestCase {
     
     func testEnvironment() throws {
@@ -23,12 +24,14 @@ final class ViewEnvironmentTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private class TestEnvObject: ObservableObject { }
 
 private struct TestEnvKey: EnvironmentKey {
     static var defaultValue: Self { .init() }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension EnvironmentValues {
     var testKey: TestEnvKey {
         get { self[TestEnvKey.self] }
@@ -38,6 +41,7 @@ private extension EnvironmentValues {
 
 // MARK: - ViewPreferenceTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewPreferenceTests: XCTestCase {
     
     func testPreference() throws {
