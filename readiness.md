@@ -33,7 +33,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| GroupBox | `contained view` |
 |:white_check_mark:| HSplitView | `contained view` |
 |:white_check_mark:| HStack | `contained view` |
-|:white_check_mark:| Image | `imageName: String?`, `(ui|ns|cg)Image: (UI|NS|CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |
+|:white_check_mark:| Image | `imageName: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:white_check_mark:| List | `contained view` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
