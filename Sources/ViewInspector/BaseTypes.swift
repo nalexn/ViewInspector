@@ -56,9 +56,9 @@ public enum InspectionError: Swift.Error {
     case notSupported(String)
 }
 
-extension InspectionError: LocalizedError {
+extension InspectionError: CustomStringConvertible, LocalizedError {
     
-    public var errorDescription: String? {
+    public var description: String {
         switch self {
         case let .typeMismatch(factual, expected):
             return "Type mismatch: \(factual) is not \(expected)"
@@ -71,8 +71,12 @@ extension InspectionError: LocalizedError {
         case let .modifierNotFound(parent, modifier):
             return "\(parent) does not have '\(modifier)' modifier"
         case let .notSupported(message):
-            return "ViewInspector: " + message
+            return message
         }
+    }
+    
+    public var errorDescription: String? {
+        return description
     }
 }
 
