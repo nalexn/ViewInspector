@@ -57,7 +57,7 @@ final class ShapeTests: XCTestCase {
         let sut2 = try shape2.inspect().shape()
         let rect = CGRect(x: 0, y: 0, width: 5, height: 5)
         XCTAssertThrows(try sut1.path(in: rect),
-            "ViewInspector: Please put a void '.offset()' modifier before or after '.inset(by:)'")
+            "Please put a void '.offset()' modifier before or after '.inset(by:)'")
         XCTAssertNoThrow(try sut2.path(in: rect))
     }
     

@@ -19,7 +19,7 @@ final class BaseTypesTests: XCTestCase {
         XCTAssertEqual(desc3, "Enclosed view index '5' is out of bounds: '0 ..< 3'")
         XCTAssertEqual(desc4, "View for Optional<Text> is absent")
         XCTAssertEqual(desc5, "Text does not have 'onAppear' modifier")
-        XCTAssertEqual(desc6, "ViewInspector: Not supported")
+        XCTAssertEqual(desc6, "Not supported")
     }
     
     func testBindingExtension() {

@@ -13,7 +13,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
         }
         XCTAssertThrows(
             try view.inspect().navigationView().list(0),
-            "ViewInspector: Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
+            "Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
     }
     
     func testUnknownHierarchyTypeUnwrap() throws {
@@ -21,11 +21,9 @@ final class EnvironmentReaderViewTests: XCTestCase {
             List { Text("") }
                 .navigationBarItems(trailing: Text(""))
         }
-        //swiftlint:disable line_length
         XCTAssertThrows(
             try view.inspect().navigationView().navigationBarItems().list(),
-            "ViewInspector: Please substitute 'List<Never, Text>.self' as the parameter for 'navigationBarItems()' inspection call")
-        //swiftlint:enable line_length
+            "Please substitute 'List<Never, Text>.self' as the parameter for 'navigationBarItems()' inspection call")
     }
     
     func testKnownHierarchyTypeUnwrap() throws {
