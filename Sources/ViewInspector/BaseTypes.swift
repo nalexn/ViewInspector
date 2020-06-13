@@ -23,7 +23,7 @@ public protocol KnownViewType {
 }
 
 public protocol CustomViewType {
-    associatedtype T
+    associatedtype T: Inspectable
 }
 
 public struct ViewType { }

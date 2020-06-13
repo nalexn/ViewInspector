@@ -57,6 +57,10 @@ public extension InspectableView where View: CustomViewType {
         }
         return casted
     }
+
+    func viewBuilder() throws -> InspectableView<ViewType.ViewBuilder<View.T>> {
+        return try .init(content)
+    }
 }
 
 #if os(macOS)
