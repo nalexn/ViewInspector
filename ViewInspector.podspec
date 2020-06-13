@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name = "ViewInspector"
-  s.version = "0.3.12"
+  s.version = "0.3.13"
   s.summary = "ViewInspector is a library for unit testing SwiftUI views.
                It allows for traversing a view hierarchy at runtime providing direct access to the underlying View structs."
   s.homepage = "https://github.com/nalexn/ViewInspector"
