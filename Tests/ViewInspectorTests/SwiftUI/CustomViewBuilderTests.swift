@@ -48,9 +48,12 @@ final class CustomViewBuilderTests: XCTestCase {
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        let view = AnyView(TestViewBuilderView { Text("Test") })
+        let view = AnyView(TestViewBuilderView {
+            Spacer()
+            Text("Test")
+        })
         XCTAssertNoThrow(try view.inspect().anyView()
-            .view(TestViewBuilderView<Text>.self).viewBuilder().text(0))
+            .view(TestViewBuilderView<EmptyView>.self).viewBuilder().text(1))
     }
     
     func testExtractionFromMultipleViewContainer() throws {

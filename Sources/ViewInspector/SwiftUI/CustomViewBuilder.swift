@@ -4,7 +4,7 @@ public extension ViewType {
     
     struct ViewBuilder<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String {
-            return Inspector.typeName(type: T.self)
+            return Inspector.typeName(type: T.self, prefixOnly: true)
         }
     }
 }

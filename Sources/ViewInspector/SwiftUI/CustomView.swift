@@ -4,7 +4,7 @@ public extension ViewType {
     
     struct View<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String {
-            return Inspector.typeName(type: T.self)
+            return Inspector.typeName(type: T.self, prefixOnly: true)
         }
     }
 }
@@ -28,7 +28,7 @@ public extension InspectableView where View: SingleViewContent {
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
             let child = try View.child(content)
-            let prefix = Inspector.typeName(type: type)
+            let prefix = Inspector.typeName(type: type, prefixOnly: true)
             try Inspector.guardType(value: child.view, prefix: prefix)
             return try .init(child)
     }
@@ -41,7 +41,7 @@ public extension InspectableView where View: MultipleViewContent {
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>>
         where T: Inspectable {
             let content = try child(at: index)
-            let prefix = Inspector.typeName(type: type)
+            let prefix = Inspector.typeName(type: type, prefixOnly: true)
             try Inspector.guardType(value: content.view, prefix: prefix)
             return try .init(content)
     }
