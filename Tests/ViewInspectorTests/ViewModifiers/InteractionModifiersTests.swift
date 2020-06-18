@@ -5,6 +5,7 @@ import Combine
 
 // MARK: - InteractionTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class InteractionTests: XCTestCase {
     
     #if os(macOS)
@@ -157,6 +158,7 @@ final class InteractionTests: XCTestCase {
 
 // MARK: - ViewHoverTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewHoverTests: XCTestCase {
     
     #if os(macOS)
@@ -199,6 +201,7 @@ final class ViewHoverTests: XCTestCase {
 
 // MARK: - ViewDragDropTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewDragDropTests: XCTestCase {
     
     #if os(macOS)

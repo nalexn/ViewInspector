@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - ViewGraphicalEffects
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func blur() throws -> (radius: CGFloat, isOpaque: Bool) {
@@ -103,6 +104,7 @@ public extension InspectableView {
 
 // MARK: - ViewMasking
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func clipShape<S>(_ shape: S.Type) throws -> S where S: Shape {
@@ -140,6 +142,7 @@ public extension InspectableView {
 
 // MARK: - ViewHiding
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func isHidden() -> Bool {

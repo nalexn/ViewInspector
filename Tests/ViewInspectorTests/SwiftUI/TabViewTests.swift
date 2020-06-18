@@ -4,6 +4,7 @@ import SwiftUI
 
 #if !os(watchOS)
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TabViewTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -48,6 +49,7 @@ final class TabViewTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForTabView: XCTestCase {
     
     func testTag() throws {

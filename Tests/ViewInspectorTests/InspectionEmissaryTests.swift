@@ -4,6 +4,7 @@ import SwiftUI
 
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class InspectionEmissaryTests: XCTestCase {
     
     func testOnFunction() throws {
@@ -53,6 +54,7 @@ final class InspectionEmissaryTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 class Inspection<V>: InspectionEmissary where V: View & Inspectable {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
@@ -64,6 +66,7 @@ class Inspection<V>: InspectionEmissary where V: View & Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestView: View, Inspectable {
     
     @State private(set) var flag: Bool

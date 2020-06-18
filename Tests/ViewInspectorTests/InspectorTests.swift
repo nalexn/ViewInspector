@@ -3,6 +3,7 @@ import SwiftUI
 import Combine
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class InspectorTests: XCTestCase {
     
     private let testString = "abc"
@@ -94,6 +95,7 @@ final class InspectorTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class InspectableViewModifiersTests: XCTestCase {
     
     func testModifierIsNotPresent() throws {

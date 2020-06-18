@@ -21,6 +21,7 @@ extension ViewType.DatePicker: SingleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func datePicker() throws -> InspectableView<ViewType.DatePicker> {
@@ -30,6 +31,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func datePicker(_ index: Int) throws -> InspectableView<ViewType.DatePicker> {

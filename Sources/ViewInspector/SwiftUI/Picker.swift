@@ -34,6 +34,7 @@ extension ViewType.Picker.Label: SingleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func picker() throws -> InspectableView<ViewType.Picker> {
@@ -43,6 +44,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func picker(_ index: Int) throws -> InspectableView<ViewType.Picker> {
@@ -52,6 +54,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Picker {
     
     func label() throws -> InspectableView<ViewType.Picker.Label> {

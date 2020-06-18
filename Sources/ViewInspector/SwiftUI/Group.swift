@@ -19,6 +19,7 @@ extension ViewType.Group: MultipleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func group() throws -> InspectableView<ViewType.Group> {
@@ -28,6 +29,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func group(_ index: Int) throws -> InspectableView<ViewType.Group> {

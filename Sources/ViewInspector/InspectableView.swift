@@ -1,6 +1,7 @@
 import SwiftUI
 import XCTest
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct InspectableView<View> where View: KnownViewType {
     
     internal let content: Content
@@ -11,12 +12,14 @@ public struct InspectableView<View> where View: KnownViewType {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView where View: SingleViewContent {
     func child() throws -> Content {
         return try View.child(content)
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView where View: MultipleViewContent {
     
     func child(at index: Int) throws -> Content {
@@ -28,6 +31,7 @@ internal extension InspectableView where View: MultipleViewContent {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectableView: Sequence where View: MultipleViewContent {
     
     public typealias Element = InspectableView<ViewType.ClassifiedView>
@@ -57,6 +61,7 @@ extension InspectableView: Sequence where View: MultipleViewContent {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectableView: Collection, BidirectionalCollection, RandomAccessCollection
     where View: MultipleViewContent {
     
@@ -85,6 +90,7 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
 
 // MARK: - Inspection of a Custom View
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         return try .init(try Inspector.unwrap(view: self, modifiers: []))
@@ -100,6 +106,7 @@ public extension View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View where Self: Inspectable {
     
     func inspect() throws -> InspectableView<ViewType.View<Self>> {
@@ -118,6 +125,7 @@ public extension View where Self: Inspectable {
 
 // MARK: - Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
     
     func modifierAttribute<Type>(modifierName: String, path: String,
@@ -143,10 +151,12 @@ internal extension InspectableView {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol ModifierNameProvider {
     var modifierType: String { get }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ModifiedContent: ModifierNameProvider {
     var modifierType: String {
         return Inspector.typeName(type: Modifier.self)

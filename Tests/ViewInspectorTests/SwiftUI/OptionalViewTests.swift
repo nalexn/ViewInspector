@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class OptionalViewTests: XCTestCase {
     
     func testOptionalViewWhenExists() throws {
@@ -43,6 +44,7 @@ final class OptionalViewTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct OptionalView: View, Inspectable {
     
     let flag: Bool
@@ -53,6 +55,7 @@ private struct OptionalView: View, Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct MixedOptionalView: View, Inspectable {
     
     let flag: Bool

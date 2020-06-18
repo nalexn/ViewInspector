@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TextFieldTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -57,6 +58,7 @@ final class TextFieldTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForTextField: XCTestCase {
     
     func testTextFieldStyle() throws {

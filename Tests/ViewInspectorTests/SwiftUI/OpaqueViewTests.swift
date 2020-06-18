@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class OpaqueViewTests: XCTestCase {
     
     func testOpaqueStandardView() throws {
@@ -33,12 +34,14 @@ final class OpaqueViewTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct InspectableTestView: View, Inspectable {
     var body: some View {
         Text("Test")
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct EnvInspectableTestView: View, Inspectable {
     
     var body: some View {

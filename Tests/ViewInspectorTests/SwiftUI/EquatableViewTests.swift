@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class EquatableViewTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -34,6 +35,7 @@ final class EquatableViewTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForEquatableView: XCTestCase {
     
     func testEquatable() throws {
@@ -42,6 +44,7 @@ final class GlobalModifiersForEquatableView: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestView: View, Equatable, Inspectable {
     
     var body: some View { EmptyView() }

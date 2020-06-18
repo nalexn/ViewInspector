@@ -4,6 +4,7 @@ import SwiftUI
 
 // MARK: - ViewPositioningTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewPositioningTests: XCTestCase {
     
     func testPosition() throws {
@@ -79,6 +80,7 @@ final class ViewPositioningTests: XCTestCase {
 
 // MARK: - ViewAligningTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewAligningTests: XCTestCase {
     
     func testHorizontalAlignmentGuide() throws {
@@ -94,6 +96,7 @@ final class ViewAligningTests: XCTestCase {
 
 // MARK: - ViewLayeringTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewLayeringTests: XCTestCase {
     
     func testOverlay() throws {

@@ -34,6 +34,7 @@ extension ViewType.NavigationLink.Label: SingleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func navigationLink() throws -> InspectableView<ViewType.NavigationLink> {
@@ -43,6 +44,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func navigationLink(_ index: Int) throws -> InspectableView<ViewType.NavigationLink> {
@@ -52,6 +54,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.NavigationLink {
     
     func label() throws -> InspectableView<ViewType.NavigationLink.Label> {
@@ -84,6 +87,7 @@ public extension InspectableView where View == ViewType.NavigationLink {
 
 // MARK: - Private
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension InspectableView where View == ViewType.NavigationLink {
     func internalIsActive() throws -> State<Bool> {
         return try Inspector

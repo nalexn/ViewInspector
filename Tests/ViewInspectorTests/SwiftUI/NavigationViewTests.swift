@@ -4,6 +4,7 @@ import SwiftUI
 
 #if !os(watchOS)
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class NavigationViewTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
@@ -51,6 +52,7 @@ final class NavigationViewTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForNavigationView: XCTestCase {
     
     func testNavigationViewStyle() throws {
