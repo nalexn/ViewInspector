@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - ViewSizing
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     func fixedFrame() throws -> (width: CGFloat, height: CGFloat, alignment: Alignment) {
         let width = try modifierAttribute(
@@ -52,6 +53,7 @@ public extension InspectableView {
 
 // MARK: - ViewPadding
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func padding() throws -> EdgeInsets {

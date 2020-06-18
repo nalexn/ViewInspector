@@ -9,6 +9,7 @@ public extension ViewType {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func linearGradient() throws -> InspectableView<ViewType.LinearGradient> {
@@ -18,6 +19,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func linearGradient(_ index: Int) throws -> InspectableView<ViewType.LinearGradient> {
@@ -27,6 +29,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.LinearGradient {
     
     func gradient() throws -> Gradient {

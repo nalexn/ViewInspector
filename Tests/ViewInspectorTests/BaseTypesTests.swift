@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class BaseTypesTests: XCTestCase {
     
     func testInspectionErrorDescription() throws {
@@ -30,6 +31,7 @@ final class BaseTypesTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class SequenceTests: XCTestCase {
     
     func testLazyGroupEmpty() {
@@ -74,6 +76,7 @@ final class SequenceTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class RandomAccessCollectionTests: XCTestCase {
     
     func testMultipleViewContentSequence() throws {

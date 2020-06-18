@@ -7,6 +7,7 @@ import UIKit
 @testable import ViewInspector
 
 #if os(macOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewHostingTests: XCTestCase {
 
     func testNSViewUpdate() throws {
@@ -78,6 +79,7 @@ final class ViewHostingTests: XCTestCase {
     }
 }
 #else
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewHostingTests: XCTestCase {
     
     func testUIViewUpdate() throws {
@@ -191,6 +193,7 @@ extension NSTestView {
     }
 }
 #else
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct UITestView: UIViewRepresentable, Inspectable {
     
     typealias UpdateContext = UIViewRepresentableContext<Self>
@@ -211,6 +214,7 @@ private struct UITestView: UIViewRepresentable, Inspectable {
     static let onTag: Int = 43
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension UITestView {
     struct WrapperView: View, Inspectable {
         
@@ -255,6 +259,7 @@ private struct NSTestVC: NSViewControllerRepresentable, Inspectable {
     }
 }
 #else
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct UITestVC: UIViewControllerRepresentable, Inspectable {
     
     class TestVC: UIViewController { }

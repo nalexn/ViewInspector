@@ -5,6 +5,7 @@ import UIKit
 
 public struct ViewHosting { }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewHosting {
     
     static func host<V>(view: V, size: CGSize? = nil, viewId: String = #function) where V: View {
@@ -38,6 +39,7 @@ public extension ViewHosting {
 
 // MARK: - Private
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension ViewHosting {
     
     #if os(macOS)
@@ -161,6 +163,7 @@ private class RootViewController: NSViewController {
 
 // MARK: - UIView lookup
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewHosting {
     #if os(macOS)
     static func lookup<V>(_ view: V.Type) throws -> V.NSViewType

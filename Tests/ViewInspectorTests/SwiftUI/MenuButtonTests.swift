@@ -4,6 +4,7 @@ import SwiftUI
 
 #if os(macOS)
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class MenuButtonTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -40,6 +41,7 @@ final class MenuButtonTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForMenuMenuButton: XCTestCase {
     
     func testMenuButtonStyle() throws {

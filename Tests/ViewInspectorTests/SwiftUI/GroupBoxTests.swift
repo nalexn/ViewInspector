@@ -4,6 +4,7 @@ import SwiftUI
 
 #if os(macOS)
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GroupBoxTests: XCTestCase {
     
     func testSingleEnclosedView() throws {

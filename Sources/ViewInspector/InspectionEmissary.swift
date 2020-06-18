@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 import XCTest
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol InspectionEmissary: class {
     
     associatedtype V: View & Inspectable
@@ -25,6 +26,7 @@ public protocol InspectionEmissary: class {
 
 // MARK: - Default Implementation
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectionEmissary {
     
     @discardableResult
@@ -75,6 +77,7 @@ public extension InspectionEmissary {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View where Self: Inspectable {
     @discardableResult
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,

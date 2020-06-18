@@ -4,6 +4,7 @@ import SwiftUI
 
 // MARK: - ViewSizingTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewSizingTests: XCTestCase {
     
     func testFrameWidthHeightAlignment() throws {
@@ -79,6 +80,7 @@ final class ViewSizingTests: XCTestCase {
 
 // MARK: - ViewPaddingTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewPaddingTests: XCTestCase {
     
     func testPadding() throws {

@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class NavigationLinkTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -99,6 +100,7 @@ final class NavigationLinkTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestView: View, Inspectable {
     @ObservedObject var state = NavigationState()
     
@@ -115,6 +117,7 @@ private struct TestView: View, Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension TestView {
     class NavigationState: ObservableObject {
         @Published var selection: String?

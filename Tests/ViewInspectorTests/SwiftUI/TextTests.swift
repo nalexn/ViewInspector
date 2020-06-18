@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TextTests: XCTestCase {
     
     // MARK: - string()
@@ -45,6 +46,7 @@ final class TextTests: XCTestCase {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForText: XCTestCase {
     
     func testFont() throws {

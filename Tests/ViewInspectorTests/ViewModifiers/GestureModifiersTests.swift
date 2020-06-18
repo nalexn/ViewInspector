@@ -5,6 +5,7 @@ import Combine
 
 // MARK: - ViewGesturesTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewGesturesTests: XCTestCase {
     
     #if !os(tvOS)
@@ -69,6 +70,7 @@ final class ViewGesturesTests: XCTestCase {
 
 // MARK: - ViewHitTestingTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewHitTestingTests: XCTestCase {
     
     func testAllowsHitTesting() throws {

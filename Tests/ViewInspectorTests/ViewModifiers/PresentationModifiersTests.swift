@@ -4,6 +4,7 @@ import SwiftUI
 
 // MARK: - ViewPresentationTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewPresentationTests: XCTestCase {
     
     func testSheet() throws {
@@ -37,6 +38,7 @@ final class ViewPresentationTests: XCTestCase {
 
 // MARK: - ViewColorTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewColorTests: XCTestCase {
     
     func testForegroundColor() throws {
@@ -66,6 +68,7 @@ final class ViewColorTests: XCTestCase {
 
 // MARK: - ViewPreviewTests
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewPreviewTests: XCTestCase {
     
     func testPreviewDevice() throws {
@@ -104,4 +107,5 @@ final class ViewPreviewTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension PreviewLayout: BinaryEquatable { }

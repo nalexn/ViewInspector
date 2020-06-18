@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ModifiedContentTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -49,12 +50,14 @@ final class ModifiedContentTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestModifier: ViewModifier {
     func body(content: Self.Content) -> some View {
         content.onAppear()
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct InspectableTestModifier: ViewModifier {
     
     var didAppear: ((Self.Body) -> Void)?
@@ -68,6 +71,7 @@ private struct InspectableTestModifier: ViewModifier {
 
 // MARK: - View Modifiers
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class GlobalModifiersForModifiedContent: XCTestCase {
     
     func testModifier() throws {

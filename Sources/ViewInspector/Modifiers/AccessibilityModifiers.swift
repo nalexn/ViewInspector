@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - Accessibility
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func accessibilityLabel() throws -> InspectableView<ViewType.Text> {
@@ -87,6 +88,7 @@ public extension InspectableView {
 
 // MARK: - Private
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension InspectableView {
     
     func accessibilityElement<T>(_ name: String, path: String = "value|some",
