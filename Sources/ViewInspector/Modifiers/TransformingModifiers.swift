@@ -63,13 +63,13 @@ public extension InspectableView {
 public extension InspectableView {
     
     func isScaledToFill() throws -> Bool {
-        let mode = try contentMode(call: "scaledToFill")
-        return try aspectRatio(call: "scaledToFill") == nil && mode == .fill
+        let values = try aspectRatio(call: "scaledToFill")
+        return values.contentMode == .fill && values.aspectRatio == nil
     }
     
     func isScaledToFit() throws -> Bool {
-        let mode = try contentMode(call: "scaledToFit")
-        return try aspectRatio(call: "scaledToFit") == nil && mode == .fit
+        let values = try aspectRatio(call: "scaledToFit")
+        return values.contentMode == .fit && values.aspectRatio == nil
     }
     
     func scaleEffect() throws -> CGSize {
@@ -84,12 +84,8 @@ public extension InspectableView {
             type: UnitPoint.self, call: "scaleEffect")
     }
     
-    func aspectRatio() throws -> CGFloat? {
+    func aspectRatio() throws -> (aspectRatio: CGFloat?, contentMode: ContentMode) {
         return try aspectRatio(call: "aspectRatio")
-    }
-    
-    func aspectRatioContentMode() throws -> ContentMode {
-        return try contentMode(call: "aspectRatio")
     }
     
     #if !os(macOS)
@@ -100,15 +96,13 @@ public extension InspectableView {
     }
     #endif
     
-    private func aspectRatio(call: String) throws -> CGFloat? {
-        return try modifierAttribute(
+    private func aspectRatio(call: String) throws -> (aspectRatio: CGFloat?, contentMode: ContentMode) {
+        let ratio = try modifierAttribute(
             modifierName: "_AspectRatioLayout", path: "modifier|aspectRatio",
-            type: Optional<CGFloat>.self, call: "aspectRatio")
-    }
-    
-    private func contentMode(call: String) throws -> ContentMode {
-        return try modifierAttribute(
+            type: Optional<CGFloat>.self, call: call)
+        let mode = try modifierAttribute(
             modifierName: "_AspectRatioLayout", path: "modifier|contentMode",
-            type: ContentMode.self, call: "aspectRatio")
+            type: ContentMode.self, call: call)
+        return (ratio, mode)
     }
 }
