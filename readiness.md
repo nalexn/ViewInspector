@@ -135,10 +135,10 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func rotationEffect(Angle, anchor: UnitPoint) -> View` |
-|:heavy_check_mark:| `func rotation3DEffect(Angle, axis: (x: CGFloat, y: CGFloat, z: CGFloat), anchor: UnitPoint, anchorZ: CGFloat, perspective: CGFloat) -> View` |
-|:heavy_check_mark:| `func projectionEffect(ProjectionTransform) -> View` |
-|:heavy_check_mark:| `func transformEffect(CGAffineTransform) -> View` |
+|:white_check_mark:| `func rotationEffect(Angle, anchor: UnitPoint) -> View` |
+|:white_check_mark:| `func rotation3DEffect(Angle, axis: (x: CGFloat, y: CGFloat, z: CGFloat), anchor: UnitPoint, anchorZ: CGFloat, perspective: CGFloat) -> View` |
+|:white_check_mark:| `func projectionEffect(ProjectionTransform) -> View` |
+|:white_check_mark:| `func transformEffect(CGAffineTransform) -> View` |
 
 ### Adjusting Text in a View
 

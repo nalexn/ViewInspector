@@ -12,10 +12,30 @@ final class ViewTransformingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testRotationEffectInspection() throws {
+        let sut = EmptyView().rotationEffect(.degrees(5), anchor: .center)
+        let values = try sut.inspect().emptyView().rotation()
+        XCTAssertEqual(values.angle, .degrees(5))
+        XCTAssertEqual(values.anchor, .center)
+    }
+    
     func testRotation3DEffect() throws {
         let sut = EmptyView().rotation3DEffect(.degrees(5), axis: (5, 5, 5),
                                                anchor: .center, anchorZ: 5, perspective: 5)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testRotation3DEffectInspection() throws {
+        let sut = EmptyView().rotation3DEffect(.degrees(5), axis: (2, 7, 3),
+                                               anchor: .center, anchorZ: 9, perspective: 6)
+        let values = try sut.inspect().emptyView().rotation3D()
+        XCTAssertEqual(values.angle, .degrees(5))
+        XCTAssertEqual(values.axis.x, 2)
+        XCTAssertEqual(values.axis.y, 7)
+        XCTAssertEqual(values.axis.z, 3)
+        XCTAssertEqual(values.anchor, .center)
+        XCTAssertEqual(values.anchorZ, 9)
+        XCTAssertEqual(values.perspective, 6)
     }
     
     func testProjectionEffect() throws {
@@ -23,9 +43,22 @@ final class ViewTransformingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testProjectionEffectInspection() throws {
+        var value = ProjectionTransform()
+        value.m21 = 175
+        let sut = EmptyView().projectionEffect(value)
+        XCTAssertEqual(try sut.inspect().emptyView().projectionTransform(), value)
+    }
+    
     func testTransformEffect() throws {
         let sut = EmptyView().transformEffect(.identity)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTransformEffectInspection() throws {
+        let transform = CGAffineTransform(scaleX: 0.5, y: 3)
+        let sut = EmptyView().transformEffect(transform)
+        XCTAssertEqual(try sut.inspect().emptyView().transformEffect(), transform)
     }
 }
 
