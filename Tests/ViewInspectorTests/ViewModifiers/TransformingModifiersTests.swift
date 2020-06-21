@@ -39,9 +39,27 @@ final class ViewScalingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testScaledToFillInspection() throws {
+        let sut1 = EmptyView().scaledToFill()
+        let sut2 = EmptyView().scaledToFit()
+        let sut3 = EmptyView().aspectRatio(contentMode: .fill)
+        XCTAssertTrue(try sut1.inspect().isScaledToFill())
+        XCTAssertFalse(try sut2.inspect().isScaledToFill())
+        XCTAssertTrue(try sut3.inspect().isScaledToFill())
+    }
+    
     func testScaledToFit() throws {
         let sut = EmptyView().scaledToFit()
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testScaledToFitlInspection() throws {
+        let sut1 = EmptyView().scaledToFit()
+        let sut2 = EmptyView().scaledToFill()
+        let sut3 = EmptyView().aspectRatio(contentMode: .fit)
+        XCTAssertTrue(try sut1.inspect().isScaledToFit())
+        XCTAssertFalse(try sut2.inspect().isScaledToFit())
+        XCTAssertTrue(try sut3.inspect().isScaledToFit())
     }
     
     func testScaleEffectFloat() throws {
@@ -59,20 +77,50 @@ final class ViewScalingTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testScaleEffectInspection() throws {
+        let sut = EmptyView().scaleEffect(5, anchor: .leading)
+        XCTAssertEqual(try sut.inspect().emptyView().scaleEffect(), CGSize(width: 5, height: 5))
+    }
+    
+    func testScaleEffectAnchorInspection() throws {
+        let sut = EmptyView().scaleEffect(5, anchor: .leading)
+        XCTAssertEqual(try sut.inspect().emptyView().scaleEffectAnchor(), .leading)
+    }
+    
+    func testAspectRatioContentModeInspection() throws {
+        let sut = EmptyView().aspectRatio(5, contentMode: .fit)
+        XCTAssertEqual(try sut.inspect().emptyView().aspectRatioContentMode(), .fit)
+    }
+    
     func testAspectRatioFloat() throws {
         let sut = EmptyView().aspectRatio(5, contentMode: .fill)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testAspectRatioFloatInspection() throws {
+        let sut = EmptyView().aspectRatio(5, contentMode: .fill)
+        XCTAssertEqual(try sut.inspect().emptyView().aspectRatio(), 5)
+    }
+    
     func testAspectRatioSize() throws {
-        let sut = EmptyView().aspectRatio(CGSize(width: 5, height: 5), contentMode: .fit)
+        let sut = EmptyView().aspectRatio(CGSize(width: 5, height: 6), contentMode: .fit)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testAspectRatioSizeInspection() throws {
+        let sut = EmptyView().aspectRatio(CGSize(width: 3, height: 4), contentMode: .fit)
+        XCTAssertEqual(try sut.inspect().emptyView().aspectRatio(), 0.75)
     }
     
     #if !os(macOS)
     func testImageScale() throws {
         let sut = EmptyView().imageScale(.small)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testImageScaleInspection() throws {
+        let sut = EmptyView().imageScale(.small)
+        XCTAssertEqual(try sut.inspect().emptyView().imageScale(), .small)
     }
     #endif
 }

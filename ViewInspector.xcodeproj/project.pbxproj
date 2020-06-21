@@ -69,6 +69,7 @@
 		F639DBBF23A6CF03003A6FED /* AccessibilityModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBBE23A6CF03003A6FED /* AccessibilityModifiers.swift */; };
 		F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBC223A7DDA2003A6FED /* TouchBar.swift */; };
 		F639DBC523A7DFA6003A6FED /* TouchBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBC423A7DFA6003A6FED /* TouchBarTests.swift */; };
+		F63E926A249FCF92005861F0 /* TransformingModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63E9269249FCF92005861F0 /* TransformingModifiers.swift */; };
 		F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057EC238DB1530029D9BA /* ConditionalContent.swift */; };
 		F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057EE238DBA800029D9BA /* EmptyView.swift */; };
 		F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057F0238DBB120029D9BA /* EmptyViewTests.swift */; };
@@ -221,6 +222,7 @@
 		F639DBBE23A6CF03003A6FED /* AccessibilityModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityModifiers.swift; sourceTree = "<group>"; };
 		F639DBC223A7DDA2003A6FED /* TouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBar.swift; sourceTree = "<group>"; };
 		F639DBC423A7DFA6003A6FED /* TouchBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarTests.swift; sourceTree = "<group>"; };
+		F63E9269249FCF92005861F0 /* TransformingModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformingModifiers.swift; sourceTree = "<group>"; };
 		F64057EC238DB1530029D9BA /* ConditionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalContent.swift; sourceTree = "<group>"; };
 		F64057EE238DBA800029D9BA /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		F64057F0238DBB120029D9BA /* EmptyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewTests.swift; sourceTree = "<group>"; };
@@ -516,6 +518,7 @@
 				F6ECF6D323A68BA4000FC591 /* PositioningModifiers.swift */,
 				F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */,
 				F6ECF6CD23A67C64000FC591 /* SizingModifiers.swift */,
+				F63E9269249FCF92005861F0 /* TransformingModifiers.swift */,
 				F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */,
 			);
 			path = Modifiers;
@@ -650,6 +653,7 @@
 			files = (
 				F60EEBCE2382EED0007DB53A /* BaseTypes.swift in Sources */,
 				F60EEBD22382EED0007DB53A /* Image.swift in Sources */,
+				F63E926A249FCF92005861F0 /* TransformingModifiers.swift in Sources */,
 				F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */,
 				F6DFD88423830E9F0028E84D /* List.swift in Sources */,
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,

@@ -122,14 +122,14 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func scaledToFill() -> View` |
-|:heavy_check_mark:| `func scaledToFit() -> View` |
-|:heavy_check_mark:| `func scaleEffect(CGFloat, anchor: UnitPoint) -> View` |
-|:heavy_check_mark:| `func scaleEffect(CGSize, anchor: UnitPoint) -> View` |
-|:heavy_check_mark:| `func scaleEffect(x: CGFloat, y: CGFloat, anchor: UnitPoint) -> View` |
-|:heavy_check_mark:| `func aspectRatio(CGFloat?, contentMode: ContentMode) -> View` |
-|:heavy_check_mark:| `func aspectRatio(CGSize, contentMode: ContentMode) -> View` |
-|:heavy_check_mark:| `func imageScale(Image.Scale) -> View` |
+|:white_check_mark:| `func scaledToFill() -> View` |
+|:white_check_mark:| `func scaledToFit() -> View` |
+|:white_check_mark:| `func scaleEffect(CGFloat, anchor: UnitPoint) -> View` |
+|:white_check_mark:| `func scaleEffect(CGSize, anchor: UnitPoint) -> View` |
+|:white_check_mark:| `func scaleEffect(x: CGFloat, y: CGFloat, anchor: UnitPoint) -> View` |
+|:white_check_mark:| `func aspectRatio(CGFloat?, contentMode: ContentMode) -> View` |
+|:white_check_mark:| `func aspectRatio(CGSize, contentMode: ContentMode) -> View` |
+|:white_check_mark:| `func imageScale(Image.Scale) -> View` |
 
 ### Rotating and Transforming Views
 
