@@ -32,6 +32,12 @@ final class TextTests: XCTestCase {
         XCTAssertEqual(sut, string)
     }
     
+    func testConcatenatedTexts() throws {
+        let view = Text("Test") + Text("Abc").bold() + Text("123")
+        let sut = try view.inspect().text().string()
+        XCTAssertEqual(sut, "TestAbc123")
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Text("Test"))
         XCTAssertNoThrow(try view.inspect().anyView().text())
