@@ -53,10 +53,13 @@ extension Inspector {
 
 extension Inspector {
     
-    // Use this function to lookup the struct content:
-    // (lldb) po Inspector.print(sut) as AnyObject
-    
-    static func print(_ value: Any) -> String {
+    /**
+        Use this function to lookup the struct content:
+        ```
+        (lldb) po Inspector.print(view) as AnyObject
+        ```
+     */
+    public static func print(_ value: Any) -> String {
         return typeName(value: value) + print(attributesTree(value: value), level: 1)
     }
     
@@ -70,7 +73,11 @@ extension Inspector {
         return prefix + String(describing: value) + "\n"
     }
     
-    fileprivate static func newline(value: Any) -> String {
+    fileprivate static func indent(level: Int) -> String {
+        return Array(repeating: "  ", count: level).joined()
+    }
+    
+    private static func newline(value: Any) -> String {
         let needsNewLine: Bool = {
             if let array = value as? [Any] {
                 return array.count > 0
@@ -104,9 +111,9 @@ extension Inspector {
 
 fileprivate extension Dictionary where Key == String {
     func description(level: Int) -> String {
-        let prefix = Array(repeating: "  ", count: level).joined()
+        let indent = Inspector.indent(level: level)
         return sorted(by: { $0.key < $1.key }).reduce("") { (str, pair) -> String in
-            return str + prefix + pair.key + Inspector.print(pair.value, level: level + 1)
+            return str + indent + pair.key + Inspector.print(pair.value, level: level + 1)
         }
     }
 }
@@ -116,9 +123,9 @@ fileprivate extension Array {
         guard count > 0 else {
             return " = []\n"
         }
-        let prefix = Swift.Array(repeating: "  ", count: level).joined()
+        let indent = Inspector.indent(level: level)
         return enumerated().reduce("") { (str, pair) -> String in
-            return str + prefix + "[\(pair.offset)]" + Inspector.print(pair.element, level: level + 1)
+            return str + indent + "[\(pair.offset)]" + Inspector.print(pair.element, level: level + 1)
         }
     }
 }
