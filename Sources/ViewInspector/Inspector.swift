@@ -49,6 +49,79 @@ extension Inspector {
     }
 }
 
+// MARK: - Attributes lookup
+
+extension Inspector {
+    
+    // Use this function to lookup the struct content:
+    // (lldb) po Inspector.print(sut) as AnyObject
+    
+    static func print(_ value: Any) -> String {
+        return typeName(value: value) + print(attributesTree(value: value), level: 1)
+    }
+    
+    fileprivate static func print(_ value: Any, level: Int) -> String {
+        let prefix = Inspector.newline(value: value)
+        if let array = value as? [Any] {
+            return prefix + array.description(level: level)
+        } else if let dict = value as? [String: Any] {
+            return prefix + dict.description(level: level)
+        }
+        return prefix + String(describing: value) + "\n"
+    }
+    
+    fileprivate static func newline(value: Any) -> String {
+        let needsNewLine: Bool = {
+            if let array = value as? [Any] {
+                return array.count > 0
+            }
+            return value is [String: Any]
+        }()
+        return needsNewLine ? "\n" : ""
+    }
+    
+    private static func attributesTree(value: Any) -> Any {
+        if let array = value as? [Any] {
+            return array.map { attributesTree(value: $0) }
+        }
+        let mirror = Mirror(reflecting: value)
+        var dict: [String: Any] = [:]
+        mirror.children.enumerated().forEach { child in
+            let childName = child.element.label ?? "[\(child.offset)]"
+            let childType = typeName(value: child.element.value)
+            dict[childName + ": " + childType] = attributesTree(value: child.element.value)
+        }
+        if let inspectable = value as? Inspectable {
+            let childType = typeName(value: inspectable.content)
+            dict["body: " + childType] = attributesTree(value: inspectable.content)
+        }
+        if dict.count == 0 {
+            return " = " + String(describing: value)
+        }
+        return dict
+    }
+}
+
+fileprivate extension Dictionary where Key == String {
+    func description(level: Int) -> String {
+        let prefix = Array(repeating: "  ", count: level).joined()
+        return sorted(by: { $0.key < $1.key }).reduce("") { (str, pair) -> String in
+            return str + prefix + pair.key + Inspector.print(pair.value, level: level + 1)
+        }
+    }
+}
+
+fileprivate extension Array {
+    func description(level: Int) -> String {
+        guard count > 0 else {
+            return " = []\n"
+        }
+        let prefix = Swift.Array(repeating: "  ", count: level).joined()
+        return enumerated().reduce("") { (str, pair) -> String in
+            return str + prefix + "[\(pair.offset)]" + Inspector.print(pair.element, level: level + 1)
+        }
+    }
+}
 // MARK: - View Inspection
 
 extension Inspector {

@@ -55,6 +55,22 @@ final class InspectorTests: XCTestCase {
         XCTAssertEqual(name2, "Struct1")
     }
     
+    func testPrintValue() {
+        let sut = TestPrintView()
+        let str = """
+                TestPrintView
+                  body: Text
+                    modifiers: Array<Modifier> = []
+                    storage: Storage
+                      verbatim: String = abc
+                  str: Array<String>
+                    [0] = abc
+                    [1] = def
+
+                """
+        XCTAssertEqual(Inspector.print(sut), str)
+    }
+    
     func testTupleView() throws {
         let view = HStack { Text(""); Text("") }
         let content = try Inspector.attribute(path: "_tree|content", value: view)
@@ -125,3 +141,12 @@ private struct Struct1 {
 }
 
 private struct Struct3<T> { }
+
+private struct TestPrintView: View, Inspectable {
+    
+    let str = ["abc", "def"]
+    
+    var body: some View {
+        Text(str[0])
+    }
+}
