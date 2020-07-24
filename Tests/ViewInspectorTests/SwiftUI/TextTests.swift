@@ -48,6 +48,32 @@ final class TextTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().text(0))
         XCTAssertNoThrow(try view.inspect().hStack().text(1))
     }
+
+    func testFontWeightWithSingleTextWithNoFontWeight() throws {
+        let view = Text("Test")
+        let sut = try view.inspect().text().fontWeight()
+        XCTAssertEqual(sut, [nil])
+    }
+
+    func testFontWeightWithSingleTextWithFontWeight() throws {
+        let view = Text("Test").fontWeight(.medium)
+        let sut = try view.inspect().text().fontWeight()
+        XCTAssertEqual(sut, [.medium])
+    }
+
+    func testFontWeightWithConcatenatedTextWithNoFontWeight() throws {
+        let view = Text("Test1") + Text(" ") + Text("Test2")
+        let sut = try view.inspect().text().fontWeight()
+        XCTAssertEqual(sut, [nil, nil, nil])
+    }
+
+    func testFontWeightWithConcatenatedTextWithFontWeight() throws {
+        let view = Text("Test1").fontWeight(.light)
+            + Text(" ").fontWeight(.medium)
+            + Text("Test2").fontWeight(.heavy)
+        let sut = try view.inspect().text().fontWeight()
+        XCTAssertEqual(sut, [.light, .medium, .heavy])
+    }
 }
 
 // MARK: - View Modifiers
