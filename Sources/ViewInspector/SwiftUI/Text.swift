@@ -33,18 +33,18 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Text {
     
     func string() throws -> String? {
+        if let first = try? Inspector.attribute(path: "storage|anyTextStorage|first", value: content.view) as? Text,
+            let second = try? Inspector.attribute(path: "storage|anyTextStorage|second", value: content.view) as? Text {
+            let firstText = try first.inspect().text().string() ?? ""
+            let secondText = try second.inspect().text().string() ?? ""
+            return firstText + secondText
+        }
         if let externalString = try? Inspector
             .attribute(path: "storage|verbatim", value: content.view) as? String {
             return externalString
         }
         let textStorage = try Inspector
             .attribute(path: "storage|anyTextStorage", value: content.view)
-        if let first = try? Inspector.attribute(path: "first", value: textStorage) as? Text,
-            let second = try? Inspector.attribute(path: "second", value: textStorage) as? Text {
-            let firstText = try first.inspect().text().string() ?? ""
-            let secondText = try second.inspect().text().string() ?? ""
-            return firstText + secondText
-        }
         let localizedStringKey = try Inspector
             .attribute(path: "key", value: textStorage)
         guard let baseString = try Inspector
