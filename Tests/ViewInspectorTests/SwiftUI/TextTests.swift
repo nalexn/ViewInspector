@@ -48,6 +48,86 @@ final class TextTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().text(0))
         XCTAssertNoThrow(try view.inspect().hStack().text(1))
     }
+
+    func testAttributedString() throws {
+        let view = Text("Test")
+        let sut = try view.inspect().text().attributedString()
+        XCTAssertEqual(sut, NSAttributedString(string: "Test"))
+    }
+
+    func testAttributedStringWithFontWeight() throws {
+        let view = Text("Test").fontWeight(.heavy)
+        let sut = try view.inspect().text().attributedString()
+        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
+            NSAttributedString.Key("FontWeight"): Font.Weight.heavy,
+        ]))
+    }
+
+    func testAttributedStringWithBold() throws {
+        let view = Text("Test").bold()
+        let sut = try view.inspect().text().attributedString()
+        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
+            NSAttributedString.Key("Bold"): true,
+        ]))
+    }
+
+    func testAttributedStringWithItalic() throws {
+        let view = Text("Test").italic()
+        let sut = try view.inspect().text().attributedString()
+        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
+            NSAttributedString.Key("Italic"): true,
+        ]))
+    }
+
+    func testAttributedStringWithBoldAndItalic() throws {
+        let view = Text("Test").bold().italic()
+        let sut = try view.inspect().text().attributedString()
+        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
+            NSAttributedString.Key("Bold"): true,
+            NSAttributedString.Key("Italic"): true,
+        ]))
+    }
+
+    func testAttributedStringWithFont() throws {
+        let view = Text("Test").font(.system(size: 17))
+        let sut = try view.inspect().text().attributedString()
+        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
+            NSAttributedString.Key("Font"): Font.system(size: 17),
+        ]))
+    }
+
+    func testAttributedStringForConcatenatedTextsWithNoTraits() throws {
+        let view = Text("Te") + Text("st")
+        let sut = try view.inspect().text().attributedString()
+        XCTAssertEqual(sut, NSAttributedString(string: "Test"))
+    }
+
+    func testAttributedStringForConcatenatedTextsWithSameTraits() throws {
+        let view = Text("Te").bold() + Text("st").bold()
+        let sut = try view.inspect().text().attributedString()
+        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
+            NSAttributedString.Key("Bold"): true,
+        ]))
+    }
+
+    func testAttributedStringForConcatenatedTextsWithDifferentTraits() throws {
+        let view = Text("Te").bold() + Text("st").italic()
+        let sut = try view.inspect().text().attributedString()
+
+        let attributedString = NSMutableAttributedString(string: "Test")
+        attributedString.addAttribute(
+            NSAttributedString.Key("Bold"),
+            value: true,
+            range: NSRange(location: 0, length: 2)
+        )
+        attributedString.addAttribute(
+            NSAttributedString.Key("Italic"),
+            value: true,
+            range: NSRange(location: 2, length: 2)
+        )
+
+        XCTAssertEqual(sut, attributedString)
+    }
 }
 
 // MARK: - View Modifiers
