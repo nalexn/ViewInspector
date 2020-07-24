@@ -65,4 +65,24 @@ public extension InspectableView where View == ViewType.Text {
         }
         return String(format: format, arguments: values)
     }
+
+    func fontWeight() throws -> [Font.Weight?] {
+        if let textStorage = try? Inspector.attribute(path: "storage|anyTextStorage", value: content.view),
+            let first = try? Inspector.attribute(path: "first", value: textStorage) as? Text,
+            let second = try? Inspector.attribute(path: "second", value: textStorage) as? Text {
+            let firstWeight = (try? first.inspect().text().fontWeight()) ?? [nil]
+            let secondWeight = (try? second.inspect().text().fontWeight()) ?? [nil]
+            return firstWeight + secondWeight
+        } else {
+            guard let viewModifiers = try? Inspector.attribute(path: "modifiers", value: content.view) as? Array<Any>
+            else { return [nil] }
+            for viewModifier in viewModifiers {
+                if let weight = try? Inspector
+                    .attribute(path: "weight", value: viewModifier) as? Font.Weight {
+                    return [weight]
+                }
+            }
+            return [nil]
+        }
+    }
 }
