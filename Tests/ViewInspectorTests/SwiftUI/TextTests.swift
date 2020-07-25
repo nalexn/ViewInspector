@@ -49,84 +49,82 @@ final class TextTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().text(1))
     }
 
-    func testAttributedString() throws {
-        let view = Text("Test")
-        let sut = try view.inspect().text().attributedString()
-        XCTAssertEqual(sut, NSAttributedString(string: "Test"))
+    func testBoldAttribute() throws {
+        let view1 = Text("Test")
+        let sut1 = try view1.inspect().text().attributes()
+        XCTAssertThrows(try sut1.isBold(), "Text does not have 'bold' modifier")
+        let view2 = Text("Test").bold()
+        let sut2 = try view2.inspect().text().attributes()
+        XCTAssertTrue(try sut2.isBold())
+        let view3 = Text("Test").kerning(1).bold().italic()
+        let sut3 = try view3.inspect().text().attributes()
+        XCTAssertTrue(try sut3.isBold())
+    }
+    
+    func testItalicAttribute() throws {
+        let view1 = Text("Test")
+        let sut1 = try view1.inspect().text().attributes()
+        XCTAssertThrows(try sut1.isItalic(), "Text does not have 'italic' modifier")
+        let view2 = Text("Test").italic()
+        let sut2 = try view2.inspect().text().attributes()
+        XCTAssertTrue(try sut2.isItalic())
+        let view3 = Text("Test").kerning(1).italic().bold()
+        let sut3 = try view3.inspect().text().attributes()
+        XCTAssertTrue(try sut3.isItalic())
+    }
+    
+    func testFontAttribute() throws {
+        let system = Font.system(size: 24, weight: .semibold, design: .monospaced)
+        let view1 = Text("Test").kerning(2).font(system)
+        let sut1 = try view1.inspect().text().attributes()
+        XCTAssertEqual(try sut1.font(), system)
+        let custom = Font.custom("Avenir-Roman", size: 15)
+        let view2 = Text("Test").font(custom)
+        let sut2 = try view2.inspect().text().attributes()
+        XCTAssertEqual(try sut2.font(), custom)
     }
 
-    func testAttributedStringWithFontWeight() throws {
-        let view = Text("Test").fontWeight(.heavy)
-        let sut = try view.inspect().text().attributedString()
-        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
-            NSAttributedString.Key("FontWeight"): Font.Weight.heavy,
-        ]))
+    func testFontWeightAttribute() throws {
+        let view = Text("Test").italic().fontWeight(.heavy)
+        let sut = try view.inspect().text().attributes()
+        XCTAssertEqual(try sut.fontWeight(), .heavy)
+    }
+    
+    func testKerningAttribute() throws {
+        let view = Text("Test").italic().kerning(7)
+        let sut = try view.inspect().text().attributes()
+        XCTAssertEqual(try sut.kerning(), 7)
+    }
+    
+    func testAttributesForConcatenatedText() throws {
+        let view = Text("Te").kerning(2).bold() + Text("st").bold().italic()
+        let sut = try view.inspect().text().attributes()
+
+        XCTAssertTrue(try sut.isBold())
+        XCTAssertThrows(try sut.isItalic(), "Modifier 'italic' is applied only to a subrange")
     }
 
-    func testAttributedStringWithBold() throws {
-        let view = Text("Test").bold()
-        let sut = try view.inspect().text().attributedString()
-        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
-            NSAttributedString.Key("Bold"): true,
-        ]))
+    func testAttributeRangesForConcatenatedText() throws {
+        let view = Text("Te").bold() + Text("st").italic() + Text("123").bold().italic()
+        let sut = try view.inspect().text().attributes()
+
+        XCTAssertTrue(try sut[0..<2].isBold())
+        XCTAssertTrue(try sut[1..<2].isBold())
+        XCTAssertTrue(try sut[2..<4].isItalic())
+        XCTAssertTrue(try sut[2..<6].isItalic())
+        XCTAssertTrue(try sut[3..<5].isItalic())
+        XCTAssertThrows(try sut[0..<4].isItalic(), "Modifier 'italic' is applied only to a subrange")
+        XCTAssertThrows(try sut.isBold(), "Modifier 'bold' is applied only to a subrange")
     }
-
-    func testAttributedStringWithItalic() throws {
-        let view = Text("Test").italic()
-        let sut = try view.inspect().text().attributedString()
-        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
-            NSAttributedString.Key("Italic"): true,
-        ]))
-    }
-
-    func testAttributedStringWithBoldAndItalic() throws {
-        let view = Text("Test").bold().italic()
-        let sut = try view.inspect().text().attributedString()
-        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
-            NSAttributedString.Key("Bold"): true,
-            NSAttributedString.Key("Italic"): true,
-        ]))
-    }
-
-    func testAttributedStringWithFont() throws {
-        let view = Text("Test").font(.system(size: 17))
-        let sut = try view.inspect().text().attributedString()
-        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
-            NSAttributedString.Key("Font"): Font.system(size: 17),
-        ]))
-    }
-
-    func testAttributedStringForConcatenatedTextsWithNoTraits() throws {
-        let view = Text("Te") + Text("st")
-        let sut = try view.inspect().text().attributedString()
-        XCTAssertEqual(sut, NSAttributedString(string: "Test"))
-    }
-
-    func testAttributedStringForConcatenatedTextsWithSameTraits() throws {
-        let view = Text("Te").bold() + Text("st").bold()
-        let sut = try view.inspect().text().attributedString()
-        XCTAssertEqual(sut, NSAttributedString(string: "Test", attributes: [
-            NSAttributedString.Key("Bold"): true,
-        ]))
-    }
-
-    func testAttributedStringForConcatenatedTextsWithDifferentTraits() throws {
-        let view = Text("Te").bold() + Text("st").italic()
-        let sut = try view.inspect().text().attributedString()
-
-        let attributedString = NSMutableAttributedString(string: "Test")
-        attributedString.addAttribute(
-            NSAttributedString.Key("Bold"),
-            value: true,
-            range: NSRange(location: 0, length: 2)
-        )
-        attributedString.addAttribute(
-            NSAttributedString.Key("Italic"),
-            value: true,
-            range: NSRange(location: 2, length: 2)
-        )
-
-        XCTAssertEqual(sut, attributedString)
+    
+    func testAttributeLookupErrors() throws {
+        let view1 = Text("Test").bold().kerning(5)
+        let sut1 = try view1.inspect().text().attributes()
+        XCTAssertThrows(try sut1[10..<14].isBold(), "Invalid text range")
+        
+        let view2 = Text("Te").kerning(2) + Text("st").kerning(4)
+        let sut2 = try view2.inspect().text().attributes()
+        XCTAssertThrows(try sut2.kerning(), "Modifier 'kerning' has different values in subranges")
     }
 }
 

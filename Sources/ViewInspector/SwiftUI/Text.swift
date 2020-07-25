@@ -33,29 +33,29 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Text {
     
     func string() throws -> String? {
-        if let first = try? Inspector.attribute(path: "storage|anyTextStorage|first", value: content.view) as? Text,
-            let second = try? Inspector.attribute(path: "storage|anyTextStorage|second", value: content.view) as? Text {
-            let firstText = try first.inspect().text().string() ?? ""
-            let secondText = try second.inspect().text().string() ?? ""
+        if let first = try? Inspector
+                .attribute(path: "storage|anyTextStorage|first", value: content.view, type: Text.self),
+            let second = try? Inspector
+                .attribute(path: "storage|anyTextStorage|second", value: content.view, type: Text.self),
+            let firstText = try first.inspect().text().string(),
+            let secondText = try second.inspect().text().string() {
             return firstText + secondText
         }
         if let externalString = try? Inspector
-            .attribute(path: "storage|verbatim", value: content.view) as? String {
+            .attribute(path: "storage|verbatim", value: content.view, type: String.self) {
             return externalString
         }
         let textStorage = try Inspector
             .attribute(path: "storage|anyTextStorage", value: content.view)
         let localizedStringKey = try Inspector
             .attribute(path: "key", value: textStorage)
-        guard let baseString = try Inspector
-            .attribute(label: "key", value: localizedStringKey) as? String,
-            let hasFormatting = try Inspector
-            .attribute(label: "hasFormatting", value: localizedStringKey) as? Bool
-        else { return nil }
+        let baseString = try Inspector
+            .attribute(label: "key", value: localizedStringKey, type: String.self)
+        let hasFormatting = try Inspector
+            .attribute(label: "hasFormatting", value: localizedStringKey, type: Bool.self)
         guard hasFormatting else { return baseString }
-        guard let arguments = try Inspector
-            .attribute(label: "arguments", value: localizedStringKey) as? [Any]
-        else { return nil }
+        let arguments = try Inspector
+            .attribute(label: "arguments", value: localizedStringKey, type: [Any].self)
         let values: [CVarArg] = try arguments.map {
             String(describing: try Inspector.attribute(label: "value", value: $0))
         }
@@ -65,48 +65,136 @@ public extension InspectableView where View == ViewType.Text {
         }
         return String(format: format, arguments: values)
     }
-
-    func attributedString() throws -> NSAttributedString? {
-        if let first = try? Inspector.attribute(path: "storage|anyTextStorage|first", value: content.view) as? Text,
-            let second = try? Inspector.attribute(path: "storage|anyTextStorage|second", value: content.view) as? Text {
-            let combination = NSMutableAttributedString()
-            combination.append(try first.inspect().text().attributedString() ?? NSAttributedString(string: ""))
-            combination.append(try second.inspect().text().attributedString() ?? NSAttributedString(string: ""))
-            return combination
+    
+    func attributes() throws -> TextAttributes {
+        if let first = try? Inspector
+                .attribute(path: "storage|anyTextStorage|first", value: content.view, type: Text.self),
+            let second = try? Inspector
+                .attribute(path: "storage|anyTextStorage|second", value: content.view, type: Text.self) {
+            let firstAttr = try first.inspect().text().attributes()
+            let secondAttr = try second.inspect().text().attributes()
+            return firstAttr + secondAttr
         }
-        if let string = try string() {
-            let attributedString = NSMutableAttributedString(string: string)
-            let range = NSRange(location: 0, length: attributedString.length)
+        let string = try self.string() ?? ""
+        let modifiers = try Inspector.attribute(label: "modifiers", value: content.view, type: [Any].self)
+        return .init(length: string.count, modifiers: modifiers)
+    }
+}
 
-            let viewModifiers = (try? Inspector.attribute(path: "modifiers", value: content.view) as? [Any]) ?? []
-            for viewModifier in viewModifiers {
-                if String(describing: viewModifier) == "anyTextModifier(SwiftUI.BoldTextModifier)" {
-                    attributedString.addAttributes([
-                        NSAttributedString.Key("Bold"): true,
-                    ], range: range)
-                } else if String(describing: viewModifier) == "italic" {
-                    attributedString.addAttributes([
-                        NSAttributedString.Key("Italic"): true,
-                    ], range: range)
-                } else if let fontProvider = try? Inspector.attribute(path: "font|some|provider|base", value: viewModifier) {
-                    if String(describing: type(of: fontProvider)) == "SystemProvider" {
-                        let size = try Inspector.attribute(path: "size", value: fontProvider) as! CGFloat
-                        let weight = try Inspector.attribute(path: "weight", value: fontProvider) as! Font.Weight
-                        let design = try Inspector.attribute(path: "design", value: fontProvider) as! Font.Design
-                        attributedString.addAttributes([
-                            NSAttributedString.Key("Font"): Font.system(size: size, weight: weight, design: design),
-                        ], range: range)
-                    }
-                } else if let fontWeight = try? Inspector.attribute(path: "weight|some", value: viewModifier) as? Font.Weight {
-                    attributedString.addAttributes([
-                        NSAttributedString.Key("FontWeight"): fontWeight,
-                    ], range: range)
-                } else {
-                    throw InspectionError.notSupported(String(describing: viewModifier))
-                }
+// MARK: - TextAttributes
+
+public extension InspectableView.TextAttributes {
+    
+    subscript(_ range: Range<Int>) -> Self {
+        let chunksInRange = zip(chunkRanges, chunks)
+            .filter { range.overlaps($0.0) }
+            .map { $0.1 }
+        return .init(chunks: chunksInRange)
+    }
+    
+    func isItalic() throws -> Bool {
+        return try commonTrait(name: "italic") { modifier in
+            String(describing: modifier) == "italic" ? true : nil
+        } == true
+    }
+    
+    func isBold() throws -> Bool {
+        return try commonTrait(name: "bold") { modifier in
+            guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier)
+                else { return nil }
+            return Inspector.typeName(value: child) == "BoldTextModifier" ? true : nil
+        } == true
+    }
+    
+    func fontWeight() throws -> Font.Weight {
+        return try commonTrait(name: "fontWeight") { modifier -> Font.Weight? in
+            guard let fontWeight = try? Inspector
+                .attribute(path: "weight|some", value: modifier, type: Font.Weight.self)
+                else { return nil }
+            return fontWeight
+        }
+    }
+    
+    func font() throws -> Font {
+        return try commonTrait(name: "font") { modifier -> Font? in
+            guard let fontProvider = try? Inspector
+                .attribute(path: "font|some|provider|base", value: modifier)
+                else { return nil }
+            if Inspector.typeName(value: fontProvider) == "SystemProvider" {
+                let size = try Inspector.attribute(label: "size", value: fontProvider, type: CGFloat.self)
+                let weight = try Inspector.attribute(label: "weight", value: fontProvider, type: Font.Weight.self)
+                let design = try Inspector.attribute(label: "design", value: fontProvider, type: Font.Design.self)
+                return .system(size: size, weight: weight, design: design)
             }
-            return attributedString
+            if Inspector.typeName(value: fontProvider) == "NamedProvider" {
+                let name = try Inspector.attribute(label: "name", value: fontProvider, type: String.self)
+                let size = try Inspector.attribute(label: "size", value: fontProvider, type: CGFloat.self)
+                return .custom(name, size: size)
+            }
+            return nil
         }
-        return nil
+    }
+    
+    func kerning() throws -> CGFloat {
+        return try commonTrait(name: "kerning") { modifier -> CGFloat? in
+            guard let kerning = try? Inspector
+                .attribute(label: "kerning", value: modifier, type: CGFloat.self)
+                else { return nil }
+            return kerning
+        }
+    }
+}
+
+public extension InspectableView {
+    struct TextAttributes {
+        
+        private struct Chunk {
+            let length: Int
+            let modifiers: [Any]
+        }
+        private let chunks: [Chunk]
+        
+        private init(chunks: [Chunk]) {
+            self.chunks = chunks
+        }
+        
+        fileprivate init(length: Int, modifiers: [Any]) {
+            self.init(chunks: [Chunk(length: length, modifiers: modifiers)])
+        }
+        
+        fileprivate static func + (lhs: TextAttributes, rhs: TextAttributes) -> TextAttributes {
+            return TextAttributes(chunks: lhs.chunks + rhs.chunks)
+        }
+        
+        private var chunkRanges: [Range<Int>] {
+            return chunks.reduce([]) { (array, chunk) in
+                let start = array.last?.upperBound ?? 0
+                return array + [start ..< start + chunk.length]
+            }
+        }
+        
+        private func commonTrait<V>(name: String, _ trait: (Any) throws -> V?) throws -> V where V: Equatable {
+            guard chunks.count > 0 else {
+                throw InspectionError.textAttribute("Invalid text range")
+            }
+            let traits = try chunks.compactMap { chunk -> V? in
+                for modifier in chunk.modifiers {
+                    if let value = try trait(modifier) {
+                        return value
+                    }
+                }
+                return nil
+            }
+            guard let trait = traits.first else {
+                throw InspectionError.modifierNotFound(parent: "Text", modifier: name)
+            }
+            guard traits.count == chunks.count else {
+                throw InspectionError.textAttribute("Modifier '\(name)' is applied only to a subrange")
+            }
+            guard traits.allSatisfy({ $0 == trait }) else {
+                throw InspectionError.textAttribute("Modifier '\(name)' has different values in subranges")
+            }
+            return trait
+        }
     }
 }
