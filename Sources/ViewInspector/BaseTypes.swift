@@ -58,6 +58,7 @@ public enum InspectionError: Swift.Error {
     case viewNotFound(parent: String)
     case modifierNotFound(parent: String, modifier: String)
     case notSupported(String)
+    case textAttribute(String)
 }
 
 extension InspectionError: CustomStringConvertible, LocalizedError {
@@ -74,7 +75,7 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
             return "View for \(parent) is absent"
         case let .modifierNotFound(parent, modifier):
             return "\(parent) does not have '\(modifier)' modifier"
-        case let .notSupported(message):
+        case let .notSupported(message), let .textAttribute(message):
             return message
         }
     }
