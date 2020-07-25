@@ -167,8 +167,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func fontWeight(_ weight: Font.Weight?) -> Text` |
 |:white_check_mark:| `func bold() -> Text` |
 |:white_check_mark:| `func italic() -> Text` |
-|:white_check_mark:| `func strikethrough(_ active: Bool = true, color: Color? = nil) -> Text` |
-|:white_check_mark:| `func underline(_ active: Bool = true, color: Color? = nil) -> Text` |
+|:white_check_mark:| `func strikethrough(_ active: Bool, color: Color?) -> Text` |
+|:white_check_mark:| `func underline(_ active: Bool, color: Color?) -> Text` |
 |:white_check_mark:| `func kerning(_ kerning: CGFloat) -> Text` |
 |:white_check_mark:| `func tracking(_ tracking: CGFloat) -> Text` |
 |:white_check_mark:| `func baselineOffset(_ baselineOffset: CGFloat) -> Text` |
