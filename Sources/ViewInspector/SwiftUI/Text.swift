@@ -135,10 +135,81 @@ public extension InspectableView.TextAttributes {
         }
     }
     
+    func foregroundColor() throws -> Color {
+        return try commonTrait(name: "foregroundColor") { modifier -> Color? in
+            guard let color = try? Inspector
+                .attribute(path: "color|some", value: modifier, type: Color.self)
+                else { return nil }
+            return color
+        }
+    }
+    
+    func strikethrough() throws -> Bool {
+        return try commonTrait(name: "strikethrough") { modifier -> Bool? in
+            guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
+                Inspector.typeName(value: child) == "StrikethroughTextModifier",
+                let active = try? Inspector
+                    .attribute(path: "lineStyle|some|active", value: child, type: Bool.self)
+                else { return nil }
+            return active
+        }
+    }
+    
+    func strikethroughColor() throws -> Color? {
+        return try commonTrait(name: "strikethrough") { modifier -> Color? in
+            guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
+                Inspector.typeName(value: child) == "StrikethroughTextModifier",
+                let color = try? Inspector
+                    .attribute(path: "lineStyle|some|color", value: child, type: Color?.self)
+                else { return nil }
+            return color
+        }
+    }
+    
+    func underline() throws -> Bool {
+        return try commonTrait(name: "underline") { modifier -> Bool? in
+            guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
+                Inspector.typeName(value: child) == "UnderlineTextModifier",
+                let active = try? Inspector
+                    .attribute(path: "lineStyle|some|active", value: child, type: Bool.self)
+                else { return nil }
+            return active
+        }
+    }
+    
+    func underlineColor() throws -> Color? {
+        return try commonTrait(name: "underline") { modifier -> Color? in
+            guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
+                Inspector.typeName(value: child) == "UnderlineTextModifier",
+                let color = try? Inspector
+                    .attribute(path: "lineStyle|some|color", value: child, type: Color?.self)
+                else { return nil }
+            return color
+        }
+    }
+    
     func kerning() throws -> CGFloat {
         return try commonTrait(name: "kerning") { modifier -> CGFloat? in
             guard let kerning = try? Inspector
                 .attribute(label: "kerning", value: modifier, type: CGFloat.self)
+                else { return nil }
+            return kerning
+        }
+    }
+    
+    func tracking() throws -> CGFloat {
+        return try commonTrait(name: "tracking") { modifier -> CGFloat? in
+            guard let kerning = try? Inspector
+                .attribute(label: "tracking", value: modifier, type: CGFloat.self)
+                else { return nil }
+            return kerning
+        }
+    }
+    
+    func baselineOffset() throws -> CGFloat {
+        return try commonTrait(name: "baselineOffset") { modifier -> CGFloat? in
+            guard let kerning = try? Inspector
+                .attribute(label: "baseline", value: modifier, type: CGFloat.self)
                 else { return nil }
             return kerning
         }

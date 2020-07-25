@@ -53,7 +53,7 @@ final class TextTests: XCTestCase {
         let view1 = Text("Test")
         let sut1 = try view1.inspect().text().attributes()
         XCTAssertThrows(try sut1.isBold(), "Text does not have 'bold' modifier")
-        let view2 = Text("Test").bold()
+        let view2 = Text("Test").strikethrough().bold()
         let sut2 = try view2.inspect().text().attributes()
         XCTAssertTrue(try sut2.isBold())
         let view3 = Text("Test").kerning(1).bold().italic()
@@ -90,10 +90,42 @@ final class TextTests: XCTestCase {
         XCTAssertEqual(try sut.fontWeight(), .heavy)
     }
     
+    func testForegroundColorAttribute() throws {
+        let view = Text("Test").italic().foregroundColor(.green)
+        let sut = try view.inspect().text().attributes()
+        XCTAssertEqual(try sut.foregroundColor(), .green)
+    }
+    
+    func testStrikethroughAttribute() throws {
+        let view = Text("Test").bold().strikethrough(true, color: .black)
+        let sut = try view.inspect().text().attributes()
+        XCTAssertTrue(try sut.strikethrough())
+        XCTAssertEqual(try sut.strikethroughColor(), .black)
+    }
+    
+    func testUnderlineAttribute() throws {
+        let view = Text("Test").bold().underline(true, color: .black)
+        let sut = try view.inspect().text().attributes()
+        XCTAssertTrue(try sut.underline())
+        XCTAssertEqual(try sut.underlineColor(), .black)
+    }
+    
     func testKerningAttribute() throws {
         let view = Text("Test").italic().kerning(7)
         let sut = try view.inspect().text().attributes()
         XCTAssertEqual(try sut.kerning(), 7)
+    }
+    
+    func testTrackingAttribute() throws {
+        let view = Text("Test").italic().tracking(4)
+        let sut = try view.inspect().text().attributes()
+        XCTAssertEqual(try sut.tracking(), 4)
+    }
+    
+    func testBaselineOffsetAttribute() throws {
+        let view = Text("Test").italic().baselineOffset(6)
+        let sut = try view.inspect().text().attributes()
+        XCTAssertEqual(try sut.baselineOffset(), 6)
     }
     
     func testAttributesForConcatenatedText() throws {
