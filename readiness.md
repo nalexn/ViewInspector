@@ -53,7 +53,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
 |:white_check_mark:| Stepper | `contained view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:white_check_mark:| TabView | `contained view` |
-|:white_check_mark:| Text | `string: String?` |
+|:white_check_mark:| Text | `string: String?`, `attributes: TextAttributes` |
 |:white_check_mark:| TextField | `contained view`, `callOnEditingChanged()`, `callOnCommit()` |
 |:white_check_mark:| Toggle | `contained view` |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
@@ -157,6 +157,21 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:heavy_check_mark:| `func flipsForRightToLeftLayoutDirection(Bool) -> View` |
 |:heavy_check_mark:| `func autocapitalization(UITextAutocapitalizationType) -> View` |
 |:heavy_check_mark:| `func disableAutocorrection(Bool?) -> View` |
+
+### Text modifiers
+
+| Status | Modifier |
+|:---:|---|
+|:white_check_mark:| `func foregroundColor(_ color: Color?) -> Text` |
+|:white_check_mark:| `func font(_ font: Font?) -> Text` |
+|:white_check_mark:| `func fontWeight(_ weight: Font.Weight?) -> Text` |
+|:white_check_mark:| `func bold() -> Text` |
+|:white_check_mark:| `func italic() -> Text` |
+|:white_check_mark:| `func strikethrough(_ active: Bool = true, color: Color? = nil) -> Text` |
+|:white_check_mark:| `func underline(_ active: Bool = true, color: Color? = nil) -> Text` |
+|:white_check_mark:| `func kerning(_ kerning: CGFloat) -> Text` |
+|:white_check_mark:| `func tracking(_ tracking: CGFloat) -> Text` |
+|:white_check_mark:| `func baselineOffset(_ baselineOffset: CGFloat) -> Text` |
 
 ### Adding Animations to a View
 
