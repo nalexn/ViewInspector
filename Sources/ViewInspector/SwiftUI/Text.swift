@@ -83,6 +83,7 @@ public extension InspectableView where View == ViewType.Text {
 
 // MARK: - TextAttributes
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView.TextAttributes {
     
     subscript(_ range: Range<Int>) -> Self {
@@ -216,6 +217,7 @@ public extension InspectableView.TextAttributes {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     struct TextAttributes {
         
