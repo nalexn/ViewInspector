@@ -4,16 +4,11 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
+
     func fixedFrame() throws -> (width: CGFloat, height: CGFloat, alignment: Alignment) {
-        let width = try modifierAttribute(
-            modifierName: "_FrameLayout", path: "modifier|width",
-            type: CGFloat.self, call: "frame(width: height: alignment:)")
-        let height = try modifierAttribute(
-            modifierName: "_FrameLayout", path: "modifier|height",
-            type: CGFloat.self, call: "frame(width: height: alignment:)")
-        let alignment = try modifierAttribute(
-            modifierName: "_FrameLayout", path: "modifier|alignment",
-            type: Alignment.self, call: "frame(width: height: alignment:)")
+        let width = try fixedWidth()
+        let height = try fixedHeight()
+        let alignment = try fixedAlignment()
         return (width, height, alignment)
     }
 
