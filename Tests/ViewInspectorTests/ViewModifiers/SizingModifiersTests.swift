@@ -35,6 +35,13 @@ final class ViewSizingTests: XCTestCase {
             .inspect().emptyView().fixedWidth()
         XCTAssertEqual(sut, width)
     }
+
+    func testFrameAlignmentInspection() throws {
+        let alignment: Alignment = .center
+        let sut = try EmptyView().frame(alignment: alignment)
+            .inspect().emptyView().fixedAlignment()
+        XCTAssertEqual(sut, alignment)
+    }
     
     func testFrameMinIdealMax() throws {
         let sut = EmptyView().frame(minWidth: 5, idealWidth: 5, maxWidth: 5,
