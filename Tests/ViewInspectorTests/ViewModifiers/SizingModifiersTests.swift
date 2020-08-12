@@ -28,6 +28,13 @@ final class ViewSizingTests: XCTestCase {
             .inspect().emptyView().fixedHeight()
         XCTAssertEqual(sut, height)
     }
+
+    func testFrameWidthInspection() throws {
+        let width: CGFloat = 10
+        let sut = try EmptyView().frame(width: width)
+            .inspect().emptyView().fixedWidth()
+        XCTAssertEqual(sut, width)
+    }
     
     func testFrameMinIdealMax() throws {
         let sut = EmptyView().frame(minWidth: 5, idealWidth: 5, maxWidth: 5,

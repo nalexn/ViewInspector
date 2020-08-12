@@ -23,6 +23,13 @@ public extension InspectableView {
             type: CGFloat.self, call: "frame(height:)")
         return height
     }
+
+    func fixedWidth() throws -> CGFloat {
+        let width = try modifierAttribute(
+            modifierName: "_FrameLayout", path: "modifier|width",
+            type: CGFloat.self, call: "frame(width:)")
+        return width
+    }
     
     func flexFrame() throws -> (minWidth: CGFloat, idealWidth: CGFloat, maxWidth: CGFloat,
                                 minHeight: CGFloat, idealHeight: CGFloat, maxHeight: CGFloat,
