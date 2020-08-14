@@ -4,17 +4,30 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
+
     func fixedFrame() throws -> (width: CGFloat, height: CGFloat, alignment: Alignment) {
-        let width = try modifierAttribute(
-            modifierName: "_FrameLayout", path: "modifier|width",
-            type: CGFloat.self, call: "frame(width: height: alignment:)")
-        let height = try modifierAttribute(
-            modifierName: "_FrameLayout", path: "modifier|height",
-            type: CGFloat.self, call: "frame(width: height: alignment:)")
-        let alignment = try modifierAttribute(
-            modifierName: "_FrameLayout", path: "modifier|alignment",
-            type: Alignment.self, call: "frame(width: height: alignment:)")
+        let width = try fixedWidth()
+        let height = try fixedHeight()
+        let alignment = try fixedAlignment()
         return (width, height, alignment)
+    }
+
+    func fixedHeight() throws -> CGFloat {
+        return try modifierAttribute(
+            modifierName: "_FrameLayout", path: "modifier|height",
+            type: CGFloat.self, call: "frame(height:)")
+    }
+
+    func fixedWidth() throws -> CGFloat {
+        return try modifierAttribute(
+            modifierName: "_FrameLayout", path: "modifier|width",
+            type: CGFloat.self, call: "frame(width:)")
+    }
+
+    func fixedAlignment() throws -> Alignment {
+        return try modifierAttribute(
+            modifierName: "_FrameLayout", path: "modifier|alignment",
+            type: Alignment.self, call: "frame(alignment:)")
     }
     
     func flexFrame() throws -> (minWidth: CGFloat, idealWidth: CGFloat, maxWidth: CGFloat,
