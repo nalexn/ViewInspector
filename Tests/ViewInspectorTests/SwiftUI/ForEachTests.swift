@@ -82,6 +82,19 @@ final class ForEachTests: XCTestCase {
             try sut.text(range.upperBound),
             "Enclosed view index '5' is out of bounds: '0 ..< 5'")
     }
+    
+    func testForEachIteration() throws {
+        let view = ForEach([0, 1, 3], id: \.self) { id in
+            Text("\(id)")
+        }
+        let sut = try view.inspect().forEach()
+        var counter = 0
+        try sut.forEach { view in
+            XCTAssertNoThrow(try view.text())
+            counter += 1
+        }
+        XCTAssertEqual(counter, 3)
+    }
 }
 
 private struct TestStruct: Identifiable {

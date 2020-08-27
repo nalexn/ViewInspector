@@ -98,7 +98,10 @@ public struct LazyGroup<T> {
     }
     
     func element(at index: Int) throws -> T {
-        try access(index)
+        guard 0 ..< count ~= index else {
+            throw InspectionError.viewIndexOutOfBounds(index: index, count: count)
+        }
+        return try access(index)
     }
     
     static var empty: Self {
