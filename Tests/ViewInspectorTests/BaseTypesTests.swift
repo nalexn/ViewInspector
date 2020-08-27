@@ -43,10 +43,7 @@ final class SequenceTests: XCTestCase {
     
     func testLazyGroupSequence() {
         let count = 3
-        let sut = LazyGroup<Int>(count: count) { index -> Int in
-            if index < count { return index }
-            throw InspectionError.viewIndexOutOfBounds(index: index, count: count)
-        }
+        let sut = LazyGroup<Int>(count: count) { $0 }
         XCTAssertEqual(sut.map { $0 }, [0, 1, 2])
         var iterator = sut.makeIterator()
         for _ in 0 ..< count {

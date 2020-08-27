@@ -137,9 +137,6 @@ extension Inspector {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view))
         guard Inspector.isTupleView(unwrappedContainer.view) else {
             return LazyGroup(count: 1) { index in
-                guard index == 0 else {
-                    throw InspectionError.viewIndexOutOfBounds(index: index, count: 1)
-                }
                 return unwrappedContainer
             }
         }
