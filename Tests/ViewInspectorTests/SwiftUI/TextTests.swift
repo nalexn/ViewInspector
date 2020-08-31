@@ -158,6 +158,31 @@ final class TextTests: XCTestCase {
         let sut2 = try view2.inspect().text().attributes()
         XCTAssertThrows(try sut2.kerning(), "Modifier 'kerning' has different values in subranges")
     }
+
+    func testAttributeRangesForConcatenatedTextUsingStringRange() throws {
+        let text = Text("bold").bold() + Text(" ") + Text("italic").italic()
+        let inspectableText = try text.inspect().text()
+        let string = try XCTUnwrap(try inspectableText.string())
+        let attributes = try inspectableText.attributes()
+
+        let boldTextRange = try XCTUnwrap(string.range(of: "bold"))
+        XCTAssertTrue(try attributes[boldTextRange].isBold())
+
+        let italicTextRange = try XCTUnwrap(string.range(of: "italic"))
+        XCTAssertTrue(try attributes[italicTextRange].isItalic())
+    }
+
+    func testAttributeRangesForConcatenatedTextUsingRangeExpressions() throws {
+        let text = Text("bold").bold() + Text(" ") + Text("italic").italic()
+        let inspectableText = try text.inspect().text()
+        let string = try XCTUnwrap(try inspectableText.string())
+        let attributes = try inspectableText.attributes()
+
+        let endOfBoldIndex = string.index(string.startIndex, offsetBy: 4)
+        XCTAssertTrue(try attributes[..<endOfBoldIndex].isBold())
+        XCTAssertThrows(try attributes[string.startIndex...endOfBoldIndex].isBold(), "Modifier 'bold' is applied only to a subrange")
+        XCTAssertTrue(try attributes[string.index(endOfBoldIndex, offsetBy: 2)...].isItalic())
+    }
 }
 
 // MARK: - View Modifiers
