@@ -77,7 +77,7 @@ public extension InspectableView where View == ViewType.Text {
         }
         let string = try self.string() ?? ""
         let modifiers = try Inspector.attribute(label: "modifiers", value: content.view, type: [Any].self)
-        return .init(length: string.count, modifiers: modifiers)
+        return .init(string: string, modifiers: modifiers)
     }
 }
 
@@ -89,6 +89,14 @@ public extension InspectableView.TextAttributes {
     subscript(_ range: Range<Int>) -> Self {
         let chunksInRange = zip(chunkRanges, chunks)
             .filter { range.overlaps($0.0) }
+            .map { $0.1 }
+        return .init(chunks: chunksInRange)
+    }
+
+    subscript<Range>(_ range: Range) -> Self where Range: RangeExpression, Range.Bound == String.Index {
+        let relativeRange = range.relative(to: string)
+        let chunksInRange = zip(chunkStringRanges, chunks)
+            .filter { relativeRange.overlaps($0.0) }
             .map { $0.1 }
         return .init(chunks: chunksInRange)
     }
@@ -222,8 +230,12 @@ public extension InspectableView {
     struct TextAttributes {
         
         private struct Chunk {
-            let length: Int
+            let string: String
             let modifiers: [Any]
+
+            var length: Int {
+                string.count
+            }
         }
         private let chunks: [Chunk]
         
@@ -231,8 +243,8 @@ public extension InspectableView {
             self.chunks = chunks
         }
         
-        fileprivate init(length: Int, modifiers: [Any]) {
-            self.init(chunks: [Chunk(length: length, modifiers: modifiers)])
+        fileprivate init(string: String, modifiers: [Any]) {
+            self.init(chunks: [Chunk(string: string, modifiers: modifiers)])
         }
         
         fileprivate static func + (lhs: TextAttributes, rhs: TextAttributes) -> TextAttributes {
@@ -244,6 +256,20 @@ public extension InspectableView {
                 let start = array.last?.upperBound ?? 0
                 return array + [start ..< start + chunk.length]
             }
+        }
+
+        private var chunkStringRanges: [Range<String.Index>] {
+            var totalString = ""
+            return chunks.reduce([]) { (array, chunk) in
+                let start = totalString.endIndex
+                totalString += chunk.string
+                let end = totalString.endIndex
+                return array + [start ..< end]
+            }
+        }
+
+        private var string: String {
+            chunks.map { $0.string }.joined()
         }
         
         private func commonTrait<V>(name: String, _ trait: (Any) throws -> V?) throws -> V where V: Equatable {
