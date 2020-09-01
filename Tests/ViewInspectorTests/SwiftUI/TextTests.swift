@@ -147,6 +147,10 @@ final class TextTests: XCTestCase {
         XCTAssertTrue(try sut[3..<5].isItalic())
         XCTAssertThrows(try sut[0..<4].isItalic(), "Modifier 'italic' is applied only to a subrange")
         XCTAssertThrows(try sut.isBold(), "Modifier 'bold' is applied only to a subrange")
+        XCTAssertTrue(try sut[..<2].isBold())
+        XCTAssertTrue(try sut[0...1].isBold())
+        XCTAssertTrue(try sut[...1].isBold())
+        XCTAssertTrue(try sut[5...].isBold())
     }
     
     func testAttributeLookupErrors() throws {

@@ -86,9 +86,10 @@ public extension InspectableView where View == ViewType.Text {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView.TextAttributes {
     
-    subscript(_ range: Range<Int>) -> Self {
+    subscript<Range>(_ range: Range) -> Self where Range: RangeExpression, Range.Bound == Int {
+        let relativeRange = range.relative(to: 0..<string.count)
         let chunksInRange = zip(chunkRanges, chunks)
-            .filter { range.overlaps($0.0) }
+            .filter { relativeRange.overlaps($0.0) }
             .map { $0.1 }
         return .init(chunks: chunksInRange)
     }
