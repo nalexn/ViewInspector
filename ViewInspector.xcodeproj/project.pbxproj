@@ -65,6 +65,7 @@
 		F60EEC072382F004007DB53A /* ScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF42382F004007DB53A /* ScrollViewTests.swift */; };
 		F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF52382F004007DB53A /* AnyViewTests.swift */; };
 		F62AEAFC23E705D6003E69D9 /* ViewHostingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */; };
+		F62D69902507FA0C00335BCC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62D698F2507FA0C00335BCC /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */; };
 		F639DBBF23A6CF03003A6FED /* AccessibilityModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBBE23A6CF03003A6FED /* AccessibilityModifiers.swift */; };
 		F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBC223A7DDA2003A6FED /* TouchBar.swift */; };
@@ -218,6 +219,7 @@
 		F60EEBF42382F004007DB53A /* ScrollViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViewTests.swift; sourceTree = "<group>"; };
 		F60EEBF52382F004007DB53A /* AnyViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewTests.swift; sourceTree = "<group>"; };
 		F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHostingTests.swift; sourceTree = "<group>"; };
+		F62D698F2507FA0C00335BCC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewModifiers.swift; sourceTree = "<group>"; };
 		F639DBBE23A6CF03003A6FED /* AccessibilityModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityModifiers.swift; sourceTree = "<group>"; };
 		F639DBC223A7DDA2003A6FED /* TouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBar.swift; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				F62D69902507FA0C00335BCC /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,6 +491,14 @@
 			path = SwiftUI;
 			sourceTree = "<group>";
 		};
+		F62D698E2507FA0C00335BCC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F62D698F2507FA0C00335BCC /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F67540ED23A3D8820022AC33 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
@@ -542,6 +553,7 @@
 				OBJ_26 /* Products */,
 				OBJ_30 /* LICENSE */,
 				OBJ_31 /* README.md */,
+				F62D698E2507FA0C00335BCC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -849,6 +861,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -876,6 +889,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -69,10 +69,20 @@ So this framework is production-friendly for the case if you accidentally (or in
 
 ### How do I add it to my Xcode project?
 
+**Swift Package Manager**
+
 1. In Xcode select **File ⭢ Swift Packages ⭢ Add Package Dependency...**
 2. Copy-paste repository URL: **https://github.com/nalexn/ViewInspector**
 3. Hit **Next** two times, under **Add to Target** select your test target. There is no need to add it to the build target.
 4. Hit **Finish**
+
+**Carthage**
+
+`github "nalexn/ViewInspector"`
+
+**CocoaPods**
+
+`pod 'ViewInspector'`
 
 ### How do I use it in my project?
 
