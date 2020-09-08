@@ -184,7 +184,8 @@ final class TextTests: XCTestCase {
 
         let endOfBoldIndex = string.index(string.startIndex, offsetBy: 4)
         XCTAssertTrue(try attributes[..<endOfBoldIndex].isBold())
-        XCTAssertThrows(try attributes[string.startIndex...endOfBoldIndex].isBold(), "Modifier 'bold' is applied only to a subrange")
+        XCTAssertThrows(try attributes[string.startIndex...endOfBoldIndex].isBold(),
+                        "Modifier 'bold' is applied only to a subrange")
         XCTAssertTrue(try attributes[string.index(endOfBoldIndex, offsetBy: 2)...].isItalic())
     }
 }
