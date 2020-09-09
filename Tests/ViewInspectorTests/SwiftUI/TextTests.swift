@@ -235,3 +235,12 @@ final class GlobalModifiersForText: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+final class TextImageTests: XCTestCase {
+
+    func testTextImage() throws {
+        let text = Text(Image("someImage"))
+        XCTAssertNoThrow(try text.inspect().text().image())
+    }
+}

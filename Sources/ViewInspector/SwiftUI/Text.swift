@@ -298,3 +298,24 @@ public extension InspectableView {
         }
     }
 }
+
+// MARK: - Wrapped images
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+public extension InspectableView where View == ViewType.Text {
+
+    /// Extracts image wrapped inside of the current `Text` instance.
+    ///
+    /// # Example
+    /// ```
+    /// try Text(Image("someImage")).inspect().text().image()
+    /// ```
+    ///
+    func image() throws -> InspectableView<ViewType.Image> {
+        let textStorage = try Inspector
+            .attribute(path: "storage|anyTextStorage", value: content.view)
+        let view = try Inspector.attribute(label: "image", value: textStorage)
+        let content = try Inspector.unwrap(view: view, modifiers: [])
+        return try .init(content)
+    }
+}
