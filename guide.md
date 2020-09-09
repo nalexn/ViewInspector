@@ -186,7 +186,7 @@ After you add that `class Inspection<V>` to the build target, you should extend 
 extension Inspection: InspectionEmissary where V: Inspectable { }
 ```
 
-Once you add these two snippets, the **ViewInstector** will be fully armed for inspecting any custom views with all types of the state.
+Once you add these two snippets, the **ViewInspector** will be fully armed for inspecting any custom views with all types of the state.
 
 ---
 
