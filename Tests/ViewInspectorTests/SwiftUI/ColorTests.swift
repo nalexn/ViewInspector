@@ -55,4 +55,14 @@ final class ColorTests: XCTestCase {
         XCTAssertThrows(try Color.accentColor.inspect().color().rgba(),
                         "RGBA values are not available")
     }
+    
+    func testName() throws {
+        let color = Color("abc")
+        XCTAssertEqual(try color.inspect().color().name(), "abc")
+    }
+    
+    func testNameError() throws {
+        XCTAssertThrows(try Color.accentColor.inspect().color().name(),
+                        "Color name is not available")
+    }
 }

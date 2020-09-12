@@ -55,4 +55,13 @@ public extension InspectableView where View == ViewType.Color {
         }
         throw InspectionError.notSupported("RGBA values are not available")
     }
+    
+    func name() throws -> String {
+        let colorProvider = try Inspector.attribute(path: "provider|base", value: content.view)
+        let providerName = Inspector.typeName(value: colorProvider)
+        if providerName == "NamedColor" {
+            return try Inspector.attribute(label: "name", value: colorProvider, type: String.self)
+        }
+        throw InspectionError.notSupported("Color name is not available")
+    }
 }
