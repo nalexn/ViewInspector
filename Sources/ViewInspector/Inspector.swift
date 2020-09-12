@@ -28,7 +28,7 @@ extension Inspector {
     }
     
     static func attribute<T>(path: String, value: Any, type: T.Type) throws -> T {
-        let labels = path.components(separatedBy: "|")
+        let labels = path.components(separatedBy: "|").filter { $0.count > 0 }
         let child = try labels.reduce(value, { (value, label) -> Any in
             try attribute(label: label, value: value)
         })

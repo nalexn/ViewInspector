@@ -1,0 +1,59 @@
+import SwiftUI
+
+public extension ViewType {
+    
+    struct Color: KnownViewType {
+        public static var typePrefix: String = "Color"
+    }
+}
+
+// MARK: - Extraction from SingleViewContent parent
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View: SingleViewContent {
+    
+    func color() throws -> InspectableView<ViewType.Color> {
+        return try .init(try child())
+    }
+}
+
+// MARK: - Extraction from MultipleViewContent parent
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View: MultipleViewContent {
+    
+    func color(_ index: Int) throws -> InspectableView<ViewType.Color> {
+        return try .init(try child(at: index))
+    }
+}
+
+// MARK: - Custom Attributes
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View == ViewType.Color {
+    
+    func value() throws -> Color {
+        return try Inspector.attribute(path: "", value: content.view, type: Color.self)
+    }
+    
+    func rgba() throws -> (red: Float, green: Float, blue: Float, alpha: Float) {
+        let colorProvider = try Inspector
+            .attribute(path: "provider|base", value: content.view, type: Any.self)
+        let providerName = Inspector.typeName(value: colorProvider)
+        if providerName == "_Resolved" {
+            let red = try Inspector.attribute(label: "linearRed", value: colorProvider, type: Float.self)
+            let green = try Inspector.attribute(label: "linearGreen", value: colorProvider, type: Float.self)
+            let blue = try Inspector.attribute(label: "linearBlue", value: colorProvider, type: Float.self)
+            let alpha = try Inspector.attribute(label: "opacity", value: colorProvider, type: Float.self)
+            return (red, green, blue, alpha)
+        }
+        if providerName == "DisplayP3" {
+            let red = try Inspector.attribute(label: "red", value: colorProvider, type: CGFloat.self)
+            let green = try Inspector.attribute(label: "green", value: colorProvider, type: CGFloat.self)
+            let blue = try Inspector.attribute(label: "blue", value: colorProvider, type: CGFloat.self)
+            let alpha = try Inspector.attribute(label: "opacity", value: colorProvider, type: Float.self)
+            return (Float(red), Float(green), Float(blue), alpha)
+        }
+        throw InspectionError.notSupported("RGBA values are not available")
+    }
+}
