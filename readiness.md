@@ -17,6 +17,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
 |:white_check_mark:| Button | `contained view`, `tap()` |
+|:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ConditionalContent | `contained view` |
 |:white_check_mark:| SwiftUI Custom View | `actualView: CustomView`, `viewBuilder container` |
 |:white_check_mark:| SwiftUI Custom @ViewBuilder | `actualView: CustomView` |
