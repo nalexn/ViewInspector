@@ -103,12 +103,6 @@ final class CustomViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().view(EnvironmentStateTestView.self, 1))
     }
     
-    func testContentViewTypeMismatch() {
-        XCTAssertThrows(
-            try ViewType.View<SimpleTestView>.child(Content("abc")),
-            "Type mismatch: String is not SimpleTestView")
-    }
-    
     func testActualView() throws {
         let sut = try LocalStateTestView(flag: true).inspect()
         let flagValue = try sut.actualView().flag

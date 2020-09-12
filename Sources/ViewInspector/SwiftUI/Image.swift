@@ -55,14 +55,17 @@ public extension InspectableView where View == ViewType.Image {
     }
     
     func orientation() throws -> Image.Orientation {
-        let orientation = try Inspector.attribute(path: "provider|base|orientation", value: unwrap(view: content.view))
-            as? Image.Orientation
-        return orientation ?? .up
+        return try Inspector
+            .attribute(path: "provider|base|orientation",
+                       value: unwrap(view: content.view),
+                       type: Image.Orientation.self)
     }
     
     func scale() throws -> CGFloat {
-        let scale = try Inspector.attribute(path: "provider|base|scale", value: unwrap(view: content.view)) as? CGFloat
-        return scale ?? 1.0
+        return try Inspector
+            .attribute(path: "provider|base|scale",
+                       value: unwrap(view: content.view),
+                       type: CGFloat.self)
     }
     
     func label() throws -> InspectableView<ViewType.Text> {

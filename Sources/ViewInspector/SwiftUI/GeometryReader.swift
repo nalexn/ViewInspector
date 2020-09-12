@@ -12,10 +12,8 @@ public extension ViewType {
 extension ViewType.GeometryReader: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
-        guard let child = try (content.view as? GeometryReaderContentProvider)?.view() else {
-            throw InspectionError.typeMismatch(content.view, GeometryReaderContentProvider.self)
-        }
-        return try Inspector.unwrap(view: child, modifiers: [])
+        let provider = try Inspector.cast(value: content.view, type: GeometryReaderContentProvider.self)
+        return try Inspector.unwrap(view: provider.view(), modifiers: [])
     }
 }
 

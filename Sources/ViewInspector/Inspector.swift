@@ -17,10 +17,7 @@ extension Inspector {
             throw InspectionError.attributeNotFound(
                 label: label, type: typeName(value: value))
         }
-        guard let casted = child as? T else {
-            throw InspectionError.typeMismatch(child, T.self)
-        }
-        return casted
+        return try cast(value: child, type: T.self)
     }
     
     static func attribute(path: String, value: Any) throws -> Any {
@@ -28,12 +25,16 @@ extension Inspector {
     }
     
     static func attribute<T>(path: String, value: Any, type: T.Type) throws -> T {
-        let labels = path.components(separatedBy: "|").filter { $0.count > 0 }
+        let labels = path.components(separatedBy: "|")
         let child = try labels.reduce(value, { (value, label) -> Any in
             try attribute(label: label, value: value)
         })
-        guard let casted = child as? T else {
-            throw InspectionError.typeMismatch(child, T.self)
+        return try cast(value: child, type: T.self)
+    }
+    
+    static func cast<T>(value: Any, type: T.Type) throws -> T {
+        guard let casted = value as? T else {
+            throw InspectionError.typeMismatch(value, T.self)
         }
         return casted
     }

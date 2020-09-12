@@ -33,12 +33,11 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Color {
     
     func value() throws -> Color {
-        return try Inspector.attribute(path: "", value: content.view, type: Color.self)
+        return try Inspector.cast(value: content.view, type: Color.self)
     }
     
     func rgba() throws -> (red: Float, green: Float, blue: Float, alpha: Float) {
-        let colorProvider = try Inspector
-            .attribute(path: "provider|base", value: content.view, type: Any.self)
+        let colorProvider = try Inspector.attribute(path: "provider|base", value: content.view)
         let providerName = Inspector.typeName(value: colorProvider)
         if providerName == "_Resolved" {
             let red = try Inspector.attribute(label: "linearRed", value: colorProvider, type: Float.self)

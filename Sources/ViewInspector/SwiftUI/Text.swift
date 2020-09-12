@@ -32,13 +32,13 @@ public extension InspectableView where View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Text {
     
-    func string() throws -> String? {
+    func string() throws -> String {
         if let first = try? Inspector
                 .attribute(path: "storage|anyTextStorage|first", value: content.view, type: Text.self),
             let second = try? Inspector
-                .attribute(path: "storage|anyTextStorage|second", value: content.view, type: Text.self),
-            let firstText = try first.inspect().text().string(),
-            let secondText = try second.inspect().text().string() {
+                .attribute(path: "storage|anyTextStorage|second", value: content.view, type: Text.self) {
+            let firstText = try first.inspect().text().string()
+            let secondText = try second.inspect().text().string()
             return firstText + secondText
         }
         if let externalString = try? Inspector
@@ -75,7 +75,7 @@ public extension InspectableView where View == ViewType.Text {
             let secondAttr = try second.inspect().text().attributes()
             return firstAttr + secondAttr
         }
-        let string = try self.string() ?? ""
+        let string = try self.string()
         let modifiers = try Inspector.attribute(label: "modifiers", value: content.view, type: [Any].self)
         return .init(string: string, modifiers: modifiers)
     }
@@ -130,13 +130,14 @@ public extension InspectableView.TextAttributes {
             guard let fontProvider = try? Inspector
                 .attribute(path: "font|some|provider|base", value: modifier)
                 else { return nil }
-            if Inspector.typeName(value: fontProvider) == "SystemProvider" {
+            let providerName = Inspector.typeName(value: fontProvider)
+            if providerName == "SystemProvider" {
                 let size = try Inspector.attribute(label: "size", value: fontProvider, type: CGFloat.self)
                 let weight = try Inspector.attribute(label: "weight", value: fontProvider, type: Font.Weight.self)
                 let design = try Inspector.attribute(label: "design", value: fontProvider, type: Font.Design.self)
                 return .system(size: size, weight: weight, design: design)
             }
-            if Inspector.typeName(value: fontProvider) == "NamedProvider" {
+            if providerName == "NamedProvider" {
                 let name = try Inspector.attribute(label: "name", value: fontProvider, type: String.self)
                 let size = try Inspector.attribute(label: "size", value: fontProvider, type: CGFloat.self)
                 return .custom(name, size: size)

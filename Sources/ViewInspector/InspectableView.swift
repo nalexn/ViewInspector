@@ -52,12 +52,11 @@ extension InspectableView: Sequence where View: MultipleViewContent {
     }
 
     public func makeIterator() -> Iterator {
-        let group: LazyGroup<Content> = (try? View.children(content)) ?? .empty
-        return .init(group)
+        return .init(View._children(content))
     }
 
     public var underestimatedCount: Int {
-        return (try? View.children(content))?.count ?? 0
+        return View._children(content).count
     }
 }
 
@@ -68,13 +67,13 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
     public typealias Index = Int
     public var startIndex: Index { 0 }
     public var endIndex: Index { count }
-    public var count: Int { (try? View.children(content))?.count ?? 0 }
+    public var count: Int { View._children(content).count }
     
     public subscript(index: Index) -> Iterator.Element {
         do {
             let viewes = try View.children(content)
             return try .init(try viewes.element(at: index))
-        } catch let error {
+        } catch {
             fatalError("\(error)")
         }
     }
@@ -100,7 +99,7 @@ public extension View {
                  traverse: (InspectableView<ViewType.ClassifiedView>) throws -> Void) {
         do {
             try traverse(try inspect())
-        } catch let error {
+        } catch {
             XCTFail("\(error.localizedDescription)", file: file, line: line)
         }
     }
@@ -117,7 +116,7 @@ public extension View where Self: Inspectable {
                  traverse: (InspectableView<ViewType.View<Self>>) throws -> Void) {
         do {
             try traverse(try inspect())
-        } catch let error {
+        } catch {
             XCTFail("\(error.localizedDescription)", file: file, line: line)
         }
     }
@@ -160,5 +159,11 @@ internal protocol ModifierNameProvider {
 extension ModifiedContent: ModifierNameProvider {
     var modifierType: String {
         return Inspector.typeName(type: Modifier.self)
+    }
+}
+
+private extension MultipleViewContent {
+    static func _children(_ content: Content) -> LazyGroup<Content> {
+        return (try? children(content)) ?? .empty
     }
 }

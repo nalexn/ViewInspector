@@ -12,9 +12,8 @@ public extension ViewType {
 extension ViewType.ForEach: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        guard let children = try (content.view as? ForEachContentProvider)?.views() else {
-            throw InspectionError.typeMismatch(content.view, ForEachContentProvider.self)
-        }
+        let provider = try Inspector.cast(value: content.view, type: ForEachContentProvider.self)
+        let children = try provider.views()
         return LazyGroup(count: children.count) { index in
             try Inspector.unwrap(view: try children.element(at: index), modifiers: [])
         }

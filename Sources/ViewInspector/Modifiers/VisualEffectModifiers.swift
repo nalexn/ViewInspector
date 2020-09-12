@@ -86,13 +86,11 @@ public extension InspectableView {
         let content = try modifierAttribute(modifierName:
             "_OverlayModifier<_ShapeView<_StrokedShape", path: "modifier|overlay|style",
             type: Any.self, call: "border")
-        guard let casyedContent = content as? S else {
-            throw InspectionError.typeMismatch(content, S.self)
-        }
+        let castedContent = try Inspector.cast(value: content, type: S.self)
         let width = try modifierAttribute(modifierName:
             "_OverlayModifier<_ShapeView<_StrokedShape", path: "modifier|overlay|shape|style|lineWidth",
             type: CGFloat.self, call: "border")
-        return (casyedContent, width)
+        return (castedContent, width)
     }
     
     func blendMode() throws -> BlendMode {
@@ -115,10 +113,7 @@ public extension InspectableView {
         let shapeValue = try modifierAttribute(
             modifierName: "_ClipEffect", path: "modifier|shape",
             type: Any.self, call: call)
-        guard let casted = shapeValue as? S else {
-            throw InspectionError.typeMismatch(shapeValue, S.self)
-        }
-        return casted
+        return try Inspector.cast(value: shapeValue, type: S.self)
     }
     
     func clipStyle() throws -> FillStyle {

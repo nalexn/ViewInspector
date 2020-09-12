@@ -14,10 +14,8 @@ public extension ViewType {
 extension ViewType.View: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
-        guard let body = (content.view as? Inspectable)?.content else {
-            throw InspectionError.typeMismatch(content.view, T.self)
-        }
-        return try Inspector.unwrap(view: body, modifiers: [])
+        let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
+        return try Inspector.unwrap(view: inspectable.content, modifiers: [])
     }
 }
 
@@ -55,10 +53,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View: CustomViewType {
     
     func actualView() throws -> View.T {
-        guard let casted = content.view as? View.T else {
-            throw InspectionError.typeMismatch(content.view, View.T.self)
-        }
-        return casted
+        return try Inspector.cast(value: content.view, type: View.T.self)
     }
 
     func viewBuilder() throws -> InspectableView<ViewType.ViewBuilder<View.T>> {
