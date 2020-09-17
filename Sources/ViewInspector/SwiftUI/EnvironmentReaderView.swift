@@ -26,6 +26,15 @@ public extension InspectableView where View: SingleViewContent {
         InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
         return try navigationBarItems(viewType: viewType, content: try child())
     }
+    
+    func popover() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try popover(AnyView.self)
+    }
+    
+    func popover<V>(_ viewType: V.Type) throws ->
+        InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
+        return try popover(viewType: viewType, content: try child())
+    }
 }
 
 // MARK: - Extraction from MultipleViewContent parent
@@ -46,7 +55,31 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Unwrapping the EnvironmentReaderView
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private extension InspectableView {
+internal extension InspectableView {
+    
+    func popover<V>(viewType: V.Type, content: Content) throws ->
+        InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
+        typealias Closure = (EnvironmentValues) -> ModifiedContent<V,
+            _AnchorWritingModifier<CGRect?, FakeNavigationBarItemsKey>>
+        guard let closure = try? Inspector.attribute(label: "content", value: content.view),
+            let closureDesc = Inspector.typeName(value: closure) as String?,
+            closureDesc.contains("_AnchorWritingModifier<Optional<CGRect>, Key>") else {
+            throw InspectionError.modifierNotFound(parent:
+                Inspector.typeName(value: content.view), modifier: "popover")
+        }
+        
+        let expectedViewType = closureDesc.popoverWrappedViewType
+        guard Inspector.typeName(type: viewType) == expectedViewType else {
+            throw InspectionError.notSupported(
+                "Please substitute '\(expectedViewType).self' as the parameter for 'popover()' inspection call")
+        }
+        
+        guard let typedClosure = withUnsafeBytes(of: closure, {
+            $0.bindMemory(to: Closure.self).first
+        }) else { throw InspectionError.typeMismatch(closure, Closure.self) }
+        let view = typedClosure(EnvironmentValues())
+        return try .init(try Inspector.unwrap(view: view, modifiers: content.modifiers))
+    }
     
     func navigationBarItems<V>(viewType: V.Type, content: Content) throws ->
         InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
@@ -80,6 +113,12 @@ private extension String {
     var navigationBarItemsWrappedViewType: String {
         let prefix = "(EnvironmentValues) -> ModifiedContent<"
         let suffix = ", _PreferenceWritingModifier<NavigationBarItemsKey>>"
+        return components(separatedBy: prefix).last?
+            .components(separatedBy: suffix).first ?? self
+    }
+    var popoverWrappedViewType: String {
+        let prefix = "(EnvironmentValues) -> ModifiedContent<"
+        let suffix = ", _AnchorWritingModifier<Optional<CGRect>, Key>>"
         return components(separatedBy: prefix).last?
             .components(separatedBy: suffix).first ?? self
     }

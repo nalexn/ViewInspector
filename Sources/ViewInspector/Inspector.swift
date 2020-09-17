@@ -184,9 +184,14 @@ extension Inspector {
     
     static func guardType(value: Any, prefix: String) throws {
         let name = typeName(type: type(of: value))
-        if name.hasPrefix("EnvironmentReaderView") {
-            throw InspectionError.notSupported(
-                "Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
+        if prefix.count > 0 && name.hasPrefix("EnvironmentReaderView") {
+            if name.contains("NavigationBarItemsKey") {
+                throw InspectionError.notSupported(
+                    "Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
+            } else {
+                throw InspectionError.notSupported(
+                    "Please use 'popover()' for unwrapping the underlying view hierarchy.")
+            }
         }
         guard name.hasPrefix(prefix) else {
             throw InspectionError.typeMismatch(factual: name, expected: prefix)

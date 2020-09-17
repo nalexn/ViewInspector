@@ -62,8 +62,8 @@ public extension InspectableView where View == ViewType.NavigationLink {
     }
     
     func isActive() throws -> Bool {
-        guard let external = try externalIsActive() else {
-            return try internalIsActive().wrappedValue
+        guard let external = try isActiveBinding() else {
+            return try isActiveState().wrappedValue
         }
         return external.wrappedValue
     }
@@ -73,7 +73,7 @@ public extension InspectableView where View == ViewType.NavigationLink {
     func deactivate() throws { try set(isActive: false) }
     
     private func set(isActive: Bool) throws {
-        if let external = try externalIsActive() {
+        if let external = try isActiveBinding() {
             external.wrappedValue = isActive
         } else {
             // @State mutation from outside is ignored by SwiftUI
@@ -89,12 +89,20 @@ public extension InspectableView where View == ViewType.NavigationLink {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension InspectableView where View == ViewType.NavigationLink {
-    func internalIsActive() throws -> State<Bool> {
+    func isActiveState() throws -> State<Bool> {
+        if #available(iOS 14, tvOS 14, macOS 10.16, *) {
+            return try Inspector
+                .attribute(path: "_isActive|state", value: content.view, type: State<Bool>.self)
+        }
         return try Inspector
             .attribute(label: "__internalIsActive", value: content.view, type: State<Bool>.self)
     }
     
-    func externalIsActive() throws -> Binding<Bool>? {
+    func isActiveBinding() throws -> Binding<Bool>? {
+        if #available(iOS 14, tvOS 14, macOS 10.16, *) {
+            return try? Inspector
+                .attribute(path: "_isActive|binding", value: content.view, type: Binding<Bool>.self)
+        }
         let isActive = try Inspector.attribute(label: "_externalIsActive", value: content.view)
         return isActive as? Binding<Bool>
     }

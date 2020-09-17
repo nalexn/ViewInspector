@@ -57,13 +57,21 @@ public extension InspectableView where View == ViewType.Text {
         let arguments = try Inspector
             .attribute(label: "arguments", value: localizedStringKey, type: [Any].self)
         let values: [CVarArg] = try arguments.map {
-            String(describing: try Inspector.attribute(label: "value", value: $0))
+            String(describing: try Inspector.attribute(path: stringArgumentPath, value: $0))
         }
         let argPatterns = ["%lld", "%ld", "%d", "%lf", "%f"]
         let format: String = argPatterns.reduce(baseString) { (format, pattern) in
             format.replacingOccurrences(of: pattern, with: "%@")
         }
         return String(format: format, arguments: values)
+    }
+    
+    var stringArgumentPath: String {
+        if #available(iOS 14, tvOS 14, macOS 10.16, *) {
+            return "storage|value|.0"
+        } else {
+            return "value"
+        }
     }
     
     func attributes() throws -> TextAttributes {

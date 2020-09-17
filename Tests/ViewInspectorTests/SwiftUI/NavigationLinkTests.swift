@@ -45,7 +45,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().navigationView().navigationLink(1))
     }
     
-    func testNavigationWithoutBinding() throws {
+    func testNavigationWithoutBindingAndState() throws {
         let view = NavigationView {
             NavigationLink(
                 destination: Text("Screen 1")) { Text("GoTo 1") }
@@ -57,8 +57,8 @@ final class NavigationLinkTests: XCTestCase {
             "Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
     }
     
-    func testNavigationWithBindingActivation() throws {
-        let view = TestView()
+    func testNavigationWithStateActivation() throws {
+        let view = TestViewState()
         XCTAssertNil(view.state.selection)
         let isActive1 = try view.inspect().navigationView().navigationLink(0).isActive()
         let isActive2 = try view.inspect().navigationView().navigationLink(1).isActive()
@@ -72,8 +72,24 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertFalse(isActiveAfter2)
     }
     
-    func testNavigationWithBindingDeactivation() throws {
-        let view = TestView()
+    func testNavigationWithBindingActivation() throws {
+        let selection = Binding<String?>(wrappedValue: nil)
+        let view = TestViewBinding(selection: selection)
+        XCTAssertNil(view.$selection.wrappedValue)
+        let isActive1 = try view.inspect().navigationView().navigationLink(0).isActive()
+        let isActive2 = try view.inspect().navigationView().navigationLink(1).isActive()
+        XCTAssertFalse(isActive1)
+        XCTAssertFalse(isActive2)
+        try view.inspect().navigationView().navigationLink(0).activate()
+        XCTAssertEqual(view.$selection.wrappedValue, view.tag1)
+        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
+        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
+        XCTAssertTrue(isActiveAfter1)
+        XCTAssertFalse(isActiveAfter2)
+    }
+    
+    func testNavigationWithStateDeactivation() throws {
+        let view = TestViewState()
         view.state.selection = view.tag2
         let isActive1 = try view.inspect().navigationView().navigationLink(0).isActive()
         let isActive2 = try view.inspect().navigationView().navigationLink(1).isActive()
@@ -87,8 +103,24 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertFalse(isActiveAfter2)
     }
     
-    func testNavigationWithBindingReactivation() throws {
-        let view = TestView()
+    func testNavigationWithBindingDeactivation() throws {
+        let selection = Binding<String?>(wrappedValue: nil)
+        let view = TestViewBinding(selection: selection)
+        view.selection = view.tag2
+        let isActive1 = try view.inspect().navigationView().navigationLink(0).isActive()
+        let isActive2 = try view.inspect().navigationView().navigationLink(1).isActive()
+        XCTAssertFalse(isActive1)
+        XCTAssertTrue(isActive2)
+        try view.inspect().navigationView().navigationLink(1).deactivate()
+        XCTAssertNil(view.selection)
+        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
+        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
+        XCTAssertFalse(isActiveAfter1)
+        XCTAssertFalse(isActiveAfter2)
+    }
+    
+    func testNavigationWithStateReactivation() throws {
+        let view = TestViewState()
         try view.inspect().navigationView().navigationLink(1).activate()
         XCTAssertEqual(view.state.selection, view.tag2)
         try view.inspect().navigationView().navigationLink(0).activate()
@@ -98,10 +130,23 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertTrue(isActiveAfter1)
         XCTAssertFalse(isActiveAfter2)
     }
+    
+    func testNavigationWithBindingReactivation() throws {
+        let selection = Binding<String?>(wrappedValue: nil)
+        let view = TestViewBinding(selection: selection)
+        try view.inspect().navigationView().navigationLink(1).activate()
+        XCTAssertEqual(view.selection, view.tag2)
+        try view.inspect().navigationView().navigationLink(0).activate()
+        XCTAssertEqual(view.selection, view.tag1)
+        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
+        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
+        XCTAssertTrue(isActiveAfter1)
+        XCTAssertFalse(isActiveAfter2)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestView: View, Inspectable {
+private struct TestViewState: View, Inspectable {
     @ObservedObject var state = NavigationState()
     
     var tag1: String { "tag1" }
@@ -118,7 +163,25 @@ private struct TestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension TestView {
+private struct TestViewBinding: View, Inspectable {
+
+    @Binding var selection: String?
+    
+    var tag1: String { "tag1" }
+    var tag2: String { "tag2" }
+    
+    var body: some View {
+        NavigationView {
+            NavigationLink(destination: Text("Screen 1"), tag: tag1,
+                           selection: self.$selection) { Text("GoTo 1") }
+            NavigationLink(destination: Text("Screen 2"), tag: tag2,
+                           selection: self.$selection) { Text("GoTo 2") }
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension TestViewState {
     class NavigationState: ObservableObject {
         @Published var selection: String?
     }

@@ -55,12 +55,17 @@ extension GeometryReader: GeometryReaderContentProvider {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension GeometryProxy {
-    struct Allocator {
+    struct Allocator48 {
         let data: (Int64, Int64, Int64, Int64, Int64, Int64) = (0, 0, 0, 0, 0, 0)
+    }
+    struct Allocator52 {
+        let data: (Allocator48, Int32) = (.init(), 0)
     }
     
     static func stub() -> GeometryProxy {
-        precondition(MemoryLayout<GeometryProxy>.size == MemoryLayout<Allocator>.size)
-        return unsafeBitCast(Allocator(), to: GeometryProxy.self)
+        if MemoryLayout<GeometryProxy>.size == 48 {
+            return unsafeBitCast(Allocator48(), to: GeometryProxy.self)
+        }
+        return unsafeBitCast(Allocator52(), to: GeometryProxy.self)
     }
 }
