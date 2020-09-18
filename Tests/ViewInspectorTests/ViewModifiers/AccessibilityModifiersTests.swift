@@ -70,11 +70,15 @@ final class ViewAccessibilityTests: XCTestCase {
         XCTAssertEqual(sut, string)
     }
     
+    @available(iOS, deprecated, introduced: 13.0)
+    @available(tvOS, deprecated, introduced: 13.0)
     func testAccessibilitySelectionIdentifier() throws {
         let sut = EmptyView().accessibility(selectionIdentifier: "")
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    @available(iOS, deprecated, introduced: 13.0)
+    @available(tvOS, deprecated, introduced: 13.0)
     func testAccessibilitySelectionIdentifierInspection() throws {
         let string = "abc"
         let sut = try EmptyView().accessibility(selectionIdentifier: string)
