@@ -145,6 +145,11 @@ public extension InspectableView.TextAttributes {
                 let design = try Inspector.attribute(label: "design", value: fontProvider, type: Font.Design.self)
                 return .system(size: size, weight: weight, design: design)
             }
+            if providerName == "TextStyleProvider" {
+                let design = try Inspector.attribute(label: "design", value: fontProvider, type: Font.Design.self)
+                let style = try Inspector.attribute(label: "style", value: fontProvider, type: Font.TextStyle.self)
+                return .system(style, design: design)
+            }
             if providerName == "NamedProvider" {
                 let name = try Inspector.attribute(label: "name", value: fontProvider, type: String.self)
                 let size = try Inspector.attribute(label: "size", value: fontProvider, type: CGFloat.self)

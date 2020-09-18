@@ -78,10 +78,14 @@ final class TextTests: XCTestCase {
         let view1 = Text("Test").kerning(2).font(system)
         let sut1 = try view1.inspect().text().attributes()
         XCTAssertEqual(try sut1.font(), system)
-        let custom = Font.custom("Avenir-Roman", size: 15)
-        let view2 = Text("Test").font(custom)
+        let system2 = Font.system(.largeTitle)
+        let view2 = Text("Test").kerning(2).font(system2)
         let sut2 = try view2.inspect().text().attributes()
-        XCTAssertEqual(try sut2.font(), custom)
+        XCTAssertEqual(try sut2.font(), .largeTitle)
+        let custom = Font.custom("Avenir-Roman", size: 15)
+        let view3 = Text("Test").font(custom)
+        let sut3 = try view3.inspect().text().attributes()
+        XCTAssertEqual(try sut3.font(), custom)
     }
 
     func testFontWeightAttribute() throws {
