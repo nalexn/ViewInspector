@@ -642,7 +642,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func accessibility(hint: Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibility(activationPoint: UnitPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibility(activationPoint: CGPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-func accessibility(inputLabels: [Text]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>
+|:technologist:| `func accessibility(inputLabels: [Text]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:heavy_check_mark:| `func accessibility(addTraits: AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:heavy_check_mark:| `func accessibility(removeTraits: AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibility(sortPriority: Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
