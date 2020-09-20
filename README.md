@@ -57,9 +57,9 @@ The library can operate with all types of the View's state: `@Binding`, `@State`
 
 ### Which views and modifiers are supported?
 
-Pretty much all! Check out the [detailed list](readiness.md).
+Check out the [detailed list](readiness.md). There is currently almost full support for SwiftUI 1.0 API, the 2.0 support is under active development.
 
-The framework is still expanding, as there are hundreds of inspectable attributes in SwiftUI that are not included yet. Contributions are welcomed!
+You are welcomed to contribute! Use `po Inspector.print(view) as AnyObject` in **lldb** for printing the inner view structure - this is the tool that would help you dig super fast!
 
 ### Is it using private APIs?
 
