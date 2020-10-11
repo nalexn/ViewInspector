@@ -84,4 +84,14 @@ final class GlobalModifiersForList: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif
+    
+    func testListStyle() throws {
+        let sut = EmptyView().listStyle(DefaultListStyle())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testListStyleInspection() throws {
+        let sut = EmptyView().listStyle(DefaultListStyle())
+        XCTAssertTrue(try sut.inspect().listStyle() is DefaultListStyle)
+    }
 }
