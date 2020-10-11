@@ -494,7 +494,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func listRowInsets(EdgeInsets?) -> some View` |
+|:white_check_mark:| `func listRowInsets(EdgeInsets?) -> some View` |
 |:heavy_check_mark:| `func listRowBackground<V>(V?) -> some View` |
 |:heavy_check_mark:| `func listRowPlatterColor(Color?) -> some View` |
 |:white_check_mark:| `func tag<V>(V) -> some View` |

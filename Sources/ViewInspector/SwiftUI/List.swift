@@ -41,6 +41,12 @@ public extension InspectableView where View: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
+    
+    func listRowInsets() throws -> EdgeInsets {
+        return try modifierAttribute(
+            modifierName: "_TraitWritingModifier<ListRowInsetsTraitKey>",
+            path: "modifier|value|some", type: EdgeInsets.self, call: "listRowInsets")
+    }
 
     func listStyle() throws -> Any {
         let modifier = try self.modifier({ modifier -> Bool in

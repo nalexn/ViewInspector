@@ -73,6 +73,11 @@ final class GlobalModifiersForList: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testListRowInsetsInspection() throws {
+        let sut = EmptyView().listRowInsets(EdgeInsets())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
     func testListRowBackground() throws {
         let sut = EmptyView().listRowBackground(Text(""))
         XCTAssertNoThrow(try sut.inspect().emptyView())
