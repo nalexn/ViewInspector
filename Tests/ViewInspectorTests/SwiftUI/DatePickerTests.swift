@@ -54,6 +54,11 @@ final class GlobalModifiersForDatePicker: XCTestCase {
         let sut = EmptyView().datePickerStyle(DefaultDatePickerStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testDatePickerStyleInspection() throws {
+        let sut = EmptyView().datePickerStyle(DefaultDatePickerStyle())
+        XCTAssertTrue(try sut.inspect().datePickerStyle() is DefaultDatePickerStyle)
+    }
 }
 
 #endif
