@@ -484,7 +484,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| `func indexViewStyle<S>(S) -> some View` |
 |:white_check_mark:| `func listStyle<S>(S) -> some View` |
 |:technologist:| `func groupBoxStyle<S>(S) -> some View` |
-|:heavy_check_mark:| `func navigationViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func navigationViewStyle<S>(S) -> some View` |
 |:technologist:| `func progressViewStyle<S>(S) -> some View` |
 |:technologist:| `func gaugeStyle<S>(S) -> some View` |
 |:technologist:| `func presentedWindowStyle<S>(S) -> some View` |

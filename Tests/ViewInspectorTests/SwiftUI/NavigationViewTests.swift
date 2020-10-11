@@ -60,6 +60,11 @@ final class GlobalModifiersForNavigationView: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testNavigationStyleInspection() throws {
+        let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
+        XCTAssertTrue(try sut.inspect().navigationViewStyle() is DefaultNavigationViewStyle)
+    }
+    
     #if !os(macOS)
     func testNavigationBarTitle() throws {
         let sut = EmptyView().navigationBarTitle("")
