@@ -74,13 +74,19 @@ final class GlobalModifiersForList: XCTestCase {
     }
     
     func testListRowInsetsInspection() throws {
-        let sut = EmptyView().listRowInsets(EdgeInsets())
-        XCTAssertNoThrow(try sut.inspect().emptyView())
+        let insets = EdgeInsets(top: 1, leading: 2, bottom: 3, trailing: 4)
+        let sut = EmptyView().listRowInsets(insets)
+        XCTAssertEqual(try sut.inspect().listRowInsets(), insets)
     }
     
     func testListRowBackground() throws {
         let sut = EmptyView().listRowBackground(Text(""))
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testListRowBackgroundInspection() throws {
+        let sut = EmptyView().listRowBackground(Text("test").padding())
+        XCTAssertEqual(try sut.inspect().listRowBackground().text().string(), "test")
     }
     
     #if os(watchOS)

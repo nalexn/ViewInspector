@@ -47,6 +47,13 @@ public extension InspectableView {
             modifierName: "_TraitWritingModifier<ListRowInsetsTraitKey>",
             path: "modifier|value|some", type: EdgeInsets.self, call: "listRowInsets")
     }
+    
+    func listRowBackground() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try modifierAttribute(
+            modifierName: "_TraitWritingModifier<ListRowBackgroundTraitKey>",
+            path: "modifier|value|some|storage|view", type: Any.self, call: "listRowBackground")
+        return try .init(try Inspector.unwrap(content: Content(view)))
+    }
 
     func listStyle() throws -> Any {
         let modifier = try self.modifier({ modifier -> Bool in
