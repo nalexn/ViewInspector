@@ -66,6 +66,11 @@ final class GlobalModifiersForTextField: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testTextFieldStyleInspection() throws {
+        let sut = EmptyView().textFieldStyle(DefaultTextFieldStyle())
+        XCTAssertTrue(try sut.inspect().textFieldStyle() is DefaultTextFieldStyle)
+    }
+    
     #if !os(macOS)
     func testTextContentType() throws {
         let sut = EmptyView().textContentType(.emailAddress)
