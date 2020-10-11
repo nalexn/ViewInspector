@@ -48,6 +48,11 @@ final class GlobalModifiersForMenuMenuButton: XCTestCase {
         let sut = EmptyView().menuButtonStyle(PullDownMenuButtonStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testMenuStyleInspection() throws {
+        let sut = EmptyView().menuButtonStyle(DefaultMenuButtonStyle())
+        XCTAssertTrue(try sut.inspect().menuButtonStyle() is DefaultMenuButtonStyle)
+    }
 }
 
 #endif

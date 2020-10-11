@@ -475,7 +475,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|
 |:technologist:| `func labelStyle<S>(S) -> some View` |
 |:white_check_mark:| `func buttonStyle<S>(S) -> some View` |
-|:heavy_check_mark:| `func menuButtonStyle<S>(S) -> some View` |
+|:white_check_mark:| `func menuButtonStyle<S>(S) -> some View` |
 |:technologist:| `func menuStyle<S>(S) -> some View` |
 |:heavy_check_mark:| `func pickerStyle<S>(S) -> some View` |
 |:heavy_check_mark:| `func datePickerStyle<S>(S) -> some View` |
