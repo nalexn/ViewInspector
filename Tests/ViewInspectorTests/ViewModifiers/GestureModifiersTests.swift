@@ -52,20 +52,6 @@ final class ViewGesturesTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif
-    
-    #if os(watchOS)
-    func testDigitalCrownRotation() throws {
-        let sut = EmptyView().digitalCrownRotation(self.$floatValue)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testDigitalCrownRotationExtended() throws {
-        let sut = EmptyView().digitalCrownRotation(
-            self.$floatValue, from: 5, through: 5, by: 5, sensitivity: .low,
-            isContinuous: true, isHapticFeedbackEnabled: true)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
 }
 
 // MARK: - ViewHitTestingTests

@@ -252,13 +252,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:heavy_check_mark:| `func simultaneousGesture<T>(T, including: GestureMask) -> some View` |
 |:white_check_mark:| `func transaction((inout Transaction) -> Void) -> some View` |
 
-### Tracking Digital Crown Rotation
-
-| Status | Modifier |
-|:---:|---|
-|:heavy_check_mark:| `func digitalCrownRotation<V>(Binding<V>) -> some View` |
-|:heavy_check_mark:| `func digitalCrownRotation<V>(Binding<V>, from: V, through: V, by: V.Stride?, sensitivity: DigitalCrownRotationalSensitivity, isContinuous: Bool, isHapticFeedbackEnabled: Bool) -> some View` |
-
 ### Handling Application Life Cycle Events
 
 | Status | Modifier |
@@ -465,7 +458,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:heavy_check_mark:| `func labelsHidden() -> some View` |
-|:heavy_check_mark:| `func defaultWheelPickerItemHeight(CGFloat) -> some View` |
 |:heavy_check_mark:| `func horizontalRadioGroupLayout() -> some View` |
 |:heavy_check_mark:| `func controlSize(ControlSize) -> some View` |
 
@@ -496,7 +488,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|
 |:white_check_mark:| `func listRowInsets(EdgeInsets?) -> some View` |
 |:white_check_mark:| `func listRowBackground<V>(V?) -> some View` |
-|:heavy_check_mark:| `func listRowPlatterColor(Color?) -> some View` |
 |:white_check_mark:| `func tag<V>(V) -> some View` |
 
 ### Tinting a List Item

@@ -12,13 +12,6 @@ final class ViewControlAttributesTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
-    #if os(watchOS)
-    func testDefaultWheelPickerItemHeight() throws {
-        let sut = EmptyView().defaultWheelPickerItemHeight(5)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
     #if os(macOS)
     func testHorizontalRadioGroupLayout() throws {
         let sut = EmptyView().horizontalRadioGroupLayout()

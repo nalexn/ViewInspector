@@ -89,13 +89,6 @@ final class GlobalModifiersForList: XCTestCase {
         XCTAssertEqual(try sut.inspect().listRowBackground().text().string(), "test")
     }
     
-    #if os(watchOS)
-    func testListRowPlatterColor() throws {
-        let sut = EmptyView().listRowPlatterColor(.red)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
     func testListStyle() throws {
         let sut = EmptyView().listStyle(DefaultListStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
