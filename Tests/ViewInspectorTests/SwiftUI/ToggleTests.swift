@@ -45,4 +45,9 @@ final class GlobalModifiersForToggle: XCTestCase {
         let sut = EmptyView().toggleStyle(DefaultToggleStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testToggleStyleInspection() throws {
+        let sut = EmptyView().toggleStyle(DefaultToggleStyle())
+        XCTAssertTrue(try sut.inspect().toggleStyle() is DefaultToggleStyle)
+    }
 }

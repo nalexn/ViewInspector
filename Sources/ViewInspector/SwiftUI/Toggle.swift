@@ -36,3 +36,16 @@ public extension InspectableView where View: MultipleViewContent {
         return try .init(try child(at: index))
     }
 }
+
+// MARK: - Global View Modifiers
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView {
+
+    func toggleStyle() throws -> Any {
+        let modifier = try self.modifier({ modifier -> Bool in
+            return modifier.modifierType.hasPrefix("ToggleStyleModifier")
+        }, call: "toggleStyle")
+        return try Inspector.attribute(path: "modifier|style", value: modifier)
+    }
+}
