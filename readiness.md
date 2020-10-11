@@ -18,7 +18,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
 |:white_check_mark:| Button | `contained view`, `tap()` |
-|:technologist:| ButtonStyleConfiguration.Label | |
+|:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:technologist:| ColorPicker | |
 |:white_check_mark:| ConditionalContent | `contained view` |
@@ -70,7 +70,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| OutlineSubgroupChildren | |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view` |
-|:technologist:| PrimitiveButtonStyleConfiguration.Label | |
+|:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
 |:technologist:| ProgressView | |
 |:technologist:| ProgressViewStyleConfiguration.CurrentValueLabel | |
 |:technologist:| ProgressViewStyleConfiguration.Label | |
@@ -474,7 +474,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:technologist:| `func labelStyle<S>(S) -> some View` |
-|:heavy_check_mark:| `func buttonStyle<S>(S) -> some View` |
+|:white_check_mark:| `func buttonStyle<S>(S) -> some View` |
 |:heavy_check_mark:| `func menuButtonStyle<S>(S) -> some View` |
 |:technologist:| `func menuStyle<S>(S) -> some View` |
 |:heavy_check_mark:| `func pickerStyle<S>(S) -> some View` |

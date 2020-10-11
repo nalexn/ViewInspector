@@ -137,16 +137,24 @@ internal extension InspectableView {
     
     func modifierAttribute<Type>(modifierLookup: (ModifierNameProvider) -> Bool, path: String,
                                  type: Type.Type, call: String) throws -> Type {
-        let foundModifier = content.modifiers.lazy
-            .compactMap { $0 as? ModifierNameProvider }
-            .last(where: modifierLookup)
-        guard let modifier = foundModifier,
-            let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
+        let modifier = try self.modifier(modifierLookup, call: call)
+        guard let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
             throw InspectionError.modifierNotFound(
                 parent: Inspector.typeName(value: content.view), modifier: call)
         }
         return attribute
+    }
+    
+    func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
+        guard let modifier = content.modifiers.lazy
+                .compactMap({ $0 as? ModifierNameProvider })
+                .last(where: modifierLookup)
+        else {
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: content.view), modifier: call)
+        }
+        return modifier
     }
 }
 

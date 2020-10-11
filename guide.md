@@ -6,6 +6,7 @@
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
 - [ViewModifiers](#viewmodifiers)
+- [Custom **ButtonStyle** or **PrimitiveButtonStyle**](#custom-buttonstyle-or-primitivebuttonstyle)
 
 ## The Basics
 
@@ -337,3 +338,92 @@ func testViewModifier() {
 Please note that you cannot get access to the hierarchy behind the `content` of `ViewModifier`, that is `try view.emptyView()` in this test would not work: the outer hierarchy has to be inspected from the parent's view.
 
 An example of an asynchronous `ViewModifier` inspection can be found in the sample project: [ViewModifier](https://github.com/nalexn/clean-architecture-swiftui/blob/master/CountriesSwiftUI/UI/RootViewModifier.swift) | [Tests](https://github.com/nalexn/clean-architecture-swiftui/blob/master/UnitTests/UI/RootViewAppearanceTests.swift)
+
+## Custom `ButtonStyle` or `PrimitiveButtonStyle`
+
+Verifying the button style in use is easy:
+
+```swift
+XCTAssertTrue(try sut.inspect().buttonStyle() is PlainButtonStyle)
+```
+
+Assuming you want to test how your custom `ButtonStyle` works for different `isPressed` status, consider the following example:
+
+```swift
+struct CustomButtonStyle: ButtonStyle {
+    
+    public func makeBody(configuration: CustomButtonStyle.Configuration) -> some View {
+        configuration.label
+            .blur(radius: configuration.isPressed ? 5 : 0)
+    }
+}
+```
+
+The library provides a custom inspection function `inspect(isPressed: Bool)` for testing the `ButtonStyle`:
+
+```swift
+func testCustomButtonStyle() throws {
+    let sut = CustomButtonStyle()
+    XCTAssertEqual(try sut.inspect(isPressed: false).blur().radius, 0)
+    XCTAssertEqual(try sut.inspect(isPressed: true).blur().radius, 5)
+}
+```
+
+Now an example for a custom `PrimitiveButtonStyle`:
+
+```swift
+struct CustomPrimitiveButtonStyle: PrimitiveButtonStyle {
+    
+    func makeBody(configuration: PrimitiveButtonStyle.Configuration) -> some View {
+        CustomButton(configuration: configuration)
+    }
+    
+    struct CustomButton: View {
+        
+        let configuration: PrimitiveButtonStyle.Configuration
+        @State private(set) var isPressed = false
+
+        var body: some View {
+            configuration.label
+                .blur(radius: isPressed ? 5 : 0)
+                .onTapGesture {
+                    self.isPressed = true
+                    self.configuration.trigger()
+                }
+        }
+    }
+}
+```
+
+You can get access to the root view:
+
+```swift
+func testPrimitiveButtonStyle() throws {
+    let sut = CustomPrimitiveButtonStyle()
+    let view = try sut.inspect().view(CustomPrimitiveButtonStyle.CustomButton.self)
+    ...
+}
+```
+However, since that root view is likely to be a custom view itself, it's better to inspect it directly. There is a helper initializer available for `PrimitiveButtonStyleConfiguration` where you provide `onTrigger` closure for verifying that your `PrimitiveButtonStyle` calls `trigger()` in the right time:
+
+```swift
+func testPrimitiveButtonStyleLabel() throws {
+    let triggerExp = XCTestExpectation(description: "trigger()")
+    triggerExp.expectedFulfillmentCount = 1
+    triggerExp.assertForOverFulfill = true
+    let config = PrimitiveButtonStyleConfiguration(onTrigger: {
+        triggerExp.fulfill()
+    })
+    let view = CustomPrimitiveButtonStyle.CustomButton(configuration: config)
+    let exp = view.inspection.inspect { view in
+        let label = try view.primitiveButtonStyleLabel()
+        XCTAssertEqual(try label.blur().radius, 0)
+        try label.callOnTapGesture()
+        let updatedLabel = try view.primitiveButtonStyleLabel()
+        XCTAssertEqual(try updatedLabel.blur().radius, 5)
+    }
+    ViewHosting.host(view: view)
+    wait(for: [exp, triggerExp], timeout: 0.1)
+}
+```
+

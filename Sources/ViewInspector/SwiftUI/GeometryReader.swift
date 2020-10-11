@@ -49,7 +49,7 @@ extension GeometryReader: GeometryReaderContentProvider {
         typealias Builder = (GeometryProxy) -> Content
         let builder = try Inspector
             .attribute(label: "content", value: self, type: Builder.self)
-        return builder(GeometryProxy.stub())
+        return builder(GeometryProxy())
     }
 }
 
@@ -62,10 +62,11 @@ private extension GeometryProxy {
         let data: (Allocator48, Int32) = (.init(), 0)
     }
     
-    static func stub() -> GeometryProxy {
+    init() {
         if MemoryLayout<GeometryProxy>.size == 48 {
-            return unsafeBitCast(Allocator48(), to: GeometryProxy.self)
+            self = unsafeBitCast(Allocator48(), to: GeometryProxy.self)
+            return
         }
-        return unsafeBitCast(Allocator52(), to: GeometryProxy.self)
+        self = unsafeBitCast(Allocator52(), to: GeometryProxy.self)
     }
 }
