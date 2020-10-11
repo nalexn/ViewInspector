@@ -61,3 +61,16 @@ public extension InspectableView where View == ViewType.Picker {
         return try .init(content)
     }
 }
+
+// MARK: - Global View Modifiers
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView {
+
+    func pickerStyle() throws -> Any {
+        let modifier = try self.modifier({ modifier -> Bool in
+            return modifier.modifierType.hasPrefix("PickerStyleWriter")
+        }, call: "pickerStyle")
+        return try Inspector.attribute(path: "modifier|style", value: modifier)
+    }
+}

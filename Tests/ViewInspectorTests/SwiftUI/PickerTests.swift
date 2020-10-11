@@ -66,4 +66,9 @@ final class GlobalModifiersForPicker: XCTestCase {
         let sut = EmptyView().pickerStyle(DefaultPickerStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testPickerStyleInspection() throws {
+        let sut = EmptyView().pickerStyle(DefaultPickerStyle())
+        XCTAssertTrue(try sut.inspect().pickerStyle() is DefaultPickerStyle)
+    }
 }
