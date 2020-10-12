@@ -35,6 +35,12 @@ public extension InspectableView {
         let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)
         return try environmentModifier(keyPath: keyPath, call: "disableAutocorrection")
     }
+    
+    func flipsForRightToLeftLayoutDirection() throws -> Bool? {
+        return try modifierAttribute(
+            modifierName: "_FlipForRTLEffect", path: "modifier|isEnabled",
+            type: Optional<Bool>.self, call: "flipsForRightToLeftLayoutDirection")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

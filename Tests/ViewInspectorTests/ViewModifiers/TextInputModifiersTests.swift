@@ -50,4 +50,14 @@ final class TextInputModifiersTests: XCTestCase {
         let sut = EmptyView().disableAutocorrection(false)
         XCTAssertEqual(try sut.inspect().emptyView().disableAutocorrection(), false)
     }
+    
+    func testFlipsForRightToLeftLayoutDirection() throws {
+        let sut = EmptyView().flipsForRightToLeftLayoutDirection(true)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testFlipsForRightToLeftLayoutDirectionInspection() throws {
+        let sut = EmptyView().flipsForRightToLeftLayoutDirection(true)
+        XCTAssertEqual(try sut.inspect().emptyView().flipsForRightToLeftLayoutDirection(), true)
+    }
 }

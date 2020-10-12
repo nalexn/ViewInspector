@@ -442,7 +442,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| `func textContentType(NSTextContentType?) -> some View` |
 |:heavy_check_mark:| `func textContentType(WKTextContentType?) -> some View` |
 |:technologist:| `func textCase(Text.Case?) -> some View` |
-|:heavy_check_mark:| `func flipsForRightToLeftLayoutDirection(Bool) -> some View` |
+|:white_check_mark:| `func flipsForRightToLeftLayoutDirection(Bool) -> some View` |
 |:white_check_mark:| `func autocapitalization(UITextAutocapitalizationType) -> some View` |
 |:white_check_mark:| `func disableAutocorrection(Bool?) -> some View` |
 
