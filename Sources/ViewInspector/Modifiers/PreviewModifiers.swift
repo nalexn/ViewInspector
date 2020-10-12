@@ -7,32 +7,22 @@ public extension InspectableView {
     
     func foregroundColor() throws -> Color? {
         let reference = EmptyView().foregroundColor(nil)
-        let referenceKeyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
-        return try modifierAttribute(modifierLookup: { modifier -> Bool in
-            guard modifier.modifierType == "_EnvironmentKeyWritingModifier<Optional<Color>>",
-                  let keyPath = try? Inspector.environmentKeyPath(Optional<Color>.self, modifier)
-            else { return false }
-            return keyPath == referenceKeyPath
-        }, path: "modifier|value", type: Optional<Color>.self, call: "foregroundColor")
+        let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "foregroundColor")
     }
     
     #if !os(macOS)
     func accentColor() throws -> Color? {
         let reference = EmptyView().accentColor(nil)
-        let referenceKeyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
-        return try modifierAttribute(modifierLookup: { modifier -> Bool in
-            guard modifier.modifierType == "_EnvironmentKeyWritingModifier<Optional<Color>>",
-                  let keyPath = try? Inspector.environmentKeyPath(Optional<Color>.self, modifier)
-            else { return false }
-            return keyPath == referenceKeyPath
-        }, path: "modifier|value", type: Optional<Color>.self, call: "accentColor")
+        let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "accentColor")
     }
     #endif
     
     func colorScheme() throws -> ColorScheme {
-        return try modifierAttribute(
-            modifierName: "_EnvironmentKeyWritingModifier<ColorScheme>",
-            path: "modifier|value", type: ColorScheme.self, call: "colorScheme")
+        let reference = EmptyView().colorScheme(.light)
+        let keyPath = try Inspector.environmentKeyPath(ColorScheme.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "colorScheme")
     }
     
     #if !os(macOS)

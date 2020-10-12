@@ -90,9 +90,9 @@ public extension InspectableView {
     
     #if !os(macOS)
     func imageScale() throws -> Image.Scale {
-        return try modifierAttribute(
-            modifierName: "_EnvironmentKeyWritingModifier<Scale>", path: "modifier|value",
-            type: Image.Scale.self, call: "imageScale")
+        let reference = EmptyView().imageScale(.large)
+        let keyPath = try Inspector.environmentKeyPath(Image.Scale.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "imageScale")
     }
     #endif
     
