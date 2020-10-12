@@ -29,6 +29,12 @@ public extension InspectableView {
         return UITextAutocapitalizationType(rawValue: value)!
     }
     #endif
+    
+    func disableAutocorrection() throws -> Bool? {
+        let reference = EmptyView().disableAutocorrection(false)
+        let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "disableAutocorrection")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

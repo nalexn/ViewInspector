@@ -45,4 +45,9 @@ final class TextInputModifiersTests: XCTestCase {
         let sut = EmptyView().disableAutocorrection(false)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testDisableAutocorrectionInspection() throws {
+        let sut = EmptyView().disableAutocorrection(false)
+        XCTAssertEqual(try sut.inspect().emptyView().disableAutocorrection(), false)
+    }
 }
