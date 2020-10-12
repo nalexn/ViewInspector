@@ -70,4 +70,28 @@ public extension InspectableView {
         }, call: "textFieldStyle")
         return try Inspector.attribute(path: "modifier|style", value: modifier)
     }
+    
+    func keyboardType() throws -> UIKeyboardType {
+        let reference = EmptyView().keyboardType(.default)
+        let accentKeyPath = try Inspector.environmentKeyPath(Int.self, reference)
+        let value = try modifierAttribute(modifierLookup: { modifier -> Bool in
+            guard modifier.modifierType == "_EnvironmentKeyWritingModifier<Int>",
+                  let keyPath = try? Inspector.environmentKeyPath(Int.self, modifier)
+            else { return false }
+            return keyPath == accentKeyPath
+        }, path: "modifier|value", type: Int.self, call: "keyboardType")
+        return UIKeyboardType(rawValue: value)!
+    }
+    
+    func autocapitalization() throws -> UITextAutocapitalizationType {
+        let reference = EmptyView().autocapitalization(.none)
+        let accentKeyPath = try Inspector.environmentKeyPath(Int.self, reference)
+        let value = try modifierAttribute(modifierLookup: { modifier -> Bool in
+            guard modifier.modifierType == "_EnvironmentKeyWritingModifier<Int>",
+                  let keyPath = try? Inspector.environmentKeyPath(Int.self, modifier)
+            else { return false }
+            return keyPath == accentKeyPath
+        }, path: "modifier|value", type: Int.self, call: "autocapitalization")
+        return UITextAutocapitalizationType(rawValue: value)!
+    }
 }

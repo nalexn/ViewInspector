@@ -84,9 +84,19 @@ final class GlobalModifiersForTextField: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testKeyboardTypeInspection() throws {
+        let sut = EmptyView().keyboardType(.namePhonePad)
+        XCTAssertEqual(try sut.inspect().emptyView().keyboardType(), .namePhonePad)
+    }
+    
     func testAutocapitalization() throws {
         let sut = EmptyView().autocapitalization(.words)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testAutocapitalizationInspection() throws {
+        let sut = EmptyView().autocapitalization(.words)
+        XCTAssertEqual(try sut.inspect().emptyView().autocapitalization(), .words)
     }
     #endif
     

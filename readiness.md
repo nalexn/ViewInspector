@@ -430,7 +430,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func keyboardType(UIKeyboardType) -> some View` |
+|:white_check_mark:| `func keyboardType(UIKeyboardType) -> some View` |
 |:heavy_check_mark:| `func font(Font?) -> some View` |
 |:heavy_check_mark:| `func lineLimit(Int?) -> some View` |
 |:heavy_check_mark:| `func lineSpacing(CGFloat) -> some View` |
@@ -443,7 +443,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:heavy_check_mark:| `func textContentType(WKTextContentType?) -> some View` |
 |:technologist:| `func textCase(Text.Case?) -> some View` |
 |:heavy_check_mark:| `func flipsForRightToLeftLayoutDirection(Bool) -> some View` |
-|:heavy_check_mark:| `func autocapitalization(UITextAutocapitalizationType) -> some View` |
+|:white_check_mark:| `func autocapitalization(UITextAutocapitalizationType) -> some View` |
 |:heavy_check_mark:| `func disableAutocorrection(Bool?) -> some View` |
 
 ### Redacting Content

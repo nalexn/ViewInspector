@@ -78,11 +78,6 @@ final class ViewColorTests: XCTestCase {
     }
     #endif
     
-    func testEnvironmentColorKeyPathError() throws {
-        XCTAssertThrows(try Inspector.environmentColorKeyPath(0),
-                        "Int does not have 'keyPath' attribute")
-    }
-    
     func testColorScheme() throws {
         let sut = EmptyView().colorScheme(.light)
         XCTAssertNoThrow(try sut.inspect().emptyView())

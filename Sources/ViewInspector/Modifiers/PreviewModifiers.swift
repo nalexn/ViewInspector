@@ -6,10 +6,11 @@ import SwiftUI
 public extension InspectableView {
     
     func foregroundColor() throws -> Color? {
-        let foregroundKeyPath = try Inspector.environmentColorKeyPath(EmptyView().foregroundColor(nil))
+        let reference = EmptyView().foregroundColor(nil)
+        let foregroundKeyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
         return try modifierAttribute(modifierLookup: { modifier -> Bool in
             guard modifier.modifierType == "_EnvironmentKeyWritingModifier<Optional<Color>>",
-                  let keyPath = try? Inspector.environmentColorKeyPath(modifier)
+                  let keyPath = try? Inspector.environmentKeyPath(Optional<Color>.self, modifier)
             else { return false }
             return keyPath == foregroundKeyPath
         }, path: "modifier|value", type: Optional<Color>.self, call: "foregroundColor")
@@ -17,10 +18,11 @@ public extension InspectableView {
     
     #if !os(macOS)
     func accentColor() throws -> Color? {
-        let accentKeyPath = try Inspector.environmentColorKeyPath(EmptyView().accentColor(nil))
+        let reference = EmptyView().accentColor(nil)
+        let accentKeyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
         return try modifierAttribute(modifierLookup: { modifier -> Bool in
             guard modifier.modifierType == "_EnvironmentKeyWritingModifier<Optional<Color>>",
-                  let keyPath = try? Inspector.environmentColorKeyPath(modifier)
+                  let keyPath = try? Inspector.environmentKeyPath(Optional<Color>.self, modifier)
             else { return false }
             return keyPath == accentKeyPath
         }, path: "modifier|value", type: Optional<Color>.self, call: "accentColor")
@@ -44,13 +46,9 @@ public extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Inspector {
-    static func environmentColorKeyPath(_ value: Any) throws -> WritableKeyPath<EnvironmentValues, Color?> {
-        guard let keyPath = try? Inspector.attribute(path: "modifier|keyPath", value: value)
-        as? WritableKeyPath<EnvironmentValues, Color?> else {
-            throw InspectionError.attributeNotFound(
-                label: "keyPath", type: Inspector.typeName(value: value))
-        }
-        return keyPath
+    static func environmentKeyPath<T>(_ type: T.Type, _ value: Any) throws -> WritableKeyPath<EnvironmentValues, T> {
+        return try Inspector.attribute(path: "modifier|keyPath", value: value,
+                                       type: WritableKeyPath<EnvironmentValues, T>.self)
     }
 }
 
