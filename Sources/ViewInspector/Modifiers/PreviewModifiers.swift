@@ -7,24 +7,24 @@ public extension InspectableView {
     
     func foregroundColor() throws -> Color? {
         let reference = EmptyView().foregroundColor(nil)
-        let foregroundKeyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
+        let referenceKeyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
         return try modifierAttribute(modifierLookup: { modifier -> Bool in
             guard modifier.modifierType == "_EnvironmentKeyWritingModifier<Optional<Color>>",
                   let keyPath = try? Inspector.environmentKeyPath(Optional<Color>.self, modifier)
             else { return false }
-            return keyPath == foregroundKeyPath
+            return keyPath == referenceKeyPath
         }, path: "modifier|value", type: Optional<Color>.self, call: "foregroundColor")
     }
     
     #if !os(macOS)
     func accentColor() throws -> Color? {
         let reference = EmptyView().accentColor(nil)
-        let accentKeyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
+        let referenceKeyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
         return try modifierAttribute(modifierLookup: { modifier -> Bool in
             guard modifier.modifierType == "_EnvironmentKeyWritingModifier<Optional<Color>>",
                   let keyPath = try? Inspector.environmentKeyPath(Optional<Color>.self, modifier)
             else { return false }
-            return keyPath == accentKeyPath
+            return keyPath == referenceKeyPath
         }, path: "modifier|value", type: Optional<Color>.self, call: "accentColor")
     }
     #endif
@@ -42,14 +42,6 @@ public extension InspectableView {
             path: "modifier|value", type: Optional<ColorScheme>.self, call: "preferredColorScheme")
     }
     #endif
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension Inspector {
-    static func environmentKeyPath<T>(_ type: T.Type, _ value: Any) throws -> WritableKeyPath<EnvironmentValues, T> {
-        return try Inspector.attribute(path: "modifier|keyPath", value: value,
-                                       type: WritableKeyPath<EnvironmentValues, T>.self)
-    }
 }
 
 // MARK: - ViewPreview

@@ -12,6 +12,11 @@ final class TextInputModifiersTests: XCTestCase {
         let sut = EmptyView().textContentType(.emailAddress)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testTextContentTypeInspection() throws {
+        let sut = EmptyView().textContentType(.emailAddress)
+        XCTAssertEqual(try sut.inspect().emptyView().textContentType(), .emailAddress)
+    }
     #endif
     
     #if os(iOS) || os(tvOS)
