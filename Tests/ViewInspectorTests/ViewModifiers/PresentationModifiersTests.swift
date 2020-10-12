@@ -54,12 +54,34 @@ final class ViewColorTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testForegroundColorInspection() throws {
+        let sut = EmptyView().padding().foregroundColor(.purple).padding()
+        XCTAssertEqual(try sut.inspect().emptyView().foregroundColor(), .purple)
+    }
+    
     #if !os(macOS)
     func testAccentColor() throws {
         let sut = EmptyView().accentColor(.purple)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    
+    func testAccentColorInspection() throws {
+        let sut = EmptyView().padding().accentColor(.purple).padding()
+        XCTAssertEqual(try sut.inspect().emptyView().accentColor(), .purple)
+    }
+    
+    func testForegroundWithAccentColorInspection() throws {
+        let sut = Text("").accentColor(.purple).foregroundColor(.red)
+        let view = try sut.inspect().text()
+        XCTAssertEqual(try view.accentColor(), .purple)
+        XCTAssertEqual(try view.foregroundColor(), .red)
+    }
     #endif
+    
+    func testEnvironmentColorKeyPathError() throws {
+        XCTAssertThrows(try Inspector.environmentColorKeyPath(0),
+                        "Int does not have 'keyPath' attribute")
+    }
     
     func testColorScheme() throws {
         let sut = EmptyView().colorScheme(.light)

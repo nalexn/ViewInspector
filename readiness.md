@@ -416,8 +416,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func foregroundColor(Color?) -> some View` |
-|:heavy_check_mark:| `func accentColor(Color?) -> some View` |
+|:white_check_mark:| `func foregroundColor(Color?) -> some View` |
+|:white_check_mark:| `func accentColor(Color?) -> some View` |
 
 ### Adopting View Color Schemes
 
