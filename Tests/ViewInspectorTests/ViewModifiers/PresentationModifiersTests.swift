@@ -88,10 +88,20 @@ final class ViewColorTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testColorSchemeInspection() throws {
+        let sut = EmptyView().colorScheme(.light)
+        XCTAssertEqual(try sut.inspect().emptyView().colorScheme(), .light)
+    }
+    
     #if !os(macOS)
     func testPreferredColorScheme() throws {
         let sut = EmptyView().preferredColorScheme(.dark)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testPreferredColorSchemeInspection() throws {
+        let sut = EmptyView().preferredColorScheme(.dark)
+        XCTAssertEqual(try sut.inspect().emptyView().preferredColorScheme(), .dark)
     }
     #endif
 }

@@ -26,6 +26,20 @@ public extension InspectableView {
         }, path: "modifier|value", type: Optional<Color>.self, call: "accentColor")
     }
     #endif
+    
+    func colorScheme() throws -> ColorScheme {
+        return try modifierAttribute(
+            modifierName: "_EnvironmentKeyWritingModifier<ColorScheme>",
+            path: "modifier|value", type: ColorScheme.self, call: "colorScheme")
+    }
+    
+    #if !os(macOS)
+    func preferredColorScheme() throws -> ColorScheme? {
+        return try modifierAttribute(
+            modifierName: "_PreferenceWritingModifier<PreferredColorSchemeKey>",
+            path: "modifier|value", type: Optional<ColorScheme>.self, call: "preferredColorScheme")
+    }
+    #endif
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

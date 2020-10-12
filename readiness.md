@@ -423,8 +423,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func colorScheme(ColorScheme) -> some View` |
-|:heavy_check_mark:| `func preferredColorScheme(ColorScheme?) -> some View` |
+|:white_check_mark:| `func colorScheme(ColorScheme) -> some View` |
+|:white_check_mark:| `func preferredColorScheme(ColorScheme?) -> some View` |
 
 ### Adjusting Text in a View
 
