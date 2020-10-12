@@ -70,38 +70,4 @@ final class GlobalModifiersForTextField: XCTestCase {
         let sut = EmptyView().textFieldStyle(DefaultTextFieldStyle())
         XCTAssertTrue(try sut.inspect().textFieldStyle() is DefaultTextFieldStyle)
     }
-    
-    #if !os(macOS)
-    func testTextContentType() throws {
-        let sut = EmptyView().textContentType(.emailAddress)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
-    #if os(iOS) || os(tvOS)
-    func testKeyboardType() throws {
-        let sut = EmptyView().keyboardType(.namePhonePad)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testKeyboardTypeInspection() throws {
-        let sut = EmptyView().keyboardType(.namePhonePad)
-        XCTAssertEqual(try sut.inspect().emptyView().keyboardType(), .namePhonePad)
-    }
-    
-    func testAutocapitalization() throws {
-        let sut = EmptyView().autocapitalization(.words)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testAutocapitalizationInspection() throws {
-        let sut = EmptyView().autocapitalization(.words)
-        XCTAssertEqual(try sut.inspect().emptyView().autocapitalization(), .words)
-    }
-    #endif
-    
-    func testDisableAutocorrection() throws {
-        let sut = EmptyView().disableAutocorrection(false)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
 }

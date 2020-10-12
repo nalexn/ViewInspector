@@ -130,6 +130,8 @@
 		F6D933C92385FC1A00358E0E /* StepperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933C82385FC1A00358E0E /* StepperTests.swift */; };
 		F6D933CB2385FF8F00358E0E /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933CA2385FF8F00358E0E /* Slider.swift */; };
 		F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D933CC2385FFA300358E0E /* SliderTests.swift */; };
+		F6DB5A01253510350056FC83 /* TextInputModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DB5A00253510350056FC83 /* TextInputModifiers.swift */; };
+		F6DB5A0B253510CC0056FC83 /* TextInputModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DB5A0A253510CC0056FC83 /* TextInputModifiersTests.swift */; };
 		F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87B2382FB510028E84D /* EditButton.swift */; };
 		F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */; };
 		F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD87F238303AF0028E84D /* NavigationView.swift */; };
@@ -286,6 +288,8 @@
 		F6D933C82385FC1A00358E0E /* StepperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperTests.swift; sourceTree = "<group>"; };
 		F6D933CA2385FF8F00358E0E /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		F6D933CC2385FFA300358E0E /* SliderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderTests.swift; sourceTree = "<group>"; };
+		F6DB5A00253510350056FC83 /* TextInputModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputModifiers.swift; sourceTree = "<group>"; };
+		F6DB5A0A253510CC0056FC83 /* TextInputModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputModifiersTests.swift; sourceTree = "<group>"; };
 		F6DFD87B2382FB510028E84D /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButtonTests.swift; sourceTree = "<group>"; };
 		F6DFD87F238303AF0028E84D /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -517,6 +521,7 @@
 				F6ECF6C523A66D98000FC591 /* InteractionModifiersTests.swift */,
 				F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */,
 				F6ECF6CF23A67D11000FC591 /* SizingModifiersTests.swift */,
+				F6DB5A0A253510CC0056FC83 /* TextInputModifiersTests.swift */,
 				F6ECF6D123A680DA000FC591 /* TransformingModifiersTests.swift */,
 				F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */,
 				F6ECF6D723A69CB5000FC591 /* VisualEffectModifiersTests.swift */,
@@ -535,6 +540,7 @@
 				F6ECF6D323A68BA4000FC591 /* PositioningModifiers.swift */,
 				F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */,
 				F6ECF6CD23A67C64000FC591 /* SizingModifiers.swift */,
+				F6DB5A00253510350056FC83 /* TextInputModifiers.swift */,
 				F63E9269249FCF92005861F0 /* TransformingModifiers.swift */,
 				F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */,
 			);
@@ -726,6 +732,7 @@
 				F6F08E6623A29FE4001F04DF /* SubscriptionView.swift in Sources */,
 				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F6ECF6D423A68BA4000FC591 /* PositioningModifiers.swift in Sources */,
+				F6DB5A01253510350056FC83 /* TextInputModifiers.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
 				F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
@@ -788,6 +795,7 @@
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
 				F6ECF6D823A69CB5000FC591 /* VisualEffectModifiersTests.swift in Sources */,
+				F6DB5A0B253510CC0056FC83 /* TextInputModifiersTests.swift in Sources */,
 				F609EFC323A4342400B9256A /* DelayedPreferenceViewTests.swift in Sources */,
 				F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */,
 				F6D933AD2385EB0100358E0E /* GroupBoxTests.swift in Sources */,
