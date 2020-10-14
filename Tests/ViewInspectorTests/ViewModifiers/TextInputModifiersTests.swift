@@ -41,6 +41,11 @@ final class TextInputModifiersTests: XCTestCase {
     }
     #endif
     
+    func testFont() throws {
+        let sut = EmptyView().font(.body)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
     func testFontInspection() throws {
         let sut = EmptyView().font(.body)
         XCTAssertEqual(try sut.inspect().emptyView().font(), .body)
@@ -55,14 +60,49 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertEqual(try group.text(0).attributes().font(), .callout)
     }
     
+    func testLineLimit() throws {
+        let sut = EmptyView().lineLimit(5)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
     func testLineLimitInspection() throws {
         let sut = EmptyView().lineLimit(5)
         XCTAssertEqual(try sut.inspect().emptyView().lineLimit(), 5)
     }
     
+    func testLineSpacing() throws {
+        let sut = EmptyView().lineSpacing(5)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
     func testLineSpacingInspection() throws {
         let sut = EmptyView().lineSpacing(4)
         XCTAssertEqual(try sut.inspect().emptyView().lineSpacing(), 4)
+    }
+    
+    func testMultilineTextAlignmentInspection() throws {
+        let sut = EmptyView().multilineTextAlignment(.center)
+        XCTAssertEqual(try sut.inspect().emptyView().multilineTextAlignment(), .center)
+    }
+    
+    func testMultilineTextAlignment() throws {
+        let sut = EmptyView().multilineTextAlignment(.center)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testMinimumScaleFactor() throws {
+        let sut = EmptyView().minimumScaleFactor(5)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTruncationMode() throws {
+        let sut = EmptyView().truncationMode(.tail)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testAllowsTightening() throws {
+        let sut = EmptyView().allowsTightening(true)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testDisableAutocorrection() throws {

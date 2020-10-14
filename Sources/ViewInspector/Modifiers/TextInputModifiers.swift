@@ -55,6 +55,12 @@ public extension InspectableView {
         return try environmentModifier(keyPath: keyPath, call: "lineSpacing")
     }
     
+    func multilineTextAlignment() throws -> TextAlignment {
+        let reference = EmptyView().multilineTextAlignment(.leading)
+        let keyPath = try Inspector.environmentKeyPath(TextAlignment.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "multilineTextAlignment")
+    }
+    
     func disableAutocorrection() throws -> Bool? {
         let reference = EmptyView().disableAutocorrection(false)
         let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)
