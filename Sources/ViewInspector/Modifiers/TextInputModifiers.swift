@@ -30,6 +30,19 @@ public extension InspectableView {
     }
     #endif
     
+    func font() throws -> Font? {
+        let reference = EmptyView().font(.callout)
+        let keyPath = try Inspector.environmentKeyPath(Optional<Font>.self, reference)
+        do {
+            return try environmentModifier(keyPath: keyPath, call: "font")
+        } catch {
+            if content.view is Text {
+                throw InspectionError.notSupported("Please use .attributes() for inspecting Font on a Text")
+            }
+            throw error
+        }
+    }
+    
     func disableAutocorrection() throws -> Bool? {
         let reference = EmptyView().disableAutocorrection(false)
         let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)

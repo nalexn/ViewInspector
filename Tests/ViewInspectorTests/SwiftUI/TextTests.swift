@@ -73,6 +73,13 @@ final class TextTests: XCTestCase {
         XCTAssertTrue(try sut3.isItalic())
     }
     
+    func testNaiveFontInspectionError() throws {
+        let sut = Text("Test").font(.body)
+        XCTAssertThrows(try sut.inspect().text().font(),
+                        "Please use .attributes() for inspecting Font on a Text")
+        XCTAssertEqual(try sut.inspect().text().attributes().font(), .body)
+    }
+    
     func testFontAttribute() throws {
         let system = Font.system(size: 24, weight: .semibold, design: .monospaced)
         let view1 = Text("Test").kerning(2).font(system)

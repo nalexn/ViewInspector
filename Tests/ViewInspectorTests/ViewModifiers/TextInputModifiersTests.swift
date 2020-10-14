@@ -41,6 +41,20 @@ final class TextInputModifiersTests: XCTestCase {
     }
     #endif
     
+    func testFontInspection() throws {
+        let sut = EmptyView().font(.body)
+        XCTAssertEqual(try sut.inspect().emptyView().font(), .body)
+    }
+    
+    func testTextFontInspection() throws {
+        let sut = Group { Text("test").font(.callout) }.font(.footnote)
+        let group = try sut.inspect().group()
+        XCTAssertEqual(try group.font(), .footnote)
+        XCTAssertThrows(try EmptyView().inspect().font(),
+                        "EmptyView does not have 'font' modifier")
+        XCTAssertEqual(try group.text(0).attributes().font(), .callout)
+    }
+    
     func testDisableAutocorrection() throws {
         let sut = EmptyView().disableAutocorrection(false)
         XCTAssertNoThrow(try sut.inspect().emptyView())
