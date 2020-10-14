@@ -23,9 +23,19 @@ final class ViewControlAttributesTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testHorizontalRadioGroupLayoutInspection() throws {
+        let sut = EmptyView().horizontalRadioGroupLayout()
+        XCTAssertTrue(try sut.inspect().horizontalRadioGroupLayout())
+    }
+    
     func testControlSize() throws {
         let sut = EmptyView().controlSize(.mini)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testControlSizeInspection() throws {
+        let sut = EmptyView().controlSize(.mini)
+        XCTAssertEqual(try sut.inspect().emptyView().controlSize(), .mini)
     }
     #endif
 }

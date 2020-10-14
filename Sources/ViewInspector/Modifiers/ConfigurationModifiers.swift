@@ -6,10 +6,23 @@ import SwiftUI
 public extension InspectableView {
     
     func labelsHidden() throws -> Bool {
-        _ = try modifierAttribute(
-            modifierName: "_LabeledViewStyleModifier<HiddenLabeledViewStyle>",
-            path: "modifier|style",
-            type: Any.self, call: "labelsHidden")
+        _  = try modifierAttribute(modifierLookup: { modifier -> Bool in
+            modifier.modifierType.hasPrefix("_LabeledViewStyleModifier<HiddenLabel")
+        }, path: "modifier|style", type: Any.self, call: "labelsHidden")
         return true
+    }
+    
+    func horizontalRadioGroupLayout() throws -> Bool {
+        _ = try modifierAttribute(
+            modifierName: "RadioGroupLayoutModifier<_HStackLayout>",
+            path: "modifier|style",
+            type: Any.self, call: "horizontalRadioGroupLayout")
+        return true
+    }
+    
+    func controlSize() throws -> ControlSize {
+        let reference = EmptyView().controlSize(.regular)
+        let keyPath = try Inspector.environmentKeyPath(ControlSize.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "controlSize")
     }
 }

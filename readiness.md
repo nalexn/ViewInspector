@@ -457,8 +457,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func labelsHidden() -> some View` |
-|:heavy_check_mark:| `func horizontalRadioGroupLayout() -> some View` |
-|:heavy_check_mark:| `func controlSize(ControlSize) -> some View` |
+|:white_check_mark:| `func horizontalRadioGroupLayout() -> some View` |
+|:white_check_mark:| `func controlSize(ControlSize) -> some View` |
 
 ### Styling Specific View Types
 

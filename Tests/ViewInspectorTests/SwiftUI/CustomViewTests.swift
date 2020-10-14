@@ -17,7 +17,7 @@ final class CustomViewTests: XCTestCase {
             XCTAssertEqual(text2, "true")
         }
         ViewHosting.host(view: sut)
-        wait(for: [exp], timeout: 0.1)
+        wait(for: [exp], timeout: 0.5)
     }
     
     func testObservedStateChanges() throws {
