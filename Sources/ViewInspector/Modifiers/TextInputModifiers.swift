@@ -61,6 +61,18 @@ public extension InspectableView {
         return try environmentModifier(keyPath: keyPath, call: "multilineTextAlignment")
     }
     
+    func minimumScaleFactor() throws -> CGFloat {
+        let reference = EmptyView().minimumScaleFactor(3)
+        let keyPath = try Inspector.environmentKeyPath(CGFloat.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "minimumScaleFactor")
+    }
+    
+    func truncationMode() throws -> Text.TruncationMode {
+        let reference = EmptyView().truncationMode(.head)
+        let keyPath = try Inspector.environmentKeyPath(Text.TruncationMode.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "truncationMode")
+    }
+    
     func disableAutocorrection() throws -> Bool? {
         let reference = EmptyView().disableAutocorrection(false)
         let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)

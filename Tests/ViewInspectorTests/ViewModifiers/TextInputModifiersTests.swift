@@ -80,14 +80,14 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().emptyView().lineSpacing(), 4)
     }
     
-    func testMultilineTextAlignmentInspection() throws {
-        let sut = EmptyView().multilineTextAlignment(.center)
-        XCTAssertEqual(try sut.inspect().emptyView().multilineTextAlignment(), .center)
-    }
-    
     func testMultilineTextAlignment() throws {
         let sut = EmptyView().multilineTextAlignment(.center)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testMultilineTextAlignmentInspection() throws {
+        let sut = EmptyView().multilineTextAlignment(.center)
+        XCTAssertEqual(try sut.inspect().emptyView().multilineTextAlignment(), .center)
     }
     
     func testMinimumScaleFactor() throws {
@@ -95,9 +95,19 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testMinimumScaleFactorInspection() throws {
+        let sut = EmptyView().minimumScaleFactor(2)
+        XCTAssertEqual(try sut.inspect().emptyView().minimumScaleFactor(), 2)
+    }
+    
     func testTruncationMode() throws {
         let sut = EmptyView().truncationMode(.tail)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTruncationModeInspection() throws {
+        let sut = EmptyView().truncationMode(.tail)
+        XCTAssertEqual(try sut.inspect().emptyView().truncationMode(), .tail)
     }
     
     func testAllowsTightening() throws {
