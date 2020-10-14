@@ -432,8 +432,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|
 |:white_check_mark:| `func keyboardType(UIKeyboardType) -> some View` |
 |:white_check_mark:| `func font(Font?) -> some View` |
-|:heavy_check_mark:| `func lineLimit(Int?) -> some View` |
-|:heavy_check_mark:| `func lineSpacing(CGFloat) -> some View` |
+|:white_check_mark:| `func lineLimit(Int?) -> some View` |
+|:white_check_mark:| `func lineSpacing(CGFloat) -> some View` |
 |:heavy_check_mark:| `func multilineTextAlignment(TextAlignment) -> some View` |
 |:heavy_check_mark:| `func minimumScaleFactor(CGFloat) -> some View` |
 |:heavy_check_mark:| `func truncationMode(Text.TruncationMode) -> some View` |

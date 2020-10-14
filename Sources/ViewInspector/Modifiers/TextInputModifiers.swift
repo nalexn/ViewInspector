@@ -43,6 +43,18 @@ public extension InspectableView {
         }
     }
     
+    func lineLimit() throws -> Int? {
+        let reference = EmptyView().lineLimit(nil)
+        let keyPath = try Inspector.environmentKeyPath(Optional<Int>.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "lineLimit")
+    }
+    
+    func lineSpacing() throws -> CGFloat {
+        let reference = EmptyView().lineSpacing(0)
+        let keyPath = try Inspector.environmentKeyPath(CGFloat.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "lineSpacing")
+    }
+    
     func disableAutocorrection() throws -> Bool? {
         let reference = EmptyView().disableAutocorrection(false)
         let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)

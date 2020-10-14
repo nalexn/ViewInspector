@@ -55,6 +55,16 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertEqual(try group.text(0).attributes().font(), .callout)
     }
     
+    func testLineLimitInspection() throws {
+        let sut = EmptyView().lineLimit(5)
+        XCTAssertEqual(try sut.inspect().emptyView().lineLimit(), 5)
+    }
+    
+    func testLineSpacingInspection() throws {
+        let sut = EmptyView().lineSpacing(4)
+        XCTAssertEqual(try sut.inspect().emptyView().lineSpacing(), 4)
+    }
+    
     func testDisableAutocorrection() throws {
         let sut = EmptyView().disableAutocorrection(false)
         XCTAssertNoThrow(try sut.inspect().emptyView())
