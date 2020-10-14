@@ -12,6 +12,11 @@ final class ViewControlAttributesTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testLabelsHiddenInspection() throws {
+        let sut = EmptyView().labelsHidden()
+        XCTAssertTrue(try sut.inspect().emptyView().labelsHidden())
+    }
+    
     #if os(macOS)
     func testHorizontalRadioGroupLayout() throws {
         let sut = EmptyView().horizontalRadioGroupLayout()

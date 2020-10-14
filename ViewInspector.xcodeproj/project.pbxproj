@@ -64,6 +64,7 @@
 		F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF32382F004007DB53A /* DatePickerTests.swift */; };
 		F60EEC072382F004007DB53A /* ScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF42382F004007DB53A /* ScrollViewTests.swift */; };
 		F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF52382F004007DB53A /* AnyViewTests.swift */; };
+		F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */; };
 		F62AEAFC23E705D6003E69D9 /* ViewHostingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */; };
 		F62D69902507FA0C00335BCC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62D698F2507FA0C00335BCC /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */; };
@@ -222,6 +223,7 @@
 		F60EEBF32382F004007DB53A /* DatePickerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerTests.swift; sourceTree = "<group>"; };
 		F60EEBF42382F004007DB53A /* ScrollViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViewTests.swift; sourceTree = "<group>"; };
 		F60EEBF52382F004007DB53A /* AnyViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewTests.swift; sourceTree = "<group>"; };
+		F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationModifiers.swift; sourceTree = "<group>"; };
 		F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHostingTests.swift; sourceTree = "<group>"; };
 		F62D698F2507FA0C00335BCC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		F639DBBC23A6B318003A6FED /* PreviewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewModifiers.swift; sourceTree = "<group>"; };
@@ -534,6 +536,7 @@
 			children = (
 				F639DBBE23A6CF03003A6FED /* AccessibilityModifiers.swift */,
 				F6ECF6C923A66FE2000FC591 /* AnimationModifiers.swift */,
+				F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */,
 				F68108A723A667A300B32145 /* GestureModifiers.swift */,
 				F68108A523A5835E00B32145 /* EventsModifiers.swift */,
 				F6ECF6C723A66E54000FC591 /* InteractionModifiers.swift */,
@@ -708,6 +711,7 @@
 				F609EFC123A432AA00B9256A /* IDView.swift in Sources */,
 				F6ECF6C823A66E54000FC591 /* InteractionModifiers.swift in Sources */,
 				F60EEBDC2382EED0007DB53A /* Text.swift in Sources */,
+				F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */,
 				F6684BFE23AA863400DECCB3 /* RadialGradient.swift in Sources */,
 				F60EEBD42382EED0007DB53A /* ScrollView.swift in Sources */,
 				F64C4E2C250CD60800A69FF9 /* Color.swift in Sources */,

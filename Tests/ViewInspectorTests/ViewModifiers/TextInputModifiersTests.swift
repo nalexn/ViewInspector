@@ -115,6 +115,11 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    func testAllowsTighteningInspection() throws {
+        let sut = EmptyView().allowsTightening(true)
+        XCTAssertTrue(try sut.inspect().emptyView().allowsTightening())
+    }
+    
     func testDisableAutocorrection() throws {
         let sut = EmptyView().disableAutocorrection(false)
         XCTAssertNoThrow(try sut.inspect().emptyView())

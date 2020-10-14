@@ -73,6 +73,12 @@ public extension InspectableView {
         return try environmentModifier(keyPath: keyPath, call: "truncationMode")
     }
     
+    func allowsTightening() throws -> Bool {
+        let reference = EmptyView().allowsTightening(true)
+        let keyPath = try Inspector.environmentKeyPath(Bool.self, reference)
+        return try environmentModifier(keyPath: keyPath, call: "allowsTightening")
+    }
+    
     func disableAutocorrection() throws -> Bool? {
         let reference = EmptyView().disableAutocorrection(false)
         let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)

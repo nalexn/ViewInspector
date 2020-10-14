@@ -437,7 +437,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func multilineTextAlignment(TextAlignment) -> some View` |
 |:white_check_mark:| `func minimumScaleFactor(CGFloat) -> some View` |
 |:white_check_mark:| `func truncationMode(Text.TruncationMode) -> some View` |
-|:heavy_check_mark:| `func allowsTightening(Bool) -> some View` |
+|:white_check_mark:| `func allowsTightening(Bool) -> some View` |
 |:white_check_mark:| `func textContentType(UITextContentType?) -> some View` |
 |:technologist:| `func textContentType(NSTextContentType?) -> some View` |
 |:technologist:| `func textCase(Text.Case?) -> some View` |
@@ -456,7 +456,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func labelsHidden() -> some View` |
+|:white_check_mark:| `func labelsHidden() -> some View` |
 |:heavy_check_mark:| `func horizontalRadioGroupLayout() -> some View` |
 |:heavy_check_mark:| `func controlSize(ControlSize) -> some View` |
 
