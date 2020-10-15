@@ -20,9 +20,11 @@ public extension InspectableView {
         return true
     }
     
+    #if os(macOS)
     func controlSize() throws -> ControlSize {
         let reference = EmptyView().controlSize(.regular)
         let keyPath = try Inspector.environmentKeyPath(ControlSize.self, reference)
         return try environmentModifier(keyPath: keyPath, call: "controlSize")
     }
+    #endif
 }
