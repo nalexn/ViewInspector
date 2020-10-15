@@ -566,7 +566,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func hidden() -> some View` |
-|:heavy_check_mark:| `func disabled(Bool) -> some View` |
+|:white_check_mark:| `func disabled(Bool) -> some View` |
 
 ### Customizing Accessibility Labels of a View
 
