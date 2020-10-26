@@ -20,7 +20,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Button | `contained view`, `tap()` |
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
-|:technologist:| ColorPicker | |
+|:white_check_mark:| ColorPicker | `label view` |
 |:white_check_mark:| ConditionalContent | `contained view` |
 |:white_check_mark:| SwiftUI Custom View | `actualView: CustomView`, `viewBuilder container` |
 |:white_check_mark:| SwiftUI Custom @ViewBuilder | `actualView: CustomView` |

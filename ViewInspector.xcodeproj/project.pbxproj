@@ -158,6 +158,8 @@
 		F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */; };
 		F6F08E6F23A2AA64001F04DF /* EnvironmentReaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */; };
 		F6F08E7123A3BD0C001F04DF /* AccessibilityModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E7023A3BD0C001F04DF /* AccessibilityModifiersTests.swift */; };
+		F6FB7F5825476431006658EF /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FB7F5725476431006658EF /* ColorPicker.swift */; };
+		F6FB7F6225476480006658EF /* ColorPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FB7F6125476480006658EF /* ColorPickerTests.swift */; };
 		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
@@ -317,6 +319,8 @@
 		F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentReaderView.swift; sourceTree = "<group>"; };
 		F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentReaderViewTests.swift; sourceTree = "<group>"; };
 		F6F08E7023A3BD0C001F04DF /* AccessibilityModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityModifiersTests.swift; sourceTree = "<group>"; };
+		F6FB7F5725476431006658EF /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
+		F6FB7F6125476480006658EF /* ColorPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -374,6 +378,7 @@
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
 				F6ECF6D523A695FB000FC591 /* ClassifiedView.swift */,
 				F64C4E2B250CD60800A69FF9 /* Color.swift */,
+				F6FB7F5725476431006658EF /* ColorPicker.swift */,
 				F64057EC238DB1530029D9BA /* ConditionalContent.swift */,
 				F60EEBBE2382EED0007DB53A /* CustomView.swift */,
 				F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */,
@@ -452,6 +457,7 @@
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
 				F64C4E2F250CD71400A69FF9 /* ColorTests.swift */,
+				F6FB7F6125476480006658EF /* ColorPickerTests.swift */,
 				F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */,
 				F60EEBEF2382F004007DB53A /* CustomViewTests.swift */,
 				F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */,
@@ -687,6 +693,7 @@
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,
 				F6ECF6D623A695FB000FC591 /* ClassifiedView.swift in Sources */,
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
+				F6FB7F5825476431006658EF /* ColorPicker.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
 				F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */,
@@ -775,6 +782,7 @@
 				F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */,
 				F6F08E6F23A2AA64001F04DF /* EnvironmentReaderViewTests.swift in Sources */,
 				F6ECF6C423A66BF6000FC591 /* EventsModifiersTests.swift in Sources */,
+				F6FB7F6225476480006658EF /* ColorPickerTests.swift in Sources */,
 				F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */,
 				F6D933A52385DC0F00358E0E /* TabViewTests.swift in Sources */,
 				F6ECF6C223A66B42000FC591 /* GestureModifiersTests.swift in Sources */,
