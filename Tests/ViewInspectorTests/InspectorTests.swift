@@ -142,6 +142,7 @@ private struct Struct1 {
 
 private struct Struct3<T> { }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestPrintView: View, Inspectable {
     
     let str = ["abc", "def"]

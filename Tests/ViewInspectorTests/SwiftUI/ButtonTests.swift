@@ -115,6 +115,7 @@ final class ButtonStyleInspectionTests: XCTestCase {
     #endif
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestButtonStyle: ButtonStyle {
     
     public func makeBody(configuration: TestButtonStyle.Configuration) -> some View {
@@ -124,6 +125,7 @@ private struct TestButtonStyle: ButtonStyle {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestPrimitiveButtonStyle: PrimitiveButtonStyle {
     
     func makeBody(configuration: PrimitiveButtonStyle.Configuration) -> some View {
@@ -154,4 +156,5 @@ private struct TestPrimitiveButtonStyle: PrimitiveButtonStyle {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension TestPrimitiveButtonStyle.TestButton: Inspectable { }

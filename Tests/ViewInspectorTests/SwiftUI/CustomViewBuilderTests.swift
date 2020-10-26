@@ -4,6 +4,7 @@ import SwiftUI
 
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class CustomViewBuilderTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
@@ -77,6 +78,7 @@ final class CustomViewBuilderTests: XCTestCase {
 
 // MARK: - Test Views
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestViewBuilderView<Content: View>: View {
     let content: Content
 
@@ -90,4 +92,5 @@ private struct TestViewBuilderView<Content: View>: View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension TestViewBuilderView: Inspectable { }
