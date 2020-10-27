@@ -56,6 +56,22 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
+    #if !os(macOS)
+    func testToupleView() throws {
+        let view = ToupleTestView().padding()
+        let sut = try view.inspect().view(ToupleTestView.self)
+        XCTAssertNoThrow(try sut.emptyView(0))
+        XCTAssertNoThrow(try sut.text(1))
+    }
+    
+    func testToupleViewError() throws {
+        let view = ToupleTestView().padding()
+        let sut = try view.inspect().view(ToupleTestView.self)
+        XCTAssertThrows(try sut.emptyView(),
+                        "Unable to extract EmptyView: please specify its index inside parent view")
+    }
+    #endif
+    
     func testEnvViewResetsModifiers() throws {
         let sut = EnvironmentStateTestView()
         let exp = sut.inspection.inspect { view in
@@ -131,6 +147,16 @@ private struct SimpleTestView: View, Inspectable {
         EmptyView()
     }
 }
+
+#if !os(macOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct ToupleTestView: View, Inspectable {
+    var body: some View {
+        EmptyView()
+        Text("abc")
+    }
+}
+#endif
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct LocalStateTestView: View, Inspectable {

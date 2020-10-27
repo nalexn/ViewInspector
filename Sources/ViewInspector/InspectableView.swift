@@ -7,6 +7,10 @@ public struct InspectableView<View> where View: KnownViewType {
     internal let content: Content
     
     internal init(_ content: Content) throws {
+        if !View.typePrefix.isEmpty, Inspector.isTupleView(content.view) {
+            throw InspectionError.notSupported(
+                "Unable to extract \(View.typePrefix): please specify its index inside parent view")
+        }
         try Inspector.guardType(value: content.view, prefix: View.typePrefix)
         self.content = content
     }

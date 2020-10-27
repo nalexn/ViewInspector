@@ -19,6 +19,14 @@ extension ViewType.View: SingleViewContent {
     }
 }
 
+extension ViewType.View: MultipleViewContent {
+    
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
+        let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
+        return try Inspector.viewsInContainer(view: inspectable.content)
+    }
+}
+
 // MARK: - Extraction from SingleViewContent parent
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

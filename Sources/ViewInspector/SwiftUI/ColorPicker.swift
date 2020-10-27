@@ -9,7 +9,7 @@ public extension ViewType {
 
 // MARK: - Extraction from SingleViewContent parent
 
-@available(iOS 14.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 14.0, macOS 11.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func colorPicker() throws -> InspectableView<ViewType.ColorPicker> {
@@ -19,7 +19,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
-@available(iOS 14.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 14.0, macOS 11.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func colorPicker(_ index: Int) throws -> InspectableView<ViewType.ColorPicker> {
@@ -29,7 +29,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
-@available(iOS 14.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension InspectableView where View == ViewType.ColorPicker {
     
     func label() throws -> InspectableView<ViewType.ClassifiedView> {

@@ -27,7 +27,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| UIViewRepresentable | `uiView: UIView` |
 |:white_check_mark:| UIViewControllerRepresentable | `viewController: UIViewController` |
 |:white_check_mark:| DatePicker | `contained view` |
-|:technologist:| DisclosureGroup | |
+|:white_check_mark:| DisclosureGroup | `label view`, `content view`, `isExpanded: Bool`, `expand()`, `collapse()` |
 |:white_check_mark:| Divider | |
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
 |:white_check_mark:| EmptyView | |

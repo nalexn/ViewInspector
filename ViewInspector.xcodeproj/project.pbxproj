@@ -99,6 +99,8 @@
 		F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */; };
 		F68108A623A5835E00B32145 /* EventsModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A523A5835E00B32145 /* EventsModifiers.swift */; };
 		F68108A823A667A400B32145 /* GestureModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68108A723A667A300B32145 /* GestureModifiers.swift */; };
+		F682A00C254772C3005F1B70 /* DisclosureGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F682A00B254772C3005F1B70 /* DisclosureGroupTests.swift */; };
+		F682A016254776F2005F1B70 /* DisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F682A015254776F2005F1B70 /* DisclosureGroup.swift */; };
 		F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91C92383187D00515A91 /* ModifiedContent.swift */; };
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
 		F6B7D0082494DE5500ABB5E0 /* CustomViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */; };
@@ -260,6 +262,8 @@
 		F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositioningModifiersTests.swift; sourceTree = "<group>"; };
 		F68108A523A5835E00B32145 /* EventsModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModifiers.swift; sourceTree = "<group>"; };
 		F68108A723A667A300B32145 /* GestureModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifiers.swift; sourceTree = "<group>"; };
+		F682A00B254772C3005F1B70 /* DisclosureGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroupTests.swift; sourceTree = "<group>"; };
+		F682A015254776F2005F1B70 /* DisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroup.swift; sourceTree = "<group>"; };
 		F69C91C92383187D00515A91 /* ModifiedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContent.swift; sourceTree = "<group>"; };
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
 		F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewBuilder.swift; sourceTree = "<group>"; };
@@ -384,6 +388,7 @@
 				F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */,
 				F60EEBBF2382EED0007DB53A /* DatePicker.swift */,
 				F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */,
+				F682A015254776F2005F1B70 /* DisclosureGroup.swift */,
 				F60EEBC72382EED0007DB53A /* Divider.swift */,
 				F6DFD87B2382FB510028E84D /* EditButton.swift */,
 				F64057EE238DBA800029D9BA /* EmptyView.swift */,
@@ -463,6 +468,7 @@
 				F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */,
 				F60EEBF32382F004007DB53A /* DatePickerTests.swift */,
 				F609EFC223A4342400B9256A /* DelayedPreferenceViewTests.swift */,
+				F682A00B254772C3005F1B70 /* DisclosureGroupTests.swift */,
 				F60EEBEC2382F004007DB53A /* DividerTests.swift */,
 				F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */,
 				F6D933A82385E9F700358E0E /* EquatableViewTests.swift */,
@@ -723,6 +729,7 @@
 				F6684BFE23AA863400DECCB3 /* RadialGradient.swift in Sources */,
 				F60EEBD42382EED0007DB53A /* ScrollView.swift in Sources */,
 				F64C4E2C250CD60800A69FF9 /* Color.swift in Sources */,
+				F682A016254776F2005F1B70 /* DisclosureGroup.swift in Sources */,
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
@@ -807,6 +814,7 @@
 				F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
+				F682A00C254772C3005F1B70 /* DisclosureGroupTests.swift in Sources */,
 				F6ECF6D823A69CB5000FC591 /* VisualEffectModifiersTests.swift in Sources */,
 				F6DB5A0B253510CC0056FC83 /* TextInputModifiersTests.swift in Sources */,
 				F609EFC323A4342400B9256A /* DelayedPreferenceViewTests.swift in Sources */,

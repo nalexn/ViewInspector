@@ -77,7 +77,7 @@ public extension InspectableView where View == ViewType.NavigationLink {
             external.wrappedValue = isActive
         } else {
             // @State mutation from outside is ignored by SwiftUI
-            // try internalIsActive().wrappedValue = isActive
+            // try isActiveState().wrappedValue = isActive
             //swiftlint:disable line_length
             throw InspectionError.notSupported("Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
             //swiftlint:enable line_length
