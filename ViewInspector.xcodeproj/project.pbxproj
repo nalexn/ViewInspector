@@ -111,6 +111,8 @@
 		F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */; };
 		F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A06254A0592000240F1 /* LazyVGridTests.swift */; };
 		F6C15A0D254A05A4000240F1 /* LazyVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A0C254A05A4000240F1 /* LazyVGrid.swift */; };
+		F6C15A17254A0BB5000240F1 /* LazyHStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A16254A0BB5000240F1 /* LazyHStackTests.swift */; };
+		F6C15A21254A0C67000240F1 /* LazyHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A20254A0C67000240F1 /* LazyHStack.swift */; };
 		F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */; };
 		F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
@@ -280,6 +282,8 @@
 		F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewBuilderTests.swift; sourceTree = "<group>"; };
 		F6C15A06254A0592000240F1 /* LazyVGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVGridTests.swift; sourceTree = "<group>"; };
 		F6C15A0C254A05A4000240F1 /* LazyVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVGrid.swift; sourceTree = "<group>"; };
+		F6C15A16254A0BB5000240F1 /* LazyHStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyHStackTests.swift; sourceTree = "<group>"; };
+		F6C15A20254A0C67000240F1 /* LazyHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyHStack.swift; sourceTree = "<group>"; };
 		F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectModifiers.swift; sourceTree = "<group>"; };
 		F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHosting.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
@@ -417,6 +421,7 @@
 				F60EEBC02382EED0007DB53A /* Image.swift */,
 				F6119FD52549EECC0000C54A /* Label.swift */,
 				F6119FF3254A00FC0000C54A /* LazyHGrid.swift */,
+				F6C15A20254A0C67000240F1 /* LazyHStack.swift */,
 				F6C15A0C254A05A4000240F1 /* LazyVGrid.swift */,
 				F6684BF923AA809300DECCB3 /* LinearGradient.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
@@ -500,6 +505,7 @@
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
 				F6119FDB2549EF170000C54A /* LabelTests.swift */,
 				F6119FE92549F5960000C54A /* LazyHGridTests.swift */,
+				F6C15A16254A0BB5000240F1 /* LazyHStackTests.swift */,
 				F6C15A06254A0592000240F1 /* LazyVGridTests.swift */,
 				F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
@@ -738,6 +744,7 @@
 				F60EEBDB2382EED0007DB53A /* VStack.swift in Sources */,
 				F60EEBD62382EED0007DB53A /* Section.swift in Sources */,
 				F6D933BB2385F42300358E0E /* Toggle.swift in Sources */,
+				F6C15A21254A0C67000240F1 /* LazyHStack.swift in Sources */,
 				F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */,
 				F6684BFA23AA809300DECCB3 /* LinearGradient.swift in Sources */,
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
@@ -836,6 +843,7 @@
 				F64C4E30250CD71400A69FF9 /* ColorTests.swift in Sources */,
 				F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
+				F6C15A17254A0BB5000240F1 /* LazyHStackTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
 				F682A00C254772C3005F1B70 /* DisclosureGroupTests.swift in Sources */,
 				F6ECF6D823A69CB5000FC591 /* VisualEffectModifiersTests.swift in Sources */,

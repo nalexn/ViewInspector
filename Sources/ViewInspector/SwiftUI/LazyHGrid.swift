@@ -39,22 +39,22 @@ public extension InspectableView where View == ViewType.LazyHGrid {
     
     func alignment() throws -> VerticalAlignment {
         return try Inspector.attribute(
-            path: "alignment", value: lazyHGridLayout(), type: VerticalAlignment.self)
+            label: "alignment", value: lazyHGridLayout(), type: VerticalAlignment.self)
     }
     
     func spacing() throws -> CGFloat? {
         return try Inspector.attribute(
-            path: "spacing", value: lazyHGridLayout(), type: CGFloat?.self)
+            label: "spacing", value: lazyHGridLayout(), type: CGFloat?.self)
     }
     
     func pinnedViews() throws -> PinnedScrollableViews {
         return try Inspector.attribute(
-            path: "pinnedViews", value: lazyHGridLayout(), type: PinnedScrollableViews.self)
+            label: "pinnedViews", value: lazyHGridLayout(), type: PinnedScrollableViews.self)
     }
     
     func rows() throws -> [GridItem] {
         return try Inspector.attribute(
-            path: "rows", value: lazyHGridLayout(), type: [GridItem].self)
+            label: "rows", value: lazyHGridLayout(), type: [GridItem].self)
     }
     
     private func lazyHGridLayout() throws -> Any {

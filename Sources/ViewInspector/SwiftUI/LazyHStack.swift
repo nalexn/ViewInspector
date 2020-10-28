@@ -2,8 +2,8 @@ import SwiftUI
 
 public extension ViewType {
     
-    struct LazyVGrid: KnownViewType {
-        public static var typePrefix: String = "LazyVGrid"
+    struct LazyHStack: KnownViewType {
+        public static var typePrefix: String = "LazyHStack"
     }
 }
 
@@ -12,7 +12,7 @@ public extension ViewType {
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension InspectableView where View: SingleViewContent {
     
-    func lazyVGrid() throws -> InspectableView<ViewType.LazyVGrid> {
+    func lazyHStack() throws -> InspectableView<ViewType.LazyHStack> {
         return try .init(try child())
     }
 }
@@ -22,7 +22,7 @@ public extension InspectableView where View: SingleViewContent {
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
-    func lazyVGrid(_ index: Int) throws -> InspectableView<ViewType.LazyVGrid> {
+    func lazyHStack(_ index: Int) throws -> InspectableView<ViewType.LazyHStack> {
         return try .init(try child(at: index))
     }
 }
@@ -30,34 +30,29 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Custom Attributes
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
-public extension InspectableView where View == ViewType.LazyVGrid {
+public extension InspectableView where View == ViewType.LazyHStack {
     
     func contentView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(path: "tree|content", value: content.view)
         return try .init(try Inspector.unwrap(content: Content(view)))
     }
     
-    func alignment() throws -> HorizontalAlignment {
+    func alignment() throws -> VerticalAlignment {
         return try Inspector.attribute(
-            label: "alignment", value: lazyVGridLayout(), type: HorizontalAlignment.self)
+            path: "base|alignment", value: lazyHStackLayout(), type: VerticalAlignment.self)
     }
     
     func spacing() throws -> CGFloat? {
         return try Inspector.attribute(
-            label: "spacing", value: lazyVGridLayout(), type: CGFloat?.self)
+            path: "base|spacing", value: lazyHStackLayout(), type: CGFloat?.self)
     }
     
     func pinnedViews() throws -> PinnedScrollableViews {
         return try Inspector.attribute(
-            label: "pinnedViews", value: lazyVGridLayout(), type: PinnedScrollableViews.self)
+            label: "pinnedViews", value: lazyHStackLayout(), type: PinnedScrollableViews.self)
     }
     
-    func columns() throws -> [GridItem] {
-        return try Inspector.attribute(
-            label: "columns", value: lazyVGridLayout(), type: [GridItem].self)
-    }
-    
-    private func lazyVGridLayout() throws -> Any {
+    private func lazyHStackLayout() throws -> Any {
         return try Inspector.attribute(path: "tree|root", value: content.view)
     }
 }
