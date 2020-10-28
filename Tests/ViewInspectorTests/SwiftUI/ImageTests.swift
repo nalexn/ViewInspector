@@ -15,7 +15,7 @@ final class ImageTests: XCTestCase {
     }
     
     func testExternalImage() throws {
-        #if os(iOS) || os(watchOS) || os(tvOS)
+        #if os(iOS) || os(tvOS)
         let view = Image(uiImage: testImage)
         let sut = try view.inspect().image().uiImage()
         #else
@@ -27,7 +27,7 @@ final class ImageTests: XCTestCase {
     
     func testExtractionWithModifiers() throws {
         let view = AnyView(imageView().resizable().interpolation(.low))
-        #if os(iOS) || os(watchOS) || os(tvOS)
+        #if os(iOS) || os(tvOS)
         let image = try view.inspect().anyView().image().uiImage()
         #else
         let image = try view.inspect().anyView().image().nsImage()
@@ -46,7 +46,7 @@ final class ImageTests: XCTestCase {
         XCTAssertEqual(scale, 2.0)
         XCTAssertEqual(orientation, .down)
         XCTAssertEqual(label, "CGImage")
-        #if os(iOS) || os(watchOS) || os(tvOS)
+        #if os(iOS) || os(tvOS)
         let uiImage = try view.inspect().image().uiImage()
         XCTAssertNil(uiImage)
         #else
@@ -73,7 +73,7 @@ final class ImageTests: XCTestCase {
     }
     
     private func imageView() -> Image {
-        #if os(iOS) || os(watchOS) || os(tvOS)
+        #if os(iOS) || os(tvOS)
         return Image(uiImage: testImage)
         #else
         return Image(nsImage: testImage)
@@ -81,8 +81,8 @@ final class ImageTests: XCTestCase {
     }
 }
 
-#if os(iOS) || os(watchOS) || os(tvOS)
-private extension UIColor {
+#if os(iOS) || os(tvOS)
+extension UIColor {
     func image(_ size: CGSize) -> UIImage {
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -93,7 +93,7 @@ private extension UIColor {
     }
 }
 #else
-private extension NSColor {
+extension NSColor {
     func image(_ size: CGSize) -> NSImage {
         let image = NSImage(size: size)
         image.lockFocus()
@@ -102,14 +102,14 @@ private extension NSColor {
         return image
     }
 }
-private extension NSImage {
+extension NSImage {
     var cgImage: CGImage? {
         cgImage(forProposedRect: nil, context: nil, hints: nil)
     }
 }
 #endif
 
-#if os(iOS) || os(watchOS) || os(tvOS)
+#if os(iOS) || os(tvOS)
 let testColor = UIColor.red
 #else
 let testColor = NSColor.red

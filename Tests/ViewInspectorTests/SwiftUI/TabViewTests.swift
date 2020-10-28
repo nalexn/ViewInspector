@@ -2,8 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(watchOS)
-
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TabViewTests: XCTestCase {
     
@@ -45,8 +43,6 @@ final class TabViewTests: XCTestCase {
     }
 }
 
-#endif
-
 // MARK: - View Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -63,7 +59,6 @@ final class GlobalModifiersForTabView: XCTestCase {
         XCTAssertEqual(sut, tag)
     }
     
-    #if !os(watchOS)
     func testTabItem() throws {
         let sut = EmptyView().tabItem { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -76,5 +71,4 @@ final class GlobalModifiersForTabView: XCTestCase {
         let sut = try tabItem.text().string()
         XCTAssertEqual(sut, string)
     }
-    #endif
 }

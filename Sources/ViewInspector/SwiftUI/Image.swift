@@ -36,7 +36,7 @@ public extension InspectableView where View == ViewType.Image {
         return try Inspector.attribute(label: "name", value: image()) as? String
     }
     
-    #if os(iOS) || os(watchOS) || os(tvOS)
+    #if os(iOS) || os(tvOS)
     func uiImage() throws -> UIImage? {
         return try image() as? UIImage
     }

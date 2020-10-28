@@ -1,7 +1,5 @@
 import SwiftUI
 
-#if !os(watchOS)
-
 public extension ViewType {
     
     struct TabView: KnownViewType {
@@ -39,8 +37,6 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
-#endif
-
 // MARK: - Global View Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -52,12 +48,10 @@ public extension InspectableView {
             path: "modifier|value|tagged", type: AnyHashable.self, call: "tag")
     }
     
-    #if !os(watchOS)
     func tabItem() throws -> InspectableView<ViewType.ClassifiedView> {
         let rootView = try modifierAttribute(
             modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
             type: Any.self, call: "tabItem")
         return try .init(try Inspector.unwrap(content: Content(rootView)))
     }
-    #endif
 }

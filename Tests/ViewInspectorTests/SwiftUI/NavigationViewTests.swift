@@ -2,8 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(watchOS)
-
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class NavigationViewTests: XCTestCase {
     
@@ -47,8 +45,6 @@ final class NavigationViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().navigationView(1))
     }
 }
-
-#endif
 
 // MARK: - View Modifiers
 
