@@ -40,8 +40,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| HSplitView | `contained view` |
 |:white_check_mark:| HStack | `contained view` |
 |:white_check_mark:| Image | `imageName: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |
-|:technologist:| Label | `title view`, `icon view` |
-|:technologist:| LazyHGrid | |
+|:white_check_mark:| Label | `title view`, `icon view` |
+|:white_check_mark:| LazyHGrid | |
 |:technologist:| LazyHStack | |
 |:technologist:| LazyVGrid | |
 |:technologist:| LazyVStack | |

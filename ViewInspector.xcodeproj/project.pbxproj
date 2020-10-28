@@ -66,6 +66,8 @@
 		F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF52382F004007DB53A /* AnyViewTests.swift */; };
 		F6119FD62549EECC0000C54A /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FD52549EECC0000C54A /* Label.swift */; };
 		F6119FDC2549EF170000C54A /* LabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FDB2549EF170000C54A /* LabelTests.swift */; };
+		F6119FEA2549F5960000C54A /* LazyHGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FE92549F5960000C54A /* LazyHGridTests.swift */; };
+		F6119FF4254A00FC0000C54A /* LazyHGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FF3254A00FC0000C54A /* LazyHGrid.swift */; };
 		F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */; };
 		F62AEAFC23E705D6003E69D9 /* ViewHostingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */; };
 		F62D69902507FA0C00335BCC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62D698F2507FA0C00335BCC /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -231,6 +233,8 @@
 		F60EEBF52382F004007DB53A /* AnyViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewTests.swift; sourceTree = "<group>"; };
 		F6119FD52549EECC0000C54A /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		F6119FDB2549EF170000C54A /* LabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTests.swift; sourceTree = "<group>"; };
+		F6119FE92549F5960000C54A /* LazyHGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyHGridTests.swift; sourceTree = "<group>"; };
+		F6119FF3254A00FC0000C54A /* LazyHGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyHGrid.swift; sourceTree = "<group>"; };
 		F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationModifiers.swift; sourceTree = "<group>"; };
 		F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHostingTests.swift; sourceTree = "<group>"; };
 		F62D698F2507FA0C00335BCC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -408,6 +412,7 @@
 				F609EFC023A432AA00B9256A /* IDView.swift */,
 				F60EEBC02382EED0007DB53A /* Image.swift */,
 				F6119FD52549EECC0000C54A /* Label.swift */,
+				F6119FF3254A00FC0000C54A /* LazyHGrid.swift */,
 				F6684BF923AA809300DECCB3 /* LinearGradient.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
@@ -489,6 +494,7 @@
 				F609EFC423A4350700B9256A /* IDViewTests.swift */,
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
 				F6119FDB2549EF170000C54A /* LabelTests.swift */,
+				F6119FE92549F5960000C54A /* LazyHGridTests.swift */,
 				F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
@@ -737,6 +743,7 @@
 				F60EEBD42382EED0007DB53A /* ScrollView.swift in Sources */,
 				F64C4E2C250CD60800A69FF9 /* Color.swift in Sources */,
 				F682A016254776F2005F1B70 /* DisclosureGroup.swift in Sources */,
+				F6119FF4254A00FC0000C54A /* LazyHGrid.swift in Sources */,
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
@@ -791,6 +798,7 @@
 				F6D933C92385FC1A00358E0E /* StepperTests.swift in Sources */,
 				F60EEC012382F004007DB53A /* ButtonTests.swift in Sources */,
 				F60EEC042382F004007DB53A /* GroupTests.swift in Sources */,
+				F6119FEA2549F5960000C54A /* LazyHGridTests.swift in Sources */,
 				F6DFD882238303C60028E84D /* NavigationViewTests.swift in Sources */,
 				F60EEC052382F004007DB53A /* SectionTests.swift in Sources */,
 				F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */,
