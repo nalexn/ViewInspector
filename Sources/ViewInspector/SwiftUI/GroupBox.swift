@@ -21,6 +21,10 @@ extension ViewType.GroupBox: MultipleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
     func groupBox() throws -> InspectableView<ViewType.GroupBox> {
@@ -30,10 +34,28 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
 public extension InspectableView where View: MultipleViewContent {
     
     func groupBox(_ index: Int) throws -> InspectableView<ViewType.GroupBox> {
         return try .init(try child(at: index))
+    }
+}
+
+// MARK: - Custom Attributes
+
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+public extension InspectableView where View == ViewType.GroupBox {
+    
+    func label() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "label", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
     }
 }
 

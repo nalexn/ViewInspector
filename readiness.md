@@ -34,17 +34,9 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| EquatableView | `contained view` |
 |:white_check_mark:| ForEach | `contained view` |
 |:white_check_mark:| Form | `contained view` |
-|:technologist:| Gauge | |
-|:technologist:| GaugeStyleConfiguration.CurrentValueLabel | |
-|:technologist:| GaugeStyleConfiguration.Label | |
-|:technologist:| GaugeStyleConfiguration.MarkedValueLabel | |
-|:technologist:| GaugeStyleConfiguration.MaximumValueLabel | |
-|:technologist:| GaugeStyleConfiguration.MinimumValueLabel | |
 |:white_check_mark:| GeometryReader | `contained view` |
 |:white_check_mark:| Group | `contained view` |
-|:white_check_mark:| GroupBox | `contained view` |
-|:technologist:| GroupBoxStyleConfiguration.Content | |
-|:technologist:| GroupBoxStyleConfiguration.Label | |
+|:white_check_mark:| GroupBox | `contained view`, `label view` |
 |:white_check_mark:| HSplitView | `contained view` |
 |:white_check_mark:| HStack | `contained view` |
 |:white_check_mark:| Image | `imageName: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |

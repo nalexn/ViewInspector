@@ -37,12 +37,12 @@ public extension InspectableView where View == ViewType.DisclosureGroup {
     
     func label() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(view: view, modifiers: []))
+        return try .init(try Inspector.unwrap(content: Content(view)))
     }
     
     func contentView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "content", value: content.view)
-        return try .init(try Inspector.unwrap(view: view, modifiers: []))
+        return try .init(try Inspector.unwrap(content: Content(view)))
     }
     
     func isExpanded() throws -> Bool {

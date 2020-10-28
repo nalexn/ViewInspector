@@ -4,7 +4,10 @@ import SwiftUI
 
 #if os(macOS)
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class GroupBoxTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
@@ -62,6 +65,14 @@ final class GroupBoxTests: XCTestCase {
         }
         XCTAssertNoThrow(try view.inspect().groupBox().groupBox(0))
         XCTAssertNoThrow(try view.inspect().groupBox().groupBox(1))
+    }
+    
+    func testLabelInspection() throws {
+        let view = GroupBox(
+            label: HStack { Text("abc") },
+            content: { Text("test") })
+        let sut = try view.inspect().groupBox().label().hStack().text(0).string()
+        XCTAssertEqual(sut, "abc")
     }
 }
 

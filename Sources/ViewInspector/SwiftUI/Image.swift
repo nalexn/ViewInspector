@@ -70,7 +70,7 @@ public extension InspectableView where View == ViewType.Image {
     
     func label() throws -> InspectableView<ViewType.Text> {
         let view = try Inspector.attribute(path: "provider|base|label", value: content.view)
-        return try .init(try Inspector.unwrap(view: view, modifiers: []))
+        return try .init(try Inspector.unwrap(content: Content(view)))
     }
     
     private func image() throws -> Any {

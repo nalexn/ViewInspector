@@ -34,6 +34,6 @@ public extension InspectableView where View == ViewType.ColorPicker {
     
     func label() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(view: view, modifiers: []))
+        return try .init(try Inspector.unwrap(content: Content(view)))
     }
 }
