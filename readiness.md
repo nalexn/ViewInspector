@@ -44,7 +44,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| LazyHGrid | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `rows: [GridItem]` |
 |:white_check_mark:| LazyHStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews` |
 |:white_check_mark:| LazyVGrid | `contained view`, `alignment: HorizontalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `columns: [GridItem]` |
-|:technologist:| LazyVStack | |
+|:white_check_mark:| LazyVStack | `contained view`, `alignment: HorizontalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews` |
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:technologist:| Link | |
 |:white_check_mark:| List | `contained view` |
