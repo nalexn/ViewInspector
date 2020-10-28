@@ -49,4 +49,25 @@ final class LazyHGridTests: XCTestCase {
         let sut = try view.inspect().lazyHGrid().pinnedViews()
         XCTAssertEqual(sut, .sectionFooters)
     }
+    
+    func testRowsInspection() throws {
+        let view = LazyHGrid(rows: [GridItem(.fixed(10))]) { Text("") }
+        let sut = try view.inspect().lazyHGrid().rows()
+        XCTAssertEqual(sut, [GridItem(.fixed(10))])
+    }
+}
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+final class GridItemTests: XCTestCase {
+    func testEquatable() throws {
+        let items = [
+            GridItem(.fixed(5), spacing: 40, alignment: .bottomLeading),
+            GridItem(.adaptive(minimum: 10, maximum: 20)),
+            GridItem(.flexible(minimum: 10, maximum: 20))
+        ]
+        XCTAssertEqual(items[0], items[0])
+        XCTAssertEqual(items[1], items[1])
+        XCTAssertEqual(items[2], items[2])
+        XCTAssertNotEqual(items[1], items[2])
+    }
 }

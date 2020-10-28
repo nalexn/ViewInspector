@@ -61,3 +61,28 @@ public extension InspectableView where View == ViewType.LazyHGrid {
         return try Inspector.attribute(path: "tree|root", value: content.view)
     }
 }
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+extension GridItem: Equatable {
+    public static func == (lhs: GridItem, rhs: GridItem) -> Bool {
+        return lhs.size == rhs.size
+            && lhs.spacing == rhs.spacing
+            && lhs.alignment == rhs.alignment
+    }
+}
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+extension GridItem.Size: Equatable {
+    public static func == (lhs: GridItem.Size, rhs: GridItem.Size) -> Bool {
+        switch (lhs, rhs) {
+        case let (.fixed(lhsValue), .fixed(rhsValue)):
+            return lhsValue == rhsValue
+        case let (.flexible(lhsMin, lhsMax), .flexible(rhsMin, rhsMax)):
+            return lhsMin == rhsMin && lhsMax == rhsMax
+        case let (.adaptive(lhsMin, lhsMax), .adaptive(rhsMin, rhsMax)):
+            return lhsMin == rhsMin && lhsMax == rhsMax
+        default:
+            return false
+        }
+    }
+}

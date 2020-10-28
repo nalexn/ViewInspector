@@ -41,9 +41,9 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| HStack | `contained view` |
 |:white_check_mark:| Image | `imageName: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |
 |:white_check_mark:| Label | `title view`, `icon view` |
-|:white_check_mark:| LazyHGrid | |
+|:white_check_mark:| LazyHGrid | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `rows: [GridItem]` |
 |:technologist:| LazyHStack | |
-|:technologist:| LazyVGrid | |
+|:white_check_mark:| LazyVGrid | `contained view`, `alignment: HorizontalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `columns: [GridItem]` |
 |:technologist:| LazyVStack | |
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:technologist:| Link | |

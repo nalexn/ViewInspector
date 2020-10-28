@@ -109,6 +109,8 @@
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
 		F6B7D0082494DE5500ABB5E0 /* CustomViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */; };
 		F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */; };
+		F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A06254A0592000240F1 /* LazyVGridTests.swift */; };
+		F6C15A0D254A05A4000240F1 /* LazyVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A0C254A05A4000240F1 /* LazyVGrid.swift */; };
 		F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */; };
 		F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
@@ -276,6 +278,8 @@
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
 		F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewBuilder.swift; sourceTree = "<group>"; };
 		F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewBuilderTests.swift; sourceTree = "<group>"; };
+		F6C15A06254A0592000240F1 /* LazyVGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVGridTests.swift; sourceTree = "<group>"; };
+		F6C15A0C254A05A4000240F1 /* LazyVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVGrid.swift; sourceTree = "<group>"; };
 		F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectModifiers.swift; sourceTree = "<group>"; };
 		F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHosting.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
@@ -413,6 +417,7 @@
 				F60EEBC02382EED0007DB53A /* Image.swift */,
 				F6119FD52549EECC0000C54A /* Label.swift */,
 				F6119FF3254A00FC0000C54A /* LazyHGrid.swift */,
+				F6C15A0C254A05A4000240F1 /* LazyVGrid.swift */,
 				F6684BF923AA809300DECCB3 /* LinearGradient.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
@@ -495,6 +500,7 @@
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
 				F6119FDB2549EF170000C54A /* LabelTests.swift */,
 				F6119FE92549F5960000C54A /* LazyHGridTests.swift */,
+				F6C15A06254A0592000240F1 /* LazyVGridTests.swift */,
 				F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
@@ -745,6 +751,7 @@
 				F682A016254776F2005F1B70 /* DisclosureGroup.swift in Sources */,
 				F6119FF4254A00FC0000C54A /* LazyHGrid.swift in Sources */,
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
+				F6C15A0D254A05A4000240F1 /* LazyVGrid.swift in Sources */,
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
 				F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */,
@@ -852,6 +859,7 @@
 				F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */,
 				F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */,
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
+				F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */,
 				F6ECF6CC23A6702B000FC591 /* AnimationModifiersTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
 				F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */,
