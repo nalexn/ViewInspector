@@ -64,6 +64,8 @@
 		F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF32382F004007DB53A /* DatePickerTests.swift */; };
 		F60EEC072382F004007DB53A /* ScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF42382F004007DB53A /* ScrollViewTests.swift */; };
 		F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBF52382F004007DB53A /* AnyViewTests.swift */; };
+		F6119FD62549EECC0000C54A /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FD52549EECC0000C54A /* Label.swift */; };
+		F6119FDC2549EF170000C54A /* LabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FDB2549EF170000C54A /* LabelTests.swift */; };
 		F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */; };
 		F62AEAFC23E705D6003E69D9 /* ViewHostingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */; };
 		F62D69902507FA0C00335BCC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62D698F2507FA0C00335BCC /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -227,6 +229,8 @@
 		F60EEBF32382F004007DB53A /* DatePickerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerTests.swift; sourceTree = "<group>"; };
 		F60EEBF42382F004007DB53A /* ScrollViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViewTests.swift; sourceTree = "<group>"; };
 		F60EEBF52382F004007DB53A /* AnyViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewTests.swift; sourceTree = "<group>"; };
+		F6119FD52549EECC0000C54A /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		F6119FDB2549EF170000C54A /* LabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTests.swift; sourceTree = "<group>"; };
 		F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationModifiers.swift; sourceTree = "<group>"; };
 		F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHostingTests.swift; sourceTree = "<group>"; };
 		F62D698F2507FA0C00335BCC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -403,6 +407,7 @@
 				F60EEBC82382EED0007DB53A /* HStack.swift */,
 				F609EFC023A432AA00B9256A /* IDView.swift */,
 				F60EEBC02382EED0007DB53A /* Image.swift */,
+				F6119FD52549EECC0000C54A /* Label.swift */,
 				F6684BF923AA809300DECCB3 /* LinearGradient.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
@@ -483,6 +488,7 @@
 				F60EEBE92382F004007DB53A /* HStackTests.swift */,
 				F609EFC423A4350700B9256A /* IDViewTests.swift */,
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
+				F6119FDB2549EF170000C54A /* LabelTests.swift */,
 				F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
@@ -695,6 +701,7 @@
 				F60EEBD22382EED0007DB53A /* Image.swift in Sources */,
 				F63E926A249FCF92005861F0 /* TransformingModifiers.swift in Sources */,
 				F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */,
+				F6119FD62549EECC0000C54A /* Label.swift in Sources */,
 				F6DFD88423830E9F0028E84D /* List.swift in Sources */,
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,
 				F6ECF6D623A695FB000FC591 /* ClassifiedView.swift in Sources */,
@@ -788,6 +795,7 @@
 				F60EEC052382F004007DB53A /* SectionTests.swift in Sources */,
 				F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */,
 				F6F08E6F23A2AA64001F04DF /* EnvironmentReaderViewTests.swift in Sources */,
+				F6119FDC2549EF170000C54A /* LabelTests.swift in Sources */,
 				F6ECF6C423A66BF6000FC591 /* EventsModifiersTests.swift in Sources */,
 				F6FB7F6225476480006658EF /* ColorPickerTests.swift in Sources */,
 				F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */,
