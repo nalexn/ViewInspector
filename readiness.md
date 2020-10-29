@@ -46,7 +46,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| LazyVGrid | `contained view`, `alignment: HorizontalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `columns: [GridItem]` |
 |:white_check_mark:| LazyVStack | `contained view`, `alignment: HorizontalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews` |
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
-|:technologist:| Link | |
+|:white_check_mark:| Link | `label view`, `url: URL` |
 |:white_check_mark:| List | `contained view` |
 |:technologist:| Menu | |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
