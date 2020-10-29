@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if !os(macOS)
 public extension ViewType {
     
     struct LazyVGrid: KnownViewType {
@@ -61,3 +62,5 @@ public extension InspectableView where View == ViewType.LazyVGrid {
         return try Inspector.attribute(path: "tree|root", value: content.view)
     }
 }
+
+#endif

@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if !os(macOS)
 public extension ViewType {
     
     struct LazyHGrid: KnownViewType {
@@ -86,3 +87,4 @@ extension GridItem.Size: Equatable {
         }
     }
 }
+#endif

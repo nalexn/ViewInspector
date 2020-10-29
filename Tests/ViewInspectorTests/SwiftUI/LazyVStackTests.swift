@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if !os(macOS)
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 final class LazyVStackTests: XCTestCase {
     
@@ -50,3 +51,4 @@ final class LazyVStackTests: XCTestCase {
         XCTAssertEqual(sut, .sectionFooters)
     }
 }
+#endif

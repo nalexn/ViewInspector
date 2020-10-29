@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if !os(macOS)
 public extension ViewType {
     
     struct LazyHStack: KnownViewType {
@@ -56,3 +57,4 @@ public extension InspectableView where View == ViewType.LazyHStack {
         return try Inspector.attribute(path: "tree|root", value: content.view)
     }
 }
+#endif
