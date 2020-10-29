@@ -29,6 +29,16 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Content Extraction
+
+extension ViewType.DisclosureGroup: MultipleViewContent {
+    
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
+        let content = try Inspector.attribute(label: "content", value: content.view)
+        return try Inspector.viewsInContainer(view: content)
+    }
+}
+
 // MARK: - Custom Attributes
 
 @available(iOS 14.0, macOS 11.0, *)
@@ -37,11 +47,6 @@ public extension InspectableView where View == ViewType.DisclosureGroup {
     
     func label() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
-    }
-    
-    func contentView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "content", value: content.view)
         return try .init(try Inspector.unwrap(content: Content(view)))
     }
     

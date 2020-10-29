@@ -29,7 +29,7 @@ final class LazyVGridTests: XCTestCase {
         let view = LazyVGrid(columns: [], content: {
             ForEach((0...10), id: \.self) { Text("\($0)") }
         })
-        let sut = try view.inspect().lazyVGrid().contentView().forEach()
+        let sut = try view.inspect().lazyVGrid().forEach(0)
         XCTAssertEqual(try sut.text(3).string(), "3")
     }
     

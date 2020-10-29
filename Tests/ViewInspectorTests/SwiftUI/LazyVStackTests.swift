@@ -29,7 +29,7 @@ final class LazyVStackTests: XCTestCase {
         let view = LazyVStack(content: {
             ForEach((0...10), id: \.self) { Text("\($0)") }
         })
-        let sut = try view.inspect().lazyVStack().contentView().forEach()
+        let sut = try view.inspect().lazyVStack().forEach(0)
         XCTAssertEqual(try sut.text(3).string(), "3")
     }
     

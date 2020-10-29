@@ -29,7 +29,7 @@ final class LazyHStackTests: XCTestCase {
         let view = LazyHStack(content: {
             ForEach((0...10), id: \.self) { Text("\($0)") }
         })
-        let sut = try view.inspect().lazyHStack().contentView().forEach()
+        let sut = try view.inspect().lazyHStack().forEach(0)
         XCTAssertEqual(try sut.text(3).string(), "3")
     }
     

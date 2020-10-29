@@ -29,7 +29,7 @@ final class LazyHGridTests: XCTestCase {
         let view = LazyHGrid(rows: [], content: {
             ForEach((0...10), id: \.self) { Text("\($0)") }
         })
-        let sut = try view.inspect().lazyHGrid().contentView().forEach()
+        let sut = try view.inspect().lazyHGrid().forEach(0)
         XCTAssertEqual(try sut.text(3).string(), "3")
     }
     

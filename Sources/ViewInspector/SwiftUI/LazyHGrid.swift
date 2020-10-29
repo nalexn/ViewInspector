@@ -28,15 +28,20 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Content Extraction
+
+extension ViewType.LazyHGrid: MultipleViewContent {
+    
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
+        let content = try Inspector.attribute(path: "tree|content", value: content.view)
+        return try Inspector.viewsInContainer(view: content)
+    }
+}
+
 // MARK: - Custom Attributes
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension InspectableView where View == ViewType.LazyHGrid {
-    
-    func contentView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(path: "tree|content", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
-    }
     
     func alignment() throws -> VerticalAlignment {
         return try Inspector.attribute(
