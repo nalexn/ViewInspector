@@ -48,7 +48,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:white_check_mark:| Link | `label view`, `url: URL` |
 |:white_check_mark:| List | `contained view` |
-|:technologist:| Menu | |
+|:white_check_mark:| Menu | `contained view`, `label view` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
 |:technologist:| MenuStyleConfiguration.Content | |
 |:technologist:| MenuStyleConfiguration.Label | |
@@ -67,7 +67,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
 |:technologist:| ScrollViewReader | |
-|:white_check_mark:| Section | `contained view` |
+|:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
 |:white_check_mark:| SecureField | `contained view`, `callOnCommit()` |
 |:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
 |:white_check_mark:| Slider | `contained view`, `callOnEditingChanged()` |

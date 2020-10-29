@@ -61,4 +61,16 @@ final class SectionTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().form().section(0))
         XCTAssertNoThrow(try view.inspect().form().section(1))
     }
+    
+    func testHeaderInspection() throws {
+        let view = Section(header: Text("header"), footer: Text("footer"), content: { Text("content") })
+        let sut = try view.inspect().section().header().text(0).string()
+        XCTAssertEqual(sut, "header")
+    }
+    
+    func testFooterInspection() throws {
+        let view = Section(header: Text("header"), footer: Text("footer"), content: { Text("content") })
+        let sut = try view.inspect().section().footer().text(0).string()
+        XCTAssertEqual(sut, "footer")
+    }
 }
