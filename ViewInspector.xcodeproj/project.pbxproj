@@ -117,6 +117,8 @@
 		F6C15A31254A0F29000240F1 /* LazyVStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A30254A0F29000240F1 /* LazyVStackTests.swift */; };
 		F6C15A3F254B4835000240F1 /* LinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A3E254B4835000240F1 /* LinkTests.swift */; };
 		F6C15A49254B4A3A000240F1 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A48254B4A3A000240F1 /* Link.swift */; };
+		F6C15A6B254B669F000240F1 /* MenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A6A254B669F000240F1 /* MenuTests.swift */; };
+		F6C15A71254B68C0000240F1 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A70254B68C0000240F1 /* Menu.swift */; };
 		F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */; };
 		F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
@@ -292,6 +294,8 @@
 		F6C15A30254A0F29000240F1 /* LazyVStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVStackTests.swift; sourceTree = "<group>"; };
 		F6C15A3E254B4835000240F1 /* LinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTests.swift; sourceTree = "<group>"; };
 		F6C15A48254B4A3A000240F1 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
+		F6C15A6A254B669F000240F1 /* MenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTests.swift; sourceTree = "<group>"; };
+		F6C15A70254B68C0000240F1 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectModifiers.swift; sourceTree = "<group>"; };
 		F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHosting.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
@@ -435,6 +439,7 @@
 				F6684BF923AA809300DECCB3 /* LinearGradient.swift */,
 				F6C15A48254B4A3A000240F1 /* Link.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
+				F6C15A70254B68C0000240F1 /* Menu.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
 				F69C91C92383187D00515A91 /* ModifiedContent.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
@@ -521,6 +526,7 @@
 				F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */,
 				F6C15A3E254B4835000240F1 /* LinkTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
+				F6C15A6A254B669F000240F1 /* MenuTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
 				F69C91CB2383189200515A91 /* ModifiedContentTests.swift */,
 				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
@@ -743,6 +749,7 @@
 				F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */,
 				F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */,
 				F6C15A49254B4A3A000240F1 /* Link.swift in Sources */,
+				F6C15A71254B68C0000240F1 /* Menu.swift in Sources */,
 				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				F6ECF6CE23A67C64000FC591 /* SizingModifiers.swift in Sources */,
@@ -886,6 +893,7 @@
 				F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */,
 				F6ECF6CC23A6702B000FC591 /* AnimationModifiersTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
+				F6C15A6B254B669F000240F1 /* MenuTests.swift in Sources */,
 				F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */,
 				F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */,
 				F64057F3238E9F600029D9BA /* OptionalViewTests.swift in Sources */,
