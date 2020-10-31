@@ -47,6 +47,21 @@ final class OutlineGroupTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().outlineGroup(1))
     }
     
+    func testSourceDataInspection() throws {
+        let view1 = OutlineGroup(values, id: \.testValue, children: \.testChildren) { _ in
+            EmptyView()
+        }
+        let view2 = OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { _ in
+            EmptyView()
+        }
+        XCTAssertThrows(try view1.inspect().outlineGroup().sourceData(TestTree<String>.self),
+                        "Type mismatch: Array<TestTree<String>> is not TestTree<String>")
+        XCTAssertEqual(try view1.inspect().outlineGroup().sourceData([TestTree<String>].self), values)
+        XCTAssertEqual(try view2.inspect().outlineGroup().sourceData(TestTree<String>.self), values[0])
+        XCTAssertThrows(try view2.inspect().outlineGroup().sourceData([TestTree<String>].self),
+                        "Type mismatch: TestTree<String> is not Array<TestTree<String>>")
+    }
+    
     func testLeafInspection() throws {
         let view = OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { element in
             Text(element.testValue)

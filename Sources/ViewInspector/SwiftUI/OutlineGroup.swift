@@ -35,6 +35,15 @@ public extension InspectableView where View: MultipleViewContent {
 @available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.OutlineGroup {
     
+    func sourceData<T>(_ type: T.Type) throws -> T {
+        let root = try (try? Inspector.attribute(path: "base|forest", value: content.view)) ??
+            (try Inspector.attribute(path: "base|tree", value: content.view))
+        guard let data = root as? T else {
+            throw InspectionError.typeMismatch(root, T.self)
+        }
+        return data
+    }
+    
     func leaf<DataElement, Leaf>(_ dataElement: DataElement, _ leafType: Leaf.Type
     ) throws -> InspectableView<ViewType.ClassifiedView> {
         typealias LeafContent = (DataElement) -> Leaf
