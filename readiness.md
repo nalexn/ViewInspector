@@ -60,7 +60,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view` |
 |:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
-|:technologist:| ProgressView | |
+|:white_check_mark:| ProgressView | `label view`, `currentValueLabel view`, `fractionCompleted: Double?`, `progress: Progress` |
 |:technologist:| ProgressViewStyleConfiguration.CurrentValueLabel | |
 |:technologist:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |

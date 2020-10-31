@@ -121,6 +121,8 @@
 		F6C15A71254B68C0000240F1 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A70254B68C0000240F1 /* Menu.swift */; };
 		F6C15A7B254B7555000240F1 /* OutlineGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A7A254B7555000240F1 /* OutlineGroupTests.swift */; };
 		F6C15A85254D806C000240F1 /* OutlineGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A84254D806C000240F1 /* OutlineGroup.swift */; };
+		F6C15A99254D9F26000240F1 /* ProgressViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A98254D9F24000240F1 /* ProgressViewTests.swift */; };
+		F6C15AA3254DA270000240F1 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15AA2254DA270000240F1 /* ProgressView.swift */; };
 		F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */; };
 		F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
@@ -300,6 +302,8 @@
 		F6C15A70254B68C0000240F1 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		F6C15A7A254B7555000240F1 /* OutlineGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineGroupTests.swift; sourceTree = "<group>"; };
 		F6C15A84254D806C000240F1 /* OutlineGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineGroup.swift; sourceTree = "<group>"; };
+		F6C15A98254D9F24000240F1 /* ProgressViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewTests.swift; sourceTree = "<group>"; };
+		F6C15AA2254DA270000240F1 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectModifiers.swift; sourceTree = "<group>"; };
 		F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHosting.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
@@ -452,6 +456,7 @@
 				F6C15A84254D806C000240F1 /* OutlineGroup.swift */,
 				F6684BF123AA554500DECCB3 /* PasteButton.swift */,
 				F6D933B62385EDCB00358E0E /* Picker.swift */,
+				F6C15AA2254DA270000240F1 /* ProgressView.swift */,
 				F6684BFD23AA863400DECCB3 /* RadialGradient.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
@@ -541,6 +546,7 @@
 				F6C15A7A254B7555000240F1 /* OutlineGroupTests.swift */,
 				F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */,
 				F6D933B82385EDDF00358E0E /* PickerTests.swift */,
+				F6C15A98254D9F24000240F1 /* ProgressViewTests.swift */,
 				F6684BFF23AA864F00DECCB3 /* RadialGradientTests.swift */,
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
@@ -811,6 +817,7 @@
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
 				F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
+				F6C15AA3254DA270000240F1 /* ProgressView.swift in Sources */,
 				F6ECF6CA23A66FE2000FC591 /* AnimationModifiers.swift in Sources */,
 				F66EDB5B23EDC19000A01B9F /* Spacer.swift in Sources */,
 				F639DBBF23A6CF03003A6FED /* AccessibilityModifiers.swift in Sources */,
@@ -856,6 +863,7 @@
 				F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */,
 				F6D933A92385E9F700358E0E /* EquatableViewTests.swift in Sources */,
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
+				F6C15A99254D9F26000240F1 /* ProgressViewTests.swift in Sources */,
 				F6D933C52385FB1D00358E0E /* SecureFieldTests.swift in Sources */,
 				F609EFBF23A424D800B9256A /* EnvironmentModifiersTests.swift in Sources */,
 				F6684BF823AA58F200DECCB3 /* AngularGradientTests.swift in Sources */,
