@@ -56,8 +56,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| NavigationLink | `contained view`, `label view`, `isActive: Bool`, `activate()`, `deactivate()` |
 |:white_check_mark:| NavigationView | `contained view` |
 |:white_check_mark:| OptionalContent | `contained view` |
-|:technologist:| OutlineGroup | |
-|:technologist:| OutlineSubgroupChildren | |
+|:white_check_mark:| OutlineGroup | `leaf view` |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view` |
 |:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
