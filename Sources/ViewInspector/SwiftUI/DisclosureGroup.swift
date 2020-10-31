@@ -45,7 +45,7 @@ extension ViewType.DisclosureGroup: MultipleViewContent {
 @available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.DisclosureGroup {
     
-    func label() throws -> InspectableView<ViewType.ClassifiedView> {
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
         return try .init(try Inspector.unwrap(content: Content(view)))
     }

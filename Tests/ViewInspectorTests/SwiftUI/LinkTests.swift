@@ -31,7 +31,7 @@ final class LinkTests: XCTestCase {
         let view = Link(destination: url, label: {
             HStack { Text("xyz") }
         })
-        let sut = try view.inspect().link().label().hStack().text(0).string()
+        let sut = try view.inspect().link().labelView().hStack().text(0).string()
         XCTAssertEqual(sut, "xyz")
     }
 }

@@ -35,7 +35,7 @@ final class DisclosureGroupTests: XCTestCase {
     @available(tvOS, unavailable)
     func testLabelInspection() throws {
         let sut = DisclosureGroup(content: { EmptyView() }, label: { Text("abc") })
-        let string = try sut.inspect().disclosureGroup().label().text().string()
+        let string = try sut.inspect().disclosureGroup().labelView().text().string()
         XCTAssertEqual(string, "abc")
     }
     

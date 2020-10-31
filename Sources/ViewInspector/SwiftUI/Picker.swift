@@ -7,13 +7,6 @@ public extension ViewType {
     }
 }
 
-public extension ViewType.Picker {
-    
-    struct Label: KnownViewType {
-        public static var typePrefix: String = "Picker"
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.Picker: MultipleViewContent {
@@ -21,14 +14,6 @@ extension ViewType.Picker: MultipleViewContent {
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let content = try Inspector.attribute(label: "content", value: content.view)
         return try Inspector.viewsInContainer(view: content)
-    }
-}
-
-extension ViewType.Picker.Label: SingleViewContent {
-    
-    public static func child(_ content: Content) throws -> Content {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [])
     }
 }
 
@@ -57,8 +42,14 @@ public extension InspectableView where View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Picker {
     
-    func label() throws -> InspectableView<ViewType.Picker.Label> {
-        return try .init(content)
+    @available(*, deprecated, renamed: "labelView")
+    func label() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try labelView()
+    }
+    
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "label", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
     }
 }
 

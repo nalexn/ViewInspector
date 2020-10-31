@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if !os(macOS)
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 final class OutlineGroupTests: XCTestCase {
@@ -55,3 +56,4 @@ final class OutlineGroupTests: XCTestCase {
         XCTAssertEqual(sut, "l2")
     }
 }
+#endif

@@ -41,7 +41,7 @@ final class ImageTests: XCTestCase {
         let image = try view.inspect().image().cgImage()
         let scale = try view.inspect().image().scale()
         let orientation = try view.inspect().image().orientation()
-        let label = try view.inspect().image().label().string()
+        let label = try view.inspect().image().labelView().string()
         XCTAssertEqual(image, cgImage)
         XCTAssertEqual(scale, 2.0)
         XCTAssertEqual(orientation, .down)
@@ -53,6 +53,12 @@ final class ImageTests: XCTestCase {
         let nsImage = try view.inspect().image().nsImage()
         XCTAssertNil(nsImage)
         #endif
+    }
+    
+    func textDeprecatedLabel() throws {
+        let cgImage = testImage.cgImage!
+        let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage").bold())
+        XCTAssertNoThrow(try view.inspect().image().label())
     }
     
     func testExtractionNilCGImage() throws {

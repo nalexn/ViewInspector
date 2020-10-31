@@ -4,7 +4,9 @@ import SwiftUI
 
 #if os(macOS)
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 final class MenuButtonTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -34,14 +36,16 @@ final class MenuButtonTests: XCTestCase {
     
     func testLabelView() throws {
         let sut = MenuButton(label: Text("abc")) { EmptyView() }
-        let text = try sut.inspect().menuButton().label().text().string()
+        let text = try sut.inspect().menuButton().labelView().text().string()
         XCTAssertEqual(text, "abc")
     }
 }
 
 // MARK: - View Modifiers
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 final class GlobalModifiersForMenuMenuButton: XCTestCase {
     
     func testMenuButtonStyle() throws {

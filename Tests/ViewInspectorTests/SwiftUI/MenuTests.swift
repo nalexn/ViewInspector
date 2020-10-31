@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if !os(macOS)
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 final class MenuTests: XCTestCase {
@@ -26,7 +27,7 @@ final class MenuTests: XCTestCase {
         }, label: {
             VStack { Text("xyz") }
         })
-        let sut = try view.inspect().menu().label().vStack().text(0).string()
+        let sut = try view.inspect().menu().labelView().vStack().text(0).string()
         XCTAssertEqual(sut, "xyz")
     }
     
@@ -40,3 +41,4 @@ final class MenuTests: XCTestCase {
         XCTAssertEqual(sut, "abc")
     }
 }
+#endif

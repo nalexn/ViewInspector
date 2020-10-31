@@ -71,7 +71,7 @@ final class GroupBoxTests: XCTestCase {
         let view = GroupBox(
             label: HStack { Text("abc") },
             content: { Text("test") })
-        let sut = try view.inspect().groupBox().label().hStack().text(0).string()
+        let sut = try view.inspect().groupBox().labelView().hStack().text(0).string()
         XCTAssertEqual(sut, "abc")
     }
 }

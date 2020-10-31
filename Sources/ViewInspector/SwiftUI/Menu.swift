@@ -9,7 +9,8 @@ public extension ViewType {
 
 // MARK: - Extraction from SingleViewContent parent
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
     func menu() throws -> InspectableView<ViewType.Menu> {
@@ -19,7 +20,8 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View: MultipleViewContent {
     
     func menu(_ index: Int) throws -> InspectableView<ViewType.Menu> {
@@ -39,10 +41,11 @@ extension ViewType.Menu: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.Menu {
     
-    func label() throws -> InspectableView<ViewType.ClassifiedView> {
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
         return try .init(try Inspector.unwrap(content: Content(view)))
     }

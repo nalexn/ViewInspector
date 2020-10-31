@@ -68,7 +68,12 @@ public extension InspectableView where View == ViewType.Image {
                        type: CGFloat.self)
     }
     
+    @available(*, deprecated, renamed: "labelView")
     func label() throws -> InspectableView<ViewType.Text> {
+        return try labelView()
+    }
+    
+    func labelView() throws -> InspectableView<ViewType.Text> {
         let view = try Inspector.attribute(path: "provider|base|label", value: content.view)
         return try .init(try Inspector.unwrap(content: Content(view)))
     }
