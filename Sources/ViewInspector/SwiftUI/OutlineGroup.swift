@@ -44,12 +44,32 @@ public extension InspectableView where View == ViewType.OutlineGroup {
         return data
     }
     
-    func leaf<DataElement, Leaf>(_ dataElement: DataElement, _ leafType: Leaf.Type
-    ) throws -> InspectableView<ViewType.ClassifiedView> {
-        typealias LeafContent = (DataElement) -> Leaf
-        let leafContent = try Inspector
-            .attribute(label: "leafContent", value: content.view, type: LeafContent.self)
-        let view = leafContent(dataElement)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+    #if !os(macOS)
+    func leaf(_ dataElement: Any) throws -> InspectableView<ViewType.ClassifiedView> {
+        let provider = try Inspector.cast(value: content.view, type: LeafContentProvider.self)
+        return try .init(Content(try provider.view(dataElement)))
+    }
+    #endif
+}
+
+#if !os(macOS)
+// MARK: - Private
+
+private protocol LeafContentProvider {
+    func view(_ element: Any) throws -> Any
+}
+
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
+extension OutlineGroup: LeafContentProvider {
+    func view(_ element: Any) throws -> Any {
+        guard let data = element as? Data.Element else {
+            throw InspectionError.typeMismatch(element, Data.Element.self)
+        }
+        typealias Builder = (Data.Element) -> Leaf
+        let builder = try Inspector
+            .attribute(label: "leafContent", value: self, type: Builder.self)
+        return builder(data)
     }
 }
+#endif

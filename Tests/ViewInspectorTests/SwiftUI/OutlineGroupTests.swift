@@ -67,7 +67,9 @@ final class OutlineGroupTests: XCTestCase {
             Text(element.testValue)
         }
         let data = values[0].testChildren![2]
-        let sut = try view.inspect().outlineGroup().leaf(data, Text.self).text().string()
+        XCTAssertThrows(try view.inspect().outlineGroup().leaf("wrong_type"),
+                        "Type mismatch: String is not TestTree<String>")
+        let sut = try view.inspect().outlineGroup().leaf(data).text().string()
         XCTAssertEqual(sut, "l2")
     }
 }
