@@ -72,10 +72,10 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Slider | `contained view`, `callOnEditingChanged()` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
 |:white_check_mark:| Stepper | `contained view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
-|:technologist:| SubscriptionView | |
+|:heavy_check_mark:| SubscriptionView | |
 |:white_check_mark:| TabView | `contained view` |
 |:white_check_mark:| Text | `string: String?`, `attributes: TextAttributes` |
-|:technologist:| TextEditor | |
+|:white_check_mark:| TextEditor | |
 |:white_check_mark:| TextField | `contained view`, `callOnEditingChanged()`, `callOnCommit()` |
 |:white_check_mark:| Toggle | `contained view` |
 |:technologist:| ToggleStyleConfiguration.Label | |
