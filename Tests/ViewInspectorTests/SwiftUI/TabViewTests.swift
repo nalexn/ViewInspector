@@ -2,8 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(watchOS)
-
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TabViewTests: XCTestCase {
     
@@ -45,8 +43,6 @@ final class TabViewTests: XCTestCase {
     }
 }
 
-#endif
-
 // MARK: - View Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -63,7 +59,6 @@ final class GlobalModifiersForTabView: XCTestCase {
         XCTAssertEqual(sut, tag)
     }
     
-    #if !os(watchOS)
     func testTabItem() throws {
         let sut = EmptyView().tabItem { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -75,6 +70,33 @@ final class GlobalModifiersForTabView: XCTestCase {
             .inspect().emptyView().tabItem()
         let sut = try tabItem.text().string()
         XCTAssertEqual(sut, string)
+    }
+    
+    #if !os(macOS) && !targetEnvironment(macCatalyst)
+    func testTabViewStyleInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let style = PageTabViewStyle(indexDisplayMode: .never)
+        let view = EmptyView().tabViewStyle(style)
+        let sut = try XCTUnwrap(try view.inspect().tabViewStyle() as? PageTabViewStyle)
+        XCTAssertEqual(sut, style)
+    }
+    
+    func testPageTabViewStyleEquatable() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let styles = [PageTabViewStyle(indexDisplayMode: .always),
+                      PageTabViewStyle(indexDisplayMode: .automatic),
+                      PageTabViewStyle(indexDisplayMode: .never)]
+        (0..<styles.count).forEach { index in
+            XCTAssertEqual(styles[index], styles[index])
+            XCTAssertNotEqual(styles[index], styles[(index + 1) % styles.count])
+        }
+    }
+    
+    @available(macOS, unavailable)
+    func testIndexViewStyleInspection() throws {
+        guard #available(iOS 14, tvOS 14, *) else { return }
+        let sut = EmptyView().indexViewStyle(PageIndexViewStyle())
+        XCTAssertTrue(try sut.inspect().indexViewStyle() is PageIndexViewStyle)
     }
     #endif
 }

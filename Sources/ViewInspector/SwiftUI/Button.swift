@@ -7,16 +7,6 @@ public extension ViewType {
     }
 }
 
-// MARK: - Content Extraction
-
-extension ViewType.Button: SingleViewContent {
-    
-    public static func child(_ content: Content) throws -> Content {
-        let view = try Inspector.attribute(label: "_label", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [])
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -41,6 +31,16 @@ public extension InspectableView where View: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Button {
+    
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "_label", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
+    }
+    
+    @available(*, deprecated, message: "Please use .labelView().text() instead")
+    func text() throws -> InspectableView<ViewType.Text> {
+        return try labelView().text()
+    }
     
     func tap() throws {
         let action = try Inspector.attribute(label: "action", value: content.view)
@@ -71,7 +71,7 @@ public extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ButtonStyle {
-    func inspect(isPressed: Bool) throws -> InspectableView<ViewType.ButtonStyleLabel> {
+    func inspect(isPressed: Bool) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ButtonStyleConfiguration(isPressed: isPressed)
         let view = try makeBody(configuration: config).inspect()
         return try .init(view.content)
@@ -86,26 +86,14 @@ public extension PrimitiveButtonStyle {
     }
 }
 
-// MARK: - ButtonStyle.Label
-
-public extension ViewType {
-    
-    struct ButtonStyleLabel: KnownViewType {
-        public static var typePrefix: String = "Label"
-    }
-    
-    struct PrimitiveButtonStyleLabel: KnownViewType {
-        public static var typePrefix: String = "Label"
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
-    func primitiveButtonStyleLabel() throws -> InspectableView<ViewType.PrimitiveButtonStyleLabel> {
-        return try .init(try child())
+    @available(*, deprecated, renamed: "styleConfigurationLabel")
+    func primitiveButtonStyleLabel() throws -> InspectableView<ViewType.StyleConfiguration.Label> {
+        return try styleConfigurationLabel()
     }
 }
 
@@ -114,8 +102,9 @@ public extension InspectableView where View: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
-    func primitiveButtonStyleLabel(_ index: Int) throws -> InspectableView<ViewType.PrimitiveButtonStyleLabel> {
-        return try .init(try child(at: index))
+    @available(*, deprecated, renamed: "styleConfigurationLabel")
+    func primitiveButtonStyleLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfiguration.Label> {
+        return try styleConfigurationLabel(index)
     }
 }
 

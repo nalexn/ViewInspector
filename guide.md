@@ -5,8 +5,12 @@
 - [Views using **@Binding**](#views-using-binding)
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
-- [ViewModifiers](#viewmodifiers)
+- [Custom **ViewModifier**](#custom-viewmodifier)
 - [Custom **ButtonStyle** or **PrimitiveButtonStyle**](#custom-buttonstyle-or-primitivebuttonstyle)
+- [Custom **LabelStyle**](#custom-labelstyle)
+- [Custom **GroupBoxStyle**](#custom-groupboxstyle)
+- [Custom **ToggleStyle**](#custom-togglestyle)
+- [Custom **ProgressViewStyle**](#custom-progressview)
 
 ## The Basics
 
@@ -288,7 +292,7 @@ For the case of `@Environment` or `@EnvironmentObject`, you can perform the inje
 ViewHosting.host(view: sut.environmentObject(...))
 ```
 
-## ViewModifiers
+## Custom **ViewModifier**
 
 Custom `ViewModifier` has to be tested independently from the main hierarchy. An example:
 
@@ -398,7 +402,7 @@ struct CustomPrimitiveButtonStyle: PrimitiveButtonStyle {
 You can get access to the root view:
 
 ```swift
-func testPrimitiveButtonStyle() throws {
+func testCustomPrimitiveButtonStyle() throws {
     let sut = CustomPrimitiveButtonStyle()
     let view = try sut.inspect().view(CustomPrimitiveButtonStyle.CustomButton.self)
     ...
@@ -407,7 +411,7 @@ func testPrimitiveButtonStyle() throws {
 However, since that root view is likely to be a custom view itself, it's better to inspect it directly. There is a helper initializer available for `PrimitiveButtonStyleConfiguration` where you provide `onTrigger` closure for verifying that your `PrimitiveButtonStyle` calls `trigger()` in the right time:
 
 ```swift
-func testPrimitiveButtonStyleLabel() throws {
+func testCustomPrimitiveButtonStyleButton() throws {
     let triggerExp = XCTestExpectation(description: "trigger()")
     triggerExp.expectedFulfillmentCount = 1
     triggerExp.assertForOverFulfill = true
@@ -416,10 +420,10 @@ func testPrimitiveButtonStyleLabel() throws {
     })
     let view = CustomPrimitiveButtonStyle.CustomButton(configuration: config)
     let exp = view.inspection.inspect { view in
-        let label = try view.primitiveButtonStyleLabel()
+        let label = try view.styleConfigurationLabel()
         XCTAssertEqual(try label.blur().radius, 0)
         try label.callOnTapGesture()
-        let updatedLabel = try view.primitiveButtonStyleLabel()
+        let updatedLabel = try view.styleConfigurationLabel()
         XCTAssertEqual(try updatedLabel.blur().radius, 5)
     }
     ViewHosting.host(view: view)
@@ -427,3 +431,117 @@ func testPrimitiveButtonStyleLabel() throws {
 }
 ```
 
+## Custom **LabelStyle**
+
+For verifying the label style you can just do:
+
+```swift
+XCTAssertTrue(try sut.inspect().labelStyle() is IconOnlyLabelStyle)
+```
+
+Consider the following example:
+
+```swift
+struct CustomLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.title
+                .blur(radius: 3)
+            configuration.icon
+                .padding(5)
+        }
+    }
+}
+```
+
+The test for this style may look like this:
+
+```swift
+func testCustomLabelStyle() throws {
+    let sut = CustomLabelStyle()
+    let title = try sut.inspect().vStack().styleConfigurationTitle(0)
+    let icon = try sut.inspect().vStack().styleConfigurationIcon(1)
+    XCTAssertEqual(try title.blur().radius, 3)
+    XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+}
+```
+
+## Custom **GroupBoxStyle**
+
+Consider the following example:
+
+```swift
+struct CustomGroupBoxStyle: GroupBoxStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.label
+                .brightness(3)
+            configuration.content
+                .blur(radius: 5)
+        }
+    }
+}
+```
+
+The test for this style may look like this:
+
+```swift
+func testCustomGroupBoxStyleInspection() throws {
+    let sut = CustomGroupBoxStyle()
+    XCTAssertEqual(try sut.inspect().vStack().styleConfigurationLabel(0).brightness(), 3)
+    XCTAssertEqual(try sut.inspect().vStack().styleConfigurationContent(1).blur().radius, 5)
+}
+```
+
+## Custom **ToggleStyle**
+
+Consider the following example:
+
+```swift
+struct CustomToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .blur(radius: configuration.isOn ? 5 : 0)
+    }
+}
+```
+
+The library provides a custom inspection function `inspect(isOn: Bool)` for testing the custom `ToggleStyle`:
+
+```swift
+func testCustomToggleStyle() throws {
+    let sut = CustomToggleStyle()
+    XCTAssertEqual(try sut.inspect(isOn: false).styleConfigurationLabel().blur().radius, 0)
+    XCTAssertEqual(try sut.inspect(isOn: true).styleConfigurationLabel().blur().radius, 5)
+}
+```
+
+## Custom **ProgressViewStyle**
+
+Consider the following example:
+
+```swift
+struct CustomProgressViewStyle: ProgressViewStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.label
+                .brightness(3)
+            configuration.currentValueLabel
+                .blur(radius: 5)
+            Text("Completed: \(Int(configuration.fractionCompleted.flatMap { $0 * 100 } ?? 0))%")
+        }
+    }
+}
+```
+
+The library provides a custom inspection function `inspect(fractionCompleted: Double?)` for testing the custom `ProgressViewStyle`:
+
+```swift
+func testCustomProgressViewStyle() throws {
+    let sut = CustomProgressViewStyle()
+    let sut = TestProgressViewStyle()
+    XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationLabel(0).brightness(), 3)
+    XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationCurrentValueLabel(1).blur().radius, 5)
+    XCTAssertEqual(try sut.inspect(fractionCompleted: 0.42).vStack().text(2).string(), "Completed: 42%")
+}
+```

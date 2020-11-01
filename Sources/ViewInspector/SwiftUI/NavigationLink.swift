@@ -7,27 +7,12 @@ public extension ViewType {
     }
 }
 
-public extension ViewType.NavigationLink {
-    
-    struct Label: KnownViewType {
-        public static var typePrefix: String = "NavigationLink"
-    }
-}
-
 // MARK: - Content Extraction
 
 extension ViewType.NavigationLink: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "destination", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [])
-    }
-}
-
-extension ViewType.NavigationLink.Label: SingleViewContent {
-    
-    public static func child(_ content: Content) throws -> Content {
-        let view = try Inspector.attribute(label: "label", value: content.view)
         return try Inspector.unwrap(view: view, modifiers: [])
     }
 }
@@ -57,8 +42,14 @@ public extension InspectableView where View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.NavigationLink {
     
-    func label() throws -> InspectableView<ViewType.NavigationLink.Label> {
-        return try .init(content)
+    @available(*, deprecated, renamed: "labelView")
+    func label() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try labelView()
+    }
+    
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "label", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
     }
     
     func isActive() throws -> Bool {
@@ -77,7 +68,7 @@ public extension InspectableView where View == ViewType.NavigationLink {
             external.wrappedValue = isActive
         } else {
             // @State mutation from outside is ignored by SwiftUI
-            // try internalIsActive().wrappedValue = isActive
+            // try isActiveState().wrappedValue = isActive
             //swiftlint:disable line_length
             throw InspectionError.notSupported("Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
             //swiftlint:enable line_length

@@ -1,7 +1,5 @@
 import SwiftUI
 
-#if !os(watchOS)
-
 public extension ViewType {
     
     struct NavigationView: KnownViewType {
@@ -51,5 +49,3 @@ public extension InspectableView {
         return try Inspector.attribute(path: "modifier|style", value: modifier)
     }
 }
-
-#endif

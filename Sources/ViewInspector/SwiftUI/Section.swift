@@ -36,3 +36,19 @@ public extension InspectableView where View: MultipleViewContent {
         return try .init(try child(at: index))
     }
 }
+
+// MARK: - Custom Attributes
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View == ViewType.Section {
+    
+    func header() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "header", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
+    }
+    
+    func footer() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "footer", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
+    }
+}

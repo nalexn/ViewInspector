@@ -21,12 +21,12 @@ final class InspectionEmissaryTests: XCTestCase {
     func testInspectAfter() throws {
         let sut = TestView(flag: false)
         let exp1 = sut.inspection.inspect { view in
-            let text = try view.button().text().string()
+            let text = try view.button().labelView().text().string()
             XCTAssertEqual(text, "false")
             sut.publisher.send(true)
         }
         let exp2 = sut.inspection.inspect(after: 0.1) { view in
-            let text = try view.button().text().string()
+            let text = try view.button().labelView().text().string()
             XCTAssertEqual(text, "true")
         }
         ViewHosting.host(view: sut)
@@ -36,17 +36,17 @@ final class InspectionEmissaryTests: XCTestCase {
     func testInspectOnReceive() throws {
         let sut = TestView(flag: false)
         let exp1 = sut.inspection.inspect { view in
-            let text = try view.button().text().string()
+            let text = try view.button().labelView().text().string()
             XCTAssertEqual(text, "false")
             sut.publisher.send(true)
         }
         let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
-            let text = try view.button().text().string()
+            let text = try view.button().labelView().text().string()
             XCTAssertEqual(text, "true")
             sut.publisher.send(false)
         }
         let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
-            let text = try view.button().text().string()
+            let text = try view.button().labelView().text().string()
             XCTAssertEqual(text, "false")
         }
         ViewHosting.host(view: sut)

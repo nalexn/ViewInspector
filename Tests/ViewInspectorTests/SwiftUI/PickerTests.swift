@@ -21,8 +21,16 @@ final class PickerTests: XCTestCase {
             Text("First Option").tag(0)
             Text("Second Option").tag(1)
         }
-        let text = try view.inspect().picker().label().text().string()
+        let text = try view.inspect().picker().labelView().text().string()
         XCTAssertEqual(text, "Title")
+    }
+    
+    func testDeprecatedLabelInspection() throws {
+        let binding = Binding<Int?>(wrappedValue: nil)
+        let view = Picker(selection: binding, label: Text("Title")) {
+            Text("").tag(0)
+        }
+        XCTAssertNoThrow(try view.inspect().picker().label())
     }
     
     func testResetsModifiers() throws {

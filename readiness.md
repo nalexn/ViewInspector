@@ -17,81 +17,72 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|---|
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
-|:white_check_mark:| Button | `contained view`, `tap()` |
+|:white_check_mark:| Button | `label view`, `tap()` |
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
-|:technologist:| ColorPicker | |
+|:white_check_mark:| ColorPicker | `label view` |
 |:white_check_mark:| ConditionalContent | `contained view` |
 |:white_check_mark:| SwiftUI Custom View | `actualView: CustomView`, `viewBuilder container` |
 |:white_check_mark:| SwiftUI Custom @ViewBuilder | `actualView: CustomView` |
 |:white_check_mark:| UIViewRepresentable | `uiView: UIView` |
 |:white_check_mark:| UIViewControllerRepresentable | `viewController: UIViewController` |
-|:white_check_mark:| DatePicker | `contained view` |
-|:technologist:| DisclosureGroup | |
+|:white_check_mark:| DatePicker | `label view` |
+|:white_check_mark:| DisclosureGroup | `label view`, `content view`, `isExpanded: Bool`, `expand()`, `collapse()` |
 |:white_check_mark:| Divider | |
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
 |:white_check_mark:| EmptyView | |
 |:white_check_mark:| EquatableView | `contained view` |
 |:white_check_mark:| ForEach | `contained view` |
 |:white_check_mark:| Form | `contained view` |
-|:technologist:| Gauge | |
-|:technologist:| GaugeStyleConfiguration.CurrentValueLabel | |
-|:technologist:| GaugeStyleConfiguration.Label | |
-|:technologist:| GaugeStyleConfiguration.MarkedValueLabel | |
-|:technologist:| GaugeStyleConfiguration.MaximumValueLabel | |
-|:technologist:| GaugeStyleConfiguration.MinimumValueLabel | |
 |:white_check_mark:| GeometryReader | `contained view` |
 |:white_check_mark:| Group | `contained view` |
-|:white_check_mark:| GroupBox | `contained view` |
-|:technologist:| GroupBoxStyleConfiguration.Content | |
-|:technologist:| GroupBoxStyleConfiguration.Label | |
+|:white_check_mark:| GroupBox | `contained view`, `label view` |
 |:white_check_mark:| HSplitView | `contained view` |
 |:white_check_mark:| HStack | `contained view` |
 |:white_check_mark:| Image | `imageName: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |
-|:technologist:| Label | |
-|:technologist:| LabelStyleConfiguration.Icon | |
-|:technologist:| LabelStyleConfiguration.Title | |
-|:technologist:| LazyHGrid | |
-|:technologist:| LazyHStack | |
-|:technologist:| LazyVGrid | |
-|:technologist:| LazyVStack | |
+|:white_check_mark:| Label | `title view`, `icon view` |
+|:white_check_mark:| LabelStyleConfiguration.Icon | |
+|:white_check_mark:| LabelStyleConfiguration.Title | |
+|:white_check_mark:| LazyHGrid | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `rows: [GridItem]` |
+|:white_check_mark:| LazyHStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews` |
+|:white_check_mark:| LazyVGrid | `contained view`, `alignment: HorizontalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `columns: [GridItem]` |
+|:white_check_mark:| LazyVStack | `contained view`, `alignment: HorizontalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews` |
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
-|:technologist:| Link | |
+|:white_check_mark:| Link | `label view`, `url: URL` |
 |:white_check_mark:| List | `contained view` |
-|:technologist:| Menu | |
+|:white_check_mark:| Menu | `contained view`, `label view` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
-|:technologist:| MenuStyleConfiguration.Content | |
-|:technologist:| MenuStyleConfiguration.Label | |
+|:white_check_mark:| MenuStyleConfiguration.Content | |
+|:white_check_mark:| MenuStyleConfiguration.Label | |
 |:white_check_mark:| ModifiedContent | `contained view` |
 |:white_check_mark:| NavigationLink | `contained view`, `label view`, `isActive: Bool`, `activate()`, `deactivate()` |
 |:white_check_mark:| NavigationView | `contained view` |
 |:white_check_mark:| OptionalContent | `contained view` |
-|:technologist:| OutlineGroup | |
-|:technologist:| OutlineSubgroupChildren | |
+|:white_check_mark:| OutlineGroup | `leaf view`, `source data` |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view` |
 |:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
-|:technologist:| ProgressView | |
-|:technologist:| ProgressViewStyleConfiguration.CurrentValueLabel | |
-|:technologist:| ProgressViewStyleConfiguration.Label | |
+|:white_check_mark:| ProgressView | `label view`, `currentValueLabel view`, `fractionCompleted: Double?`, `progress: Progress` |
+|:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
+|:white_check_mark:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
-|:technologist:| ScrollViewReader | |
-|:white_check_mark:| Section | `contained view` |
-|:white_check_mark:| SecureField | `contained view`, `callOnCommit()` |
+|:white_check_mark:| ScrollViewReader | `contained view` |
+|:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
+|:white_check_mark:| SecureField | `label view`, `callOnCommit()` |
 |:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
-|:white_check_mark:| Slider | `contained view`, `callOnEditingChanged()` |
+|:white_check_mark:| Slider | `label view`, `callOnEditingChanged()` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
-|:white_check_mark:| Stepper | `contained view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
-|:technologist:| SubscriptionView | |
+|:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
+|:heavy_check_mark:| SubscriptionView | |
 |:white_check_mark:| TabView | `contained view` |
 |:white_check_mark:| Text | `string: String?`, `attributes: TextAttributes` |
-|:technologist:| TextEditor | |
-|:white_check_mark:| TextField | `contained view`, `callOnEditingChanged()`, `callOnCommit()` |
-|:white_check_mark:| Toggle | `contained view` |
-|:technologist:| ToggleStyleConfiguration.Label | |
+|:white_check_mark:| TextEditor | |
+|:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()` |
+|:white_check_mark:| Toggle | `label view` |
+|:white_check_mark:| ToggleStyleConfiguration.Label | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
-|:technologist:| TupleView | |
+|:heavy_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
 |:white_check_mark:| VStack | `contained view` |
 |:white_check_mark:| ZStack | `contained view` |
@@ -464,22 +455,22 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:technologist:| `func labelStyle<S>(S) -> some View` |
 |:white_check_mark:| `func buttonStyle<S>(S) -> some View` |
-|:white_check_mark:| `func menuButtonStyle<S>(S) -> some View` |
-|:technologist:| `func menuStyle<S>(S) -> some View` |
-|:white_check_mark:| `func pickerStyle<S>(S) -> some View` |
 |:white_check_mark:| `func datePickerStyle<S>(S) -> some View` |
-|:white_check_mark:| `func textFieldStyle<S>(S) -> some View` |
-|:white_check_mark:| `func toggleStyle<S>(S) -> some View` |
-|:technologist:| `func indexViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func groupBoxStyle<S>(S) -> some View` |
+|:white_check_mark:| `func indexViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func labelStyle<S>(S) -> some View` |
 |:white_check_mark:| `func listStyle<S>(S) -> some View` |
-|:technologist:| `func groupBoxStyle<S>(S) -> some View` |
+|:white_check_mark:| `func menuButtonStyle<S>(S) -> some View` |
+|:white_check_mark:| `func menuStyle<S>(S) -> some View` |
 |:white_check_mark:| `func navigationViewStyle<S>(S) -> some View` |
-|:technologist:| `func progressViewStyle<S>(S) -> some View` |
-|:technologist:| `func gaugeStyle<S>(S) -> some View` |
+|:white_check_mark:| `func pickerStyle<S>(S) -> some View` |
 |:technologist:| `func presentedWindowStyle<S>(S) -> some View` |
 |:technologist:| `func presentedWindowToolbarStyle<S>(S) -> some View` |
+|:white_check_mark:| `func progressViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func tabViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func textFieldStyle<S>(S) -> some View` |
+|:white_check_mark:| `func toggleStyle<S>(S) -> some View` |
 
 ### Configuring a List View
 
@@ -530,7 +521,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:heavy_check_mark:| `func navigationBarItems<L, T>(leading: L, trailing: T) -> some View` |
 |:heavy_check_mark:| `func navigationBarItems<T>(trailing: T) -> some View` |
 |:white_check_mark:| `func tabItem<V>(() -> V) -> some View` |
-|:technologist:| `func tabViewStyle<S>(S) -> some View` |
 
 ### Configuring Toolbar Items
 

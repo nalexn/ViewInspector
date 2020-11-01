@@ -1,7 +1,5 @@
 import SwiftUI
 
-#if !os(tvOS)
-
 public extension ViewType {
     
     struct Slider: KnownViewType {
@@ -9,19 +7,10 @@ public extension ViewType {
     }
 }
 
-// MARK: - Content Extraction
-
-extension ViewType.Slider: SingleViewContent {
-    
-    public static func child(_ content: Content) throws -> Content {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [])
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
     func slider() throws -> InspectableView<ViewType.Slider> {
@@ -31,7 +20,8 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View: MultipleViewContent {
     
     func slider(_ index: Int) throws -> InspectableView<ViewType.Slider> {
@@ -41,8 +31,19 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.Slider {
+    
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "label", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
+    }
+    
+    @available(*, deprecated, message: "Please use .labelView().text() instead")
+    func text() throws -> InspectableView<ViewType.Text> {
+        return try labelView().text()
+    }
     
     func callOnEditingChanged() throws {
         let action = try Inspector.attribute(label: "onEditingChanged", value: content.view)
@@ -52,5 +53,3 @@ public extension InspectableView where View == ViewType.Slider {
         }
     }
 }
-
-#endif

@@ -8,15 +8,21 @@ final class ToggleTests: XCTestCase {
     func testEnclosedView() throws {
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("Test") }
-        let text = try view.inspect().toggle().text().string()
+        let text = try view.inspect().toggle().labelView().text().string()
         XCTAssertEqual(text, "Test")
     }
     
     func testResetsModifiers() throws {
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("Test") }.padding()
-        let sut = try view.inspect().toggle().text()
+        let sut = try view.inspect().toggle().labelView().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testDeprecatedLabelInspection() throws {
+        let binding = Binding(wrappedValue: false)
+        let view = Toggle(isOn: binding) { Text("Test") }
+        XCTAssertNoThrow(try view.inspect().toggle().text())
     }
     
     func testExtractionFromSingleViewContainer() throws {
@@ -49,5 +55,28 @@ final class GlobalModifiersForToggle: XCTestCase {
     func testToggleStyleInspection() throws {
         let sut = EmptyView().toggleStyle(DefaultToggleStyle())
         XCTAssertTrue(try sut.inspect().toggleStyle() is DefaultToggleStyle)
+    }
+    
+    func testToggleStyleConfiguration() throws {
+        let sut1 = ToggleStyleConfiguration(isOn: false)
+        let sut2 = ToggleStyleConfiguration(isOn: true)
+        XCTAssertFalse(sut1.isOn)
+        XCTAssertTrue(sut2.isOn)
+    }
+    
+    func testCustomMenuStyleInspection() throws {
+        let sut = TestToggleStyle()
+        XCTAssertEqual(try sut.inspect(isOn: true).vStack().styleConfigurationLabel(0).blur().radius, 5)
+        XCTAssertEqual(try sut.inspect(isOn: false).vStack().styleConfigurationLabel(0).blur().radius, 0)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.label
+                .blur(radius: configuration.isOn ? 5 : 0)
+        }
     }
 }
