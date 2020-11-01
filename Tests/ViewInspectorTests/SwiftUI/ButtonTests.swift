@@ -86,16 +86,25 @@ final class ButtonStyleInspectionTests: XCTestCase {
     }
     
     func testButtonStyle() throws {
-        let sut = TestButtonStyle()
-        XCTAssertEqual(try sut.inspect(isPressed: false).blur().radius, 0)
-        XCTAssertEqual(try sut.inspect(isPressed: true).blur().radius, 5)
+        let style = TestButtonStyle()
+        let sut1 = try style.inspect(isPressed: false)
+        let sut2 = try style.inspect(isPressed: true)
+        XCTAssertEqual(try sut1.group().styleConfigurationLabel(0).blur().radius, 0)
+        XCTAssertEqual(try sut2.group().styleConfigurationLabel(0).blur().radius, 5)
     }
     
     func testPrimitiveButtonStyleExtraction() throws {
-        let sut = TestPrimitiveButtonStyle()
-        XCTAssertNoThrow(
-            try sut.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
-        )
+        let style = TestPrimitiveButtonStyle()
+        let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
+        XCTAssertNoThrow(try button.anyView().styleConfigurationLabel().blur())
+    }
+    
+    func testDeprecatedStyleLabelInspection() throws {
+        let style = TestPrimitiveButtonStyle()
+        let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
+        XCTAssertNoThrow(try button.anyView().primitiveButtonStyleLabel())
+        XCTAssertThrows(try Group { EmptyView() }.inspect().group().primitiveButtonStyleLabel(0),
+                        "Type mismatch: EmptyView is not Label")
     }
     
     #if !os(tvOS)
@@ -108,14 +117,14 @@ final class ButtonStyleInspectionTests: XCTestCase {
         })
         let view = TestPrimitiveButtonStyle.TestButton(configuration: config)
         let exp = view.inspection.inspect { view in
-            let label = try view.primitiveButtonStyleLabel()
+            let label = try view.anyView().styleConfigurationLabel()
             XCTAssertEqual(try label.blur().radius, 0)
             try label.callOnTapGesture()
-            let updatedLabel = try view.primitiveButtonStyleLabel()
+            let updatedLabel = try view.anyView().styleConfigurationLabel()
             XCTAssertEqual(try updatedLabel.blur().radius, 5)
         }
         ViewHosting.host(view: view)
-        wait(for: [exp, triggerExp], timeout: 0.1)
+        wait(for: [exp, triggerExp], timeout: 0.3)
     }
     #endif
 }
@@ -124,9 +133,11 @@ final class ButtonStyleInspectionTests: XCTestCase {
 private struct TestButtonStyle: ButtonStyle {
     
     public func makeBody(configuration: TestButtonStyle.Configuration) -> some View {
-        configuration.label
-            .blur(radius: configuration.isPressed ? 5 : 0)
-            .padding()
+        Group {
+            configuration.label
+                .blur(radius: configuration.isPressed ? 5 : 0)
+                .padding()
+        }
     }
 }
 
@@ -149,13 +160,14 @@ private struct TestPrimitiveButtonStyle: PrimitiveButtonStyle {
         var body: some View { EmptyView() }
         #else
         var body: some View {
-            configuration.label
-                .blur(radius: isPressed ? 5 : 0)
-                .onTapGesture {
-                    self.isPressed = true
-                    self.configuration.trigger()
-                }
-                .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+            AnyView(
+                configuration.label
+                    .blur(radius: isPressed ? 5 : 0)
+                    .onTapGesture {
+                        self.isPressed = true
+                        self.configuration.trigger()
+                    }
+            ).onReceive(inspection.notice) { self.inspection.visit(self, $0) }
         }
         #endif
     }

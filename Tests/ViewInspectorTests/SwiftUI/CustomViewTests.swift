@@ -10,10 +10,10 @@ final class CustomViewTests: XCTestCase {
     func testLocalStateChanges() throws {
         let sut = LocalStateTestView(flag: false)
         let exp = sut.inspection.inspect { view in
-            let text1 = try view.button().text().string()
+            let text1 = try view.button().labelView().text().string()
             XCTAssertEqual(text1, "false")
             try view.button().tap()
-            let text2 = try view.button().text().string()
+            let text2 = try view.button().labelView().text().string()
             XCTAssertEqual(text2, "true")
         }
         ViewHosting.host(view: sut)

@@ -61,17 +61,21 @@ final class GlobalModifiersForLabel: XCTestCase {
     }
     
     func testCustomLabelStyleInspection() throws {
-        let style = TestLabelStyle()
-        let sut = try style.inspect().hStack().label(0).padding()
-        XCTAssertEqual(sut, EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+        let sut = TestLabelStyle()
+        let title = try sut.inspect().vStack().styleConfigurationTitle(0)
+        let icon = try sut.inspect().vStack().styleConfigurationIcon(1)
+        XCTAssertEqual(try title.blur().radius, 3)
+        XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
     }
 }
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 struct TestLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
-        HStack {
-            Label(configuration)
+        VStack {
+            configuration.title
+                .blur(radius: 3)
+            configuration.icon
                 .padding(5)
         }
     }

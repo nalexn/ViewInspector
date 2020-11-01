@@ -71,7 +71,7 @@ public extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ButtonStyle {
-    func inspect(isPressed: Bool) throws -> InspectableView<ViewType.ButtonStyleLabel> {
+    func inspect(isPressed: Bool) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ButtonStyleConfiguration(isPressed: isPressed)
         let view = try makeBody(configuration: config).inspect()
         return try .init(view.content)
@@ -86,15 +86,11 @@ public extension PrimitiveButtonStyle {
     }
 }
 
-// MARK: - ButtonStyle.Label
+// MARK: - StyleConfigurationLabel
 
 public extension ViewType {
     
-    struct ButtonStyleLabel: KnownViewType {
-        public static var typePrefix: String = "Label"
-    }
-    
-    struct PrimitiveButtonStyleLabel: KnownViewType {
+    struct StyleConfigurationLabel: KnownViewType {
         public static var typePrefix: String = "Label"
     }
 }
@@ -104,8 +100,13 @@ public extension ViewType {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
-    func primitiveButtonStyleLabel() throws -> InspectableView<ViewType.PrimitiveButtonStyleLabel> {
+    func styleConfigurationLabel() throws -> InspectableView<ViewType.StyleConfigurationLabel> {
         return try .init(try child())
+    }
+    
+    @available(*, deprecated, renamed: "styleConfigurationLabel")
+    func primitiveButtonStyleLabel() throws -> InspectableView<ViewType.StyleConfigurationLabel> {
+        return try styleConfigurationLabel()
     }
 }
 
@@ -114,8 +115,13 @@ public extension InspectableView where View: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
-    func primitiveButtonStyleLabel(_ index: Int) throws -> InspectableView<ViewType.PrimitiveButtonStyleLabel> {
+    func styleConfigurationLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationLabel> {
         return try .init(try child(at: index))
+    }
+    
+    @available(*, deprecated, renamed: "styleConfigurationLabel")
+    func primitiveButtonStyleLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationLabel> {
+        return try styleConfigurationLabel(index)
     }
 }
 
