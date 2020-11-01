@@ -42,3 +42,39 @@ public extension InspectableView where View == ViewType.Label {
         return try .init(try Inspector.unwrap(content: Content(view)))
     }
 }
+
+// MARK: - Global View Modifiers
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+public extension InspectableView {
+
+    func labelStyle() throws -> Any {
+        let modifier = try self.modifier({ modifier -> Bool in
+            return modifier.modifierType.hasPrefix("LabelStyleModifier")
+        }, call: "labelStyle")
+        return try Inspector.attribute(path: "modifier|style", value: modifier)
+    }
+}
+
+#if !os(macOS)
+// MARK: - LabelStyle inspection
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+public extension LabelStyle {
+    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
+        let config = LabelStyleConfiguration()
+        let view = try makeBody(configuration: config).inspect()
+        return try .init(view.content)
+    }
+}
+
+// MARK: - Style Configuration initializer
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+private extension LabelStyleConfiguration {
+    struct Allocator { }
+    init() {
+        self = unsafeBitCast(Allocator(), to: Self.self)
+    }
+}
+#endif

@@ -80,7 +80,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Toggle | `label view` |
 |:technologist:| ToggleStyleConfiguration.Label | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
-|:technologist:| TupleView | |
+|:heavy_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
 |:white_check_mark:| VStack | `contained view` |
 |:white_check_mark:| ZStack | `contained view` |
@@ -453,7 +453,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:technologist:| `func labelStyle<S>(S) -> some View` |
+|:white_check_mark:| `func labelStyle<S>(S) -> some View` |
 |:white_check_mark:| `func buttonStyle<S>(S) -> some View` |
 |:white_check_mark:| `func menuButtonStyle<S>(S) -> some View` |
 |:technologist:| `func menuStyle<S>(S) -> some View` |

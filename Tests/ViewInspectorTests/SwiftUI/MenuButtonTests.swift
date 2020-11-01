@@ -46,14 +46,14 @@ final class MenuButtonTests: XCTestCase {
 @available(macOS 10.15, *)
 @available(iOS, unavailable)
 @available(tvOS, unavailable)
-final class GlobalModifiersForMenuMenuButton: XCTestCase {
+final class GlobalModifiersForMenuButton: XCTestCase {
     
     func testMenuButtonStyle() throws {
         let sut = EmptyView().menuButtonStyle(PullDownMenuButtonStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
-    func testMenuStyleInspection() throws {
+    func testMenuButtonStyleInspection() throws {
         let sut = EmptyView().menuButtonStyle(DefaultMenuButtonStyle())
         XCTAssertTrue(try sut.inspect().menuButtonStyle() is DefaultMenuButtonStyle)
     }
