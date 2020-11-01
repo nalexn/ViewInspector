@@ -2,21 +2,24 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS)
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class LazyVStackTests: XCTestCase {
     
     func testInspect() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = LazyVStack(content: { Text("abc") })
         XCTAssertNoThrow(try view.inspect())
     }
     
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = AnyView(LazyVStack(content: { Text("abc") }))
         XCTAssertNoThrow(try view.inspect().anyView().lazyVStack())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = HStack {
             Text("")
             LazyVStack(content: { Text("abc") })
@@ -26,6 +29,7 @@ final class LazyVStackTests: XCTestCase {
     }
     
     func testContentViewInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = LazyVStack(content: {
             ForEach((0...10), id: \.self) { Text("\($0)") }
         })
@@ -34,18 +38,21 @@ final class LazyVStackTests: XCTestCase {
     }
     
     func testAlignmentInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = LazyVStack(alignment: .leading) { Text("") }
         let sut = try view.inspect().lazyVStack().alignment()
         XCTAssertEqual(sut, .leading)
     }
     
     func testSpacingInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = LazyVStack(spacing: 5) { Text("") }
         let sut = try view.inspect().lazyVStack().spacing()
         XCTAssertEqual(sut, 5)
     }
     
     func testPinnedViewsInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = LazyVStack(pinnedViews: .sectionFooters) { Text("") }
         let sut = try view.inspect().lazyVStack().pinnedViews()
         XCTAssertEqual(sut, .sectionFooters)

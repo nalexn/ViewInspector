@@ -1,6 +1,6 @@
 import SwiftUI
 
-#if !os(macOS)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
 public extension ViewType {
     
     struct LazyVGrid: KnownViewType {

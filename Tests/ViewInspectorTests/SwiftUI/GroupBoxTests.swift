@@ -2,11 +2,14 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 14.0, macOS 11.0, *)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
+
+@available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 final class GroupBoxTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
+        guard #available(iOS 14, *) else { return }
         let sampleView = Text("Test")
         let view = GroupBox { sampleView }
         let sut = try view.inspect().groupBox().text(0).content.view as? Text
@@ -14,6 +17,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testSingleEnclosedViewIndexOutOfBounds() throws {
+        guard #available(iOS 14, *) else { return }
         let sampleView = Text("Test")
         let view = GroupBox { sampleView }
         XCTAssertThrows(
@@ -22,6 +26,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testMultipleEnclosedViews() throws {
+        guard #available(iOS 14, *) else { return }
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
         let sampleView3 = Text("XYZ")
@@ -35,6 +40,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
+        guard #available(iOS 14, *) else { return }
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
         let view = GroupBox { sampleView1; sampleView2 }
@@ -44,17 +50,20 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testResetsModifiers() throws {
+        guard #available(iOS 14, *) else { return }
         let view = GroupBox { Text("Test") }.padding()
         let sut = try view.inspect().groupBox().text(0)
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 14, *) else { return }
         let view = AnyView(GroupBox { Text("Test") })
         XCTAssertNoThrow(try view.inspect().anyView().groupBox())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 14, *) else { return }
         let view = GroupBox {
             GroupBox { Text("Test") }
             GroupBox { Text("Test") }
@@ -64,6 +73,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testLabelInspection() throws {
+        guard #available(iOS 14, *) else { return }
         let view = GroupBox(
             label: HStack { Text("abc") },
             content: { Text("test") })
@@ -71,23 +81,22 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertEqual(sut, "abc")
     }
     
-    #if !os(macOS)
     func testGroupBoxStyleInspection() throws {
+        guard #available(iOS 14, *) else { return }
         let sut = EmptyView().groupBoxStyle(DefaultGroupBoxStyle())
         XCTAssertTrue(try sut.inspect().groupBoxStyle() is DefaultGroupBoxStyle)
     }
     
     func testCustomGroupBoxStyleInspection() throws {
+        guard #available(iOS 14, *) else { return }
         let sut = TestGroupBoxStyle()
         XCTAssertEqual(try sut.inspect().vStack().styleConfigurationContent(0).blur().radius, 5)
         XCTAssertEqual(try sut.inspect().vStack().styleConfigurationLabel(1).brightness(), 3)
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationContent(),
                         "Type mismatch: EmptyView is not Content")
     }
-    #endif
 }
 
-#if !os(macOS)
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 private struct TestGroupBoxStyle: GroupBoxStyle {

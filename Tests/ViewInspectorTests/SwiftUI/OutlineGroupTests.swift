@@ -2,8 +2,8 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS)
-@available(iOS 14.0, macOS 11.0, *)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
+@available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 final class OutlineGroupTests: XCTestCase {
     
@@ -30,6 +30,7 @@ final class OutlineGroupTests: XCTestCase {
     ]
     
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let view = AnyView(OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { _ in
             EmptyView()
         })
@@ -37,6 +38,7 @@ final class OutlineGroupTests: XCTestCase {
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let view = HStack {
             EmptyView()
             OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { _ in
@@ -48,6 +50,7 @@ final class OutlineGroupTests: XCTestCase {
     }
     
     func testSourceDataInspection() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let view1 = OutlineGroup(values, id: \.testValue, children: \.testChildren) { _ in
             EmptyView()
         }
@@ -63,6 +66,7 @@ final class OutlineGroupTests: XCTestCase {
     }
     
     func testLeafInspection() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let view = OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { element in
             Text(element.testValue)
         }

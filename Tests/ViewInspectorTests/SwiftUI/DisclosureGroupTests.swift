@@ -2,27 +2,26 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
 
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 final class DisclosureGroupTests: XCTestCase {
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testInspect() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let view = DisclosureGroup(content: { EmptyView() }, label: { EmptyView() })
         XCTAssertNoThrow(try view.inspect())
     }
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let view = AnyView(DisclosureGroup(content: { EmptyView() }, label: { EmptyView() }))
         XCTAssertNoThrow(try view.inspect().anyView().disclosureGroup())
     }
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let view = HStack {
             Text("")
             DisclosureGroup(content: { EmptyView() }, label: { EmptyView() })
@@ -31,25 +30,22 @@ final class DisclosureGroupTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().disclosureGroup(1))
     }
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testLabelInspection() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let sut = DisclosureGroup(content: { EmptyView() }, label: { Text("abc") })
         let string = try sut.inspect().disclosureGroup().labelView().text().string()
         XCTAssertEqual(string, "abc")
     }
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testContentInspection() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let sut = DisclosureGroup(content: { Text("abc") }, label: { EmptyView() })
         let string = try sut.inspect().disclosureGroup().text(0).string()
         XCTAssertEqual(string, "abc")
     }
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testToupleContentInspection() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let sut = DisclosureGroup(content: {
                                     EmptyView()
                                     Text("abc")
@@ -58,9 +54,8 @@ final class DisclosureGroupTests: XCTestCase {
         XCTAssertEqual(string, "abc")
     }
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testExpansionError() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let sut = DisclosureGroup("", content: { EmptyView() })
         XCTAssertFalse(try sut.inspect().disclosureGroup().isExpanded())
         // swiftlint:disable line_length
@@ -69,9 +64,8 @@ final class DisclosureGroupTests: XCTestCase {
         // swiftlint:enable line_length
     }
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testExpansionWithStateActivation() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let view = TestViewState()
         XCTAssertFalse(view.state.expanded)
         XCTAssertFalse(try view.inspect().disclosureGroup().isExpanded())
@@ -81,9 +75,8 @@ final class DisclosureGroupTests: XCTestCase {
         XCTAssertFalse(try view.inspect().disclosureGroup().isExpanded())
     }
     
-    @available(iOS 14.0, macOS 11.0, *)
-    @available(tvOS, unavailable)
     func testExpansionWithBindingActivation() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
         let expanded = Binding<Bool>(wrappedValue: false)
         let view = TestViewBinding(expanded: expanded)
         XCTAssertFalse(try view.inspect().disclosureGroup().isExpanded())

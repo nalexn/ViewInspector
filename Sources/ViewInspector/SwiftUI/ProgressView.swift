@@ -67,7 +67,7 @@ public extension InspectableView {
     }
 }
 
-#if !os(macOS)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
 // MARK: - ProgressViewStyle inspection
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)

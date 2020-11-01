@@ -56,7 +56,7 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    #if !os(macOS)
+    #if !os(macOS) && !targetEnvironment(macCatalyst)
     func testToupleView() throws {
         let view = ToupleTestView().padding()
         let sut = try view.inspect().view(ToupleTestView.self)
@@ -148,7 +148,7 @@ private struct SimpleTestView: View, Inspectable {
     }
 }
 
-#if !os(macOS)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct ToupleTestView: View, Inspectable {
     var body: some View {

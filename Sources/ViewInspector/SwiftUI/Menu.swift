@@ -65,7 +65,7 @@ public extension InspectableView {
     }
 }
 
-#if !os(macOS)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
 // MARK: - MenuStyle inspection
 
 @available(iOS 14.0, macOS 11.0, *)

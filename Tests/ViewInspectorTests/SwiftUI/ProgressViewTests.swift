@@ -2,16 +2,18 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS)
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+#if !os(macOS) && !targetEnvironment(macCatalyst)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ProgressViewTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = AnyView(ProgressView())
         XCTAssertNoThrow(try view.inspect().anyView().progressView())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = HStack {
             Text("")
             ProgressView()
@@ -21,6 +23,7 @@ final class ProgressViewTests: XCTestCase {
     }
     
     func testFractionCompletedInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view1 = ProgressView()
         let view2 = ProgressView("test", value: 0.35)
         XCTAssertNil(try view1.inspect().progressView().fractionCompleted())
@@ -28,6 +31,7 @@ final class ProgressViewTests: XCTestCase {
     }
     
     func testProgressInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let progress = Progress(totalUnitCount: 100)
         progress.completedUnitCount = 10
         let view = ProgressView(progress)
@@ -37,6 +41,7 @@ final class ProgressViewTests: XCTestCase {
     }
     
     func testLabelViewInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = ProgressView(value: 0, label: { HStack { Text("abc") } },
                                 currentValueLabel: { EmptyView() })
         let sut = try view.inspect().progressView().labelView().hStack(0).text(0).string()
@@ -44,6 +49,7 @@ final class ProgressViewTests: XCTestCase {
     }
     
     func testCurrentValueLabelViewInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = ProgressView(value: 0, label: { EmptyView() },
                                 currentValueLabel: { HStack { Text("abc") } })
         let sut = try view.inspect().progressView().currentValueLabelView().hStack(0).text(0).string()
@@ -51,11 +57,13 @@ final class ProgressViewTests: XCTestCase {
     }
     
     func testProgressViewStyleInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let sut = EmptyView().progressViewStyle(CircularProgressViewStyle())
         XCTAssertTrue(try sut.inspect().progressViewStyle() is CircularProgressViewStyle)
     }
     
     func testProgressViewStyleConfiguration() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let sut1 = ProgressViewStyleConfiguration(fractionCompleted: nil)
         XCTAssertNil(sut1.fractionCompleted)
         let sut2 = ProgressViewStyleConfiguration(fractionCompleted: 0.9)
@@ -63,6 +71,7 @@ final class ProgressViewTests: XCTestCase {
     }
     
     func testCustomProgressViewStyleInspection() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let sut = TestProgressViewStyle()
         XCTAssertEqual(try sut.inspect(fractionCompleted: nil)
                         .vStack().styleConfigurationLabel(0).brightness(), 3)
