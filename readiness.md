@@ -80,7 +80,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| TextEditor | |
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()` |
 |:white_check_mark:| Toggle | `label view` |
-|:technologist:| ToggleStyleConfiguration.Label | |
+|:white_check_mark:| ToggleStyleConfiguration.Label | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:heavy_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
@@ -458,7 +458,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func buttonStyle<S>(S) -> some View` |
 |:white_check_mark:| `func datePickerStyle<S>(S) -> some View` |
 |:white_check_mark:| `func groupBoxStyle<S>(S) -> some View` |
-|:technologist:| `func indexViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func indexViewStyle<S>(S) -> some View` |
 |:white_check_mark:| `func labelStyle<S>(S) -> some View` |
 |:white_check_mark:| `func listStyle<S>(S) -> some View` |
 |:white_check_mark:| `func menuButtonStyle<S>(S) -> some View` |

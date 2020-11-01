@@ -37,4 +37,13 @@ final class ScrollViewTests: XCTestCase {
         let contentInsets = try sut.inspect().scrollView().contentInsets()
         XCTAssertEqual(contentInsets, EdgeInsets())
     }
+    
+    #if !os(macOS)
+    @available(iOS 14.0, tvOS 14.0, *)
+    @available(macOS, unavailable)
+    func testIndexViewStyleInspection() throws {
+        let sut = EmptyView().indexViewStyle(PageIndexViewStyle())
+        XCTAssertTrue(try sut.inspect().indexViewStyle() is PageIndexViewStyle)
+    }
+    #endif
 }

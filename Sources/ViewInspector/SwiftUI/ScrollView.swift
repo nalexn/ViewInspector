@@ -47,3 +47,17 @@ public extension InspectableView where View == ViewType.ScrollView {
                                        value: content.view, type: EdgeInsets.self)
     }
 }
+
+// MARK: - Global View Modifiers
+
+@available(iOS 14.0, tvOS 14.0, *)
+@available(macOS, unavailable)
+public extension InspectableView {
+
+    func indexViewStyle() throws -> Any {
+        let modifier = try self.modifier({ modifier -> Bool in
+            return modifier.modifierType.hasPrefix("IndexViewStyleModifier")
+        }, call: "indexViewStyle")
+        return try Inspector.attribute(path: "modifier|style", value: modifier)
+    }
+}
