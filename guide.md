@@ -8,6 +8,7 @@
 - [Custom **ViewModifier**](#custom-viewmodifier)
 - [Custom **ButtonStyle** or **PrimitiveButtonStyle**](#custom-buttonstyle-or-primitivebuttonstyle)
 - [Custom **LabelStyle**](#custom-labelstyle)
+- [Custom **GroupBoxStyle**](#custom-groupboxstyle)
 - [Custom **ToggleStyle**](#custom-togglestyle)
 
 ## The Basics
@@ -437,7 +438,7 @@ For verifying the label style you can just do:
 XCTAssertTrue(try sut.inspect().labelStyle() is IconOnlyLabelStyle)
 ```
 
-Consider the following example of a custom LabelStyle:
+Consider the following example of a custom `LabelStyle`:
 
 ```swift
 struct CustomLabelStyle: LabelStyle {
@@ -461,6 +462,33 @@ func testCustomLabelStyle() throws {
     let icon = try sut.inspect().vStack().styleConfigurationIcon(1)
     XCTAssertEqual(try title.blur().radius, 3)
     XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+}
+```
+
+## Custom **GroupBoxStyle**
+
+Consider the following example of a custom `GroupBoxStyle`:
+
+```swift
+struct CustomGroupBoxStyle: GroupBoxStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.label
+                .brightness(3)
+            configuration.content
+                .blur(radius: 5)
+        }
+    }
+}
+```
+
+The test for this style may look like this:
+
+```swift
+func testCustomGroupBoxStyleInspection() throws {
+    let sut = CustomGroupBoxStyle()
+    XCTAssertEqual(try sut.inspect().vStack().styleConfigurationLabel(0).brightness(), 3)
+    XCTAssertEqual(try sut.inspect().vStack().styleConfigurationContent(1).blur().radius, 5)
 }
 ```
 

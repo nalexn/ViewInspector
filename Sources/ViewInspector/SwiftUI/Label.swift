@@ -7,33 +7,12 @@ public extension ViewType {
     }
 }
 
-// MARK: - StyleConfigurationTitle and StyleConfigurationIcon
-
-public extension ViewType {
-    
-    struct StyleConfigurationTitle: KnownViewType {
-        public static var typePrefix: String = "Title"
-    }
-    
-    struct StyleConfigurationIcon: KnownViewType {
-        public static var typePrefix: String = "Icon"
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func label() throws -> InspectableView<ViewType.Label> {
-        return try .init(try child())
-    }
-    
-    func styleConfigurationTitle() throws -> InspectableView<ViewType.StyleConfigurationTitle> {
-        return try .init(try child())
-    }
-    
-    func styleConfigurationIcon() throws -> InspectableView<ViewType.StyleConfigurationIcon> {
         return try .init(try child())
     }
 }
@@ -44,14 +23,6 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func label(_ index: Int) throws -> InspectableView<ViewType.Label> {
-        return try .init(try child(at: index))
-    }
-    
-    func styleConfigurationTitle(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationTitle> {
-        return try .init(try child(at: index))
-    }
-    
-    func styleConfigurationIcon(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationIcon> {
         return try .init(try child(at: index))
     }
 }

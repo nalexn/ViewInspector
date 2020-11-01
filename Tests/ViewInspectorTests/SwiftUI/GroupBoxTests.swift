@@ -2,12 +2,8 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if os(macOS)
-
-@available(macOS 10.15, *)
-@available(iOS, unavailable)
+@available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
-@available(watchOS, unavailable)
 final class GroupBoxTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
@@ -74,6 +70,31 @@ final class GroupBoxTests: XCTestCase {
         let sut = try view.inspect().groupBox().labelView().hStack().text(0).string()
         XCTAssertEqual(sut, "abc")
     }
+    
+    #if !os(macOS)
+    func testGroupBoxStyleInspection() throws {
+        let sut = EmptyView().groupBoxStyle(DefaultGroupBoxStyle())
+        XCTAssertTrue(try sut.inspect().groupBoxStyle() is DefaultGroupBoxStyle)
+    }
+    
+    func testCustomGroupBoxStyleInspection() throws {
+        let sut = TestGroupBoxStyle()
+        XCTAssertEqual(try sut.inspect().vStack().styleConfigurationContent(0).blur().radius, 5)
+        XCTAssertEqual(try sut.inspect().vStack().styleConfigurationLabel(1).brightness(), 3)
+    }
+    #endif
 }
 
+#if !os(macOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestGroupBoxStyle: GroupBoxStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.content
+                .blur(radius: 5)
+            configuration.label
+                .brightness(3)
+        }
+    }
+}
 #endif

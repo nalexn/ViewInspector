@@ -457,8 +457,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|
 |:white_check_mark:| `func buttonStyle<S>(S) -> some View` |
 |:white_check_mark:| `func datePickerStyle<S>(S) -> some View` |
-|:technologist:| `func gaugeStyle<S>(S) -> some View` |
-|:technologist:| `func groupBoxStyle<S>(S) -> some View` |
+|:white_check_mark:| `func groupBoxStyle<S>(S) -> some View` |
 |:technologist:| `func indexViewStyle<S>(S) -> some View` |
 |:white_check_mark:| `func labelStyle<S>(S) -> some View` |
 |:white_check_mark:| `func listStyle<S>(S) -> some View` |

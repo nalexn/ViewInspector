@@ -86,23 +86,10 @@ public extension PrimitiveButtonStyle {
     }
 }
 
-// MARK: - StyleConfigurationLabel
-
-public extension ViewType {
-    
-    struct StyleConfigurationLabel: KnownViewType {
-        public static var typePrefix: String = "Label"
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
-    
-    func styleConfigurationLabel() throws -> InspectableView<ViewType.StyleConfigurationLabel> {
-        return try .init(try child())
-    }
     
     @available(*, deprecated, renamed: "styleConfigurationLabel")
     func primitiveButtonStyleLabel() throws -> InspectableView<ViewType.StyleConfigurationLabel> {
@@ -114,10 +101,6 @@ public extension InspectableView where View: SingleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
-    
-    func styleConfigurationLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationLabel> {
-        return try .init(try child(at: index))
-    }
     
     @available(*, deprecated, renamed: "styleConfigurationLabel")
     func primitiveButtonStyleLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationLabel> {

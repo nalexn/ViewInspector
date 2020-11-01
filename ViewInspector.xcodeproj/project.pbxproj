@@ -127,6 +127,7 @@
 		F6C15AB7254DB173000240F1 /* ScrollViewReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15AB6254DB173000240F1 /* ScrollViewReader.swift */; };
 		F6C15AC1254EDA17000240F1 /* TextEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15AC0254EDA15000240F1 /* TextEditorTests.swift */; };
 		F6C15AC7254EDA7B000240F1 /* TextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15AC6254EDA79000240F1 /* TextEditor.swift */; };
+		F6C15ADD254F26B9000240F1 /* StyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15ADC254F26B6000240F1 /* StyleConfiguration.swift */; };
 		F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */; };
 		F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */; };
 		F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D9339A2385AD9100358E0E /* GeometryReader.swift */; };
@@ -312,6 +313,7 @@
 		F6C15AB6254DB173000240F1 /* ScrollViewReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewReader.swift; sourceTree = "<group>"; };
 		F6C15AC0254EDA15000240F1 /* TextEditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorTests.swift; sourceTree = "<group>"; };
 		F6C15AC6254EDA79000240F1 /* TextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditor.swift; sourceTree = "<group>"; };
+		F6C15ADC254F26B6000240F1 /* StyleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleConfiguration.swift; sourceTree = "<group>"; };
 		F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectModifiers.swift; sourceTree = "<group>"; };
 		F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHosting.swift; sourceTree = "<group>"; };
 		F6D9339A2385AD9100358E0E /* GeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryReader.swift; sourceTree = "<group>"; };
@@ -474,6 +476,7 @@
 				F6D933CA2385FF8F00358E0E /* Slider.swift */,
 				F66EDB5A23EDC19000A01B9F /* Spacer.swift */,
 				F6D933C62385FC0100358E0E /* Stepper.swift */,
+				F6C15ADC254F26B6000240F1 /* StyleConfiguration.swift */,
 				F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */,
 				F6D933A22385DBFD00358E0E /* TabView.swift */,
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
@@ -775,6 +778,7 @@
 				F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */,
 				F6C15A49254B4A3A000240F1 /* Link.swift in Sources */,
 				F6C15A71254B68C0000240F1 /* Menu.swift in Sources */,
+				F6C15ADD254F26B9000240F1 /* StyleConfiguration.swift in Sources */,
 				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				F6ECF6CE23A67C64000FC591 /* SizingModifiers.swift in Sources */,
