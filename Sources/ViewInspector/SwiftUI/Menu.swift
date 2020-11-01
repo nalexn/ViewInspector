@@ -68,7 +68,8 @@ public extension InspectableView {
 #if !os(macOS)
 // MARK: - MenuStyle inspection
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension MenuStyle {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let config = MenuStyleConfiguration()
@@ -79,7 +80,8 @@ public extension MenuStyle {
 
 // MARK: - Style Configuration initializer
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 private extension MenuStyleConfiguration {
     struct Allocator { }
     init() {

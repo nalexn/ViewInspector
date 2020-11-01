@@ -468,7 +468,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| `func presentedWindowStyle<S>(S) -> some View` |
 |:technologist:| `func presentedWindowToolbarStyle<S>(S) -> some View` |
 |:white_check_mark:| `func progressViewStyle<S>(S) -> some View` |
-|:technologist:| `func tabViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func tabViewStyle<S>(S) -> some View` |
 |:white_check_mark:| `func textFieldStyle<S>(S) -> some View` |
 |:white_check_mark:| `func toggleStyle<S>(S) -> some View` |
 

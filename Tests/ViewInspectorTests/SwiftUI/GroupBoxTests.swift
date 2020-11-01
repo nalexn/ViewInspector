@@ -88,7 +88,8 @@ final class GroupBoxTests: XCTestCase {
 }
 
 #if !os(macOS)
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 private struct TestGroupBoxStyle: GroupBoxStyle {
     func makeBody(configuration: Configuration) -> some View {
         VStack {

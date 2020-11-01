@@ -93,6 +93,7 @@ final class ButtonStyleInspectionTests: XCTestCase {
         XCTAssertEqual(try sut2.group().styleConfigurationLabel(0).blur().radius, 5)
     }
     
+    #if !os(tvOS)
     func testPrimitiveButtonStyleExtraction() throws {
         let style = TestPrimitiveButtonStyle()
         let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
@@ -107,7 +108,6 @@ final class ButtonStyleInspectionTests: XCTestCase {
                         "Type mismatch: EmptyView is not Label")
     }
     
-    #if !os(tvOS)
     func testPrimitiveButtonStyleLabel() throws {
         let triggerExp = XCTestExpectation(description: "label.trigger()")
         triggerExp.expectedFulfillmentCount = 1
