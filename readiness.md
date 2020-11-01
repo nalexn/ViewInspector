@@ -455,22 +455,23 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:white_check_mark:| `func labelStyle<S>(S) -> some View` |
 |:white_check_mark:| `func buttonStyle<S>(S) -> some View` |
+|:white_check_mark:| `func datePickerStyle<S>(S) -> some View` |
+|:technologist:| `func gaugeStyle<S>(S) -> some View` |
+|:technologist:| `func groupBoxStyle<S>(S) -> some View` |
+|:technologist:| `func indexViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func labelStyle<S>(S) -> some View` |
+|:white_check_mark:| `func listStyle<S>(S) -> some View` |
 |:white_check_mark:| `func menuButtonStyle<S>(S) -> some View` |
 |:white_check_mark:| `func menuStyle<S>(S) -> some View` |
-|:white_check_mark:| `func pickerStyle<S>(S) -> some View` |
-|:white_check_mark:| `func datePickerStyle<S>(S) -> some View` |
-|:white_check_mark:| `func textFieldStyle<S>(S) -> some View` |
-|:white_check_mark:| `func toggleStyle<S>(S) -> some View` |
-|:technologist:| `func indexViewStyle<S>(S) -> some View` |
-|:white_check_mark:| `func listStyle<S>(S) -> some View` |
-|:technologist:| `func groupBoxStyle<S>(S) -> some View` |
 |:white_check_mark:| `func navigationViewStyle<S>(S) -> some View` |
-|:technologist:| `func progressViewStyle<S>(S) -> some View` |
-|:technologist:| `func gaugeStyle<S>(S) -> some View` |
+|:white_check_mark:| `func pickerStyle<S>(S) -> some View` |
 |:technologist:| `func presentedWindowStyle<S>(S) -> some View` |
 |:technologist:| `func presentedWindowToolbarStyle<S>(S) -> some View` |
+|:technologist:| `func progressViewStyle<S>(S) -> some View` |
+|:technologist:| `func tabViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func textFieldStyle<S>(S) -> some View` |
+|:white_check_mark:| `func toggleStyle<S>(S) -> some View` |
 
 ### Configuring a List View
 
@@ -521,7 +522,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:heavy_check_mark:| `func navigationBarItems<L, T>(leading: L, trailing: T) -> some View` |
 |:heavy_check_mark:| `func navigationBarItems<T>(trailing: T) -> some View` |
 |:white_check_mark:| `func tabItem<V>(() -> V) -> some View` |
-|:technologist:| `func tabViewStyle<S>(S) -> some View` |
 
 ### Configuring Toolbar Items
 

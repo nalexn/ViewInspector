@@ -56,4 +56,27 @@ final class GlobalModifiersForToggle: XCTestCase {
         let sut = EmptyView().toggleStyle(DefaultToggleStyle())
         XCTAssertTrue(try sut.inspect().toggleStyle() is DefaultToggleStyle)
     }
+    
+    func testToggleStyleConfiguration() throws {
+        let sut1 = ToggleStyleConfiguration(isOn: false)
+        let sut2 = ToggleStyleConfiguration(isOn: true)
+        XCTAssertFalse(sut1.isOn)
+        XCTAssertTrue(sut2.isOn)
+    }
+    
+    func testCustomMenuStyleInspection() throws {
+        let sut = TestToggleStyle()
+        XCTAssertEqual(try sut.inspect(isOn: true).vStack().styleConfigurationLabel(0).blur().radius, 5)
+        XCTAssertEqual(try sut.inspect(isOn: false).vStack().styleConfigurationLabel(0).blur().radius, 0)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.label
+                .blur(radius: configuration.isOn ? 5 : 0)
+        }
+    }
 }

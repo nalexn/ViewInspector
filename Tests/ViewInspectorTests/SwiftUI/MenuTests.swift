@@ -41,6 +41,11 @@ final class MenuTests: XCTestCase {
         XCTAssertEqual(sut, "abc")
     }
     
+    func testLabelStyleInspection() throws {
+        let sut = EmptyView().menuStyle(DefaultMenuStyle())
+        XCTAssertTrue(try sut.inspect().menuStyle() is DefaultMenuStyle)
+    }
+    
     func testCustomMenuStyleInspection() throws {
         let sut = TestMenuStyle()
         let menu = try sut.inspect().vStack().menu(0)
@@ -50,7 +55,7 @@ final class MenuTests: XCTestCase {
 
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
-struct TestMenuStyle: MenuStyle {
+private struct TestMenuStyle: MenuStyle {
     func makeBody(configuration: Configuration) -> some View {
         VStack {
             Menu(configuration)

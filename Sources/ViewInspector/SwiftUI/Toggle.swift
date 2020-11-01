@@ -55,3 +55,29 @@ public extension InspectableView {
         return try Inspector.attribute(path: "modifier|style", value: modifier)
     }
 }
+
+// MARK: - ToggleStyle inspection
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension ToggleStyle {
+    func inspect(isOn: Bool) throws -> InspectableView<ViewType.ClassifiedView> {
+        let config = ToggleStyleConfiguration(isOn: isOn)
+        let view = try makeBody(configuration: config).inspect()
+        return try .init(view.content)
+    }
+}
+
+// MARK: - Style Configuration initializer
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ToggleStyleConfiguration {
+    private struct Allocator {
+        let binding: Binding<Bool>
+        init(isOn: Bool) {
+            self.binding = .init(wrappedValue: isOn)
+        }
+    }
+    init(isOn: Bool) {
+        self = unsafeBitCast(Allocator(isOn: isOn), to: Self.self)
+    }
+}

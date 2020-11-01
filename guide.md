@@ -8,6 +8,7 @@
 - [Custom **ViewModifier**](#custom-viewmodifier)
 - [Custom **ButtonStyle** or **PrimitiveButtonStyle**](#custom-buttonstyle-or-primitivebuttonstyle)
 - [Custom **LabelStyle**](#custom-labelstyle)
+- [Custom **ToggleStyle**](#custom-togglestyle)
 
 ## The Basics
 
@@ -460,5 +461,26 @@ func testCustomLabelStyle() throws {
     let icon = try sut.inspect().vStack().styleConfigurationIcon(1)
     XCTAssertEqual(try title.blur().radius, 3)
     XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+}
+```
+
+## Custom **ToggleStyle**
+
+The library provides a custom inspection function `inspect(isOn: Bool)` for testing the custom `ToggleStyle`:
+
+```swift
+struct CustomToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .blur(radius: configuration.isOn ? 5 : 0)
+    }
+}
+```
+
+```swift
+func testCustomToggleStyle() throws {
+    let sut = CustomToggleStyle()
+    XCTAssertEqual(try sut.inspect(isOn: false).styleConfigurationLabel().blur().radius, 0)
+    XCTAssertEqual(try sut.inspect(isOn: true).styleConfigurationLabel().blur().radius, 5)
 }
 ```
