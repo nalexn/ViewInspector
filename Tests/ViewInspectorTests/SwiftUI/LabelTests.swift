@@ -66,6 +66,10 @@ final class GlobalModifiersForLabel: XCTestCase {
         let icon = try sut.inspect().vStack().styleConfigurationIcon(1)
         XCTAssertEqual(try title.blur().radius, 3)
         XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+        XCTAssertThrows(try EmptyView().inspect().styleConfigurationTitle(),
+                        "Type mismatch: EmptyView is not Title")
+        XCTAssertThrows(try EmptyView().inspect().styleConfigurationIcon(),
+                        "Type mismatch: EmptyView is not Icon")
     }
 }
 

@@ -10,6 +10,7 @@
 - [Custom **LabelStyle**](#custom-labelstyle)
 - [Custom **GroupBoxStyle**](#custom-groupboxstyle)
 - [Custom **ToggleStyle**](#custom-togglestyle)
+- [Custom **ProgressViewStyle**](#custom-progressview)
 
 ## The Basics
 
@@ -438,7 +439,7 @@ For verifying the label style you can just do:
 XCTAssertTrue(try sut.inspect().labelStyle() is IconOnlyLabelStyle)
 ```
 
-Consider the following example of a custom `LabelStyle`:
+Consider the following example:
 
 ```swift
 struct CustomLabelStyle: LabelStyle {
@@ -467,7 +468,7 @@ func testCustomLabelStyle() throws {
 
 ## Custom **GroupBoxStyle**
 
-Consider the following example of a custom `GroupBoxStyle`:
+Consider the following example:
 
 ```swift
 struct CustomGroupBoxStyle: GroupBoxStyle {
@@ -494,7 +495,7 @@ func testCustomGroupBoxStyleInspection() throws {
 
 ## Custom **ToggleStyle**
 
-The library provides a custom inspection function `inspect(isOn: Bool)` for testing the custom `ToggleStyle`:
+Consider the following example:
 
 ```swift
 struct CustomToggleStyle: ToggleStyle {
@@ -505,10 +506,42 @@ struct CustomToggleStyle: ToggleStyle {
 }
 ```
 
+The library provides a custom inspection function `inspect(isOn: Bool)` for testing the custom `ToggleStyle`:
+
 ```swift
 func testCustomToggleStyle() throws {
     let sut = CustomToggleStyle()
     XCTAssertEqual(try sut.inspect(isOn: false).styleConfigurationLabel().blur().radius, 0)
     XCTAssertEqual(try sut.inspect(isOn: true).styleConfigurationLabel().blur().radius, 5)
+}
+```
+
+## Custom **ProgressViewStyle**
+
+Consider the following example:
+
+```swift
+struct CustomProgressViewStyle: ProgressViewStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.label
+                .brightness(3)
+            configuration.currentValueLabel
+                .blur(radius: 5)
+            Text("Completed: \(Int(configuration.fractionCompleted.flatMap { $0 * 100 } ?? 0))%")
+        }
+    }
+}
+```
+
+The library provides a custom inspection function `inspect(fractionCompleted: Double?)` for testing the custom `ProgressViewStyle`:
+
+```swift
+func testCustomProgressViewStyle() throws {
+    let sut = CustomProgressViewStyle()
+    let sut = TestProgressViewStyle()
+    XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationLabel(0).brightness(), 3)
+    XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationCurrentValueLabel(1).blur().radius, 5)
+    XCTAssertEqual(try sut.inspect(fractionCompleted: 0.42).vStack().text(2).string(), "Completed: 42%")
 }
 ```

@@ -92,7 +92,7 @@ public extension PrimitiveButtonStyle {
 public extension InspectableView where View: SingleViewContent {
     
     @available(*, deprecated, renamed: "styleConfigurationLabel")
-    func primitiveButtonStyleLabel() throws -> InspectableView<ViewType.StyleConfigurationLabel> {
+    func primitiveButtonStyleLabel() throws -> InspectableView<ViewType.StyleConfiguration.Label> {
         return try styleConfigurationLabel()
     }
 }
@@ -103,7 +103,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     @available(*, deprecated, renamed: "styleConfigurationLabel")
-    func primitiveButtonStyleLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationLabel> {
+    func primitiveButtonStyleLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfiguration.Label> {
         return try styleConfigurationLabel(index)
     }
 }

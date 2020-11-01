@@ -63,8 +63,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Picker | `contained view`, `label view` |
 |:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
 |:white_check_mark:| ProgressView | `label view`, `currentValueLabel view`, `fractionCompleted: Double?`, `progress: Progress` |
-|:technologist:| ProgressViewStyleConfiguration.CurrentValueLabel | |
-|:technologist:| ProgressViewStyleConfiguration.Label | |
+|:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
+|:white_check_mark:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
@@ -467,7 +467,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func pickerStyle<S>(S) -> some View` |
 |:technologist:| `func presentedWindowStyle<S>(S) -> some View` |
 |:technologist:| `func presentedWindowToolbarStyle<S>(S) -> some View` |
-|:technologist:| `func progressViewStyle<S>(S) -> some View` |
+|:white_check_mark:| `func progressViewStyle<S>(S) -> some View` |
 |:technologist:| `func tabViewStyle<S>(S) -> some View` |
 |:white_check_mark:| `func textFieldStyle<S>(S) -> some View` |
 |:white_check_mark:| `func toggleStyle<S>(S) -> some View` |

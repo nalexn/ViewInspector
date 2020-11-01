@@ -49,5 +49,42 @@ final class ProgressViewTests: XCTestCase {
         let sut = try view.inspect().progressView().currentValueLabelView().hStack(0).text(0).string()
         XCTAssertEqual(sut, "abc")
     }
+    
+    func testProgressViewStyleInspection() throws {
+        let sut = EmptyView().progressViewStyle(CircularProgressViewStyle())
+        XCTAssertTrue(try sut.inspect().progressViewStyle() is CircularProgressViewStyle)
+    }
+    
+    func testProgressViewStyleConfiguration() throws {
+        let sut1 = ProgressViewStyleConfiguration(fractionCompleted: nil)
+        XCTAssertNil(sut1.fractionCompleted)
+        let sut2 = ProgressViewStyleConfiguration(fractionCompleted: 0.9)
+        XCTAssertEqual(sut2.fractionCompleted, 0.9)
+    }
+    
+    func testCustomProgressViewStyleInspection() throws {
+        let sut = TestProgressViewStyle()
+        XCTAssertEqual(try sut.inspect(fractionCompleted: nil)
+                        .vStack().styleConfigurationLabel(0).brightness(), 3)
+        XCTAssertEqual(try sut.inspect(fractionCompleted: nil)
+                        .vStack().styleConfigurationCurrentValueLabel(1).blur().radius, 5)
+        XCTAssertThrows(try EmptyView().inspect().styleConfigurationCurrentValueLabel(),
+                        "Type mismatch: EmptyView is not CurrentValueLabel")
+        XCTAssertEqual(try sut.inspect(fractionCompleted: 0.42)
+                        .vStack().text(2).string(), "Completed: 42%")
+    }
+}
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+private struct TestProgressViewStyle: ProgressViewStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            configuration.label
+                .brightness(3)
+            configuration.currentValueLabel
+                .blur(radius: 5)
+            Text("Completed: \(Int(configuration.fractionCompleted.flatMap { $0 * 100 } ?? 0))%")
+        }
+    }
 }
 #endif

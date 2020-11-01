@@ -53,3 +53,42 @@ public extension InspectableView where View == ViewType.ProgressView {
         return try .init(try Inspector.unwrap(content: Content(view)))
     }
 }
+
+// MARK: - Global View Modifiers
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+public extension InspectableView {
+
+    func progressViewStyle() throws -> Any {
+        let modifier = try self.modifier({ modifier -> Bool in
+            return modifier.modifierType.hasPrefix("ProgressViewStyleModifier")
+        }, call: "progressViewStyle")
+        return try Inspector.attribute(path: "modifier|style", value: modifier)
+    }
+}
+
+#if !os(macOS)
+// MARK: - ProgressViewStyle inspection
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+public extension ProgressViewStyle {
+    func inspect(fractionCompleted: Double? = nil) throws -> InspectableView<ViewType.ClassifiedView> {
+        let config = ProgressViewStyleConfiguration(fractionCompleted: fractionCompleted)
+        let view = try makeBody(configuration: config).inspect()
+        return try .init(view.content)
+    }
+}
+
+// MARK: - Style Configuration initializer
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+internal extension ProgressViewStyleConfiguration {
+    private struct Allocator {
+        let fractionCompleted: Double?
+        let data: Int16 = 0
+    }
+    init(fractionCompleted: Double?) {
+        self = unsafeBitCast(Allocator(fractionCompleted: fractionCompleted), to: Self.self)
+    }
+}
+#endif

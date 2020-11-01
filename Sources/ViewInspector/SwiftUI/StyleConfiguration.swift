@@ -1,21 +1,28 @@
 import SwiftUI
 
 public extension ViewType {
-    
-    struct StyleConfigurationLabel: KnownViewType {
+    struct StyleConfiguration { }
+}
+
+public extension ViewType.StyleConfiguration {
+    struct Label: KnownViewType {
         public static var typePrefix: String = "Label"
     }
     
-    struct StyleConfigurationContent: KnownViewType {
+    struct Content: KnownViewType {
         public static var typePrefix: String = "Content"
     }
     
-    struct StyleConfigurationTitle: KnownViewType {
+    struct Title: KnownViewType {
         public static var typePrefix: String = "Title"
     }
     
-    struct StyleConfigurationIcon: KnownViewType {
+    struct Icon: KnownViewType {
         public static var typePrefix: String = "Icon"
+    }
+    
+    struct CurrentValueLabel: KnownViewType {
+        public static var typePrefix: String = "CurrentValueLabel"
     }
 }
 
@@ -24,19 +31,24 @@ public extension ViewType {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
-    func styleConfigurationLabel() throws -> InspectableView<ViewType.StyleConfigurationLabel> {
+    func styleConfigurationLabel() throws -> InspectableView<ViewType.StyleConfiguration.Label> {
         return try .init(try child())
     }
     
-    func styleConfigurationContent() throws -> InspectableView<ViewType.StyleConfigurationContent> {
+    func styleConfigurationContent() throws -> InspectableView<ViewType.StyleConfiguration.Content> {
         return try .init(try child())
     }
     
-    func styleConfigurationTitle() throws -> InspectableView<ViewType.StyleConfigurationTitle> {
+    func styleConfigurationTitle() throws -> InspectableView<ViewType.StyleConfiguration.Title> {
         return try .init(try child())
     }
     
-    func styleConfigurationIcon() throws -> InspectableView<ViewType.StyleConfigurationIcon> {
+    func styleConfigurationIcon() throws -> InspectableView<ViewType.StyleConfiguration.Icon> {
+        return try .init(try child())
+    }
+    
+    func styleConfigurationCurrentValueLabel() throws ->
+    InspectableView<ViewType.StyleConfiguration.CurrentValueLabel> {
         return try .init(try child())
     }
 }
@@ -46,19 +58,24 @@ public extension InspectableView where View: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
-    func styleConfigurationLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationLabel> {
+    func styleConfigurationLabel(_ index: Int) throws -> InspectableView<ViewType.StyleConfiguration.Label> {
         return try .init(try child(at: index))
     }
     
-    func styleConfigurationContent(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationContent> {
+    func styleConfigurationContent(_ index: Int) throws -> InspectableView<ViewType.StyleConfiguration.Content> {
         return try .init(try child(at: index))
     }
     
-    func styleConfigurationTitle(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationTitle> {
+    func styleConfigurationTitle(_ index: Int) throws -> InspectableView<ViewType.StyleConfiguration.Title> {
         return try .init(try child(at: index))
     }
     
-    func styleConfigurationIcon(_ index: Int) throws -> InspectableView<ViewType.StyleConfigurationIcon> {
+    func styleConfigurationIcon(_ index: Int) throws -> InspectableView<ViewType.StyleConfiguration.Icon> {
+        return try .init(try child(at: index))
+    }
+    
+    func styleConfigurationCurrentValueLabel(_ index: Int) throws ->
+    InspectableView<ViewType.StyleConfiguration.CurrentValueLabel> {
         return try .init(try child(at: index))
     }
 }

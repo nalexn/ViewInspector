@@ -35,12 +35,12 @@ final class OptionalViewTests: XCTestCase {
         XCTAssertEqual(string, "XYZ")
     }
     
-    func testResetsModifiers() throws {
+    func testRetainsModifiers() throws {
         let view = Group {
-            if true { Text("ABC") }
+            if true { Text("ABC").padding().blur(radius: 4) }
         }.padding()
         let sut = try view.inspect().group().text(0)
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.modifiers.count, 2)
     }
 }
 
