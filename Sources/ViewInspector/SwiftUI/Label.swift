@@ -7,7 +7,7 @@ public extension ViewType {
     }
 }
 
-// MARK: - StyleConfigurationLabel
+// MARK: - StyleConfigurationTitle and StyleConfigurationIcon
 
 public extension ViewType {
     

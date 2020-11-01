@@ -52,8 +52,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| List | `contained view` |
 |:white_check_mark:| Menu | `contained view`, `label view` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
-|:technologist:| MenuStyleConfiguration.Content | |
-|:technologist:| MenuStyleConfiguration.Label | |
+|:white_check_mark:| MenuStyleConfiguration.Content | |
+|:white_check_mark:| MenuStyleConfiguration.Label | |
 |:white_check_mark:| ModifiedContent | `contained view` |
 |:white_check_mark:| NavigationLink | `contained view`, `label view`, `isActive: Bool`, `activate()`, `deactivate()` |
 |:white_check_mark:| NavigationView | `contained view` |
@@ -458,7 +458,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func labelStyle<S>(S) -> some View` |
 |:white_check_mark:| `func buttonStyle<S>(S) -> some View` |
 |:white_check_mark:| `func menuButtonStyle<S>(S) -> some View` |
-|:technologist:| `func menuStyle<S>(S) -> some View` |
+|:white_check_mark:| `func menuStyle<S>(S) -> some View` |
 |:white_check_mark:| `func pickerStyle<S>(S) -> some View` |
 |:white_check_mark:| `func datePickerStyle<S>(S) -> some View` |
 |:white_check_mark:| `func textFieldStyle<S>(S) -> some View` |
