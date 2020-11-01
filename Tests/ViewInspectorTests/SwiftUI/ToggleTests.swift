@@ -8,15 +8,21 @@ final class ToggleTests: XCTestCase {
     func testEnclosedView() throws {
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("Test") }
-        let text = try view.inspect().toggle().text().string()
+        let text = try view.inspect().toggle().labelView().text().string()
         XCTAssertEqual(text, "Test")
     }
     
     func testResetsModifiers() throws {
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("Test") }.padding()
-        let sut = try view.inspect().toggle().text()
+        let sut = try view.inspect().toggle().labelView().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testDeprecatedLabelInspection() throws {
+        let binding = Binding(wrappedValue: false)
+        let view = Toggle(isOn: binding) { Text("Test") }
+        XCTAssertNoThrow(try view.inspect().toggle().text())
     }
     
     func testExtractionFromSingleViewContainer() throws {

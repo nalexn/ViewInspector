@@ -2,23 +2,28 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(tvOS)
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 final class SliderTests: XCTestCase {
     
     func testEnclosedView() throws {
         let binding = Binding<Float>(wrappedValue: 0)
         let view = Slider(value: binding, label: { Text("Title") })
-        let text = try view.inspect().slider().text().string()
+        let text = try view.inspect().slider().labelView().text().string()
         XCTAssertEqual(text, "Title")
     }
     
     func testResetsModifiers() throws {
         let binding = Binding<Float>(wrappedValue: 0)
         let view = Slider(value: binding, label: { Text("Title") }).padding()
-        let sut = try view.inspect().slider().text()
+        let sut = try view.inspect().slider().labelView().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testDeprecatedLabelInspection() throws {
+        let binding = Binding<Float>(wrappedValue: 0)
+        let view = Slider(value: binding, label: { Text("Title") })
+        XCTAssertNoThrow(try view.inspect().slider().text())
     }
     
     func testExtractionFromSingleViewContainer() throws {
@@ -44,5 +49,3 @@ final class SliderTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 }
-
-#endif

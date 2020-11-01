@@ -17,7 +17,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|---|
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
-|:white_check_mark:| Button | `contained view`, `tap()` |
+|:white_check_mark:| Button | `label view`, `tap()` |
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view` |
@@ -26,7 +26,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| SwiftUI Custom @ViewBuilder | `actualView: CustomView` |
 |:white_check_mark:| UIViewRepresentable | `uiView: UIView` |
 |:white_check_mark:| UIViewControllerRepresentable | `viewController: UIViewController` |
-|:white_check_mark:| DatePicker | `contained view` |
+|:white_check_mark:| DatePicker | `label view` |
 |:white_check_mark:| DisclosureGroup | `label view`, `content view`, `isExpanded: Bool`, `expand()`, `collapse()` |
 |:white_check_mark:| Divider | |
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
@@ -67,17 +67,17 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
-|:white_check_mark:| SecureField | `contained view`, `callOnCommit()` |
+|:white_check_mark:| SecureField | `label view`, `callOnCommit()` |
 |:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
-|:white_check_mark:| Slider | `contained view`, `callOnEditingChanged()` |
+|:white_check_mark:| Slider | `label view`, `callOnEditingChanged()` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
-|:white_check_mark:| Stepper | `contained view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
+|:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:heavy_check_mark:| SubscriptionView | |
 |:white_check_mark:| TabView | `contained view` |
 |:white_check_mark:| Text | `string: String?`, `attributes: TextAttributes` |
 |:white_check_mark:| TextEditor | |
-|:white_check_mark:| TextField | `contained view`, `callOnEditingChanged()`, `callOnCommit()` |
-|:white_check_mark:| Toggle | `contained view` |
+|:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()` |
+|:white_check_mark:| Toggle | `label view` |
 |:technologist:| ToggleStyleConfiguration.Label | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:technologist:| TupleView | |

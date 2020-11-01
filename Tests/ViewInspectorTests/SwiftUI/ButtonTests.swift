@@ -7,14 +7,19 @@ final class ButtonTests: XCTestCase {
     
     func testEnclosedView() throws {
         let sut = Button(action: {}, label: { Text("Test") })
-        let text = try sut.inspect().button().text().string()
+        let text = try sut.inspect().button().labelView().text().string()
         XCTAssertEqual(text, "Test")
     }
     
     func testResetsModifiers() throws {
         let view = Button(action: {}, label: { Text("") }).padding()
-        let sut = try view.inspect().button().text()
+        let sut = try view.inspect().button().labelView().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testDeprecatedLabelInspection() throws {
+        let view = Button(action: {}, label: { Text("") })
+        XCTAssertNoThrow(try view.inspect().button().text())
     }
     
     func testExtractionFromSingleViewContainer() throws {

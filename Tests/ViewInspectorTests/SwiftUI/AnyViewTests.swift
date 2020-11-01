@@ -20,7 +20,7 @@ final class AnyViewTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = Button(action: { }, label: { AnyView(Text("")) })
-        XCTAssertNoThrow(try view.inspect().button().anyView())
+        XCTAssertNoThrow(try view.inspect().button().labelView().anyView())
     }
     
     func testExtractionFromMultipleViewContainer() throws {

@@ -11,8 +11,8 @@ final class StepperTests: XCTestCase {
         let binding = Binding<Int>(wrappedValue: 0)
         let view1 = Stepper("Title1", value: binding)
         let view2 = Stepper(value: binding, label: { Text("Title2") })
-        let text1 = try view1.inspect().stepper().text().string()
-        let text2 = try view2.inspect().stepper().text().string()
+        let text1 = try view1.inspect().stepper().labelView().text().string()
+        let text2 = try view2.inspect().stepper().labelView().text().string()
         XCTAssertEqual(text1, "Title1")
         XCTAssertEqual(text2, "Title2")
     }
@@ -20,8 +20,14 @@ final class StepperTests: XCTestCase {
     func testResetsModifiers() throws {
         let binding = Binding<Int>(wrappedValue: 0)
         let view = Stepper("Title1", value: binding).padding()
-        let sut = try view.inspect().stepper().text()
+        let sut = try view.inspect().stepper().labelView().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testDeprecatedLabelInspection() throws {
+        let binding = Binding<Int>(wrappedValue: 0)
+        let view = Stepper("Title1", value: binding)
+        XCTAssertNoThrow(try view.inspect().stepper().text())
     }
     
     func testExtractionFromSingleViewContainer() throws {

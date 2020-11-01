@@ -8,15 +8,21 @@ final class TextFieldTests: XCTestCase {
     func testEnclosedView() throws {
         let binding = Binding(wrappedValue: "")
         let view = TextField("Title", text: binding)
-        let text = try view.inspect().textField().text().string()
+        let text = try view.inspect().textField().labelView().text().string()
         XCTAssertEqual(text, "Title")
     }
     
     func testResetsModifiers() throws {
         let binding = Binding(wrappedValue: "")
         let view = TextField("Title", text: binding).padding()
-        let sut = try view.inspect().textField().text()
+        let sut = try view.inspect().textField().labelView().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testDeprecatedLabelInspection() throws {
+        let binding = Binding(wrappedValue: "")
+        let view = TextField("Title", text: binding)
+        XCTAssertNoThrow(try view.inspect().textField().text())
     }
     
     func testExtractionFromSingleViewContainer() throws {

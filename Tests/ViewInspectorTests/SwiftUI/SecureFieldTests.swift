@@ -8,15 +8,21 @@ final class SecureFieldTests: XCTestCase {
     func testEnclosedView() throws {
         let binding = Binding(wrappedValue: "")
         let view = SecureField("Title", text: binding)
-        let text = try view.inspect().secureField().text().string()
+        let text = try view.inspect().secureField().labelView().text().string()
         XCTAssertEqual(text, "Title")
     }
     
     func testResetsModifiers() throws {
         let binding = Binding(wrappedValue: "")
         let view = SecureField("Title", text: binding).padding()
-        let sut = try view.inspect().secureField().text()
+        let sut = try view.inspect().secureField().labelView().text()
         XCTAssertEqual(sut.content.modifiers.count, 0)
+    }
+    
+    func testDeprecatedLabelInspection() throws {
+        let binding = Binding(wrappedValue: "")
+        let view = SecureField("Title", text: binding)
+        XCTAssertNoThrow(try view.inspect().secureField().text())
     }
     
     func testExtractionFromSingleViewContainer() throws {

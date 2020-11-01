@@ -7,16 +7,6 @@ public extension ViewType {
     }
 }
 
-// MARK: - Content Extraction
-
-extension ViewType.Toggle: SingleViewContent {
-    
-    public static func child(_ content: Content) throws -> Content {
-        let view = try Inspector.attribute(label: "_label", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [])
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -34,6 +24,22 @@ public extension InspectableView where View: MultipleViewContent {
     
     func toggle(_ index: Int) throws -> InspectableView<ViewType.Toggle> {
         return try .init(try child(at: index))
+    }
+}
+
+// MARK: - Custom Attributes
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View == ViewType.Toggle {
+    
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "_label", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
+    }
+    
+    @available(*, deprecated, message: "Please use .labelView().text() instead")
+    func text() throws -> InspectableView<ViewType.Text> {
+        return try labelView().text()
     }
 }
 

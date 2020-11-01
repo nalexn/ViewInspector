@@ -9,16 +9,6 @@ public extension ViewType {
     }
 }
 
-// MARK: - Content Extraction
-
-extension ViewType.DatePicker: SingleViewContent {
-    
-    public static func child(_ content: Content) throws -> Content {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [])
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -36,6 +26,22 @@ public extension InspectableView where View: MultipleViewContent {
     
     func datePicker(_ index: Int) throws -> InspectableView<ViewType.DatePicker> {
         return try .init(try child(at: index))
+    }
+}
+
+// MARK: - Custom Attributes
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View == ViewType.DatePicker {
+    
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "label", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
+    }
+    
+    @available(*, deprecated, message: "Please use .labelView().text() instead")
+    func text() throws -> InspectableView<ViewType.Text> {
+        return try labelView().text()
     }
 }
 

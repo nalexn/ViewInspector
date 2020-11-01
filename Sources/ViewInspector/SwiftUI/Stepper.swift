@@ -1,7 +1,5 @@
 import SwiftUI
 
-#if os(iOS) || os(macOS)
-
 public extension ViewType {
     
     struct Stepper: KnownViewType {
@@ -9,19 +7,10 @@ public extension ViewType {
     }
 }
 
-// MARK: - Content Extraction
-
-extension ViewType.Stepper: SingleViewContent {
-    
-    public static func child(_ content: Content) throws -> Content {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [])
-    }
-}
-
 // MARK: - Extraction from SingleViewContent parent
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
     func stepper() throws -> InspectableView<ViewType.Stepper> {
@@ -31,7 +20,8 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View: MultipleViewContent {
     
     func stepper(_ index: Int) throws -> InspectableView<ViewType.Stepper> {
@@ -41,8 +31,19 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.Stepper {
+    
+    func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
+        let view = try Inspector.attribute(label: "label", value: content.view)
+        return try .init(try Inspector.unwrap(content: Content(view)))
+    }
+    
+    @available(*, deprecated, message: "Please use .labelView().text() instead")
+    func text() throws -> InspectableView<ViewType.Text> {
+        return try labelView().text()
+    }
     
     func increment() throws {
         let action = try Inspector.attribute(path: path(to: "onIncrement"), value: content.view)
@@ -69,13 +70,9 @@ public extension InspectableView where View == ViewType.Stepper {
     }
     
     private func path(to attribute: String) -> String {
-        #if os(iOS) || os(macOS)
-        if #available(iOS 13.4, tvOS 13.4, macOS 10.15.4, *) {
+        if #available(iOS 13.4, macOS 10.15.4, *) {
             return "configuration|\(attribute)"
         }
-        #endif
         return attribute
     }
 }
-
-#endif
