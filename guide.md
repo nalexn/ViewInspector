@@ -10,7 +10,7 @@
 - [Custom **LabelStyle**](#custom-labelstyle)
 - [Custom **GroupBoxStyle**](#custom-groupboxstyle)
 - [Custom **ToggleStyle**](#custom-togglestyle)
-- [Custom **ProgressViewStyle**](#custom-progressview)
+- [Custom **ProgressViewStyle**](#custom-progressviewstyle)
 
 ## The Basics
 
