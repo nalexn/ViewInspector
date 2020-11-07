@@ -145,7 +145,7 @@ extension Inspector {
     }
     
     static func isTupleView(_ view: Any) -> Bool {
-        return Inspector.typeName(value: view, prefixOnly: true) == "TupleView"
+        return Inspector.typeName(value: view, prefixOnly: true) == ViewType.TupleView.typePrefix
     }
     
     static func unwrap(view: Any, modifiers: [Any]) throws -> Content {

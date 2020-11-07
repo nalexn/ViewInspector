@@ -31,8 +31,8 @@ internal extension InspectableView where View: MultipleViewContent {
     func child(at index: Int, isTupleExtraction: Bool = false) throws -> Content {
         let viewes = try View.children(content)
         guard index >= 0 && index < viewes.count else {
-            throw InspectionError.viewIndexOutOfBounds(
-                index: index, count: viewes.count) }
+            throw InspectionError.viewIndexOutOfBounds(index: index, count: viewes.count)
+        }
         let child = try viewes.element(at: index)
         if !isTupleExtraction && Inspector.isTupleView(child.view) {
             // swiftlint:disable line_length
