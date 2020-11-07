@@ -82,7 +82,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Toggle | `label view` |
 |:white_check_mark:| ToggleStyleConfiguration.Label | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
-|:heavy_check_mark:| TupleView | |
+|:white_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
 |:white_check_mark:| VStack | `contained view` |
 |:white_check_mark:| ZStack | `contained view` |

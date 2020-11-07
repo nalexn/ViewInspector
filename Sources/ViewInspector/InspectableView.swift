@@ -7,7 +7,9 @@ public struct InspectableView<View> where View: KnownViewType {
     internal let content: Content
     
     internal init(_ content: Content) throws {
-        if !View.typePrefix.isEmpty, Inspector.isTupleView(content.view) {
+        if !View.typePrefix.isEmpty,
+           Inspector.isTupleView(content.view),
+           View.self != ViewType.TupleView.self {
             throw InspectionError.notSupported(
                 "Unable to extract \(View.typePrefix): please specify its index inside parent view")
         }
@@ -26,12 +28,19 @@ internal extension InspectableView where View: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView where View: MultipleViewContent {
     
-    func child(at index: Int) throws -> Content {
+    func child(at index: Int, isTupleExtraction: Bool = false) throws -> Content {
         let viewes = try View.children(content)
         guard index >= 0 && index < viewes.count else {
             throw InspectionError.viewIndexOutOfBounds(
                 index: index, count: viewes.count) }
-        return try viewes.element(at: index)
+        let child = try viewes.element(at: index)
+        if !isTupleExtraction && Inspector.isTupleView(child.view) {
+            // swiftlint:disable line_length
+            throw InspectionError.notSupported(
+                "Please insert .tupleView(\(index)) after \(Inspector.typeName(type: View.self)) for inspecting its children at index \(index)")
+            // swiftlint:enable line_length
+        }
+        return child
     }
 }
 

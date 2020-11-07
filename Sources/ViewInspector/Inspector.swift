@@ -141,12 +141,7 @@ extension Inspector {
                 return unwrappedContainer
             }
         }
-        let tupleViews = try Inspector.attribute(label: "value", value: unwrappedContainer.view)
-        let childrenCount = Mirror(reflecting: tupleViews).children.count
-        return LazyGroup(count: childrenCount) { index in
-            let child = try Inspector.attribute(label: ".\(index)", value: tupleViews)
-            return try Inspector.unwrap(content: Content(child))
-        }
+        return try ViewType.TupleView.children(unwrappedContainer)
     }
     
     static func isTupleView(_ view: Any) -> Bool {

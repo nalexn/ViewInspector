@@ -86,6 +86,8 @@
 		F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */; };
 		F64C4E2C250CD60800A69FF9 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64C4E2B250CD60800A69FF9 /* Color.swift */; };
 		F64C4E30250CD71400A69FF9 /* ColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64C4E2F250CD71400A69FF9 /* ColorTests.swift */; };
+		F653BDE3255698A6001FA688 /* TupleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653BDE2255698A6001FA688 /* TupleView.swift */; };
+		F653BDED25569D2E001FA688 /* TupleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653BDEC25569D2E001FA688 /* TupleViewTests.swift */; };
 		F6684BEE23AA4CF400DECCB3 /* MenuButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */; };
 		F6684BF023AA504500DECCB3 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BEF23AA504500DECCB3 /* MenuButton.swift */; };
 		F6684BF223AA554500DECCB3 /* PasteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF123AA554500DECCB3 /* PasteButton.swift */; };
@@ -272,6 +274,8 @@
 		F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewTests.swift; sourceTree = "<group>"; };
 		F64C4E2B250CD60800A69FF9 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		F64C4E2F250CD71400A69FF9 /* ColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTests.swift; sourceTree = "<group>"; };
+		F653BDE2255698A6001FA688 /* TupleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TupleView.swift; sourceTree = "<group>"; };
+		F653BDEC25569D2E001FA688 /* TupleViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TupleViewTests.swift; sourceTree = "<group>"; };
 		F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonTests.swift; sourceTree = "<group>"; };
 		F6684BEF23AA504500DECCB3 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		F6684BF123AA554500DECCB3 /* PasteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteButton.swift; sourceTree = "<group>"; };
@@ -485,6 +489,7 @@
 				F6D933BA2385F42300358E0E /* Toggle.swift */,
 				F639DBC223A7DDA2003A6FED /* TouchBar.swift */,
 				F64A2C6723A3FD3A00A4853A /* TreeView.swift */,
+				F653BDE2255698A6001FA688 /* TupleView.swift */,
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
@@ -577,6 +582,7 @@
 				F6D933BC2385F45A00358E0E /* ToggleTests.swift */,
 				F639DBC423A7DFA6003A6FED /* TouchBarTests.swift */,
 				F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */,
+				F653BDEC25569D2E001FA688 /* TupleViewTests.swift */,
 				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
@@ -808,6 +814,7 @@
 				F64C4E2C250CD60800A69FF9 /* Color.swift in Sources */,
 				F682A016254776F2005F1B70 /* DisclosureGroup.swift in Sources */,
 				F6119FF4254A00FC0000C54A /* LazyHGrid.swift in Sources */,
+				F653BDE3255698A6001FA688 /* TupleView.swift in Sources */,
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
 				F6C15A0D254A05A4000240F1 /* LazyVGrid.swift in Sources */,
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
@@ -912,6 +919,7 @@
 				F6D933AD2385EB0100358E0E /* GroupBoxTests.swift in Sources */,
 				F6ECF6D223A680DA000FC591 /* TransformingModifiersTests.swift in Sources */,
 				F6F08E6B23A2A849001F04DF /* ConditionalContentTests.swift in Sources */,
+				F653BDED25569D2E001FA688 /* TupleViewTests.swift in Sources */,
 				F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */,
 				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,
 				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
