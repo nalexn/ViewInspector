@@ -5,7 +5,6 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TupleViewTests: XCTestCase {
     
-    #if !os(macOS) && !targetEnvironment(macCatalyst)
     func testSimpleTupleView() throws {
         let view = SimpleTupleView().padding()
         let sut = try view.inspect().view(SimpleTupleView.self)
@@ -14,7 +13,6 @@ final class TupleViewTests: XCTestCase {
         XCTAssertNoThrow(try sut.emptyView(0))
         XCTAssertNoThrow(try sut.text(1))
     }
-    #endif
     
     func testTupleInsideTupleView() throws {
         let view = TupleInsideTupleView(flag: true)
@@ -29,7 +27,6 @@ final class TupleViewTests: XCTestCase {
     }
 }
 
-#if !os(macOS) && !targetEnvironment(macCatalyst)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct SimpleTupleView: View, Inspectable {
     var body: some View {
@@ -37,7 +34,6 @@ private struct SimpleTupleView: View, Inspectable {
         Text("abc")
     }
 }
-#endif
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TupleInsideTupleView: View, Inspectable {

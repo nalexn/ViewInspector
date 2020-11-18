@@ -67,7 +67,6 @@ public extension InspectableView {
     }
 }
 
-#if !os(macOS) && !targetEnvironment(macCatalyst)
 // MARK: - ProgressViewStyle inspection
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
@@ -91,4 +90,3 @@ internal extension ProgressViewStyleConfiguration {
         self = unsafeBitCast(Allocator(fractionCompleted: fractionCompleted), to: Self.self)
     }
 }
-#endif

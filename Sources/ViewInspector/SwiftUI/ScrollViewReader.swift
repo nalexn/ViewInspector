@@ -1,6 +1,5 @@
 import SwiftUI
 
-#if !os(macOS) && !targetEnvironment(macCatalyst)
 public extension ViewType {
     
     struct ScrollViewReader: KnownViewType {
@@ -64,4 +63,3 @@ private extension ScrollViewProxy {
         self = unsafeBitCast(Allocator8(), to: ScrollViewProxy.self)
     }
 }
-#endif

@@ -2,8 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS) && !targetEnvironment(macCatalyst)
-
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 final class DisclosureGroupTests: XCTestCase {
@@ -121,5 +119,3 @@ private struct TestViewBinding: View, Inspectable {
         }, label: { EmptyView() })
     }
 }
-
-#endif

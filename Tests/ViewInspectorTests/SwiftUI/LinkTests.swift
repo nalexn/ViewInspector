@@ -2,7 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS) && !targetEnvironment(macCatalyst)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class LinkTests: XCTestCase {
     
@@ -39,4 +38,3 @@ final class LinkTests: XCTestCase {
         XCTAssertEqual(sut, "xyz")
     }
 }
-#endif

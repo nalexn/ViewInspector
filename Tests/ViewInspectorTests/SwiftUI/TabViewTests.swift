@@ -92,6 +92,7 @@ final class GlobalModifiersForTabView: XCTestCase {
             XCTAssertNotEqual(styles[index], styles[(index + 1) % styles.count])
         }
     }
+    #endif
     
     @available(macOS, unavailable)
     func testIndexViewStyleInspection() throws {
@@ -99,5 +100,4 @@ final class GlobalModifiersForTabView: XCTestCase {
         let sut = EmptyView().indexViewStyle(PageIndexViewStyle())
         XCTAssertTrue(try sut.inspect().indexViewStyle() is PageIndexViewStyle)
     }
-    #endif
 }

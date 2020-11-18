@@ -2,8 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS) && !targetEnvironment(macCatalyst)
-
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 final class GroupBoxTests: XCTestCase {
@@ -81,6 +79,7 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertEqual(sut, "abc")
     }
     
+    #if !os(macOS) && !targetEnvironment(macCatalyst)
     func testGroupBoxStyleInspection() throws {
         guard #available(iOS 14, *) else { return }
         let sut = EmptyView().groupBoxStyle(DefaultGroupBoxStyle())
@@ -95,6 +94,7 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationContent(),
                         "Type mismatch: EmptyView is not Content")
     }
+    #endif
 }
 
 @available(iOS 14.0, macOS 11.0, *)
@@ -109,4 +109,3 @@ private struct TestGroupBoxStyle: GroupBoxStyle {
         }
     }
 }
-#endif

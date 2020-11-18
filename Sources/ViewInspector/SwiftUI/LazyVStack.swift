@@ -1,6 +1,5 @@
 import SwiftUI
 
-#if !os(macOS) && !targetEnvironment(macCatalyst)
 public extension ViewType {
     
     struct LazyVStack: KnownViewType {
@@ -62,4 +61,3 @@ public extension InspectableView where View == ViewType.LazyVStack {
         return try Inspector.attribute(path: "tree|root", value: content.view)
     }
 }
-#endif
