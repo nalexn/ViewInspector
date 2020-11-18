@@ -183,9 +183,9 @@ extension Inspector {
             if name.contains("NavigationBarItemsKey") {
                 throw InspectionError.notSupported(
                     "Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
-            } else {
+            } else if name.contains("_AnchorWritingModifier") {
                 throw InspectionError.notSupported(
-                    "Please use 'popover()' for unwrapping the underlying view hierarchy.")
+                    "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
             }
         }
         guard name.hasPrefix(prefix) else {

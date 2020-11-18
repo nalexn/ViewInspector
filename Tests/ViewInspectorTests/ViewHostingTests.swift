@@ -84,8 +84,7 @@ final class ViewHostingTests: XCTestCase {
     
     func testUIViewUpdate() throws {
         let exp = XCTestExpectation(description: "updateUIView")
-        exp.expectedFulfillmentCount = 3
-        exp.assertForOverFulfill = true
+        exp.expectedFulfillmentCount = 2
         var sut = UITestView.WrapperView(flag: false, didUpdate: {
             exp.fulfill()
         })

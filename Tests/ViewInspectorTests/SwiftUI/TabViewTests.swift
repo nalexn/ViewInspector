@@ -66,10 +66,11 @@ final class GlobalModifiersForTabView: XCTestCase {
     
     func testTabItemInspection() throws {
         let string = "abc"
-        let tabItem = try EmptyView().tabItem { Text(string) }
+        let tabItem = try EmptyView().tabItem { Text(string).blur(radius: 3) }
             .inspect().emptyView().tabItem()
-        let sut = try tabItem.text().string()
-        XCTAssertEqual(sut, string)
+        let sut = try tabItem.text()
+        XCTAssertEqual(try sut.string(), string)
+        XCTAssertEqual(try sut.blur().radius, 3)
     }
     
     #if !os(macOS) && !targetEnvironment(macCatalyst)

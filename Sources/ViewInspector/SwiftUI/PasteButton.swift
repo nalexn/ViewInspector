@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 #if os(macOS)
 public extension ViewType {
@@ -34,9 +35,10 @@ public extension InspectableView where View == ViewType.PasteButton {
     func callPayloadAction()
     */
     
-    func supportedTypes() throws -> [String] {
+    @available(macOS 11.0, *)
+    func supportedContentTypes() throws -> [UTType] {
         return try Inspector
-            .attribute(label: "supportedTypes", value: content.view, type: [String].self)
+            .attribute(label: "supportedContentTypes", value: content.view, type: [UTType].self)
     }
 }
 #endif

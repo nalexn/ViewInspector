@@ -14,7 +14,14 @@ public extension ViewType {
 extension ViewType.HSplitView: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        return try ViewType.HStack.children(content)
+        let path: String
+        if #available(macOS 11.0, *) {
+            path = "content"
+        } else {
+            path = "_tree|content"
+        }
+        let container = try Inspector.attribute(path: path, value: content.view)
+        return try Inspector.viewsInContainer(view: container)
     }
 }
 

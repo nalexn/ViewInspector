@@ -52,7 +52,14 @@ public extension InspectableView {
         let rootView = try modifierAttribute(
             modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
             type: Any.self, call: "tabItem")
-        return try .init(try Inspector.unwrap(content: Content(rootView)))
+        let view = try InspectableView<ViewType.ClassifiedView>(
+            try Inspector.unwrap(content: Content(rootView)))
+        if #available(iOS 14.2, tvOS 14.2, *) {
+            return try InspectableView<ViewType.ClassifiedView>(
+            try Inspector.unwrap(content: try view.zStack().child(at: 0)))
+        } else {
+            return view
+        }
     }
 
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)

@@ -1,5 +1,6 @@
 import XCTest
 import SwiftUI
+import UniformTypeIdentifiers
 @testable import ViewInspector
 
 #if os(macOS)
@@ -21,10 +22,11 @@ final class PasteButtonTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().pasteButton(1))
     }
     
+    @available(macOS 11.0, *)
     func testSupportedTypes() throws {
-        let types = ["abc", "def"]
-        let view = PasteButton(supportedTypes: types, payloadAction: { _ in })
-        let sut = try view.inspect().pasteButton().supportedTypes()
+        let types = [UTType.gif, .pdf]
+        let view = PasteButton(supportedContentTypes: types, payloadAction: { _ in })
+        let sut = try view.inspect().pasteButton().supportedContentTypes()
         XCTAssertEqual(sut, types)
     }
 }

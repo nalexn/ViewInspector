@@ -539,7 +539,6 @@ The library provides a custom inspection function `inspect(fractionCompleted: Do
 ```swift
 func testCustomProgressViewStyle() throws {
     let sut = CustomProgressViewStyle()
-    let sut = TestProgressViewStyle()
     XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationLabel(0).brightness(), 3)
     XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationCurrentValueLabel(1).blur().radius, 5)
     XCTAssertEqual(try sut.inspect(fractionCompleted: 0.42).vStack().text(2).string(), "Completed: 42%")

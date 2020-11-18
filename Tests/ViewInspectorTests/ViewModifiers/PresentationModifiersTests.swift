@@ -26,22 +26,6 @@ final class ViewPresentationTests: XCTestCase {
         let sut = EmptyView().alert(isPresented: binding) { Alert(title: Text("")) }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
-    
-    #if !os(tvOS)
-    func testPopover() throws {
-        let binding = Binding(wrappedValue: true)
-        let sut = EmptyView().popover(isPresented: binding) { Text("") }
-        if #available(iOS 14, tvOS 14, macOS 10.16, *) {
-            XCTAssertThrows(try sut.inspect().emptyView(),
-                            "Please use 'popover()' for unwrapping the underlying view hierarchy.")
-            XCTAssertThrows(try sut.inspect().popover().emptyView(),
-                            "Please substitute 'EmptyView.self' as the parameter for 'popover()' inspection call")
-            XCTAssertNoThrow(try sut.inspect().popover(EmptyView.self).emptyView())
-        } else {
-            XCTAssertNoThrow(try sut.inspect().emptyView())
-        }
-    }
-    #endif
 }
 
 // MARK: - ViewColorTests
