@@ -117,6 +117,13 @@ public extension InspectableView.TextAttributes {
     }
     
     func isBold() throws -> Bool {
+        do {
+            return try fontWeight(attributeName: "bold") == .bold
+        } catch {
+            if case .textAttribute = error as? InspectionError {
+                throw error
+            }
+        }
         return try commonTrait(name: "bold") { modifier in
             guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier)
                 else { return nil }
@@ -125,7 +132,11 @@ public extension InspectableView.TextAttributes {
     }
     
     func fontWeight() throws -> Font.Weight {
-        return try commonTrait(name: "fontWeight") { modifier -> Font.Weight? in
+        return try fontWeight(attributeName: "fontWeight")
+    }
+    
+    private func fontWeight(attributeName: String) throws -> Font.Weight {
+        return try commonTrait(name: attributeName) { modifier -> Font.Weight? in
             guard let fontWeight = try? Inspector
                 .attribute(path: "weight|some", value: modifier, type: Font.Weight.self)
                 else { return nil }

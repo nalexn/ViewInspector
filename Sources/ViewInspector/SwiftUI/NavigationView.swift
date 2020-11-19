@@ -12,7 +12,13 @@ public extension ViewType {
 extension ViewType.NavigationView: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        let content = try Inspector.attribute(label: "content", value: content.view)
+        let path: String
+        if #available(iOS 13.1, macOS 10.15, tvOS 13.1, *) {
+            path = "content"
+        } else {
+            path = "_tree|content"
+        }
+        let content = try Inspector.attribute(path: path, value: content.view)
         return try Inspector.viewsInContainer(view: content)
     }
 }

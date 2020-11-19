@@ -104,9 +104,13 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testActualView() throws {
-        let sut = try LocalStateTestView(flag: true).inspect()
-        let flagValue = try sut.actualView().flag
-        XCTAssertTrue(flagValue)
+        let sut = LocalStateTestView(flag: true)
+        let exp = sut.inspection.inspect { view in
+            let value = try view.actualView().flag
+            XCTAssertTrue(value)
+        }
+        ViewHosting.host(view: sut.environmentObject(ExternalState()).padding())
+        wait(for: [exp], timeout: 0.1)
     }
     
     func testActualViewTypeMismatch() throws {
@@ -118,7 +122,6 @@ final class CustomViewTests: XCTestCase {
     
     func testTestViews() {
         XCTAssertNoThrow(SimpleTestView().body)
-        XCTAssertNoThrow(LocalStateTestView(flag: true).body)
         XCTAssertNoThrow(ObservedStateTestView(viewModel: ExternalState()).body)
     }
 }

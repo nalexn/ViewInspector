@@ -8,14 +8,14 @@ import SwiftUI
 final class DelayedPreferenceViewTests: XCTestCase {
     
     func testUnwrapDelayedPreferenceView() throws {
-        let view = NavigationView {
+        let view = Group {
             Text("Test")
                 .backgroundPreferenceValue(Key.self) { _ in EmptyView() }
         }
         // Not supported
         //swiftlint:disable line_length
         XCTAssertThrows(
-            try view.inspect().navigationView().text(0),
+            try view.inspect().group().text(0),
             "'PreferenceValue' modifiers are currently not supported. Consider extracting the enclosed view for direct inspection.")
         //swiftlint:enable line_length
     }

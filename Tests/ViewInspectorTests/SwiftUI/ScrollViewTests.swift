@@ -33,6 +33,7 @@ final class ScrollViewTests: XCTestCase {
     }
     
     func testContentInsets() throws {
+        guard #available(iOS 13.1, macOS 10.15, tvOS 13.1, *) else { return }
         let sut = ScrollView { Text("") }
         let contentInsets = try sut.inspect().scrollView().contentInsets()
         XCTAssertEqual(contentInsets, EdgeInsets())

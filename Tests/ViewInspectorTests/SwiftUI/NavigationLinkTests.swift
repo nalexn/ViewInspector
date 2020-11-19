@@ -52,6 +52,7 @@ final class NavigationLinkTests: XCTestCase {
     }
     
     func testNavigationWithoutBindingAndState() throws {
+        guard #available(iOS 13.1, macOS 10.15, tvOS 13.1, *) else { return }
         let view = NavigationView {
             NavigationLink(
                 destination: Text("Screen 1")) { Text("GoTo 1") }

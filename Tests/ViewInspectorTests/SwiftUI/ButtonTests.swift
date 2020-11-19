@@ -95,6 +95,7 @@ final class ButtonStyleInspectionTests: XCTestCase {
     
     #if !os(tvOS)
     func testPrimitiveButtonStyleExtraction() throws {
+        guard #available(iOS 13.1, macOS 10.15, tvOS 13.1, *) else { return }
         let style = TestPrimitiveButtonStyle()
         let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
         XCTAssertNoThrow(try button.anyView().styleConfigurationLabel().blur())
@@ -103,7 +104,9 @@ final class ButtonStyleInspectionTests: XCTestCase {
     func testDeprecatedStyleLabelInspection() throws {
         let style = TestPrimitiveButtonStyle()
         let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
-        XCTAssertNoThrow(try button.anyView().primitiveButtonStyleLabel())
+        if #available(iOS 13.1, macOS 10.15, tvOS 13.1, *) {
+            XCTAssertNoThrow(try button.anyView().primitiveButtonStyleLabel())
+        }
         XCTAssertThrows(try Group { EmptyView() }.inspect().group().primitiveButtonStyleLabel(0),
                         "Type mismatch: EmptyView is not Label")
     }
