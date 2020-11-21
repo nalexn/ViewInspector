@@ -50,15 +50,17 @@ final class ColorPickerTests: XCTestCase {
         try sut1.inspect().colorPicker().select(color: CGColor.test)
         XCTAssertEqual(binding1.wrappedValue.rgba(), CGColor.test.rgba())
         
-        let binding2 = Binding<Color>(wrappedValue: .red)
-        let sut2 = ColorPicker(selection: binding2) { Text("") }
-        XCTAssertEqual(binding2.wrappedValue.rgba(), Color.red.rgba())
-        try sut2.inspect().colorPicker().select(color: Color.yellow)
-        XCTAssertEqual(binding2.wrappedValue.rgba(), Color.yellow.rgba())
+        if #available(tvOS 14.0, *) {
+            let binding2 = Binding<Color>(wrappedValue: .red)
+            let sut2 = ColorPicker(selection: binding2) { Text("") }
+            XCTAssertEqual(binding2.wrappedValue.rgba(), Color.red.rgba())
+            try sut2.inspect().colorPicker().select(color: Color.yellow)
+            XCTAssertEqual(binding2.wrappedValue.rgba(), Color.yellow.rgba())
+        }
     }
     
     func testRGBA() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14, *) else { return }
         XCTAssertNotEqual(UIColor.red.rgba(), Color.red.rgba())
         XCTAssertEqual(CGColor(gray: 1, alpha: 1).rgba(), UIColor.white.rgba())
         XCTAssertEqual(UIColor(red: 0.3, green: 0.4, blue: 0.5, alpha: 0.6).rgba(),
@@ -93,6 +95,7 @@ private extension UIColor {
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 private extension Color {
+    @available(tvOS 14.0, *)
     func rgba() -> ViewType.ColorPicker.RGBA {
         return .init(color: self)
     }

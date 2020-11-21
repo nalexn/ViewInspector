@@ -1,7 +1,5 @@
 import SwiftUI
 
-#if os(iOS) || os(macOS)
-
 public extension ViewType {
     
     struct DatePicker: KnownViewType {
@@ -11,7 +9,8 @@ public extension ViewType {
 
 // MARK: - Extraction from SingleViewContent parent
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
     func datePicker() throws -> InspectableView<ViewType.DatePicker> {
@@ -21,7 +20,8 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View: MultipleViewContent {
     
     func datePicker(_ index: Int) throws -> InspectableView<ViewType.DatePicker> {
@@ -31,7 +31,8 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.DatePicker {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
@@ -47,7 +48,8 @@ public extension InspectableView where View == ViewType.DatePicker {
 
 // MARK: - Global View Modifiers
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension InspectableView {
 
     func datePickerStyle() throws -> Any {
@@ -57,5 +59,3 @@ public extension InspectableView {
         return try Inspector.attribute(path: "modifier|style", value: modifier)
     }
 }
-
-#endif

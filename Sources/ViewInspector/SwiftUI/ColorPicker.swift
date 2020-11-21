@@ -40,6 +40,7 @@ public extension InspectableView where View == ViewType.ColorPicker {
         return try .init(try Inspector.unwrap(content: Content(view)))
     }
     
+    @available(tvOS 14.0, *)
     func select(color: Color) throws {
         try select(color: UIColor(color))
     }
@@ -75,6 +76,7 @@ public extension ViewType.ColorPicker {
             self.init(color: UIColor(cgColor: color))
         }
         
+        @available(tvOS 14.0, *)
         init(color: Color) {
             self.init(color: UIColor(color))
         }
