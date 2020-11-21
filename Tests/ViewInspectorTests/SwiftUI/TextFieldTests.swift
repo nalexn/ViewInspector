@@ -60,6 +60,15 @@ final class TextFieldTests: XCTestCase {
         try view.inspect().textField().callOnCommit()
         wait(for: [exp], timeout: 0.5)
     }
+    
+    func testInput() throws {
+        let binding = Binding(wrappedValue: "123")
+        let view = TextField("", text: binding)
+        let sut = try view.inspect().textField()
+        XCTAssertEqual(try sut.input(), "123")
+        try sut.setInput("abc")
+        XCTAssertEqual(try sut.input(), "abc")
+    }
 }
 
 // MARK: - View Modifiers

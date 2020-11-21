@@ -22,4 +22,14 @@ final class TextEditorTests: XCTestCase {
         }
         XCTAssertNoThrow(try view.inspect().hStack().textEditor(1))
     }
+    
+    func testInput() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
+        let binding = Binding(wrappedValue: "123")
+        let view = TextEditor(text: binding)
+        let sut = try view.inspect().textEditor()
+        XCTAssertEqual(try sut.input(), "123")
+        try sut.setInput("abc")
+        XCTAssertEqual(try sut.input(), "abc")
+    }
 }

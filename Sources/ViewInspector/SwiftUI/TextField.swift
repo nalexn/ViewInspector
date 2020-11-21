@@ -57,6 +57,24 @@ public extension InspectableView where View == ViewType.TextField {
             callback()
         }
     }
+    
+    func input() throws -> String {
+        return try inputBinding().wrappedValue
+    }
+    
+    func setInput(_ value: String) throws {
+        try inputBinding().wrappedValue = value
+    }
+    
+    private func inputBinding() throws -> Binding<String> {
+        let label: String
+        if #available(iOS 13.2, macOS 10.15, tvOS 13.2, *) {
+            label = "_text"
+        } else {
+            label = "text"
+        }
+        return try Inspector.attribute(label: label, value: content.view, type: Binding<String>.self)
+    }
 }
 
 // MARK: - Global View Modifiers
