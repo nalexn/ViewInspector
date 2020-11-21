@@ -43,8 +43,16 @@ public extension InspectableView where View == ViewType.Toggle {
     }
     
     func tap() throws {
-        let binding = try Inspector.attribute(label: "__isOn", value: content.view, type: Binding<Bool>.self)
-        binding.wrappedValue.toggle()
+        try isOnBinding().wrappedValue.toggle()
+    }
+    
+    func isOn() throws -> Bool {
+        return try isOnBinding().wrappedValue
+    }
+    
+    private func isOnBinding() throws -> Binding<Bool> {
+        return try Inspector
+            .attribute(label: "__isOn", value: content.view, type: Binding<Bool>.self)
     }
 }
 

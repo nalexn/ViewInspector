@@ -80,7 +80,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Text | `string: String?`, `attributes: TextAttributes` |
 |:white_check_mark:| TextEditor | |
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()` |
-|:white_check_mark:| Toggle | `label view`, `tap()` |
+|:white_check_mark:| Toggle | `label view`, `tap()`, `isOn: Bool` |
 |:white_check_mark:| ToggleStyleConfiguration.Label | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:white_check_mark:| TupleView | |
