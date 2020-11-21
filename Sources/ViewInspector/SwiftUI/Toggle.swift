@@ -41,6 +41,11 @@ public extension InspectableView where View == ViewType.Toggle {
     func text() throws -> InspectableView<ViewType.Text> {
         return try labelView().text()
     }
+    
+    func tap() throws {
+        let binding = try Inspector.attribute(label: "__isOn", value: content.view, type: Binding<Bool>.self)
+        binding.wrappedValue.toggle()
+    }
 }
 
 // MARK: - Global View Modifiers

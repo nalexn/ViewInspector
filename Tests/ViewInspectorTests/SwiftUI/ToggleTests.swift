@@ -25,6 +25,14 @@ final class ToggleTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().toggle().text())
     }
     
+    func testTap() throws {
+        let binding = Binding(wrappedValue: false)
+        let view = Toggle(isOn: binding) { Text("") }
+        XCTAssertFalse(binding.wrappedValue)
+        try view.inspect().toggle().tap()
+        XCTAssertTrue(binding.wrappedValue)
+    }
+    
     func testExtractionFromSingleViewContainer() throws {
         let binding = Binding(wrappedValue: false)
         let view = AnyView(Toggle(isOn: binding) { Text("Test") })
