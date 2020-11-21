@@ -32,7 +32,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
 |:white_check_mark:| EmptyView | |
 |:white_check_mark:| EquatableView | `contained view` |
-|:white_check_mark:| ForEach | `contained view` |
+|:white_check_mark:| ForEach | `contained view`, `callOnDelete`, `callOnMove`, `callOnInsert` |
 |:white_check_mark:| Form | `contained view` |
 |:white_check_mark:| GeometryReader | `contained view` |
 |:white_check_mark:| Group | `contained view` |

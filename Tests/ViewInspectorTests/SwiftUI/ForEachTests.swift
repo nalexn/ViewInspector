@@ -1,5 +1,6 @@
 import XCTest
 import SwiftUI
+import UniformTypeIdentifiers
 @testable import ViewInspector
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -94,6 +95,46 @@ final class ForEachTests: XCTestCase {
             counter += 1
         }
         XCTAssertEqual(counter, 3)
+    }
+    
+    func testOnDelete() throws {
+        let exp = XCTestExpectation(description: #function)
+        let set = IndexSet(0...1)
+        let sut = ForEach([0, 1, 3], id: \.self) { id in Text("\(id)") }
+            .onDelete { value in
+                XCTAssertEqual(value, set)
+                exp.fulfill()
+            }
+        try sut.inspect().forEach().callOnDelete(set)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testOnMove() throws {
+        let exp = XCTestExpectation(description: #function)
+        let set = IndexSet(0...1)
+        let index = 2
+        let sut = ForEach([0, 1, 3], id: \.self) { id in Text("\(id)") }
+            .onMove { value1, value2 in
+                XCTAssertEqual(value1, set)
+                XCTAssertEqual(value2, index)
+                exp.fulfill()
+            }
+        try sut.inspect().forEach().callOnMove(set, index)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testOnInsert() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
+        let exp = XCTestExpectation(description: #function)
+        let sut = ForEach([0, 1, 3], id: \.self) { id in Text("\(id)") }
+            .onInsert(of: [UTType.pdf]) { (index, providers) in
+                exp.fulfill()
+            }
+        XCTAssertThrows(try sut.inspect().forEach().callOnInsert(of: [UTType.jpeg], 0, []),
+        "ForEach<Array<Int>, Int, Text> does not have 'onInsert(of: [\"public.jpeg\"], perform:)' modifier")
+        try sut.inspect().forEach().callOnInsert(of: [UTType.pdf], 0, [])
+        wait(for: [exp], timeout: 0.1)
     }
 }
 

@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 public extension ViewType {
     
@@ -37,6 +38,42 @@ public extension InspectableView where View: MultipleViewContent {
     
     func forEach(_ index: Int) throws -> InspectableView<ViewType.ForEach> {
         return try .init(try child(at: index))
+    }
+}
+
+// MARK: - DynamicViewContent
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View == ViewType.ForEach {
+    
+    func callOnDelete(_ indexSet: IndexSet) throws {
+        typealias Closure = (IndexSet) -> Void
+        let closure = try modifierAttribute(
+            modifierName: "_TraitWritingModifier<OnDeleteTraitKey>",
+            path: "modifier|value|some", type: Closure.self, call: "onDelete(perform:)")
+        closure(indexSet)
+    }
+    
+    func callOnMove(_ indexSet: IndexSet, _ index: Int) throws {
+        typealias Closure = (IndexSet, Int) -> Void
+        let closure = try modifierAttribute(
+            modifierName: "_TraitWritingModifier<OnMoveTraitKey>",
+            path: "modifier|value|some", type: Closure.self, call: "onMove(perform:)")
+        closure(indexSet, index)
+    }
+    
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    func callOnInsert(of types: [UTType], _ index: Int, _ providers: [NSItemProvider]) throws {
+        typealias Closure = (Int, [NSItemProvider]) -> Void
+        let closure = try modifierAttribute(modifierLookup: { modifier -> Bool in
+            guard modifier.modifierType == "_TraitWritingModifier<OnInsertTraitKey>",
+                  let typesValue = try? Inspector.attribute(
+                    path: "modifier|value|some|supportedContentTypes", value: modifier, type: [UTType].self)
+            else { return false }
+            return typesValue == types
+        }, path: "modifier|value|some|action", type: Closure.self,
+        call: "onInsert(of: \(types.map({ $0.identifier })), perform:)")
+        closure(index, providers)
     }
 }
 
