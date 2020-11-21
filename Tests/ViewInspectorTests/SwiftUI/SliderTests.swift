@@ -39,6 +39,16 @@ final class SliderTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().slider(1))
     }
     
+    func testValue() throws {
+        let binding = Binding<CGFloat>(wrappedValue: 0.4)
+        let view = Slider(value: binding, label: { Text("") })
+        let sut = try view.inspect().slider()
+        XCTAssertEqual(try sut.value(), 0.4, accuracy: 0.0001)
+        try sut.setValue(0.7)
+        XCTAssertEqual(try sut.value(), 0.7, accuracy: 0.0001)
+        XCTAssertEqual(binding.wrappedValue, 0.7, accuracy: 0.0001)
+    }
+    
     func testEditingChanged() throws {
         let exp = XCTestExpectation(description: "Callback")
         let binding = Binding<Float>(wrappedValue: 0)

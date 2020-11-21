@@ -45,6 +45,19 @@ public extension InspectableView where View == ViewType.Slider {
         return try labelView().text()
     }
     
+    func value() throws -> Double {
+        return try valueBinding().wrappedValue
+    }
+    
+    func setValue(_ value: Double) throws {
+        try valueBinding().wrappedValue = value
+    }
+    
+    private func valueBinding() throws -> Binding<Double> {
+        return try Inspector
+            .attribute(label: "_value", value: content.view, type: Binding<Double>.self)
+    }
+    
     func callOnEditingChanged() throws {
         let action = try Inspector.attribute(label: "onEditingChanged", value: content.view)
         typealias Callback = (Bool) -> Void

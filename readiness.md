@@ -72,7 +72,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
 |:white_check_mark:| SecureField | `label view`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
 |:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
-|:white_check_mark:| Slider | `label view`, `callOnEditingChanged()` |
+|:white_check_mark:| Slider | `label view`, `callOnEditingChanged()`, `value: Double`, `setValue(_: Double)` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
 |:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:heavy_check_mark:| SubscriptionView | |
