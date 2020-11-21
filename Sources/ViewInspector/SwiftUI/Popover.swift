@@ -57,6 +57,23 @@ public extension InspectableView where View == ViewType.Popover {
         return try Inspector.attribute(label: "attachmentAnchor", value: content.view,
                                        type: PopoverAttachmentAnchor.self)
     }
+    
+    func isPresented() throws -> Bool {
+        return try isPresentedBinding().wrappedValue
+    }
+    
+    func dismiss() throws {
+        typealias OnDismiss = () -> Void
+        let onDismiss = try Inspector.attribute(
+            label: "onDismiss", value: content.view, type: OnDismiss.self)
+        onDismiss()
+        try isPresentedBinding().wrappedValue = false
+    }
+    
+    private func isPresentedBinding() throws -> Binding<Bool> {
+        return try Inspector.attribute(
+            label: "_isPresented", value: content.view, type: Binding<Bool>.self)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

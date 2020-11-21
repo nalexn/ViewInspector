@@ -57,6 +57,16 @@ final class PopoverTests: XCTestCase {
         let value = try sut.inspect().emptyView().popover().attachmentAnchor()
         XCTAssertEqual(value, anchor)
     }
+    
+    func testIsPresentedAndDismiss() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().popover(isPresented: binding) { Text("") }
+        let popover = try sut.inspect().emptyView().popover()
+        XCTAssertTrue(try popover.isPresented())
+        try popover.dismiss()
+        XCTAssertFalse(try popover.isPresented())
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

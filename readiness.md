@@ -61,7 +61,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| OutlineGroup | `leaf view`, `source data` |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view`, `select(value: Hashable)` |
-|:white_check_mark:| Popover | `content view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge` |
+|:white_check_mark:| Popover | `content view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge`, `isPresented: Bool`, `dismiss()` |
 |:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
 |:white_check_mark:| ProgressView | `label view`, `currentValueLabel view`, `fractionCompleted: Double?`, `progress: Progress` |
 |:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
