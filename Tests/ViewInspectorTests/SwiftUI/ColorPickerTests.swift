@@ -43,12 +43,14 @@ final class ColorPickerTests: XCTestCase {
     func testColorSelection() throws {
         guard #available(iOS 14, macOS 11.0, *) else { return }
         
+        #if !os(macOS)
         let cgColor = CGColor(red: 0.5, green: 0.2, blue: 0.7, alpha: 0.1)
         let binding1 = Binding<CGColor>(wrappedValue: cgColor)
         let sut1 = ColorPicker(selection: binding1) { Text("") }
         XCTAssertEqual(binding1.wrappedValue.rgba(), cgColor.rgba())
         try sut1.inspect().colorPicker().select(color: CGColor.test)
         XCTAssertEqual(binding1.wrappedValue.rgba(), CGColor.test.rgba())
+        #endif
         
         if #available(tvOS 14.0, *) {
             let binding2 = Binding<Color>(wrappedValue: .red)
@@ -61,10 +63,14 @@ final class ColorPickerTests: XCTestCase {
     
     func testRGBA() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14, *) else { return }
+        #if os(macOS)
+        XCTAssertNotEqual(NSColor.red.rgba(), Color.red.rgba())
+        #else
         XCTAssertNotEqual(UIColor.red.rgba(), Color.red.rgba())
         XCTAssertEqual(CGColor(gray: 1, alpha: 1).rgba(), UIColor.white.rgba())
         XCTAssertEqual(UIColor(red: 0.3, green: 0.4, blue: 0.5, alpha: 0.6).rgba(),
                        CGColor(srgbRed: 0.3, green: 0.4, blue: 0.5, alpha: 0.6).rgba())
+        #endif
     }
 }
 
@@ -76,6 +82,7 @@ private extension CGColor {
     }
 }
 
+#if !os(macOS)
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 private extension CGColor {
@@ -83,7 +90,17 @@ private extension CGColor {
         return .init(color: self)
     }
 }
+#endif
 
+#if os(macOS)
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
+private extension NSColor {
+    func rgba() -> ViewType.ColorPicker.RGBA {
+        return .init(color: self)
+    }
+}
+#else
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 private extension UIColor {
@@ -91,6 +108,7 @@ private extension UIColor {
         return .init(color: self)
     }
 }
+#endif
 
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)

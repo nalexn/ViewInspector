@@ -68,7 +68,7 @@ public extension InspectableView where View == ViewType.TextField {
     
     private func inputBinding() throws -> Binding<String> {
         let label: String
-        if #available(iOS 13.2, macOS 10.15, tvOS 13.2, *) {
+        if #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) {
             label = "_text"
         } else {
             label = "text"

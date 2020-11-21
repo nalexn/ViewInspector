@@ -73,7 +73,7 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(iOS, deprecated, introduced: 13.0)
     @available(tvOS, deprecated, introduced: 13.0)
     func testAccessibilitySelectionIdentifier() throws {
-        guard #available(iOS 13.2, macOS 10.15, tvOS 13.2, *) else { return }
+        guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { return }
         let sut = EmptyView().accessibility(selectionIdentifier: "")
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
@@ -81,7 +81,7 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(iOS, deprecated, introduced: 13.0)
     @available(tvOS, deprecated, introduced: 13.0)
     func testAccessibilitySelectionIdentifierInspection() throws {
-        guard #available(iOS 13.2, macOS 10.15, tvOS 13.2, *) else { return }
+        guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { return }
         let string = "abc"
         let sut = try EmptyView().accessibility(selectionIdentifier: string)
             .inspect().emptyView().accessibilitySelectionIdentifier()
