@@ -33,6 +33,19 @@ final class PickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().picker().label())
     }
     
+    func testValueSelection() throws {
+        let binding = Binding<Int?>(wrappedValue: nil)
+        let view = Picker(selection: binding, label: Text("Title")) {
+            Text("").tag(0)
+            Text("").tag(1)
+        }
+        XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try view.inspect().picker().select(value: 1),
+                        "select(value:) expects a value of type Optional<Int> but received Int")
+        try view.inspect().picker().select(value: Int?(1))
+        XCTAssertEqual(binding.wrappedValue, 1)
+    }
+    
     func testResetsModifiers() throws {
         let binding = Binding<Int?>(wrappedValue: nil)
         let view = Picker(selection: binding, label: Text("Title")) {
