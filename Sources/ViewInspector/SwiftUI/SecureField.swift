@@ -42,6 +42,19 @@ public extension InspectableView where View == ViewType.SecureField {
         return try labelView().text()
     }
     
+    func input() throws -> String {
+        return try inputBinding().wrappedValue
+    }
+    
+    func setInput(_ value: String) throws {
+        try inputBinding().wrappedValue = value
+    }
+    
+    private func inputBinding() throws -> Binding<String> {
+        return try Inspector.attribute(
+            label: "text", value: content.view, type: Binding<String>.self)
+    }
+    
     func callOnCommit() throws {
         let action = try Inspector.attribute(label: "onCommit", value: content.view)
         typealias Callback = () -> Void

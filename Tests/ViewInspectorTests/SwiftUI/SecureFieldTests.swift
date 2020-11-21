@@ -41,6 +41,15 @@ final class SecureFieldTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().secureField(1))
     }
     
+    func testInput() throws {
+        let binding = Binding(wrappedValue: "123")
+        let view = SecureField("", text: binding)
+        let sut = try view.inspect().secureField()
+        XCTAssertEqual(try sut.input(), "123")
+        try sut.setInput("abc")
+        XCTAssertEqual(try sut.input(), "abc")
+    }
+    
     func testCallOnCommit() throws {
         let exp = XCTestExpectation(description: "Callback")
         let binding = Binding(wrappedValue: "")
