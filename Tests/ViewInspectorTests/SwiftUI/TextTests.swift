@@ -105,7 +105,15 @@ final class TextTests: XCTestCase {
         XCTAssertEqual(value, "abc xyz qwe")
     }
     
-    func testCustomInterpolation() throws {
+    func testImageInterpolation() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 11.0, *)
+        else { return }
+        let sut = Text("abc \(Image("test"))")
+        let value = try sut.inspect().text().string()
+        XCTAssertEqual(value, "abc Image(\"test\")")
+    }
+    
+    func testCustomTextInterpolation() throws {
         let sut = Text("abc \(braces: "test")")
         let value = try sut.inspect().text().string()
         XCTAssertEqual(value, "abc [test]")

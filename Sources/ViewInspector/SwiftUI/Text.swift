@@ -59,6 +59,8 @@ private extension ViewType.Text {
             return try extractString(concatenatedTextStorage: textStorage)
         case "LocalizedTextStorage":
             return try extractString(localizedTextStorage: textStorage)
+        case "AttachmentTextStorage":
+            return try extractString(attachmentTextStorage: textStorage)
         case "FormatterTextStorage":
             return try extractString(formatterTextStorage: textStorage)
         default:
@@ -84,6 +86,19 @@ private extension ViewType.Text {
             .attribute(label: "formatter", value: formatterTextStorage, type: Formatter.self)
         let object = try Inspector.attribute(label: "object", value: formatterTextStorage)
         return formatter.string(for: object) ?? ""
+    }
+    
+    // MARK: - AttachmentTextStorage
+    
+    private static func extractString(attachmentTextStorage: Any) throws -> String {
+        let image = try Inspector
+            .attribute(label: "image", value: attachmentTextStorage, type: Image.self)
+        let description: String = {
+            guard let name = try? image.inspect().image().imageName()
+            else { return "" }
+            return "\"\(name)\""
+        }()
+        return "Image(\(description))"
     }
     
     // MARK: - LocalizedTextStorage
