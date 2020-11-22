@@ -1,25 +1,25 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectableView where View == ViewType.Text {
+internal extension ViewType.Text.Attributes {
     
-    func attributes() throws -> TextAttributes {
+    static func extract(from view: InspectableView<ViewType.Text>) throws -> ViewType.Text.Attributes {
         if let first = try? Inspector
-                .attribute(path: "storage|anyTextStorage|first", value: content.view, type: Text.self),
+            .attribute(path: "storage|anyTextStorage|first", value: view.content.view, type: Text.self),
             let second = try? Inspector
-                .attribute(path: "storage|anyTextStorage|second", value: content.view, type: Text.self) {
+                .attribute(path: "storage|anyTextStorage|second", value: view.content.view, type: Text.self) {
             let firstAttr = try first.inspect().text().attributes()
             let secondAttr = try second.inspect().text().attributes()
             return firstAttr + secondAttr
         }
-        let string = try self.string()
-        let modifiers = try Inspector.attribute(label: "modifiers", value: content.view, type: [Any].self)
+        let string = try view.string()
+        let modifiers = try Inspector.attribute(label: "modifiers", value: view.content.view, type: [Any].self)
         return .init(string: string, modifiers: modifiers)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectableView.TextAttributes {
+public extension ViewType.Text.Attributes {
     
     subscript<Range>(_ range: Range) -> Self where Range: RangeExpression, Range.Bound == Int {
         let relativeRange = range.relative(to: 0..<string.count)
@@ -189,8 +189,8 @@ public extension InspectableView.TextAttributes {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectableView {
-    struct TextAttributes {
+public extension ViewType.Text {
+    struct Attributes {
         
         private struct Chunk {
             let string: String
@@ -210,8 +210,8 @@ public extension InspectableView {
             self.init(chunks: [Chunk(string: string, modifiers: modifiers)])
         }
         
-        fileprivate static func + (lhs: TextAttributes, rhs: TextAttributes) -> TextAttributes {
-            return TextAttributes(chunks: lhs.chunks + rhs.chunks)
+        fileprivate static func + (lhs: Attributes, rhs: Attributes) -> Attributes {
+            return Attributes(chunks: lhs.chunks + rhs.chunks)
         }
         
         private var chunkRanges: [Range<Int>] {

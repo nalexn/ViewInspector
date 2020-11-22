@@ -33,7 +33,21 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Text {
     
     func string() throws -> String {
-        let storage = try Inspector.attribute(label: "storage", value: content.view)
+        return try ViewType.Text.extractString(from: self)
+    }
+    
+    func attributes() throws -> ViewType.Text.Attributes {
+        return try ViewType.Text.Attributes.extract(from: self)
+    }
+}
+
+// MARK: - String extraction
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension ViewType.Text {
+    
+    static func extractString(from view: InspectableView<ViewType.Text>) throws -> String {
+        let storage = try Inspector.attribute(label: "storage", value: view.content.view)
         if let verbatim = try? Inspector
             .attribute(label: "verbatim", value: storage, type: String.self) {
             return verbatim
@@ -54,7 +68,7 @@ public extension InspectableView where View == ViewType.Text {
     
     // MARK: - ConcatenatedTextStorage
     
-    private func extractString(concatenatedTextStorage: Any) throws -> String {
+    private static func extractString(concatenatedTextStorage: Any) throws -> String {
         let firstText = try Inspector
             .attribute(label: "first", value: concatenatedTextStorage, type: Text.self)
         let secondText = try Inspector
@@ -65,7 +79,7 @@ public extension InspectableView where View == ViewType.Text {
     
     // MARK: - FormatterTextStorage
     
-    private func extractString(formatterTextStorage: Any) throws -> String {
+    private static func extractString(formatterTextStorage: Any) throws -> String {
         let formatter = try Inspector
             .attribute(label: "formatter", value: formatterTextStorage, type: Formatter.self)
         let object = try Inspector.attribute(label: "object", value: formatterTextStorage)
@@ -74,7 +88,7 @@ public extension InspectableView where View == ViewType.Text {
     
     // MARK: - LocalizedTextStorage
     
-    private func extractString(localizedTextStorage: Any) throws -> String {
+    private static func extractString(localizedTextStorage: Any) throws -> String {
         let stringContainer = try Inspector
             .attribute(label: "key", value: localizedTextStorage)
         let format = try Inspector
@@ -86,13 +100,13 @@ public extension InspectableView where View == ViewType.Text {
         return String(format: format, arguments: arguments)
     }
     
-    private func formattingArguments(_ container: Any) throws -> [CVarArg] {
+    private static func formattingArguments(_ container: Any) throws -> [CVarArg] {
         return try Inspector
             .attribute(label: "arguments", value: container, type: [Any].self)
             .map { try formattingArgument($0) }
     }
     
-    private func formattingArgument(_ container: Any) throws -> CVarArg {
+    private static func formattingArgument(_ container: Any) throws -> CVarArg {
         if let text = try? Inspector.attribute(path: "storage|text|.0", value: container, type: Text.self) {
             return try text.inspect().text().string()
         }
