@@ -32,8 +32,8 @@ public extension InspectableView where View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Text {
     
-    func string() throws -> String {
-        return try ViewType.Text.extractString(from: self)
+    func string(locale: Locale = .current) throws -> String {
+        return try ViewType.Text.extractString(from: self, locale: locale)
     }
     
     func attributes() throws -> ViewType.Text.Attributes {
@@ -46,7 +46,8 @@ public extension InspectableView where View == ViewType.Text {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension ViewType.Text {
     
-    static func extractString(from view: InspectableView<ViewType.Text>) throws -> String {
+    static func extractString(from view: InspectableView<ViewType.Text>,
+                              locale: Locale) throws -> String {
         let storage = try Inspector.attribute(label: "storage", value: view.content.view)
         if let verbatim = try? Inspector
             .attribute(label: "verbatim", value: storage, type: String.self) {
@@ -56,9 +57,9 @@ private extension ViewType.Text {
         let storageType = Inspector.typeName(value: textStorage)
         switch storageType {
         case "ConcatenatedTextStorage":
-            return try extractString(concatenatedTextStorage: textStorage)
+            return try extractString(concatenatedTextStorage: textStorage, locale)
         case "LocalizedTextStorage":
-            return try extractString(localizedTextStorage: textStorage)
+            return try extractString(localizedTextStorage: textStorage, locale)
         case "AttachmentTextStorage":
             return try extractString(attachmentTextStorage: textStorage)
         case "FormatterTextStorage":
@@ -70,13 +71,13 @@ private extension ViewType.Text {
     
     // MARK: - ConcatenatedTextStorage
     
-    private static func extractString(concatenatedTextStorage: Any) throws -> String {
+    private static func extractString(concatenatedTextStorage: Any, _ locale: Locale) throws -> String {
         let firstText = try Inspector
             .attribute(label: "first", value: concatenatedTextStorage, type: Text.self)
         let secondText = try Inspector
             .attribute(label: "second", value: concatenatedTextStorage, type: Text.self)
-        return (try firstText.inspect().text().string())
-            + (try secondText.inspect().text().string())
+        return (try firstText.inspect().text().string(locale: locale))
+            + (try secondText.inspect().text().string(locale: locale))
     }
     
     // MARK: - FormatterTextStorage
@@ -103,27 +104,36 @@ private extension ViewType.Text {
     
     // MARK: - LocalizedTextStorage
     
-    private static func extractString(localizedTextStorage: Any) throws -> String {
+    private static func extractString(localizedTextStorage: Any, _ locale: Locale) throws -> String {
         let stringContainer = try Inspector
             .attribute(label: "key", value: localizedTextStorage)
         let format = try Inspector
             .attribute(label: "key", value: stringContainer, type: String.self)
         let hasFormatting = try Inspector
             .attribute(label: "hasFormatting", value: stringContainer, type: Bool.self)
-        guard hasFormatting else { return format }
-        let arguments = try formattingArguments(stringContainer)
-        return String(format: format, arguments: arguments)
+        let bundle = try? Inspector
+            .attribute(label: "bundle", value: localizedTextStorage, type: Bundle.self)
+        let table = try? Inspector
+            .attribute(label: "table", value: localizedTextStorage, type: String?.self)
+        let localized = (bundle ?? Bundle.main)?
+            .path(forResource: locale.identifier
+                    .replacingOccurrences(of: "_", with: "-"),
+                  ofType: "lproj").flatMap({ Bundle(path: $0) })?
+            .localizedString(forKey: format, value: format, table: table) ?? format
+        guard hasFormatting else { return localized }
+        let arguments = try formattingArguments(stringContainer, locale: locale)
+        return String(format: localized, arguments: arguments)
     }
     
-    private static func formattingArguments(_ container: Any) throws -> [CVarArg] {
+    private static func formattingArguments(_ container: Any, locale: Locale) throws -> [CVarArg] {
         return try Inspector
             .attribute(label: "arguments", value: container, type: [Any].self)
-            .map { try formattingArgument($0) }
+            .map { try formattingArgument($0, locale) }
     }
     
-    private static func formattingArgument(_ container: Any) throws -> CVarArg {
+    private static func formattingArgument(_ container: Any, _ locale: Locale) throws -> CVarArg {
         if let text = try? Inspector.attribute(path: "storage|text|.0", value: container, type: Text.self) {
-            return try text.inspect().text().string()
+            return try text.inspect().text().string(locale: locale)
         }
         let valuePath: String
         let formatterPath: String

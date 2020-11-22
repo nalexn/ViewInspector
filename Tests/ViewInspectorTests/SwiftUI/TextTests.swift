@@ -31,6 +31,20 @@ final class TextTests: XCTestCase {
         XCTAssertEqual(value, "Test")
     }
     
+    func testResourceLocalizationStringNoParams() throws {
+        guard let bundle = Bundle.testResources else { return }
+        let sut = Text("Test", tableName: "Test", bundle: bundle)
+        let text = try sut.inspect().text()
+        let value1 = try text.string()
+        XCTAssertEqual(value1, "Test")
+        let value2 = try text.string(locale: Locale(identifier: "en"))
+        XCTAssertEqual(value2, "Test_en")
+        let value3 = try text.string(locale: Locale(identifier: "en_AU"))
+        XCTAssertEqual(value3, "Test_en_au")
+        let value4 = try text.string(locale: Locale(identifier: "ru"))
+        XCTAssertEqual(value4, "Тест_ru")
+    }
+    
     func testVerbatimStringNoParams() throws {
         let sut = Text(verbatim: "Test")
         let value = try sut.inspect().text().string()
@@ -62,9 +76,13 @@ final class TextTests: XCTestCase {
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en")
         let sut = Text(NSNumber(value: 12.541), formatter: formatter)
-        let value = try sut.inspect().text().string()
-        XCTAssertEqual(value, "12.54")
+        let value1 = try sut.inspect().text().string()
+        XCTAssertEqual(value1, "12.54")
+        formatter.locale = Locale(identifier: "ru")
+        let value2 = try sut.inspect().text().string()
+        XCTAssertEqual(value2, "12,54")
     }
     
     func testObjectInterpolation() throws {
@@ -72,6 +90,7 @@ final class TextTests: XCTestCase {
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en")
         let sut = Text("\(NSNumber(value: 12.541), formatter: formatter)")
         let value = try sut.inspect().text().string()
         XCTAssertEqual(value, "12.54")
@@ -131,4 +150,27 @@ extension LocalizedStringKey.StringInterpolation {
     mutating func appendInterpolation(braces: String) {
         appendLiteral("[\(braces)]")
     }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension Bundle {
+    
+    static var testResources: Bundle? = {
+        let bundleName = "ViewInspector_ViewInspectorTests"
+
+        let candidates = [
+            Bundle.main.resourceURL,
+            Bundle(for: TextTests.self).resourceURL,
+            Bundle.main.bundleURL,
+        ]
+
+        for candidate in candidates {
+            let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
+            if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
+                return bundle
+            }
+        }
+        
+        return nil
+    }()
 }

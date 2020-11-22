@@ -383,6 +383,9 @@
 		F6F08E7023A3BD0C001F04DF /* AccessibilityModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityModifiersTests.swift; sourceTree = "<group>"; };
 		F6FB7F5725476431006658EF /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		F6FB7F6125476480006658EF /* ColorPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerTests.swift; sourceTree = "<group>"; };
+		F6FEBEF5256AE732006C28F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Test.strings; sourceTree = "<group>"; };
+		F6FEBEFA256AEE09006C28F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Test.strings; sourceTree = "<group>"; };
+		F6FEBEFF256B0A3D006C28F5 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Test.strings"; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -524,6 +527,7 @@
 				F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */,
 				F67540ED23A3D8820022AC33 /* ViewModifiers */,
 				F60EEBE62382F004007DB53A /* SwiftUI */,
+				F6FEBEF3256AE732006C28F5 /* TestResources */,
 			);
 			path = ViewInspectorTests;
 			sourceTree = "<group>";
@@ -649,6 +653,14 @@
 			path = Modifiers;
 			sourceTree = "<group>";
 		};
+		F6FEBEF3256AE732006C28F5 /* TestResources */ = {
+			isa = PBXGroup;
+			children = (
+				F6FEBEF4256AE732006C28F5 /* Test.strings */,
+			);
+			path = TestResources;
+			sourceTree = "<group>";
+		};
 		OBJ_26 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -738,6 +750,8 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
+				"en-AU",
 			);
 			mainGroup = OBJ_5;
 			productRefGroup = OBJ_26 /* Products */;
@@ -980,10 +994,24 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		F6FEBEF4256AE732006C28F5 /* Test.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F6FEBEF5256AE732006C28F5 /* en */,
+				F6FEBEFA256AEE09006C28F5 /* ru */,
+				F6FEBEFF256B0A3D006C28F5 /* en-AU */,
+			);
+			name = Test.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		OBJ_3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1096,6 +1124,7 @@
 		OBJ_4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
