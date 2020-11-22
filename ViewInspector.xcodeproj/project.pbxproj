@@ -22,6 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
+		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
+		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
 		F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D423D3C74B008F31BD /* InspectionEmissary.swift */; };
 		F60385D723D3CDED008F31BD /* InspectionEmissaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D623D3CDED008F31BD /* InspectionEmissaryTests.swift */; };
 		F605E76525606AA300DE9B07 /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605E76425606AA300DE9B07 /* Popover.swift */; };
@@ -212,6 +214,8 @@
 
 /* Begin PBXFileReference section */
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
+		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
+		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
 		F60385D423D3C74B008F31BD /* InspectionEmissary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissary.swift; sourceTree = "<group>"; };
 		F60385D623D3CDED008F31BD /* InspectionEmissaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissaryTests.swift; sourceTree = "<group>"; };
 		F605E76425606AA300DE9B07 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
@@ -489,6 +493,7 @@
 				F6F08E6523A29FE4001F04DF /* SubscriptionView.swift */,
 				F6D933A22385DBFD00358E0E /* TabView.swift */,
 				F60EEBCA2382EED0007DB53A /* Text.swift */,
+				F6026A26256A7D1900CA31E5 /* TextAttributes.swift */,
 				F6C15AC6254EDA79000240F1 /* TextEditor.swift */,
 				F6D933BE2385F5CB00358E0E /* TextField.swift */,
 				F6D933BA2385F42300358E0E /* Toggle.swift */,
@@ -583,6 +588,7 @@
 				F6F08E6323A29FA1001F04DF /* SubscriptionViewTests.swift */,
 				F6D933A42385DC0F00358E0E /* TabViewTests.swift */,
 				F60EEBE82382F004007DB53A /* TextTests.swift */,
+				F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */,
 				F6C15AC0254EDA15000240F1 /* TextEditorTests.swift */,
 				F6D933C02385F62500358E0E /* TextFieldTests.swift */,
 				F6D933BC2385F45A00358E0E /* ToggleTests.swift */,
@@ -788,6 +794,7 @@
 				F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */,
 				F6C15AB7254DB173000240F1 /* ScrollViewReader.swift in Sources */,
 				F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */,
+				F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */,
 				F6C15A49254B4A3A000240F1 /* Link.swift in Sources */,
 				F6C15A71254B68C0000240F1 /* Menu.swift in Sources */,
 				F6C15ADD254F26B9000240F1 /* StyleConfiguration.swift in Sources */,
@@ -938,6 +945,7 @@
 				F6D933C12385F62500358E0E /* TextFieldTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F66EDB5D23EDC1D800A01B9F /* SpacerTests.swift in Sources */,
+				F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */,
 				F609EFC523A4350700B9256A /* IDViewTests.swift in Sources */,
 				F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */,
 				F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */,
