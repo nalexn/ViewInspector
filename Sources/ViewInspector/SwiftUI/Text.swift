@@ -33,43 +33,80 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Text {
     
     func string() throws -> String {
-        if let first = try? Inspector
-                .attribute(path: "storage|anyTextStorage|first", value: content.view, type: Text.self),
-            let second = try? Inspector
-                .attribute(path: "storage|anyTextStorage|second", value: content.view, type: Text.self) {
-            let firstText = try first.inspect().text().string()
-            let secondText = try second.inspect().text().string()
-            return firstText + secondText
+        let storage = try Inspector.attribute(label: "storage", value: content.view)
+        if let verbatim = try? Inspector
+            .attribute(label: "verbatim", value: storage, type: String.self) {
+            return verbatim
         }
-        if let externalString = try? Inspector
-            .attribute(path: "storage|verbatim", value: content.view, type: String.self) {
-            return externalString
+        let textStorage = try Inspector.attribute(path: "anyTextStorage", value: storage)
+        let storageType = Inspector.typeName(value: textStorage)
+        switch storageType {
+        case "ConcatenatedTextStorage":
+            return try extractString(concatenatedTextStorage: textStorage)
+        case "LocalizedTextStorage":
+            return try extractString(localizedTextStorage: textStorage)
+        case "FormatterTextStorage":
+            return try extractString(formatterTextStorage: textStorage)
+        default:
+            throw InspectionError.notSupported("Unknown text storage: \(storageType)")
         }
-        let textStorage = try Inspector
-            .attribute(path: "storage|anyTextStorage", value: content.view)
-        let localizedStringKey = try Inspector
-            .attribute(path: "key", value: textStorage)
-        let baseString = try Inspector
-            .attribute(label: "key", value: localizedStringKey, type: String.self)
+    }
+    
+    // MARK: - ConcatenatedTextStorage
+    
+    private func extractString(concatenatedTextStorage: Any) throws -> String {
+        let firstText = try Inspector
+            .attribute(label: "first", value: concatenatedTextStorage, type: Text.self)
+        let secondText = try Inspector
+            .attribute(label: "second", value: concatenatedTextStorage, type: Text.self)
+        return (try firstText.inspect().text().string())
+            + (try secondText.inspect().text().string())
+    }
+    
+    // MARK: - FormatterTextStorage
+    
+    private func extractString(formatterTextStorage: Any) throws -> String {
+        let formatter = try Inspector
+            .attribute(label: "formatter", value: formatterTextStorage, type: Formatter.self)
+        let object = try Inspector.attribute(label: "object", value: formatterTextStorage)
+        return formatter.string(for: object) ?? ""
+    }
+    
+    // MARK: - LocalizedTextStorage
+    
+    private func extractString(localizedTextStorage: Any) throws -> String {
+        let stringContainer = try Inspector
+            .attribute(label: "key", value: localizedTextStorage)
+        let format = try Inspector
+            .attribute(label: "key", value: stringContainer, type: String.self)
         let hasFormatting = try Inspector
-            .attribute(label: "hasFormatting", value: localizedStringKey, type: Bool.self)
-        guard hasFormatting else { return baseString }
-        let arguments = try Inspector
-            .attribute(label: "arguments", value: localizedStringKey, type: [Any].self)
-        let stringArgumentPath: String = {
-            if #available(iOS 14, tvOS 14, macOS 10.16, *) {
-                return "storage|value|.0"
-            } else {
-                return "value"
-            }
-        }()
-        let values: [CVarArg] = try arguments.map {
-            String(describing: try Inspector.attribute(path: stringArgumentPath, value: $0))
+            .attribute(label: "hasFormatting", value: stringContainer, type: Bool.self)
+        guard hasFormatting else { return format }
+        let arguments = try formattingArguments(stringContainer)
+        return String(format: format, arguments: arguments)
+    }
+    
+    private func formattingArguments(_ container: Any) throws -> [CVarArg] {
+        return try Inspector
+            .attribute(label: "arguments", value: container, type: [Any].self)
+            .map { try formattingArgument($0) }
+    }
+    
+    private func formattingArgument(_ container: Any) throws -> CVarArg {
+        if let text = try? Inspector.attribute(path: "storage|text|.0", value: container, type: Text.self) {
+            return try text.inspect().text().string()
         }
-        let argPatterns = ["%lld", "%ld", "%d", "%lf", "%f"]
-        let format: String = argPatterns.reduce(baseString) { (format, pattern) in
-            format.replacingOccurrences(of: pattern, with: "%@")
+        let valuePath: String
+        let formatterPath: String
+        if #available(iOS 14, macOS 10.16, tvOS 14, *) {
+            valuePath = "storage|value|.0"
+            formatterPath = "storage|value|.1"
+        } else {
+            valuePath = "value"
+            formatterPath = "formatter"
         }
-        return String(format: format, arguments: values)
+        let value = try Inspector.attribute(path: valuePath, value: container, type: CVarArg.self)
+        let formatter = try Inspector.attribute(path: formatterPath, value: container, type: Formatter?.self)
+        return formatter.flatMap({ $0.string(for: value) }) ?? value
     }
 }
