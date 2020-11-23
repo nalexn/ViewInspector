@@ -1,6 +1,6 @@
 import XCTest
 import SwiftUI
-import UniformTypeIdentifiers
+import UniformTypeIdentifiers.UTType
 @testable import ViewInspector
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -123,6 +123,7 @@ final class ForEachTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
+    #if os(macOS)
     func testOnInsert() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
         else { return }
@@ -136,6 +137,7 @@ final class ForEachTests: XCTestCase {
         try sut.inspect().forEach().callOnInsert(of: [UTType.pdf], 0, [])
         wait(for: [exp], timeout: 0.1)
     }
+    #endif
 }
 
 private struct TestStruct: Identifiable {

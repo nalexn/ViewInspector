@@ -1,5 +1,5 @@
 import SwiftUI
-import UniformTypeIdentifiers
+import UniformTypeIdentifiers.UTType
 
 #if os(macOS)
 public extension ViewType {

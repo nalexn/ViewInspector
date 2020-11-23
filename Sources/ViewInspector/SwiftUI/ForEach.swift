@@ -1,5 +1,5 @@
 import SwiftUI
-import UniformTypeIdentifiers
+import UniformTypeIdentifiers.UTType
 
 public extension ViewType {
     
@@ -62,6 +62,7 @@ public extension InspectableView where View == ViewType.ForEach {
         closure(indexSet, index)
     }
     
+    #if os(macOS)
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func callOnInsert(of types: [UTType], _ index: Int, _ providers: [NSItemProvider]) throws {
         typealias Closure = (Int, [NSItemProvider]) -> Void
@@ -75,6 +76,7 @@ public extension InspectableView where View == ViewType.ForEach {
         call: "onInsert(of: \(types.map({ $0.identifier })), perform:)")
         closure(index, providers)
     }
+    #endif
 }
 
 // MARK: - Private

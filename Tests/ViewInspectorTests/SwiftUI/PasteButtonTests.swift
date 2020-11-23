@@ -1,6 +1,6 @@
 import XCTest
 import SwiftUI
-import UniformTypeIdentifiers
+import UniformTypeIdentifiers.UTType
 @testable import ViewInspector
 
 #if os(macOS)
