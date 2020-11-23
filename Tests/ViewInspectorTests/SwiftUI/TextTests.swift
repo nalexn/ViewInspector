@@ -116,6 +116,29 @@ final class TextTests: XCTestCase {
         XCTAssertEqual(value, formatter.string(from: date))
     }
     
+    func testDateStyleInitialization() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
+        let date = Date(timeIntervalSinceReferenceDate: 123)
+        let sut = Text(date, style: .timer)
+        XCTAssertThrows(try sut.inspect().text().string(),
+                        "Inspection of formatted Date is currently not supported")
+    }
+    
+    func testDateIntervalInitialization() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
+        let date1 = Date(timeIntervalSinceReferenceDate: 123)
+        let date2 = Date(timeIntervalSinceReferenceDate: 123456)
+        let sut1 = Text(date1...date2)
+        XCTAssertThrows(try sut1.inspect().text().string(),
+                        "Inspection of formatted Date is currently not supported")
+        let interval = DateInterval(start: date1, end: date2)
+        let sut2 = Text(interval)
+        XCTAssertThrows(try sut2.inspect().text().string(),
+                        "Inspection of formatted Date is currently not supported")
+    }
+    
     func testTextInterpolation() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
         else { return }

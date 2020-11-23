@@ -62,6 +62,8 @@ private extension ViewType.Text {
             return try extractString(localizedTextStorage: textStorage, locale)
         case "AttachmentTextStorage":
             return try extractString(attachmentTextStorage: textStorage)
+        case "DateTextStorage":
+            return try extractString(dateTextStorage: textStorage)
         case "FormatterTextStorage":
             return try extractString(formatterTextStorage: textStorage)
         default:
@@ -100,6 +102,12 @@ private extension ViewType.Text {
             return "\"\(name)\""
         }()
         return "Image(\(description))"
+    }
+    
+    // MARK: - DateTextStorage
+    
+    private static func extractString(dateTextStorage: Any) throws -> String {
+        throw InspectionError.notSupported("Inspection of formatted Date is currently not supported")
     }
     
     // MARK: - LocalizedTextStorage
