@@ -127,6 +127,24 @@ final class InspectableViewModifiersTests: XCTestCase {
             try sut.inspect().emptyView().callOnAppear(),
             "EmptyView does not have 'onAppear' modifier")
     }
+    
+    func testModifierLookupFailure() throws {
+        let sut = EmptyView().padding()
+        XCTAssertThrows(try sut.inspect().modifierAttribute(
+                            modifierLookup: { _ in true }, path: "wrong",
+                            type: Int.self, call: "test"),
+                        "EmptyView does not have 'test' modifier")
+    }
+    
+    func testParentInspection() throws {
+        let view = HStack { AnyView(Text("test")) }
+        let sut = try view.inspect().hStack().anyView(0).text()
+        XCTAssertThrows(try sut.parent().group(), "Type mismatch: AnyView is not Group")
+        XCTAssertNoThrow(try sut.parent().anyView())
+        XCTAssertNoThrow(try sut.parent().parent().hStack())
+        XCTAssertThrows(try sut.parent().parent().parent(), "HStack<AnyView> does not have parent")
+        XCTAssertThrows(try view.inspect().parent(), "HStack<AnyView> does not have parent")
+    }
 }
 
 // MARK: - Helpers

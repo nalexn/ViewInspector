@@ -5,7 +5,7 @@ import XCTest
 public struct InspectableView<View> where View: KnownViewType {
     
     internal let content: Content
-    internal let parent: UnwrappedView?
+    internal let parentView: UnwrappedView?
     
     internal init(_ content: Content, parent: UnwrappedView?) throws {
         if !View.typePrefix.isEmpty,
@@ -16,17 +16,32 @@ public struct InspectableView<View> where View: KnownViewType {
         }
         try Inspector.guardType(value: content.view, prefix: View.typePrefix)
         self.content = content
-        self.parent = parent
+        if View.self == ViewType.ClassifiedView.self {
+            self.parentView = parent?.parentView
+        } else {
+            self.parentView = parent
+        }
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol UnwrappedView {
     var content: Content { get }
+    var parentView: UnwrappedView? { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectableView: UnwrappedView { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView {
+    func parent() throws -> InspectableView<ViewType.ClassifiedView> {
+        guard let parent = self.parentView else {
+            throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
+        }
+        return try .init(parent.content, parent: parent.parentView)
+    }
+}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView where View: SingleViewContent {
