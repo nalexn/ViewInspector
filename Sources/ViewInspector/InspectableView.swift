@@ -14,12 +14,21 @@ public struct InspectableView<View> where View: KnownViewType {
             throw InspectionError.notSupported(
                 "Unable to extract \(View.typePrefix): please specify its index inside parent view")
         }
-        try Inspector.guardType(value: content.view, prefix: View.typePrefix)
         self.content = content
         if View.self == ViewType.ClassifiedView.self {
             self.parentView = parent?.parentView
         } else {
             self.parentView = parent
+        }
+        do {
+            try Inspector.guardType(value: content.view, prefix: View.typePrefix)
+        } catch {
+            if let err = error as? InspectionError, case .typeMismatch = err {
+                throw InspectionError.inspection(
+                    path: pathToRoot, factual: Inspector.typeName(value: content.view),
+                    expected: View.typePrefix)
+            }
+            throw error
         }
     }
 }
@@ -28,10 +37,16 @@ public struct InspectableView<View> where View: KnownViewType {
 internal protocol UnwrappedView {
     var content: Content { get }
     var parentView: UnwrappedView? { get }
+    var inspectionCall: String { get }
+    var pathToRoot: String { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension InspectableView: UnwrappedView { }
+extension InspectableView: UnwrappedView {
+    var inspectionCall: String {
+        View.inspectionCall
+    }
+}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
@@ -40,6 +55,10 @@ public extension InspectableView {
             throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
         }
         return try .init(parent.content, parent: parent.parentView)
+    }
+    
+    var pathToRoot: String {
+        return (parentView?.pathToRoot ?? "inspect()") + inspectionCall
     }
 }
 

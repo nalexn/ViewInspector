@@ -25,6 +25,14 @@ public protocol MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol KnownViewType {
     static var typePrefix: String { get }
+    static var inspectionCall: String { get }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension KnownViewType {
+    public static var inspectionCall: String {
+        return "." + typePrefix.prefix(1).lowercased() + typePrefix.dropFirst() + "()"
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -58,6 +66,7 @@ public extension Binding {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public enum InspectionError: Swift.Error {
+    case inspection(path: String, factual: String, expected: String)
     case typeMismatch(factual: String, expected: String)
     case attributeNotFound(label: String, type: String)
     case viewIndexOutOfBounds(index: Int, count: Int)
@@ -73,6 +82,8 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
     
     public var description: String {
         switch self {
+        case let .inspection(path, factual, expected):
+            return "\(path) found \(factual) instead of \(expected)"
         case let .typeMismatch(factual, expected):
             return "Type mismatch: \(factual) is not \(expected)"
         case let .attributeNotFound(label, type):

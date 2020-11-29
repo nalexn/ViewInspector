@@ -5,6 +5,7 @@ public extension ViewType {
     
     struct ModifiedContent: KnownViewType {
         public static var typePrefix: String = "ModifiedContent"
+        public static var inspectionCall: String { fatalError() }
     }
 }
 

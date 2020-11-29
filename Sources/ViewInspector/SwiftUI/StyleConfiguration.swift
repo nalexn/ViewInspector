@@ -9,22 +9,27 @@ public extension ViewType {
 public extension ViewType.StyleConfiguration {
     struct Label: KnownViewType {
         public static var typePrefix: String = "Label"
+        public static var inspectionCall: String { ".styleConfigurationLabel()" }
     }
     
     struct Content: KnownViewType {
         public static var typePrefix: String = "Content"
+        public static var inspectionCall: String { ".styleConfigurationContent()" }
     }
     
     struct Title: KnownViewType {
         public static var typePrefix: String = "Title"
+        public static var inspectionCall: String { ".styleConfigurationTitle()" }
     }
     
     struct Icon: KnownViewType {
         public static var typePrefix: String = "Icon"
+        public static var inspectionCall: String { ".styleConfigurationIcon()" }
     }
     
     struct CurrentValueLabel: KnownViewType {
         public static var typePrefix: String = "CurrentValueLabel"
+        public static var inspectionCall: String { ".styleConfigurationCurrentValueLabel()" }
     }
 }
 

@@ -139,11 +139,22 @@ final class InspectableViewModifiersTests: XCTestCase {
     func testParentInspection() throws {
         let view = HStack { AnyView(Text("test")) }
         let sut = try view.inspect().hStack().anyView(0).text()
-        XCTAssertThrows(try sut.parent().group(), "Type mismatch: AnyView is not Group")
+        XCTAssertThrows(try sut.parent().group(), "inspect().group() found AnyView instead of Group")
         XCTAssertNoThrow(try sut.parent().anyView())
         XCTAssertNoThrow(try sut.parent().parent().hStack())
         XCTAssertThrows(try sut.parent().parent().parent(), "HStack<AnyView> does not have parent")
         XCTAssertThrows(try view.inspect().parent(), "HStack<AnyView> does not have parent")
+    }
+    
+    func testPathToRoot() throws {
+        let view1 = Group { HStack { EmptyView(); AnyView(Text("test")) } }
+        let sut1 = try view1.inspect().group().hStack(0).anyView(1).text()
+        XCTAssertEqual(sut1.pathToRoot, "inspect().group().hStack().anyView().text()")
+        let view2 = EmptyView()
+        let sut2 = try view2.inspect()
+        XCTAssertEqual(sut2.pathToRoot, "inspect()")
+        let sut3 = try view2.inspect().emptyView()
+        XCTAssertEqual(sut3.pathToRoot, "inspect().emptyView()")
     }
 }
 

@@ -7,6 +7,10 @@ public extension ViewType {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
+        
+        public static var inspectionCall: String {
+            return ".view(\(typePrefix))"
+        }
     }
 }
 

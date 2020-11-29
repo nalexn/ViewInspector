@@ -77,7 +77,7 @@ final class ProgressViewTests: XCTestCase {
         XCTAssertEqual(try sut.inspect(fractionCompleted: nil)
                         .vStack().styleConfigurationCurrentValueLabel(1).blur().radius, 5)
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationCurrentValueLabel(),
-                        "Type mismatch: EmptyView is not CurrentValueLabel")
+            "inspect().styleConfigurationCurrentValueLabel() found EmptyView instead of CurrentValueLabel")
         XCTAssertEqual(try sut.inspect(fractionCompleted: 0.42)
                         .vStack().text(2).string(), "Completed: 42%")
     }
