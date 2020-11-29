@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension ViewType {
     
     struct LazyHStack: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func lazyHStack() throws -> InspectableView<ViewType.LazyHStack> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -23,12 +24,13 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func lazyHStack(_ index: Int) throws -> InspectableView<ViewType.LazyHStack> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
 // MARK: - Content Extraction
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 extension ViewType.LazyHStack: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {

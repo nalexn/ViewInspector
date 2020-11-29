@@ -1,6 +1,7 @@
 import SwiftUI
 import UniformTypeIdentifiers.UTType
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct ForEach: KnownViewType {
@@ -10,6 +11,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.ForEach: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -27,7 +29,7 @@ extension ViewType.ForEach: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func forEach() throws -> InspectableView<ViewType.ForEach> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -37,7 +39,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func forEach(_ index: Int) throws -> InspectableView<ViewType.ForEach> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -81,6 +83,7 @@ public extension InspectableView where View == ViewType.ForEach {
 
 // MARK: - Private
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private protocol ForEachContentProvider {
     func views() throws -> LazyGroup<Any>
 }

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct TabView: KnownViewType {
@@ -9,6 +10,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.TabView: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -23,7 +25,7 @@ extension ViewType.TabView: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func tabView() throws -> InspectableView<ViewType.TabView> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -33,7 +35,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func tabView(_ index: Int) throws -> InspectableView<ViewType.TabView> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -53,10 +55,10 @@ public extension InspectableView {
             modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
             type: Any.self, call: "tabItem")
         let view = try InspectableView<ViewType.ClassifiedView>(
-            try Inspector.unwrap(content: Content(rootView)))
+            try Inspector.unwrap(content: Content(rootView)), parent: self)
         if #available(iOS 14.2, tvOS 14.2, *) {
             return try InspectableView<ViewType.ClassifiedView>(
-            try Inspector.unwrap(content: try view.zStack().child(at: 0)))
+            try Inspector.unwrap(content: try view.zStack().child(at: 0)), parent: self)
         } else {
             return view
         }

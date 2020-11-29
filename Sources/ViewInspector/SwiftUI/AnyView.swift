@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct AnyView: KnownViewType {
@@ -9,6 +10,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.AnyView: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
@@ -23,7 +25,7 @@ extension ViewType.AnyView: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func anyView() throws -> InspectableView<ViewType.AnyView> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -33,6 +35,6 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func anyView(_ index: Int) throws -> InspectableView<ViewType.AnyView> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Image: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func image() throws -> InspectableView<ViewType.Image> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -23,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func image(_ index: Int) throws -> InspectableView<ViewType.Image> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -75,7 +76,7 @@ public extension InspectableView where View == ViewType.Image {
     
     func labelView() throws -> InspectableView<ViewType.Text> {
         let view = try Inspector.attribute(path: "provider|base|label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     private func image() throws -> Any {

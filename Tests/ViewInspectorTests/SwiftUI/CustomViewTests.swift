@@ -114,7 +114,7 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testActualViewTypeMismatch() throws {
-        let sut = try InspectableView<ViewType.Test<SimpleTestView>>(Content(""))
+        let sut = try InspectableView<ViewType.Test<SimpleTestView>>(Content(""), parent: nil)
         XCTAssertThrows(
             try sut.actualView(),
             "Type mismatch: String is not SimpleTestView")
@@ -226,6 +226,7 @@ extension EnvironmentValues {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType {
     struct Test<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String { "String" }

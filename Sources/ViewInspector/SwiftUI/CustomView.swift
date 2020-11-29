@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct View<T>: KnownViewType, CustomViewType where T: Inspectable {
@@ -11,6 +12,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.View: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
@@ -19,6 +21,7 @@ extension ViewType.View: SingleViewContent {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.View: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -37,7 +40,7 @@ public extension InspectableView where View: SingleViewContent {
             let child = try View.child(content)
             let prefix = Inspector.typeName(type: type, prefixOnly: true)
             try Inspector.guardType(value: child.view, prefix: prefix)
-            return try .init(child)
+            return try .init(child, parent: self)
     }
 }
 
@@ -51,7 +54,7 @@ public extension InspectableView where View: MultipleViewContent {
             let content = try child(at: index)
             let prefix = Inspector.typeName(type: type, prefixOnly: true)
             try Inspector.guardType(value: content.view, prefix: prefix)
-            return try .init(content)
+            return try .init(content, parent: self)
     }
 }
 
@@ -65,17 +68,19 @@ public extension InspectableView where View: CustomViewType {
     }
 
     func viewBuilder() throws -> InspectableView<ViewType.ViewBuilder<View.T>> {
-        return try .init(content)
+        return try .init(content, parent: self)
     }
 }
 
 #if os(macOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension NSViewRepresentable where Self: Inspectable {
     func nsView() throws -> NSViewType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension NSViewControllerRepresentable where Self: Inspectable {
     func viewController() throws -> NSViewControllerType {
         return try ViewHosting.lookup(Self.self)

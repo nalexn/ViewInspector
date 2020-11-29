@@ -1,5 +1,7 @@
 import SwiftUI
 
+@available(iOS 14.2, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct Popover: KnownViewType {
@@ -17,7 +19,7 @@ public extension InspectableView {
         let modifier = try modifierAttribute(
             modifierName: "PopoverPresentationModifier", path: "modifier",
             type: Any.self, call: "popover")
-        return try .init(Content(modifier))
+        return try .init(Content(modifier), parent: self)
     }
 }
 
@@ -46,7 +48,7 @@ public extension InspectableView where View == ViewType.Popover {
             $0.bindMemory(to: Closure.self).first
         }) else { throw InspectionError.typeMismatch(closure, Closure.self) }
         let view = typedClosure()
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func arrowEdge() throws -> Edge {

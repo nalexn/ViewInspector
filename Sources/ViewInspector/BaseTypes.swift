@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - Protocols
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol Inspectable {
     var content: Any { get }
 }
@@ -11,26 +12,30 @@ public extension Inspectable where Self: View {
     var content: Any { body }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol SingleViewContent {
     static func child(_ content: Content) throws -> Content
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol MultipleViewContent {
     static func children(_ content: Content) throws -> LazyGroup<Content>
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol KnownViewType {
     static var typePrefix: String { get }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol CustomViewType {
     associatedtype T: Inspectable
 }
 
-@available(iOS 11.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct ViewType { }
 
-@available(iOS 11.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct Content {
     let view: Any
     let modifiers: [Any]
@@ -51,6 +56,7 @@ public extension Binding {
 
 // MARK: - Error
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public enum InspectionError: Swift.Error {
     case typeMismatch(factual: String, expected: String)
     case attributeNotFound(label: String, type: String)
@@ -61,6 +67,7 @@ public enum InspectionError: Swift.Error {
     case textAttribute(String)
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectionError: CustomStringConvertible, LocalizedError {
     
     public var description: String {
@@ -87,6 +94,7 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
 
 // MARK: - LazyGroup
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct LazyGroup<T> {
     
     private let access: (Int) throws -> T
@@ -109,6 +117,7 @@ public struct LazyGroup<T> {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension LazyGroup: Sequence {
     
     public struct Iterator: IteratorProtocol {
@@ -139,8 +148,10 @@ extension LazyGroup: Sequence {
 
 // MARK: - BinaryEquatable
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol BinaryEquatable: Equatable { }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension BinaryEquatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         withUnsafeBytes(of: lhs) { lhsBytes -> Bool in

@@ -1,5 +1,7 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct GroupBox: KnownViewType {
@@ -9,6 +11,8 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 14.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 extension ViewType.GroupBox: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -24,7 +28,7 @@ extension ViewType.GroupBox: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func groupBox() throws -> InspectableView<ViewType.GroupBox> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -35,7 +39,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func groupBox(_ index: Int) throws -> InspectableView<ViewType.GroupBox> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -47,7 +51,7 @@ public extension InspectableView where View == ViewType.GroupBox {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
 }
 
@@ -73,7 +77,7 @@ public extension GroupBoxStyle {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let config = GroupBoxStyleConfiguration()
         let view = try makeBody(configuration: config).inspect()
-        return try .init(view.content)
+        return try .init(view.content, parent: nil)
     }
 }
 

@@ -1,5 +1,7 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct DisclosureGroup: KnownViewType {
@@ -14,7 +16,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func disclosureGroup() throws -> InspectableView<ViewType.DisclosureGroup> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -25,12 +27,14 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func disclosureGroup(_ index: Int) throws -> InspectableView<ViewType.DisclosureGroup> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
 // MARK: - Content Extraction
 
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 extension ViewType.DisclosureGroup: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -47,7 +51,7 @@ public extension InspectableView where View == ViewType.DisclosureGroup {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func isExpanded() throws -> Bool {

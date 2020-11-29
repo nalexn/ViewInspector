@@ -5,8 +5,9 @@ import XCTest
 public struct InspectableView<View> where View: KnownViewType {
     
     internal let content: Content
+    internal let parent: UnwrappedView?
     
-    internal init(_ content: Content) throws {
+    internal init(_ content: Content, parent: UnwrappedView?) throws {
         if !View.typePrefix.isEmpty,
            Inspector.isTupleView(content.view),
            View.self != ViewType.TupleView.self {
@@ -15,8 +16,17 @@ public struct InspectableView<View> where View: KnownViewType {
         }
         try Inspector.guardType(value: content.view, prefix: View.typePrefix)
         self.content = content
+        self.parent = parent
     }
 }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol UnwrappedView {
+    var content: Content { get }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension InspectableView: UnwrappedView { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView where View: SingleViewContent {
@@ -52,20 +62,22 @@ extension InspectableView: Sequence where View: MultipleViewContent {
     public struct Iterator: IteratorProtocol {
         
         private var groupIterator: LazyGroup<Content>.Iterator
+        private let view: UnwrappedView
         
-        init(_ group: LazyGroup<Content>) {
+        init(_ group: LazyGroup<Content>, view: UnwrappedView) {
             groupIterator = group.makeIterator()
+            self.view = view
         }
         
         mutating public func next() -> Element? {
             guard let content = groupIterator.next()
                 else { return nil }
-            return try? .init(content)
+            return try? .init(content, parent: view)
         }
     }
 
     public func makeIterator() -> Iterator {
-        return .init(View._children(content))
+        return .init(View._children(content), view: self)
     }
 
     public var underestimatedCount: Int {
@@ -85,7 +97,7 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
     public subscript(index: Index) -> Iterator.Element {
         do {
             let viewes = try View.children(content)
-            return try .init(try viewes.element(at: index))
+            return try .init(try viewes.element(at: index), parent: self)
         } catch {
             fatalError("\(error)")
         }
@@ -105,7 +117,7 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try .init(try Inspector.unwrap(view: self, modifiers: []))
+        return try .init(try Inspector.unwrap(view: self, modifiers: []), parent: nil)
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
@@ -122,7 +134,7 @@ public extension View {
 public extension View where Self: Inspectable {
     
     func inspect() throws -> InspectableView<ViewType.View<Self>> {
-        return try .init(Content(self))
+        return try .init(Content(self), parent: nil)
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
@@ -183,6 +195,7 @@ extension ModifiedContent: ModifierNameProvider {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension MultipleViewContent {
     static func _children(_ content: Content) -> LazyGroup<Content> {
         return (try? children(content)) ?? .empty

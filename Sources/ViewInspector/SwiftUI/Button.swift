@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Button: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func button() throws -> InspectableView<ViewType.Button> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -23,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func button(_ index: Int) throws -> InspectableView<ViewType.Button> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -34,7 +35,7 @@ public extension InspectableView where View == ViewType.Button {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "_label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     @available(*, deprecated, message: "Please use .labelView().text() instead")
@@ -74,7 +75,7 @@ public extension ButtonStyle {
     func inspect(isPressed: Bool) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ButtonStyleConfiguration(isPressed: isPressed)
         let view = try makeBody(configuration: config).inspect()
-        return try .init(view.content)
+        return try .init(view.content, parent: nil)
     }
 }
 

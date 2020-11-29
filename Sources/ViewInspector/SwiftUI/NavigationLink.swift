@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct NavigationLink: KnownViewType {
@@ -9,6 +10,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.NavigationLink: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
@@ -23,7 +25,7 @@ extension ViewType.NavigationLink: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func navigationLink() throws -> InspectableView<ViewType.NavigationLink> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -33,7 +35,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func navigationLink(_ index: Int) throws -> InspectableView<ViewType.NavigationLink> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -49,7 +51,7 @@ public extension InspectableView where View == ViewType.NavigationLink {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func isActive() throws -> Bool {

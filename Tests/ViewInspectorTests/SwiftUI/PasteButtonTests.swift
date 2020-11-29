@@ -5,7 +5,9 @@ import UniformTypeIdentifiers.UTType
 
 #if os(macOS)
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 final class PasteButtonTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {

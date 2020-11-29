@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct ViewBuilder<T>: KnownViewType, CustomViewType where T: Inspectable {
@@ -11,6 +12,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.ViewBuilder: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {

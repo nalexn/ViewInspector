@@ -1,7 +1,9 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal struct Inspector { }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
     static func attribute(label: String, value: Any) throws -> Any {
@@ -52,6 +54,7 @@ extension Inspector {
 
 // MARK: - Attributes lookup
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
     /**
@@ -110,6 +113,7 @@ extension Inspector {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 fileprivate extension Dictionary where Key == String {
     func description(level: Int) -> String {
         let indent = Inspector.indent(level: level)
@@ -119,6 +123,7 @@ fileprivate extension Dictionary where Key == String {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 fileprivate extension Array {
     func description(level: Int) -> String {
         guard count > 0 else {
@@ -132,6 +137,7 @@ fileprivate extension Array {
 }
 // MARK: - View Inspection
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
     static func viewsInContainer(view: Any) throws -> LazyGroup<Content> {
@@ -194,6 +200,7 @@ extension Inspector {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectionError {
     static func typeMismatch<V, T>(_ value: V, _ expectedType: T.Type) -> InspectionError {
         return .typeMismatch(

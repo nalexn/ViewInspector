@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension ViewType {
     
     struct ProgressView: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func progressView() throws -> InspectableView<ViewType.ProgressView> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -23,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func progressView(_ index: Int) throws -> InspectableView<ViewType.ProgressView> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -45,12 +46,12 @@ public extension InspectableView where View == ViewType.ProgressView {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(path: "base|custom|label|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func currentValueLabelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(path: "base|custom|currentValueLabel|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
 }
 
@@ -74,7 +75,7 @@ public extension ProgressViewStyle {
     func inspect(fractionCompleted: Double? = nil) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ProgressViewStyleConfiguration(fractionCompleted: fractionCompleted)
         let view = try makeBody(configuration: config).inspect()
-        return try .init(view.content)
+        return try .init(view.content, parent: nil)
     }
 }
 

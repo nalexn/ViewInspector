@@ -1,11 +1,13 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType {
     struct EnvironmentReaderView { }
 }
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.EnvironmentReaderView: SingleViewContent {
     
     static func child(_ content: Content) throws -> Content {
@@ -72,7 +74,7 @@ internal extension InspectableView {
             $0.bindMemory(to: Closure.self).first
         }) else { throw InspectionError.typeMismatch(closure, Closure.self) }
         let view = typedClosure(EnvironmentValues())
-        return try .init(try Inspector.unwrap(view: view, modifiers: content.modifiers))
+        return try .init(try Inspector.unwrap(view: view, modifiers: content.modifiers), parent: self)
     }
 }
 

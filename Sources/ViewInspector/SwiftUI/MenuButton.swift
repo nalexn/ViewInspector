@@ -1,6 +1,9 @@
 import SwiftUI
 
 #if os(macOS)
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct MenuButton: KnownViewType {
@@ -29,7 +32,7 @@ extension ViewType.MenuButton: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func menuButton() throws -> InspectableView<ViewType.MenuButton> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -41,7 +44,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func menuButton(_ index: Int) throws -> InspectableView<ViewType.MenuButton> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -54,7 +57,7 @@ public extension InspectableView where View == ViewType.MenuButton {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
 }
 

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension ViewType {
     
     struct Link: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func link() throws -> InspectableView<ViewType.Link> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -23,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func link(_ index: Int) throws -> InspectableView<ViewType.Link> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -34,7 +35,7 @@ public extension InspectableView where View == ViewType.Link {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func url() throws -> URL {

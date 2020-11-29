@@ -1,5 +1,7 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct OutlineGroup: KnownViewType {
@@ -14,7 +16,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func outlineGroup() throws -> InspectableView<ViewType.OutlineGroup> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -25,7 +27,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func outlineGroup(_ index: Int) throws -> InspectableView<ViewType.OutlineGroup> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -46,7 +48,7 @@ public extension InspectableView where View == ViewType.OutlineGroup {
     
     func leaf(_ dataElement: Any) throws -> InspectableView<ViewType.ClassifiedView> {
         let provider = try Inspector.cast(value: content.view, type: LeafContentProvider.self)
-        return try .init(Content(try provider.view(dataElement)))
+        return try .init(Content(try provider.view(dataElement)), parent: self)
     }
 }
 

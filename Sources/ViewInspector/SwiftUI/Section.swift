@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Section: KnownViewType {
@@ -9,6 +10,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.Section: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -23,7 +25,7 @@ extension ViewType.Section: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func section() throws -> InspectableView<ViewType.Section> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -33,7 +35,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func section(_ index: Int) throws -> InspectableView<ViewType.Section> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
 
@@ -44,11 +46,11 @@ public extension InspectableView where View == ViewType.Section {
     
     func header() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "header", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func footer() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "footer", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
 }

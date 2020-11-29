@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct EmptyView: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func emptyView() throws -> InspectableView<ViewType.EmptyView> {
-        return try .init(try child())
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -23,6 +24,6 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func emptyView(_ index: Int) throws -> InspectableView<ViewType.EmptyView> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self)
     }
 }
