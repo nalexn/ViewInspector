@@ -9,14 +9,14 @@ final class CustomViewBuilderTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
         let sut = TestViewBuilderView { Text("Test") }
-        let string = try sut.inspect().viewBuilder().text(0).string()
+        let string = try sut.inspect().text(0).string()
         XCTAssertEqual(string, "Test")
     }
     
     func testSingleEnclosedViewIndexOutOfBounds() throws {
         let sut = TestViewBuilderView { Text("Test") }
         XCTAssertThrows(
-            try sut.inspect().viewBuilder().text(1),
+            try sut.inspect().text(1),
             "Enclosed view index '1' is out of bounds: '0 ..< 1'")
     }
     
@@ -25,9 +25,9 @@ final class CustomViewBuilderTests: XCTestCase {
         let sampleView2 = Text("Abc")
         let sampleView3 = Text("XYZ")
         let view = TestViewBuilderView { sampleView1; sampleView2; sampleView3 }
-        let view1 = try view.inspect().viewBuilder().text(0).content.view as? Text
-        let view2 = try view.inspect().viewBuilder().text(1).content.view as? Text
-        let view3 = try view.inspect().viewBuilder().text(2).content.view as? Text
+        let view1 = try view.inspect().text(0).content.view as? Text
+        let view2 = try view.inspect().text(1).content.view as? Text
+        let view3 = try view.inspect().text(2).content.view as? Text
         XCTAssertEqual(view1, sampleView1)
         XCTAssertEqual(view2, sampleView2)
         XCTAssertEqual(view3, sampleView3)
@@ -38,14 +38,17 @@ final class CustomViewBuilderTests: XCTestCase {
         let sampleView2 = Text("Abc")
         let view = TestViewBuilderView { sampleView1; sampleView2 }
         XCTAssertThrows(
-            try view.inspect().viewBuilder().text(2),
+            try view.inspect().text(2),
             "Enclosed view index '2' is out of bounds: '0 ..< 2'")
     }
     
     func testResetsModifiers() throws {
-        let view = TestViewBuilderView { Text("Test") }.padding()
-        let sut = try view.inspect().view(TestViewBuilderView<Text>.self).viewBuilder().text(0)
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        let view1 = TestViewBuilderView { Text("Test") }.padding()
+        let sut1 = try view1.inspect().view(TestViewBuilderView<Text>.self).text(0)
+        XCTAssertEqual(sut1.content.modifiers.count, 0)
+        let view2 = TestViewBuilderView { Text("Test"); EmptyView() }.padding()
+        let sut2 = try view2.inspect().view(TestViewBuilderView<Text>.self).text(0)
+        XCTAssertEqual(sut2.content.modifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {
@@ -54,7 +57,7 @@ final class CustomViewBuilderTests: XCTestCase {
             Text("Test")
         })
         XCTAssertNoThrow(try view.inspect().anyView()
-            .view(TestViewBuilderView<EmptyView>.self).viewBuilder().text(1))
+            .view(TestViewBuilderView<EmptyView>.self).text(1))
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -68,11 +71,25 @@ final class CustomViewBuilderTests: XCTestCase {
     
     func testActualView() throws {
         let sut = TestViewBuilderView { Text("Test") }
-        XCTAssertNoThrow(try sut.inspect().viewBuilder().actualView().content)
+        XCTAssertNoThrow(try sut.inspect().actualView().content)
     }
     
     func testViewBody() {
         XCTAssertNoThrow(TestViewBuilderView { Text("Test") }.body)
+    }
+    
+    func testDeprecatedViewBuilder() throws {
+        let sut = TestViewBuilderView { Text("Test") }
+        XCTAssertNoThrow(try sut.inspect().viewBuilder().text(0))
+    }
+    
+    func testPathToRoot() throws {
+        let view = HStack {
+            TestViewBuilderView { Text("Test"); EmptyView() }
+        }
+        let sut = try view.inspect().hStack().view(TestViewBuilderView<EmptyView>.self, 0).text(0)
+            .pathToRoot
+        XCTAssertEqual(sut, "inspect().hStack().view(TestViewBuilderView.self, 0).text(0)")
     }
 }
 

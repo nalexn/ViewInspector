@@ -112,7 +112,6 @@
 		F682A016254776F2005F1B70 /* DisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F682A015254776F2005F1B70 /* DisclosureGroup.swift */; };
 		F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91C92383187D00515A91 /* ModifiedContent.swift */; };
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
-		F6B7D0082494DE5500ABB5E0 /* CustomViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */; };
 		F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */; };
 		F6BD820A2565AD5D00A772D4 /* PopoverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BD82092565AD5D00A772D4 /* PopoverTests.swift */; };
 		F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A06254A0592000240F1 /* LazyVGridTests.swift */; };
@@ -304,7 +303,6 @@
 		F682A015254776F2005F1B70 /* DisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroup.swift; sourceTree = "<group>"; };
 		F69C91C92383187D00515A91 /* ModifiedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContent.swift; sourceTree = "<group>"; };
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
-		F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewBuilder.swift; sourceTree = "<group>"; };
 		F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewBuilderTests.swift; sourceTree = "<group>"; };
 		F6BD82092565AD5D00A772D4 /* PopoverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverTests.swift; sourceTree = "<group>"; };
 		F6C15A06254A0592000240F1 /* LazyVGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVGridTests.swift; sourceTree = "<group>"; };
@@ -446,7 +444,6 @@
 				F6FB7F5725476431006658EF /* ColorPicker.swift */,
 				F64057EC238DB1530029D9BA /* ConditionalContent.swift */,
 				F60EEBBE2382EED0007DB53A /* CustomView.swift */,
-				F6B7D0072494DE5500ABB5E0 /* CustomViewBuilder.swift */,
 				F60EEBBF2382EED0007DB53A /* DatePicker.swift */,
 				F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */,
 				F682A015254776F2005F1B70 /* DisclosureGroup.swift */,
@@ -815,7 +812,6 @@
 				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				F6ECF6CE23A67C64000FC591 /* SizingModifiers.swift in Sources */,
-				F6B7D0082494DE5500ABB5E0 /* CustomViewBuilder.swift in Sources */,
 				F6684BF023AA504500DECCB3 /* MenuButton.swift in Sources */,
 				F6C15A85254D806C000240F1 /* OutlineGroup.swift in Sources */,
 				F6D933C32385FA8B00358E0E /* SecureField.swift in Sources */,

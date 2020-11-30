@@ -140,10 +140,13 @@ fileprivate extension Array {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
-    static func viewsInContainer(view: Any) throws -> LazyGroup<Content> {
+    static func viewsInContainer(view: Any, resetModifiersForSingleChild: Bool = false) throws -> LazyGroup<Content> {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view))
         guard Inspector.isTupleView(unwrappedContainer.view) else {
             return LazyGroup(count: 1) { index in
+                if resetModifiersForSingleChild {
+                    return Content(unwrappedContainer.view, modifiers: [])
+                }
                 return unwrappedContainer
             }
         }

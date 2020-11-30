@@ -33,7 +33,8 @@ extension ViewType.View: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
-        return try Inspector.viewsInContainer(view: inspectable.content)
+        return try Inspector.viewsInContainer(view: inspectable.content,
+                                              resetModifiersForSingleChild: true)
     }
 }
 
@@ -74,8 +75,9 @@ public extension InspectableView where View: CustomViewType {
         return try Inspector.cast(value: content.view, type: View.T.self)
     }
 
-    func viewBuilder() throws -> InspectableView<ViewType.ViewBuilder<View.T>> {
-        return try .init(content, parent: self, index: nil)
+    @available(*, deprecated, message: "You can remove .viewBuilder()")
+    func viewBuilder() throws -> InspectableView<View> {
+        return self
     }
 }
 

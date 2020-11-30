@@ -25,6 +25,12 @@ final class TupleViewTests: XCTestCase {
         let string3 = try view.inspect().hStack().tupleView(1).text(1).string()
         XCTAssertEqual(string3, "def")
     }
+    
+    func testResetsModifiers() throws {
+        let view = TupleInsideTupleView(flag: true)
+        let sut = try view.inspect().hStack().tupleView(1).text(0)
+        XCTAssertEqual(sut.content.modifiers.count, 2)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -43,9 +49,9 @@ private struct TupleInsideTupleView: View, Inspectable {
         HStack {
             Text("xyz")
             if flag {
-                Text("abc")
+                Text("abc").offset().blur(radius: 1)
                 Text("def")
             }
-        }
+        }.padding()
     }
 }
