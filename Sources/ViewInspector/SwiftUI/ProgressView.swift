@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func progressView() throws -> InspectableView<ViewType.ProgressView> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -24,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func progressView(_ index: Int) throws -> InspectableView<ViewType.ProgressView> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
@@ -46,12 +46,12 @@ public extension InspectableView where View == ViewType.ProgressView {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(path: "base|custom|label|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
     
     func currentValueLabelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(path: "base|custom|currentValueLabel|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
 }
 
@@ -75,7 +75,7 @@ public extension ProgressViewStyle {
     func inspect(fractionCompleted: Double? = nil) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ProgressViewStyleConfiguration(fractionCompleted: fractionCompleted)
         let view = try makeBody(configuration: config).inspect()
-        return try .init(view.content, parent: nil)
+        return try .init(view.content, parent: nil, index: nil)
     }
 }
 

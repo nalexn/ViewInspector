@@ -16,7 +16,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func outlineGroup() throws -> InspectableView<ViewType.OutlineGroup> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -27,7 +27,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func outlineGroup(_ index: Int) throws -> InspectableView<ViewType.OutlineGroup> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
@@ -48,7 +48,7 @@ public extension InspectableView where View == ViewType.OutlineGroup {
     
     func leaf(_ dataElement: Any) throws -> InspectableView<ViewType.ClassifiedView> {
         let provider = try Inspector.cast(value: content.view, type: LeafContentProvider.self)
-        return try .init(Content(try provider.view(dataElement)), parent: self)
+        return try .init(Content(try provider.view(dataElement)), parent: self, index: nil)
     }
 }
 

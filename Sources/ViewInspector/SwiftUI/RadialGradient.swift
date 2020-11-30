@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func radialGradient() throws -> InspectableView<ViewType.RadialGradient> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -24,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func radialGradient(_ index: Int) throws -> InspectableView<ViewType.RadialGradient> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 

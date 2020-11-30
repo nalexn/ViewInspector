@@ -29,7 +29,7 @@ extension ViewType.ForEach: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func forEach() throws -> InspectableView<ViewType.ForEach> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -39,7 +39,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func forEach(_ index: Int) throws -> InspectableView<ViewType.ForEach> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 

@@ -5,7 +5,7 @@ public extension ViewType {
     
     struct ClassifiedView: KnownViewType {
         public static var typePrefix: String = ""
-        public static var inspectionCall: String { "" }
+        public static func inspectionCall(index: Int?) -> String { "" }
     }
 }
 

@@ -25,7 +25,7 @@ extension ViewType.Section: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func section() throws -> InspectableView<ViewType.Section> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -35,7 +35,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func section(_ index: Int) throws -> InspectableView<ViewType.Section> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
@@ -46,11 +46,11 @@ public extension InspectableView where View == ViewType.Section {
     
     func header() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "header", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
     
     func footer() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "footer", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
 }

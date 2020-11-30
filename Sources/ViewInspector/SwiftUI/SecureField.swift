@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func secureField() throws -> InspectableView<ViewType.SecureField> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -24,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func secureField(_ index: Int) throws -> InspectableView<ViewType.SecureField> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
@@ -35,7 +35,7 @@ public extension InspectableView where View == ViewType.SecureField {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
     
     @available(*, deprecated, message: "Please use .labelView().text() instead")

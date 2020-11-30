@@ -16,7 +16,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func colorPicker() throws -> InspectableView<ViewType.ColorPicker> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -27,7 +27,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func colorPicker(_ index: Int) throws -> InspectableView<ViewType.ColorPicker> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
@@ -39,7 +39,7 @@ public extension InspectableView where View == ViewType.ColorPicker {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
     
     #if os(macOS)

@@ -8,8 +8,11 @@ public extension ViewType {
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
         
-        public static var inspectionCall: String {
-            return ".view(\(typePrefix))"
+        public static func inspectionCall(index: Int?) -> String {
+            if let index = index {
+                return ".view(\(typePrefix).self, \(index))"
+            }
+            return ".view(\(typePrefix).self)"
         }
     }
 }
@@ -44,7 +47,7 @@ public extension InspectableView where View: SingleViewContent {
             let child = try View.child(content)
             let prefix = Inspector.typeName(type: type, prefixOnly: true)
             try Inspector.guardType(value: child.view, prefix: prefix)
-            return try .init(child, parent: self)
+            return try .init(child, parent: self, index: nil)
     }
 }
 
@@ -58,7 +61,7 @@ public extension InspectableView where View: MultipleViewContent {
             let content = try child(at: index)
             let prefix = Inspector.typeName(type: type, prefixOnly: true)
             try Inspector.guardType(value: content.view, prefix: prefix)
-            return try .init(content, parent: self)
+            return try .init(content, parent: self, index: index)
     }
 }
 
@@ -72,7 +75,7 @@ public extension InspectableView where View: CustomViewType {
     }
 
     func viewBuilder() throws -> InspectableView<ViewType.ViewBuilder<View.T>> {
-        return try .init(content, parent: self)
+        return try .init(content, parent: self, index: nil)
     }
 }
 

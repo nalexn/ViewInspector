@@ -6,7 +6,12 @@ public extension ViewType {
     
     struct Popover: KnownViewType {
         public static var typePrefix: String = ""
-        public static var inspectionCall: String { ".popover()" }
+        public static func inspectionCall(index: Int?) -> String {
+            if let index = index {
+                return ".popover(\(index))"
+            }
+            return ".popover()"
+        }
     }
 }
 
@@ -20,7 +25,7 @@ public extension InspectableView {
         let modifier = try modifierAttribute(
             modifierName: "PopoverPresentationModifier", path: "modifier",
             type: Any.self, call: "popover")
-        return try .init(Content(modifier), parent: self)
+        return try .init(Content(modifier), parent: self, index: nil)
     }
 }
 
@@ -49,7 +54,7 @@ public extension InspectableView where View == ViewType.Popover {
             $0.bindMemory(to: Closure.self).first
         }) else { throw InspectionError.typeMismatch(closure, Closure.self) }
         let view = typedClosure()
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
     
     func arrowEdge() throws -> Edge {

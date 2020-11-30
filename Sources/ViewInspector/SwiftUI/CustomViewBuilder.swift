@@ -8,7 +8,10 @@ public extension ViewType {
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
         
-        public static var inspectionCall: String {
+        public static func inspectionCall(index: Int?) -> String {
+            if let index = index {
+                return ".view(\(typePrefix), \(index))"
+            }
             return ".view(\(typePrefix))"
         }
     }

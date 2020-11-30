@@ -16,7 +16,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func menu() throws -> InspectableView<ViewType.Menu> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -27,7 +27,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func menu(_ index: Int) throws -> InspectableView<ViewType.Menu> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
@@ -51,7 +51,7 @@ public extension InspectableView where View == ViewType.Menu {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
 }
 
@@ -77,7 +77,7 @@ public extension MenuStyle {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let config = MenuStyleConfiguration()
         let view = try makeBody(configuration: config).inspect()
-        return try .init(view.content, parent: nil)
+        return try .init(view.content, parent: nil, index: nil)
     }
 }
 

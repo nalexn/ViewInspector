@@ -32,7 +32,7 @@ extension ViewType.VSplitView: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func vSplitView() throws -> InspectableView<ViewType.VSplitView> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: index)
     }
 }
 
@@ -44,7 +44,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func vSplitView(_ index: Int) throws -> InspectableView<ViewType.VSplitView> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 

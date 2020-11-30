@@ -147,9 +147,15 @@ final class InspectableViewModifiersTests: XCTestCase {
     }
     
     func testPathToRoot() throws {
-        let view1 = Group { HStack { EmptyView(); AnyView(Text("test")) } }
-        let sut1 = try view1.inspect().group().hStack(0).anyView(1).text()
-        XCTAssertEqual(sut1.pathToRoot, "inspect().group().hStack().anyView().text()")
+        let view1 = Group {
+            EmptyView()
+            AnyView(
+                HStack {
+                    EmptyView()
+                    TestPrintView()
+            }) }
+        let sut1 = try view1.inspect().group().anyView(1).hStack().view(TestPrintView.self, 1).text()
+        XCTAssertEqual(sut1.pathToRoot, "inspect().group().anyView(1).hStack().view(TestPrintView.self, 1).text()")
         let view2 = EmptyView()
         let sut2 = try view2.inspect()
         XCTAssertEqual(sut2.pathToRoot, "inspect()")

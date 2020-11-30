@@ -29,6 +29,6 @@ extension ViewType.TupleView: MultipleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func tupleView(_ index: Int) throws -> InspectableView<ViewType.TupleView> {
-        return try .init(try child(at: index, isTupleExtraction: true), parent: self)
+        return try .init(try child(at: index, isTupleExtraction: true), parent: self, index: index)
     }
 }

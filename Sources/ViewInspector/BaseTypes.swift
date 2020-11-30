@@ -25,13 +25,14 @@ public protocol MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol KnownViewType {
     static var typePrefix: String { get }
-    static var inspectionCall: String { get }
+    static func inspectionCall(index: Int?) -> String
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension KnownViewType {
-    public static var inspectionCall: String {
-        return "." + typePrefix.prefix(1).lowercased() + typePrefix.dropFirst() + "()"
+    public static func inspectionCall(index: Int?) -> String {
+        return "." + typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
+            + (index.flatMap({ "(\($0))" }) ?? "()")
     }
 }
 
@@ -136,7 +137,7 @@ extension LazyGroup: Sequence {
     
     public struct Iterator: IteratorProtocol {
         public typealias Element = T
-        private var index = -1
+        internal var index = -1
         private var group: LazyGroup<Element>
         
         init(group: LazyGroup<Element>) {

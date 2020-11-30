@@ -20,7 +20,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func pasteButton() throws -> InspectableView<ViewType.PasteButton> {
-        return try .init(try child(), parent: self)
+        return try .init(try child(), parent: self, index: index)
     }
 }
 
@@ -32,7 +32,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func pasteButton(_ index: Int) throws -> InspectableView<ViewType.PasteButton> {
-        return try .init(try child(at: index), parent: self)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
