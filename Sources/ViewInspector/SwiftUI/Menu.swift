@@ -1,5 +1,7 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct Menu: KnownViewType {
@@ -14,7 +16,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func menu() throws -> InspectableView<ViewType.Menu> {
-        return try .init(try child())
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -25,12 +27,14 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func menu(_ index: Int) throws -> InspectableView<ViewType.Menu> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
 // MARK: - Content Extraction
 
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 extension ViewType.Menu: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -47,7 +51,7 @@ public extension InspectableView where View == ViewType.Menu {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
 }
 
@@ -73,7 +77,7 @@ public extension MenuStyle {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let config = MenuStyleConfiguration()
         let view = try makeBody(configuration: config).inspect()
-        return try .init(view.content)
+        return try .init(view.content, parent: nil, index: nil)
     }
 }
 

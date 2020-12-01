@@ -8,20 +8,20 @@ public extension InspectableView {
     func accessibilityLabel() throws -> InspectableView<ViewType.Text> {
         let text = try accessibilityElement(
             "LabelKey", type: Text.self, call: "accessibilityLabel")
-        return try .init(try Inspector.unwrap(content: Content(text)))
+        return try .init(try Inspector.unwrap(content: Content(text)), parent: self, index: nil)
     }
     
     func accessibilityValue() throws -> InspectableView<ViewType.Text> {
         let text = try accessibilityElement(
             "TypedValueKey", path: "value|some|description|some",
             type: Text.self, call: "accessibilityValue")
-        return try .init(try Inspector.unwrap(content: Content(text)))
+        return try .init(try Inspector.unwrap(content: Content(text)), parent: self, index: nil)
     }
     
     func accessibilityHint() throws -> InspectableView<ViewType.Text> {
         let text = try accessibilityElement(
             "HintKey", type: Text.self, call: "accessibilityHint")
-        return try .init(try Inspector.unwrap(content: Content(text)))
+        return try .init(try Inspector.unwrap(content: Content(text)), parent: self, index: nil)
     }
     
     func accessibilityHidden() throws -> Bool {

@@ -1,11 +1,13 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType {
     struct IDView { }
 }
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.IDView: SingleViewContent {
     
     static func child(_ content: Content) throws -> Content {
@@ -17,6 +19,7 @@ extension ViewType.IDView: SingleViewContent {
 
 // MARK: - Private
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct IDViewModifier: ModifierNameProvider {
     static var modifierName: String { "IDView" }
     var modifierType: String { IDViewModifier.modifierName }

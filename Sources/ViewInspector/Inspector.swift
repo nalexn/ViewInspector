@@ -1,7 +1,9 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal struct Inspector { }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
     static func attribute(label: String, value: Any) throws -> Any {
@@ -52,6 +54,7 @@ extension Inspector {
 
 // MARK: - Attributes lookup
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
     /**
@@ -110,6 +113,7 @@ extension Inspector {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 fileprivate extension Dictionary where Key == String {
     func description(level: Int) -> String {
         let indent = Inspector.indent(level: level)
@@ -119,6 +123,7 @@ fileprivate extension Dictionary where Key == String {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 fileprivate extension Array {
     func description(level: Int) -> String {
         guard count > 0 else {
@@ -132,12 +137,16 @@ fileprivate extension Array {
 }
 // MARK: - View Inspection
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
-    static func viewsInContainer(view: Any) throws -> LazyGroup<Content> {
+    static func viewsInContainer(view: Any, resetModifiersForSingleChild: Bool = false) throws -> LazyGroup<Content> {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view))
         guard Inspector.isTupleView(unwrappedContainer.view) else {
             return LazyGroup(count: 1) { index in
+                if resetModifiersForSingleChild {
+                    return Content(unwrappedContainer.view, modifiers: [])
+                }
                 return unwrappedContainer
             }
         }
@@ -177,12 +186,15 @@ extension Inspector {
         }
     }
     
-    static func guardType(value: Any, prefix: String) throws {
+    static func guardType(value: Any, prefix: String, inspectionCall: String) throws {
         let name = typeName(type: type(of: value))
         if prefix.count > 0 && name.hasPrefix("EnvironmentReaderView") {
             if name.contains("NavigationBarItemsKey") {
                 throw InspectionError.notSupported(
-                    "Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
+                    """
+                    Please insert '.navigationBarItems()' before \(inspectionCall) \
+                    for unwrapping the underlying view hierarchy.
+                    """)
             } else if name.contains("_AnchorWritingModifier") {
                 throw InspectionError.notSupported(
                     "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
@@ -194,6 +206,7 @@ extension Inspector {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectionError {
     static func typeMismatch<V, T>(_ value: V, _ expectedType: T.Type) -> InspectionError {
         return .typeMismatch(

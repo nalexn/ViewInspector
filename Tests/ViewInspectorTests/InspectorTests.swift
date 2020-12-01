@@ -80,9 +80,9 @@ final class InspectorTests: XCTestCase {
     
     func testGuardType() throws {
         let value = "abc"
-        XCTAssertNoThrow(try Inspector.guardType(value: value, prefix: "String"))
+        XCTAssertNoThrow(try Inspector.guardType(value: value, prefix: "String", inspectionCall: ""))
         XCTAssertThrows(
-            try Inspector.guardType(value: value, prefix: "Int"),
+            try Inspector.guardType(value: value, prefix: "Int", inspectionCall: ""),
             "Type mismatch: String is not Int")
     }
     
@@ -126,6 +126,41 @@ final class InspectableViewModifiersTests: XCTestCase {
         XCTAssertThrows(
             try sut.inspect().emptyView().callOnAppear(),
             "EmptyView does not have 'onAppear' modifier")
+    }
+    
+    func testModifierLookupFailure() throws {
+        let sut = EmptyView().padding()
+        XCTAssertThrows(try sut.inspect().modifierAttribute(
+                            modifierLookup: { _ in true }, path: "wrong",
+                            type: Int.self, call: "test"),
+                        "EmptyView does not have 'test' modifier")
+    }
+    
+    func testParentInspection() throws {
+        let view = HStack { AnyView(Text("test")) }
+        let sut = try view.inspect().hStack().anyView(0).text()
+        XCTAssertThrows(try sut.parent().group(), "inspect().group() found AnyView instead of Group")
+        XCTAssertNoThrow(try sut.parent().anyView())
+        XCTAssertNoThrow(try sut.parent().parent().hStack())
+        XCTAssertThrows(try sut.parent().parent().parent(), "HStack<AnyView> does not have parent")
+        XCTAssertThrows(try view.inspect().parent(), "HStack<AnyView> does not have parent")
+    }
+    
+    func testPathToRoot() throws {
+        let view1 = Group {
+            EmptyView()
+            AnyView(
+                HStack {
+                    EmptyView()
+                    TestPrintView()
+            }) }
+        let sut1 = try view1.inspect().group().anyView(1).hStack().view(TestPrintView.self, 1).text()
+        XCTAssertEqual(sut1.pathToRoot, "inspect().group().anyView(1).hStack().view(TestPrintView.self, 1).text()")
+        let view2 = EmptyView()
+        let sut2 = try view2.inspect()
+        XCTAssertEqual(sut2.pathToRoot, "inspect()")
+        let sut3 = try view2.inspect().emptyView()
+        XCTAssertEqual(sut3.pathToRoot, "inspect().emptyView()")
     }
 }
 

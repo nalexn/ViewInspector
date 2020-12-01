@@ -1,9 +1,16 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Shape: KnownViewType {
         public static var typePrefix: String = ""
+        public static func inspectionCall(index: Int?) -> String {
+            if let index = index {
+                return ".shape(\(index))"
+            }
+            return ".shape()"
+        }
     }
 }
 
@@ -15,7 +22,7 @@ public extension InspectableView where View: SingleViewContent {
     func shape() throws -> InspectableView<ViewType.Shape> {
         let content = try child()
         try guardShapeIsInspectable(content.view)
-        return try .init(content)
+        return try .init(content, parent: self, index: nil)
     }
 }
 
@@ -27,7 +34,7 @@ public extension InspectableView where View: MultipleViewContent {
     func shape(_ index: Int) throws -> InspectableView<ViewType.Shape> {
         let content = try child(at: index)
         try guardShapeIsInspectable(content.view)
-        return try .init(content)
+        return try .init(content, parent: self, index: index)
     }
 }
 

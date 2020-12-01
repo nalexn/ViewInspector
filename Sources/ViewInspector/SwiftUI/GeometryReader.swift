@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct GeometryReader: KnownViewType {
@@ -9,6 +10,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.GeometryReader: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
@@ -23,7 +25,7 @@ extension ViewType.GeometryReader: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func geometryReader() throws -> InspectableView<ViewType.GeometryReader> {
-        return try .init(try child())
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -33,7 +35,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func geometryReader(_ index: Int) throws -> InspectableView<ViewType.GeometryReader> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
@@ -63,10 +65,10 @@ private extension GeometryProxy {
     }
     
     init() {
-        if MemoryLayout<GeometryProxy>.size == 48 {
-            self = unsafeBitCast(Allocator48(), to: GeometryProxy.self)
+        if MemoryLayout<GeometryProxy>.size == 52 {
+            self = unsafeBitCast(Allocator52(), to: GeometryProxy.self)
             return
         }
-        self = unsafeBitCast(Allocator52(), to: GeometryProxy.self)
+        self = unsafeBitCast(Allocator48(), to: GeometryProxy.self)
     }
 }

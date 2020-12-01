@@ -2,6 +2,9 @@ import SwiftUI
 import UniformTypeIdentifiers.UTType
 
 #if os(macOS)
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct PasteButton: KnownViewType {
@@ -11,24 +14,33 @@ public extension ViewType {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
     func pasteButton() throws -> InspectableView<ViewType.PasteButton> {
-        return try .init(try child())
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension InspectableView where View: MultipleViewContent {
     
     func pasteButton(_ index: Int) throws -> InspectableView<ViewType.PasteButton> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
 // MARK: - Custom Attributes
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.PasteButton {
     
     /* Not Supported. Related: callOnPasteCommand in "InteractionModifiers.swift"

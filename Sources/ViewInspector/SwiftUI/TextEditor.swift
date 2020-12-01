@@ -1,5 +1,7 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct TextEditor: KnownViewType {
@@ -14,7 +16,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func textEditor() throws -> InspectableView<ViewType.TextEditor> {
-        return try .init(try child())
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -25,7 +27,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func textEditor(_ index: Int) throws -> InspectableView<ViewType.TextEditor> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 

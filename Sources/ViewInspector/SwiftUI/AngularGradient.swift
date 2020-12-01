@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct AngularGradient: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func angularGradient() throws -> InspectableView<ViewType.AngularGradient> {
-        return try .init(try child())
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -23,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func angularGradient(_ index: Int) throws -> InspectableView<ViewType.AngularGradient> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 

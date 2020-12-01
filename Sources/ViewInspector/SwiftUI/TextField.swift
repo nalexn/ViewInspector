@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct TextField: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func textField() throws -> InspectableView<ViewType.TextField> {
-        return try .init(try child())
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -23,7 +24,7 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func textField(_ index: Int) throws -> InspectableView<ViewType.TextField> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
@@ -34,7 +35,7 @@ public extension InspectableView where View == ViewType.TextField {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
     
     @available(*, deprecated, message: "Please use .labelView().text() instead")

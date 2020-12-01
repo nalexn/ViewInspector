@@ -5,16 +5,64 @@ import XCTest
 public struct InspectableView<View> where View: KnownViewType {
     
     internal let content: Content
+    internal let parentView: UnwrappedView?
+    internal let indexInParent: Int?
     
-    internal init(_ content: Content) throws {
+    internal init(_ content: Content, parent: UnwrappedView?, index: Int?) throws {
         if !View.typePrefix.isEmpty,
            Inspector.isTupleView(content.view),
            View.self != ViewType.TupleView.self {
             throw InspectionError.notSupported(
                 "Unable to extract \(View.typePrefix): please specify its index inside parent view")
         }
-        try Inspector.guardType(value: content.view, prefix: View.typePrefix)
         self.content = content
+        self.indexInParent = index
+        if View.self == ViewType.ClassifiedView.self {
+            self.parentView = parent?.parentView
+        } else {
+            self.parentView = parent
+        }
+        do {
+            try Inspector.guardType(value: content.view, prefix: View.typePrefix,
+                                    inspectionCall: View.inspectionCall(index: index))
+        } catch {
+            if let err = error as? InspectionError, case .typeMismatch = err {
+                throw InspectionError.inspection(
+                    path: pathToRoot, factual: Inspector.typeName(value: content.view),
+                    expected: View.typePrefix)
+            }
+            throw error
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol UnwrappedView {
+    var content: Content { get }
+    var parentView: UnwrappedView? { get }
+    var indexInParent: Int? { get }
+    var pathToRoot: String { get }
+    func inspectionCall(index: Int?) -> String
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension InspectableView: UnwrappedView {
+    func inspectionCall(index: Int?) -> String {
+        View.inspectionCall(index: index)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView {
+    func parent() throws -> InspectableView<ViewType.ClassifiedView> {
+        guard let parent = self.parentView else {
+            throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
+        }
+        return try .init(parent.content, parent: parent.parentView, index: parent.parentView?.indexInParent)
+    }
+    
+    var pathToRoot: String {
+        return (parentView?.pathToRoot ?? "inspect()") + inspectionCall(index: indexInParent)
     }
 }
 
@@ -52,20 +100,22 @@ extension InspectableView: Sequence where View: MultipleViewContent {
     public struct Iterator: IteratorProtocol {
         
         private var groupIterator: LazyGroup<Content>.Iterator
+        private let view: UnwrappedView
         
-        init(_ group: LazyGroup<Content>) {
+        init(_ group: LazyGroup<Content>, view: UnwrappedView) {
             groupIterator = group.makeIterator()
+            self.view = view
         }
         
         mutating public func next() -> Element? {
             guard let content = groupIterator.next()
                 else { return nil }
-            return try? .init(content)
+            return try? .init(content, parent: view, index: groupIterator.index)
         }
     }
 
     public func makeIterator() -> Iterator {
-        return .init(View._children(content))
+        return .init(View._children(content), view: self)
     }
 
     public var underestimatedCount: Int {
@@ -85,7 +135,7 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
     public subscript(index: Index) -> Iterator.Element {
         do {
             let viewes = try View.children(content)
-            return try .init(try viewes.element(at: index))
+            return try .init(try viewes.element(at: index), parent: self, index: index)
         } catch {
             fatalError("\(error)")
         }
@@ -105,7 +155,7 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try .init(try Inspector.unwrap(view: self, modifiers: []))
+        return try .init(try Inspector.unwrap(view: self, modifiers: []), parent: nil, index: nil)
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
@@ -122,7 +172,7 @@ public extension View {
 public extension View where Self: Inspectable {
     
     func inspect() throws -> InspectableView<ViewType.View<Self>> {
-        return try .init(Content(self))
+        return try .init(Content(self), parent: nil, index: nil)
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
@@ -183,6 +233,7 @@ extension ModifiedContent: ModifierNameProvider {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension MultipleViewContent {
     static func _children(_ content: Content) -> LazyGroup<Content> {
         return (try? children(content)) ?? .empty

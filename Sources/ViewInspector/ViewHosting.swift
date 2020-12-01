@@ -128,6 +128,7 @@ private extension ViewHosting {
     #endif
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension NSLayoutConstraint {
     #if os(macOS)
     func priority(_ value: NSLayoutConstraint.Priority) -> NSLayoutConstraint {
@@ -145,6 +146,7 @@ private extension NSLayoutConstraint {
 // MARK: - RootViewController for macOS
 
 #if os(macOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private class RootViewController: NSViewController {
 
    override func loadView() {
@@ -212,6 +214,7 @@ internal extension ViewHosting {
 }
 
 #if os(macOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension NSView {
     func descendant(nameTraits: [String]) -> NSView? {
         let name = Inspector.typeName(value: self)
@@ -224,6 +227,7 @@ private extension NSView {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension NSViewController {
     func descendant(nameTraits: [String]) -> NSViewController? {
         let name = Inspector.typeName(value: self)
@@ -241,6 +245,7 @@ private extension NSViewController {
     }
 }
 #else
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension UIView {
     func descendant(nameTraits: [String]) -> UIView? {
         let name = Inspector.typeName(value: self)
@@ -253,6 +258,7 @@ private extension UIView {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension UIViewController {
     func descendant(nameTraits: [String]) -> UIViewController? {
         let name = Inspector.typeName(value: self)

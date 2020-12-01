@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 public extension ViewType {
     
     struct ScrollViewReader: KnownViewType {
@@ -13,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func scrollViewReader() throws -> InspectableView<ViewType.ScrollViewReader> {
-        return try .init(try child())
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -23,12 +24,13 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func scrollViewReader(_ index: Int) throws -> InspectableView<ViewType.ScrollViewReader> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 
 // MARK: - Content Extraction
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
 extension ViewType.ScrollViewReader: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {

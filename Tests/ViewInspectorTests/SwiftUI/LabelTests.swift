@@ -74,9 +74,9 @@ final class GlobalModifiersForLabel: XCTestCase {
         XCTAssertEqual(try title.blur().radius, 3)
         XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationTitle(),
-                        "Type mismatch: EmptyView is not Title")
+            "inspect().styleConfigurationTitle() found EmptyView instead of Title")
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationIcon(),
-                        "Type mismatch: EmptyView is not Icon")
+            "inspect().styleConfigurationIcon() found EmptyView instead of Icon")
     }
 }
 

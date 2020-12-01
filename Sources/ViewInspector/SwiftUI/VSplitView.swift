@@ -2,6 +2,9 @@ import SwiftUI
 
 #if os(macOS)
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct VSplitView: KnownViewType {
@@ -11,6 +14,9 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 extension ViewType.VSplitView: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -20,19 +26,25 @@ extension ViewType.VSplitView: MultipleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
     func vSplitView() throws -> InspectableView<ViewType.VSplitView> {
-        return try .init(try child())
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
 // MARK: - Extraction from MultipleViewContent parent
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension InspectableView where View: MultipleViewContent {
     
     func vSplitView(_ index: Int) throws -> InspectableView<ViewType.VSplitView> {
-        return try .init(try child(at: index))
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
 

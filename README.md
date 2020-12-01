@@ -9,7 +9,12 @@ It allows for traversing a view hierarchy at runtime providing direct access to 
 
 SwiftUI views are a function of state. We can provide the input, but couldn't verify the output. Until now!
 
-## Features
+## Helpful links
+
+* **[Inspection guide](guide.md)**
+* **[SwiftUI API coverage](readiness.md)**
+
+## Use cases
 
 #### 1. Verify the view's inner state
 
@@ -27,6 +32,8 @@ func testVStackOfTexts() throws {
 }
 ```
 
+`Text` value inspection supports various formatting styles, text attributes, and localization.
+
 #### 2. Trigger side effects
 
 You can simulate user interaction by programmatically triggering system-controls callbacks:
@@ -39,7 +46,7 @@ let list = try view.inspect().list()
 try list[5].view(RowItemView.self).callOnAppear()
 ```
 
-
+The library provides helpers for writing asynchronous tests for views with callbacks.
 
 #### 3. Extract custom views from the hierarchy of any depth
 
@@ -51,7 +58,7 @@ let sut = try view.inspect().tabView().navigationView()
 XCTAssertTrue(sut.viewModel.isUserLoggedIn)
 ```
 
-The library can operate with all types of the View's state: `@Binding`, `@State`, `@ObservedObject` and `@EnvironmentObject`.
+The library can operate with various types of the view's state, such as `@Binding`, `@State`, `@ObservedObject` and `@EnvironmentObject`.
 
 ## FAQs
 

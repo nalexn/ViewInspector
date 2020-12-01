@@ -1,6 +1,9 @@
 import SwiftUI
 
 #if os(macOS)
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension ViewType {
     
     struct TouchBar: KnownViewType {
@@ -10,6 +13,9 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 extension ViewType.TouchBar: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
@@ -20,6 +26,9 @@ extension ViewType.TouchBar: SingleViewContent {
 
 // MARK: - Custom Attributes
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.TouchBar {
     
     func touchBarID() throws -> String {
@@ -30,13 +39,16 @@ public extension InspectableView where View == ViewType.TouchBar {
 
 // MARK: - Global View Modifiers
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
 public extension InspectableView {
     
     func touchBar() throws -> InspectableView<ViewType.TouchBar> {
         let view = try modifierAttribute(
             modifierName: "_TouchBarModifier", path: "modifier|touchBar",
             type: Any.self, call: "touchBar")
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
     
     func touchBarItemPrincipal() throws -> Bool {
@@ -49,7 +61,7 @@ public extension InspectableView {
         let view = try modifierAttribute(
             modifierName: "TouchBarCustomizationLabelTraitKey", path: "modifier|value",
             type: Any.self, call: "touchBarCustomizationLabel")
-        return try .init(try Inspector.unwrap(content: Content(view)))
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
     
     func touchBarItemPresence() throws -> TouchBarItemPresence {
