@@ -20,7 +20,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func pasteButton() throws -> InspectableView<ViewType.PasteButton> {
-        return try .init(try child(), parent: self, index: index)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 

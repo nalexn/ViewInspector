@@ -32,7 +32,7 @@ extension ViewType.MenuButton: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func menuButton() throws -> InspectableView<ViewType.MenuButton> {
-        return try .init(try child(), parent: self, index: index)
+        return try .init(try child(), parent: self, index: nil)
     }
 }
 
@@ -57,7 +57,7 @@ public extension InspectableView where View == ViewType.MenuButton {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: index)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
     }
 }
 
