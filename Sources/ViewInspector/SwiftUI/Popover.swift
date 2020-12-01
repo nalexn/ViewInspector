@@ -6,12 +6,7 @@ public extension ViewType {
     
     struct Popover: KnownViewType {
         public static var typePrefix: String = ""
-        public static func inspectionCall(index: Int?) -> String {
-            if let index = index {
-                return ".popover(\(index))"
-            }
-            return ".popover()"
-        }
+        public static func inspectionCall(index: Int?) -> String { ".popover()" }
     }
 }
 

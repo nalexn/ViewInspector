@@ -120,6 +120,15 @@ final class CustomViewTests: XCTestCase {
             "Type mismatch: String is not SimpleTestView")
     }
     
+    func testPathToRoot() throws {
+        let view1 = AnyView(SimpleTestView())
+        let sut1 = try view1.inspect().anyView().view(SimpleTestView.self).pathToRoot
+        XCTAssertEqual(sut1, "inspect().anyView().view(SimpleTestView.self)")
+        let view2 = HStack { SimpleTestView() }
+        let sut2 = try view2.inspect().hStack().view(SimpleTestView.self, 0).pathToRoot
+        XCTAssertEqual(sut2, "inspect().hStack().view(SimpleTestView.self, 0)")
+    }
+    
     func testTestViews() {
         XCTAssertNoThrow(SimpleTestView().body)
         XCTAssertNoThrow(ObservedStateTestView(viewModel: ExternalState()).body)

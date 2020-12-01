@@ -65,10 +65,10 @@ private extension GeometryProxy {
     }
     
     init() {
-        if MemoryLayout<GeometryProxy>.size == 48 {
-            self = unsafeBitCast(Allocator48(), to: GeometryProxy.self)
+        if MemoryLayout<GeometryProxy>.size == 52 {
+            self = unsafeBitCast(Allocator52(), to: GeometryProxy.self)
             return
         }
-        self = unsafeBitCast(Allocator52(), to: GeometryProxy.self)
+        self = unsafeBitCast(Allocator48(), to: GeometryProxy.self)
     }
 }
