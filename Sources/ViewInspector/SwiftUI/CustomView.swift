@@ -43,12 +43,12 @@ extension ViewType.View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
-    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>>
-        where T: Inspectable {
-            let child = try View.child(content)
-            let prefix = Inspector.typeName(type: type, prefixOnly: true)
-            try Inspector.guardType(value: child.view, prefix: prefix)
-            return try .init(child, parent: self, index: nil)
+    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
+        let child = try View.child(content)
+        let prefix = Inspector.typeName(type: type, prefixOnly: true)
+        let call = View.inspectionCall(index: nil)
+        try Inspector.guardType(value: child.view, prefix: prefix, inspectionCall: call)
+        return try .init(child, parent: self, index: nil)
     }
 }
 
@@ -57,12 +57,12 @@ public extension InspectableView where View: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
-    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>>
-        where T: Inspectable {
-            let content = try child(at: index)
-            let prefix = Inspector.typeName(type: type, prefixOnly: true)
-            try Inspector.guardType(value: content.view, prefix: prefix)
-            return try .init(content, parent: self, index: index)
+    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
+        let content = try child(at: index)
+        let prefix = Inspector.typeName(type: type, prefixOnly: true)
+        let call = View.inspectionCall(index: index)
+        try Inspector.guardType(value: content.view, prefix: prefix, inspectionCall: call)
+        return try .init(content, parent: self, index: index)
     }
 }
 

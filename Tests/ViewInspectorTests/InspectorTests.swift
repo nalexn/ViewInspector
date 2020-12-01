@@ -80,9 +80,9 @@ final class InspectorTests: XCTestCase {
     
     func testGuardType() throws {
         let value = "abc"
-        XCTAssertNoThrow(try Inspector.guardType(value: value, prefix: "String"))
+        XCTAssertNoThrow(try Inspector.guardType(value: value, prefix: "String", inspectionCall: ""))
         XCTAssertThrows(
-            try Inspector.guardType(value: value, prefix: "Int"),
+            try Inspector.guardType(value: value, prefix: "Int", inspectionCall: ""),
             "Type mismatch: String is not Int")
     }
     

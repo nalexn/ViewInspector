@@ -23,7 +23,8 @@ public struct InspectableView<View> where View: KnownViewType {
             self.parentView = parent
         }
         do {
-            try Inspector.guardType(value: content.view, prefix: View.typePrefix)
+            try Inspector.guardType(value: content.view, prefix: View.typePrefix,
+                                    inspectionCall: View.inspectionCall(index: index))
         } catch {
             if let err = error as? InspectionError, case .typeMismatch = err {
                 throw InspectionError.inspection(

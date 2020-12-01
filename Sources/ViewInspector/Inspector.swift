@@ -186,12 +186,15 @@ extension Inspector {
         }
     }
     
-    static func guardType(value: Any, prefix: String) throws {
+    static func guardType(value: Any, prefix: String, inspectionCall: String) throws {
         let name = typeName(type: type(of: value))
         if prefix.count > 0 && name.hasPrefix("EnvironmentReaderView") {
             if name.contains("NavigationBarItemsKey") {
                 throw InspectionError.notSupported(
-                    "Please use 'navigationBarItems()' for unwrapping the underlying view hierarchy.")
+                    """
+                    Please insert '.navigationBarItems()' before \(inspectionCall) \
+                    for unwrapping the underlying view hierarchy.
+                    """)
             } else if name.contains("_AnchorWritingModifier") {
                 throw InspectionError.notSupported(
                     "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
