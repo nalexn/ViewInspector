@@ -102,9 +102,10 @@ extension Inspector {
             let childType = typeName(value: child.element.value)
             dict[childName + ": " + childType] = attributesTree(value: child.element.value)
         }
-        if let inspectable = value as? Inspectable {
-            let childType = typeName(value: inspectable.content)
-            dict["body: " + childType] = attributesTree(value: inspectable.content)
+        if let inspectable = value as? Inspectable,
+           let content = try? inspectable.extractContent() {
+            let childType = typeName(value: content)
+            dict["body: " + childType] = attributesTree(value: content)
         }
         if dict.count == 0 {
             return " = " + String(describing: value)

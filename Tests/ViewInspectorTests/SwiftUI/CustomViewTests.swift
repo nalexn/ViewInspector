@@ -66,19 +66,31 @@ final class CustomViewTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
-    #if os(macOS)
-    func testExtractionOfNSTestView() throws {
-        let view = AnyView(NSTestView())
-        let sut = try view.inspect().anyView().view(NSTestView.self)
+    func testExtractionOfTestViewRepresentable() throws {
+        let view = AnyView(TestViewRepresentable())
+        let sut = try view.inspect().anyView().view(TestViewRepresentable.self)
         XCTAssertNoThrow(try sut.actualView())
+        #if os(macOS)
+        XCTAssertThrows(try sut.hStack(),
+        "Please use `.actualView().nsView()` for inspecting the contents of NSViewRepresentable")
+        #else
+        XCTAssertThrows(try sut.hStack(),
+        "Please use `.actualView().uiView()` for inspecting the contents of UIViewRepresentable")
+        #endif
     }
-    #else
-    func testExtractionOfUITestView() throws {
-        let view = AnyView(UITestView())
-        let sut = try view.inspect().anyView().view(UITestView.self)
+    
+    func testExtractionOfViewControllerRepresentable() throws {
+        let view = AnyView(TestViewControllerRepresentable())
+        let sut = try view.inspect().anyView().view(TestViewControllerRepresentable.self)
         XCTAssertNoThrow(try sut.actualView())
+        #if os(macOS)
+        XCTAssertThrows(try sut.hStack(),
+        "Please use `.actualView().viewController()` for inspecting the contents of NSViewControllerRepresentable")
+        #else
+        XCTAssertThrows(try sut.hStack(),
+        "Please use `.actualView().viewController()` for inspecting the contents of UIViewControllerRepresentable")
+        #endif
     }
-    #endif
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(SimpleTestView())
@@ -181,7 +193,7 @@ private struct EnvironmentStateTestView: View, Inspectable {
 }
 
 #if os(macOS)
-private struct NSTestView: NSViewRepresentable, Inspectable {
+private struct TestViewRepresentable: NSViewRepresentable, Inspectable {
     
     func makeNSView(context: NSViewRepresentableContext<Self>) -> NSView {
         let view = NSView()
@@ -192,17 +204,43 @@ private struct NSTestView: NSViewRepresentable, Inspectable {
     func updateNSView(_ nsView: NSView, context: NSViewRepresentableContext<Self>) {
     }
 }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestViewControllerRepresentable: NSViewControllerRepresentable, Inspectable {
+    
+    func makeNSViewController(context: Context) -> NSViewController {
+        let vc = NSViewController()
+        updateNSViewController(vc, context: context)
+        return vc
+    }
+    
+    func updateNSViewController(_ uiViewController: NSViewControllerType, context: Context) {
+    }
+}
 #else
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct UITestView: UIViewRepresentable, Inspectable {
+private struct TestViewRepresentable: UIViewRepresentable, Inspectable {
     
-    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIView {
+    func makeUIView(context: Context) -> UIView {
         let view = UIView()
         updateUIView(view, context: context)
         return view
     }
     
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<Self>) {
+    func updateUIView(_ uiView: UIView, context: Context) {
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestViewControllerRepresentable: UIViewControllerRepresentable, Inspectable {
+    
+    func makeUIViewController(context: Context) -> UIViewController {
+        let vc = UIViewController()
+        updateUIViewController(vc, context: context)
+        return vc
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
 }
 #endif

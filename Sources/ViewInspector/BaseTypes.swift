@@ -4,12 +4,12 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol Inspectable {
-    var content: Any { get }
+    func extractContent() throws -> Any
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: View {
-    var content: Any { body }
+    func extractContent() throws -> Any { body }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

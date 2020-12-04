@@ -19,6 +19,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| AnyView | `contained view` |
 |:white_check_mark:| Button | `label view`, `tap()` |
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
+|:technologist:| CameraView | |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
 |:white_check_mark:| ConditionalContent | `contained view` |
@@ -50,6 +51,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:white_check_mark:| Link | `label view`, `url: URL` |
 |:white_check_mark:| List | `contained view` |
+|:technologist:| Map | |
+|:technologist:| MapAnnotation | |
 |:white_check_mark:| Menu | `contained view`, `label view` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
 |:white_check_mark:| MenuStyleConfiguration.Content | |
@@ -67,13 +70,16 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
 |:white_check_mark:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
+|:technologist:| SceneKit | |
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
 |:white_check_mark:| SecureField | `label view`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
 |:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
+|:technologist:| SignInWithAppleButton | |
 |:white_check_mark:| Slider | `label view`, `callOnEditingChanged()`, `value: Double`, `setValue(_: Double)` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
+|:technologist:| SpriteView | |
 |:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:heavy_check_mark:| SubscriptionView | |
 |:white_check_mark:| TabView | `contained view` |
@@ -145,6 +151,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func padding(CGFloat) -> some View` |
 |:white_check_mark:| `func padding(EdgeInsets) -> some View` |
 |:white_check_mark:| `func padding(Edge.Set, CGFloat?) -> some View` |
+|:technologist:| `func ignoresSafeArea(SafeAreaRegions, edges: Edge.Set) -> some View` |
 
 ### Layering Views
 
@@ -350,9 +357,14 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func popover<Content>(isPresented: Binding<Bool>, attachmentAnchor: PopoverAttachmentAnchor, arrowEdge: Edge, content: () -> Content) -> some View` |
 |:white_check_mark:| `func popover<Item, Content>(item: Binding<Item?>, attachmentAnchor: PopoverAttachmentAnchor, arrowEdge: Edge, content: (Item) -> Content) -> some View` |
 
-### Presenting an App Store Overlay
+### APIs from other Frameworks
 
->>>
+| Status | Modifier |
+|:---:|---|
+|:technologist:| `func appStoreOverlay(isPresented: Binding<Bool>, configuration: @escaping () -> SKOverlay.Configuration) -> some View` |
+|:technologist:| `func quickLookPreview<Items>(_ selection: Binding<Items.Element?>, in items: Items) -> some View` |
+|:technologist:| `func quickLookPreview(_ item: Binding<URL?>) -> some View` |
+|:technologist:| `func signInWithAppleButtonStyle(_ style: SignInWithAppleButton.Style) -> some View` |
 
 ### Presenting File Management Interfaces
 
@@ -432,6 +444,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func allowsTightening(Bool) -> some View` |
 |:white_check_mark:| `func textContentType(UITextContentType?) -> some View` |
 |:technologist:| `func textContentType(NSTextContentType?) -> some View` |
+|:technologist:| `func textContentType(WKTextContentType?) -> some View` |
 |:technologist:| `func textCase(Text.Case?) -> some View` |
 |:white_check_mark:| `func flipsForRightToLeftLayoutDirection(Bool) -> some View` |
 |:white_check_mark:| `func autocapitalization(UITextAutocapitalizationType) -> some View` |
@@ -479,14 +492,10 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|
 |:white_check_mark:| `func listRowInsets(EdgeInsets?) -> some View` |
 |:white_check_mark:| `func listRowBackground<V>(V?) -> some View` |
-|:white_check_mark:| `func tag<V>(V) -> some View` |
-
-### Tinting a List Item
-
-| Status | Modifier |
-|:---:|---|
+|:technologist:| `func listRowPlatterColor(Color?) -> some View` |
 |:technologist:| `func listItemTint(ListItemTint?) -> some View` |
 |:technologist:| `func listItemTint(Color?) -> some View` |
+|:white_check_mark:| `func tag<V>(V) -> some View` |
 
 ### Configuring the Navigation Title
 
@@ -547,10 +556,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func touchBarItemPrincipal(Bool) -> some View` |
 |:white_check_mark:| `func touchBarCustomizationLabel(Text) -> some View` |
 |:white_check_mark:| `func touchBarItemPresence(TouchBarItemPresence) -> some View` |
-
-### Configuring Scroll Views
-
->>>
 
 ### Hiding and Disabling Views
 
