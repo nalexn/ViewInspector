@@ -136,6 +136,24 @@ final class InspectableViewModifiersTests: XCTestCase {
                         "EmptyView does not have 'test' modifier")
     }
     
+    func testParentModifierAttribute() throws {
+        let sut1 = AnyView(EmptyView()).onAppear { }
+        XCTAssertNoThrow(try sut1.inspect().anyView().callOnAppear())
+        XCTAssertNoThrow(try sut1.inspect().anyView().emptyView().parent().callOnAppear())
+        XCTAssertNoThrow(try sut1.inspect().anyView().emptyView().parent().anyView().callOnAppear())
+        
+        let sut2 = EmptyView()
+            .onAppear { }
+            .overlay(
+                HStack { EmptyView() }
+            )
+            .onDisappear { }
+        XCTAssertNoThrow(try sut2.inspect().emptyView().overlay().hStack())
+        XCTAssertNoThrow(try sut2.inspect().emptyView().overlay().parent())
+        XCTAssertNoThrow(try sut2.inspect().emptyView().overlay().parent().callOnAppear())
+        XCTAssertNoThrow(try sut2.inspect().emptyView().overlay().parent().emptyView().callOnDisappear())
+    }
+    
     func testParentInspection() throws {
         let view = AnyView(Group {
             Text("")

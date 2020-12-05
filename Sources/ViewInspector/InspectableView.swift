@@ -21,8 +21,6 @@ public struct InspectableView<View> where View: KnownViewType {
             call.replacingOccurrences(of: "_:", with: "\($0)") }) ?? call
         if parent is InspectableView<ViewType.ParentView> {
             self.parentView = parent?.parentView
-        } else if View.self == ViewType.ClassifiedView.self && parent?.parentView == nil {
-            self.parentView = nil
         } else {
             self.parentView = parent
         }
@@ -164,9 +162,9 @@ public extension View {
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
-                 traverse: (InspectableView<ViewType.ParentView>) throws -> Void) {
+                 inspection: (InspectableView<ViewType.ParentView>) throws -> Void) {
         do {
-            try traverse(try inspect())
+            try inspection(try inspect())
         } catch {
             XCTFail("\(error.localizedDescription)", file: file, line: line)
         }
@@ -182,9 +180,9 @@ public extension View where Self: Inspectable {
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
-                 traverse: (InspectableView<ViewType.View<Self>>) throws -> Void) {
+                 inspection: (InspectableView<ViewType.View<Self>>) throws -> Void) {
         do {
-            try traverse(try inspect())
+            try inspection(try inspect())
         } catch {
             XCTFail("\(error.localizedDescription)", file: file, line: line)
         }

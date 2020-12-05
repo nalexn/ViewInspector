@@ -88,7 +88,7 @@ public extension View where Self: Inspectable {
         let description = Inspector.typeName(value: self) + " callback at line #\(line)"
         let expectation = XCTestExpectation(description: description)
         self[keyPath: keyPath] = { view in
-            view.inspect(file: file, line: line, traverse: perform)
+            view.inspect(file: file, line: line, inspection: perform)
             ViewHosting.expel(viewId: viewId)
             expectation.fulfill()
         }
