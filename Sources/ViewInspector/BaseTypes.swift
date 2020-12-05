@@ -25,15 +25,6 @@ public protocol MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol KnownViewType {
     static var typePrefix: String { get }
-    static func inspectionCall(index: Int?) -> String
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension KnownViewType {
-    public static func inspectionCall(index: Int?) -> String {
-        return "." + typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
-            + (index.flatMap({ "(\($0))" }) ?? "()")
-    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

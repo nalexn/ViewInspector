@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func link() throws -> InspectableView<ViewType.Link> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -35,7 +35,7 @@ public extension InspectableView where View == ViewType.Link {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func url() throws -> URL {

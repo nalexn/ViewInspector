@@ -5,12 +5,6 @@ public extension ViewType {
     
     struct Shape: KnownViewType {
         public static var typePrefix: String = ""
-        public static func inspectionCall(index: Int?) -> String {
-            if let index = index {
-                return ".shape(\(index))"
-            }
-            return ".shape()"
-        }
     }
 }
 
@@ -22,7 +16,7 @@ public extension InspectableView where View: SingleViewContent {
     func shape() throws -> InspectableView<ViewType.Shape> {
         let content = try child()
         try guardShapeIsInspectable(content.view)
-        return try .init(content, parent: self, index: nil)
+        return try .init(content, parent: self)
     }
 }
 

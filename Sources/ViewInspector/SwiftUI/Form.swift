@@ -25,7 +25,7 @@ extension ViewType.Form: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func form() throws -> InspectableView<ViewType.Form> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

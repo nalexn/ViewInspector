@@ -73,7 +73,7 @@ final class PopoverTests: XCTestCase {
         let binding = Binding(wrappedValue: true)
         let view = EmptyView().popover(isPresented: binding) { Text("") }
         let sut = try view.inspect().emptyView().popover().pathToRoot
-        XCTAssertEqual(sut, "inspect().emptyView().popover()")
+        XCTAssertEqual(sut, "emptyView().popover()")
     }
 }
 

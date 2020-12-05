@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func button() throws -> InspectableView<ViewType.Button> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -35,7 +35,7 @@ public extension InspectableView where View == ViewType.Button {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "_label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     @available(*, deprecated, message: "Please use .labelView().text() instead")
@@ -81,7 +81,7 @@ public extension ButtonStyle {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension PrimitiveButtonStyle {
-    func inspect(onTrigger: @escaping () -> Void = { }) throws -> InspectableView<ViewType.ClassifiedView> {
+    func inspect(onTrigger: @escaping () -> Void = { }) throws -> InspectableView<ViewType.ParentView> {
         let config = PrimitiveButtonStyleConfiguration(onTrigger: onTrigger)
         return try makeBody(configuration: config).inspect()
     }

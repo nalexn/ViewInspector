@@ -25,7 +25,7 @@ extension ViewType.Group: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func group() throws -> InspectableView<ViewType.Group> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

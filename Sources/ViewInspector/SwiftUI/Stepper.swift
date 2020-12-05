@@ -16,7 +16,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func stepper() throws -> InspectableView<ViewType.Stepper> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -39,7 +39,7 @@ public extension InspectableView where View == ViewType.Stepper {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     @available(*, deprecated, message: "Please use .labelView().text() instead")

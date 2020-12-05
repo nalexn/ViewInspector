@@ -25,7 +25,7 @@ extension ViewType.List: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func list() throws -> InspectableView<ViewType.List> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -54,7 +54,7 @@ public extension InspectableView {
         let view = try modifierAttribute(
             modifierName: "_TraitWritingModifier<ListRowBackgroundTraitKey>",
             path: "modifier|value|some|storage|view", type: Any.self, call: "listRowBackground")
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
 
     func listStyle() throws -> Any {

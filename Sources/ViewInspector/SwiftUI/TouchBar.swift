@@ -48,7 +48,7 @@ public extension InspectableView {
         let view = try modifierAttribute(
             modifierName: "_TouchBarModifier", path: "modifier|touchBar",
             type: Any.self, call: "touchBar")
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func touchBarItemPrincipal() throws -> Bool {
@@ -61,7 +61,7 @@ public extension InspectableView {
         let view = try modifierAttribute(
             modifierName: "TouchBarCustomizationLabelTraitKey", path: "modifier|value",
             type: Any.self, call: "touchBarCustomizationLabel")
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func touchBarItemPresence() throws -> TouchBarItemPresence {

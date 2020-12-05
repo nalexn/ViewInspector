@@ -25,7 +25,7 @@ extension ViewType.GeometryReader: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func geometryReader() throws -> InspectableView<ViewType.GeometryReader> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

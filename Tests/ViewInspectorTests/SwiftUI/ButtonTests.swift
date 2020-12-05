@@ -108,8 +108,6 @@ final class ButtonStyleInspectionTests: XCTestCase {
             XCTAssertNoThrow(try button.anyView().primitiveButtonStyleLabel())
         }
         let sut = Group { EmptyView() }
-        XCTAssertThrows(try sut.inspect().group().primitiveButtonStyleLabel(0),
-        "inspect().group().styleConfigurationLabel() found EmptyView instead of Label")
     }
     
     func testPrimitiveButtonStyleLabel() throws {

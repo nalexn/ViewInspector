@@ -6,9 +6,10 @@ public struct InspectableView<View> where View: KnownViewType {
     
     internal let content: Content
     internal let parentView: UnwrappedView?
-    internal let indexInParent: Int?
+    internal let inspectionCall: String
     
-    internal init(_ content: Content, parent: UnwrappedView?, index: Int?) throws {
+    internal init(_ content: Content, parent: UnwrappedView?,
+                  call: String = #function, index: Int? = nil) throws {
         if !View.typePrefix.isEmpty,
            Inspector.isTupleView(content.view),
            View.self != ViewType.TupleView.self {
@@ -16,19 +17,28 @@ public struct InspectableView<View> where View: KnownViewType {
                 "Unable to extract \(View.typePrefix): please specify its index inside parent view")
         }
         self.content = content
-        self.indexInParent = index
-        if View.self == ViewType.ClassifiedView.self {
+        self.inspectionCall = index.flatMap({
+            call.replacingOccurrences(of: "_:", with: "\($0)") }) ?? call
+        if parent is InspectableView<ViewType.ParentView> {
             self.parentView = parent?.parentView
+        } else if View.self == ViewType.ClassifiedView.self && parent?.parentView == nil {
+            self.parentView = nil
         } else {
             self.parentView = parent
         }
         do {
-            try Inspector.guardType(value: content.view, prefix: View.typePrefix,
-                                    inspectionCall: View.inspectionCall(index: index))
+            try Inspector.guardType(value: content.view, prefix: View.typePrefix, inspectionCall: inspectionCall)
         } catch {
             if let err = error as? InspectionError, case .typeMismatch = err {
+                let path: String = {
+                    if let predecessor = parent?.parentView,
+                       parent is InspectableView<ViewType.ParentView> {
+                        return predecessor.pathToRoot + "." + inspectionCall
+                    }
+                    return pathToRoot
+                }()
                 throw InspectionError.inspection(
-                    path: pathToRoot, factual: Inspector.typeName(value: content.view),
+                    path: path, factual: Inspector.typeName(value: content.view),
                     expected: View.typePrefix)
             }
             throw error
@@ -40,29 +50,24 @@ public struct InspectableView<View> where View: KnownViewType {
 internal protocol UnwrappedView {
     var content: Content { get }
     var parentView: UnwrappedView? { get }
-    var indexInParent: Int? { get }
+    var inspectionCall: String { get }
     var pathToRoot: String { get }
-    func inspectionCall(index: Int?) -> String
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension InspectableView: UnwrappedView {
-    func inspectionCall(index: Int?) -> String {
-        View.inspectionCall(index: index)
-    }
-}
+extension InspectableView: UnwrappedView { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
-    func parent() throws -> InspectableView<ViewType.ClassifiedView> {
+    func parent() throws -> InspectableView<ViewType.ParentView> {
         guard let parent = self.parentView else {
             throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
         }
-        return try .init(parent.content, parent: parent.parentView, index: parent.parentView?.indexInParent)
+        return try .init(parent.content, parent: parent.parentView, call: parent.inspectionCall)
     }
     
     var pathToRoot: String {
-        return (parentView?.pathToRoot ?? "inspect()") + inspectionCall(index: indexInParent)
+        return (parentView.flatMap { $0.pathToRoot + "." } ?? "") + inspectionCall
     }
 }
 
@@ -110,7 +115,7 @@ extension InspectableView: Sequence where View: MultipleViewContent {
         mutating public func next() -> Element? {
             guard let content = groupIterator.next()
                 else { return nil }
-            return try? .init(content, parent: view, index: groupIterator.index)
+            return try? .init(content, parent: view)
         }
     }
 
@@ -135,7 +140,7 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
     public subscript(index: Index) -> Iterator.Element {
         do {
             let viewes = try View.children(content)
-            return try .init(try viewes.element(at: index), parent: self, index: index)
+            return try .init(try viewes.element(at: index), parent: self, call: "[\(index)]")
         } catch {
             fatalError("\(error)")
         }
@@ -154,12 +159,12 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
-    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try .init(try Inspector.unwrap(view: self, modifiers: []), parent: nil, index: nil)
+    func inspect() throws -> InspectableView<ViewType.ParentView> {
+        return try .init(try Inspector.unwrap(view: self, modifiers: []), parent: nil, call: "")
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
-                 traverse: (InspectableView<ViewType.ClassifiedView>) throws -> Void) {
+                 traverse: (InspectableView<ViewType.ParentView>) throws -> Void) {
         do {
             try traverse(try inspect())
         } catch {
@@ -172,7 +177,8 @@ public extension View {
 public extension View where Self: Inspectable {
     
     func inspect() throws -> InspectableView<ViewType.View<Self>> {
-        return try .init(Content(self), parent: nil, index: nil)
+        let call = "view(\(ViewType.View<Self>.typePrefix).self)"
+        return try .init(Content(self), parent: nil, call: call)
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
@@ -210,7 +216,13 @@ internal extension InspectableView {
     }
     
     func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
-        guard let modifier = content.modifiers.lazy
+        let contentForInspection: Content
+        if self is InspectableView<ViewType.ParentView>, let parent = parentView {
+            contentForInspection = parent.content
+        } else {
+            contentForInspection = content
+        }
+        guard let modifier = contentForInspection.modifiers.lazy
                 .compactMap({ $0 as? ModifierNameProvider })
                 .last(where: modifierLookup)
         else {

@@ -92,7 +92,7 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().vStack().styleConfigurationContent(0).blur().radius, 5)
         XCTAssertEqual(try sut.inspect().vStack().styleConfigurationLabel(1).brightness(), 3)
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationContent(),
-            "inspect().styleConfigurationContent() found EmptyView instead of Content")
+            "styleConfigurationContent() found EmptyView instead of Content")
     }
     #endif
 }

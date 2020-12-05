@@ -39,7 +39,7 @@ extension ViewType.HSplitView: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func hSplitView() throws -> InspectableView<ViewType.HSplitView> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

@@ -89,7 +89,7 @@ final class CustomViewBuilderTests: XCTestCase {
         }
         let sut = try view.inspect().hStack().view(TestViewBuilderView<EmptyView>.self, 0).text(0)
             .pathToRoot
-        XCTAssertEqual(sut, "inspect().hStack().view(TestViewBuilderView.self, 0).text(0)")
+        XCTAssertEqual(sut, "hStack().view(TestViewBuilderView.self, 0).text(0)")
     }
 }
 

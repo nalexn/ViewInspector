@@ -13,7 +13,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
         }
         XCTAssertThrows(
             try view.inspect().navigationView().list(0),
-            "Please insert '.navigationBarItems()' before .list(0) for unwrapping the underlying view hierarchy.")
+            "Please insert '.navigationBarItems()' before list(0) for unwrapping the underlying view hierarchy.")
     }
     
     func testUnknownHierarchyTypeUnwrap() throws {
@@ -62,7 +62,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
         let sut = TestView()
         let exp = sut.inspection.inspect { view in
             XCTAssertThrows(try view.vStack(),
-            "Please insert '.navigationBarItems()' before .vStack() for unwrapping the underlying view hierarchy.")
+            "Please insert '.navigationBarItems()' before vStack() for unwrapping the underlying view hierarchy.")
         }
         ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 1.0)

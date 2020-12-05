@@ -7,13 +7,6 @@ public extension ViewType {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
-        
-        public static func inspectionCall(index: Int?) -> String {
-            if let index = index {
-                return ".view(\(typePrefix).self, \(index))"
-            }
-            return ".view(\(typePrefix).self)"
-        }
     }
 }
 
@@ -46,9 +39,9 @@ public extension InspectableView where View: SingleViewContent {
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
         let child = try View.child(content)
         let prefix = Inspector.typeName(type: type, prefixOnly: true)
-        let call = View.inspectionCall(index: nil)
+        let call = "view(\(ViewType.View<T>.typePrefix).self)"
         try Inspector.guardType(value: child.view, prefix: prefix, inspectionCall: call)
-        return try .init(child, parent: self, index: nil)
+        return try .init(child, parent: self, call: call)
     }
 }
 
@@ -60,9 +53,9 @@ public extension InspectableView where View: MultipleViewContent {
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
         let content = try child(at: index)
         let prefix = Inspector.typeName(type: type, prefixOnly: true)
-        let call = View.inspectionCall(index: index)
+        let call = "view(\(ViewType.View<T>.typePrefix).self, \(index))"
         try Inspector.guardType(value: content.view, prefix: prefix, inspectionCall: call)
-        return try .init(content, parent: self, index: index)
+        return try .init(content, parent: self, call: call)
     }
 }
 

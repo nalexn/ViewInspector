@@ -25,7 +25,7 @@ extension ViewType.TabView: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func tabView() throws -> InspectableView<ViewType.TabView> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -55,10 +55,10 @@ public extension InspectableView {
             modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
             type: Any.self, call: "tabItem")
         let view = try InspectableView<ViewType.ClassifiedView>(
-            try Inspector.unwrap(content: Content(rootView)), parent: self, index: nil)
+            try Inspector.unwrap(content: Content(rootView)), parent: self)
         if #available(iOS 14.2, tvOS 14.2, *) {
             return try InspectableView<ViewType.ClassifiedView>(
-            try Inspector.unwrap(content: try view.zStack().child(at: 0)), parent: self, index: nil)
+            try Inspector.unwrap(content: try view.zStack().child(at: 0)), parent: self)
         } else {
             return view
         }

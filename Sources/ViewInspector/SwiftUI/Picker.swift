@@ -25,7 +25,7 @@ extension ViewType.Picker: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func picker() throws -> InspectableView<ViewType.Picker> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -51,7 +51,7 @@ public extension InspectableView where View == ViewType.Picker {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func select<SelectionValue>(value: SelectionValue) throws where SelectionValue: Hashable {

@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func progressView() throws -> InspectableView<ViewType.ProgressView> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -46,12 +46,12 @@ public extension InspectableView where View == ViewType.ProgressView {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(path: "base|custom|label|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func currentValueLabelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(path: "base|custom|currentValueLabel|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
 }
 
