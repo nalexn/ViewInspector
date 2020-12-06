@@ -10,6 +10,9 @@ public struct InspectableView<View> where View: KnownViewType {
     
     internal init(_ content: Content, parent: UnwrappedView?,
                   call: String = #function, index: Int? = nil) throws {
+        let parentView: UnwrappedView? = (parent is InspectableView<ViewType.ParentView>)
+            ? parent?.parentView : parent
+        let content = try parentView?.traverseIfNeeded(content: content, View.self) ?? content
         if !View.typePrefix.isEmpty,
            Inspector.isTupleView(content.view),
            View.self != ViewType.TupleView.self {
@@ -19,11 +22,7 @@ public struct InspectableView<View> where View: KnownViewType {
         self.content = content
         self.inspectionCall = index.flatMap({
             call.replacingOccurrences(of: "_:", with: "\($0)") }) ?? call
-        if parent is InspectableView<ViewType.ParentView> {
-            self.parentView = parent?.parentView
-        } else {
-            self.parentView = parent
-        }
+        self.parentView = parentView
         do {
             try Inspector.guardType(value: content.view, prefix: View.typePrefix, inspectionCall: inspectionCall)
         } catch {
