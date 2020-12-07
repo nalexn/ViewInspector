@@ -39,7 +39,10 @@ extension UnwrappedView {
     ) throws -> UnwrappedView? where V: KnownViewType {
         guard let traverseParams = content.view as? ViewType.Traverse.Params
         else { return nil }
-        return try traverseParams.search(for: viewType)
+        let notFound = "Could not find view with type \(Inspector.typeName(type: viewType, prefixOnly: false))."
+        return try traverseParams.search(notFound: notFound) { identity, view -> Bool in
+            return identity.viewType == viewType
+        }
     }
 }
 
@@ -47,7 +50,7 @@ extension UnwrappedView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.Traverse.Params {
-    func search<V>(for viewType: V.Type) throws -> UnwrappedView where V: KnownViewType {
+    func search(notFound: String, _ condition: (ViewIdentity, UnwrappedView) -> Bool) throws -> UnwrappedView {
 
         var unknownViews: [Any] = []
         guard let result = parent.breadthFirstSearch({ view in
@@ -55,12 +58,11 @@ extension ViewType.Traverse.Params {
                 unknownViews.append(view.content.view)
                 return nil
             }
-            return (identity, identity.viewType == viewType)
+            return (identity, condition(identity, view))
         }) else {
             let blockers = unknownViews.count == 0 ? "" :
                 " Possible blockers: \(unknownViews.map({ Inspector.typeName(value: $0, prefixOnly: false) }))"
-            throw InspectionError.notSupported(
-                "Could not find view with type \(Inspector.typeName(type: viewType, prefixOnly: false))." + blockers)
+            throw InspectionError.notSupported(notFound + blockers)
         }
         return result
     }
@@ -69,7 +71,6 @@ extension ViewType.Traverse.Params {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension UnwrappedView {
     
-    typealias ViewIdentity = ViewType.Traverse.ViewIdentity
     func breadthFirstSearch(_ condition: (UnwrappedView) -> (ViewIdentity, Bool)?) -> UnwrappedView? {
         var queue: [(isSingle: Bool, children: LazyGroup<UnwrappedView>)] = []
         queue.append((true, .init(count: 1, { _ in self })))
@@ -126,6 +127,9 @@ extension ViewType.Traverse {
 }
 
 // MARK: - ViewIdentity
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal typealias ViewIdentity = ViewType.Traverse.ViewIdentity
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.Traverse {

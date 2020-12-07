@@ -203,17 +203,17 @@ internal extension InspectableView {
     func modifierAttribute<Type>(modifierName: String, path: String,
                                  type: Type.Type, call: String) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
-            modifierName: modifierName, path: path, type: type, call: call)
+            modifierName: modifierName, path: path, type: type, call: call).value
     }
     
     func modifierAttribute<Type>(modifierLookup: (ModifierNameProvider) -> Bool, path: String,
                                  type: Type.Type, call: String) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
-            modifierLookup: modifierLookup, path: path, type: type, call: call)
+            modifierLookup: modifierLookup, path: path, type: type, call: call).value
     }
     
     func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
-        return try contentForModifierLookup.modifier(modifierLookup, call: call)
+        return try contentForModifierLookup.modifier(modifierLookup, call: call).value
     }
     
     var contentForModifierLookup: Content {
@@ -226,10 +226,13 @@ internal extension InspectableView {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal typealias AttributeLookupResult<T> = (value: T, parent: UnwrappedView?)
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
     func modifierAttribute<Type>(modifierName: String, path: String,
-                                 type: Type.Type, call: String) throws -> Type {
+                                 type: Type.Type, call: String) throws -> AttributeLookupResult<Type> {
         return try modifierAttribute(modifierLookup: { modifier -> Bool in
             guard modifier.modifierType.contains(modifierName) else { return false }
             return (try? Inspector.attribute(path: path, value: modifier) as? Type) != nil
@@ -237,25 +240,32 @@ internal extension Content {
     }
     
     func modifierAttribute<Type>(modifierLookup: (ModifierNameProvider) -> Bool, path: String,
-                                 type: Type.Type, call: String) throws -> Type {
-        let modifier = try self.modifier(modifierLookup, call: call)
+                                 type: Type.Type, call: String) throws -> AttributeLookupResult<Type> {
+        let (modifier, parent) = try self.modifier(modifierLookup, call: call)
         guard let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
             throw InspectionError.modifierNotFound(
                 parent: Inspector.typeName(value: self.view), modifier: call)
         }
-        return attribute
+        return (attribute, parent)
     }
     
-    func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
-        guard let modifier = self.modifiers.lazy
+    func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> AttributeLookupResult<Any> {
+        var parent: UnwrappedView?
+        if let traverse = self.view as? ViewType.Traverse.Params {
+            let notFound = "Could not find a view with modifier \(call)."
+            parent = try traverse.search(notFound: notFound) { identity, view -> Bool in
+                return (try? view.content.modifier(modifierLookup, call: call).value) != nil
+            }
+        }
+        guard let modifier = (parent?.content ?? self).modifiers.lazy
                 .compactMap({ $0 as? ModifierNameProvider })
                 .last(where: modifierLookup)
         else {
             throw InspectionError.modifierNotFound(
                 parent: Inspector.typeName(value: self.view), modifier: call)
         }
-        return modifier
+        return (modifier, parent)
     }
 }
 
