@@ -192,6 +192,33 @@ public extension View where Self: Inspectable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
+    func modifierAttribute<Type>(modifierName: String, path: String,
+                                 type: Type.Type, call: String) throws -> Type {
+        return try contentForModifierLookup.modifierAttribute(
+            modifierName: modifierName, path: path, type: type, call: call)
+    }
+    
+    func modifierAttribute<Type>(modifierLookup: (ModifierNameProvider) -> Bool, path: String,
+                                 type: Type.Type, call: String) throws -> Type {
+        return try contentForModifierLookup.modifierAttribute(
+            modifierLookup: modifierLookup, path: path, type: type, call: call)
+    }
+    
+    func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
+        return try contentForModifierLookup.modifier(modifierLookup, call: call)
+    }
+    
+    var contentForModifierLookup: Content {
+        if self is InspectableView<ViewType.ParentView>, let parent = parentView {
+            return parent.content
+        } else {
+            return content
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
     
     func modifierAttribute<Type>(modifierName: String, path: String,
                                  type: Type.Type, call: String) throws -> Type {
@@ -207,24 +234,18 @@ internal extension InspectableView {
         guard let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
             throw InspectionError.modifierNotFound(
-                parent: Inspector.typeName(value: content.view), modifier: call)
+                parent: Inspector.typeName(value: self.view), modifier: call)
         }
         return attribute
     }
     
     func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
-        let contentForInspection: Content
-        if self is InspectableView<ViewType.ParentView>, let parent = parentView {
-            contentForInspection = parent.content
-        } else {
-            contentForInspection = content
-        }
-        guard let modifier = contentForInspection.modifiers.lazy
+        guard let modifier = self.modifiers.lazy
                 .compactMap({ $0 as? ModifierNameProvider })
                 .last(where: modifierLookup)
         else {
             throw InspectionError.modifierNotFound(
-                parent: Inspector.typeName(value: content.view), modifier: call)
+                parent: Inspector.typeName(value: self.view), modifier: call)
         }
         return modifier
     }

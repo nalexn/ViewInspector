@@ -98,7 +98,8 @@ extension ViewType.Traverse {
     static private(set) var index: [String: [ViewIdentity]] = {
         let identities: [ViewIdentity] = [
             .init(ViewType.AnyView.self), .init(ViewType.Group.self),
-            .init(ViewType.Text.self), .init(ViewType.EmptyView.self)
+            .init(ViewType.Text.self), .init(ViewType.EmptyView.self),
+            .init(ViewType.HStack.self),
         ]
         var index = [String: [ViewIdentity]](minimumCapacity: 27) // alphabet + empty string
         identities.forEach { identity in
@@ -134,7 +135,11 @@ extension ViewType.Traverse {
             builder = { content, parent, index in
                 try InspectableView<T>.init(content, parent: parent, index: index)
             }
-            self.descendants = descendants
+            self.descendants = { parent in
+                let children = try descendants(parent)
+                let modifiers = parent.content.modifierDescendants(parent: parent)
+                return children + modifiers
+            }
         }
         
         init<T>(_ type: T.Type) where T: KnownViewType, T: SingleViewContent {
@@ -169,6 +174,45 @@ extension ViewType.Traverse {
         
         init<T>(_ type: T.Type) where T: KnownViewType {
             self.init(type, descendants: { _ in .empty })
+        }
+    }
+}
+
+// MARK: - ModifierIdentity
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.Traverse {
+    
+    static private(set) var modifierIdentities: [ModifierIdentity] = [
+        .init(name: "_OverlayModifier", builder: { parent in
+            try parent.content.overlay(parent: parent)
+        }),
+        .init(name: "_BackgroundModifier", builder: { parent in
+            try parent.content.background(parent: parent)
+        }),
+        .init(name: "_MaskEffect", builder: { parent in
+            try parent.content.mask(parent: parent)
+        })
+    ]
+    
+    struct ModifierIdentity {
+        let name: String
+        let builder: (UnwrappedView) throws -> UnwrappedView
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    
+    func modifierDescendants(parent: UnwrappedView) -> LazyGroup<UnwrappedView> {
+        let modifierNames = self.modifiers
+                .compactMap { $0 as? ModifierNameProvider }
+                .map { $0.modifierType }
+        let identities = ViewType.Traverse.modifierIdentities.filter({ identity -> Bool in
+            modifierNames.contains(where: { $0.hasPrefix(identity.name) })
+        })
+        return .init(count: identities.count) { index -> UnwrappedView in
+            try identities[index].builder(parent)
         }
     }
 }

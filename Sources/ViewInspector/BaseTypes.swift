@@ -121,6 +121,16 @@ public struct LazyGroup<T> {
     static var empty: Self {
         return .init(count: 0) { _ in fatalError() }
     }
+    
+    static func + (lhs: LazyGroup, rhs: LazyGroup) -> LazyGroup {
+        return .init(count: lhs.count + rhs.count) { index -> T in
+            if index < lhs.count {
+                return try lhs.element(at: index)
+            } else {
+                return try rhs.element(at: index - lhs.count)
+            }
+        }
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
