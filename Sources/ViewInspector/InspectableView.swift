@@ -12,7 +12,16 @@ public struct InspectableView<View> where View: KnownViewType {
                   call: String = #function, index: Int? = nil) throws {
         let parentView: UnwrappedView? = (parent is InspectableView<ViewType.ParentView>)
             ? parent?.parentView : parent
-        let content = try parentView?.traverseIfNeeded(content: content, View.self) ?? content
+        if let view = try parentView?.traverseIfNeeded(content: content, View.self) {
+            try self.init(content: view.content, parent: view.parentView, call: view.inspectionCall)
+            return
+        }
+        let inspectionCall = index
+            .flatMap({ call.replacingOccurrences(of: "_:", with: "\($0)") }) ?? call
+        try self.init(content: content, parent: parentView, call: inspectionCall)
+    }
+    
+    private init(content: Content, parent: UnwrappedView?, call: String) throws {
         if !View.typePrefix.isEmpty,
            Inspector.isTupleView(content.view),
            View.self != ViewType.TupleView.self {
@@ -20,9 +29,8 @@ public struct InspectableView<View> where View: KnownViewType {
                 "Unable to extract \(View.typePrefix): please specify its index inside parent view")
         }
         self.content = content
-        self.inspectionCall = index.flatMap({
-            call.replacingOccurrences(of: "_:", with: "\($0)") }) ?? call
-        self.parentView = parentView
+        self.parentView = parent
+        self.inspectionCall = call
         do {
             try Inspector.guardType(value: content.view, prefix: View.typePrefix, inspectionCall: inspectionCall)
         } catch {

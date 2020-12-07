@@ -17,7 +17,8 @@ final class TraverseTests: XCTestCase {
                     TestView().padding()
                 })
            })
-        let sut = try view.inspect().traverse().hStack().emptyView(0)
+        let sut = try view.inspect().traverse().hStack().emptyView(0).pathToRoot
+        XCTAssertEqual(sut, "")
 //        XCTAssertEqual(try sut.string(), "123")
     }
 }

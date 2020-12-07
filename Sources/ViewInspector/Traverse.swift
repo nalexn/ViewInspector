@@ -35,9 +35,10 @@ extension ViewType.Traverse: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension UnwrappedView {
     
-    internal func traverseIfNeeded<V>(content: Content, _ viewType: V.Type) throws -> Content {
+    internal func traverseIfNeeded<V>(content: Content, _ viewType: V.Type
+    ) throws -> UnwrappedView? where V: KnownViewType {
         guard let traverseParams = content.view as? ViewType.Traverse.Params
-        else { return content }
+        else { return nil }
         return try traverseParams.search(for: viewType)
     }
 }
@@ -46,11 +47,11 @@ extension UnwrappedView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.Traverse.Params {
-    func search<V>(for viewType: V.Type) throws -> Content {
+    func search<V>(for viewType: V.Type) throws -> UnwrappedView where V: KnownViewType {
 
         var unknownViews: [Any] = []
         guard let result = parent.breadthFirstSearch({ view in
-            guard let identity = ViewType.Traverse.identify(view.content.view) else {
+            guard let identity = ViewType.Traverse.identify(view.content) else {
                 unknownViews.append(view.content.view)
                 return nil
             }
@@ -61,28 +62,31 @@ extension ViewType.Traverse.Params {
             throw InspectionError.notSupported(
                 "Could not find view with type \(Inspector.typeName(type: viewType, prefixOnly: false))." + blockers)
         }
-        return result.content
+        return result
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension UnwrappedView {
-    func breadthFirstSearch(_ condition: (UnwrappedView) -> (ViewType.Traverse.ViewIdentity, Bool)?
-    ) -> UnwrappedView? {
-        var queue: [LazyGroup<UnwrappedView>] = []
-        queue.append(.init(count: 1, { _ in self }))
+    
+    typealias ViewIdentity = ViewType.Traverse.ViewIdentity
+    func breadthFirstSearch(_ condition: (UnwrappedView) -> (ViewIdentity, Bool)?) -> UnwrappedView? {
+        var queue: [(isSingle: Bool, children: LazyGroup<UnwrappedView>)] = []
+        queue.append((true, .init(count: 1, { _ in self })))
         while !queue.isEmpty {
-            let group = queue.remove(at: 0)
-            for pair in group.enumerated() {
+            let (isSingle, children) = queue.remove(at: 0)
+            for pair in children.enumerated() {
                 let view = pair.element
+                let index = (isSingle && pair.offset == 0) ? nil : pair.offset
                 guard let (identity, result) = condition(view),
-                      let instance = try? identity.builder(view.content, view.parentView, pair.offset)
+                      let instance = try? identity.builder(view.content, view.parentView, index)
                 else { continue }
                 if result {
                     return instance
                 }
-                if let descendants = try? identity.descendants(view) {
-                    queue.append(descendants)
+                if let descendants = try? identity.descendants(instance) {
+                    let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1
+                    queue.append((isSingle, descendants))
                 }
             }
         }
@@ -111,10 +115,13 @@ extension ViewType.Traverse {
         return index
     }()
     
-    static func identify(_ view: Any) -> ViewIdentity? {
-        let typePrefix = Inspector.typeName(value: view, prefixOnly: true)
-        return index[String(typePrefix.prefix(1))]?
-            .first(where: { $0.viewType.typePrefix == typePrefix })
+    static func identify(_ content: Content) -> ViewIdentity? {
+        let typePrefix = Inspector.typeName(value: content.view, prefixOnly: true)
+        if let identity = index[String(typePrefix.prefix(1))]?
+            .first(where: { $0.viewType.typePrefix == typePrefix }) {
+            return identity
+        }
+        return nil
     }
 }
 
@@ -129,11 +136,16 @@ extension ViewType.Traverse {
         let descendants: (UnwrappedView) throws -> LazyGroup<UnwrappedView>
         
         private init<T>(_ type: T.Type,
+                        call: String?,
                         descendants: @escaping (UnwrappedView) throws -> LazyGroup<UnwrappedView>
         ) where T: KnownViewType {
             viewType = type
+            let callWithIndex: (Int?) -> String = { index in
+                let base = call ?? (type.typePrefix.prefix(1).lowercased() + type.typePrefix.dropFirst())
+                return base + (index.flatMap({ "(\($0))" }) ?? "()")
+            }
             builder = { content, parent, index in
-                try InspectableView<T>.init(content, parent: parent, index: index)
+                try InspectableView<T>.init(content, parent: parent, call: callWithIndex(index), index: index)
             }
             self.descendants = { parent in
                 let children = try descendants(parent)
@@ -142,8 +154,9 @@ extension ViewType.Traverse {
             }
         }
         
-        init<T>(_ type: T.Type) where T: KnownViewType, T: SingleViewContent {
-            self.init(type, descendants: { parent in
+        init<T>(_ type: T.Type, call: String? = nil
+        ) where T: KnownViewType, T: SingleViewContent {
+            self.init(type, call: call, descendants: { parent in
                 let view = try T.child(parent.content)
                 return .init(count: 1) { _ in
                     try InspectableView<ViewType.ClassifiedView>(
@@ -152,8 +165,9 @@ extension ViewType.Traverse {
             })
         }
         
-        init<T>(_ type: T.Type) where T: KnownViewType, T: MultipleViewContent {
-            self.init(type, descendants: { parent in
+        init<T>(_ type: T.Type, call: String? = nil
+        ) where T: KnownViewType, T: MultipleViewContent {
+            self.init(type, call: call, descendants: { parent in
                 let viewes = try T.children(parent.content)
                 return .init(count: viewes.count) { index in
                     try InspectableView<ViewType.ClassifiedView>(
@@ -162,8 +176,9 @@ extension ViewType.Traverse {
             })
         }
         
-        init<T>(_ type: T.Type) where T: KnownViewType, T: SingleViewContent, T: MultipleViewContent {
-            self.init(type, descendants: { parent in
+        init<T>(_ type: T.Type, call: String? = nil
+        ) where T: KnownViewType, T: SingleViewContent, T: MultipleViewContent {
+            self.init(type, call: call, descendants: { parent in
                 let viewes = try T.children(parent.content)
                 return .init(count: viewes.count) { index in
                     try InspectableView<ViewType.ClassifiedView>(
@@ -172,8 +187,8 @@ extension ViewType.Traverse {
             })
         }
         
-        init<T>(_ type: T.Type) where T: KnownViewType {
-            self.init(type, descendants: { _ in .empty })
+        init<T>(_ type: T.Type, call: String? = nil) where T: KnownViewType {
+            self.init(type, call: call, descendants: { _ in .empty })
         }
     }
 }
