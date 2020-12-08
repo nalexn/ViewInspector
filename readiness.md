@@ -2,6 +2,8 @@
 
 This document reflects the current status of the [ViewInspector](https://github.com/nalexn/ViewInspector) framework: which `Views` and `Modifiers` are available for inspection.
 
+Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) for helping me prioritize the work on a specific APIs.
+
 ### Denotations
 
 | Status | Meaning |
@@ -70,7 +72,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
 |:white_check_mark:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
-|:technologist:| SceneKit | |
+|:technologist:| SceneView | |
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
