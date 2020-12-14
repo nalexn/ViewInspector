@@ -170,6 +170,9 @@ This one works for a more complex test scenarios where we want to inspect the vi
 Here is a code snippet that you need to include in the **build** target to make it work:
 
 ```swift
+import Combine
+import SwiftUI
+
 internal final class Inspection<V> where V: View {
 
     let notice = PassthroughSubject<UInt, Never>()
