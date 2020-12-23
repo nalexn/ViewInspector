@@ -5,6 +5,8 @@ public extension ViewType {
     
     struct View<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String {
+            guard T.self != TraverseStubView.self
+            else { return "" }
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
     }
@@ -16,7 +18,14 @@ public extension ViewType {
 extension ViewType.View: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
-        let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
+        return try content.extractCustomView()
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    func extractCustomView() throws -> Content {
+        let inspectable = try Inspector.cast(value: self.view, type: Inspectable.self)
         return try Inspector.unwrap(view: try inspectable.extractContent(), modifiers: [])
     }
 }

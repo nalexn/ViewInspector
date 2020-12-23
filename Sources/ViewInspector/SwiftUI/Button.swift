@@ -28,14 +28,26 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.Button: SearchBranchViewContent {
+    static func nonStandardChildren(_ content: Content) throws -> LazyGroup<Content> {
+        return .init(count: 1) { _ -> Content in
+            let child = try Inspector.attribute(label: "_label", value: content.view)
+            return try Inspector.unwrap(content: Content(child))
+        }
+    }
+}
+
 // MARK: - Custom Attributes
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Button {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "_label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        let label = try View.nonStandardChildren(content).element(at: 0)
+        return try .init(label, parent: self)
     }
     
     @available(*, deprecated, message: "Please use .labelView().text() instead")

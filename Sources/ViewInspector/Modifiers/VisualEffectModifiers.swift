@@ -135,11 +135,11 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     func mask(parent: UnwrappedView) throws -> InspectableView<ViewType.ClassifiedView> {
-        let (rootView, actualParent) = try modifierAttribute(
+        let rootView = try modifierAttribute(
             modifierName: "_MaskEffect", path: "modifier|mask",
             type: Any.self, call: "mask")
         return try .init(try Inspector.unwrap(content: Content(rootView)),
-                         parent: actualParent ?? parent, call: "mask()")
+                         parent: parent, call: "mask()")
     }
 }
 

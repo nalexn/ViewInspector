@@ -54,18 +54,18 @@ public extension InspectableView {
 internal extension Content {
     
     func overlay(parent: UnwrappedView) throws -> InspectableView<ViewType.ClassifiedView> {
-        let (rootView, actualParent) = try modifierAttribute(
+        let rootView = try modifierAttribute(
             modifierName: "_OverlayModifier", path: "modifier|overlay",
             type: Any.self, call: "overlay")
         return try .init(try Inspector.unwrap(content: Content(rootView)),
-                         parent: actualParent ?? parent, call: "overlay()")
+                         parent: parent, call: "overlay()")
     }
     
     func background(parent: UnwrappedView) throws -> InspectableView<ViewType.ClassifiedView> {
-        let (rootView, actualParent) = try modifierAttribute(
+        let rootView = try modifierAttribute(
             modifierName: "_BackgroundModifier", path: "modifier|background",
             type: Any.self, call: "background")
         return try .init(try Inspector.unwrap(content: Content(rootView)),
-                         parent: actualParent ?? parent, call: "background()")
+                         parent: parent, call: "background()")
     }
 }

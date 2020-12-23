@@ -1,89 +1,117 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension ViewType {
-    
-    struct Traverse: KnownViewType {
-        public static var typePrefix: String = ""
-    }
+internal protocol SearchBranchViewContent {
+    static func nonStandardChildren(_ content: Content) throws -> LazyGroup<Content>
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension ViewType.Traverse {
-    struct Params {
-        let parent: UnwrappedView
-    }
-}
+// MARK: - Public search API
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
-    func traverse() throws -> InspectableView<ViewType.Traverse> {
-        return try .init(Content(ViewType.Traverse.Params(parent: self)), parent: nil)
-    }
-}
-
-// MARK: - Double dispatch
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.Traverse: SingleViewContent {
     
-    public static func child(_ content: Content) throws -> Content {
-        return content
+    func find(text: String) throws -> InspectableView<ViewType.Text> {
+        return try find(textWhere: { value, _ in value == text })
     }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension UnwrappedView {
     
-    internal func traverseIfNeeded<V>(content: Content, _ viewType: V.Type
-    ) throws -> UnwrappedView? where V: KnownViewType {
-        guard let traverseParams = content.view as? ViewType.Traverse.Params
-        else { return nil }
-        let notFound = "Could not find view with type \(Inspector.typeName(type: viewType, prefixOnly: false))."
-        return try traverseParams.search(notFound: notFound) { identity, view -> Bool in
-            return identity.viewType == viewType
+    func find(textWhere condition: (String, ViewType.Text.Attributes) throws -> Bool
+    ) throws -> InspectableView<ViewType.Text> {
+        return try find(ViewType.Text.self, where: {
+            try condition(try $0.string(), try $0.attributes())
+        })
+    }
+    
+    func find(viewWithId id: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
+        return try find { try $0.id() == id }
+    }
+    
+    func find(viewWithTag tag: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
+        return try find { try $0.tag() == tag }
+    }
+    
+    func find<T>(_ viewType: T.Type,
+                 relation: ViewSearch.Relation = .child,
+                 where condition: (InspectableView<T>) throws -> Bool = { _ in true }
+    ) throws -> InspectableView<T> where T: KnownViewType {
+        let view = try find(relation: relation, where: { view -> Bool in
+            guard let typedView = try? view.asInspectableView(ofType: T.self)
+            else { return false }
+            return (try? condition(typedView)) == true
+        })
+        return try view.asInspectableView(ofType: T.self)
+    }
+    
+    func findAll<T>(_ viewType: T.Type,
+                    where condition: (InspectableView<T>) throws -> Bool = { _ in true }
+    ) -> [InspectableView<T>] where T: KnownViewType {
+        return findAll(where: { view in
+            guard let typedView = try? view.asInspectableView(ofType: T.self)
+            else { return false }
+            return (try? condition(typedView)) == true
+        }).compactMap({ try? $0.asInspectableView(ofType: T.self) })
+    }
+    
+    func find(relation: ViewSearch.Relation = .child,
+              where condition: ViewSearch.Condition
+    ) throws -> InspectableView<ViewType.ClassifiedView> {
+        switch relation {
+        case .child:
+            return try findChild(condition: condition)
+        case .parent:
+            return try findParent(condition: condition)
         }
     }
-}
-
-// MARK: - Lookup
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.Traverse.Params {
-    func search(notFound: String, _ condition: (ViewIdentity, UnwrappedView) -> Bool) throws -> UnwrappedView {
-
-        var unknownViews: [Any] = []
-        guard let result = parent.breadthFirstSearch({ view in
-            guard let identity = ViewType.Traverse.identify(view.content) else {
-                unknownViews.append(view.content.view)
-                return nil
-            }
-            return (identity, condition(identity, view))
-        }) else {
-            let blockers = unknownViews.count == 0 ? "" :
-                " Possible blockers: \(unknownViews.map({ Inspector.typeName(value: $0, prefixOnly: false) }))"
-            throw InspectionError.notSupported(notFound + blockers)
-        }
-        return result
+    
+    func findAll(where condition: ViewSearch.Condition) -> [InspectableView<ViewType.ClassifiedView>] {
+        return depthFirstFullTraversal(condition)
+            .compactMap { try? $0.asInspectableView() }
     }
 }
+
+// MARK: - Search
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension UnwrappedView {
     
-    func breadthFirstSearch(_ condition: (UnwrappedView) -> (ViewIdentity, Bool)?) -> UnwrappedView? {
+    func findParent(condition: ViewSearch.Condition) throws -> InspectableView<ViewType.ClassifiedView> {
+        var current = parentView
+        while let parent = try? current?.asInspectableView() {
+            if (try? condition(parent)) == true {
+                return parent
+            }
+            current = parent.parentView
+        }
+        throw InspectionError.notSupported("Search did not find a match")
+    }
+    
+    func findChild(condition: ViewSearch.Condition) throws -> InspectableView<ViewType.ClassifiedView> {
+        var unknownViews: [Any] = []
+        guard let result = breadthFirstSearch(condition, identificationFailure: { content in
+            unknownViews.append(content.view)
+        }) else {
+            let blockers = unknownViews.count == 0 ? "" :
+                ". Possible blockers: \(unknownViews.map({ Inspector.typeName(value: $0, prefixOnly: false) }))"
+            throw InspectionError.notSupported("Search did not find a match" + blockers)
+        }
+        return try result.asInspectableView()
+    }
+    
+    func breadthFirstSearch(_ condition: ViewSearch.Condition,
+                            identificationFailure: (Content) -> Void) -> UnwrappedView? {
         var queue: [(isSingle: Bool, children: LazyGroup<UnwrappedView>)] = []
         queue.append((true, .init(count: 1, { _ in self })))
         while !queue.isEmpty {
             let (isSingle, children) = queue.remove(at: 0)
-            for pair in children.enumerated() {
-                let view = pair.element
-                let index = (isSingle && pair.offset == 0) ? nil : pair.offset
-                guard let (identity, result) = condition(view),
+            for (offset, view) in children.enumerated() {
+                if (try? condition(try view.asInspectableView())) == true {
+                    return view
+                }
+                let index = (isSingle && offset == 0) ? nil : offset
+                guard let identity = ViewSearch.identify(view.content),
                       let instance = try? identity.builder(view.content, view.parentView, index)
-                else { continue }
-                if result {
-                    return instance
+                else {
+                    identificationFailure(view.content)
+                    continue
                 }
                 if let descendants = try? identity.descendants(instance) {
                     let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1
@@ -93,18 +121,50 @@ private extension UnwrappedView {
         }
         return nil
     }
+    
+    func depthFirstFullTraversal(isSingle: Bool = true, offset: Int = 0, _ condition: ViewSearch.Condition) -> [UnwrappedView] {
+        
+        var current: [UnwrappedView] = []
+        if (try? condition(try self.asInspectableView())) == true {
+            current.append(self)
+        }
+        
+        let index = (isSingle && offset == 0) ? nil : offset
+        guard let identity = ViewSearch.identify(self.content),
+              let instance = try? identity.builder(self.content, self.parentView, index),
+              let descendants = try? identity.descendants(instance)
+        else { return current }
+        
+        let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1
+        
+        let joined = [current] + descendants.enumerated().map({ offset, child in
+            child.depthFirstFullTraversal(isSingle: isSingle, offset: offset, condition)
+        })
+        return joined.flatMap { $0 }
+    }
+}
+
+// MARK: - Search namespace and types
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public struct ViewSearch {
+    public enum Relation {
+        case child
+        case parent
+    }
+    public typealias Condition = (InspectableView<ViewType.ClassifiedView>) throws -> Bool
 }
 
 // MARK: - Index
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.Traverse {
+internal extension ViewSearch {
     
     static private(set) var index: [String: [ViewIdentity]] = {
         let identities: [ViewIdentity] = [
             .init(ViewType.AnyView.self), .init(ViewType.Group.self),
             .init(ViewType.Text.self), .init(ViewType.EmptyView.self),
-            .init(ViewType.HStack.self),
+            .init(ViewType.HStack.self), .init(ViewType.Button.self)
         ]
         var index = [String: [ViewIdentity]](minimumCapacity: 27) // alphabet + empty string
         identities.forEach { identity in
@@ -122,6 +182,9 @@ extension ViewType.Traverse {
             .first(where: { $0.viewType.typePrefix == typePrefix }) {
             return identity
         }
+        if (try? content.extractCustomView()) != nil {
+            return .init(ViewType.View<TraverseStubView>.self)
+        }
         return nil
     }
 }
@@ -129,10 +192,7 @@ extension ViewType.Traverse {
 // MARK: - ViewIdentity
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal typealias ViewIdentity = ViewType.Traverse.ViewIdentity
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.Traverse {
+internal extension ViewSearch {
     
     struct ViewIdentity {
         let viewType: KnownViewType.Type
@@ -200,7 +260,7 @@ extension ViewType.Traverse {
 // MARK: - ModifierIdentity
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.Traverse {
+internal extension ViewSearch {
     
     static private(set) var modifierIdentities: [ModifierIdentity] = [
         .init(name: "_OverlayModifier", builder: { parent in
@@ -227,11 +287,18 @@ internal extension Content {
         let modifierNames = self.modifiers
                 .compactMap { $0 as? ModifierNameProvider }
                 .map { $0.modifierType }
-        let identities = ViewType.Traverse.modifierIdentities.filter({ identity -> Bool in
+        let identities = ViewSearch.modifierIdentities.filter({ identity -> Bool in
             modifierNames.contains(where: { $0.hasPrefix(identity.name) })
         })
         return .init(count: identities.count) { index -> UnwrappedView in
             try identities[index].builder(parent)
         }
     }
+}
+
+// MARK: - TraverseStubView
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal struct TraverseStubView: View, Inspectable {
+    var body: some View { EmptyView() }
 }

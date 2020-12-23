@@ -1,0 +1,73 @@
+import XCTest
+import Combine
+import SwiftUI
+
+@testable import ViewInspector
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+final class ViewSearchTests: XCTestCase {
+    
+    private struct TestCustomView: View, Inspectable {
+        var body: some View {
+            Button(action: { }, label: {
+                HStack { Text("Btn") }
+            })
+            Group {
+                Text("Test")
+            }
+        }
+    }
+    
+    private let testView = AnyView(Group {
+        EmptyView()
+            .padding()
+            .overlay(HStack {
+                EmptyView()
+                    .id("5")
+                TestCustomView()
+                    .padding(15)
+                    .tag(9)
+            })
+        Text("123")
+            .font(.footnote)
+            .tag(4)
+            .id(7)
+       })
+    
+    func testFindAll() throws {
+        XCTAssertEqual(try testView.inspect().findAll(ViewType.ZStack.self).count, 0)
+        XCTAssertEqual(try testView.inspect().findAll(ViewType.HStack.self).count, 2)
+        XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self).map({ try $0.string() }),
+                       ["Btn", "Test", "123"])
+        XCTAssertEqual(try testView.inspect().findAll(ViewType.View<TestCustomView>.self).count, 1)
+        XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self, where: {
+            try $0.string() == "Test"
+        }).count, 1)
+    }
+    
+    func testFindText() throws {
+        XCTAssertNoThrow(try testView.inspect().find(text: "123"))
+        XCTAssertNoThrow(try testView.inspect().find(text: "Test"))
+        XCTAssertNoThrow(try testView.inspect().find(text: "Btn"))
+        XCTAssertEqual(try testView.inspect().find(
+            textWhere: { _, attr -> Bool in
+                try attr.font() == .footnote
+            }).string(), "123")
+        XCTAssertThrows(try testView.inspect().find(text: "unknown"),
+                        "Search did not find a match")
+    }
+    
+    func testFindViewWithId() throws {
+        XCTAssertNoThrow(try testView.inspect().find(viewWithId: "5").emptyView())
+        XCTAssertNoThrow(try testView.inspect().find(viewWithId: 7).text())
+        XCTAssertThrows(try testView.inspect().find(viewWithId: 0),
+                        "Search did not find a match")
+    }
+    
+    func testFindViewWithTag() throws {
+        XCTAssertNoThrow(try testView.inspect().find(viewWithTag: 4).text())
+        XCTAssertNoThrow(try testView.inspect().find(viewWithTag: 9).view(TestCustomView.self))
+        XCTAssertThrows(try testView.inspect().find(viewWithTag: 0),
+                        "Search did not find a match")
+    }
+}

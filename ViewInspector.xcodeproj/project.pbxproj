@@ -83,8 +83,8 @@
 		F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057EE238DBA800029D9BA /* EmptyView.swift */; };
 		F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057F0238DBB120029D9BA /* EmptyViewTests.swift */; };
 		F64057F3238E9F600029D9BA /* OptionalViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64057F2238E9F600029D9BA /* OptionalViewTests.swift */; };
-		F64105C4257BF9A70033D82D /* Traverse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64105C3257BF9A70033D82D /* Traverse.swift */; };
-		F64105CE257C3E1F0033D82D /* TraverseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64105CD257C3E1F0033D82D /* TraverseTests.swift */; };
+		F64105C4257BF9A70033D82D /* ViewSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64105C3257BF9A70033D82D /* ViewSearch.swift */; };
+		F64105CE257C3E1F0033D82D /* ViewSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64105CD257C3E1F0033D82D /* ViewSearchTests.swift */; };
 		F64A2C6423A3E74E00A4853A /* PresentationModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */; };
 		F64A2C6623A3F0A900A4853A /* ConfigurationModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6523A3F0A900A4853A /* ConfigurationModifiersTests.swift */; };
 		F64A2C6823A3FD3A00A4853A /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A2C6723A3FD3A00A4853A /* TreeView.swift */; };
@@ -276,8 +276,8 @@
 		F64057EE238DBA800029D9BA /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		F64057F0238DBB120029D9BA /* EmptyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewTests.swift; sourceTree = "<group>"; };
 		F64057F2238E9F600029D9BA /* OptionalViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalViewTests.swift; sourceTree = "<group>"; };
-		F64105C3257BF9A70033D82D /* Traverse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Traverse.swift; sourceTree = "<group>"; };
-		F64105CD257C3E1F0033D82D /* TraverseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraverseTests.swift; sourceTree = "<group>"; };
+		F64105C3257BF9A70033D82D /* ViewSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSearch.swift; sourceTree = "<group>"; };
+		F64105CD257C3E1F0033D82D /* ViewSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSearchTests.swift; sourceTree = "<group>"; };
 		F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationModifiersTests.swift; sourceTree = "<group>"; };
 		F64A2C6523A3F0A900A4853A /* ConfigurationModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationModifiersTests.swift; sourceTree = "<group>"; };
 		F64A2C6723A3FD3A00A4853A /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
@@ -430,7 +430,7 @@
 				F60EEBBA2382EED0007DB53A /* Inspector.swift */,
 				F60EEBBC2382EED0007DB53A /* InspectableView.swift */,
 				F60385D423D3C74B008F31BD /* InspectionEmissary.swift */,
-				F64105C3257BF9A70033D82D /* Traverse.swift */,
+				F64105C3257BF9A70033D82D /* ViewSearch.swift */,
 				F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */,
 				F68108A423A5833D00B32145 /* Modifiers */,
 				F60EEBBD2382EED0007DB53A /* SwiftUI */,
@@ -526,7 +526,7 @@
 				F60EEBE42382F004007DB53A /* BaseTypesTests.swift */,
 				F60EEBE52382F004007DB53A /* InspectorTests.swift */,
 				F60385D623D3CDED008F31BD /* InspectionEmissaryTests.swift */,
-				F64105CD257C3E1F0033D82D /* TraverseTests.swift */,
+				F64105CD257C3E1F0033D82D /* ViewSearchTests.swift */,
 				F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */,
 				F67540ED23A3D8820022AC33 /* ViewModifiers */,
 				F60EEBE62382F004007DB53A /* SwiftUI */,
@@ -847,7 +847,7 @@
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
 				F6C15A0D254A05A4000240F1 /* LazyVGrid.swift in Sources */,
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
-				F64105C4257BF9A70033D82D /* Traverse.swift in Sources */,
+				F64105C4257BF9A70033D82D /* ViewSearch.swift in Sources */,
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
 				F6DFD87C2382FB510028E84D /* EditButton.swift in Sources */,
 				F6C15AC7254EDA7B000240F1 /* TextEditor.swift in Sources */,
@@ -916,7 +916,7 @@
 				F6ECF6C223A66B42000FC591 /* GestureModifiersTests.swift in Sources */,
 				F6D933A12385B48100358E0E /* NavigationLinkTests.swift in Sources */,
 				F6C15A7B254B7555000240F1 /* OutlineGroupTests.swift in Sources */,
-				F64105CE257C3E1F0033D82D /* TraverseTests.swift in Sources */,
+				F64105CE257C3E1F0033D82D /* ViewSearchTests.swift in Sources */,
 				F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */,
 				F6C15AAD254DB0AB000240F1 /* ScrollViewReaderTests.swift in Sources */,
 				F6D933A92385E9F700358E0E /* EquatableViewTests.swift in Sources */,
