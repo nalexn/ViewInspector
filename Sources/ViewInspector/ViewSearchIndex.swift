@@ -5,7 +5,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewSearch {
     
-    static private(set) var index: [String: [ViewIdentity]] = {
+    private static var index: [String: [ViewIdentity]] = {
         let identities: [ViewIdentity] = [
             .init(ViewType.AnyView.self), .init(ViewType.Group.self),
             .init(ViewType.Text.self), .init(ViewType.EmptyView.self),
@@ -32,6 +32,13 @@ internal extension ViewSearch {
         }
         return nil
     }
+}
+
+// MARK: - TraverseStubView
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal struct TraverseStubView: View, Inspectable {
+    var body: some View { EmptyView() }
 }
 
 // MARK: - ViewIdentity
@@ -176,11 +183,4 @@ internal extension Content {
             try identities[index].builder(parent)
         }
     }
-}
-
-// MARK: - TraverseStubView
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal struct TraverseStubView: View, Inspectable {
-    var body: some View { EmptyView() }
 }
