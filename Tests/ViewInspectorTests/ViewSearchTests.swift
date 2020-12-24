@@ -32,17 +32,17 @@ final class ViewSearchTests: XCTestCase {
             .font(.footnote)
             .tag(4)
             .id(7)
+        Button("xyz", action: { })
        })
     
     func testFindAll() throws {
         XCTAssertEqual(try testView.inspect().findAll(ViewType.ZStack.self).count, 0)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.HStack.self).count, 2)
+        XCTAssertEqual(try testView.inspect().findAll(ViewType.Button.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self).map({ try $0.string() }),
-                       ["Btn", "Test", "123"])
+                       ["Btn", "Test", "123", "xyz"])
         XCTAssertEqual(try testView.inspect().findAll(ViewType.View<TestCustomView>.self).count, 1)
-        XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self, where: {
-            try $0.string() == "Test"
-        }).count, 1)
+        XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 1)
     }
     
     func testFindText() throws {
@@ -54,6 +54,13 @@ final class ViewSearchTests: XCTestCase {
                 try attr.font() == .footnote
             }).string(), "123")
         XCTAssertThrows(try testView.inspect().find(text: "unknown"),
+                        "Search did not find a match")
+    }
+    
+    func testFindButton() throws {
+        XCTAssertNoThrow(try testView.inspect().find(button: "Btn"))
+        XCTAssertNoThrow(try testView.inspect().find(button: "xyz"))
+        XCTAssertThrows(try testView.inspect().find(button: "unknown"),
                         "Search did not find a match")
     }
     

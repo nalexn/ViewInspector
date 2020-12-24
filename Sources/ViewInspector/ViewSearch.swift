@@ -27,6 +27,14 @@ public extension InspectableView {
         })
     }
     
+    func find(button: String) throws -> InspectableView<ViewType.Button> {
+        let buttonType = ViewType.Button.self
+        return try find(ViewType.Text.self, where: { text in
+            (try? text.string()) == button &&
+            (try? text.find(buttonType, relation: .parent)) != nil
+        }).find(buttonType, relation: .parent)
+    }
+    
     func find(viewWithId id: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
         return try find { try $0.id() == id }
     }
@@ -47,16 +55,6 @@ public extension InspectableView {
         return try view.asInspectableView(ofType: T.self)
     }
     
-    func findAll<T>(_ viewType: T.Type,
-                    where condition: (InspectableView<T>) throws -> Bool = { _ in true }
-    ) -> [InspectableView<T>] where T: KnownViewType {
-        return findAll(where: { view in
-            guard let typedView = try? view.asInspectableView(ofType: T.self)
-            else { return false }
-            return (try? condition(typedView)) == true
-        }).compactMap({ try? $0.asInspectableView(ofType: T.self) })
-    }
-    
     func find(relation: ViewSearch.Relation = .child,
               where condition: ViewSearch.Condition
     ) throws -> InspectableView<ViewType.ClassifiedView> {
@@ -66,6 +64,16 @@ public extension InspectableView {
         case .parent:
             return try findParent(condition: condition)
         }
+    }
+    
+    func findAll<T>(_ viewType: T.Type,
+                    where condition: (InspectableView<T>) throws -> Bool = { _ in true }
+    ) -> [InspectableView<T>] where T: KnownViewType {
+        return findAll(where: { view in
+            guard let typedView = try? view.asInspectableView(ofType: T.self)
+            else { return false }
+            return (try? condition(typedView)) == true
+        }).compactMap({ try? $0.asInspectableView(ofType: T.self) })
     }
     
     func findAll(where condition: ViewSearch.Condition) -> [InspectableView<ViewType.ClassifiedView>] {
