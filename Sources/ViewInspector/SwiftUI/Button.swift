@@ -31,8 +31,8 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.Button: SearchBranchViewContent {
-    static func nonStandardChildren(_ content: Content) throws -> LazyGroup<Content> {
+extension ViewType.Button: SupplementaryChildren {
+    static func supplementaryChildren(_ content: Content) throws -> LazyGroup<Content> {
         return .init(count: 1) { _ -> Content in
             let child = try Inspector.attribute(label: "_label", value: content.view)
             return try Inspector.unwrap(content: Content(child))
@@ -46,7 +46,7 @@ extension ViewType.Button: SearchBranchViewContent {
 public extension InspectableView where View == ViewType.Button {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let label = try View.nonStandardChildren(content).element(at: 0)
+        let label = try View.supplementaryChildren(content).element(at: 0)
         return try .init(label, parent: self)
     }
     

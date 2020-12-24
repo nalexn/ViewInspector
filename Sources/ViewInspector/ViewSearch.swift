@@ -1,8 +1,14 @@
 import SwiftUI
 
+// MARK: - Search namespace and types
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal protocol SearchBranchViewContent {
-    static func nonStandardChildren(_ content: Content) throws -> LazyGroup<Content>
+public struct ViewSearch {
+    public enum Relation {
+        case child
+        case parent
+    }
+    public typealias Condition = (InspectableView<ViewType.ClassifiedView>) throws -> Bool
 }
 
 // MARK: - Public search API
@@ -122,7 +128,8 @@ private extension UnwrappedView {
         return nil
     }
     
-    func depthFirstFullTraversal(isSingle: Bool = true, offset: Int = 0, _ condition: ViewSearch.Condition) -> [UnwrappedView] {
+    func depthFirstFullTraversal(isSingle: Bool = true, offset: Int = 0,
+                                 _ condition: ViewSearch.Condition) -> [UnwrappedView] {
         
         var current: [UnwrappedView] = []
         if (try? condition(try self.asInspectableView())) == true {
@@ -142,163 +149,4 @@ private extension UnwrappedView {
         })
         return joined.flatMap { $0 }
     }
-}
-
-// MARK: - Search namespace and types
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public struct ViewSearch {
-    public enum Relation {
-        case child
-        case parent
-    }
-    public typealias Condition = (InspectableView<ViewType.ClassifiedView>) throws -> Bool
-}
-
-// MARK: - Index
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension ViewSearch {
-    
-    static private(set) var index: [String: [ViewIdentity]] = {
-        let identities: [ViewIdentity] = [
-            .init(ViewType.AnyView.self), .init(ViewType.Group.self),
-            .init(ViewType.Text.self), .init(ViewType.EmptyView.self),
-            .init(ViewType.HStack.self), .init(ViewType.Button.self)
-        ]
-        var index = [String: [ViewIdentity]](minimumCapacity: 27) // alphabet + empty string
-        identities.forEach { identity in
-            let letter = String(identity.viewType.typePrefix.prefix(1))
-            var array = index[letter] ?? []
-            array.append(identity)
-            index[letter] = array
-        }
-        return index
-    }()
-    
-    static func identify(_ content: Content) -> ViewIdentity? {
-        let typePrefix = Inspector.typeName(value: content.view, prefixOnly: true)
-        if let identity = index[String(typePrefix.prefix(1))]?
-            .first(where: { $0.viewType.typePrefix == typePrefix }) {
-            return identity
-        }
-        if (try? content.extractCustomView()) != nil {
-            return .init(ViewType.View<TraverseStubView>.self)
-        }
-        return nil
-    }
-}
-
-// MARK: - ViewIdentity
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension ViewSearch {
-    
-    struct ViewIdentity {
-        let viewType: KnownViewType.Type
-        let builder: (Content, UnwrappedView?, Int?) throws -> UnwrappedView
-        let descendants: (UnwrappedView) throws -> LazyGroup<UnwrappedView>
-        
-        private init<T>(_ type: T.Type,
-                        call: String?,
-                        descendants: @escaping (UnwrappedView) throws -> LazyGroup<UnwrappedView>
-        ) where T: KnownViewType {
-            viewType = type
-            let callWithIndex: (Int?) -> String = { index in
-                let base = call ?? (type.typePrefix.prefix(1).lowercased() + type.typePrefix.dropFirst())
-                return base + (index.flatMap({ "(\($0))" }) ?? "()")
-            }
-            builder = { content, parent, index in
-                try InspectableView<T>.init(content, parent: parent, call: callWithIndex(index), index: index)
-            }
-            self.descendants = { parent in
-                let children = try descendants(parent)
-                let modifiers = parent.content.modifierDescendants(parent: parent)
-                return children + modifiers
-            }
-        }
-        
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: SingleViewContent {
-            self.init(type, call: call, descendants: { parent in
-                let view = try T.child(parent.content)
-                return .init(count: 1) { _ in
-                    try InspectableView<ViewType.ClassifiedView>(
-                        view, parent: parent, index: nil)
-                }
-            })
-        }
-        
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: MultipleViewContent {
-            self.init(type, call: call, descendants: { parent in
-                let viewes = try T.children(parent.content)
-                return .init(count: viewes.count) { index in
-                    try InspectableView<ViewType.ClassifiedView>(
-                        try viewes.element(at: index), parent: parent, index: index)
-                }
-            })
-        }
-        
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: SingleViewContent, T: MultipleViewContent {
-            self.init(type, call: call, descendants: { parent in
-                let viewes = try T.children(parent.content)
-                return .init(count: viewes.count) { index in
-                    try InspectableView<ViewType.ClassifiedView>(
-                        try viewes.element(at: index), parent: parent, index: index)
-                }
-            })
-        }
-        
-        init<T>(_ type: T.Type, call: String? = nil) where T: KnownViewType {
-            self.init(type, call: call, descendants: { _ in .empty })
-        }
-    }
-}
-
-// MARK: - ModifierIdentity
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension ViewSearch {
-    
-    static private(set) var modifierIdentities: [ModifierIdentity] = [
-        .init(name: "_OverlayModifier", builder: { parent in
-            try parent.content.overlay(parent: parent)
-        }),
-        .init(name: "_BackgroundModifier", builder: { parent in
-            try parent.content.background(parent: parent)
-        }),
-        .init(name: "_MaskEffect", builder: { parent in
-            try parent.content.mask(parent: parent)
-        })
-    ]
-    
-    struct ModifierIdentity {
-        let name: String
-        let builder: (UnwrappedView) throws -> UnwrappedView
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension Content {
-    
-    func modifierDescendants(parent: UnwrappedView) -> LazyGroup<UnwrappedView> {
-        let modifierNames = self.modifiers
-                .compactMap { $0 as? ModifierNameProvider }
-                .map { $0.modifierType }
-        let identities = ViewSearch.modifierIdentities.filter({ identity -> Bool in
-            modifierNames.contains(where: { $0.hasPrefix(identity.name) })
-        })
-        return .init(count: identities.count) { index -> UnwrappedView in
-            try identities[index].builder(parent)
-        }
-    }
-}
-
-// MARK: - TraverseStubView
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal struct TraverseStubView: View, Inspectable {
-    var body: some View { EmptyView() }
 }

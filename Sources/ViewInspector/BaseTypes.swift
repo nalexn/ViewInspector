@@ -23,6 +23,11 @@ public protocol MultipleViewContent {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol SupplementaryChildren {
+    static func supplementaryChildren(_ content: Content) throws -> LazyGroup<Content>
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol KnownViewType {
     static var typePrefix: String { get }
 }

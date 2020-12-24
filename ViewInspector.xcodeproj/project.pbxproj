@@ -93,6 +93,7 @@
 		F64C4E30250CD71400A69FF9 /* ColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64C4E2F250CD71400A69FF9 /* ColorTests.swift */; };
 		F653BDE3255698A6001FA688 /* TupleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653BDE2255698A6001FA688 /* TupleView.swift */; };
 		F653BDED25569D2E001FA688 /* TupleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653BDEC25569D2E001FA688 /* TupleViewTests.swift */; };
+		F660849B2594AA6800AF59A2 /* ViewSearchIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F660849A2594AA6700AF59A2 /* ViewSearchIndex.swift */; };
 		F6684BEE23AA4CF400DECCB3 /* MenuButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */; };
 		F6684BF023AA504500DECCB3 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BEF23AA504500DECCB3 /* MenuButton.swift */; };
 		F6684BF223AA554500DECCB3 /* PasteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684BF123AA554500DECCB3 /* PasteButton.swift */; };
@@ -286,6 +287,7 @@
 		F64C4E2F250CD71400A69FF9 /* ColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTests.swift; sourceTree = "<group>"; };
 		F653BDE2255698A6001FA688 /* TupleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TupleView.swift; sourceTree = "<group>"; };
 		F653BDEC25569D2E001FA688 /* TupleViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TupleViewTests.swift; sourceTree = "<group>"; };
+		F660849A2594AA6700AF59A2 /* ViewSearchIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSearchIndex.swift; sourceTree = "<group>"; };
 		F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonTests.swift; sourceTree = "<group>"; };
 		F6684BEF23AA504500DECCB3 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		F6684BF123AA554500DECCB3 /* PasteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteButton.swift; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 				F60EEBBC2382EED0007DB53A /* InspectableView.swift */,
 				F60385D423D3C74B008F31BD /* InspectionEmissary.swift */,
 				F64105C3257BF9A70033D82D /* ViewSearch.swift */,
+				F660849A2594AA6700AF59A2 /* ViewSearchIndex.swift */,
 				F6D58B9223C4A0F3000CEE3B /* ViewHosting.swift */,
 				F68108A423A5833D00B32145 /* Modifiers */,
 				F60EEBBD2382EED0007DB53A /* SwiftUI */,
@@ -797,6 +800,7 @@
 			files = (
 				F60EEBCE2382EED0007DB53A /* BaseTypes.swift in Sources */,
 				F60EEBD22382EED0007DB53A /* Image.swift in Sources */,
+				F660849B2594AA6800AF59A2 /* ViewSearchIndex.swift in Sources */,
 				F63E926A249FCF92005861F0 /* TransformingModifiers.swift in Sources */,
 				F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */,
 				F6119FD62549EECC0000C54A /* Label.swift in Sources */,
