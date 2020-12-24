@@ -11,10 +11,9 @@ final class ViewSearchTests: XCTestCase {
         var body: some View {
             Button(action: { }, label: {
                 HStack { Text("Btn") }
-            })
-            Group {
+            }).mask(Group {
                 Text("Test")
-            }
+            })
         }
     }
     
@@ -32,7 +31,7 @@ final class ViewSearchTests: XCTestCase {
             .font(.footnote)
             .tag(4)
             .id(7)
-        Button("xyz", action: { })
+            .background(Button("xyz", action: { }))
        })
     
     func testFindAll() throws {
@@ -49,6 +48,7 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertNoThrow(try testView.inspect().find(text: "123"))
         XCTAssertNoThrow(try testView.inspect().find(text: "Test"))
         XCTAssertNoThrow(try testView.inspect().find(text: "Btn"))
+        XCTAssertNoThrow(try testView.inspect().find(text: "xyz"))
         XCTAssertEqual(try testView.inspect().find(
             textWhere: { _, attr -> Bool in
                 try attr.font() == .footnote

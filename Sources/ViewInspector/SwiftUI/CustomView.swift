@@ -35,8 +35,7 @@ extension ViewType.View: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
-        return try Inspector.viewsInContainer(view: try inspectable.extractContent(),
-                                              resetModifiersForSingleChild: true)
+        return try Inspector.viewsInContainer(view: try inspectable.extractContent())
     }
 }
 
