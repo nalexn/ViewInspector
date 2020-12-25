@@ -80,6 +80,7 @@ internal extension ViewSearch {
     struct ViewIdentity {
         
         typealias ChildrenBuilder = (UnwrappedView) throws -> LazyGroup<UnwrappedView>
+        typealias SupplementaryBuilder = (UnwrappedView) throws -> LazyGroup<SupplementaryView>
         
         let viewType: KnownViewType.Type
         let builder: (Content, UnwrappedView?, Int?) throws -> UnwrappedView
@@ -94,7 +95,7 @@ internal extension ViewSearch {
         private init<T>(_ type: T.Type,
                         call: String?,
                         children: @escaping ChildrenBuilder = { _ in .empty },
-                        supplementary: @escaping ChildrenBuilder = { _ in .empty }
+                        supplementary: @escaping SupplementaryBuilder = { _ in .empty }
         ) where T: KnownViewType {
             viewType = type
             let callWithIndex: (Int?) -> String = { index in
@@ -106,10 +107,16 @@ internal extension ViewSearch {
                 return base + (index.flatMap({ "(\($0))" }) ?? "()")
             }
             builder = { content, parent, index in
-                try InspectableView<T>.init(content, parent: parent, call: callWithIndex(index), index: index)
+                try InspectableView<T>(content, parent: parent, call: callWithIndex(index), index: index)
             }
             self.children = children
-            self.supplementary = supplementary
+            self.supplementary = { parent in
+                let descendants = try supplementary(parent)
+                return .init(count: descendants.count) { index -> UnwrappedView in
+                    let view = try descendants.element(at: index)
+                    return try InspectableView<ViewType.ClassifiedView>(view.content, parent: view)
+                }
+            }
             self.modifiers = { parent in
                 return parent.content.modifierDescendants(parent: parent)
             }
@@ -127,7 +134,7 @@ internal extension ViewSearch {
             self.init(type, call: call, children: { parent in
                 try T.child(parent.content).descendants(parent)
             }, supplementary: { parent in
-                try T.supplementaryChildren(parent.content).descendants(parent, indexed: false)
+                try T.supplementaryChildren(parent)
             })
         }
         
@@ -143,7 +150,7 @@ internal extension ViewSearch {
             self.init(type, call: call, children: { parent in
                 try T.children(parent.content).descendants(parent, indexed: true)
             }, supplementary: { parent in
-                try T.supplementaryChildren(parent.content).descendants(parent, indexed: false)
+                try T.supplementaryChildren(parent)
             })
         }
         
@@ -159,7 +166,7 @@ internal extension ViewSearch {
             self.init(type, call: call, children: { parent in
                 try T.children(parent.content).descendants(parent, indexed: true)
             }, supplementary: { parent in
-                try T.supplementaryChildren(parent.content).descendants(parent, indexed: false)
+                try T.supplementaryChildren(parent)
             })
         }
         
@@ -169,7 +176,7 @@ internal extension ViewSearch {
         
         init<T>(_ type: T.Type, call: String? = nil) where T: KnownViewType, T: SupplementaryChildren {
             self.init(type, call: call, supplementary: { parent in
-                try T.supplementaryChildren(parent.content).descendants(parent, indexed: false)
+                try T.supplementaryChildren(parent)
             })
         }
         

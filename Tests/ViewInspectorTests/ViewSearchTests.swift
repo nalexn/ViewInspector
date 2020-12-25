@@ -39,7 +39,7 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertEqual(try testView.inspect().findAll(ViewType.HStack.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Button.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self).map({ try $0.string() }),
-                       ["Btn", "Test", "123", "xyz"])
+                       ["Test", "Btn", "123", "xyz"])
         XCTAssertEqual(try testView.inspect().findAll(ViewType.View<TestCustomView>.self).count, 1)
         XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 1)
     }
@@ -52,8 +52,13 @@ final class ViewSearchTests: XCTestCase {
         anyView().group().emptyView(0).overlay().hStack()\
         .view(TestCustomView.self, 1).button().mask().group().text(0)
         """)
-        XCTAssertNoThrow(try testView.inspect().find(text: "Btn"))
-        XCTAssertNoThrow(try testView.inspect().find(text: "xyz"))
+        XCTAssertEqual(try testView.inspect().find(text: "Btn").pathToRoot,
+        """
+        anyView().group().emptyView(0).overlay().hStack()\
+        .view(TestCustomView.self, 1).button().labelView().hStack().text(0)
+        """)
+        XCTAssertEqual(try testView.inspect().find(text: "xyz").pathToRoot,
+        "anyView().group().text(1).background().button().labelView().text()")
         XCTAssertEqual(try testView.inspect().find(
             textWhere: { _, attr -> Bool in
                 try attr.font() == .footnote

@@ -45,11 +45,8 @@ extension ViewType.DisclosureGroup: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.DisclosureGroup: SupplementaryChildren {
-    static func supplementaryChildren(_ content: Content) throws -> LazyGroup<Content> {
-        return .init(count: 1) { _ -> Content in
-            let child = try Inspector.attribute(label: "label", value: content.view)
-            return try Inspector.unwrap(content: Content(child))
-        }
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
+        return try .labelView(parent)
     }
 }
 
@@ -60,8 +57,7 @@ extension ViewType.DisclosureGroup: SupplementaryChildren {
 public extension InspectableView where View == ViewType.DisclosureGroup {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let label = try View.supplementaryChildren(content).element(at: 0)
-        return try .init(label, parent: self)
+        return try View.supplementaryChildren(self).element(at: 0)
     }
     
     func isExpanded() throws -> Bool {

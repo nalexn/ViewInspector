@@ -43,11 +43,17 @@ public extension InspectableView where View: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.Section: SupplementaryChildren {
-    static func supplementaryChildren(_ content: Content) throws -> LazyGroup<Content> {
-        return .init(count: 2) { index -> Content in
-            let label = index == 0 ? "header" : "footer"
-            let child = try Inspector.attribute(label: label, value: content.view)
-            return try Inspector.unwrap(content: Content(child))
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
+        return .init(count: 2) { index in
+            if index == 0 {
+                let child = try Inspector.attribute(label: "header", value: parent.content.view)
+                let content = try Inspector.unwrap(content: Content(child))
+                return try .init(content, parent: parent, call: "header()")
+            } else {
+                let child = try Inspector.attribute(label: "footer", value: parent.content.view)
+                let content = try Inspector.unwrap(content: Content(child))
+                return try .init(content, parent: parent, call: "footer()")
+            }
         }
     }
 }
@@ -58,12 +64,10 @@ extension ViewType.Section: SupplementaryChildren {
 public extension InspectableView where View == ViewType.Section {
     
     func header() throws -> InspectableView<ViewType.ClassifiedView> {
-        let child = try View.supplementaryChildren(content).element(at: 0)
-        return try .init(child, parent: self)
+        return try View.supplementaryChildren(self).element(at: 0)
     }
     
     func footer() throws -> InspectableView<ViewType.ClassifiedView> {
-        let child = try View.supplementaryChildren(content).element(at: 1)
-        return try .init(child, parent: self)
+        return try View.supplementaryChildren(self).element(at: 1)
     }
 }

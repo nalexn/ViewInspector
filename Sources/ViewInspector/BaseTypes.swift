@@ -23,8 +23,24 @@ public protocol MultipleViewContent {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal typealias SupplementaryView = InspectableView<ViewType.ClassifiedView>
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol SupplementaryChildren {
-    static func supplementaryChildren(_ content: Content) throws -> LazyGroup<Content>
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView>
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension LazyGroup where Element == SupplementaryView {
+    static func labelView(_ parent: UnwrappedView,
+                          path: String = "label"
+    ) throws -> LazyGroup<SupplementaryView> {
+        return .init(count: 1) { _ in
+            let child = try Inspector.attribute(path: path, value: parent.content.view)
+            let content = try Inspector.unwrap(content: Content(child))
+            return try .init(content, parent: parent, call: "labelView()")
+        }
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
