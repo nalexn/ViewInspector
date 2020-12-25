@@ -50,11 +50,6 @@ public extension InspectableView where View == ViewType.SecureField {
         return try .init(label, parent: self)
     }
     
-    @available(*, deprecated, message: "Please use .labelView().text() instead")
-    func text() throws -> InspectableView<ViewType.Text> {
-        return try labelView().text()
-    }
-    
     func input() throws -> String {
         return try inputBinding().wrappedValue
     }

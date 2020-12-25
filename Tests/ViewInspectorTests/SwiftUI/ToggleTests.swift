@@ -19,12 +19,6 @@ final class ToggleTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let binding = Binding(wrappedValue: false)
-        let view = Toggle(isOn: binding) { Text("Test") }
-        XCTAssertNoThrow(try view.inspect().toggle().text())
-    }
-    
     func testTapAndIsOn() throws {
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("") }

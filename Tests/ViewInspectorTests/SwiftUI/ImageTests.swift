@@ -55,12 +55,6 @@ final class ImageTests: XCTestCase {
         #endif
     }
     
-    func textDeprecatedLabel() throws {
-        let cgImage = testImage.cgImage!
-        let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage").bold())
-        XCTAssertNoThrow(try view.inspect().image().label())
-    }
-    
     func testExtractionNilCGImage() throws {
         let cgImage = unsafeBitCast(testColor.cgColor, to: CGImage.self)
         let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage"))

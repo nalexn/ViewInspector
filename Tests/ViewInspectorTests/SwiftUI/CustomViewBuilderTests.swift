@@ -78,11 +78,6 @@ final class CustomViewBuilderTests: XCTestCase {
         XCTAssertNoThrow(TestViewBuilderView { Text("Test") }.body)
     }
     
-    func testDeprecatedViewBuilder() throws {
-        let sut = TestViewBuilderView { Text("Test") }
-        XCTAssertNoThrow(try sut.inspect().viewBuilder().text(0))
-    }
-    
     func testPathToRoot() throws {
         let view = HStack {
             TestViewBuilderView { Text("Test"); EmptyView() }

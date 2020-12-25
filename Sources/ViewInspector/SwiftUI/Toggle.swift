@@ -50,11 +50,6 @@ public extension InspectableView where View == ViewType.Toggle {
         return try .init(child, parent: self)
     }
     
-    @available(*, deprecated, message: "Please use .labelView().text() instead")
-    func text() throws -> InspectableView<ViewType.Text> {
-        return try labelView().text()
-    }
-    
     func tap() throws {
         try isOnBinding().wrappedValue.toggle()
     }

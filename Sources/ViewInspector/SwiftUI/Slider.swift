@@ -53,11 +53,6 @@ public extension InspectableView where View == ViewType.Slider {
         return try .init(child, parent: self)
     }
     
-    @available(*, deprecated, message: "Please use .labelView().text() instead")
-    func text() throws -> InspectableView<ViewType.Text> {
-        return try labelView().text()
-    }
-    
     func value() throws -> Double {
         return try valueBinding().wrappedValue
     }

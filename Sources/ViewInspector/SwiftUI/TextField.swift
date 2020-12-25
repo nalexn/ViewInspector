@@ -50,11 +50,6 @@ public extension InspectableView where View == ViewType.TextField {
         return try .init(child, parent: self)
     }
     
-    @available(*, deprecated, message: "Please use .labelView().text() instead")
-    func text() throws -> InspectableView<ViewType.Text> {
-        return try labelView().text()
-    }
-    
     func callOnEditingChanged() throws {
         let action = try Inspector.attribute(label: "onEditingChanged", value: content.view)
         typealias Callback = (Bool) -> Void

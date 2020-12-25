@@ -56,11 +56,6 @@ extension ViewType.NavigationLink: SupplementaryChildren {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.NavigationLink {
     
-    @available(*, deprecated, renamed: "labelView")
-    func label() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try labelView()
-    }
-    
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         let label = try View.supplementaryChildren(content).element(at: 0)
         return try .init(label, parent: self)

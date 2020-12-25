@@ -66,7 +66,6 @@ final class TextAttributesTests: XCTestCase {
     func testStrikethroughAttribute() throws {
         let view = Text("Test").bold().strikethrough(true, color: .black)
         let sut = try view.inspect().text().attributes()
-        XCTAssertTrue(try sut.strikethrough())
         XCTAssertTrue(try sut.isStrikethrough())
         XCTAssertEqual(try sut.strikethroughColor(), .black)
     }
@@ -74,7 +73,6 @@ final class TextAttributesTests: XCTestCase {
     func testUnderlineAttribute() throws {
         let view = Text("Test").bold().underline(true, color: .black)
         let sut = try view.inspect().text().attributes()
-        XCTAssertTrue(try sut.underline())
         XCTAssertTrue(try sut.isUnderline())
         XCTAssertEqual(try sut.underlineColor(), .black)
     }

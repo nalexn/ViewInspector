@@ -20,12 +20,6 @@ final class SliderTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let binding = Binding<Float>(wrappedValue: 0)
-        let view = Slider(value: binding, label: { Text("Title") })
-        XCTAssertNoThrow(try view.inspect().slider().text())
-    }
-    
     func testExtractionFromSingleViewContainer() throws {
         let binding = Binding<Float>(wrappedValue: 0)
         let view = AnyView(Slider(value: binding))

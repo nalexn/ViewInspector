@@ -106,11 +106,6 @@ public extension ViewType.Text.Attributes {
         }
     }
     
-    @available(*, deprecated, renamed: "isStrikethrough")
-    func strikethrough() throws -> Bool {
-        try isStrikethrough()
-    }
-    
     func isStrikethrough() throws -> Bool {
         return try commonTrait(name: "strikethrough") { modifier -> Bool? in
             guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
@@ -131,11 +126,6 @@ public extension ViewType.Text.Attributes {
                 else { return nil }
             return color
         }
-    }
-    
-    @available(*, deprecated, renamed: "isUnderline")
-    func underline() throws -> Bool {
-        try isUnderline()
     }
     
     func isUnderline() throws -> Bool {

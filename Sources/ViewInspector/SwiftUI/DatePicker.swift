@@ -52,11 +52,6 @@ public extension InspectableView where View == ViewType.DatePicker {
         let label = try View.supplementaryChildren(content).element(at: 0)
         return try .init(label, parent: self)
     }
-    
-    @available(*, deprecated, message: "Please use .labelView().text() instead")
-    func text() throws -> InspectableView<ViewType.Text> {
-        return try labelView().text()
-    }
 }
 
 // MARK: - Global View Modifiers

@@ -19,12 +19,6 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertEqual(text, "GoTo 1")
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let view = NavigationLink(
-            destination: Text("Screen 1")) { Text("GoTo 1") }
-        XCTAssertNoThrow(try view.inspect().navigationLink().label())
-    }
-    
     func testResetsModifiers() throws {
         let view = NavigationLink(
             destination: Text("Screen 1")) { Text("GoTo 1") }.padding()

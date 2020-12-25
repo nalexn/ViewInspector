@@ -29,11 +29,6 @@ final class DatePickerTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let view = DatePicker("", selection: $state.selectedDate1)
-        XCTAssertNoThrow(try view.inspect().datePicker().text())
-    }
-    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(DatePicker("Test", selection: $state.selectedDate1))
         XCTAssertNoThrow(try view.inspect().anyView().datePicker())

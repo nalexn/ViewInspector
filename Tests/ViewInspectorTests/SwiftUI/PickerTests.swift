@@ -25,14 +25,6 @@ final class PickerTests: XCTestCase {
         XCTAssertEqual(text, "Title")
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let binding = Binding<Int?>(wrappedValue: nil)
-        let view = Picker(selection: binding, label: Text("Title")) {
-            Text("").tag(0)
-        }
-        XCTAssertNoThrow(try view.inspect().picker().label())
-    }
-    
     func testValueSelection() throws {
         let binding = Binding<Int?>(wrappedValue: nil)
         let view = Picker(selection: binding, label: Text("Title")) {

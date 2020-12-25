@@ -17,11 +17,6 @@ final class ButtonTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let view = Button(action: {}, label: { Text("") })
-        XCTAssertNoThrow(try view.inspect().button().text())
-    }
-    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Button(action: {}, label: { Text("") }))
         XCTAssertNoThrow(try view.inspect().anyView().button())
@@ -99,16 +94,6 @@ final class ButtonStyleInspectionTests: XCTestCase {
         let style = TestPrimitiveButtonStyle()
         let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
         XCTAssertNoThrow(try button.anyView().styleConfigurationLabel().blur())
-    }
-    
-    func testDeprecatedStyleLabelInspection() throws {
-        let style = TestPrimitiveButtonStyle()
-        let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
-        if #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) {
-            XCTAssertNoThrow(try button.anyView().primitiveButtonStyleLabel())
-            XCTAssertThrows(try style.inspect().group().primitiveButtonStyleLabel(0),
-                            "group().styleConfigurationLabel(0) found TestButton instead of Label")
-        }
     }
     
     func testPrimitiveButtonStyleLabel() throws {

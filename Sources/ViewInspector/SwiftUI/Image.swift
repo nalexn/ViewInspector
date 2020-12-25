@@ -81,11 +81,6 @@ public extension InspectableView where View == ViewType.Image {
                        type: CGFloat.self)
     }
     
-    @available(*, deprecated, renamed: "labelView")
-    func label() throws -> InspectableView<ViewType.Text> {
-        return try labelView()
-    }
-    
     func labelView() throws -> InspectableView<ViewType.Text> {
         let label = try View.supplementaryChildren(content).element(at: 0)
         return try .init(label, parent: self)

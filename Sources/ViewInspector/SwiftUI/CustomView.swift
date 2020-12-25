@@ -75,11 +75,6 @@ public extension InspectableView where View: CustomViewType {
     func actualView() throws -> View.T {
         return try Inspector.cast(value: content.view, type: View.T.self)
     }
-
-    @available(*, deprecated, message: "You can remove .viewBuilder()")
-    func viewBuilder() throws -> InspectableView<View> {
-        return self
-    }
 }
 
 #if os(macOS)
