@@ -31,12 +31,16 @@ internal protocol SupplementaryChildren {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension LazyGroup where Element == SupplementaryView {
-    static func labelView(_ parent: UnwrappedView,
-                          path: String = "label"
-    ) throws -> LazyGroup<SupplementaryView> {
+internal protocol SupplementaryChildrenLabelView: SupplementaryChildren {
+    static var labelViewPath: String { get }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension SupplementaryChildrenLabelView {
+    static var labelViewPath: String { "label" }
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 1) { _ in
-            let child = try Inspector.attribute(path: path, value: parent.content.view)
+            let child = try Inspector.attribute(path: labelViewPath, value: parent.content.view)
             let content = try Inspector.unwrap(content: Content(child))
             return try .init(content, parent: parent, call: "labelView()")
         }

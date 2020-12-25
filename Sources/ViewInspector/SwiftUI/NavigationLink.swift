@@ -42,11 +42,7 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.NavigationLink: SupplementaryChildren {
-    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
-        return try .labelView(parent)
-    }
-}
+extension ViewType.NavigationLink: SupplementaryChildrenLabelView { }
 
 // MARK: - Custom Attributes
 

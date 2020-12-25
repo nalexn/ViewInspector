@@ -44,11 +44,7 @@ extension ViewType.DisclosureGroup: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.DisclosureGroup: SupplementaryChildren {
-    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
-        return try .labelView(parent)
-    }
-}
+extension ViewType.DisclosureGroup: SupplementaryChildrenLabelView { }
 
 // MARK: - Custom Attributes
 
