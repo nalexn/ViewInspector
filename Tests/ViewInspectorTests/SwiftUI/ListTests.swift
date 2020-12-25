@@ -89,6 +89,11 @@ final class GlobalModifiersForList: XCTestCase {
         XCTAssertEqual(try sut.inspect().listRowBackground().text().string(), "test")
     }
     
+    func testListRowBackgroundSearch() throws {
+        let sut = EmptyView().listRowBackground(Text("test").padding())
+        XCTAssertNoThrow(try sut.inspect().find(text: "test"))
+    }
+    
     func testListStyle() throws {
         let sut = EmptyView().listStyle(DefaultListStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())

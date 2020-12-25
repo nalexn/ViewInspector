@@ -190,7 +190,13 @@ internal extension ViewSearch {
         }),
         .init(name: "_MaskEffect", builder: { parent in
             try parent.content.mask(parent: parent)
-        })
+        }),
+        .init(name: "_TraitWritingModifier<TabItemTraitKey>", builder: { parent in
+            try parent.content.tabItem(parent: parent)
+        }),
+        .init(name: "_TraitWritingModifier<ListRowBackgroundTraitKey>", builder: { parent in
+            try parent.content.listRowBackground(parent: parent)
+        }),
     ]
     
     struct ModifierIdentity {

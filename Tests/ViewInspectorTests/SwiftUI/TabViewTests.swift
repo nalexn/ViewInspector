@@ -73,6 +73,11 @@ final class GlobalModifiersForTabView: XCTestCase {
         XCTAssertEqual(try sut.blur().radius, 3)
     }
     
+    func testTabItemSearch() throws {
+        let view = EmptyView().tabItem { Text("abc") }
+        XCTAssertNoThrow(try view.inspect().find(text: "abc"))
+    }
+    
     #if !os(macOS) && !targetEnvironment(macCatalyst)
     func testTabViewStyleInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
