@@ -7,11 +7,41 @@ internal extension ViewSearch {
     
     private static var index: [String: [ViewIdentity]] = {
         let identities: [ViewIdentity] = [
-            .init(ViewType.AnyView.self), .init(ViewType.Group.self),
-            .init(ViewType.Text.self), .init(ViewType.EmptyView.self),
-            .init(ViewType.HStack.self), .init(ViewType.Button.self)
+            .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
+            .init(ViewType.Button.self),
+            .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
+            .init(ViewType.DatePicker.self), .init(ViewType.DisclosureGroup.self),
+            .init(ViewType.Divider.self),
+            .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
+            .init(ViewType.ForEach.self), .init(ViewType.Form.self),
+            .init(ViewType.GeometryReader.self),
+            .init(ViewType.Group.self), .init(ViewType.GroupBox.self),
+            .init(ViewType.HSplitView.self), .init(ViewType.HStack.self),
+            .init(ViewType.Image.self),
+            .init(ViewType.Label.self),
+            .init(ViewType.LazyHGrid.self), .init(ViewType.LazyHStack.self),
+            .init(ViewType.LazyVGrid.self), .init(ViewType.LazyVStack.self),
+            .init(ViewType.LinearGradient.self),
+            .init(ViewType.Link.self), .init(ViewType.List.self),
+            .init(ViewType.Menu.self), .init(ViewType.MenuButton.self),
+            .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
+            .init(ViewType.OutlineGroup.self),
+            .init(ViewType.PasteButton.self), .init(ViewType.Picker.self),
+            .init(ViewType.Popover.self), .init(ViewType.ProgressView.self),
+            .init(ViewType.RadialGradient.self),
+            .init(ViewType.ScrollView.self), .init(ViewType.ScrollViewReader.self),
+            .init(ViewType.Section.self), .init(ViewType.SecureField.self),
+            .init(ViewType.Slider.self), .init(ViewType.Spacer.self), .init(ViewType.Stepper.self),
+            .init(ViewType.StyleConfiguration.Label.self), .init(ViewType.StyleConfiguration.Content.self),
+            .init(ViewType.StyleConfiguration.Title.self), .init(ViewType.StyleConfiguration.Icon.self),
+            .init(ViewType.StyleConfiguration.CurrentValueLabel.self),
+            .init(ViewType.TabView.self), .init(ViewType.Text.self),
+            .init(ViewType.TextEditor.self), .init(ViewType.TextField.self),
+            .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self),
+            .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
+            .init(ViewType.ZStack.self)
         ]
-        var index = [String: [ViewIdentity]](minimumCapacity: 27) // alphabet + empty string
+        var index = [String: [ViewIdentity]](minimumCapacity: 26) // alphabet
         identities.forEach { identity in
             let letter = String(identity.viewType.typePrefix.prefix(1))
             var array = index[letter] ?? []

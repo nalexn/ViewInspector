@@ -39,18 +39,31 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.Section: SupplementaryChildren {
+    static func supplementaryChildren(_ content: Content) throws -> LazyGroup<Content> {
+        return .init(count: 2) { index -> Content in
+            let label = index == 0 ? "header" : "footer"
+            let child = try Inspector.attribute(label: label, value: content.view)
+            return try Inspector.unwrap(content: Content(child))
+        }
+    }
+}
+
 // MARK: - Custom Attributes
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Section {
     
     func header() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "header", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        let child = try View.supplementaryChildren(content).element(at: 0)
+        return try .init(child, parent: self)
     }
     
     func footer() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "footer", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        let child = try View.supplementaryChildren(content).element(at: 1)
+        return try .init(child, parent: self)
     }
 }

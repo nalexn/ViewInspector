@@ -106,8 +106,9 @@ final class ButtonStyleInspectionTests: XCTestCase {
         let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
         if #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) {
             XCTAssertNoThrow(try button.anyView().primitiveButtonStyleLabel())
+            XCTAssertThrows(try style.inspect().group().primitiveButtonStyleLabel(0),
+                            "group().styleConfigurationLabel(0) found TestButton instead of Label")
         }
-        let sut = Group { EmptyView() }
     }
     
     func testPrimitiveButtonStyleLabel() throws {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct ProgressView: KnownViewType {
@@ -28,6 +28,19 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.ProgressView: SupplementaryChildren {
+    static func supplementaryChildren(_ content: Content) throws -> LazyGroup<Content> {
+        return .init(count: 2) { index -> Content in
+            let path = index == 0 ? "base|custom|label|some" : "base|custom|currentValueLabel|some"
+            let child = try Inspector.attribute(path: path, value: content.view)
+            return try Inspector.unwrap(content: Content(child))
+        }
+    }
+}
+
 // MARK: - Custom Attributes
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
@@ -45,13 +58,13 @@ public extension InspectableView where View == ViewType.ProgressView {
     }
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(path: "base|custom|label|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        let child = try View.supplementaryChildren(content).element(at: 0)
+        return try .init(child, parent: self)
     }
     
     func currentValueLabelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(path: "base|custom|currentValueLabel|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        let child = try View.supplementaryChildren(content).element(at: 1)
+        return try .init(child, parent: self)
     }
 }
 

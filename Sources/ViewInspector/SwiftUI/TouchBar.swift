@@ -1,15 +1,14 @@
 import SwiftUI
 
-#if os(macOS)
-@available(macOS 10.15, *)
-@available(iOS, unavailable)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct TouchBar: KnownViewType {
         public static var typePrefix: String = "TouchBar"
     }
 }
+
+#if os(macOS)
 
 // MARK: - Content Extraction
 

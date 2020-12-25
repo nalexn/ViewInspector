@@ -1,6 +1,6 @@
 import SwiftUI
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct ScrollViewReader: KnownViewType {
@@ -30,7 +30,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Content Extraction
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.ScrollViewReader: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {

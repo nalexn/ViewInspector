@@ -28,6 +28,18 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.Image: SupplementaryChildren {
+    static func supplementaryChildren(_ content: Content) throws -> LazyGroup<Content> {
+        return .init(count: 1) { _ -> Content in
+            let child = try Inspector.attribute(path: "provider|base|label", value: content.view)
+            return try Inspector.unwrap(content: Content(child))
+        }
+    }
+}
+
 // MARK: - Custom Attributes
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -75,8 +87,8 @@ public extension InspectableView where View == ViewType.Image {
     }
     
     func labelView() throws -> InspectableView<ViewType.Text> {
-        let view = try Inspector.attribute(path: "provider|base|label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        let label = try View.supplementaryChildren(content).element(at: 0)
+        return try .init(label, parent: self)
     }
     
     private func image() throws -> Any {
