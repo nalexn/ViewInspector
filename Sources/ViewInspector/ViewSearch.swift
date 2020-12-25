@@ -117,19 +117,28 @@ private extension UnwrappedView {
         while !queue.isEmpty {
             let (isSingle, children) = queue.remove(at: 0)
             for (offset, view) in children.enumerated() {
-                if (try? condition(try view.asInspectableView())) == true {
-                    return view
-                }
                 let index = (isSingle && offset == 0) ? nil : offset
                 guard let identity = ViewSearch.identify(view.content),
                       let instance = try? identity.builder(view.content, view.parentView, index)
                 else {
+                    if (try? condition(try view.asInspectableView())) == true {
+                        return view
+                    }
                     identificationFailure(view.content)
                     continue
                 }
-                if let descendants = try? identity.descendants(instance) {
+                if (try? condition(try instance.asInspectableView())) == true {
+                    return instance
+                }
+                if let descendants = try? identity.children(instance), descendants.count > 0 {
                     let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1
                     queue.append((isSingle, descendants))
+                }
+                if let descendants = try? identity.modifiers(instance), descendants.count > 0 {
+                    queue.append((true, descendants))
+                }
+                if let descendants = try? identity.supplementary(instance), descendants.count > 0 {
+                    queue.append((true, descendants))
                 }
             }
         }
@@ -147,7 +156,7 @@ private extension UnwrappedView {
         let index = (isSingle && offset == 0) ? nil : offset
         guard let identity = ViewSearch.identify(self.content),
               let instance = try? identity.builder(self.content, self.parentView, index),
-              let descendants = try? identity.descendants(instance)
+              let descendants = try? identity.allDescendants(instance)
         else { return current }
         
         let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1

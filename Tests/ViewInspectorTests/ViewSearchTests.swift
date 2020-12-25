@@ -45,8 +45,13 @@ final class ViewSearchTests: XCTestCase {
     }
     
     func testFindText() throws {
-        XCTAssertNoThrow(try testView.inspect().find(text: "123"))
-        XCTAssertNoThrow(try testView.inspect().find(text: "Test"))
+        XCTAssertEqual(try testView.inspect().find(text: "123").pathToRoot,
+        "anyView().group().text(1)")
+        XCTAssertEqual(try testView.inspect().find(text: "Test").pathToRoot,
+        """
+        anyView().group().emptyView(0).overlay().hStack()\
+        .view(TestCustomView.self, 1).button().mask().group().text(0)
+        """)
         XCTAssertNoThrow(try testView.inspect().find(text: "Btn"))
         XCTAssertNoThrow(try testView.inspect().find(text: "xyz"))
         XCTAssertEqual(try testView.inspect().find(

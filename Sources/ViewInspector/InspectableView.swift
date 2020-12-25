@@ -64,14 +64,14 @@ extension InspectableView: UnwrappedView { }
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension UnwrappedView {
     func asInspectableView() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try .init(content, parent: parentView, index: inspectionIndex)
+        return try .init(content, parent: parentView, call: inspectionCall, index: inspectionIndex)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
     func asInspectableView<T>(ofType type: T.Type) throws -> InspectableView<T> where T: KnownViewType {
-        return try .init(content, parent: parentView, index: inspectionIndex)
+        return try .init(content, parent: parentView, call: inspectionCall, index: inspectionIndex)
     }
 }
 
