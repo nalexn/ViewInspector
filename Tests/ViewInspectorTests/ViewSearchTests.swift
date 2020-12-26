@@ -65,6 +65,8 @@ final class ViewSearchTests: XCTestCase {
             }).string(), "123")
         XCTAssertThrows(try testView.inspect().find(text: "unknown"),
                         "Search did not find a match")
+        XCTAssertThrows(try testView.inspect().find(ViewType.Text.self, relation: .parent),
+                        "Search did not find a match")
     }
     
     func testFindButton() throws {

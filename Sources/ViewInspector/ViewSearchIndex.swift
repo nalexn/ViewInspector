@@ -162,15 +162,6 @@ internal extension ViewSearch {
             })
         }
         
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: SingleViewContent, T: MultipleViewContent, T: SupplementaryChildren {
-            self.init(type, call: call, children: { parent in
-                try T.children(parent.content).descendants(parent, indexed: true)
-            }, supplementary: { parent in
-                try T.supplementaryChildren(parent)
-            })
-        }
-        
         init<T>(_ type: T.Type, call: String? = nil) where T: KnownViewType {
             self.init(type, call: call, children: { _ in .empty })
         }

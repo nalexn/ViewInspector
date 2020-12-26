@@ -77,4 +77,12 @@ internal extension Content {
         return try .init(content, parent: parent, call: "touchBar()")
     }
 }
+#else
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    func touchBar(parent: UnwrappedView) throws -> InspectableView<ViewType.TouchBar> {
+        fatalError("Not supported")
+    }
+}
 #endif
