@@ -31,6 +31,18 @@ final class ButtonTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().button(1))
     }
     
+    func testSearch() throws {
+        let view = Group { Button(action: {}, label: { AnyView(Text("abc")) }) }
+        XCTAssertEqual(try view.inspect().find(ViewType.Button.self).pathToRoot,
+                       "group().button(0)")
+        XCTAssertEqual(try view.inspect().find(button: "abc").pathToRoot,
+                       "group().button(0)")
+        XCTAssertEqual(try view.inspect().find(ViewType.Text.self).pathToRoot,
+                       "group().button(0).labelView().anyView().text()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "group().button(0).labelView().anyView().text()")
+    }
+    
     func testCallback() throws {
         let exp = XCTestExpectation(description: "Callback")
         let button = Button(action: {

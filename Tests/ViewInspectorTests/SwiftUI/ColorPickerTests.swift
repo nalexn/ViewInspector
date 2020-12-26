@@ -30,6 +30,18 @@ final class ColorPickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().colorPicker(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
+        let binding = Binding<CGColor>(wrappedValue: .test)
+        let view = Group { ColorPicker(selection: binding, label: {
+            HStack { Text("abc") }
+        }) }
+        XCTAssertEqual(try view.inspect().find(ViewType.ColorPicker.self).pathToRoot,
+                       "group().colorPicker(0)")
+        XCTAssertEqual(try view.inspect().find(ViewType.Text.self).pathToRoot,
+                       "group().colorPicker(0).labelView().hStack().text(0)")
+    }
+    
     func testLabelInspection() throws {
         guard #available(iOS 14, macOS 11.0, *) else { return }
         let binding = Binding<Color>(wrappedValue: .red)

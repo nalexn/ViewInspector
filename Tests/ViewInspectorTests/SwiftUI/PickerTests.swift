@@ -68,6 +68,21 @@ final class PickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().picker(0))
         XCTAssertNoThrow(try view.inspect().hStack().picker(1))
     }
+    
+    func testSearch() throws {
+        let binding = Binding<Int?>(wrappedValue: nil)
+        let view = AnyView(Picker(selection: binding, label: Text("qwe")) {
+            Text("abc"); Text("xyz")
+        })
+        XCTAssertEqual(try view.inspect().find(ViewType.Picker.self).pathToRoot,
+                       "anyView().picker()")
+        XCTAssertEqual(try view.inspect().find(text: "qwe").pathToRoot,
+                       "anyView().picker().labelView().text()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().picker().text(0)")
+        XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
+                       "anyView().picker().text(1)")
+    }
 }
 
 // MARK: - View Modifiers

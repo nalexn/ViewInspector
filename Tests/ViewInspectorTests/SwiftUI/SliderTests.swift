@@ -33,6 +33,17 @@ final class SliderTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().slider(1))
     }
     
+    func testSearch() throws {
+        let binding = Binding<Float>(wrappedValue: 0)
+        let view = AnyView(Slider(value: binding, label: { AnyView(Text("abc")) }))
+        XCTAssertEqual(try view.inspect().find(ViewType.Slider.self).pathToRoot,
+                       "anyView().slider()")
+        XCTAssertEqual(try view.inspect().find(ViewType.Slider.self, containing: "abc").pathToRoot,
+                       "anyView().slider()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().slider().labelView().anyView().text()")
+    }
+    
     func testValue() throws {
         let binding = Binding<CGFloat>(wrappedValue: 0.4)
         let view = Slider(value: binding, label: { Text("") })

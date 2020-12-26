@@ -42,6 +42,14 @@ final class HStackTests: XCTestCase {
             "Enclosed view index '2' is out of bounds: '0 ..< 2'")
     }
     
+    func testSearch() throws {
+        let view = AnyView(HStack { EmptyView() })
+        XCTAssertEqual(try view.inspect().find(ViewType.HStack.self).pathToRoot,
+                       "anyView().hStack()")
+        XCTAssertEqual(try view.inspect().find(ViewType.EmptyView.self).pathToRoot,
+                       "anyView().hStack().emptyView(0)")
+    }
+    
     func testResetsModifiers() throws {
         let view = HStack { Text("Test") }.padding()
         let sut = try view.inspect().hStack().text(0)

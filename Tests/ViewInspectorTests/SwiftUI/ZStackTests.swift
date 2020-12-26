@@ -39,6 +39,14 @@ final class ZStackTests: XCTestCase {
         XCTAssertEqual(view3, sampleView3)
     }
     
+    func testSearch() throws {
+        let view = AnyView(ZStack { EmptyView() })
+        XCTAssertEqual(try view.inspect().find(ViewType.ZStack.self).pathToRoot,
+                       "anyView().zStack()")
+        XCTAssertEqual(try view.inspect().find(ViewType.EmptyView.self).pathToRoot,
+                       "anyView().zStack().emptyView(0)")
+    }
+    
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")

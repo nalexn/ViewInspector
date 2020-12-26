@@ -45,6 +45,15 @@ final class ToggleTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().toggle(0))
         XCTAssertNoThrow(try view.inspect().hStack().toggle(1))
     }
+    
+    func testSearch() throws {
+        let binding = Binding(wrappedValue: false)
+        let view = AnyView(Toggle(isOn: binding) { AnyView(Text("abc")) })
+        XCTAssertEqual(try view.inspect().find(ViewType.Toggle.self).pathToRoot,
+                       "anyView().toggle()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().toggle().labelView().anyView().text()")
+    }
 }
 
 // MARK: - View Modifiers

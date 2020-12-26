@@ -45,6 +45,25 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().navigationView().navigationLink(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(NavigationView {
+            NavigationLink(
+                destination: Text("Screen 1")) { Text("GoTo 1") }
+            NavigationLink(
+                destination: Text("Screen 2")) { Text("GoTo 2") }
+        })
+        XCTAssertEqual(try view.inspect().find(ViewType.NavigationLink.self).pathToRoot,
+                       "anyView().navigationView().navigationLink(0)")
+        XCTAssertEqual(try view.inspect().find(navigationLink: "GoTo 1").pathToRoot,
+                       "anyView().navigationView().navigationLink(0)")
+        XCTAssertEqual(try view.inspect().find(navigationLink: "Screen 2").pathToRoot,
+                       "anyView().navigationView().navigationLink(1)")
+        XCTAssertEqual(try view.inspect().find(text: "Screen 1").pathToRoot,
+                       "anyView().navigationView().navigationLink(0).text()")
+        XCTAssertEqual(try view.inspect().find(text: "GoTo 2").pathToRoot,
+                       "anyView().navigationView().navigationLink(1).labelView().text()")
+    }
+    
     func testNavigationWithoutBindingAndState() throws {
         guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) else { return }
         let view = NavigationView {

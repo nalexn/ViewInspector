@@ -37,6 +37,14 @@ final class HSplitViewTests: XCTestCase {
         XCTAssertEqual(view3, sampleView3)
     }
     
+    func testSearch() throws {
+        let view = AnyView(HSplitView { Text("Test") })
+        XCTAssertEqual(try view.inspect().find(ViewType.HSplitView.self).pathToRoot,
+                       "anyView().hSplitView()")
+        XCTAssertEqual(try view.inspect().find(text: "Test").pathToRoot,
+                       "anyView().hSplitView().text(0)")
+    }
+    
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")

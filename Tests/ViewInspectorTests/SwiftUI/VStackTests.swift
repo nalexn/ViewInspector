@@ -61,4 +61,12 @@ final class VStackTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().vStack().vStack(0))
         XCTAssertNoThrow(try view.inspect().vStack().vStack(1))
     }
+    
+    func testSearch() throws {
+        let view = AnyView(VStack { EmptyView() })
+        XCTAssertEqual(try view.inspect().find(ViewType.VStack.self).pathToRoot,
+                       "anyView().vStack()")
+        XCTAssertEqual(try view.inspect().find(ViewType.EmptyView.self).pathToRoot,
+                       "anyView().vStack().emptyView(0)")
+    }
 }

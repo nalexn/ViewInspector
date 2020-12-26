@@ -1,7 +1,5 @@
 import SwiftUI
 
-#if os(iOS)
-
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
@@ -9,6 +7,8 @@ public extension ViewType {
         public static var typePrefix: String = "EditButton"
     }
 }
+
+#if os(iOS)
 
 // MARK: - Extraction from SingleViewContent parent
 

@@ -20,6 +20,14 @@ final class TouchBarTests: XCTestCase {
         let sut = try view.inspect().emptyView().touchBar().touchBarID()
         XCTAssertEqual(sut, "abc")
     }
+    
+    func testSearch() throws {
+        let view = EmptyView().touchBar { Text("abc") }
+        XCTAssertEqual(try view.inspect().find(ViewType.TouchBar.self).pathToRoot,
+                       "emptyView().touchBar()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "emptyView().touchBar().text()")
+    }
 }
 
 // MARK: - View Modifiers

@@ -41,6 +41,18 @@ final class TabViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().tabView(0))
         XCTAssertNoThrow(try view.inspect().hStack().tabView(1))
     }
+    
+    func testSearch() throws {
+        let view = AnyView(TabView {
+            Text("abc").tabItem({ Text("xyz") })
+        })
+        XCTAssertEqual(try view.inspect().find(ViewType.TabView.self).pathToRoot,
+                       "anyView().tabView()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().tabView().text(0)")
+        XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
+                       "anyView().tabView().text(0).tabItem().text()")
+    }
 }
 
 // MARK: - View Modifiers

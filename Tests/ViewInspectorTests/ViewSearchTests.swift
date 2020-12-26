@@ -39,7 +39,7 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertEqual(try testView.inspect().findAll(ViewType.HStack.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Button.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self).map({ try $0.string() }),
-                       ["Test", "Btn", "123", "xyz"])
+                       ["Btn", "Test", "123", "xyz"])
         XCTAssertEqual(try testView.inspect().findAll(ViewType.View<TestCustomView>.self).count, 1)
         XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 1)
     }

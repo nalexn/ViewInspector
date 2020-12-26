@@ -26,6 +26,12 @@ final class AngularGradientTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().angularGradient(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(AngularGradient(gradient: gradient, center: .center))
+        XCTAssertEqual(try view.inspect().find(ViewType.AngularGradient.self).pathToRoot,
+                       "anyView().angularGradient()")
+    }
+    
     func testGradient() throws {
         let sut = try AngularGradient(gradient: gradient, center: .center)
             .inspect().angularGradient().gradient()

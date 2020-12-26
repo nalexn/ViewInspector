@@ -27,12 +27,24 @@ public extension InspectableView {
         })
     }
     
-    func find(button: String) throws -> InspectableView<ViewType.Button> {
-        let buttonType = ViewType.Button.self
-        return try find(ViewType.Text.self, where: { text in
-            (try? text.string()) == button &&
-            (try? text.find(buttonType, relation: .parent)) != nil
-        }).find(buttonType, relation: .parent)
+    func find(button title: String) throws -> InspectableView<ViewType.Button> {
+        return try find(ViewType.Button.self, containing: title)
+    }
+    
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    func find(link url: URL) throws -> InspectableView<ViewType.Link> {
+        return try find(ViewType.Link.self, where: { view in
+            (try? view.url()) == url
+        })
+    }
+    
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    func find(link label: String) throws -> InspectableView<ViewType.Link> {
+        return try find(ViewType.Link.self, containing: label)
+    }
+    
+    func find(navigationLink string: String) throws -> InspectableView<ViewType.NavigationLink> {
+        return try find(ViewType.NavigationLink.self, containing: string)
     }
     
     func find(viewWithId id: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
@@ -41,6 +53,13 @@ public extension InspectableView {
     
     func find(viewWithTag tag: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
         return try find { try $0.tag() == tag }
+    }
+    
+    func find<T>(_ viewType: T.Type, containing string: String) throws -> InspectableView<T> {
+        return try find(ViewType.Text.self, where: { text in
+            (try? text.string()) == string &&
+            (try? text.find(T.self, relation: .parent)) != nil
+        }).find(T.self, relation: .parent)
     }
     
     func find<T>(_ viewType: T.Type,
@@ -116,8 +135,9 @@ private extension UnwrappedView {
         queue.append((true, .init(count: 1, { _ in self })))
         while !queue.isEmpty {
             let (isSingle, children) = queue.remove(at: 0)
-            for (offset, view) in children.enumerated() {
-                let index = (isSingle && offset == 0) ? nil : offset
+            for offset in 0..<children.count {
+                guard let view = try? children.element(at: offset) else { continue }
+                let index = isSingle ? nil : offset
                 guard let identity = ViewSearch.identify(view.content),
                       let instance = try? identity.builder(view.content, view.parentView, index)
                 else {

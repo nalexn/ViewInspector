@@ -42,6 +42,18 @@ final class SectionTests: XCTestCase {
             "Enclosed view index '2' is out of bounds: '0 ..< 2'")
     }
     
+    func testSearch() throws {
+        let view = AnyView(Section(header: Text("h"), footer: Text("f"), content: { Text("c") }))
+        XCTAssertEqual(try view.inspect().find(ViewType.Section.self).pathToRoot,
+                       "anyView().section()")
+        XCTAssertEqual(try view.inspect().find(text: "c").pathToRoot,
+                       "anyView().section().text(0)")
+        XCTAssertEqual(try view.inspect().find(text: "h").pathToRoot,
+                       "anyView().section().header().text()")
+        XCTAssertEqual(try view.inspect().find(text: "f").pathToRoot,
+                       "anyView().section().footer().text()")
+    }
+    
     func testResetsModifiers() throws {
         let view = Section { Text("Test") }.padding()
         let sut = try view.inspect().section().text(0)

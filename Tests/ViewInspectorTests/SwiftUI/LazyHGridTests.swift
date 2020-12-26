@@ -27,6 +27,15 @@ final class LazyHGridTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().lazyHGrid(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let view = HStack { LazyHGrid(rows: [], content: { Text("abc") }) }
+        XCTAssertEqual(try view.inspect().find(ViewType.LazyHGrid.self).pathToRoot,
+                       "hStack().lazyHGrid(0)")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "hStack().lazyHGrid(0).text(0)")
+    }
+    
     func testContentViewInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = LazyHGrid(rows: [], content: {

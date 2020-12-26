@@ -35,6 +35,15 @@ final class TextFieldTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().textField(1))
     }
     
+    func testSearch() throws {
+        let binding = Binding(wrappedValue: "")
+        let view = AnyView(TextField("abc", text: binding))
+        XCTAssertEqual(try view.inspect().find(ViewType.TextField.self).pathToRoot,
+                       "anyView().textField()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().textField().labelView().text()")
+    }
+    
     func testCallOnEditingChanged() throws {
         let exp = XCTestExpectation(description: "Callback")
         let binding = Binding(wrappedValue: "")

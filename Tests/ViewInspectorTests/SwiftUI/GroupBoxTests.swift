@@ -70,6 +70,15 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().groupBox().groupBox(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, *) else { return }
+        let view = AnyView(GroupBox { Text("Test") })
+        XCTAssertEqual(try view.inspect().find(ViewType.GroupBox.self).pathToRoot,
+                       "anyView().groupBox()")
+        XCTAssertEqual(try view.inspect().find(text: "Test").pathToRoot,
+                       "anyView().groupBox().text(0)")
+    }
+    
     func testLabelInspection() throws {
         guard #available(iOS 14, *) else { return }
         let view = GroupBox(

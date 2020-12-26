@@ -35,6 +35,15 @@ final class SecureFieldTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().secureField(1))
     }
     
+    func testSearch() throws {
+        let binding = Binding(wrappedValue: "")
+        let view = AnyView(SecureField("abc", text: binding))
+        XCTAssertEqual(try view.inspect().find(ViewType.SecureField.self).pathToRoot,
+                       "anyView().secureField()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().secureField().labelView().text()")
+    }
+    
     func testInput() throws {
         let binding = Binding(wrappedValue: "123")
         let view = SecureField("", text: binding)

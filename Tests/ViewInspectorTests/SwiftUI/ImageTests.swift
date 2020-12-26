@@ -55,6 +55,15 @@ final class ImageTests: XCTestCase {
         #endif
     }
     
+    func testSearch() throws {
+        let cgImage = testImage.cgImage!
+        let view = AnyView(Image(cgImage, scale: 2.0, orientation: .down, label: Text("abc")))
+        XCTAssertEqual(try view.inspect().find(ViewType.Image.self).pathToRoot,
+                       "anyView().image()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().image().labelView().text()")
+    }
+    
     func testExtractionNilCGImage() throws {
         let cgImage = unsafeBitCast(testColor.cgColor, to: CGImage.self)
         let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage"))

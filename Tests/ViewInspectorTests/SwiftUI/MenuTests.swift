@@ -22,6 +22,21 @@ final class MenuTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().menu(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
+        let view = AnyView(Menu(content: {
+            HStack { Text("abc") }
+        }, label: {
+            VStack { Text("xyz") }
+        }))
+        XCTAssertEqual(try view.inspect().find(ViewType.Menu.self).pathToRoot,
+                       "anyView().menu()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().menu().hStack(0).text(0)")
+        XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
+                       "anyView().menu().labelView().vStack().text(0)")
+    }
+    
     func testLabelInspection() throws {
         guard #available(iOS 14, macOS 11.0, *) else { return }
         let view = Menu(content: {

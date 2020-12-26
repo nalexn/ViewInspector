@@ -22,6 +22,12 @@ final class EditButtonTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().editButton(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(EditButton())
+        XCTAssertEqual(try view.inspect().find(ViewType.EditButton.self).pathToRoot,
+                       "anyView().editButton()")
+    }
+    
     func testEditMode() throws {
         guard #available(iOS 13.1, macOS 10.15, tvOS 13.1, *) else { return }
         let view = EditButton()

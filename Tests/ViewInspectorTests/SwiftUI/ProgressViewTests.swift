@@ -21,6 +21,18 @@ final class ProgressViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().progressView(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let view = AnyView(ProgressView(value: 0, label: { AnyView(Text("abc")) },
+                                        currentValueLabel: { Text("xyz") }))
+        XCTAssertEqual(try view.inspect().find(ViewType.ProgressView.self).pathToRoot,
+                       "anyView().progressView()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().progressView().labelView().anyView().text()")
+        XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
+                       "anyView().progressView().currentValueLabelView().text()")
+    }
+    
     func testFractionCompletedInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view1 = ProgressView()

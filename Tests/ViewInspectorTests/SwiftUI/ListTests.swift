@@ -33,6 +33,14 @@ final class ListTests: XCTestCase {
         XCTAssertEqual(view3, sampleView3)
     }
     
+    func testSearch() throws {
+        let view = AnyView(List { EmptyView(); Text("abc") })
+        XCTAssertEqual(try view.inspect().find(ViewType.List.self).pathToRoot,
+                       "anyView().list()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().list().text(1)")
+    }
+    
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")

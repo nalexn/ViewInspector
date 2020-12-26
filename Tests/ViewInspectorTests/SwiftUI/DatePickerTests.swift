@@ -42,6 +42,14 @@ final class DatePickerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().datePicker(0))
         XCTAssertNoThrow(try view.inspect().hStack().datePicker(1))
     }
+    
+    func testSearch() throws {
+        let view = AnyView(DatePicker("Test", selection: $state.selectedDate1))
+        XCTAssertEqual(try view.inspect().find(ViewType.DatePicker.self).pathToRoot,
+                       "anyView().datePicker()")
+        XCTAssertEqual(try view.inspect().find(text: "Test").pathToRoot,
+                       "anyView().datePicker().labelView().text()")
+    }
 }
 
 // MARK: - View Modifiers

@@ -24,4 +24,10 @@ final class DividerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().divider(1))
         XCTAssertNoThrow(try view.inspect().hStack().divider(3))
     }
+    
+    func testSearch() throws {
+        let view = AnyView(Divider())
+        XCTAssertEqual(try view.inspect().find(ViewType.Divider.self).pathToRoot,
+                       "anyView().divider()")
+    }
 }

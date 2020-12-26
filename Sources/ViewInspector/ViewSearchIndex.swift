@@ -37,7 +37,7 @@ internal extension ViewSearch {
             .init(ViewType.StyleConfiguration.CurrentValueLabel.self),
             .init(ViewType.TabView.self), .init(ViewType.Text.self),
             .init(ViewType.TextEditor.self), .init(ViewType.TextField.self),
-            .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self),
+            .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self), .init(ViewType.TupleView.self),
             .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
             .init(ViewType.ZStack.self)
         ]
@@ -58,7 +58,8 @@ internal extension ViewSearch {
             return identity
         }
         if (try? content.extractCustomView()) != nil {
-            let call = "view(\(Inspector.typeName(value: content.view)).self\(ViewIdentity.indexPlaceholder))"
+            let name = Inspector.typeName(value: content.view, prefixOnly: true)
+            let call = "view(\(name).self\(ViewIdentity.indexPlaceholder))"
             return .init(ViewType.View<TraverseStubView>.self, call: call)
         }
         return nil
@@ -89,7 +90,7 @@ internal extension ViewSearch {
         let supplementary: ChildrenBuilder
         
         var allDescendants: ChildrenBuilder {
-            return { try self.children($0) + self.modifiers($0) + self.supplementary($0) }
+            return { try self.children($0) + self.supplementary($0) + self.modifiers($0) }
         }
         
         private init<T>(_ type: T.Type,
@@ -224,6 +225,9 @@ internal extension ViewSearch {
         .init(name: "_TraitWritingModifier<ListRowBackgroundTraitKey>", builder: { parent in
             try parent.content.listRowBackground(parent: parent)
         }),
+        .init(name: "_TouchBarModifier", builder: { parent in
+            try parent.content.touchBar(parent: parent)
+        }),
     ]
     
     struct ModifierIdentity {
@@ -234,6 +238,8 @@ internal extension ViewSearch {
             self.name = name
             self.builder = { parent in
                 let modifier = try builder(parent)
+                guard modifier is InspectableView<ViewType.ClassifiedView>
+                else { return modifier }
                 return try InspectableView<ViewType.ClassifiedView>(modifier.content, parent: modifier)
             }
         }

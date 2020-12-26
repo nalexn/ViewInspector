@@ -78,12 +78,11 @@ final class CustomViewBuilderTests: XCTestCase {
         XCTAssertNoThrow(TestViewBuilderView { Text("Test") }.body)
     }
     
-    func testPathToRoot() throws {
+    func testSearch() throws {
         let view = HStack {
             TestViewBuilderView { Text("Test"); EmptyView() }
         }
-        let sut = try view.inspect().hStack().view(TestViewBuilderView<EmptyView>.self, 0).text(0)
-            .pathToRoot
+        let sut = try view.inspect().find(text: "Test").pathToRoot
         XCTAssertEqual(sut, "hStack().view(TestViewBuilderView.self, 0).text(0)")
     }
 }

@@ -26,6 +26,21 @@ final class TupleViewTests: XCTestCase {
         XCTAssertEqual(string3, "def")
     }
     
+    func testSearch() throws {
+        let view1 = TupleInsideTupleView(flag: true)
+        let view2 = TupleInsideTupleView(flag: false)
+        XCTAssertEqual(try view1.inspect().find(text: "xyz").pathToRoot,
+                       "view(TupleInsideTupleView.self).hStack().text(0)")
+        XCTAssertEqual(try view1.inspect().find(text: "abc").pathToRoot,
+                       "view(TupleInsideTupleView.self).hStack().tupleView(1).text(0)")
+        XCTAssertEqual(try view1.inspect().find(text: "def").pathToRoot,
+                       "view(TupleInsideTupleView.self).hStack().tupleView(1).text(1)")
+        XCTAssertEqual(try view2.inspect().find(text: "xyz").pathToRoot,
+                       "view(TupleInsideTupleView.self).hStack().text(0)")
+        XCTAssertThrows(try view2.inspect().find(text: "abc"), "Search did not find a match")
+        XCTAssertThrows(try view2.inspect().find(text: "def"), "Search did not find a match")
+    }
+    
     func testResetsModifiers() throws {
         let view = TupleInsideTupleView(flag: true)
         let sut = try view.inspect().hStack().tupleView(1).text(0)

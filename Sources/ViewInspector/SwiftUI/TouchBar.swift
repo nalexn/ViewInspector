@@ -44,10 +44,7 @@ public extension InspectableView where View == ViewType.TouchBar {
 public extension InspectableView {
     
     func touchBar() throws -> InspectableView<ViewType.TouchBar> {
-        let view = try modifierAttribute(
-            modifierName: "_TouchBarModifier", path: "modifier|touchBar",
-            type: Any.self, call: "touchBar")
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try contentForModifierLookup.touchBar(parent: self)
     }
     
     func touchBarItemPrincipal() throws -> Bool {
@@ -67,6 +64,17 @@ public extension InspectableView {
         return try modifierAttribute(
             modifierName: "TouchBarItemPresenceTraitKey", path: "modifier|value|some",
             type: TouchBarItemPresence.self, call: "touchBarItemPresence")
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    func touchBar(parent: UnwrappedView) throws -> InspectableView<ViewType.TouchBar> {
+        let rootView = try modifierAttribute(
+            modifierName: "_TouchBarModifier", path: "modifier|touchBar",
+            type: Any.self, call: "touchBar")
+        let content = try Inspector.unwrap(content: Content(rootView))
+        return try .init(content, parent: parent, call: "touchBar()")
     }
 }
 #endif
