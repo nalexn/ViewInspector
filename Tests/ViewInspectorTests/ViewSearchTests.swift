@@ -40,7 +40,7 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Button.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self).map({ try $0.string() }),
                        ["Btn", "Test", "123", "xyz"])
-        XCTAssertEqual(try testView.inspect().findAll(ViewType.View<TestCustomView>.self).count, 1)
+        XCTAssertEqual(try testView.inspect().findAll(TestCustomView.self).count, 1)
         XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 1)
     }
     
@@ -88,5 +88,9 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertNoThrow(try testView.inspect().find(viewWithTag: 9).view(TestCustomView.self))
         XCTAssertThrows(try testView.inspect().find(viewWithTag: 0),
                         "Search did not find a match")
+    }
+    
+    func testFindCustomView() throws {
+        XCTAssertNoThrow(try testView.inspect().find(TestCustomView.self))
     }
 }

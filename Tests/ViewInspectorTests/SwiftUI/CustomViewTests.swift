@@ -141,6 +141,7 @@ final class CustomViewTests: XCTestCase {
         let sut = AnyView(NonInspectableTestView())
         XCTAssertThrows(try sut.inspect().find(ViewType.EmptyView.self),
                         "Search did not find a match. Possible blockers: NonInspectableTestView")
+        XCTAssertEqual(try sut.inspect().findAll(ViewType.EmptyView.self).count, 0)
     }
     
     func testActualView() throws {

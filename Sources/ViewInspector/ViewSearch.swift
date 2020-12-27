@@ -55,6 +55,13 @@ public extension InspectableView {
         return try find { try $0.tag() == tag }
     }
     
+    func find<V>(_ inspectable: V.Type,
+                 relation: ViewSearch.Relation = .child,
+                 where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
+    ) throws -> InspectableView<ViewType.View<V>> where V: Inspectable {
+        return try find(ViewType.View<V>.self, relation: relation, where: condition)
+    }
+    
     func find<T>(_ viewType: T.Type, containing string: String) throws -> InspectableView<T> {
         return try find(ViewType.Text.self, where: { text in
             (try? text.string()) == string &&
@@ -83,6 +90,12 @@ public extension InspectableView {
         case .parent:
             return try findParent(condition: condition)
         }
+    }
+    
+    func findAll<V>(_ inspectable: V.Type,
+                    where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
+    ) -> [InspectableView<ViewType.View<V>>] where V: Inspectable {
+        return findAll(ViewType.View<V>.self, where: condition)
     }
     
     func findAll<T>(_ viewType: T.Type,
