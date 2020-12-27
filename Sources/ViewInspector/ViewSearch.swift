@@ -173,7 +173,7 @@ private extension UnwrappedView {
             current.append(self)
         }
         
-        let index = (isSingle && offset == 0) ? nil : offset
+        let index = isSingle ? nil : offset
         guard let identity = ViewSearch.identify(self.content),
               let instance = try? identity.builder(self.content, self.parentView, index),
               let descendants = try? identity.allDescendants(instance)
