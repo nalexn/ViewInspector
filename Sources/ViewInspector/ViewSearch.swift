@@ -114,7 +114,7 @@ private extension UnwrappedView {
             }
             current = parent.parentView
         }
-        throw InspectionError.notSupported("Search did not find a match")
+        throw InspectionError.searchFailure(blockers: [])
     }
     
     func findChild(condition: ViewSearch.Condition) throws -> InspectableView<ViewType.ClassifiedView> {
@@ -123,14 +123,13 @@ private extension UnwrappedView {
             unknownViews.append(content.view)
         }) else {
             let blockers = blockersDescription(unknownViews)
-            throw InspectionError.notSupported("Search did not find a match" + blockers)
+            throw InspectionError.searchFailure(blockers: blockers)
         }
         return try result.asInspectableView()
     }
     
-    func blockersDescription(_ views: [Any]) -> String {
-        guard views.count > 0 else { return "" }
-        let names = views.map { view -> String in
+    func blockersDescription(_ views: [Any]) -> [String] {
+        return views.map { view -> String in
             let name = Inspector.typeName(value: view, prefixOnly: false)
             if name.hasPrefix("EnvironmentReaderView") {
                 return "navigationBarItems"
@@ -140,7 +139,6 @@ private extension UnwrappedView {
             }
             return name
         }
-        return ". Possible blockers: \(names.joined(separator: ", "))"
     }
     
     func breadthFirstSearch(_ condition: ViewSearch.Condition,

@@ -92,6 +92,7 @@ public enum InspectionError: Swift.Error {
     case modifierNotFound(parent: String, modifier: String)
     case notSupported(String)
     case textAttribute(String)
+    case searchFailure(blockers: [String])
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -115,6 +116,10 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
             return "\(parent) does not have '\(modifier)' modifier"
         case let .notSupported(message), let .textAttribute(message):
             return message
+        case let .searchFailure(blockers):
+            let suffix = blockers.count == 0 ? "" :
+                ". Possible blockers: \(blockers.joined(separator: ", "))"
+            return "Search did not find a match" + suffix
         }
     }
     
