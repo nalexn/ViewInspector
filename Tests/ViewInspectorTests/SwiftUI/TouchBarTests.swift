@@ -88,4 +88,15 @@ final class GlobalModifiersForTouchBar: XCTestCase {
 
 extension TouchBarItemPresence: BinaryEquatable { }
 
+#else
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+final class TouchBarTests: XCTestCase {
+    func testNotSupported() throws {
+        let view = try EmptyView().inspect()
+        XCTAssertThrows(try view.content.touchBar(parent: view),
+                        "Not supported on this platform")
+    }
+}
+
 #endif

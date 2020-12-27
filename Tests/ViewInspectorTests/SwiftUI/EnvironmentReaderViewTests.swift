@@ -38,6 +38,15 @@ final class EnvironmentReaderViewTests: XCTestCase {
         XCTAssertEqual(value, string)
     }
     
+    func testSearchBlocker() throws {
+        let view = NavigationView {
+            List { Text("abc") }
+                .navigationBarItems(trailing: Text(""))
+        }
+        XCTAssertThrows(try view.inspect().find(text: "abc"),
+                        "Search did not find a match. Possible blockers: navigationBarItems")
+    }
+    
     func testRetainsModifiers() throws {
         let view = NavigationView {
             Text("")

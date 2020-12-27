@@ -122,11 +122,25 @@ private extension UnwrappedView {
         guard let result = breadthFirstSearch(condition, identificationFailure: { content in
             unknownViews.append(content.view)
         }) else {
-            let blockers = unknownViews.count == 0 ? "" :
-                ". Possible blockers: \(unknownViews.map({ Inspector.typeName(value: $0, prefixOnly: false) }))"
+            let blockers = blockersDescription(unknownViews)
             throw InspectionError.notSupported("Search did not find a match" + blockers)
         }
         return try result.asInspectableView()
+    }
+    
+    func blockersDescription(_ views: [Any]) -> String {
+        guard views.count > 0 else { return "" }
+        let names = views.map { view -> String in
+            let name = Inspector.typeName(value: view, prefixOnly: false)
+            if name.hasPrefix("EnvironmentReaderView") {
+                return "navigationBarItems"
+            }
+            if name.hasPrefix("PopoverPresentationModifier") {
+                return "popover"
+            }
+            return name
+        }
+        return ". Possible blockers: \(names.joined(separator: ", "))"
     }
     
     func breadthFirstSearch(_ condition: ViewSearch.Condition,

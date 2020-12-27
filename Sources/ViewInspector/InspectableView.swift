@@ -85,7 +85,8 @@ public extension InspectableView {
     }
     
     var pathToRoot: String {
-        return (parentView.flatMap { $0.pathToRoot + "." } ?? "") + inspectionCall
+        let prefix = parentView.flatMap { $0.pathToRoot } ?? ""
+        return prefix.isEmpty ? inspectionCall : prefix + "." + inspectionCall
     }
 }
 

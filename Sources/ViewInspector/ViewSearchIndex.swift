@@ -207,6 +207,9 @@ internal extension ViewSearch {
         .init(name: "_BackgroundModifier", builder: { parent in
             try parent.content.background(parent: parent)
         }),
+        .init(name: "PopoverPresentationModifier", builder: { parent in
+            try parent.content.popover(parent: parent)
+        }),
         .init(name: "_MaskEffect", builder: { parent in
             try parent.content.mask(parent: parent)
         }),

@@ -15,10 +15,19 @@ public extension ViewType {
 public extension InspectableView {
     
     func popover() throws -> InspectableView<ViewType.Popover> {
+        return try contentForModifierLookup.popover(parent: self)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    
+    func popover(parent: UnwrappedView) throws -> InspectableView<ViewType.Popover> {
         let modifier = try modifierAttribute(
             modifierName: "PopoverPresentationModifier", path: "modifier",
             type: Any.self, call: "popover")
-        return try .init(Content(modifier), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(modifier)),
+                         parent: parent, call: "popover()")
     }
 }
 
