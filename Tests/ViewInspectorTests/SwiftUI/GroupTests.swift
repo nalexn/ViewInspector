@@ -33,6 +33,14 @@ final class GroupTests: XCTestCase {
         XCTAssertEqual(view3, sampleView3)
     }
     
+    func testSearch() throws {
+        let view = AnyView(Group { EmptyView() })
+        XCTAssertEqual(try view.inspect().find(ViewType.Group.self).pathToRoot,
+                       "anyView().group()")
+        XCTAssertEqual(try view.inspect().find(ViewType.EmptyView.self).pathToRoot,
+                       "anyView().group().emptyView(0)")
+    }
+    
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")

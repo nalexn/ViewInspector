@@ -32,6 +32,15 @@ final class ForEachTests: XCTestCase {
         XCTAssertEqual(value3, "2")
     }
     
+    func testSearch() throws {
+        let data = ["0", "1", "2"].map { TestStruct(id: $0) }
+        let view = AnyView(ForEach(data) { Text($0.id) })
+        XCTAssertEqual(try view.inspect().find(ViewType.ForEach.self).pathToRoot,
+                       "anyView().forEach()")
+        XCTAssertEqual(try view.inspect().find(text: "2").pathToRoot,
+                       "anyView().forEach().text(2)")
+    }
+    
     func testMultipleNonIdentifiableEnclosedViews() throws {
         let data = ["0", "1", "2"].map { NonIdentifiable(id: $0) }
         let view = ForEach(data, id: \.id) { Text($0.id) }

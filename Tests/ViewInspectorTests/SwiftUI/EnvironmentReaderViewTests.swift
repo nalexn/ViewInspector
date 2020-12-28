@@ -13,7 +13,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
         }
         XCTAssertThrows(
             try view.inspect().navigationView().list(0),
-            "Please insert '.navigationBarItems()' before .list(0) for unwrapping the underlying view hierarchy.")
+            "Please insert '.navigationBarItems()' before list(0) for unwrapping the underlying view hierarchy.")
     }
     
     func testUnknownHierarchyTypeUnwrap() throws {
@@ -36,6 +36,16 @@ final class EnvironmentReaderViewTests: XCTestCase {
             .navigationBarItems(List<Never, Text>.self)
             .list().text(0).string()
         XCTAssertEqual(value, string)
+    }
+    
+    func testSearchBlocker() throws {
+        let view = AnyView(NavigationView {
+            Text("abc")
+                .navigationBarItems(trailing: Text(""))
+        })
+        XCTAssertThrows(try view.inspect().find(text: "abc"),
+                        "Search did not find a match. Possible blockers: navigationBarItems")
+        XCTAssertNoThrow(try view.inspect().find(where: { (try? $0.navigationBarItems(Text.self)) != nil }))
     }
     
     func testRetainsModifiers() throws {
@@ -62,7 +72,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
         let sut = TestView()
         let exp = sut.inspection.inspect { view in
             XCTAssertThrows(try view.vStack(),
-            "Please insert '.navigationBarItems()' before .vStack() for unwrapping the underlying view hierarchy.")
+            "Please insert '.navigationBarItems()' before vStack() for unwrapping the underlying view hierarchy.")
         }
         ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 1.0)

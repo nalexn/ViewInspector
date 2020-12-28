@@ -154,9 +154,9 @@ final class ShapeTests: XCTestCase {
     func testPathToRoot() throws {
         let view1 = AnyView(Rectangle())
         let sut1 = try view1.inspect().anyView().shape().pathToRoot
-        XCTAssertEqual(sut1, "inspect().anyView().shape()")
+        XCTAssertEqual(sut1, "anyView().shape()")
         let view2 = HStack { Rectangle() }
         let sut2 = try view2.inspect().hStack().shape(0).pathToRoot
-        XCTAssertEqual(sut2, "inspect().hStack().shape(0)")
+        XCTAssertEqual(sut2, "hStack().shape(0)")
     }
 }

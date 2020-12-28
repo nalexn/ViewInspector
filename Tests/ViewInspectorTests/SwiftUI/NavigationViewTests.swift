@@ -44,6 +44,14 @@ final class NavigationViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().navigationView(0))
         XCTAssertNoThrow(try view.inspect().hStack().navigationView(1))
     }
+    
+    func testSearch() throws {
+        let view = AnyView(NavigationView { Text("abc") })
+        XCTAssertEqual(try view.inspect().find(ViewType.NavigationView.self).pathToRoot,
+                       "anyView().navigationView()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().navigationView().text(0)")
+    }
 }
 
 // MARK: - View Modifiers

@@ -52,6 +52,18 @@ final class DisclosureGroupTests: XCTestCase {
         XCTAssertEqual(string, "abc")
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
+        let sut = DisclosureGroup(content: {
+                                    EmptyView()
+                                    Text("abc")
+        }, label: { Spacer() })
+        XCTAssertEqual(try sut.inspect().find(text: "abc").pathToRoot,
+                       "disclosureGroup().text(1)")
+        XCTAssertEqual(try sut.inspect().find(ViewType.Spacer.self).pathToRoot,
+                       "disclosureGroup().labelView().spacer()")
+    }
+    
     func testExpansionError() throws {
         guard #available(iOS 14, macOS 11.0, *) else { return }
         let sut = DisclosureGroup("", content: { EmptyView() })

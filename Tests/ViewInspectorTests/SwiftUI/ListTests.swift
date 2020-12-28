@@ -33,6 +33,14 @@ final class ListTests: XCTestCase {
         XCTAssertEqual(view3, sampleView3)
     }
     
+    func testSearch() throws {
+        let view = AnyView(List { EmptyView(); Text("abc") })
+        XCTAssertEqual(try view.inspect().find(ViewType.List.self).pathToRoot,
+                       "anyView().list()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().list().text(1)")
+    }
+    
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
@@ -87,6 +95,11 @@ final class GlobalModifiersForList: XCTestCase {
     func testListRowBackgroundInspection() throws {
         let sut = EmptyView().listRowBackground(Text("test").padding())
         XCTAssertEqual(try sut.inspect().listRowBackground().text().string(), "test")
+    }
+    
+    func testListRowBackgroundSearch() throws {
+        let sut = EmptyView().listRowBackground(Text("test").padding())
+        XCTAssertNoThrow(try sut.inspect().find(text: "test"))
     }
     
     func testListStyle() throws {

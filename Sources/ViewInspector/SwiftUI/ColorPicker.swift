@@ -1,7 +1,6 @@
 import SwiftUI
 
-@available(iOS 14.0, macOS 11.0, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct ColorPicker: KnownViewType {
@@ -16,7 +15,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func colorPicker() throws -> InspectableView<ViewType.ColorPicker> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -31,6 +30,11 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.ColorPicker: SupplementaryChildrenLabelView { }
+
 // MARK: - Custom Attributes
 
 @available(iOS 14.0, macOS 11.0, *)
@@ -38,8 +42,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.ColorPicker {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try View.supplementaryChildren(self).element(at: 0)
     }
     
     #if os(macOS)

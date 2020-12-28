@@ -16,6 +16,12 @@ final class TextTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().text(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(Text("abc"))
+        XCTAssertEqual(try view.inspect().find(ViewType.Text.self).pathToRoot, "anyView().text()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot, "anyView().text()")
+    }
+    
     // MARK: - string()
     
     func testExternalStringValue() throws {

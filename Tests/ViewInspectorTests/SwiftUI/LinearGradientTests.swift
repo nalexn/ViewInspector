@@ -26,6 +26,12 @@ final class LinearGradientTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().linearGradient(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(LinearGradient(gradient: gradient, startPoint: .bottom, endPoint: .top))
+        XCTAssertEqual(try view.inspect().find(ViewType.LinearGradient.self).pathToRoot,
+                       "anyView().linearGradient()")
+    }
+    
     func testGradient() throws {
         let sut = try LinearGradient(gradient: gradient, startPoint: .bottom, endPoint: .top)
             .inspect().linearGradient().gradient()

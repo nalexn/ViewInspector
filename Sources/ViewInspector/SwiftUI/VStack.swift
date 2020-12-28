@@ -24,7 +24,7 @@ extension ViewType.VStack: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func vStack() throws -> InspectableView<ViewType.VStack> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

@@ -55,10 +55,13 @@ final class ImageTests: XCTestCase {
         #endif
     }
     
-    func textDeprecatedLabel() throws {
+    func testSearch() throws {
         let cgImage = testImage.cgImage!
-        let view = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage").bold())
-        XCTAssertNoThrow(try view.inspect().image().label())
+        let view = AnyView(Image(cgImage, scale: 2.0, orientation: .down, label: Text("abc")))
+        XCTAssertEqual(try view.inspect().find(ViewType.Image.self).pathToRoot,
+                       "anyView().image()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().image().labelView().text()")
     }
     
     func testExtractionNilCGImage() throws {

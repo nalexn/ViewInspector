@@ -16,31 +16,55 @@ SwiftUI views are a function of state. We can provide the input, but couldn't ve
 
 ## Use cases
 
-#### 1. Verify the view's inner state
+### 1. Search the view of a specific type or condition
 
-You can dig into the hierarchy and read the actual state values on any SwiftUI View:
+Use one of the `find` functions to quickly locate a specific view or assert there are none of such:
 
 ```swift
-func testVStackOfTexts() throws {
-    let view = VStack {
-        Text("1")
-        Text("2")
-        Text("3")
-    }
-    let text = try view.inspect().vStack().text(2).string()
-    XCTAssertEqual(text, "3")
-}
+try sut.inspect().find(button: "Back")
+
+try sut.inspect().findAll(ViewType.Text.self,
+                          where: { try $0.attributes().isBold() })
 ```
 
-`Text` value inspection supports various formatting styles, text attributes, and localization.
+Check out [this section](guide.md#dynamic-query-with-find) in the guide for the reference.
 
-#### 2. Trigger side effects
+### 2. Verify your custom view's state
+
+Obtain a copy of your custom view with actual state and references from the hierarchy of any depth:
+
+```swift
+let sut = try view.inspect().find(CustomView.self).actualView()
+XCTAssertTrue(sut.viewModel.isUserLoggedIn)
+```
+
+The library can operate with various types of the view's state, such as `@Binding`, `@State`, `@ObservedObject` and `@EnvironmentObject`.
+
+### 3. Read the inner state of the standard views
+
+Standard SwiftUI views are no longer a black box:
+
+```swift
+let sut = Text("Completed by \(72.541, specifier: "%.2f")%")
+              .font(.caption)
+              
+XCTAssertEqual(try sut.inspect().text().attributes().font(), .caption)
+
+let value1 = try sut.inspect().text().string()
+XCTAssertEqual(value1, "Completed by 72.54%")
+
+let value2 = try sut.inspect().text().string(locale: Locale(identifier: "ru"))
+XCTAssertEqual(value2, "Завершено на 72,54%")
+```
+
+Each view has its own set of inspectable parameters, you can refer to the [API coverage](readiness.md) document to see what's available for a particular SwiftUI view.
+
+### 4. Trigger side effects
 
 You can simulate user interaction by programmatically triggering system-controls callbacks:
 
 ```swift
-let button = try view.inspect().hStack().button(1)
-try button.tap()
+try sut.inspect().find(button: "Close").tap()
 
 let list = try view.inspect().list()
 try list[5].view(RowItemView.self).callOnAppear()
@@ -48,46 +72,29 @@ try list[5].view(RowItemView.self).callOnAppear()
 
 The library provides helpers for writing asynchronous tests for views with callbacks.
 
-#### 3. Extract custom views from the hierarchy of any depth
-
-It is possible to obtain a copy of your custom view with actual state and references from the hierarchy of any depth:
-
-```swift
-let sut = try view.inspect().tabView().navigationView()
-    .overlay().anyView().view(CustomView.self).actualView()
-XCTAssertTrue(sut.viewModel.isUserLoggedIn)
-```
-
-The library can operate with various types of the view's state, such as `@Binding`, `@State`, `@ObservedObject` and `@EnvironmentObject`.
-
 ## FAQs
 
 ### Which views and modifiers are supported?
 
-Check out the [detailed list](readiness.md). There is currently almost full support for SwiftUI 1.0 API, the 2.0 support is under active development.
-
-You are welcomed to contribute! Use `po Inspector.print(view) as AnyObject` in **lldb** for printing the inner view structure - this is the tool that would help you dig super fast!
+Check out the [API coverage](readiness.md). There is currently almost full support for SwiftUI 1.0 API, the 2.0 support is under active development.
 
 ### Is it using private APIs?
 
-**ViewInspector** is using official Swift reflection API to dissect the view structures.
-
-So this framework is production-friendly for the case if you accidentally (or intentionally) linked it with the build target.
+**ViewInspector** is using official Swift reflection API to dissect the view structures. So it'll be production-friendly even if you could somehow ship the test target to the production.
 
 ### How do I add it to my Xcode project?
 
-**Swift Package Manager**
+Assure you're adding the framework to your unit-test target. **Do NOT** add it to the main build target.
 
-1. In Xcode select **File ⭢ Swift Packages ⭢ Add Package Dependency...**
-2. Copy-paste repository URL: **https://github.com/nalexn/ViewInspector**
-3. Hit **Next** two times, under **Add to Target** select your test target. There is no need to add it to the build target.
-4. Hit **Finish**
+#### Swift Package Manager
 
-**Carthage**
+`https://github.com/nalexn/ViewInspector`
+
+#### Carthage
 
 `github "nalexn/ViewInspector"`
 
-**CocoaPods**
+#### CocoaPods
 
 `pod 'ViewInspector'`
 

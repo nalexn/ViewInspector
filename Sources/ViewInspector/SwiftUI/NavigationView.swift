@@ -31,7 +31,7 @@ extension ViewType.NavigationView: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func navigationView() throws -> InspectableView<ViewType.NavigationView> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

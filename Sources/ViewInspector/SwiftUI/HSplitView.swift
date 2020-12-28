@@ -1,16 +1,14 @@
 import SwiftUI
 
-#if os(macOS)
-
-@available(macOS 10.15, *)
-@available(iOS, unavailable)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct HSplitView: KnownViewType {
         public static let typePrefix: String = "HSplitView"
     }
 }
+
+#if os(macOS)
 
 // MARK: - Content Extraction
 
@@ -39,7 +37,7 @@ extension ViewType.HSplitView: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func hSplitView() throws -> InspectableView<ViewType.HSplitView> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

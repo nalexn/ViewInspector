@@ -23,17 +23,33 @@ public protocol MultipleViewContent {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol KnownViewType {
-    static var typePrefix: String { get }
-    static func inspectionCall(index: Int?) -> String
+internal typealias SupplementaryView = InspectableView<ViewType.ClassifiedView>
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol SupplementaryChildren {
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView>
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension KnownViewType {
-    public static func inspectionCall(index: Int?) -> String {
-        return "." + typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
-            + (index.flatMap({ "(\($0))" }) ?? "()")
+internal protocol SupplementaryChildrenLabelView: SupplementaryChildren {
+    static var labelViewPath: String { get }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension SupplementaryChildrenLabelView {
+    static var labelViewPath: String { "label" }
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
+        return .init(count: 1) { _ in
+            let child = try Inspector.attribute(path: labelViewPath, value: parent.content.view)
+            let content = try Inspector.unwrap(content: Content(child))
+            return try .init(content, parent: parent, call: "labelView()")
+        }
     }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public protocol KnownViewType {
+    static var typePrefix: String { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -76,6 +92,7 @@ public enum InspectionError: Swift.Error {
     case modifierNotFound(parent: String, modifier: String)
     case notSupported(String)
     case textAttribute(String)
+    case searchFailure(blockers: [String])
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -99,6 +116,10 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
             return "\(parent) does not have '\(modifier)' modifier"
         case let .notSupported(message), let .textAttribute(message):
             return message
+        case let .searchFailure(blockers):
+            let suffix = blockers.count == 0 ? "" :
+                ". Possible blockers: \(blockers.joined(separator: ", "))"
+            return "Search did not find a match" + suffix
         }
     }
     
@@ -129,6 +150,16 @@ public struct LazyGroup<T> {
     
     static var empty: Self {
         return .init(count: 0) { _ in fatalError() }
+    }
+    
+    static func + (lhs: LazyGroup, rhs: LazyGroup) -> LazyGroup {
+        return .init(count: lhs.count + rhs.count) { index -> T in
+            if index < lhs.count {
+                return try lhs.element(at: index)
+            } else {
+                return try rhs.element(at: index - lhs.count)
+            }
+        }
     }
 }
 

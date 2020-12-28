@@ -23,6 +23,16 @@ final class LinkTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().link(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let view = AnyView(Link(destination: url, label: {
+            HStack { Text("xyz") }
+        }))
+        XCTAssertEqual(try view.inspect().find(ViewType.Link.self).pathToRoot, "anyView().link()")
+        XCTAssertEqual(try view.inspect().find(link: url).pathToRoot, "anyView().link()")
+        XCTAssertEqual(try view.inspect().find(link: "xyz").pathToRoot, "anyView().link()")
+    }
+    
     func testURLInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = Link("abc", destination: url)

@@ -26,6 +26,17 @@ final class LabelTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().label(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let view = HStack { Label("tx", image: "img") }
+        XCTAssertEqual(try view.inspect().find(ViewType.Label.self).pathToRoot,
+                       "hStack().label(0)")
+        XCTAssertEqual(try view.inspect().find(text: "tx").pathToRoot,
+                       "hStack().label(0).title().text()")
+        XCTAssertEqual(try view.inspect().find(text: "img").pathToRoot,
+                       "hStack().label(0).icon().image().labelView().text()")
+    }
+    
     func testTitleInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = Label(title: {
@@ -74,9 +85,9 @@ final class GlobalModifiersForLabel: XCTestCase {
         XCTAssertEqual(try title.blur().radius, 3)
         XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationTitle(),
-            "inspect().styleConfigurationTitle() found EmptyView instead of Title")
+            "styleConfigurationTitle() found EmptyView instead of Title")
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationIcon(),
-            "inspect().styleConfigurationIcon() found EmptyView instead of Icon")
+            "styleConfigurationIcon() found EmptyView instead of Icon")
     }
 }
 

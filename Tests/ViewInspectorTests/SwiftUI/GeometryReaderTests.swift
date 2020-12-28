@@ -31,4 +31,12 @@ final class GeometryReaderTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().geometryReader(0))
         XCTAssertNoThrow(try view.inspect().hStack().geometryReader(1))
     }
+    
+    func testSearch() throws {
+        let view = HStack { GeometryReader { _ in EmptyView() } }
+        XCTAssertEqual(try view.inspect().find(ViewType.GeometryReader.self).pathToRoot,
+                       "hStack().geometryReader(0)")
+        XCTAssertEqual(try view.inspect().find(ViewType.EmptyView.self).pathToRoot,
+                       "hStack().geometryReader(0).emptyView()")
+    }
 }

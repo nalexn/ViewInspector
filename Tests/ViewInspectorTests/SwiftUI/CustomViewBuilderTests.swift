@@ -43,10 +43,10 @@ final class CustomViewBuilderTests: XCTestCase {
     }
     
     func testResetsModifiers() throws {
-        let view1 = TestViewBuilderView { Text("Test") }.padding()
+        let view1 = TestViewBuilderView { Text("Test") }.padding().offset()
         let sut1 = try view1.inspect().view(TestViewBuilderView<Text>.self).text(0)
-        XCTAssertEqual(sut1.content.modifiers.count, 0)
-        let view2 = TestViewBuilderView { Text("Test"); EmptyView() }.padding()
+        XCTAssertEqual(sut1.content.modifiers.count, 1)
+        let view2 = TestViewBuilderView { Text("Test"); EmptyView() }.padding().offset()
         let sut2 = try view2.inspect().view(TestViewBuilderView<Text>.self).text(0)
         XCTAssertEqual(sut2.content.modifiers.count, 0)
     }
@@ -78,18 +78,12 @@ final class CustomViewBuilderTests: XCTestCase {
         XCTAssertNoThrow(TestViewBuilderView { Text("Test") }.body)
     }
     
-    func testDeprecatedViewBuilder() throws {
-        let sut = TestViewBuilderView { Text("Test") }
-        XCTAssertNoThrow(try sut.inspect().viewBuilder().text(0))
-    }
-    
-    func testPathToRoot() throws {
+    func testSearch() throws {
         let view = HStack {
             TestViewBuilderView { Text("Test"); EmptyView() }
         }
-        let sut = try view.inspect().hStack().view(TestViewBuilderView<EmptyView>.self, 0).text(0)
-            .pathToRoot
-        XCTAssertEqual(sut, "inspect().hStack().view(TestViewBuilderView.self, 0).text(0)")
+        let sut = try view.inspect().find(text: "Test").pathToRoot
+        XCTAssertEqual(sut, "hStack().view(TestViewBuilderView.self, 0).text(0)")
     }
 }
 

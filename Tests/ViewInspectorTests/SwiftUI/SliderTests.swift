@@ -20,12 +20,6 @@ final class SliderTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let binding = Binding<Float>(wrappedValue: 0)
-        let view = Slider(value: binding, label: { Text("Title") })
-        XCTAssertNoThrow(try view.inspect().slider().text())
-    }
-    
     func testExtractionFromSingleViewContainer() throws {
         let binding = Binding<Float>(wrappedValue: 0)
         let view = AnyView(Slider(value: binding))
@@ -37,6 +31,17 @@ final class SliderTests: XCTestCase {
         let view = HStack { Slider(value: binding); Slider(value: binding) }
         XCTAssertNoThrow(try view.inspect().hStack().slider(0))
         XCTAssertNoThrow(try view.inspect().hStack().slider(1))
+    }
+    
+    func testSearch() throws {
+        let binding = Binding<Float>(wrappedValue: 0)
+        let view = AnyView(Slider(value: binding, label: { AnyView(Text("abc")) }))
+        XCTAssertEqual(try view.inspect().find(ViewType.Slider.self).pathToRoot,
+                       "anyView().slider()")
+        XCTAssertEqual(try view.inspect().find(ViewType.Slider.self, containing: "abc").pathToRoot,
+                       "anyView().slider()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().slider().labelView().anyView().text()")
     }
     
     func testValue() throws {

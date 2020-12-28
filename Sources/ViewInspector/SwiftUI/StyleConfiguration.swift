@@ -9,27 +9,22 @@ public extension ViewType {
 public extension ViewType.StyleConfiguration {
     struct Label: KnownViewType {
         public static var typePrefix: String = "Label"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationLabel()" }
     }
     
     struct Content: KnownViewType {
         public static var typePrefix: String = "Content"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationContent()" }
     }
     
     struct Title: KnownViewType {
         public static var typePrefix: String = "Title"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationTitle()" }
     }
     
     struct Icon: KnownViewType {
         public static var typePrefix: String = "Icon"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationIcon()" }
     }
     
     struct CurrentValueLabel: KnownViewType {
         public static var typePrefix: String = "CurrentValueLabel"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationCurrentValueLabel()" }
     }
 }
 
@@ -39,24 +34,24 @@ public extension ViewType.StyleConfiguration {
 public extension InspectableView where View: SingleViewContent {
     
     func styleConfigurationLabel() throws -> InspectableView<ViewType.StyleConfiguration.Label> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
     
     func styleConfigurationContent() throws -> InspectableView<ViewType.StyleConfiguration.Content> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
     
     func styleConfigurationTitle() throws -> InspectableView<ViewType.StyleConfiguration.Title> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
     
     func styleConfigurationIcon() throws -> InspectableView<ViewType.StyleConfiguration.Icon> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
     
     func styleConfigurationCurrentValueLabel() throws ->
     InspectableView<ViewType.StyleConfiguration.CurrentValueLabel> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

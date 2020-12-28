@@ -23,6 +23,14 @@ final class TextEditorTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().textEditor(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
+        let binding = Binding(wrappedValue: "")
+        let view = AnyView(TextEditor(text: binding))
+        XCTAssertEqual(try view.inspect().find(ViewType.TextEditor.self).pathToRoot,
+                       "anyView().textEditor()")
+    }
+    
     func testInput() throws {
         guard #available(iOS 14, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: "123")

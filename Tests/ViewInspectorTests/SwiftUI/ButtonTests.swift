@@ -17,11 +17,6 @@ final class ButtonTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let view = Button(action: {}, label: { Text("") })
-        XCTAssertNoThrow(try view.inspect().button().text())
-    }
-    
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Button(action: {}, label: { Text("") }))
         XCTAssertNoThrow(try view.inspect().anyView().button())
@@ -34,6 +29,18 @@ final class ButtonTests: XCTestCase {
         }
         XCTAssertNoThrow(try view.inspect().hStack().button(0))
         XCTAssertNoThrow(try view.inspect().hStack().button(1))
+    }
+    
+    func testSearch() throws {
+        let view = Group { Button(action: {}, label: { AnyView(Text("abc")) }) }
+        XCTAssertEqual(try view.inspect().find(ViewType.Button.self).pathToRoot,
+                       "group().button(0)")
+        XCTAssertEqual(try view.inspect().find(button: "abc").pathToRoot,
+                       "group().button(0)")
+        XCTAssertEqual(try view.inspect().find(ViewType.Text.self).pathToRoot,
+                       "group().button(0).labelView().anyView().text()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "group().button(0).labelView().anyView().text()")
     }
     
     func testCallback() throws {
@@ -99,17 +106,6 @@ final class ButtonStyleInspectionTests: XCTestCase {
         let style = TestPrimitiveButtonStyle()
         let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
         XCTAssertNoThrow(try button.anyView().styleConfigurationLabel().blur())
-    }
-    
-    func testDeprecatedStyleLabelInspection() throws {
-        let style = TestPrimitiveButtonStyle()
-        let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
-        if #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) {
-            XCTAssertNoThrow(try button.anyView().primitiveButtonStyleLabel())
-        }
-        let sut = Group { EmptyView() }
-        XCTAssertThrows(try sut.inspect().group().primitiveButtonStyleLabel(0),
-        "inspect().group().styleConfigurationLabel() found EmptyView instead of Label")
     }
     
     func testPrimitiveButtonStyleLabel() throws {

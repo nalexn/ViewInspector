@@ -34,6 +34,16 @@ final class MenuButtonTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().menuButton(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(MenuButton(label: Text("abc")) { Text("xyz") })
+        XCTAssertEqual(try view.inspect().find(ViewType.MenuButton.self).pathToRoot,
+                       "anyView().menuButton()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().menuButton().labelView().text()")
+        XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
+                       "anyView().menuButton().text()")
+    }
+    
     func testLabelView() throws {
         let sut = MenuButton(label: Text("abc")) { EmptyView() }
         let text = try sut.inspect().menuButton().labelView().text().string()

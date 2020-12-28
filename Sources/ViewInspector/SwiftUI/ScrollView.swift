@@ -25,7 +25,7 @@ extension ViewType.ScrollView: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func scrollView() throws -> InspectableView<ViewType.ScrollView> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

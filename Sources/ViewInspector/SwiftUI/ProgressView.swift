@@ -1,6 +1,6 @@
 import SwiftUI
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct ProgressView: KnownViewType {
@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func progressView() throws -> InspectableView<ViewType.ProgressView> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -25,6 +25,27 @@ public extension InspectableView where View: MultipleViewContent {
     
     func progressView(_ index: Int) throws -> InspectableView<ViewType.ProgressView> {
         return try .init(try child(at: index), parent: self, index: index)
+    }
+}
+
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.ProgressView: SupplementaryChildren {
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
+        return .init(count: 2) { index in
+            if index == 0 {
+                let child = try Inspector.attribute(
+                    path: "base|custom|label|some", value: parent.content.view)
+                let content = try Inspector.unwrap(content: Content(child))
+                return try .init(content, parent: parent, call: "labelView()")
+            } else {
+                let child = try Inspector.attribute(
+                    path: "base|custom|currentValueLabel|some", value: parent.content.view)
+                let content = try Inspector.unwrap(content: Content(child))
+                return try .init(content, parent: parent, call: "currentValueLabelView()")
+            }
+        }
     }
 }
 
@@ -45,13 +66,11 @@ public extension InspectableView where View == ViewType.ProgressView {
     }
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(path: "base|custom|label|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try View.supplementaryChildren(self).element(at: 0)
     }
     
     func currentValueLabelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(path: "base|custom|currentValueLabel|some", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try View.supplementaryChildren(self).element(at: 1)
     }
 }
 

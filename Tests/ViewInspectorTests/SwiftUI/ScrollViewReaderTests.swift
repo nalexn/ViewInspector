@@ -21,6 +21,15 @@ final class ScrollViewReaderTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().scrollViewReader(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let view = AnyView(ScrollViewReader { _ in Text("abc") })
+        XCTAssertEqual(try view.inspect().find(ViewType.ScrollViewReader.self).pathToRoot,
+                       "anyView().scrollViewReader()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().scrollViewReader().text()")
+    }
+    
     func testEnclosedView() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = ScrollViewReader { _ in Text("abc") }

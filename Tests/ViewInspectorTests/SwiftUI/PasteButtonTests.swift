@@ -24,6 +24,12 @@ final class PasteButtonTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().pasteButton(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(PasteButton(supportedTypes: [], payloadAction: { _ in }))
+        XCTAssertEqual(try view.inspect().find(ViewType.PasteButton.self).pathToRoot,
+                       "anyView().pasteButton()")
+    }
+    
     @available(macOS 11.0, *)
     func testSupportedTypes() throws {
         let types = [UTType.gif, .pdf]

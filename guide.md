@@ -2,6 +2,7 @@
 
 
 - [The Basics](#the-basics)
+- [Dynamic query with **find**](#dynamic-query-with-find)
 - [Views using **@Binding**](#views-using-binding)
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
@@ -86,6 +87,151 @@ let okText = try hStack.anyView(1).view(OtherView.self).text()
 ```
 
 Alternatively, you can use the subscript syntax: `hStack[1].anyView()`. All the multiple-descendants views, such as `hStack`, provide the standard set of functions available for a `RandomAccessCollection`, including `count`, `map`, `first(where: )`, etc.
+
+## Dynamic query with `find`
+
+Alternatively to writing the full path to the target view you can use one of the `find` functions so the library could locate the view for you.
+
+`find` is fully compatible with the inspection call chain and can be triggered at any step:
+
+```swift
+try sut.inspect().anyView().find(ViewType.HStack.self).text(1)
+
+try sut.inspect().find(where: { ... }).zStack()
+```
+
+You can query for a specific view with `find` or use `findAll` to get an array of all matching views.
+
+The `find` traverses the hierarchy in the breadth-first order until it finds the first matching view. If none are found it throws an exception.
+
+The `findAll` traverses the entire hierarchy in depth-first order and returns an array of all matching views. It does not throw and returns an empty array if none are found.
+
+Here are a few examples of the `find` functions made available:
+
+```swift
+.find(text: "xyz") // returns Text
+.find(button: "xyz") // returns Button which label contains Text("xyz")
+.find(viewWithId: 7) // returns a view with modifier .id(7)
+.find(viewWithTag: "Home") // returns a view with modifier .tag("Home")
+.find(CustomView.self) // returns CustomView
+.find(ViewType.HStack.self) // returns the first found HStack
+```
+
+#### `where` condition
+
+Some of the functions also accept an additional parameter `where` for specifying a condition:
+
+```swift
+.find(ViewType.Text.self, where: { try $0.string() == "abc" })
+```
+
+The above is identical to `.find(text: "abc")`
+
+#### `pathToRoot`
+
+If you want to assure the library found the correct view you can read the `pathToRoot` value from any view to see the full inspection path:
+
+```swift
+let view = try sut.inspect().find(viewWithId: 42)
+// print(view.pathToRoot) in the code or
+// lldb: po view.pathToRoot
+```
+
+#### `parent`
+
+There could be a use case when you want to find a specific view which only difference lays in its child views.
+
+For example, locating a TableViewCell by its title.
+
+In such a scenario you can find the child first, and then shift the focus to its parent.
+
+Each view has a property `parent`, returning an anonymous view that you can unwrap and inspect:
+
+```swift
+let view = AnyView(HStack { Text("abc") })
+let text = try sut.inspect().find(text: "abc")
+let hStack = try text.parent().hStack()
+let anyView = try text.parent().parent().anyView()
+```
+
+Alternatively, you can use `find` with parameter `relation: .parent` for locating a specific parent view:
+
+```swift
+let anyView = try text.find(ViewType.AnyView.self, relation: .parent)
+```
+
+The default value for the `relation` parameter is `.child`, but `.parent` inverts the direction of the search outwards.
+
+So here is how you could find a TableViewCell by title:
+
+```swift
+let title = try sut.inspect().find(text: "Cell's title")
+let cell = try title.find(TableViewCell.self, relation: .parent)
+```
+
+... or simply use this other variation of the `find` function:
+
+```swift
+let cell = try sut.find(TableViewCell.self, containing: "Cell's title")
+```
+
+This function accepts either `Inspectable` custom view or types like `ViewType.HStack`, searches for a specific `Text` first and then locates the parent view of a given type.
+
+#### Generic `find` function
+
+Don't be freaked out by the number of different `find` functions, in fact, they all are based on just one most generic version, that only takes the `relation` and `where` parameters:
+
+```swift
+let text = try sut.inspect()
+    .find(where: {
+        try $0.text().string() == "abc"
+    })
+    .text()
+```
+
+The condition is called with an anonymous view, giving you the flexibility of either unwrapping it for verifying it's type or just assuring a certain modifier is applied.
+
+Here is how `find(viewWithId:)` is implemented in the library:
+
+```swift
+func find(viewWithId id: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
+    return try find(where: { try $0.id() == id })
+}
+```
+
+It does not care about the type of the view, but assures the `id` modifier exists and the values match.
+
+#### Your custom `find` functions
+
+Lastly, you can define your own `find` function for convenience by extending the `InspectableView` type:
+
+```swift
+extension InspectableView {
+    
+    func find(textWithFont font: Font) throws -> InspectableView<ViewType.Text> {
+        return try find(ViewType.Text.self, where: {
+            try $0.attributes().font() == font
+        })
+    }
+}
+
+let text = try sut.find(textWithFont: .headline)
+```
+
+#### Limitations
+
+There are a few scenarious when `find` function is unable to automatically traverse the whole view.
+
+One of such cases is a custom view that does not conform to `Inspectable`. Adding a corresponding extension in the test scope solves this problem.
+
+In addition to that, there are a few SwiftUI modifiers which currently block the search:
+
+* `navigationBarItems`
+* `popover`
+* `overlayPreferenceValue`
+* `backgroundPreferenceValue`
+
+While the first two can be unwrapped manually, the last two are notorious for blocking the inspection completely. The workaround is under investigation.
 
 ## Views using `@Binding`
 

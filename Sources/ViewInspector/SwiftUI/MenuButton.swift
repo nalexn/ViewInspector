@@ -1,15 +1,14 @@
 import SwiftUI
 
-#if os(macOS)
-@available(macOS 10.15, *)
-@available(iOS, unavailable)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct MenuButton: KnownViewType {
         public static var typePrefix: String = "MenuButton"
     }
 }
+
+#if os(macOS)
 
 // MARK: - Content Extraction
 
@@ -32,7 +31,7 @@ extension ViewType.MenuButton: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func menuButton() throws -> InspectableView<ViewType.MenuButton> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -48,6 +47,11 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.MenuButton: SupplementaryChildrenLabelView { }
+
 // MARK: - Custom Attributes
 
 @available(macOS 10.15, *)
@@ -56,8 +60,7 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.MenuButton {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try View.supplementaryChildren(self).element(at: 0)
     }
 }
 
