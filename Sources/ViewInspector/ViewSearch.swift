@@ -62,6 +62,11 @@ public extension InspectableView {
         return try find(ViewType.View<V>.self, relation: relation, where: condition)
     }
     
+    func find<V>(_ inspectable: V.Type,
+                 containing string: String) throws -> InspectableView<ViewType.View<V>> {
+        return try find(ViewType.View<V>.self, containing: string)
+    }
+    
     func find<T>(_ viewType: T.Type, containing string: String) throws -> InspectableView<T> {
         return try find(ViewType.Text.self, where: { text in
             (try? text.string()) == string &&

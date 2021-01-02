@@ -92,5 +92,8 @@ final class ViewSearchTests: XCTestCase {
     
     func testFindCustomView() throws {
         XCTAssertNoThrow(try testView.inspect().find(TestCustomView.self))
+        XCTAssertNoThrow(try testView.inspect().find(TestCustomView.self, containing: "Btn"))
+        XCTAssertThrows(try testView.inspect().find(TestCustomView.self, containing: "123"),
+                        "Search did not find a match")
     }
 }
