@@ -198,22 +198,24 @@ private extension UnwrappedView {
     func depthFirstFullTraversal(isSingle: Bool = true, offset: Int = 0,
                                  _ condition: ViewSearch.Condition) -> [UnwrappedView] {
         
-        var current: [UnwrappedView] = []
+        var result: [UnwrappedView] = []
         if (try? condition(try self.asInspectableView())) == true {
-            current.append(self)
+            result.append(self)
         }
         
         let index = isSingle ? nil : offset
         guard let identity = ViewSearch.identify(self.content),
               let instance = try? identity.builder(self.content, self.parentView, index),
               let descendants = try? identity.allDescendants(instance)
-        else { return current }
+        else { return result }
         
         let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1
         
-        let joined = [current] + descendants.enumerated().map({ offset, child in
-            child.depthFirstFullTraversal(isSingle: isSingle, offset: offset, condition)
-        })
-        return joined.flatMap { $0 }
+        for offset in 0..<descendants.count {
+            guard let descendant = try? descendants.element(at: offset) else { continue }
+            let views = descendant.depthFirstFullTraversal(isSingle: isSingle, offset: offset, condition)
+            result.append(contentsOf: views)
+        }
+        return result
     }
 }

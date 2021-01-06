@@ -35,6 +35,22 @@ private struct Test {
                })
         }
     }
+    struct ConditionalView: View, Inspectable {
+        let falseCondition = false
+        let trueCondition = true
+        
+        var body: some View {
+            HStack {
+                if falseCondition {
+                    Text("1")
+                }
+                Text("2")
+                if trueCondition {
+                    Text("3")
+                }
+            }
+        }
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -107,5 +123,12 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertNoThrow(try testView.inspect().find(Test.InnerView.self, containing: "Btn"))
         XCTAssertThrows(try testView.inspect().find(Test.InnerView.self, containing: "123"),
                         "Search did not find a match")
+    }
+    
+    func testFindForConditionalView() throws {
+        let testView = Test.ConditionalView()
+        let texts = try testView.inspect().findAll(ViewType.Text.self)
+        let values = try texts.map { try $0.string() }
+        XCTAssertEqual(values, ["2", "3"])
     }
 }
