@@ -40,8 +40,8 @@ extension ViewType.Image: SupplementaryChildrenLabelView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Image {
     
-    func imageName() throws -> String? {
-        return try Inspector.attribute(label: "name", value: image()) as? String
+    func imageName() throws -> String {
+        return try Inspector.attribute(label: "name", value: image(), type: String.self)
     }
     
     #if os(iOS) || os(tvOS)

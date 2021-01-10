@@ -9,9 +9,12 @@ final class ImageTests: XCTestCase {
     
     func testImageByName() throws {
         let imageName = "someImage"
-        let view = Image(imageName)
-        let sut = try view.inspect().image().imageName()
-        XCTAssertEqual(sut, imageName)
+        let image1 = Image(imageName)
+        let sut1 = try image1.inspect().image().imageName()
+        XCTAssertEqual(sut1, imageName)
+        let image2 = Image(testImage.cgImage!, scale: 2.0, orientation: .down, label: Text("abc"))
+        XCTAssertThrows(try image2.inspect().image().imageName(),
+                        "CGImageProvider does not have 'name' attribute")
     }
     
     func testExternalImage() throws {

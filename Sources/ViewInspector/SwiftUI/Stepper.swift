@@ -46,27 +46,24 @@ public extension InspectableView where View == ViewType.Stepper {
     }
     
     func increment() throws {
-        let action = try Inspector.attribute(path: path(to: "onIncrement"), value: content.view)
         typealias Callback = () -> Void
-        if let callback = action as? Callback {
-            callback()
-        }
+        let callback = try Inspector
+            .attribute(path: path(to: "onIncrement"), value: content.view, type: Callback.self)
+        callback()
     }
     
     func decrement() throws {
-        let action = try Inspector.attribute(path: path(to: "onDecrement"), value: content.view)
         typealias Callback = () -> Void
-        if let callback = action as? Callback {
-            callback()
-        }
+        let callback = try Inspector
+            .attribute(path: path(to: "onDecrement"), value: content.view, type: Callback.self)
+        callback()
     }
     
     func callOnEditingChanged() throws {
-        let action = try Inspector.attribute(path: path(to: "onEditingChanged"), value: content.view)
         typealias Callback = (Bool) -> Void
-        if let callback = action as? Callback {
-            callback(false)
-        }
+        let callback = try Inspector
+            .attribute(path: path(to: "onEditingChanged"), value: content.view, type: Callback.self)
+        callback(false)
     }
     
     private func path(to attribute: String) -> String {

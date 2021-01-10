@@ -95,7 +95,7 @@ private extension InspectableView where View == ViewType.NavigationLink {
             return try? Inspector
                 .attribute(path: "_isActive|binding", value: content.view, type: Binding<Bool>.self)
         }
-        let isActive = try Inspector.attribute(label: "_externalIsActive", value: content.view)
-        return isActive as? Binding<Bool>
+        return try? Inspector
+            .attribute(label: "_externalIsActive", value: content.view, type: Binding<Bool>.self)
     }
 }
