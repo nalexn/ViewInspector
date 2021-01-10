@@ -1,6 +1,10 @@
-# ViewInspector for SwiftUI
+<h1 align="center">ViewInspector 🕵️‍♂️ for SwiftUI</h1>
 
+<span align="center">
+  
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20tvOS%20%7C%20macOS-lightgrey) [![Build Status](https://travis-ci.com/nalexn/ViewInspector.svg?branch=master)](https://travis-ci.com/nalexn/ViewInspector) [![codecov](https://codecov.io/gh/nalexn/ViewInspector/branch/master/graph/badge.svg)](https://codecov.io/gh/nalexn/ViewInspector)
+
+</span>
 
 **ViewInspector** is a library for unit testing SwiftUI views.
 It allows for traversing a view hierarchy at runtime providing direct access to the underlying `View` structs.
