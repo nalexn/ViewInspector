@@ -163,14 +163,18 @@ final class FontAttributesTests: XCTestCase {
     func testSizeAttribute() throws {
         let sut1 = Font.custom("abc", size: 13)
         let sut2 = Font.system(size: 15, weight: .bold, design: .monospaced)
+        let sut3 = Font.headline
         XCTAssertEqual(try sut1.size(), 13)
         XCTAssertFalse(sut1.isFixedSize())
         XCTAssertEqual(try sut2.size(), 15)
         XCTAssertFalse(sut2.isFixedSize())
+        XCTAssertThrows(try sut3.size(),
+                        "Font does not have 'size' attribute")
+        XCTAssertFalse(sut3.isFixedSize())
         if #available(iOS 14.0, *) {
-            let sut3 = Font.custom("abc", fixedSize: 16)
-            XCTAssertEqual(try sut3.size(), 16)
-            XCTAssertTrue(sut3.isFixedSize())
+            let sut4 = Font.custom("abc", fixedSize: 16)
+            XCTAssertEqual(try sut4.size(), 16)
+            XCTAssertTrue(sut4.isFixedSize())
         }
     }
     

@@ -235,8 +235,12 @@ public extension ViewType.Text {
 public extension Font {
     
     func size() throws -> CGFloat {
-        return try Inspector
-            .attribute(path: "provider|base|size", value: self, type: CGFloat.self)
+        do {
+            return try Inspector
+                .attribute(path: "provider|base|size", value: self, type: CGFloat.self)
+        } catch {
+            throw InspectionError.attributeNotFound(label: "size", type: "Font")
+        }
     }
     
     func isFixedSize() -> Bool {
