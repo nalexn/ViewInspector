@@ -42,7 +42,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| GroupBox | `contained view`, `label view` |
 |:white_check_mark:| HSplitView | `contained view` |
 |:white_check_mark:| HStack | `contained view` |
-|:white_check_mark:| Image | `imageName: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |
+|:white_check_mark:| Image | `label view`, `actual image`, `name: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat` |
 |:white_check_mark:| Label | `title view`, `icon view` |
 |:white_check_mark:| LabelStyleConfiguration.Icon | |
 |:white_check_mark:| LabelStyleConfiguration.Title | |

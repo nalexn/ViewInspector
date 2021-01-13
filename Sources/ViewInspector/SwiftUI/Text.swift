@@ -40,6 +40,10 @@ public extension InspectableView where View == ViewType.Text {
     func attributes() throws -> ViewType.Text.Attributes {
         return try ViewType.Text.Attributes.extract(from: self)
     }
+    
+    func images() throws -> [Image] {
+        return try ViewType.Text.extractImages(from: self)
+    }
 }
 
 // MARK: - String extraction
@@ -74,11 +78,16 @@ private extension ViewType.Text {
     
     // MARK: - ConcatenatedTextStorage
     
-    private static func extractString(concatenatedTextStorage: Any, _ locale: Locale) throws -> String {
+    private static func extractTexts(concatenatedTextStorage: Any) throws -> (Text, Text) {
         let firstText = try Inspector
             .attribute(label: "first", value: concatenatedTextStorage, type: Text.self)
         let secondText = try Inspector
             .attribute(label: "second", value: concatenatedTextStorage, type: Text.self)
+        return (firstText, secondText)
+    }
+    
+    private static func extractString(concatenatedTextStorage: Any, _ locale: Locale) throws -> String {
+        let (firstText, secondText) = try extractTexts(concatenatedTextStorage: concatenatedTextStorage)
         return (try firstText.inspect().text().string(locale: locale))
             + (try secondText.inspect().text().string(locale: locale))
     }
@@ -95,12 +104,11 @@ private extension ViewType.Text {
     // MARK: - AttachmentTextStorage
     
     private static func extractString(attachmentTextStorage: Any) throws -> String {
-        let image = try Inspector
-            .attribute(label: "image", value: attachmentTextStorage, type: Image.self)
+        let image = try extractImage(attachmentTextStorage: attachmentTextStorage)
         let description: String = {
-            guard let name = try? image.inspect().image().imageName()
+            guard let name = try? image.inspect().image().actualImage().name()
             else { return "" }
-            return "\"\(name)\""
+            return "'\(name)'"
         }()
         return "Image(\(description))"
     }
@@ -156,5 +164,66 @@ private extension ViewType.Text {
         let value = try Inspector.attribute(path: valuePath, value: container, type: CVarArg.self)
         let formatter = try Inspector.attribute(path: formatterPath, value: container, type: Formatter?.self)
         return formatter.flatMap({ $0.string(for: value) }) ?? value
+    }
+}
+
+// MARK: - Image extraction
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension ViewType.Text {
+    
+    static func extractImages(from view: InspectableView<ViewType.Text>) throws -> [Image] {
+        let storage = try Inspector.attribute(label: "storage", value: view.content.view)
+        let textStorage = try Inspector.attribute(path: "anyTextStorage", value: storage)
+        let storageType = Inspector.typeName(value: textStorage)
+        switch storageType {
+        case "ConcatenatedTextStorage":
+            return try extractImages(concatenatedTextStorage: textStorage)
+        case "AttachmentTextStorage":
+            return [try extractImage(attachmentTextStorage: textStorage)]
+        case "LocalizedTextStorage":
+            return try extractImages(localizedTextStorage: textStorage)
+        default:
+            return []
+        }
+    }
+    
+    // MARK: - ConcatenatedTextStorage
+    
+    private static func extractImages(concatenatedTextStorage: Any) throws -> [Image] {
+        let (firstText, secondText) = try extractTexts(concatenatedTextStorage: concatenatedTextStorage)
+        return try firstText.inspect().text().images() + secondText.inspect().text().images()
+    }
+    
+    // MARK: - AttachmentTextStorage
+    
+    private static func extractImage(attachmentTextStorage: Any) throws -> Image {
+        return try Inspector
+            .attribute(label: "image", value: attachmentTextStorage, type: Image.self)
+    }
+    
+    // MARK: - LocalizedTextStorage
+    
+    private static func extractImages(localizedTextStorage: Any) throws -> [Image] {
+        let stringContainer = try Inspector
+            .attribute(label: "key", value: localizedTextStorage)
+        let hasFormatting = try Inspector
+            .attribute(label: "hasFormatting", value: stringContainer, type: Bool.self)
+        guard hasFormatting else { return [] }
+        return try extractImageArguments(stringContainer)
+    }
+    
+    private static func extractImageArguments(_ container: Any) throws -> [Image] {
+        return try Inspector
+            .attribute(label: "arguments", value: container, type: [Any].self)
+            .map { try imageArguments($0) }
+            .flatMap { $0 }
+    }
+    
+    private static func imageArguments(_ container: Any) throws -> [Image] {
+        if let text = try? Inspector.attribute(path: "storage|text|.0", value: container, type: Text.self) {
+            return try text.inspect().text().images()
+        }
+        return []
     }
 }

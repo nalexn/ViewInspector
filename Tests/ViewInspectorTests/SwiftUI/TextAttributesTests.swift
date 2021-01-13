@@ -171,7 +171,7 @@ final class FontAttributesTests: XCTestCase {
         XCTAssertThrows(try sut3.size(),
                         "Font does not have 'size' attribute")
         XCTAssertFalse(sut3.isFixedSize())
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
             let sut4 = Font.custom("abc", fixedSize: 16)
             XCTAssertEqual(try sut4.size(), 16)
             XCTAssertTrue(sut4.isFixedSize())
@@ -210,7 +210,7 @@ final class FontAttributesTests: XCTestCase {
         XCTAssertEqual(try sut1.style(), .callout)
         XCTAssertThrows(try sut2.style(), "Font does not have 'style' attribute")
         XCTAssertEqual(try sut3.style(), .body)
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
             let sut4 = Font.custom("abc", size: 14, relativeTo: .caption2)
             XCTAssertEqual(try sut4.style(), .caption2)
         }
