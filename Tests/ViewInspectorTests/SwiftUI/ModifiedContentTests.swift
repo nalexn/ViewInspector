@@ -39,7 +39,7 @@ final class ModifiedContentTests: XCTestCase {
         let exp = XCTestExpectation(description: #function)
         sut.didAppear = { body in
             body.inspect { view in
-                XCTAssertEqual(try view.padding().top, 15)
+                XCTAssertEqual(try view.hStack().viewModifierContent(1).padding().top, 15)
             }
             ViewHosting.expel()
             exp.fulfill()
@@ -48,24 +48,45 @@ final class ModifiedContentTests: XCTestCase {
         ViewHosting.host(view: view)
         wait(for: [exp], timeout: 0.1)
     }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestModifier: ViewModifier {
-    func body(content: Self.Content) -> some View {
-        content.onAppear()
+    
+    func testAppliedModifierInspection() throws {
+        let view1 = EmptyView().modifier(TestModifier())
+        let sut1 = try view1.inspect().emptyView().modifier(TestModifier.self)
+        let content1 = try sut1.viewModifierContent()
+        XCTAssertNoThrow(try content1.callOnAppear())
+        XCTAssertEqual(content1.pathToRoot,
+                       "emptyView().modifier(TestModifier.self).viewModifierContent()")
+        let view2 = EmptyView().modifier(InspectableTestModifier())
+        let sut2 = try view2.inspect().emptyView().modifier(InspectableTestModifier.self)
+        let content2 = try sut2.hStack().viewModifierContent(1)
+        XCTAssertEqual(try content2.padding().top, 15)
+        XCTAssertEqual(content2.pathToRoot,
+        "emptyView().modifier(InspectableTestModifier.self).hStack().viewModifierContent(1)")
+        let view3 = EmptyView().padding()
+        XCTAssertThrows(try view3.inspect().emptyView().modifier(TestModifier.self),
+                        "EmptyView does not have 'TestModifier' modifier")
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableTestModifier: ViewModifier {
+private struct TestModifier: ViewModifier, Inspectable {
+    func body(content: Self.Content) -> some View {
+        content.onAppear(perform: { })
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct InspectableTestModifier: ViewModifier, Inspectable {
     
     var didAppear: ((Self.Body) -> Void)?
     
     func body(content: Self.Content) -> some View {
-        content
-            .padding(.top, 15)
-            .onAppear { self.didAppear?(self.body(content: content)) }
+        HStack {
+            EmptyView()
+            content
+                .padding(.top, 15)
+                .onAppear { self.didAppear?(self.body(content: content)) }
+        }
     }
 }
 

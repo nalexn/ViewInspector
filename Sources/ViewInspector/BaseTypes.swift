@@ -13,6 +13,13 @@ public extension Inspectable where Self: View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension Inspectable where Self: ViewModifier {
+    func extractContent() throws -> Any {
+        body(content: _ViewModifier_Content<Self>())
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol SingleViewContent {
     static func child(_ content: Content) throws -> Content
 }
@@ -205,5 +212,15 @@ extension BinaryEquatable {
                 lhsBytes.elementsEqual(rhsBytes)
             }
         }
+    }
+}
+
+// MARK: - ViewModifier content allocation
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension _ViewModifier_Content {
+    private struct Allocator { }
+    init() {
+        self = unsafeBitCast(Allocator(), to: Self.self)
     }
 }
