@@ -11,7 +11,7 @@ It allows for traversing a view hierarchy at runtime providing direct access to 
 
 ## Why?
 
-SwiftUI views are a function of state. We can provide the input, but couldn't verify the output. Until now!
+SwiftUI view is a function of state. We could provide it with the input, but were unable to verify the output... Until now!
 
 ## Helpful links
 
