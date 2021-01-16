@@ -33,62 +33,6 @@ final class BaseTypesTests: XCTestCase {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-final class SequenceTests: XCTestCase {
-    
-    func testLazyGroupEmpty() {
-        let sut = LazyGroup<Int>.empty
-        XCTAssertEqual(sut.count, 0)
-    }
-    
-    func testLazyGroupSequence() {
-        let count = 3
-        let sut = LazyGroup<Int>(count: count) { $0 }
-        XCTAssertEqual(sut.map { $0 }, [0, 1, 2])
-        var iterator = sut.makeIterator()
-        for _ in 0 ..< count {
-            XCTAssertNotNil(iterator.next())
-        }
-        XCTAssertNil(iterator.next())
-    }
-    
-    func testLazyGroupIteratorForSingleElement() throws {
-        let view = HStack { Text("Test") }
-        var sut = try view.inspect().hStack().makeIterator()
-        XCTAssertNotNil(sut.next())
-        XCTAssertNil(sut.next())
-    }
-    
-    func testMultipleViewContentSequence() throws {
-        let view = HStack {
-            Text("1").padding(); Text("2"); Text("3")
-        }
-        let sut = try view.inspect().hStack()
-        let array = try sut.map { try $0.text().string() }
-        XCTAssertEqual(array, ["1", "2", "3"])
-        var iterator = sut.makeIterator()
-        for _ in 0 ..< 3 {
-            XCTAssertNotNil(iterator.next())
-        }
-        XCTAssertNil(iterator.next())
-        XCTAssertEqual(sut.underestimatedCount, 3)
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-final class RandomAccessCollectionTests: XCTestCase {
-    
-    func testMultipleViewContentSequence() throws {
-        let view = HStack {
-            Text("1").padding(); AnyView(EmptyView())
-        }
-        let sut = try view.inspect().hStack()
-        XCTAssertEqual(sut.count, 2)
-        XCTAssertEqual(sut.reversed().map({ _ in 0 }).count, 2)
-        XCTAssertNoThrow(try sut[1].anyView().emptyView())
-    }
-}
-
 func XCTAssertThrows<T>(_ expression: @autoclosure () throws -> T, _ message: String,
                         file: StaticString = #file, line: UInt = #line) {
     do {
