@@ -57,6 +57,15 @@ extension SupplementaryChildrenLabelView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol KnownViewType {
     static var typePrefix: String { get }
+    static func inspectionCall(typeName: String) -> String
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension KnownViewType {
+    static func inspectionCall(typeName: String) -> String {
+        let baseName = typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
+        return "\(baseName)(\(ViewType.indexPlaceholder))"
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -66,6 +75,24 @@ public protocol CustomViewType {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct ViewType { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewType {
+    static let indexPlaceholder = "###"
+    static let commaPlaceholder = "~~~"
+    
+    static func inspectionCall(base: String, index: Int?) -> String {
+        if let index = index {
+            return base
+                .replacingOccurrences(of: commaPlaceholder, with: ", ")
+                .replacingOccurrences(of: indexPlaceholder, with: "\(index)")
+        } else {
+            return base
+                .replacingOccurrences(of: commaPlaceholder, with: "")
+                .replacingOccurrences(of: indexPlaceholder, with: "")
+        }
+    }
+}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct Content {
@@ -141,7 +168,7 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
 public struct LazyGroup<T> {
     
     private let access: (Int) throws -> T
-    let count: Int
+    public let count: Int
     
     init(count: Int, _ access: @escaping (Int) throws -> T) {
         self.count = count
@@ -212,15 +239,5 @@ extension BinaryEquatable {
                 lhsBytes.elementsEqual(rhsBytes)
             }
         }
-    }
-}
-
-// MARK: - ViewModifier content allocation
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension _ViewModifier_Content {
-    private struct Allocator { }
-    init() {
-        self = unsafeBitCast(Allocator(), to: Self.self)
     }
 }

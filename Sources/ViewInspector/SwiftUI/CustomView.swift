@@ -9,6 +9,10 @@ public extension ViewType {
             else { return "" }
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
+        
+        public static func inspectionCall(typeName: String) -> String {
+            return "view(\(typeName).self\(ViewType.commaPlaceholder)\(ViewType.indexPlaceholder))"
+        }
     }
 }
 

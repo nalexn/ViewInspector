@@ -32,7 +32,8 @@ private struct Test {
                     .tag(4)
                     .id(7)
                     .background(Button("xyz", action: { }))
-               })
+                Divider().modifier(Test.Modifier())
+            })
         }
     }
     struct ConditionalView: View, Inspectable {
@@ -51,7 +52,18 @@ private struct Test {
             }
         }
     }
+    
+    struct Modifier: ViewModifier {
+        
+        func body(content: Modifier.Content) -> some View {
+            AnyView(content
+                .overlay(Text("Modifier")))
+        }
+    }
 }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension Test.Modifier: Inspectable { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewSearchTests: XCTestCase {
@@ -62,9 +74,9 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertEqual(try testView.inspect().findAll(ViewType.HStack.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Button.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self).map({ try $0.string() }),
-                       ["Btn", "Test", "123", "xyz"])
+                       ["Btn", "Test", "123", "xyz", "Modifier"])
         XCTAssertEqual(try testView.inspect().findAll(Test.InnerView.self).count, 1)
-        XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 1)
+        XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 2)
     }
     
     func testFindText() throws {
@@ -83,6 +95,11 @@ final class ViewSearchTests: XCTestCase {
         """)
         XCTAssertEqual(try testView.inspect().find(text: "xyz").pathToRoot,
         "view(MainView.self).anyView().group().text(1).background().button().labelView().text()")
+        XCTAssertEqual(try testView.inspect().find(text: "Modifier").pathToRoot,
+        """
+        view(MainView.self).anyView().group().divider(2).modifier(Modifier.self)\
+        .anyView().viewModifierContent().overlay().text()
+        """)
         XCTAssertEqual(try testView.inspect().find(
             textWhere: { _, attr -> Bool in
                 try attr.font() == .footnote
@@ -130,5 +147,9 @@ final class ViewSearchTests: XCTestCase {
         let texts = try testView.inspect().findAll(ViewType.Text.self)
         let values = try texts.map { try $0.string() }
         XCTAssertEqual(values, ["2", "3"])
+    }
+    
+    func testStubViewBody() throws {
+        _ = TraverseStubView().body
     }
 }
