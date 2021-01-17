@@ -443,7 +443,7 @@ ViewHosting.host(view: sut.environmentObject(...))
 
 ## Custom **ViewModifier**
 
-You can inspect custom `ViewModifier` independently, or together with the parent view hierarchy, to which the `ViewModifier` is applied using `.modifier(...)`. Contider an example:
+You can inspect custom `ViewModifier` independently, or together with the parent view hierarchy, to which the `ViewModifier` is applied using `.modifier(...)`. Consider an example:
 
 ```swift
 struct MyViewModifier: ViewModifier {
@@ -472,7 +472,7 @@ func testCustomViewModifierAppliedToHierarchy() throws {
 }
 ```
 
-If your `ViewModifier` uses references to SwiftUI state or environment, you may need to appeal to asynchronous inspection, similar to a custom view inspection techniques. You can take a slightly modified approach #1 described above:
+If your `ViewModifier` uses references to SwiftUI state or environment, you may need to appeal to asynchronous inspection, similar to custom view inspection techniques. You can take a slightly modified approach #1 described above:
 
 ```swift
 struct MyViewModifier: ViewModifier {
