@@ -30,22 +30,31 @@ public struct InspectableView<View> where View: KnownViewType {
         self.inspectionCall = call
         self.inspectionIndex = index
         do {
-            try Inspector.guardType(value: content.view, prefix: View.typePrefix, inspectionCall: inspectionCall)
+            try Inspector.guardType(value: content.view,
+                                    namespacedPrefixes: View.namespacedPrefixes,
+                                    inspectionCall: inspectionCall)
         } catch {
             if let err = error as? InspectionError, case .typeMismatch = err {
-                let path: String = {
-                    if let predecessor = parent?.parentView,
-                       parent is InspectableView<ViewType.ParentView> {
-                        return predecessor.pathToRoot + "." + inspectionCall
-                    }
-                    return pathToRoot
-                }()
-                throw InspectionError.inspection(
-                    path: path, factual: Inspector.typeName(value: content.view),
-                    expected: View.typePrefix)
+                let factual = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
+                    .sanitizeNamespace()
+                let expected = View.namespacedPrefixes
+                    .map { $0.sanitizeNamespace() }
+                    .joined(separator: " or ")
+                throw InspectionError.inspection(path: pathToRoot, factual: factual, expected: expected)
             }
             throw error
         }
+    }
+}
+
+private extension String {
+    func sanitizeNamespace() -> String {
+        var str = self
+        if let range = str.range(of: ".(unknown context at ") {
+            let end = str.index(range.upperBound, offsetBy: .init(11))
+            str.replaceSubrange(range.lowerBound..<end, with: "")
+        }
+        return str.replacingOccurrences(of: "SwiftUI.", with: "")
     }
 }
 
@@ -116,64 +125,6 @@ internal extension InspectableView where View: MultipleViewContent {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension InspectableView: Sequence where View: MultipleViewContent {
-    
-    public typealias Element = InspectableView<ViewType.ClassifiedView>
-    
-    public struct Iterator: IteratorProtocol {
-        
-        private var groupIterator: LazyGroup<Content>.Iterator
-        private let view: UnwrappedView
-        
-        init(_ group: LazyGroup<Content>, view: UnwrappedView) {
-            groupIterator = group.makeIterator()
-            self.view = view
-        }
-        
-        mutating public func next() -> Element? {
-            guard let content = groupIterator.next()
-                else { return nil }
-            return try? .init(content, parent: view)
-        }
-    }
-
-    public func makeIterator() -> Iterator {
-        return .init(View._children(content), view: self)
-    }
-
-    public var underestimatedCount: Int {
-        return View._children(content).count
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension InspectableView: Collection, BidirectionalCollection, RandomAccessCollection
-    where View: MultipleViewContent {
-    
-    public typealias Index = Int
-    public var startIndex: Index { 0 }
-    public var endIndex: Index { count }
-    public var count: Int { View._children(content).count }
-    
-    public subscript(index: Index) -> Iterator.Element {
-        do {
-            let viewes = try View.children(content)
-            return try .init(try viewes.element(at: index), parent: self, call: "[\(index)]")
-        } catch {
-            fatalError("\(error)")
-        }
-    }
-
-    public func index(after index: Index) -> Index {
-        return index + 1
-    }
-
-    public func index(before index: Index) -> Index {
-        return index - 1
-    }
-}
-
 // MARK: - Inspection of a Custom View
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -233,9 +184,8 @@ internal extension InspectableView {
     var contentForModifierLookup: Content {
         if self is InspectableView<ViewType.ParentView>, let parent = parentView {
             return parent.content
-        } else {
-            return content
         }
+        return content
     }
 }
 
@@ -282,12 +232,5 @@ internal protocol ModifierNameProvider {
 extension ModifiedContent: ModifierNameProvider {
     var modifierType: String {
         return Inspector.typeName(type: Modifier.self)
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private extension MultipleViewContent {
-    static func _children(_ content: Content) -> LazyGroup<Content> {
-        return (try? children(content)) ?? .empty
     }
 }

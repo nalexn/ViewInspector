@@ -59,10 +59,9 @@ public extension InspectableView where View == ViewType.Slider {
     }
     
     func callOnEditingChanged() throws {
-        let action = try Inspector.attribute(label: "onEditingChanged", value: content.view)
         typealias Callback = (Bool) -> Void
-        if let callback = action as? Callback {
-            callback(false)
-        }
+        let callback = try Inspector
+            .attribute(label: "onEditingChanged", value: content.view, type: Callback.self)
+        callback(false)
     }
 }

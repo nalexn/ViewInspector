@@ -15,7 +15,7 @@ extension ViewType.NavigationView: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let path: String
-        if #available(iOS 13.1, macOS 10.15, tvOS 13.1, *) {
+        if #available(iOS 13.1, tvOS 13.1, *) {
             path = "content"
         } else {
             path = "_tree|content"

@@ -80,10 +80,11 @@ final class InspectorTests: XCTestCase {
     
     func testGuardType() throws {
         let value = "abc"
-        XCTAssertNoThrow(try Inspector.guardType(value: value, prefix: "String", inspectionCall: ""))
+        XCTAssertNoThrow(try Inspector.guardType(
+                            value: value, namespacedPrefixes: ["Swift.String"], inspectionCall: ""))
         XCTAssertThrows(
-            try Inspector.guardType(value: value, prefix: "Int", inspectionCall: ""),
-            "Type mismatch: String is not Int")
+            try Inspector.guardType(value: value, namespacedPrefixes: ["Swift.Int"], inspectionCall: ""),
+            "Type mismatch: Swift.String is not Swift.Int")
     }
     
     func testUnwrapNoModifiers() throws {
@@ -166,11 +167,19 @@ final class InspectableViewModifiersTests: XCTestCase {
            })
         let sut = try view.inspect().anyView().group().emptyView(1).overlay()
             .hStack().view(TestPrintView.self, 1).text()
-        XCTAssertThrows(try sut.parent().group(),
-        """
-        anyView().group().emptyView(1).overlay().hStack().group() \
-        found TestPrintView instead of Group
-        """)
+        // Cannot use `XCTAssertThrows` because test target changes name
+        // between ViewInspectorTests and ViewInspector_Unit_Tests under cocoapods tests
+        // ViewInspectorTests.TestPrintView vs ViewInspector_Unit_Tests.TestPrintView
+        do {
+            try sut.parent().group()
+            XCTFail("Expected to throw")
+        } catch let error {
+            let message = error.localizedDescription
+            XCTAssertTrue(message
+                .hasPrefix("anyView().group().emptyView(1).overlay().hStack().group() found "))
+            XCTAssertTrue(message
+                .hasSuffix(".TestPrintView instead of Group"))
+        }
         XCTAssertNoThrow(try sut.parent().view(TestPrintView.self))
         let hStack = try sut.parent().parent().hStack()
         XCTAssertNoThrow(try hStack.parent().overlay())

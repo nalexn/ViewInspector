@@ -9,6 +9,16 @@ public extension ViewType {
             else { return "" }
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
+        
+        public static var namespacedPrefixes: [String] {
+            guard T.self != TraverseStubView.self
+            else { return [] }
+            return [Inspector.typeName(type: T.self, namespaced: true, prefixOnly: true)]
+        }
+        
+        public static func inspectionCall(typeName: String) -> String {
+            return "view(\(typeName).self\(ViewType.commaPlaceholder)\(ViewType.indexPlaceholder))"
+        }
     }
 }
 
@@ -46,9 +56,10 @@ public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
         let child = try View.child(content)
-        let prefix = Inspector.typeName(type: type, prefixOnly: true)
-        let call = "view(\(ViewType.View<T>.typePrefix).self)"
-        try Inspector.guardType(value: child.view, prefix: prefix, inspectionCall: call)
+        let prefix = Inspector.typeName(type: type, namespaced: true, prefixOnly: true)
+        let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
+        let call = ViewType.inspectionCall(base: base, index: nil)
+        try Inspector.guardType(value: child.view, namespacedPrefixes: [prefix], inspectionCall: call)
         return try .init(child, parent: self, call: call)
     }
 }
@@ -60,9 +71,10 @@ public extension InspectableView where View: MultipleViewContent {
     
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
         let content = try child(at: index)
-        let prefix = Inspector.typeName(type: type, prefixOnly: true)
-        let call = "view(\(ViewType.View<T>.typePrefix).self, \(index))"
-        try Inspector.guardType(value: content.view, prefix: prefix, inspectionCall: call)
+        let prefix = Inspector.typeName(type: type, namespaced: true, prefixOnly: true)
+        let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
+        let call = ViewType.inspectionCall(base: base, index: index)
+        try Inspector.guardType(value: content.view, namespacedPrefixes: [prefix], inspectionCall: call)
         return try .init(content, parent: self, call: call)
     }
 }

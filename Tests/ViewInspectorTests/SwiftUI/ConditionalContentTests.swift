@@ -10,7 +10,7 @@ final class ConditionalContentTests: XCTestCase {
         let string1 = try view.inspect().group().text(0).string()
         XCTAssertEqual(string1, "Text")
         view.viewModel.flag.toggle()
-        let string2 = try view.inspect().group().image(0).imageName()
+        let string2 = try view.inspect().group().image(0).actualImage().name()
         XCTAssertEqual(string2, "Image")
     }
     

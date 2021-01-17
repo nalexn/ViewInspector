@@ -71,6 +71,7 @@
 		F6119FDC2549EF170000C54A /* LabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FDB2549EF170000C54A /* LabelTests.swift */; };
 		F6119FEA2549F5960000C54A /* LazyHGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FE92549F5960000C54A /* LazyHGridTests.swift */; };
 		F6119FF4254A00FC0000C54A /* LazyHGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6119FF3254A00FC0000C54A /* LazyHGrid.swift */; };
+		F614E66625B36ACC000C4F66 /* InspectableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614E66525B36ACC000C4F66 /* InspectableViewTests.swift */; };
 		F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */; };
 		F62AEAFC23E705D6003E69D9 /* ViewHostingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */; };
 		F62D69902507FA0C00335BCC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62D698F2507FA0C00335BCC /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -115,6 +116,9 @@
 		F682A016254776F2005F1B70 /* DisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F682A015254776F2005F1B70 /* DisclosureGroup.swift */; };
 		F69C91CA2383187D00515A91 /* ModifiedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91C92383187D00515A91 /* ModifiedContent.swift */; };
 		F69C91CC2383189200515A91 /* ModifiedContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C91CB2383189200515A91 /* ModifiedContentTests.swift */; };
+		F6A35A4025B35E920068B8B2 /* LazyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A35A3F25B35E920068B8B2 /* LazyGroup.swift */; };
+		F6A35A4A25B35F710068B8B2 /* LazyGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A35A4925B35F710068B8B2 /* LazyGroupTests.swift */; };
+		F6A35A5425B366E90068B8B2 /* InspectableView+RandomAccessCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A35A5325B366E90068B8B2 /* InspectableView+RandomAccessCollection.swift */; };
 		F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */; };
 		F6BD820A2565AD5D00A772D4 /* PopoverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BD82092565AD5D00A772D4 /* PopoverTests.swift */; };
 		F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C15A06254A0592000240F1 /* LazyVGridTests.swift */; };
@@ -265,6 +269,7 @@
 		F6119FDB2549EF170000C54A /* LabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTests.swift; sourceTree = "<group>"; };
 		F6119FE92549F5960000C54A /* LazyHGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyHGridTests.swift; sourceTree = "<group>"; };
 		F6119FF3254A00FC0000C54A /* LazyHGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyHGrid.swift; sourceTree = "<group>"; };
+		F614E66525B36ACC000C4F66 /* InspectableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectableViewTests.swift; sourceTree = "<group>"; };
 		F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationModifiers.swift; sourceTree = "<group>"; };
 		F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHostingTests.swift; sourceTree = "<group>"; };
 		F62D698F2507FA0C00335BCC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -309,6 +314,9 @@
 		F682A015254776F2005F1B70 /* DisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureGroup.swift; sourceTree = "<group>"; };
 		F69C91C92383187D00515A91 /* ModifiedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContent.swift; sourceTree = "<group>"; };
 		F69C91CB2383189200515A91 /* ModifiedContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiedContentTests.swift; sourceTree = "<group>"; };
+		F6A35A3F25B35E920068B8B2 /* LazyGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyGroup.swift; sourceTree = "<group>"; };
+		F6A35A4925B35F710068B8B2 /* LazyGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyGroupTests.swift; sourceTree = "<group>"; };
+		F6A35A5325B366E90068B8B2 /* InspectableView+RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InspectableView+RandomAccessCollection.swift"; sourceTree = "<group>"; };
 		F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewBuilderTests.swift; sourceTree = "<group>"; };
 		F6BD82092565AD5D00A772D4 /* PopoverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverTests.swift; sourceTree = "<group>"; };
 		F6C15A06254A0592000240F1 /* LazyVGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVGridTests.swift; sourceTree = "<group>"; };
@@ -429,8 +437,10 @@
 			isa = PBXGroup;
 			children = (
 				F60EEBBB2382EED0007DB53A /* BaseTypes.swift */,
+				F6A35A3F25B35E920068B8B2 /* LazyGroup.swift */,
 				F60EEBBA2382EED0007DB53A /* Inspector.swift */,
 				F60EEBBC2382EED0007DB53A /* InspectableView.swift */,
+				F6A35A5325B366E90068B8B2 /* InspectableView+RandomAccessCollection.swift */,
 				F60385D423D3C74B008F31BD /* InspectionEmissary.swift */,
 				F64105C3257BF9A70033D82D /* ViewSearch.swift */,
 				F660849A2594AA6700AF59A2 /* ViewSearchIndex.swift */,
@@ -527,6 +537,8 @@
 			isa = PBXGroup;
 			children = (
 				F60EEBE42382F004007DB53A /* BaseTypesTests.swift */,
+				F6A35A4925B35F710068B8B2 /* LazyGroupTests.swift */,
+				F614E66525B36ACC000C4F66 /* InspectableViewTests.swift */,
 				F60EEBE52382F004007DB53A /* InspectorTests.swift */,
 				F60385D623D3CDED008F31BD /* InspectionEmissaryTests.swift */,
 				F64105CD257C3E1F0033D82D /* ViewSearchTests.swift */,
@@ -861,6 +873,7 @@
 				F6684BF223AA554500DECCB3 /* PasteButton.swift in Sources */,
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
 				F64A2C6823A3FD3A00A4853A /* TreeView.swift in Sources */,
+				F6A35A4025B35E920068B8B2 /* LazyGroup.swift in Sources */,
 				F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */,
 				F6D933B32385ED1400358E0E /* VSplitView.swift in Sources */,
 				F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */,
@@ -883,6 +896,7 @@
 				F639DBBF23A6CF03003A6FED /* AccessibilityModifiers.swift in Sources */,
 				F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */,
 				F6D933CB2385FF8F00358E0E /* Slider.swift in Sources */,
+				F6A35A5425B366E90068B8B2 /* InspectableView+RandomAccessCollection.swift in Sources */,
 				F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -928,6 +942,7 @@
 				F6C15A99254D9F26000240F1 /* ProgressViewTests.swift in Sources */,
 				F6D933C52385FB1D00358E0E /* SecureFieldTests.swift in Sources */,
 				F609EFBF23A424D800B9256A /* EnvironmentModifiersTests.swift in Sources */,
+				F614E66625B36ACC000C4F66 /* InspectableViewTests.swift in Sources */,
 				F6684BF823AA58F200DECCB3 /* AngularGradientTests.swift in Sources */,
 				F6684C0023AA864F00DECCB3 /* RadialGradientTests.swift in Sources */,
 				F6C15A31254A0F29000240F1 /* LazyVStackTests.swift in Sources */,
@@ -974,6 +989,7 @@
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
 				F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */,
 				F6ECF6CC23A6702B000FC591 /* AnimationModifiersTests.swift in Sources */,
+				F6A35A4A25B35F710068B8B2 /* LazyGroupTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
 				F6C15A6B254B669F000240F1 /* MenuTests.swift in Sources */,
 				F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */,

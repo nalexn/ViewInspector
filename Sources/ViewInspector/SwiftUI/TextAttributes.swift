@@ -73,27 +73,7 @@ public extension ViewType.Text.Attributes {
     
     func font() throws -> Font {
         return try commonTrait(name: "font") { modifier -> Font? in
-            guard let fontProvider = try? Inspector
-                .attribute(path: "font|some|provider|base", value: modifier)
-                else { return nil }
-            let providerName = Inspector.typeName(value: fontProvider)
-            if providerName == "SystemProvider" {
-                let size = try Inspector.attribute(label: "size", value: fontProvider, type: CGFloat.self)
-                let weight = try Inspector.attribute(label: "weight", value: fontProvider, type: Font.Weight.self)
-                let design = try Inspector.attribute(label: "design", value: fontProvider, type: Font.Design.self)
-                return .system(size: size, weight: weight, design: design)
-            }
-            if providerName == "TextStyleProvider" {
-                let design = try Inspector.attribute(label: "design", value: fontProvider, type: Font.Design.self)
-                let style = try Inspector.attribute(label: "style", value: fontProvider, type: Font.TextStyle.self)
-                return .system(style, design: design)
-            }
-            if providerName == "NamedProvider" {
-                let name = try Inspector.attribute(label: "name", value: fontProvider, type: String.self)
-                let size = try Inspector.attribute(label: "size", value: fontProvider, type: CGFloat.self)
-                return .custom(name, size: size)
-            }
-            return nil
+            return try? Inspector.attribute(path: "font|some", value: modifier, type: Font.self)
         }
     }
     
@@ -247,6 +227,66 @@ public extension ViewType.Text {
                 throw InspectionError.textAttribute("Modifier '\(name)' has different values in subranges")
             }
             return trait
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension Font {
+    
+    func size() throws -> CGFloat {
+        do {
+            return try Inspector
+                .attribute(path: "provider|base|size", value: self, type: CGFloat.self)
+        } catch {
+            throw InspectionError.attributeNotFound(label: "size", type: "Font")
+        }
+    }
+    
+    func isFixedSize() -> Bool {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return false }
+        guard let provider = try? Inspector.attribute(path: "provider|base", value: self),
+              Inspector.typeName(value: provider) == "NamedProvider"
+        else { return false }
+        return (try? style()) == nil
+    }
+    
+    func name() throws -> String {
+        do {
+            return try Inspector
+                .attribute(path: "provider|base|name", value: self, type: String.self)
+        } catch {
+            throw InspectionError.attributeNotFound(label: "name", type: "Font")
+        }
+    }
+    
+    func weight() throws -> Font.Weight {
+        do {
+            return try Inspector
+                .attribute(path: "provider|base|weight", value: self, type: Font.Weight.self)
+        } catch {
+            throw InspectionError.attributeNotFound(label: "weight", type: "Font")
+        }
+    }
+    
+    func design() throws -> Font.Design {
+        do {
+            return try Inspector
+                .attribute(path: "provider|base|design", value: self, type: Font.Design.self)
+        } catch {
+            throw InspectionError.attributeNotFound(label: "design", type: "Font")
+        }
+    }
+    
+    func style() throws -> Font.TextStyle {
+        do {
+            return try (try? Inspector
+                .attribute(path: "provider|base|style", value: self, type: Font.TextStyle.self))
+                ?? (try Inspector
+                .attribute(path: "provider|base|textStyle", value: self, type: Font.TextStyle.self))
+        } catch {
+            throw InspectionError.attributeNotFound(label: "style", type: "Font")
         }
     }
 }

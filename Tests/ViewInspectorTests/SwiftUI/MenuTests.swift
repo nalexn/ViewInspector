@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if !os(tvOS)
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 final class MenuTests: XCTestCase {
@@ -70,6 +71,8 @@ final class MenuTests: XCTestCase {
         let sut = TestMenuStyle()
         let menu = try sut.inspect().vStack().menu(0)
         XCTAssertEqual(try menu.blur().radius, 3)
+        XCTAssertEqual(try sut.inspect().find(ViewType.StyleConfiguration.Content.self).pathToRoot,
+                       "vStack().menu(0).styleConfigurationContent(0)")
     }
 }
 
@@ -83,3 +86,4 @@ private struct TestMenuStyle: MenuStyle {
         }
     }
 }
+#endif

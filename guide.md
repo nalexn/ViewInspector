@@ -443,7 +443,7 @@ ViewHosting.host(view: sut.environmentObject(...))
 
 ## Custom **ViewModifier**
 
-Custom `ViewModifier` has to be tested independently from the main hierarchy. An example:
+You can inspect custom `ViewModifier` independently, or together with the parent view hierarchy, to which the `ViewModifier` is applied using `.modifier(...)`. Consider an example:
 
 ```swift
 struct MyViewModifier: ViewModifier {
@@ -455,7 +455,24 @@ struct MyViewModifier: ViewModifier {
 }
 ```
 
-We can take a slightly modified approach #1 described above:
+Just like with the custom views, in order to inspect a custom `ViewModifier` extend it to conform to `Inspectable` protocol in the tests scope.
+
+```swift
+extension MyViewModifier: Inspectable { }
+```
+
+The following test shows how you can extract the `modifier` and its `content` view using `modifier(_ type: T.Type)` and `viewModifierContent()` inspection calls respectively:
+
+```swift
+func testCustomViewModifierAppliedToHierarchy() throws {
+    let sut = EmptyView().modifier(MyViewModifier())
+    let modifier = try sut.inspect().emptyView().modifier(MyViewModifier.self)
+    let content = try modifier.viewModifierContent()
+    XCTAssertEqual(try content.padding().top, 15)
+}
+```
+
+If your `ViewModifier` uses references to SwiftUI state or environment, you may need to appeal to asynchronous inspection, similar to custom view inspection techniques. You can take a slightly modified approach #1 described above:
 
 ```swift
 struct MyViewModifier: ViewModifier {
@@ -470,7 +487,7 @@ struct MyViewModifier: ViewModifier {
 }
 ```
 
-There is no need for the `ViewModifier` to conform to `Inspectable` in the tests. Here is how you'd verify that `MyViewModifier` applies the padding:
+Here is how you'd verify that `MyViewModifier` applies the padding:
 
 ```swift
 func testViewModifier() {
@@ -488,7 +505,6 @@ func testViewModifier() {
     wait(for: [exp], timeout: 0.1)
 }
 ```
-Please note that you cannot get access to the hierarchy behind the `content` of `ViewModifier`, that is `try view.emptyView()` in this test would not work: the outer hierarchy has to be inspected from the parent's view.
 
 An example of an asynchronous `ViewModifier` inspection can be found in the sample project: [ViewModifier](https://github.com/nalexn/clean-architecture-swiftui/blob/master/CountriesSwiftUI/UI/RootViewModifier.swift) | [Tests](https://github.com/nalexn/clean-architecture-swiftui/blob/master/UnitTests/UI/RootViewAppearanceTests.swift)
 

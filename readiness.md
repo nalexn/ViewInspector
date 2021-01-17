@@ -25,8 +25,9 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
 |:white_check_mark:| ConditionalContent | `contained view` |
-|:white_check_mark:| SwiftUI Custom View | `actualView: CustomView`, `viewBuilder container` |
-|:white_check_mark:| SwiftUI Custom @ViewBuilder | `actualView: CustomView` |
+|:white_check_mark:| Custom View | `actualView: CustomView`, `viewBuilder container` |
+|:white_check_mark:| Custom ViewModifier | |
+|:white_check_mark:| Custom ViewModifier.Content | |
 |:white_check_mark:| UIViewRepresentable | `uiView: UIView` |
 |:white_check_mark:| UIViewControllerRepresentable | `viewController: UIViewController` |
 |:white_check_mark:| DatePicker | `label view` |
@@ -35,6 +36,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
 |:white_check_mark:| EmptyView | |
 |:white_check_mark:| EquatableView | `contained view` |
+|:white_check_mark:| Font (*) | `size: CGFloat`, `isFixedSize: Bool`, `name: String`, `weight: Font.Weight`, `design: Font.Design`, `style: Font.TextStyle` |
 |:white_check_mark:| ForEach | `contained view`, `callOnDelete`, `callOnMove`, `callOnInsert` |
 |:white_check_mark:| Form | `contained view` |
 |:white_check_mark:| GeometryReader | `contained view` |
@@ -42,7 +44,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| GroupBox | `contained view`, `label view` |
 |:white_check_mark:| HSplitView | `contained view` |
 |:white_check_mark:| HStack | `contained view` |
-|:white_check_mark:| Image | `imageName: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |
+|:white_check_mark:| Image | `label view`, `actualImage: Image` |
+|:white_check_mark:| Image (*) | `rootImage: Image`, `name: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat` |
 |:white_check_mark:| Label | `title view`, `icon view` |
 |:white_check_mark:| LabelStyleConfiguration.Icon | |
 |:white_check_mark:| LabelStyleConfiguration.Title | |
@@ -85,7 +88,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:heavy_check_mark:| SubscriptionView | |
 |:white_check_mark:| TabView | `contained view` |
-|:white_check_mark:| Text | `string: String?`, `attributes: TextAttributes` |
+|:white_check_mark:| Text | `string(locale: Locale) -> String`, `attributes: TextAttributes`, `images: [Image]` |
 |:white_check_mark:| TextEditor | `input: String`, `setInput(_: String)` |
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
 |:white_check_mark:| Toggle | `label view`, `tap()`, `isOn: Bool` |
@@ -95,6 +98,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| VSplitView | `contained view` |
 |:white_check_mark:| VStack | `contained view` |
 |:white_check_mark:| ZStack | `contained view` |
+
+(*) The following attributes are available directly for the `Font` and `Image` SwiftUI types, as opposed to the attributes available for wrapper views extracted from the hierarchy. In case you obtained an image view from the hierarchy using `image()` call, you'd need to additionally call `actualImage: Image` to get the genuine `Image` structure.
 
 ## Property Wrappers
 
@@ -655,4 +660,4 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func modifier<T>(T) -> ModifiedContent<Self, T>` |
+|:white_check_mark:| `func modifier<T>(T) -> ModifiedContent<Self, T>` |

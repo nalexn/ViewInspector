@@ -13,6 +13,13 @@ public extension Inspectable where Self: View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension Inspectable where Self: ViewModifier {
+    func extractContent() throws -> Any {
+        body(content: _ViewModifier_Content<Self>())
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol SingleViewContent {
     static func child(_ content: Content) throws -> Content
 }
@@ -50,6 +57,20 @@ extension SupplementaryChildrenLabelView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol KnownViewType {
     static var typePrefix: String { get }
+    static var namespacedPrefixes: [String] { get }
+    static func inspectionCall(typeName: String) -> String
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension KnownViewType {
+    static var namespacedPrefixes: [String] {
+        guard !typePrefix.isEmpty else { return [] }
+        return ["SwiftUI." + typePrefix]
+    }
+    static func inspectionCall(typeName: String) -> String {
+        let baseName = typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
+        return "\(baseName)(\(ViewType.indexPlaceholder))"
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -59,6 +80,24 @@ public protocol CustomViewType {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct ViewType { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewType {
+    static let indexPlaceholder = "###"
+    static let commaPlaceholder = "~~~"
+    
+    static func inspectionCall(base: String, index: Int?) -> String {
+        if let index = index {
+            return base
+                .replacingOccurrences(of: commaPlaceholder, with: ", ")
+                .replacingOccurrences(of: indexPlaceholder, with: "\(index)")
+        } else {
+            return base
+                .replacingOccurrences(of: commaPlaceholder, with: "")
+                .replacingOccurrences(of: indexPlaceholder, with: "")
+        }
+    }
+}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct Content {
@@ -126,70 +165,6 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
     public var errorDescription: String? {
         return description
     }
-}
-
-// MARK: - LazyGroup
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public struct LazyGroup<T> {
-    
-    private let access: (Int) throws -> T
-    let count: Int
-    
-    init(count: Int, _ access: @escaping (Int) throws -> T) {
-        self.count = count
-        self.access = access
-    }
-    
-    func element(at index: Int) throws -> T {
-        guard 0 ..< count ~= index else {
-            throw InspectionError.viewIndexOutOfBounds(index: index, count: count)
-        }
-        return try access(index)
-    }
-    
-    static var empty: Self {
-        return .init(count: 0) { _ in fatalError() }
-    }
-    
-    static func + (lhs: LazyGroup, rhs: LazyGroup) -> LazyGroup {
-        return .init(count: lhs.count + rhs.count) { index -> T in
-            if index < lhs.count {
-                return try lhs.element(at: index)
-            } else {
-                return try rhs.element(at: index - lhs.count)
-            }
-        }
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension LazyGroup: Sequence {
-    
-    public struct Iterator: IteratorProtocol {
-        public typealias Element = T
-        internal var index = -1
-        private var group: LazyGroup<Element>
-        
-        init(group: LazyGroup<Element>) {
-            self.group = group
-        }
-        
-        mutating public func next() -> Element? {
-            index += 1
-            do {
-                return try group.element(at: index)
-            } catch _ {
-                return nil
-            }
-        }
-    }
-
-    public func makeIterator() -> Iterator {
-        .init(group: self)
-    }
-
-    public var underestimatedCount: Int { count }
 }
 
 // MARK: - BinaryEquatable

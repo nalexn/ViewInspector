@@ -38,7 +38,7 @@ internal extension ViewSearch {
             .init(ViewType.TabView.self), .init(ViewType.Text.self),
             .init(ViewType.TextEditor.self), .init(ViewType.TextField.self),
             .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self), .init(ViewType.TupleView.self),
-            .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
+            .init(ViewType.ViewModifierContent.self), .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
             .init(ViewType.ZStack.self)
         ]
         var index = [String: [ViewIdentity]](minimumCapacity: 26) // alphabet
@@ -51,18 +51,26 @@ internal extension ViewSearch {
         return index
     }()
     
-    static func identify(_ content: Content) -> ViewIdentity? {
-        let typePrefix = Inspector.typeName(value: content.view, prefixOnly: true)
-        if typePrefix.count > 0, let identity = index[String(typePrefix.prefix(1))]?
-            .first(where: { $0.viewType.typePrefix == typePrefix }) {
+    private static func identify(_ content: Content) -> ViewIdentity? {
+        let shortPrefix = Inspector.typeName(value: content.view, prefixOnly: true)
+        let longPrefix = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
+        if shortPrefix.count > 0,
+           let identity = index[String(shortPrefix.prefix(1))]?
+            .first(where: { $0.viewType.namespacedPrefixes.contains(longPrefix) }) {
             return identity
         }
         if (try? content.extractCustomView()) != nil {
             let name = Inspector.typeName(value: content.view, prefixOnly: true)
-            let call = "view(\(name).self\(ViewIdentity.indexPlaceholder))"
-            return .init(ViewType.View<TraverseStubView>.self, call: call)
+            return .init(ViewType.View<TraverseStubView>.self, genericTypeName: name)
         }
         return nil
+    }
+    
+    static func identifyAndInstantiate(_ view: UnwrappedView, index: Int?) -> (ViewIdentity, UnwrappedView)? {
+        guard let identity = ViewSearch.identify(view.content),
+              let instance = try? identity.builder(view.content, view.parentView, index)
+        else { return nil }
+        return (identity, instance)
     }
 }
 
@@ -94,18 +102,14 @@ internal extension ViewSearch {
         }
         
         private init<T>(_ type: T.Type,
-                        call: String?,
+                        genericTypeName: String?,
                         children: @escaping ChildrenBuilder = { _ in .empty },
                         supplementary: @escaping SupplementaryBuilder = { _ in .empty }
         ) where T: KnownViewType {
             viewType = type
             let callWithIndex: (Int?) -> String = { index in
-                if let call = call, call.contains(ViewIdentity.indexPlaceholder) {
-                    let string = index.flatMap({ ", \($0)" }) ?? ""
-                    return call.replacingOccurrences(of: ViewIdentity.indexPlaceholder, with: string)
-                }
-                let base = call ?? (type.typePrefix.prefix(1).lowercased() + type.typePrefix.dropFirst())
-                return base + (index.flatMap({ "(\($0))" }) ?? "()")
+                let base = type.inspectionCall(typeName: genericTypeName ?? "")
+                return ViewType.inspectionCall(base: base, index: index)
             }
             builder = { content, parent, index in
                 try InspectableView<T>(content, parent: parent, call: callWithIndex(index), index: index)
@@ -123,56 +127,51 @@ internal extension ViewSearch {
             }
         }
         
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: SingleViewContent {
-            self.init(type, call: call, children: { parent in
+        init<T>(_ type: T.Type) where T: KnownViewType, T: SingleViewContent {
+            self.init(type, genericTypeName: nil, children: { parent in
                 try T.child(parent.content).descendants(parent)
             })
         }
         
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: SingleViewContent, T: SupplementaryChildren {
-            self.init(type, call: call, children: { parent in
+        init<T>(_ type: T.Type) where T: KnownViewType, T: SingleViewContent, T: SupplementaryChildren {
+            self.init(type, genericTypeName: nil, children: { parent in
                 try T.child(parent.content).descendants(parent)
             }, supplementary: { parent in
                 try T.supplementaryChildren(parent)
             })
         }
         
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: MultipleViewContent {
-            self.init(type, call: call, children: { parent in
+        init<T>(_ type: T.Type) where T: KnownViewType, T: MultipleViewContent {
+            self.init(type, genericTypeName: nil, children: { parent in
                 try T.children(parent.content).descendants(parent, indexed: true)
             })
         }
         
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: MultipleViewContent, T: SupplementaryChildren {
-            self.init(type, call: call, children: { parent in
+        init<T>(_ type: T.Type)
+        where T: KnownViewType, T: MultipleViewContent, T: SupplementaryChildren {
+            self.init(type, genericTypeName: nil, children: { parent in
                 try T.children(parent.content).descendants(parent, indexed: true)
             }, supplementary: { parent in
                 try T.supplementaryChildren(parent)
             })
         }
         
-        init<T>(_ type: T.Type, call: String? = nil
-        ) where T: KnownViewType, T: SingleViewContent, T: MultipleViewContent {
-            self.init(type, call: call, children: { parent in
+        init<T>(_ type: T.Type, genericTypeName: String? = nil)
+        where T: KnownViewType, T: SingleViewContent, T: MultipleViewContent {
+            self.init(type, genericTypeName: genericTypeName, children: { parent in
                 try T.children(parent.content).descendants(parent, indexed: true)
             })
         }
         
-        init<T>(_ type: T.Type, call: String? = nil) where T: KnownViewType {
-            self.init(type, call: call, children: { _ in .empty })
+        init<T>(_ type: T.Type) where T: KnownViewType {
+            self.init(type, genericTypeName: nil, children: { _ in .empty })
         }
         
-        init<T>(_ type: T.Type, call: String? = nil) where T: KnownViewType, T: SupplementaryChildren {
-            self.init(type, call: call, supplementary: { parent in
+        init<T>(_ type: T.Type) where T: KnownViewType, T: SupplementaryChildren {
+            self.init(type, genericTypeName: nil, supplementary: { parent in
                 try T.supplementaryChildren(parent)
             })
         }
-        
-        static let indexPlaceholder = "###"
     }
 }
 
@@ -250,8 +249,16 @@ internal extension Content {
         let identities = ViewSearch.modifierIdentities.filter({ identity -> Bool in
             modifierNames.contains(where: { $0.hasPrefix(identity.name) })
         })
-        return .init(count: identities.count) { index -> UnwrappedView in
+        let customModifiers = customViewModifiers()
+        return .init(count: identities.count, { index -> UnwrappedView in
             try identities[index].builder(parent)
-        }
+        }) + .init(count: customModifiers.count, { index -> UnwrappedView in
+            let modifier = customModifiers[index]
+            let content = try Inspector.unwrap(view: try modifier.extractContent(), modifiers: [])
+            let name = Inspector.typeName(value: modifier)
+            let call = ViewType.ModifiedContent.inspectionCall(typeName: name)
+            let modifierView = try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: call)
+            return try InspectableView<ViewType.ClassifiedView>(content, parent: modifierView)
+        })
     }
 }

@@ -45,33 +45,33 @@ public extension InspectableView where View == ViewType.ColorPicker {
         return try View.supplementaryChildren(self).element(at: 0)
     }
     
+    @available(tvOS 14.0, *)
+    func select(color: Color) throws {
+        #if os(macOS)
+        try select(color: NSColor(color))
+        #else
+        try select(color: UIColor(color))
+        #endif
+    }
+    
+    func select(color: CGColor) throws {
+        #if os(macOS)
+        try select(color: NSColor(cgColor: color)!)
+        #else
+        try select(color: UIColor(cgColor: color))
+        #endif
+    }
+    
     #if os(macOS)
     func select(color: NSColor) throws {
         let binding = try Inspector.attribute(label: "_color", value: content.view, type: Binding<NSColor>.self)
         binding.wrappedValue = color
     }
-    
-    @available(tvOS 14.0, *)
-    func select(color: Color) throws {
-        try select(color: NSColor(color))
-    }
-    
     #else
-    
-    @available(tvOS 14.0, *)
-    func select(color: Color) throws {
-        try select(color: UIColor(color))
-    }
-    
-    func select(color: CGColor) throws {
-        try select(color: UIColor(cgColor: color))
-    }
-    
     func select(color: UIColor) throws {
         let binding = try Inspector.attribute(label: "_color", value: content.view, type: Binding<UIColor>.self)
         binding.wrappedValue = color
     }
-    
     #endif
 }
 
@@ -88,8 +88,24 @@ public extension ViewType.ColorPicker {
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         
-        #if os(macOS)
+        init(color: CGColor) {
+            #if os(macOS)
+            self.init(color: NSColor(cgColor: color)!)
+            #else
+            self.init(color: UIColor(cgColor: color))
+            #endif
+        }
         
+        @available(tvOS 14.0, *)
+        init(color: Color) {
+            #if os(macOS)
+            self.init(color: NSColor(color))
+            #else
+            self.init(color: UIColor(color))
+            #endif
+        }
+        
+        #if os(macOS)
         init(color: NSColor) {
             let color = color.usingColorSpace(.deviceRGB) ?? color
             red = color.redComponent
@@ -97,26 +113,10 @@ public extension ViewType.ColorPicker {
             blue = color.blueComponent
             alpha = color.alphaComponent
         }
-        
-        init(color: Color) {
-            self.init(color: NSColor(color))
-        }
-        
         #else
-        
         init(color: UIColor) {
             color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         }
-        
-        init(color: CGColor) {
-            self.init(color: UIColor(cgColor: color))
-        }
-        
-        @available(tvOS 14.0, *)
-        init(color: Color) {
-            self.init(color: UIColor(color))
-        }
-        
         #endif
         
         public static func == (lhs: RGBA, rhs: RGBA) -> Bool {

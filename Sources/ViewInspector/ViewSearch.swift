@@ -62,6 +62,11 @@ public extension InspectableView {
         return try find(ViewType.View<V>.self, relation: relation, where: condition)
     }
     
+    func find<V>(_ inspectable: V.Type,
+                 containing string: String) throws -> InspectableView<ViewType.View<V>> {
+        return try find(ViewType.View<V>.self, containing: string)
+    }
+    
     func find<T>(_ viewType: T.Type, containing string: String) throws -> InspectableView<T> {
         return try find(ViewType.Text.self, where: { text in
             (try? text.string()) == string &&
@@ -163,8 +168,8 @@ private extension UnwrappedView {
             for offset in 0..<children.count {
                 guard let view = try? children.element(at: offset) else { continue }
                 let index = isSingle ? nil : offset
-                guard let identity = ViewSearch.identify(view.content),
-                      let instance = try? identity.builder(view.content, view.parentView, index)
+                guard let (identity, instance) = ViewSearch
+                        .identifyAndInstantiate(view, index: index)
                 else {
                     if (try? condition(try view.asInspectableView())) == true {
                         return view
@@ -193,22 +198,24 @@ private extension UnwrappedView {
     func depthFirstFullTraversal(isSingle: Bool = true, offset: Int = 0,
                                  _ condition: ViewSearch.Condition) -> [UnwrappedView] {
         
-        var current: [UnwrappedView] = []
+        var result: [UnwrappedView] = []
         if (try? condition(try self.asInspectableView())) == true {
-            current.append(self)
+            result.append(self)
         }
         
         let index = isSingle ? nil : offset
-        guard let identity = ViewSearch.identify(self.content),
-              let instance = try? identity.builder(self.content, self.parentView, index),
+        guard let (identity, instance) = ViewSearch
+                .identifyAndInstantiate(self, index: index),
               let descendants = try? identity.allDescendants(instance)
-        else { return current }
+        else { return result }
         
         let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1
         
-        let joined = [current] + descendants.enumerated().map({ offset, child in
-            child.depthFirstFullTraversal(isSingle: isSingle, offset: offset, condition)
-        })
-        return joined.flatMap { $0 }
+        for offset in 0..<descendants.count {
+            guard let descendant = try? descendants.element(at: offset) else { continue }
+            let views = descendant.depthFirstFullTraversal(isSingle: isSingle, offset: offset, condition)
+            result.append(contentsOf: views)
+        }
+        return result
     }
 }
