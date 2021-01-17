@@ -52,18 +52,18 @@ private struct Test {
             }
         }
     }
-    
-    struct Modifier: ViewModifier {
-        
+    struct Modifier: ViewModifier, Inspectable {
         func body(content: Modifier.Content) -> some View {
             AnyView(content
                 .overlay(Text("Modifier")))
         }
     }
+    struct NonInspectableView: View {
+        var body: some View {
+            EmptyView()
+        }
+    }
 }
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Test.Modifier: Inspectable { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewSearchTests: XCTestCase {
@@ -147,6 +147,13 @@ final class ViewSearchTests: XCTestCase {
         let texts = try testView.inspect().findAll(ViewType.Text.self)
         let values = try texts.map { try $0.string() }
         XCTAssertEqual(values, ["2", "3"])
+    }
+    
+    func testFindMatchingBlockerView() {
+        let view = AnyView(Test.NonInspectableView().id(5))
+        XCTAssertNoThrow(try view.inspect().find(viewWithId: 5))
+        XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self),
+                        "Search did not find a match. Possible blockers: NonInspectableView")
     }
     
     func testStubViewBody() throws {

@@ -5,14 +5,14 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class InspectableViewTestsAccessTests: XCTestCase {
     
-    func testLazyGroupIteratorForSingleElement() throws {
+    func testSequence() throws {
         let view = HStack { Text("Test") }
         var sut = try view.inspect().hStack().makeIterator()
         XCTAssertNotNil(sut.next())
         XCTAssertNil(sut.next())
     }
     
-    func testMultipleViewContentSequence() throws {
+    func testRandomAccessCollection() throws {
         let view = HStack {
             Text("1").padding(); Text("2"); Text("3")
         }
