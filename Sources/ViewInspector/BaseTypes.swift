@@ -57,11 +57,16 @@ extension SupplementaryChildrenLabelView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol KnownViewType {
     static var typePrefix: String { get }
+    static var namespacedPrefixes: [String] { get }
     static func inspectionCall(typeName: String) -> String
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension KnownViewType {
+    static var namespacedPrefixes: [String] {
+        guard !typePrefix.isEmpty else { return [] }
+        return ["SwiftUI." + typePrefix]
+    }
     static func inspectionCall(typeName: String) -> String {
         let baseName = typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
         return "\(baseName)(\(ViewType.indexPlaceholder))"

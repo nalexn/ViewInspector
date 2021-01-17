@@ -30,15 +30,31 @@ public struct InspectableView<View> where View: KnownViewType {
         self.inspectionCall = call
         self.inspectionIndex = index
         do {
-            try Inspector.guardType(value: content.view, prefix: View.typePrefix, inspectionCall: inspectionCall)
+            try Inspector.guardType(value: content.view,
+                                    namespacedPrefixes: View.namespacedPrefixes,
+                                    inspectionCall: inspectionCall)
         } catch {
             if let err = error as? InspectionError, case .typeMismatch = err {
-                throw InspectionError.inspection(
-                    path: pathToRoot, factual: Inspector.typeName(value: content.view),
-                    expected: View.typePrefix)
+                let factual = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
+                    .sanitizeNamespace()
+                let expected = View.namespacedPrefixes
+                    .map { $0.sanitizeNamespace() }
+                    .joined(separator: " or ")
+                throw InspectionError.inspection(path: pathToRoot, factual: factual, expected: expected)
             }
             throw error
         }
+    }
+}
+
+private extension String {
+    func sanitizeNamespace() -> String {
+        var str = self
+        if let range = str.range(of: ".(unknown context at ") {
+            let end = str.index(range.upperBound, offsetBy: .init(11))
+            str.replaceSubrange(range.lowerBound..<end, with: "")
+        }
+        return str.replacingOccurrences(of: "SwiftUI.", with: "")
     }
 }
 

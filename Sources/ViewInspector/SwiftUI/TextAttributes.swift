@@ -244,6 +244,8 @@ public extension Font {
     }
     
     func isFixedSize() -> Bool {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return false }
         guard let provider = try? Inspector.attribute(path: "provider|base", value: self),
               Inspector.typeName(value: provider) == "NamedProvider"
         else { return false }

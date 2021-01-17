@@ -168,8 +168,8 @@ private extension UnwrappedView {
             for offset in 0..<children.count {
                 guard let view = try? children.element(at: offset) else { continue }
                 let index = isSingle ? nil : offset
-                guard let identity = ViewSearch.identify(view.content),
-                      let instance = try? identity.builder(view.content, view.parentView, index)
+                guard let (identity, instance) = ViewSearch
+                        .identifyAndInstantiate(view, index: index)
                 else {
                     if (try? condition(try view.asInspectableView())) == true {
                         return view
@@ -204,8 +204,8 @@ private extension UnwrappedView {
         }
         
         let index = isSingle ? nil : offset
-        guard let identity = ViewSearch.identify(self.content),
-              let instance = try? identity.builder(self.content, self.parentView, index),
+        guard let (identity, instance) = ViewSearch
+                .identifyAndInstantiate(self, index: index),
               let descendants = try? identity.allDescendants(instance)
         else { return result }
         

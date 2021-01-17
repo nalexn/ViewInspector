@@ -314,5 +314,6 @@ extension EnvironmentValues {
 extension ViewType {
     struct Test<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String { "String" }
+        static var namespacedPrefixes: [String] { ["Swift.String"] }
     }
 }

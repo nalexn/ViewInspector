@@ -85,8 +85,8 @@ private struct InspectableTestModifier: ViewModifier, Inspectable {
             EmptyView()
             content
                 .padding(.top, 15)
-                .onAppear { self.didAppear?(self.body(content: content)) }
         }
+        .onAppear { self.didAppear?(self.body(content: content)) }
     }
 }
 

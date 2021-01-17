@@ -51,10 +51,12 @@ internal extension ViewSearch {
         return index
     }()
     
-    static func identify(_ content: Content) -> ViewIdentity? {
-        let typePrefix = Inspector.typeName(value: content.view, prefixOnly: true)
-        if typePrefix.count > 0, let identity = index[String(typePrefix.prefix(1))]?
-            .first(where: { $0.viewType.typePrefix == typePrefix }) {
+    private static func identify(_ content: Content) -> ViewIdentity? {
+        let shortPrefix = Inspector.typeName(value: content.view, prefixOnly: true)
+        let longPrefix = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
+        if shortPrefix.count > 0,
+           let identity = index[String(shortPrefix.prefix(1))]?
+            .first(where: { $0.viewType.namespacedPrefixes.contains(longPrefix) }) {
             return identity
         }
         if (try? content.extractCustomView()) != nil {
@@ -62,6 +64,13 @@ internal extension ViewSearch {
             return .init(ViewType.View<TraverseStubView>.self, genericTypeName: name)
         }
         return nil
+    }
+    
+    static func identifyAndInstantiate(_ view: UnwrappedView, index: Int?) -> (ViewIdentity, UnwrappedView)? {
+        guard let identity = ViewSearch.identify(view.content),
+              let instance = try? identity.builder(view.content, view.parentView, index)
+        else { return nil }
+        return (identity, instance)
     }
 }
 

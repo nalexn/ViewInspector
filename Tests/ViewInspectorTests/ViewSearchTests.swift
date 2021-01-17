@@ -18,10 +18,10 @@ private struct Test {
     struct MainView: View, Inspectable {
         var body: some View {
             AnyView(Group {
-                EmptyView()
+                SwiftUI.EmptyView()
                     .padding()
                     .overlay(HStack {
-                        EmptyView()
+                        SwiftUI.EmptyView()
                             .id("5")
                         InnerView()
                             .padding(15)
@@ -60,7 +60,22 @@ private struct Test {
     }
     struct NonInspectableView: View {
         var body: some View {
-            EmptyView()
+            SwiftUI.EmptyView()
+        }
+    }
+    struct EmptyView: View, Inspectable {
+        var body: some View {
+            Text("empty")
+        }
+    }
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    struct ConflictingViewTypeNamesStyle: ButtonStyle {
+        public func makeBody(configuration: Configuration) -> some View {
+            Group {
+                Test.EmptyView()
+                Label("", image: "")
+                configuration.label
+            }
         }
     }
 }
@@ -154,6 +169,18 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().find(viewWithId: 5))
         XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self),
                         "Search did not find a match. Possible blockers: NonInspectableView")
+    }
+    
+    func testConflictingViewTypeNames() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) else { return }
+        let style = Test.ConflictingViewTypeNamesStyle()
+        let sut = try style.inspect(isPressed: true)
+        XCTAssertEqual(try sut.find(text: "empty").pathToRoot,
+                       "group().view(EmptyView.self, 0).text()")
+        XCTAssertEqual(try sut.find(ViewType.Label.self).pathToRoot,
+                       "group().label(1)")
+        XCTAssertEqual(try sut.find(ViewType.StyleConfiguration.Label.self).pathToRoot,
+                       "group().styleConfigurationLabel(2)")
     }
     
     func testStubViewBody() throws {

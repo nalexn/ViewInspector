@@ -80,10 +80,10 @@ final class InspectorTests: XCTestCase {
     
     func testGuardType() throws {
         let value = "abc"
-        XCTAssertNoThrow(try Inspector.guardType(value: value, prefix: "String", inspectionCall: ""))
+        XCTAssertNoThrow(try Inspector.guardType(value: value, namespacedPrefixes: ["Swift.String"], inspectionCall: ""))
         XCTAssertThrows(
-            try Inspector.guardType(value: value, prefix: "Int", inspectionCall: ""),
-            "Type mismatch: String is not Int")
+            try Inspector.guardType(value: value, namespacedPrefixes: ["Swift.Int"], inspectionCall: ""),
+            "Type mismatch: Swift.String is not Swift.Int")
     }
     
     func testUnwrapNoModifiers() throws {
@@ -169,7 +169,7 @@ final class InspectableViewModifiersTests: XCTestCase {
         XCTAssertThrows(try sut.parent().group(),
         """
         anyView().group().emptyView(1).overlay().hStack().group() \
-        found TestPrintView instead of Group
+        found ViewInspectorTests.TestPrintView instead of Group
         """)
         XCTAssertNoThrow(try sut.parent().view(TestPrintView.self))
         let hStack = try sut.parent().parent().hStack()
