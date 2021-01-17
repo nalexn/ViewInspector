@@ -70,6 +70,8 @@ final class MenuTests: XCTestCase {
         let sut = TestMenuStyle()
         let menu = try sut.inspect().vStack().menu(0)
         XCTAssertEqual(try menu.blur().radius, 3)
+        XCTAssertEqual(try sut.inspect().find(ViewType.StyleConfiguration.Content.self).pathToRoot,
+                       "vStack().menu(0).styleConfigurationContent(0)")
     }
 }
 
