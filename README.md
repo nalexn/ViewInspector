@@ -49,16 +49,12 @@ The library can operate with various types of the view's state, such as `@Bindin
 Standard SwiftUI views are no longer a black box:
 
 ```swift
-let sut = Text("Completed by \(72.541, specifier: "%.2f")%")
-              .font(.caption)
-              
+let sut = Text("Completed by \(72.51, specifier: "%.1f")%").font(.caption)
+
+let string = try sut.inspect().text().string(locale: Locale(identifier: "es"))
+XCTAssertEqual(string, "Completado por 72,5%")
+
 XCTAssertEqual(try sut.inspect().text().attributes().font(), .caption)
-
-let value1 = try sut.inspect().text().string()
-XCTAssertEqual(value1, "Completed by 72.54%")
-
-let value2 = try sut.inspect().text().string(locale: Locale(identifier: "ru"))
-XCTAssertEqual(value2, "Завершено на 72,54%")
 ```
 
 Each view has its own set of inspectable parameters, you can refer to the [API coverage](readiness.md) document to see what's available for a particular SwiftUI view.
