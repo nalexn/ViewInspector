@@ -93,7 +93,7 @@ public extension InspectableView {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension InspectableView {
+public extension InspectableView {
     func environmentModifier<T>(keyPath reference: WritableKeyPath<EnvironmentValues, T>, call: String) throws -> T {
         let name = Inspector.typeName(type: T.self)
         return try modifierAttribute(modifierLookup: { modifier -> Bool in
@@ -106,7 +106,7 @@ internal extension InspectableView {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension Inspector {
+public extension Inspector {
     static func environmentKeyPath<T>(_ type: T.Type, _ value: Any) throws -> WritableKeyPath<EnvironmentValues, T> {
         return try Inspector.attribute(path: "modifier|keyPath", value: value,
                                        type: WritableKeyPath<EnvironmentValues, T>.self)
