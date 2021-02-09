@@ -1,7 +1,6 @@
 import SwiftUI
 
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Stepper: KnownViewType {
@@ -16,7 +15,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func stepper() throws -> InspectableView<ViewType.Stepper> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -31,6 +30,11 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.Stepper: SupplementaryChildrenLabelView { }
+
 // MARK: - Custom Attributes
 
 @available(iOS 13.0, macOS 10.15, *)
@@ -38,37 +42,28 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.Stepper {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
-    }
-    
-    @available(*, deprecated, message: "Please use .labelView().text() instead")
-    func text() throws -> InspectableView<ViewType.Text> {
-        return try labelView().text()
+        return try View.supplementaryChildren(self).element(at: 0)
     }
     
     func increment() throws {
-        let action = try Inspector.attribute(path: path(to: "onIncrement"), value: content.view)
         typealias Callback = () -> Void
-        if let callback = action as? Callback {
-            callback()
-        }
+        let callback = try Inspector
+            .attribute(path: path(to: "onIncrement"), value: content.view, type: Callback.self)
+        callback()
     }
     
     func decrement() throws {
-        let action = try Inspector.attribute(path: path(to: "onDecrement"), value: content.view)
         typealias Callback = () -> Void
-        if let callback = action as? Callback {
-            callback()
-        }
+        let callback = try Inspector
+            .attribute(path: path(to: "onDecrement"), value: content.view, type: Callback.self)
+        callback()
     }
     
     func callOnEditingChanged() throws {
-        let action = try Inspector.attribute(path: path(to: "onEditingChanged"), value: content.view)
         typealias Callback = (Bool) -> Void
-        if let callback = action as? Callback {
-            callback(false)
-        }
+        let callback = try Inspector
+            .attribute(path: path(to: "onEditingChanged"), value: content.view, type: Callback.self)
+        callback(false)
     }
     
     private func path(to attribute: String) -> String {

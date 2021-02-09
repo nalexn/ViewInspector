@@ -18,6 +18,16 @@ final class InspectionEmissaryTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
+    func testViewModifierOnFunction() throws {
+        var sut = InspectableTestModifier()
+        let exp = sut.on(\.didAppear) { view in
+            XCTAssertEqual(try view.hStack().viewModifierContent(1).padding().top, 15)
+        }
+        let view = EmptyView().modifier(sut)
+        ViewHosting.host(view: view)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
     func testInspectAfter() throws {
         let sut = TestView(flag: false)
         let exp1 = sut.inspection.inspect { view in
@@ -81,5 +91,20 @@ private struct TestView: View, Inspectable {
         .onReceive(publisher) { self.flag = $0 }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
         .onAppear { self.didAppear?(self) }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct InspectableTestModifier: ViewModifier, Inspectable {
+    
+    var didAppear: ((Self.Body) -> Void)?
+    
+    func body(content: Self.Content) -> some View {
+        HStack {
+            EmptyView()
+            content
+                .padding(.top, 15)
+        }
+        .onAppear { self.didAppear?(self.body(content: content)) }
     }
 }

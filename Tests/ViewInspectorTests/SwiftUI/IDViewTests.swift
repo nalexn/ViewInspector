@@ -33,6 +33,17 @@ final class IDViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().text(1))
     }
     
+    func testSearch() throws {
+        let view = HStack {
+            Text("").id(5)
+            Text("").id("test")
+        }
+        XCTAssertEqual(try view.inspect().find(viewWithId: 5).pathToRoot,
+                       "hStack().text(0)")
+        XCTAssertEqual(try view.inspect().find(viewWithId: "test").pathToRoot,
+                       "hStack().text(1)")
+    }
+    
     func testID() throws {
         let id = "abc"
         let sut = try EmptyView().id(id).inspect().emptyView().id()

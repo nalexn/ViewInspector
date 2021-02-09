@@ -16,6 +16,12 @@ final class TextTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().text(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(Text("abc"))
+        XCTAssertEqual(try view.inspect().find(ViewType.Text.self).pathToRoot, "anyView().text()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot, "anyView().text()")
+    }
+    
     // MARK: - string()
     
     func testExternalStringValue() throws {
@@ -152,7 +158,7 @@ final class TextTests: XCTestCase {
         else { return }
         let sut = Text("abc \(Image("test"))")
         let value = try sut.inspect().text().string()
-        XCTAssertEqual(value, "abc Image(\"test\")")
+        XCTAssertEqual(value, "abc Image('test')")
     }
     
     func testCustomTextInterpolation() throws {
@@ -165,6 +171,23 @@ final class TextTests: XCTestCase {
         let sut = Text("Test") + Text("Abc").bold() + Text(verbatim: "123")
         let value = try sut.inspect().text().string()
         XCTAssertEqual(value, "TestAbc123")
+    }
+    
+    func testImageExtraction() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
+        let image1 = Image("abc").antialiased(true)
+        let image2 = Image("def").resizable()
+        let image3 = Image("xyz")
+        let sut = Text("Text \(image1) \(Text(image2))") + Text("\(42, specifier: "%d") \(image3)")
+        let images = try sut.inspect().text().images()
+        XCTAssertEqual(images, [image1, image2, image3])
+        let string = try sut.inspect().text().string()
+        XCTAssertEqual(string, "Text Image('abc') Image('def')42 Image('xyz')")
+        let sut2 = Text(Date()...Date())
+        XCTAssertEqual(try sut2.inspect().text().images(), [])
+        let sut3 = Text("abc")
+        XCTAssertEqual(try sut3.inspect().text().images(), [])
     }
 }
 

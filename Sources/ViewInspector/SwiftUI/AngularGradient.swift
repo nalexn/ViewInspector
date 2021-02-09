@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func angularGradient() throws -> InspectableView<ViewType.AngularGradient> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

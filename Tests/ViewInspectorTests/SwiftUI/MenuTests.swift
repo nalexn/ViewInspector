@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if !os(tvOS)
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 final class MenuTests: XCTestCase {
@@ -20,6 +21,21 @@ final class MenuTests: XCTestCase {
             Text("")
         }
         XCTAssertNoThrow(try view.inspect().hStack().menu(1))
+    }
+    
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, *) else { return }
+        let view = AnyView(Menu(content: {
+            HStack { Text("abc") }
+        }, label: {
+            VStack { Text("xyz") }
+        }))
+        XCTAssertEqual(try view.inspect().find(ViewType.Menu.self).pathToRoot,
+                       "anyView().menu()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().menu().hStack(0).text(0)")
+        XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
+                       "anyView().menu().labelView().vStack().text(0)")
     }
     
     func testLabelInspection() throws {
@@ -55,6 +71,8 @@ final class MenuTests: XCTestCase {
         let sut = TestMenuStyle()
         let menu = try sut.inspect().vStack().menu(0)
         XCTAssertEqual(try menu.blur().radius, 3)
+        XCTAssertEqual(try sut.inspect().find(ViewType.StyleConfiguration.Content.self).pathToRoot,
+                       "vStack().menu(0).styleConfigurationContent(0)")
     }
 }
 
@@ -68,3 +86,4 @@ private struct TestMenuStyle: MenuStyle {
         }
     }
 }
+#endif

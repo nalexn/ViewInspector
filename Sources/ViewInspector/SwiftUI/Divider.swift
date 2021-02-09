@@ -14,7 +14,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func divider() throws -> InspectableView<ViewType.Divider> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

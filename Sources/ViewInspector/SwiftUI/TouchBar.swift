@@ -1,15 +1,14 @@
 import SwiftUI
 
-#if os(macOS)
-@available(macOS 10.15, *)
-@available(iOS, unavailable)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct TouchBar: KnownViewType {
         public static var typePrefix: String = "TouchBar"
     }
 }
+
+#if os(macOS)
 
 // MARK: - Content Extraction
 
@@ -45,10 +44,7 @@ public extension InspectableView where View == ViewType.TouchBar {
 public extension InspectableView {
     
     func touchBar() throws -> InspectableView<ViewType.TouchBar> {
-        let view = try modifierAttribute(
-            modifierName: "_TouchBarModifier", path: "modifier|touchBar",
-            type: Any.self, call: "touchBar")
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try contentForModifierLookup.touchBar(parent: self)
     }
     
     func touchBarItemPrincipal() throws -> Bool {
@@ -61,13 +57,32 @@ public extension InspectableView {
         let view = try modifierAttribute(
             modifierName: "TouchBarCustomizationLabelTraitKey", path: "modifier|value",
             type: Any.self, call: "touchBarCustomizationLabel")
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
     }
     
     func touchBarItemPresence() throws -> TouchBarItemPresence {
         return try modifierAttribute(
             modifierName: "TouchBarItemPresenceTraitKey", path: "modifier|value|some",
             type: TouchBarItemPresence.self, call: "touchBarItemPresence")
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    func touchBar(parent: UnwrappedView) throws -> InspectableView<ViewType.TouchBar> {
+        let rootView = try modifierAttribute(
+            modifierName: "_TouchBarModifier", path: "modifier|touchBar",
+            type: Any.self, call: "touchBar")
+        let content = try Inspector.unwrap(content: Content(rootView))
+        return try .init(content, parent: parent, call: "touchBar()")
+    }
+}
+#else
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    func touchBar(parent: UnwrappedView) throws -> InspectableView<ViewType.TouchBar> {
+        throw InspectionError.notSupported("Not supported on this platform")
     }
 }
 #endif

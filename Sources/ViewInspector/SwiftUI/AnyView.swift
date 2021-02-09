@@ -25,7 +25,7 @@ extension ViewType.AnyView: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func anyView() throws -> InspectableView<ViewType.AnyView> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

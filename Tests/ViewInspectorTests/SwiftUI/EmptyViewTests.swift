@@ -24,4 +24,10 @@ final class EmptyViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().emptyView(1))
         XCTAssertNoThrow(try view.inspect().hStack().emptyView(3))
     }
+    
+    func testSearch() throws {
+        let view = AnyView(EmptyView())
+        XCTAssertEqual(try view.inspect().find(ViewType.EmptyView.self).pathToRoot,
+                       "anyView().emptyView()")
+    }
 }

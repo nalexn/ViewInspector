@@ -25,6 +25,12 @@ final class ColorTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().color(3))
     }
     
+    func testSearch() throws {
+        let view = Group { Color.red }
+        XCTAssertEqual(try view.inspect().find(ViewType.Color.self).pathToRoot,
+                       "group().color(0)")
+    }
+    
     func testValue() throws {
         let color = Color(red: 0.5, green: 0.25, blue: 1)
         let sut = try color.inspect().color().value()

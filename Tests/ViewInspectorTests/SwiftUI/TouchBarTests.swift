@@ -20,6 +20,14 @@ final class TouchBarTests: XCTestCase {
         let sut = try view.inspect().emptyView().touchBar().touchBarID()
         XCTAssertEqual(sut, "abc")
     }
+    
+    func testSearch() throws {
+        let view = EmptyView().touchBar { Text("abc") }
+        XCTAssertEqual(try view.inspect().find(ViewType.TouchBar.self).pathToRoot,
+                       "emptyView().touchBar()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "emptyView().touchBar().text()")
+    }
 }
 
 // MARK: - View Modifiers
@@ -79,5 +87,16 @@ final class GlobalModifiersForTouchBar: XCTestCase {
 }
 
 extension TouchBarItemPresence: BinaryEquatable { }
+
+#else
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+final class TouchBarTests: XCTestCase {
+    func testNotSupported() throws {
+        let view = try EmptyView().inspect()
+        XCTAssertThrows(try view.content.touchBar(parent: view),
+                        "Not supported on this platform")
+    }
+}
 
 #endif

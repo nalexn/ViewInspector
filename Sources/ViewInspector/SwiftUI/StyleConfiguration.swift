@@ -9,27 +9,98 @@ public extension ViewType {
 public extension ViewType.StyleConfiguration {
     struct Label: KnownViewType {
         public static var typePrefix: String = "Label"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationLabel()" }
+        
+        public static var namespacedPrefixes: [String] {
+            var types: [Any.Type] = [
+                PrimitiveButtonStyleConfiguration.Label.self,
+                ButtonStyleConfiguration.Label.self,
+                ToggleStyleConfiguration.Label.self
+            ]
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+                types.append(ProgressViewStyleConfiguration.Label.self)
+                #if !os(tvOS)
+                types.append(GroupBoxStyleConfiguration.Label.self)
+                types.append(MenuStyleConfiguration.Label.self)
+                #endif
+            }
+            return types
+                .map { Inspector.typeName(type: $0, namespaced: true, prefixOnly: true) }
+        }
+        
+        public static func inspectionCall(typeName: String) -> String {
+            return "styleConfigurationLabel(\(ViewType.indexPlaceholder))"
+        }
     }
     
     struct Content: KnownViewType {
         public static var typePrefix: String = "Content"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationContent()" }
+        
+        public static var namespacedPrefixes: [String] {
+            var types: [Any.Type] = []
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+                #if !os(tvOS)
+                types.append(GroupBoxStyleConfiguration.Content.self)
+                types.append(MenuStyleConfiguration.Content.self)
+                #endif
+            }
+            return types
+                .map { Inspector.typeName(type: $0, namespaced: true, prefixOnly: true) }
+        }
+        
+        public static func inspectionCall(typeName: String) -> String {
+            return "styleConfigurationContent(\(ViewType.indexPlaceholder))"
+        }
     }
     
     struct Title: KnownViewType {
         public static var typePrefix: String = "Title"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationTitle()" }
+        
+        public static var namespacedPrefixes: [String] {
+            var types: [Any.Type] = []
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+                types.append(LabelStyleConfiguration.Title.self)
+            }
+            return types
+                .map { Inspector.typeName(type: $0, namespaced: true, prefixOnly: true) }
+        }
+        
+        public static func inspectionCall(typeName: String) -> String {
+            return "styleConfigurationTitle(\(ViewType.indexPlaceholder))"
+        }
     }
     
     struct Icon: KnownViewType {
         public static var typePrefix: String = "Icon"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationIcon()" }
+        
+        public static var namespacedPrefixes: [String] {
+            var types: [Any.Type] = []
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+                types.append(LabelStyleConfiguration.Icon.self)
+            }
+            return types
+                .map { Inspector.typeName(type: $0, namespaced: true, prefixOnly: true) }
+        }
+        
+        public static func inspectionCall(typeName: String) -> String {
+            return "styleConfigurationIcon(\(ViewType.indexPlaceholder))"
+        }
     }
     
     struct CurrentValueLabel: KnownViewType {
         public static var typePrefix: String = "CurrentValueLabel"
-        public static func inspectionCall(index: Int?) -> String { ".styleConfigurationCurrentValueLabel()" }
+        
+        public static var namespacedPrefixes: [String] {
+            var types: [Any.Type] = []
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+                types.append(ProgressViewStyleConfiguration.CurrentValueLabel.self)
+            }
+            return types
+                .map { Inspector.typeName(type: $0, namespaced: true, prefixOnly: true) }
+        }
+        
+        public static func inspectionCall(typeName: String) -> String {
+            return "styleConfigurationCurrentValueLabel(\(ViewType.indexPlaceholder))"
+        }
     }
 }
 
@@ -39,24 +110,24 @@ public extension ViewType.StyleConfiguration {
 public extension InspectableView where View: SingleViewContent {
     
     func styleConfigurationLabel() throws -> InspectableView<ViewType.StyleConfiguration.Label> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
     
     func styleConfigurationContent() throws -> InspectableView<ViewType.StyleConfiguration.Content> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
     
     func styleConfigurationTitle() throws -> InspectableView<ViewType.StyleConfiguration.Title> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
     
     func styleConfigurationIcon() throws -> InspectableView<ViewType.StyleConfiguration.Icon> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
     
     func styleConfigurationCurrentValueLabel() throws ->
     InspectableView<ViewType.StyleConfiguration.CurrentValueLabel> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

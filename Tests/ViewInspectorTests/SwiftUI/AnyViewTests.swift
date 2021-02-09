@@ -31,4 +31,12 @@ final class AnyViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().anyView(0))
         XCTAssertNoThrow(try view.inspect().hStack().anyView(1))
     }
+    
+    func testSearch() throws {
+        let view = Group { AnyView(EmptyView()) }
+        XCTAssertEqual(try view.inspect().find(ViewType.AnyView.self).pathToRoot,
+                       "group().anyView(0)")
+        XCTAssertEqual(try view.inspect().find(ViewType.EmptyView.self).pathToRoot,
+                       "group().anyView(0).emptyView()")
+    }
 }

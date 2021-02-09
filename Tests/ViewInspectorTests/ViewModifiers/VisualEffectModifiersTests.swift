@@ -217,6 +217,11 @@ final class ViewMaskingTests: XCTestCase {
             .inspect().emptyView().mask().text().string()
         XCTAssertEqual(sut, string)
     }
+    
+    func testMaskSearch() throws {
+        let view = EmptyView().mask(Text("test"))
+        XCTAssertNoThrow(try view.inspect().find(text: "test"))
+    }
 }
 
 // MARK: - ViewHidingTests

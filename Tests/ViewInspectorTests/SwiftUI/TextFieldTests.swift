@@ -19,12 +19,6 @@ final class TextFieldTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let binding = Binding(wrappedValue: "")
-        let view = TextField("Title", text: binding)
-        XCTAssertNoThrow(try view.inspect().textField().text())
-    }
-    
     func testExtractionFromSingleViewContainer() throws {
         let binding = Binding(wrappedValue: "")
         let view = AnyView(TextField("Test", text: binding))
@@ -39,6 +33,15 @@ final class TextFieldTests: XCTestCase {
         }
         XCTAssertNoThrow(try view.inspect().hStack().textField(0))
         XCTAssertNoThrow(try view.inspect().hStack().textField(1))
+    }
+    
+    func testSearch() throws {
+        let binding = Binding(wrappedValue: "")
+        let view = AnyView(TextField("abc", text: binding))
+        XCTAssertEqual(try view.inspect().find(ViewType.TextField.self).pathToRoot,
+                       "anyView().textField()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().textField().labelView().text()")
     }
     
     func testCallOnEditingChanged() throws {

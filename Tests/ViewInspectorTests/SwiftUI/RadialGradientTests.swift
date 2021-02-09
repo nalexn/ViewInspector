@@ -26,6 +26,12 @@ final class RadialGradientTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().radialGradient(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(RadialGradient(gradient: gradient, center: .top, startRadius: 0, endRadius: 1))
+        XCTAssertEqual(try view.inspect().find(ViewType.RadialGradient.self).pathToRoot,
+                       "anyView().radialGradient()")
+    }
+    
     func testGradient() throws {
         let sut = try RadialGradient(gradient: gradient, center: .top, startRadius: 0, endRadius: 1)
             .inspect().radialGradient().gradient()

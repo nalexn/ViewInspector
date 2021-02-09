@@ -1,7 +1,6 @@
 import SwiftUI
 
-@available(iOS 14.0, macOS 11.0, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct ColorPicker: KnownViewType {
@@ -16,7 +15,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func colorPicker() throws -> InspectableView<ViewType.ColorPicker> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -31,6 +30,11 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.ColorPicker: SupplementaryChildrenLabelView { }
+
 // MARK: - Custom Attributes
 
 @available(iOS 14.0, macOS 11.0, *)
@@ -38,8 +42,24 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.ColorPicker {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try View.supplementaryChildren(self).element(at: 0)
+    }
+    
+    @available(tvOS 14.0, *)
+    func select(color: Color) throws {
+        #if os(macOS)
+        try select(color: NSColor(color))
+        #else
+        try select(color: UIColor(color))
+        #endif
+    }
+    
+    func select(color: CGColor) throws {
+        #if os(macOS)
+        try select(color: NSColor(cgColor: color)!)
+        #else
+        try select(color: UIColor(cgColor: color))
+        #endif
     }
     
     #if os(macOS)
@@ -47,28 +67,11 @@ public extension InspectableView where View == ViewType.ColorPicker {
         let binding = try Inspector.attribute(label: "_color", value: content.view, type: Binding<NSColor>.self)
         binding.wrappedValue = color
     }
-    
-    @available(tvOS 14.0, *)
-    func select(color: Color) throws {
-        try select(color: NSColor(color))
-    }
-    
     #else
-    
-    @available(tvOS 14.0, *)
-    func select(color: Color) throws {
-        try select(color: UIColor(color))
-    }
-    
-    func select(color: CGColor) throws {
-        try select(color: UIColor(cgColor: color))
-    }
-    
     func select(color: UIColor) throws {
         let binding = try Inspector.attribute(label: "_color", value: content.view, type: Binding<UIColor>.self)
         binding.wrappedValue = color
     }
-    
     #endif
 }
 
@@ -85,8 +88,24 @@ public extension ViewType.ColorPicker {
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         
-        #if os(macOS)
+        init(color: CGColor) {
+            #if os(macOS)
+            self.init(color: NSColor(cgColor: color)!)
+            #else
+            self.init(color: UIColor(cgColor: color))
+            #endif
+        }
         
+        @available(tvOS 14.0, *)
+        init(color: Color) {
+            #if os(macOS)
+            self.init(color: NSColor(color))
+            #else
+            self.init(color: UIColor(color))
+            #endif
+        }
+        
+        #if os(macOS)
         init(color: NSColor) {
             let color = color.usingColorSpace(.deviceRGB) ?? color
             red = color.redComponent
@@ -94,26 +113,10 @@ public extension ViewType.ColorPicker {
             blue = color.blueComponent
             alpha = color.alphaComponent
         }
-        
-        init(color: Color) {
-            self.init(color: NSColor(color))
-        }
-        
         #else
-        
         init(color: UIColor) {
             color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         }
-        
-        init(color: CGColor) {
-            self.init(color: UIColor(cgColor: color))
-        }
-        
-        @available(tvOS 14.0, *)
-        init(color: Color) {
-            self.init(color: UIColor(color))
-        }
-        
         #endif
         
         public static func == (lhs: RGBA, rhs: RGBA) -> Bool {

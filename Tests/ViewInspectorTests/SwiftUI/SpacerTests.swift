@@ -21,6 +21,11 @@ final class SpacerTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().spacer(3))
     }
     
+    func testSearch() throws {
+        let view = AnyView(Spacer())
+        XCTAssertEqual(try view.inspect().find(ViewType.Spacer.self).pathToRoot, "anyView().spacer()")
+    }
+    
     func testMinLength() throws {
         let sut1 = try Spacer().inspect().spacer().minLength()
         let sut2 = try Spacer(minLength: 30).inspect().spacer().minLength()

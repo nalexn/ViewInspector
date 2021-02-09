@@ -27,6 +27,15 @@ final class LazyHStackTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().lazyHStack(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let view = HStack { LazyHStack(content: { Text("abc") }) }
+        XCTAssertEqual(try view.inspect().find(ViewType.LazyHStack.self).pathToRoot,
+                       "hStack().lazyHStack(0)")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "hStack().lazyHStack(0).text(0)")
+    }
+    
     func testContentViewInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = LazyHStack(content: {

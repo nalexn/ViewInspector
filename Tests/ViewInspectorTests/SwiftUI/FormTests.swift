@@ -61,4 +61,12 @@ final class FormTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().group().form(0))
         XCTAssertNoThrow(try view.inspect().group().form(1))
     }
+    
+    func testSearch() throws {
+        let view = Group { Form { Text("abc") } }
+        XCTAssertEqual(try view.inspect().find(ViewType.Form.self).pathToRoot,
+                       "group().form(0)")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "group().form(0).text(0)")
+    }
 }

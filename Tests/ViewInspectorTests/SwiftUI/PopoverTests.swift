@@ -38,6 +38,14 @@ final class PopoverTests: XCTestCase {
         XCTAssertEqual(value, "test")
     }
     
+    func testSearchBlocker() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().popover(isPresented: binding, content: { Text("abc") })
+        XCTAssertThrows(try sut.inspect().find(text: "abc"),
+                        "Search did not find a match. Possible blockers: popover")
+    }
+    
     func testArrowEdge() throws {
         guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: true)
@@ -73,7 +81,7 @@ final class PopoverTests: XCTestCase {
         let binding = Binding(wrappedValue: true)
         let view = EmptyView().popover(isPresented: binding) { Text("") }
         let sut = try view.inspect().emptyView().popover().pathToRoot
-        XCTAssertEqual(sut, "inspect().emptyView().popover()")
+        XCTAssertEqual(sut, "emptyView().popover()")
     }
 }
 

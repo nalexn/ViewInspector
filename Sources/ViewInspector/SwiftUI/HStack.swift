@@ -25,7 +25,7 @@ extension ViewType.HStack: MultipleViewContent {
 public extension InspectableView where View: SingleViewContent {
 
     func hStack() throws -> InspectableView<ViewType.HStack> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 

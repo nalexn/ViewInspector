@@ -70,6 +70,15 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().groupBox().groupBox(1))
     }
     
+    func testSearch() throws {
+        guard #available(iOS 14, *) else { return }
+        let view = AnyView(GroupBox { Text("Test") })
+        XCTAssertEqual(try view.inspect().find(ViewType.GroupBox.self).pathToRoot,
+                       "anyView().groupBox()")
+        XCTAssertEqual(try view.inspect().find(text: "Test").pathToRoot,
+                       "anyView().groupBox().text(0)")
+    }
+    
     func testLabelInspection() throws {
         guard #available(iOS 14, *) else { return }
         let view = GroupBox(
@@ -79,7 +88,7 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertEqual(sut, "abc")
     }
     
-    #if !os(macOS) && !targetEnvironment(macCatalyst)
+    #if !os(tvOS) && !os(macOS) && !targetEnvironment(macCatalyst)
     func testGroupBoxStyleInspection() throws {
         guard #available(iOS 14, *) else { return }
         let sut = EmptyView().groupBoxStyle(DefaultGroupBoxStyle())
@@ -92,7 +101,10 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().vStack().styleConfigurationContent(0).blur().radius, 5)
         XCTAssertEqual(try sut.inspect().vStack().styleConfigurationLabel(1).brightness(), 3)
         XCTAssertThrows(try EmptyView().inspect().styleConfigurationContent(),
-            "inspect().styleConfigurationContent() found EmptyView instead of Content")
+        """
+        styleConfigurationContent() found EmptyView instead of \
+        GroupBoxStyleConfiguration.Content or MenuStyleConfiguration.Content
+        """)
     }
     #endif
 }

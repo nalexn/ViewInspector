@@ -80,10 +80,11 @@ final class InspectorTests: XCTestCase {
     
     func testGuardType() throws {
         let value = "abc"
-        XCTAssertNoThrow(try Inspector.guardType(value: value, prefix: "String", inspectionCall: ""))
+        XCTAssertNoThrow(try Inspector.guardType(
+                            value: value, namespacedPrefixes: ["Swift.String"], inspectionCall: ""))
         XCTAssertThrows(
-            try Inspector.guardType(value: value, prefix: "Int", inspectionCall: ""),
-            "Type mismatch: String is not Int")
+            try Inspector.guardType(value: value, namespacedPrefixes: ["Swift.Int"], inspectionCall: ""),
+            "Type mismatch: Swift.String is not Swift.Int")
     }
     
     func testUnwrapNoModifiers() throws {
@@ -136,31 +137,105 @@ final class InspectableViewModifiersTests: XCTestCase {
                         "EmptyView does not have 'test' modifier")
     }
     
-    func testParentInspection() throws {
-        let view = HStack { AnyView(Text("test")) }
-        let sut = try view.inspect().hStack().anyView(0).text()
-        XCTAssertThrows(try sut.parent().group(), "inspect().group() found AnyView instead of Group")
-        XCTAssertNoThrow(try sut.parent().anyView())
-        XCTAssertNoThrow(try sut.parent().parent().hStack())
-        XCTAssertThrows(try sut.parent().parent().parent(), "HStack<AnyView> does not have parent")
-        XCTAssertThrows(try view.inspect().parent(), "HStack<AnyView> does not have parent")
+    func testParentModifierAttribute() throws {
+        let sut1 = AnyView(EmptyView()).onAppear { }
+        XCTAssertNoThrow(try sut1.inspect().anyView().callOnAppear())
+        XCTAssertNoThrow(try sut1.inspect().anyView().emptyView().parent().callOnAppear())
+        XCTAssertNoThrow(try sut1.inspect().anyView().emptyView().parent().anyView().callOnAppear())
+        
+        let sut2 = EmptyView()
+            .onAppear { }
+            .overlay(
+                HStack { EmptyView() }
+            )
+            .onDisappear { }
+        XCTAssertNoThrow(try sut2.inspect().emptyView().overlay().hStack())
+        XCTAssertNoThrow(try sut2.inspect().emptyView().overlay().parent())
+        XCTAssertNoThrow(try sut2.inspect().emptyView().overlay().parent().callOnAppear())
+        XCTAssertNoThrow(try sut2.inspect().emptyView().overlay().parent().emptyView().callOnDisappear())
     }
     
-    func testPathToRoot() throws {
-        let view1 = Group {
+    func testParentInspection() throws {
+        let view = AnyView(Group {
+            Text("")
             EmptyView()
-            AnyView(
-                HStack {
+                .padding()
+                .overlay(HStack {
                     EmptyView()
-                    TestPrintView()
-            }) }
-        let sut1 = try view1.inspect().group().anyView(1).hStack().view(TestPrintView.self, 1).text()
-        XCTAssertEqual(sut1.pathToRoot, "inspect().group().anyView(1).hStack().view(TestPrintView.self, 1).text()")
-        let view2 = EmptyView()
-        let sut2 = try view2.inspect()
-        XCTAssertEqual(sut2.pathToRoot, "inspect()")
-        let sut3 = try view2.inspect().emptyView()
-        XCTAssertEqual(sut3.pathToRoot, "inspect().emptyView()")
+                    TestPrintView().padding()
+                })
+           })
+        let sut = try view.inspect().anyView().group().emptyView(1).overlay()
+            .hStack().view(TestPrintView.self, 1).text()
+        // Cannot use `XCTAssertThrows` because test target changes name
+        // between ViewInspectorTests and ViewInspector_Unit_Tests under cocoapods tests
+        // ViewInspectorTests.TestPrintView vs ViewInspector_Unit_Tests.TestPrintView
+        do {
+            try sut.parent().group()
+            XCTFail("Expected to throw")
+        } catch let error {
+            let message = error.localizedDescription
+            XCTAssertTrue(message
+                .hasPrefix("anyView().group().emptyView(1).overlay().hStack().group() found "))
+            XCTAssertTrue(message
+                .hasSuffix(".TestPrintView instead of Group"))
+        }
+        XCTAssertNoThrow(try sut.parent().view(TestPrintView.self))
+        let hStack = try sut.parent().parent().hStack()
+        XCTAssertNoThrow(try hStack.parent().overlay())
+        XCTAssertNoThrow(try hStack.parent().parent().emptyView())
+        let group = try hStack.parent().parent().parent().group()
+        XCTAssertNoThrow(try group.parent().anyView())
+        XCTAssertThrows(try group.parent().parent(), "AnyView does not have parent")
+        XCTAssertThrows(try view.inspect().parent(), "AnyView does not have parent")
+    }
+    
+    func testPathToRootSimpleHierarchy() throws {
+        let view1 = EmptyView()
+        let sut1 = try view1.inspect()
+        XCTAssertEqual(sut1.pathToRoot, "")
+        let sut2 = try view1.inspect().emptyView()
+        XCTAssertEqual(sut2.pathToRoot, "emptyView()")
+        let view2 = TestPrintView()
+        let sut3 = try view2.inspect()
+        XCTAssertEqual(sut3.pathToRoot, "view(TestPrintView.self)")
+        let sut4 = try view2.inspect().text()
+        XCTAssertEqual(sut4.pathToRoot, "view(TestPrintView.self).text()")
+        let sut5 = try view2.inspect().text(0)
+        XCTAssertEqual(sut5.pathToRoot, "view(TestPrintView.self).text(0)")
+    }
+    
+    func testPathToRootComplexHierarchy() throws {
+        let view1 = AnyView(Group {
+            Text("")
+            EmptyView()
+                .padding()
+                .overlay(HStack {
+                    EmptyView()
+                    TestPrintView().padding()
+                })
+           })
+        let sut1 = try view1.inspect().anyView().group().emptyView(1).overlay()
+            .hStack().view(TestPrintView.self, 1).text()
+        XCTAssertEqual(sut1.pathToRoot,
+        "anyView().group().emptyView(1).overlay().hStack().view(TestPrintView.self, 1).text()")
+        XCTAssertEqual(try sut1.parent().pathToRoot,
+        "anyView().group().emptyView(1).overlay().hStack().view(TestPrintView.self, 1)")
+        XCTAssertEqual(try sut1.parent().parent().pathToRoot,
+        "anyView().group().emptyView(1).overlay().hStack()")
+        XCTAssertEqual(try sut1.parent().parent().hStack().pathToRoot,
+        "anyView().group().emptyView(1).overlay().hStack()")
+        XCTAssertEqual(try sut1.parent().parent().parent().pathToRoot,
+        "anyView().group().emptyView(1).overlay()")
+        XCTAssertEqual(try sut1.parent().parent().parent().parent().pathToRoot,
+        "anyView().group().emptyView(1)")
+        XCTAssertEqual(try sut1.parent().parent().parent().parent().emptyView().pathToRoot,
+        "anyView().group().emptyView()")
+        XCTAssertEqual(try sut1.parent().parent().parent().parent().emptyView().overlay().pathToRoot,
+        "anyView().group().emptyView().overlay()")
+        XCTAssertEqual(try sut1.parent().view(TestPrintView.self)
+                        .parent().hStack() .parent().overlay().parent().pathToRoot,
+        "anyView().group().emptyView(1)")
     }
 }
 

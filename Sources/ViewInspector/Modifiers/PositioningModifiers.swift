@@ -36,22 +36,36 @@ public extension InspectableView {
 public extension InspectableView {
 
     func overlay() throws -> InspectableView<ViewType.ClassifiedView> {
-        let rootView = try modifierAttribute(
-            modifierName: "_OverlayModifier", path: "modifier|overlay",
-            type: Any.self, call: "overlay")
-        return try .init(try Inspector.unwrap(content: Content(rootView)), parent: self, index: nil)
+        return try contentForModifierLookup.overlay(parent: self)
     }
     
     func background() throws -> InspectableView<ViewType.ClassifiedView> {
-        let rootView = try modifierAttribute(
-            modifierName: "_BackgroundModifier", path: "modifier|background",
-            type: Any.self, call: "background")
-        return try .init(try Inspector.unwrap(content: Content(rootView)), parent: self, index: nil)
+        return try contentForModifierLookup.background(parent: self)
     }
     
     func zIndex() throws -> Double {
         return try modifierAttribute(
             modifierName: "ZIndexTraitKey", path: "modifier|value",
             type: Double.self, call: "zIndex")
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    
+    func overlay(parent: UnwrappedView) throws -> InspectableView<ViewType.ClassifiedView> {
+        let rootView = try modifierAttribute(
+            modifierName: "_OverlayModifier", path: "modifier|overlay",
+            type: Any.self, call: "overlay")
+        return try .init(try Inspector.unwrap(content: Content(rootView)),
+                         parent: parent, call: "overlay()")
+    }
+    
+    func background(parent: UnwrappedView) throws -> InspectableView<ViewType.ClassifiedView> {
+        let rootView = try modifierAttribute(
+            modifierName: "_BackgroundModifier", path: "modifier|background",
+            type: Any.self, call: "background")
+        return try .init(try Inspector.unwrap(content: Content(rootView)),
+                         parent: parent, call: "background()")
     }
 }

@@ -41,12 +41,16 @@ extension Inspector {
         return casted
     }
     
-    static func typeName(value: Any, prefixOnly: Bool = false) -> String {
-        return typeName(type: type(of: value), prefixOnly: prefixOnly)
+    static func typeName(value: Any,
+                         namespaced: Bool = false,
+                         prefixOnly: Bool = false) -> String {
+        return typeName(type: type(of: value), namespaced: namespaced, prefixOnly: prefixOnly)
     }
     
-    static func typeName(type: Any.Type, prefixOnly: Bool = false) -> String {
-        let typeName = String(describing: type)
+    static func typeName(type: Any.Type,
+                         namespaced: Bool = false,
+                         prefixOnly: Bool = false) -> String {
+        let typeName = namespaced ? String(reflecting: type) : String(describing: type)
         guard prefixOnly else { return typeName }
         return typeName.components(separatedBy: "<").first!
     }
@@ -141,15 +145,10 @@ fileprivate extension Array {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
-    static func viewsInContainer(view: Any, resetModifiersForSingleChild: Bool = false) throws -> LazyGroup<Content> {
+    static func viewsInContainer(view: Any) throws -> LazyGroup<Content> {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view))
         guard Inspector.isTupleView(unwrappedContainer.view) else {
-            return LazyGroup(count: 1) { index in
-                if resetModifiersForSingleChild {
-                    return Content(unwrappedContainer.view, modifiers: [])
-                }
-                return unwrappedContainer
-            }
+            return LazyGroup(count: 1) { _ in unwrappedContainer }
         }
         return try ViewType.TupleView.children(unwrappedContainer)
     }
@@ -187,22 +186,25 @@ extension Inspector {
         }
     }
     
-    static func guardType(value: Any, prefix: String, inspectionCall: String) throws {
-        let name = typeName(type: type(of: value))
-        if prefix.count > 0 && name.hasPrefix("EnvironmentReaderView") {
-            if name.contains("NavigationBarItemsKey") {
+    static func guardType(value: Any, namespacedPrefixes: [String], inspectionCall: String) throws {
+        guard let firstPrefix = namespacedPrefixes.first
+        else { return }
+        let shortName = typeName(type: type(of: value))
+        let longName = typeName(type: type(of: value), namespaced: true, prefixOnly: true)
+        if longName.hasPrefix("SwiftUI.EnvironmentReaderView") {
+            if shortName.contains("NavigationBarItemsKey") {
                 throw InspectionError.notSupported(
                     """
                     Please insert '.navigationBarItems()' before \(inspectionCall) \
                     for unwrapping the underlying view hierarchy.
                     """)
-            } else if name.contains("_AnchorWritingModifier") {
+            } else if shortName.contains("_AnchorWritingModifier") {
                 throw InspectionError.notSupported(
                     "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
             }
         }
-        guard name.hasPrefix(prefix) else {
-            throw InspectionError.typeMismatch(factual: name, expected: prefix)
+        guard namespacedPrefixes.contains(where: { longName.hasPrefix($0) }) else {
+            throw InspectionError.typeMismatch(factual: longName, expected: firstPrefix)
         }
     }
 }

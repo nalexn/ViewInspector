@@ -5,14 +5,19 @@ public extension ViewType {
     
     struct View<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String {
+            guard T.self != TraverseStubView.self
+            else { return "" }
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
         
-        public static func inspectionCall(index: Int?) -> String {
-            if let index = index {
-                return ".view(\(typePrefix).self, \(index))"
-            }
-            return ".view(\(typePrefix).self)"
+        public static var namespacedPrefixes: [String] {
+            guard T.self != TraverseStubView.self
+            else { return [] }
+            return [Inspector.typeName(type: T.self, namespaced: true, prefixOnly: true)]
+        }
+        
+        public static func inspectionCall(typeName: String) -> String {
+            return "view(\(typeName).self\(ViewType.commaPlaceholder)\(ViewType.indexPlaceholder))"
         }
     }
 }
@@ -23,7 +28,14 @@ public extension ViewType {
 extension ViewType.View: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
-        let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
+        return try content.extractCustomView()
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    func extractCustomView() throws -> Content {
+        let inspectable = try Inspector.cast(value: self.view, type: Inspectable.self)
         return try Inspector.unwrap(view: try inspectable.extractContent(), modifiers: [])
     }
 }
@@ -33,8 +45,7 @@ extension ViewType.View: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
-        return try Inspector.viewsInContainer(view: try inspectable.extractContent(),
-                                              resetModifiersForSingleChild: true)
+        return try Inspector.viewsInContainer(view: try inspectable.extractContent())
     }
 }
 
@@ -45,10 +56,11 @@ public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
         let child = try View.child(content)
-        let prefix = Inspector.typeName(type: type, prefixOnly: true)
-        let call = View.inspectionCall(index: nil)
-        try Inspector.guardType(value: child.view, prefix: prefix, inspectionCall: call)
-        return try .init(child, parent: self, index: nil)
+        let prefix = Inspector.typeName(type: type, namespaced: true, prefixOnly: true)
+        let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
+        let call = ViewType.inspectionCall(base: base, index: nil)
+        try Inspector.guardType(value: child.view, namespacedPrefixes: [prefix], inspectionCall: call)
+        return try .init(child, parent: self, call: call)
     }
 }
 
@@ -59,10 +71,11 @@ public extension InspectableView where View: MultipleViewContent {
     
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
         let content = try child(at: index)
-        let prefix = Inspector.typeName(type: type, prefixOnly: true)
-        let call = View.inspectionCall(index: index)
-        try Inspector.guardType(value: content.view, prefix: prefix, inspectionCall: call)
-        return try .init(content, parent: self, index: index)
+        let prefix = Inspector.typeName(type: type, namespaced: true, prefixOnly: true)
+        let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
+        let call = ViewType.inspectionCall(base: base, index: index)
+        try Inspector.guardType(value: content.view, namespacedPrefixes: [prefix], inspectionCall: call)
+        return try .init(content, parent: self, call: call)
     }
 }
 
@@ -73,11 +86,6 @@ public extension InspectableView where View: CustomViewType {
     
     func actualView() throws -> View.T {
         return try Inspector.cast(value: content.view, type: View.T.self)
-    }
-
-    @available(*, deprecated, message: "You can remove .viewBuilder()")
-    func viewBuilder() throws -> InspectableView<View> {
-        return self
     }
 }
 

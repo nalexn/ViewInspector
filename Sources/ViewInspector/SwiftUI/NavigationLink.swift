@@ -25,7 +25,7 @@ extension ViewType.NavigationLink: SingleViewContent {
 public extension InspectableView where View: SingleViewContent {
     
     func navigationLink() throws -> InspectableView<ViewType.NavigationLink> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
@@ -39,19 +39,18 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.NavigationLink: SupplementaryChildrenLabelView { }
+
 // MARK: - Custom Attributes
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.NavigationLink {
     
-    @available(*, deprecated, renamed: "labelView")
-    func label() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try labelView()
-    }
-    
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
-        let view = try Inspector.attribute(label: "label", value: content.view)
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self, index: nil)
+        return try View.supplementaryChildren(self).element(at: 0)
     }
     
     func isActive() throws -> Bool {
@@ -96,7 +95,7 @@ private extension InspectableView where View == ViewType.NavigationLink {
             return try? Inspector
                 .attribute(path: "_isActive|binding", value: content.view, type: Binding<Bool>.self)
         }
-        let isActive = try Inspector.attribute(label: "_externalIsActive", value: content.view)
-        return isActive as? Binding<Bool>
+        return try? Inspector
+            .attribute(label: "_externalIsActive", value: content.view, type: Binding<Bool>.self)
     }
 }

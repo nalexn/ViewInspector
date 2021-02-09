@@ -111,6 +111,11 @@ final class ViewLayeringTests: XCTestCase {
         XCTAssertEqual(sut, text)
     }
     
+    func testOverlaySearch() throws {
+        let view = EmptyView().overlay(Text("test").padding(), alignment: .center)
+        XCTAssertNoThrow(try view.inspect().find(text: "test"))
+    }
+    
     func testBackground() throws {
         let sut = EmptyView().background(Text(""), alignment: .center)
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -121,6 +126,11 @@ final class ViewLayeringTests: XCTestCase {
         let sut = try EmptyView().background(Text(text), alignment: .center)
             .inspect().emptyView().background().text().string()
         XCTAssertEqual(sut, text)
+    }
+    
+    func testBackgroundSearch() throws {
+        let view = EmptyView().background(Text("test").padding(), alignment: .center)
+        XCTAssertNoThrow(try view.inspect().find(text: "test"))
     }
     
     func testZIndex() throws {

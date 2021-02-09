@@ -19,12 +19,6 @@ final class SecureFieldTests: XCTestCase {
         XCTAssertEqual(sut.content.modifiers.count, 0)
     }
     
-    func testDeprecatedLabelInspection() throws {
-        let binding = Binding(wrappedValue: "")
-        let view = SecureField("Title", text: binding)
-        XCTAssertNoThrow(try view.inspect().secureField().text())
-    }
-    
     func testExtractionFromSingleViewContainer() throws {
         let binding = Binding(wrappedValue: "")
         let view = AnyView(SecureField("Test", text: binding))
@@ -39,6 +33,15 @@ final class SecureFieldTests: XCTestCase {
         }
         XCTAssertNoThrow(try view.inspect().hStack().secureField(0))
         XCTAssertNoThrow(try view.inspect().hStack().secureField(1))
+    }
+    
+    func testSearch() throws {
+        let binding = Binding(wrappedValue: "")
+        let view = AnyView(SecureField("abc", text: binding))
+        XCTAssertEqual(try view.inspect().find(ViewType.SecureField.self).pathToRoot,
+                       "anyView().secureField()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().secureField().labelView().text()")
     }
     
     func testInput() throws {

@@ -32,6 +32,14 @@ final class ScrollViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().scrollView(1))
     }
     
+    func testSearch() throws {
+        let view = AnyView(ScrollView { Text("abc") })
+        XCTAssertEqual(try view.inspect().find(ViewType.ScrollView.self).pathToRoot,
+                       "anyView().scrollView()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().scrollView().text()")
+    }
+    
     func testContentInsets() throws {
         guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) else { return }
         let sut = ScrollView { Text("") }

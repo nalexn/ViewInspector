@@ -41,6 +41,18 @@ final class TabViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().tabView(0))
         XCTAssertNoThrow(try view.inspect().hStack().tabView(1))
     }
+    
+    func testSearch() throws {
+        let view = AnyView(TabView {
+            Text("abc").tabItem({ Text("xyz") })
+        })
+        XCTAssertEqual(try view.inspect().find(ViewType.TabView.self).pathToRoot,
+                       "anyView().tabView()")
+        XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
+                       "anyView().tabView().text(0)")
+        XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
+                       "anyView().tabView().text(0).tabItem().text()")
+    }
 }
 
 // MARK: - View Modifiers
@@ -71,6 +83,11 @@ final class GlobalModifiersForTabView: XCTestCase {
         let sut = try tabItem.text()
         XCTAssertEqual(try sut.string(), string)
         XCTAssertEqual(try sut.blur().radius, 3)
+    }
+    
+    func testTabItemSearch() throws {
+        let view = EmptyView().tabItem { Text("abc") }
+        XCTAssertNoThrow(try view.inspect().find(text: "abc"))
     }
     
     #if !os(macOS) && !targetEnvironment(macCatalyst)

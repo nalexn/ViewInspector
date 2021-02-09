@@ -115,6 +115,35 @@ final class CustomViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().view(EnvironmentStateTestView.self, 1))
     }
     
+    func testSyncSearch() throws {
+        let sut1 = AnyView(SimpleTestView())
+        XCTAssertEqual(try sut1.inspect().find(ViewType.EmptyView.self).pathToRoot,
+                       "anyView().view(SimpleTestView.self).emptyView()")
+        let viewModel = ExternalState()
+        let sut2 = AnyView(ObservedStateTestView(viewModel: viewModel))
+        XCTAssertEqual(try sut2.inspect().find(text: viewModel.value).pathToRoot,
+                       "anyView().view(ObservedStateTestView.self).text()")
+    }
+    
+    func testAsyncSearch() throws {
+        let view = EnvironmentStateTestView()
+        let sut = AnyView(view)
+        let viewModel = ExternalState()
+        let exp = view.inspection.inspect { view in
+            XCTAssertEqual(try view.find(text: viewModel.value).pathToRoot,
+                           "view(EnvironmentStateTestView.self).text()")
+        }
+        ViewHosting.host(view: sut.environmentObject(viewModel))
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testSearchBlocker() throws {
+        let sut = AnyView(NonInspectableTestView())
+        XCTAssertThrows(try sut.inspect().find(ViewType.EmptyView.self),
+                        "Search did not find a match. Possible blockers: NonInspectableTestView")
+        XCTAssertEqual(try sut.inspect().findAll(ViewType.EmptyView.self).count, 0)
+    }
+    
     func testActualView() throws {
         let sut = LocalStateTestView(flag: true)
         let exp = sut.inspection.inspect { view in
@@ -135,19 +164,27 @@ final class CustomViewTests: XCTestCase {
     func testPathToRoot() throws {
         let view1 = AnyView(SimpleTestView())
         let sut1 = try view1.inspect().anyView().view(SimpleTestView.self).pathToRoot
-        XCTAssertEqual(sut1, "inspect().anyView().view(SimpleTestView.self)")
+        XCTAssertEqual(sut1, "anyView().view(SimpleTestView.self)")
         let view2 = HStack { SimpleTestView() }
         let sut2 = try view2.inspect().hStack().view(SimpleTestView.self, 0).pathToRoot
-        XCTAssertEqual(sut2, "inspect().hStack().view(SimpleTestView.self, 0)")
+        XCTAssertEqual(sut2, "hStack().view(SimpleTestView.self, 0)")
     }
     
     func testTestViews() {
+        XCTAssertNoThrow(NonInspectableTestView().body)
         XCTAssertNoThrow(SimpleTestView().body)
         XCTAssertNoThrow(ObservedStateTestView(viewModel: ExternalState()).body)
     }
 }
 
 // MARK: - Test Views
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct NonInspectableTestView: View {
+    var body: some View {
+        EmptyView()
+    }
+}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct SimpleTestView: View, Inspectable {
@@ -277,5 +314,6 @@ extension EnvironmentValues {
 extension ViewType {
     struct Test<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String { "String" }
+        static var namespacedPrefixes: [String] { ["Swift.String"] }
     }
 }

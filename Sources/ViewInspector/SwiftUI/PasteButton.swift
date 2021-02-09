@@ -1,16 +1,15 @@
 import SwiftUI
 import UniformTypeIdentifiers.UTType
 
-#if os(macOS)
-@available(macOS 10.15, *)
-@available(iOS, unavailable)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct PasteButton: KnownViewType {
         public static var typePrefix: String = "PasteButton"
     }
 }
+
+#if os(macOS)
 
 // MARK: - Extraction from SingleViewContent parent
 
@@ -20,7 +19,7 @@ public extension ViewType {
 public extension InspectableView where View: SingleViewContent {
     
     func pasteButton() throws -> InspectableView<ViewType.PasteButton> {
-        return try .init(try child(), parent: self, index: nil)
+        return try .init(try child(), parent: self)
     }
 }
 
