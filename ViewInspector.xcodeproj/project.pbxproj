@@ -197,6 +197,7 @@
 		F6F08E7123A3BD0C001F04DF /* AccessibilityModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E7023A3BD0C001F04DF /* AccessibilityModifiersTests.swift */; };
 		F6FB7F5825476431006658EF /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FB7F5725476431006658EF /* ColorPicker.swift */; };
 		F6FB7F6225476480006658EF /* ColorPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FB7F6125476480006658EF /* ColorPickerTests.swift */; };
+		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
 
@@ -399,6 +400,7 @@
 		F6FEBEFF256B0A3D006C28F5 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Test.strings"; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		"ViewInspector::ViewInspector::Product" /* ViewInspector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ViewInspector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"ViewInspector::ViewInspectorTests::Product" /* ViewInspectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = ViewInspectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -689,6 +691,7 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				OBJ_6 /* Package.swift */,
 				F60EEBB82382EED0007DB53A /* Sources */,
 				F60EEBE02382F004007DB53A /* Tests */,
 				OBJ_26 /* Products */,
@@ -902,6 +905,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				OBJ_51 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1076,6 +1080,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1184,6 +1189,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
