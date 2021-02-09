@@ -40,7 +40,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 // MARK: - Custom Attributes
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.VStack {
 
 
