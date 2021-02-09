@@ -41,7 +41,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Group | `contained view` |
 |:white_check_mark:| GroupBox | `contained view`, `label view` |
 |:white_check_mark:| HSplitView | `contained view` |
-|:white_check_mark:| HStack | `contained view` |
+|:white_check_mark:| HStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
 |:white_check_mark:| Image | `imageName: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `label view` |
 |:white_check_mark:| Label | `title view`, `icon view` |
 |:white_check_mark:| LabelStyleConfiguration.Icon | |
@@ -93,7 +93,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:white_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
-|:white_check_mark:| VStack | `contained view` |
+|:white_check_mark:| VStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
 |:white_check_mark:| ZStack | `contained view` |
 
 ## Property Wrappers
