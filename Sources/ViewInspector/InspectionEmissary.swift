@@ -95,3 +95,22 @@ public extension View where Self: Inspectable {
         return expectation
     }
 }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension ViewModifier where Self: Inspectable {
+    @discardableResult
+    mutating func on(_ keyPath: WritableKeyPath<Self, ((Self.Body) -> Void)?>,
+                     file: StaticString = #file, line: UInt = #line,
+                     viewId: String = #function,
+                     perform: @escaping ((InspectableView<ViewType.ParentView>) throws -> Void)
+    ) -> XCTestExpectation {
+        let description = Inspector.typeName(value: self) + " callback at line #\(line)"
+        let expectation = XCTestExpectation(description: description)
+        self[keyPath: keyPath] = { body in
+            body.inspect(file: file, line: line, inspection: perform)
+            ViewHosting.expel(viewId: viewId)
+            expectation.fulfill()
+        }
+        return expectation
+    }
+}
