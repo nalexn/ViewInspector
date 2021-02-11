@@ -36,10 +36,16 @@ public extension InspectableView {
         let floatAttrNames = ["minWidth", "idealWidth", "maxWidth",
                               "minHeight", "idealHeight", "maxHeight"]
         let call = "frame(minWidth: idealWidth: maxWidth: minHeight: idealHeight: maxHeight: alignment:)"
-        let floats = try floatAttrNames.map { name in
-            return try modifierAttribute(
-                modifierName: "_FlexFrameLayout", path: "modifier|\(name)",
-                type: CGFloat.self, call: call)
+        var floats = [CGFloat]()
+        for name in floatAttrNames {
+            do {
+                let value = try modifierAttribute(
+                    modifierName: "_FlexFrameLayout", path: "modifier|\(name)",
+                    type: CGFloat.self, call: call)
+                floats.append(value)
+            } catch {
+                floats.append(CGFloat.nan)
+            }
         }
         let alignment = try modifierAttribute(
             modifierName: "_FlexFrameLayout", path: "modifier|alignment",
