@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
 		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
@@ -206,19 +207,20 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = "ViewInspector::ViewInspector";
+			remoteGlobalIDString = ViewInspector::ViewInspector;
 			remoteInfo = ViewInspector;
 		};
 		F6602F47238096DB00BDCAAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = "ViewInspector::ViewInspectorTests";
+			remoteGlobalIDString = ViewInspector::ViewInspectorTests;
 			remoteInfo = ViewInspectorTests;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
 		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
@@ -648,6 +650,7 @@
 				F6ECF6D123A680DA000FC591 /* TransformingModifiersTests.swift */,
 				F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */,
 				F6ECF6D723A69CB5000FC591 /* VisualEffectModifiersTests.swift */,
+				355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -1000,6 +1003,7 @@
 				F6E4B4062386F511003E1534 /* OpaqueViewTests.swift in Sources */,
 				F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */,
 				F6684BEE23AA4CF400DECCB3 /* MenuButtonTests.swift in Sources */,
+				355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

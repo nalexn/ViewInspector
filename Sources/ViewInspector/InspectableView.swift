@@ -165,10 +165,15 @@ public extension View where Self: Inspectable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
+
+    func numberModifierAttributes(modifierName: String, path: String, call: String) -> Int {
+        return contentForModifierLookup.numberModifierAttributes(modifierName: modifierName, path: path, call: call)
+    }
+
     func modifierAttribute<Type>(modifierName: String, path: String,
-                                 type: Type.Type, call: String) throws -> Type {
+                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
-            modifierName: modifierName, path: path, type: type, call: call)
+            modifierName: modifierName, path: path, type: type, call: call, index: index)
     }
     
     func modifierAttribute<Type>(modifierLookup: (ModifierNameProvider) -> Bool, path: String,
@@ -191,18 +196,36 @@ internal extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
-    
+    typealias ModifierLookupClosure = (ModifierNameProvider) -> Bool
+
+    func numberModifierAttributes(modifierName: String, path: String, call: String) -> Int {
+        let modifyNameProvider: ModifierLookupClosure = { modifier -> Bool in
+            guard modifier.modifierType.contains(modifierName) else {
+                return false
+            }
+            return true
+        }
+        let modifiers = self.modifiers.lazy
+            .compactMap({ $0 as? ModifierNameProvider })
+            .filter(modifyNameProvider)
+
+        return modifiers.count
+    }
+
     func modifierAttribute<Type>(modifierName: String, path: String,
-                                 type: Type.Type, call: String) throws -> Type {
-        return try modifierAttribute(modifierLookup: { modifier -> Bool in
+                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
+
+        let modifyNameProvider : ModifierLookupClosure = { modifier -> Bool in
             guard modifier.modifierType.contains(modifierName) else { return false }
             return (try? Inspector.attribute(path: path, value: modifier) as? Type) != nil
-        }, path: path, type: type, call: call)
+        }
+
+        return try modifierAttribute(modifierLookup: modifyNameProvider, path: path, type: type, call: call, index: index)
     }
     
-    func modifierAttribute<Type>(modifierLookup: (ModifierNameProvider) -> Bool, path: String,
-                                 type: Type.Type, call: String) throws -> Type {
-        let modifier = try self.modifier(modifierLookup, call: call)
+    func modifierAttribute<Type>(modifierLookup: ModifierLookupClosure, path: String,
+                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
+        let modifier = try self.modifier(modifierLookup, call: call, index: index)
         guard let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
             throw InspectionError.modifierNotFound(
@@ -210,16 +233,18 @@ internal extension Content {
         }
         return attribute
     }
-    
-    func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
-        guard let modifier = self.modifiers.lazy
-                .compactMap({ $0 as? ModifierNameProvider })
-                .last(where: modifierLookup)
-        else {
-            throw InspectionError.modifierNotFound(
-                parent: Inspector.typeName(value: self.view), modifier: call)
+
+    func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
+        let modifiers = self.modifiers.lazy
+            .compactMap({ $0 as? ModifierNameProvider })
+            .filter(modifierLookup)
+
+        if index < modifiers.count {
+            return modifiers[index]
         }
-        return modifier
+        throw InspectionError.modifierNotFound(
+            parent: Inspector.typeName(value: self.view), modifier: call)
+
     }
 }
 
