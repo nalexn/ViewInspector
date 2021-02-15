@@ -10,6 +10,6 @@ public extension InspectableView {
         let defaultValue = environmentValues[keyPath: keyPath]
         let reference = EmptyView().environment(keyPath, defaultValue)
         let keyPath = try Inspector.environmentKeyPath(T.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "resizableFrameMinWidth")
+        return try environmentModifier(keyPath: keyPath, call: "")
     }
 }
