@@ -1,11 +1,11 @@
 import SwiftUI
 
-// MARK: - Custom Modifiers
+// MARK: - Environment Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
 
-    func customModifier<T>(keyPath: WritableKeyPath<EnvironmentValues, T>) throws -> T {
+    func environment<T>(keyPath: WritableKeyPath<EnvironmentValues, T>) throws -> T {
         let environmentValues = EnvironmentValues()
         let defaultValue = environmentValues[keyPath: keyPath]
         let reference = EmptyView().environment(keyPath, defaultValue)
