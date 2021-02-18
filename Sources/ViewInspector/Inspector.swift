@@ -1,7 +1,7 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public struct Inspector { }
+internal struct Inspector { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
