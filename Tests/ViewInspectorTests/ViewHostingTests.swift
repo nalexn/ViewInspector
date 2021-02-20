@@ -1,6 +1,6 @@
 import XCTest
 import SwiftUI
-#if !os(macOS)
+#if canImport(UIKit)
 import UIKit
 #endif
 

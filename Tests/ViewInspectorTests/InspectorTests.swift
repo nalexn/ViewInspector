@@ -171,7 +171,7 @@ final class InspectableViewModifiersTests: XCTestCase {
         // between ViewInspectorTests and ViewInspector_Unit_Tests under cocoapods tests
         // ViewInspectorTests.TestPrintView vs ViewInspector_Unit_Tests.TestPrintView
         do {
-            try sut.parent().group()
+            _ = try sut.parent().group()
             XCTFail("Expected to throw")
         } catch let error {
             let message = error.localizedDescription

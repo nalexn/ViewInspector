@@ -21,6 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */; };
+		52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
 		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
@@ -219,6 +223,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
+		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
 		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
@@ -410,6 +417,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */,
 				F62D69902507FA0C00335BCC /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,6 +426,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */,
 				OBJ_69 /* ViewInspector.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -627,6 +636,7 @@
 		F62D698E2507FA0C00335BCC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52510DC825E1485300A84CB8 /* SwiftUI.framework */,
 				F62D698F2507FA0C00335BCC /* XCTest.framework */,
 			);
 			name = Frameworks;
@@ -648,6 +658,7 @@
 				F6ECF6D123A680DA000FC591 /* TransformingModifiersTests.swift */,
 				F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */,
 				F6ECF6D723A69CB5000FC591 /* VisualEffectModifiersTests.swift */,
+				355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -658,6 +669,7 @@
 				F639DBBE23A6CF03003A6FED /* AccessibilityModifiers.swift */,
 				F6ECF6C923A66FE2000FC591 /* AnimationModifiers.swift */,
 				F620C7FA2537B090006D856D /* ConfigurationModifiers.swift */,
+				52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */,
 				F68108A723A667A300B32145 /* GestureModifiers.swift */,
 				F68108A523A5835E00B32145 /* EventsModifiers.swift */,
 				F6ECF6C723A66E54000FC591 /* InteractionModifiers.swift */,
@@ -852,6 +864,7 @@
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
 				F609EFC123A432AA00B9256A /* IDView.swift in Sources */,
 				F6ECF6C823A66E54000FC591 /* InteractionModifiers.swift in Sources */,
+				52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */,
 				F60EEBDC2382EED0007DB53A /* Text.swift in Sources */,
 				F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */,
 				F6684BFE23AA863400DECCB3 /* RadialGradient.swift in Sources */,
@@ -1000,6 +1013,7 @@
 				F6E4B4062386F511003E1534 /* OpaqueViewTests.swift in Sources */,
 				F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */,
 				F6684BEE23AA4CF400DECCB3 /* MenuButtonTests.swift in Sources */,
+				355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1080,7 +1094,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1108,11 +1121,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ViewInspector;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TARGET_NAME = ViewInspector;
 			};
 			name = Debug;
@@ -1136,11 +1148,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ViewInspector;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TARGET_NAME = ViewInspector;
 			};
 			name = Release;
@@ -1189,7 +1200,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1244,9 +1254,9 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TARGET_NAME = ViewInspectorTests;
 			};
 			name = Debug;
@@ -1267,9 +1277,9 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TARGET_NAME = ViewInspectorTests;
 			};
 			name = Release;

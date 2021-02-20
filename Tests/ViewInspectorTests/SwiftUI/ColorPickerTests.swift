@@ -7,20 +7,20 @@ import SwiftUI
 final class ColorPickerTests: XCTestCase {
     
     func testInspect() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let binding = Binding<CGColor>(wrappedValue: .test)
         XCTAssertNoThrow(try ColorPicker("Test", selection: binding).inspect())
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let binding = Binding<CGColor>(wrappedValue: .test)
         let view = AnyView(ColorPicker("Test", selection: binding))
         XCTAssertNoThrow(try view.inspect().anyView().colorPicker())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let binding = Binding<CGColor>(wrappedValue: .test)
         let view = HStack {
             Text("")
@@ -31,7 +31,7 @@ final class ColorPickerTests: XCTestCase {
     }
     
     func testSearch() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let binding = Binding<CGColor>(wrappedValue: .test)
         let view = Group { ColorPicker(selection: binding, label: {
             HStack { Text("abc") }
@@ -43,7 +43,7 @@ final class ColorPickerTests: XCTestCase {
     }
     
     func testLabelInspection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let binding = Binding<Color>(wrappedValue: .red)
         let sut = ColorPicker(selection: binding, label: {
             HStack { Text("abc") }
@@ -53,7 +53,7 @@ final class ColorPickerTests: XCTestCase {
     }
     
     func testColorSelection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         
         let cgColor = CGColor(red: 0.5, green: 0.2, blue: 0.7, alpha: 0.1)
         let binding1 = Binding<CGColor>(wrappedValue: cgColor)
@@ -62,17 +62,15 @@ final class ColorPickerTests: XCTestCase {
         try sut1.inspect().colorPicker().select(color: CGColor.test)
         XCTAssertEqual(binding1.wrappedValue.rgba(), CGColor.test.rgba())
         
-        if #available(tvOS 14.0, *) {
-            let binding2 = Binding<Color>(wrappedValue: .red)
-            let sut2 = ColorPicker(selection: binding2) { Text("") }
-            XCTAssertEqual(binding2.wrappedValue.rgba(), Color.red.rgba())
-            try sut2.inspect().colorPicker().select(color: Color.yellow)
-            XCTAssertEqual(binding2.wrappedValue.rgba(), Color.yellow.rgba())
-        }
+        let binding2 = Binding<Color>(wrappedValue: .red)
+        let sut2 = ColorPicker(selection: binding2) { Text("") }
+        XCTAssertEqual(binding2.wrappedValue.rgba(), Color.red.rgba())
+        try sut2.inspect().colorPicker().select(color: Color.yellow)
+        XCTAssertEqual(binding2.wrappedValue.rgba(), Color.yellow.rgba())
     }
     
     func testRGBA() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         #if os(macOS)
         XCTAssertNotEqual(NSColor.red.rgba(), Color.red.rgba())
         #else

@@ -468,7 +468,8 @@ func testCustomViewModifierAppliedToHierarchy() throws {
     let sut = EmptyView().modifier(MyViewModifier())
     let modifier = try sut.inspect().emptyView().modifier(MyViewModifier.self)
     let content = try modifier.viewModifierContent()
-    XCTAssertEqual(try content.padding().top, 15)
+    XCTAssertTrue(try content.hasPadding(.top))
+    XCTAssertEqual(try content.padding(.top), 15)
 }
 ```
 
@@ -495,7 +496,7 @@ func testViewModifier() {
     let exp = XCTestExpectation(description: #function)
     sut.didAppear = { body in
         body.inspect { view in
-            XCTAssertEqual(try view.padding().top, 15)
+            XCTAssertEqual(try view.padding(.top), 15)
         }
         ViewHosting.expel()
         exp.fulfill()
@@ -628,6 +629,7 @@ func testCustomLabelStyle() throws {
     let icon = try sut.inspect().vStack().styleConfigurationIcon(1)
     XCTAssertEqual(try title.blur().radius, 3)
     XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+    XCTAssertEqual(try icon.padding(.all), 5)
 }
 ```
 

@@ -43,7 +43,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Group | `contained view` |
 |:white_check_mark:| GroupBox | `contained view`, `label view` |
 |:white_check_mark:| HSplitView | `contained view` |
-|:white_check_mark:| HStack | `contained view` |
+|:white_check_mark:| HStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
 |:white_check_mark:| Image | `label view`, `actualImage: Image` |
 |:white_check_mark:| Image (*) | `rootImage: Image`, `name: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat` |
 |:white_check_mark:| Label | `title view`, `icon view` |
@@ -96,7 +96,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:white_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
-|:white_check_mark:| VStack | `contained view` |
+|:white_check_mark:| VStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
 |:white_check_mark:| ZStack | `contained view` |
 
 (*) The following attributes are available directly for the `Font` and `Image` SwiftUI types, as opposed to the attributes available for wrapper views extracted from the hierarchy. In case you obtained an image view from the hierarchy using `image()` call, you'd need to additionally call `actualImage: Image` to get the genuine `Image` structure.

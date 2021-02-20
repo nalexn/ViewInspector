@@ -11,6 +11,7 @@ final class ViewEnvironmentTests: XCTestCase {
         let key = TestEnvKey()
         let sut = EmptyView().environment(\.testKey, key)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+        XCTAssertNoThrow(try sut.inspect().emptyView().environment(keyPath: \.testKey))
     }
     
     func testEnvironmentObject() throws {
