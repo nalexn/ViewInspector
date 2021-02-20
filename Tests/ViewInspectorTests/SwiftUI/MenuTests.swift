@@ -8,13 +8,13 @@ import SwiftUI
 final class MenuTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view = AnyView(Menu("abc", content: { EmptyView() }))
         XCTAssertNoThrow(try view.inspect().anyView().menu())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view = HStack {
             Text("")
             Menu("abc", content: { EmptyView() })
@@ -24,7 +24,7 @@ final class MenuTests: XCTestCase {
     }
     
     func testSearch() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view = AnyView(Menu(content: {
             HStack { Text("abc") }
         }, label: {
@@ -39,7 +39,7 @@ final class MenuTests: XCTestCase {
     }
     
     func testLabelInspection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view = Menu(content: {
             HStack { Text("abc") }
         }, label: {
@@ -50,7 +50,7 @@ final class MenuTests: XCTestCase {
     }
     
     func testContentInspection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view = Menu(content: {
             HStack { Text("abc") }
         }, label: {
@@ -61,13 +61,13 @@ final class MenuTests: XCTestCase {
     }
     
     func testLabelStyleInspection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let sut = EmptyView().menuStyle(DefaultMenuStyle())
         XCTAssertTrue(try sut.inspect().menuStyle() is DefaultMenuStyle)
     }
     
     func testCustomMenuStyleInspection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let sut = TestMenuStyle()
         let menu = try sut.inspect().vStack().menu(0)
         XCTAssertEqual(try menu.blur().radius, 3)
