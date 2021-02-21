@@ -86,7 +86,7 @@ internal extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
-    func inspectContent() throws -> InspectableView<ViewType.ClassifiedView> {
+    func classify() throws -> InspectableView<ViewType.ClassifiedView> {
         return try .init(content, parent: nil, index: nil)
     }
 }
