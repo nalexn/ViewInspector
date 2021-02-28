@@ -12,6 +12,7 @@
 - [Custom **GroupBoxStyle**](#custom-groupboxstyle)
 - [Custom **ToggleStyle**](#custom-togglestyle)
 - [Custom **ProgressViewStyle**](#custom-progressviewstyle)
+- [Custom **Custom Styles**](#custom-styles)
 
 ## The Basics
 
@@ -709,5 +710,220 @@ func testCustomProgressViewStyle() throws {
     XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationLabel(0).brightness(), 3)
     XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationCurrentValueLabel(1).blur().radius, 5)
     XCTAssertEqual(try sut.inspect(fractionCompleted: 0.42).vStack().text(2).string(), "Completed: 42%")
+}
+```
+## Custom **Custom Styles**
+
+A custom style is a type that implements standard interaction behavior and/or a custom 
+appearance for all views that apply the custom style in a view hiearchy.
+
+A custom style starts with a protocol that concrete styles must conform to. Such a protocol
+has the following requirements:
+* An associated type called `Body` that conforms to `View`.
+* A type alias called `Configuration` equal to the type used to pass configuration information
+to `makeBody(configuration:)`.
+* A method called `makeBody(configuration:)` that constructs a view of type `Body`.
+
+The following example illustrates a protocol defining a style, a concrete style conforming to
+the style, and a view that applies the style.
+
+```swift
+struct HelloWorldStyleConfiguration {}
+
+protocol HelloWorldStyle {
+    associatedtype Body: View
+
+    typealias Configuration = HelloWorldStyleConfiguration
+    
+    func makeBody(configuration: Self.Configuration) -> Self.Body
+}
+
+struct DefaultHelloWorldStyle: HelloWorldStyle {
+    func makeBody(configuration: HelloWorldStyleConfiguration) -> some View {
+        ZStack {
+            Rectangle()
+                .strokeBorder(Color.accentColor, lineWidth: 1, antialiased: true)
+        }
+    }
+}
+
+struct HelloWorld: View {
+    @Environment(\.helloWorldStyle) var style
+    var body: some View {
+        ZStack {
+            Text("Hello World!")
+            style.makeBody(configuration: HelloWorldStyle.Configuration())
+        }
+    }
+}
+```
+
+Observe that  `HelloWorld` reads an environment value with the key `helloWorldStyle`
+and applies this style by calling its `makeBody(configuration:)` method. In order to enable
+this capability, it is necessary to define a custom enviroment value, as illustrated below:
+
+```Swift
+struct HelloWorldStyleKey: EnvironmentKey {
+    static var defaultValue: AnyHelloWorldStyle = AnyHelloWorldStyle(DefaultHelloWorldStyle())
+}
+
+extension EnvironmentValues {
+    var helloWorldStyle: AnyHelloWorldStyle {
+        get { self[HelloWorldStyleKey.self] }
+        set { self[HelloWorldStyleKey.self] = newValue }
+    }
+}
+```
+
+Swift doesn't allow the environment value with the type `HelloWorldStyle` because it has
+an associated type. As of this writing, Swift does not support computed properties having
+opaque types. Hence, the environment variable has to hold a type-erased `HelloWorldStyle`. 
+The following type illustrates the simplest method for type-erasing `HellowWorldStyle`:
+
+```Swift
+struct AnyHelloWorldStyle: HelloWorldStyle {
+    private var _makeBody: (HelloWorldStyle.Configuration) -> AnyView
+
+    init<S: HelloWorldStyle>(_ style: S) {
+        _makeBody = { configuration in
+            AnyView(style.makeBody(configuration: configuration))
+        }
+    }
+
+    func makeBody(configuration: HelloWorldStyle.Configuration) -> some View {
+        _makeBody(configuration)
+    }
+}
+```
+
+To emulate SwiftUI's approach to styles, it is necessary to wrap setting the environment value.
+This not only encapsulates the type-erasure of the style, but it retains the type of the style as
+part of the view's hiearchy. The following view modifier illustrates how to accomplish this:
+
+```Swift
+struct HelloWorldStyleModifier<S: HelloWorldStyle>: ViewModifier {
+    let style: S
+    
+    init(_ style: S) {
+        self.style = style
+    }
+    
+    func body(content: Self.Content) -> some View {
+        content
+            .environment(\.helloWorldStyle, AnyHelloWorldStyle(style))
+    }
+}
+
+extension View {
+    func helloWorldStyle<S: helloWorldStyle>(_ style: S) -> some View {
+        modifier(HelloWorldStyleModifier(style))
+    }
+}
+```
+
+The following example illustrates how to define a concrete style and apply it to a view 
+hiearchy:
+
+```Swift
+struct Content: View {
+    var body: some View {
+        HelloWorld()
+            .helloWorldStyle(RedOutlineHelloWorldStyle())
+    }
+}
+
+struct RedOutlineHelloWorldStyle: HelloWorldStyle {
+    func makeBody(configuration: HelloWorldStyleConfiguration) -> some View {
+        ZStack {
+            Rectangle()
+                .strokeBorder(Color.red, lineWidth: 3, antialiased: true)
+        }
+    }
+}
+```
+
+**ViewInspector** provides support for custom styles.
+
+A test can verify the style applied to a view hiearchy. For example:
+
+```Swift
+let sut = EmptyView().helloWorldStyle(RedOutlineHelloWorldStyle())
+XCTAssertNoThrow(try sut.inspect().customStyle("helloWorldStyle") is RedOutlineHelloWorldStyle)
+```
+
+Note, the `customStyle(_:)` method accepts a string-value indicating the name of the 
+convenience method used to apply the style. This method only works if the style definition
+meets the following conditions:
+* A type defines a view modifier that wraps setting the environment value used by the
+custom style. The name of this type has the format `<style>Modifier`, where `style` is the
+of the style protocol.
+* An extension of `View` defines a convenience method that applies the modifier to a view.  
+
+A test can inspect a style by defining a custom inspector. For example:
+
+```Swift
+extension RedOutlineHelloWorldStyle {
+    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
+        let configuration = HelloWorldStyleConfiguration()
+        let view = try makeBody(configuration: configuration).inspect()
+        return try view.classify()
+    }
+}
+```
+
+With this extension, test can inspect the concrete style `RedOutlineHelloWorldStyle`. For
+example:
+
+```Swift
+    let style = RedOutlineHelloWorldStyle()
+    XCTAssertNoThrow(try style.inspect().zStack()
+```
+
+A test may need to use asynchronous inspection of a concrete style; for example, if it
+contains state. This requires refactoring the concrete style:
+
+```Swift
+struct RedOutlineHelloWorldStyle: HelloWorldStyle {
+    func makeBody(configuration: HelloWorldStyleConfiguration) -> some View {
+        StyleBody(configuration: configuration))
+    }
+    
+    struct StyleBody: View {
+        let configuration: HelloWorldStyleConfiguration
+        
+        internal var didAppear: ((Self) -> Void)?
+        
+        var body: some View {
+            ZStack {
+                Rectangle()
+                    .strokeBorder(Color.red, lineWidth: 3, antialiased: true)
+            }
+            .onAppear { self.didAppear?(self) }
+        }
+    }
+}
+```
+
+Inspection becomes fully functional in the scope of  `didAppear(_:)`. The test can manually
+configure `didAppear(_:)` or use the `on(_:)` convenience method:
+
+```Swift
+extension RedOutlineHelloWorldStyle.StyleBody: InspectableView {}
+
+final class HelloWorldStyleTest: XCTestCase {
+
+    func testRedOutlineHelloWorldStyle() {
+        let style = RedOutlineHelloWorldStyle(configuration: HelloWorldStyleConfiguration())
+        var body = try style.inspect().view(RedOutlineHelloWorldStyle.StyleBody.self).actualView()
+        let expectation = body.on(\.didAppear) { inspectedBody in
+            let zStack = try inspectedBody.zStack()
+            let rectangle = try zStack.shape(0)
+            XCTAssertEqual(try rectangle.fillShapeStyle(Color.self), Color.red)
+            XCTAssertEqual(try rectangle.strokeStyle().lineWidth, 1)
+            XCTAssertEqual(try rectangle.fillStyle().isAntialiased, true)
+        }
+        ViewHosting.host(view: body)
+        wait(for: [expectation], timeout: 1.0)
+    }
 }
 ```
