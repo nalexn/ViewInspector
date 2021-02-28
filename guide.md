@@ -12,7 +12,7 @@
 - [Custom **GroupBoxStyle**](#custom-groupboxstyle)
 - [Custom **ToggleStyle**](#custom-togglestyle)
 - [Custom **ProgressViewStyle**](#custom-progressviewstyle)
-- [Custom **Custom Styles**](#custom-styles)
+- [**Custom Styles**](#custom-styles)
 
 ## The Basics
 
@@ -712,7 +712,7 @@ func testCustomProgressViewStyle() throws {
     XCTAssertEqual(try sut.inspect(fractionCompleted: 0.42).vStack().text(2).string(), "Completed: 42%")
 }
 ```
-## Custom **Custom Styles**
+## **Custom Styles**
 
 A custom style is a type that implements standard interaction behavior and/or a custom 
 appearance for all views that apply the custom style in a view hiearchy.
