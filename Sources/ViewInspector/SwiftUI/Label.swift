@@ -39,11 +39,11 @@ extension ViewType.Label: SupplementaryChildren {
         return .init(count: 2) { index in
             if index == 0 {
                 let child = try Inspector.attribute(label: "title", value: parent.content.view)
-                let content = try Inspector.unwrap(content: Content(child))
+                let content = try Inspector.unwrap(content: Content(child, heritage: parent.content.heritage))
                 return try .init(content, parent: parent, call: "title()")
             } else {
                 let child = try Inspector.attribute(label: "icon", value: parent.content.view)
-                let content = try Inspector.unwrap(content: Content(child))
+                let content = try Inspector.unwrap(content: Content(child, heritage: parent.content.heritage))
                 return try .init(content, parent: parent, call: "icon()")
             }
         }

@@ -13,9 +13,9 @@ extension ViewType.ConditionalContent: SingleViewContent {
     static func child(_ content: Content) throws -> Content {
         let storage = try Inspector.attribute(label: "storage", value: content.view)
         if let trueContent = try? Inspector.attribute(label: "trueContent", value: storage) {
-            return try Inspector.unwrap(view: trueContent, modifiers: [])
+            return try Inspector.unwrap(view: trueContent, modifiers: [], heritage: content.heritage)
         }
         let falseContent = try Inspector.attribute(label: "falseContent", value: storage)
-        return try Inspector.unwrap(view: falseContent, modifiers: [])
+        return try Inspector.unwrap(view: falseContent, modifiers: [], heritage: content.heritage)
     }
 }

@@ -52,7 +52,9 @@ public extension InspectableView {
             throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: content.view),
                                                    modifier: name)
         }
-        let modifierContent = try Inspector.unwrap(view: try modifier.extractContent(), modifiers: [])
+        let modifierContent = try Inspector.unwrap(
+            view: try modifier.extractContent(environmentObjects: content.heritage.environmentObjects),
+            modifiers: [], heritage: content.heritage)
         let call = ViewType.ModifiedContent.inspectionCall(typeName: name)
         return try .init(modifierContent, parent: self, call: call)
     }
@@ -75,7 +77,15 @@ extension ViewType.ModifiedContent: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: content.modifiers + [content.view])
+        if Inspector.typeName(value: content.view)
+            .contains("_EnvironmentKeyWritingModifier"),
+           let object = try? Inspector.attribute(
+            path: "modifier|value|some", value: content.view, type: AnyObject.self),
+           !(object is NSObject) {
+            return try Inspector.unwrap(view: view, modifiers: content.modifiers, heritage: content.heritage.appending(environmentObject: object))
+        } else {
+            return try Inspector.unwrap(view: view, modifiers: content.modifiers + [content.view], heritage: content.heritage)
+        }
     }
 }
 

@@ -26,7 +26,7 @@ internal extension Content {
         let modifier = try modifierAttribute(
             modifierName: "PopoverPresentationModifier", path: "modifier",
             type: Any.self, call: "popover")
-        return try .init(try Inspector.unwrap(content: Content(modifier)),
+        return try .init(try Inspector.unwrap(content: Content(modifier, heritage: heritage)),
                          parent: parent, call: "popover()")
     }
 }
@@ -56,7 +56,7 @@ public extension InspectableView where View == ViewType.Popover {
             $0.bindMemory(to: Closure.self).first
         }) else { throw InspectionError.typeMismatch(closure, Closure.self) }
         let view = typedClosure()
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: self)
+        return try .init(try Inspector.unwrap(content: Content(view, heritage: content.heritage)), parent: self)
     }
     
     func arrowEdge() throws -> Edge {

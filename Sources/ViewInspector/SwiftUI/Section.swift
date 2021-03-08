@@ -14,8 +14,8 @@ public extension ViewType {
 extension ViewType.Section: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        let content = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.viewsInContainer(view: content)
+        let view = try Inspector.attribute(label: "content", value: content.view)
+        return try Inspector.viewsInContainer(view: view, heritage: content.heritage)
     }
 }
 
@@ -47,11 +47,11 @@ extension ViewType.Section: SupplementaryChildren {
         return .init(count: 2) { index in
             if index == 0 {
                 let child = try Inspector.attribute(label: "header", value: parent.content.view)
-                let content = try Inspector.unwrap(content: Content(child))
+                let content = try Inspector.unwrap(content: Content(child, heritage: parent.content.heritage))
                 return try .init(content, parent: parent, call: "header()")
             } else {
                 let child = try Inspector.attribute(label: "footer", value: parent.content.view)
-                let content = try Inspector.unwrap(content: Content(child))
+                let content = try Inspector.unwrap(content: Content(child, heritage: parent.content.heritage))
                 return try .init(content, parent: parent, call: "footer()")
             }
         }

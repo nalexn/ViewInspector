@@ -14,8 +14,8 @@ public extension ViewType {
 extension ViewType.List: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        let content = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.viewsInContainer(view: content)
+        let view = try Inspector.attribute(label: "content", value: content.view)
+        return try Inspector.viewsInContainer(view: view, heritage: content.heritage)
     }
 }
 
@@ -69,6 +69,6 @@ internal extension Content {
         let view = try modifierAttribute(
             modifierName: "_TraitWritingModifier<ListRowBackgroundTraitKey>",
             path: "modifier|value|some|storage|view", type: Any.self, call: "listRowBackground")
-        return try .init(try Inspector.unwrap(content: Content(view)), parent: parent)
+        return try .init(try Inspector.unwrap(content: Content(view, heritage: heritage)), parent: parent)
     }
 }

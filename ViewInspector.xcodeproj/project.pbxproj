@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */; };
+		5214800325F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */; };
 		52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
@@ -224,6 +225,7 @@
 
 /* Begin PBXFileReference section */
 		355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
+		5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentObjectInjectionTests.swift; sourceTree = "<group>"; };
 		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 				F6D933A82385E9F700358E0E /* EquatableViewTests.swift */,
 				F64057F0238DBB120029D9BA /* EmptyViewTests.swift */,
 				F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */,
+				5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */,
 				F60EEBED2382F004007DB53A /* ForEachTests.swift */,
 				F60EEBEB2382F004007DB53A /* FormTests.swift */,
 				F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */,
@@ -974,6 +977,7 @@
 				F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6C15A17254A0BB5000240F1 /* LazyHStackTests.swift in Sources */,
+				5214800325F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
 				F682A00C254772C3005F1B70 /* DisclosureGroupTests.swift in Sources */,
 				F6C15A3F254B4835000240F1 /* LinkTests.swift in Sources */,

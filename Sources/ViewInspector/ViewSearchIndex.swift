@@ -254,7 +254,9 @@ internal extension Content {
             try identities[index].builder(parent)
         }) + .init(count: customModifiers.count, { index -> UnwrappedView in
             let modifier = customModifiers[index]
-            let content = try Inspector.unwrap(view: try modifier.extractContent(), modifiers: [])
+            let content = try Inspector.unwrap(
+                view: try modifier.extractContent(environmentObjects: heritage.environmentObjects),
+                modifiers: [], heritage: heritage)
             let name = Inspector.typeName(value: modifier)
             let call = ViewType.ModifiedContent.inspectionCall(typeName: name)
             let modifierView = try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: call)

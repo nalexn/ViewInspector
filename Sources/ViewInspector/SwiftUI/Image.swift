@@ -37,7 +37,7 @@ extension ViewType.Image: SupplementaryChildren {
             let image = try Inspector.cast(value: parent.content.view, type: Image.self)
                 .rootImage()
             let labelView = try Inspector.attribute(path: "provider|base|label", value: image)
-            let content = try Inspector.unwrap(content: Content(labelView))
+            let content = try Inspector.unwrap(content: Content(labelView, heritage: parent.content.heritage))
             return try .init(content, parent: parent, call: "labelView()")
         }
     }
@@ -151,6 +151,6 @@ private extension Inspector {
             let content = try unwrap(image: child)
             return Content(content.view, modifiers: content.modifiers + [provider])
         }
-        return Content(image, modifiers: [])
+        return Content(image)
     }
 }

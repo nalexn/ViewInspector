@@ -138,7 +138,7 @@ internal extension Content {
         let rootView = try modifierAttribute(
             modifierName: "_MaskEffect", path: "modifier|mask",
             type: Any.self, call: "mask")
-        return try .init(try Inspector.unwrap(content: Content(rootView)),
+        return try .init(try Inspector.unwrap(content: Content(rootView, heritage: heritage)),
                          parent: parent, call: "mask()")
     }
 }

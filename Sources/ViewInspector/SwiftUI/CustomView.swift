@@ -36,7 +36,9 @@ extension ViewType.View: SingleViewContent {
 internal extension Content {
     func extractCustomView() throws -> Content {
         let inspectable = try Inspector.cast(value: self.view, type: Inspectable.self)
-        return try Inspector.unwrap(view: try inspectable.extractContent(), modifiers: [])
+        return try Inspector.unwrap(
+            view: try inspectable.extractContent(environmentObjects: heritage.environmentObjects),
+            modifiers: [], heritage: heritage)
     }
 }
 
@@ -45,7 +47,9 @@ extension ViewType.View: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
-        return try Inspector.viewsInContainer(view: try inspectable.extractContent())
+        return try Inspector.viewsInContainer(
+            view: try inspectable.extractContent(environmentObjects: content.heritage.environmentObjects),
+            heritage: content.heritage)
     }
 }
 
@@ -106,7 +110,7 @@ public extension NSViewControllerRepresentable where Self: Inspectable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: NSViewRepresentable {
-    func extractContent() throws -> Any {
+    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             "Please use `.actualView().nsView()` for inspecting the contents of NSViewRepresentable")
     }
@@ -114,7 +118,7 @@ public extension Inspectable where Self: NSViewRepresentable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: NSViewControllerRepresentable {
-    func extractContent() throws -> Any {
+    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             "Please use `.actualView().viewController()` for inspecting the contents of NSViewControllerRepresentable")
     }
@@ -136,7 +140,7 @@ public extension UIViewControllerRepresentable where Self: Inspectable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: UIViewRepresentable {
-    func extractContent() throws -> Any {
+    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             "Please use `.actualView().uiView()` for inspecting the contents of UIViewRepresentable")
     }
@@ -144,7 +148,7 @@ public extension Inspectable where Self: UIViewRepresentable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: UIViewControllerRepresentable {
-    func extractContent() throws -> Any {
+    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             "Please use `.actualView().viewController()` for inspecting the contents of UIViewControllerRepresentable")
     }

@@ -37,12 +37,12 @@ extension ViewType.ProgressView: SupplementaryChildren {
             if index == 0 {
                 let child = try Inspector.attribute(
                     path: "base|custom|label|some", value: parent.content.view)
-                let content = try Inspector.unwrap(content: Content(child))
+                let content = try Inspector.unwrap(content: Content(child, heritage: parent.content.heritage))
                 return try .init(content, parent: parent, call: "labelView()")
             } else {
                 let child = try Inspector.attribute(
                     path: "base|custom|currentValueLabel|some", value: parent.content.view)
-                let content = try Inspector.unwrap(content: Content(child))
+                let content = try Inspector.unwrap(content: Content(child, heritage: parent.content.heritage))
                 return try .init(content, parent: parent, call: "currentValueLabelView()")
             }
         }

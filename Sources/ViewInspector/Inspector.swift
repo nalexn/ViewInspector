@@ -107,7 +107,7 @@ extension Inspector {
             dict[childName + ": " + childType] = attributesTree(value: child.element.value)
         }
         if let inspectable = value as? Inspectable,
-           let content = try? inspectable.extractContent() {
+           let content = try? inspectable.extractContent(environmentObjects: []) {
             let childType = typeName(value: content)
             dict["body: " + childType] = attributesTree(value: content)
         }
@@ -145,8 +145,8 @@ fileprivate extension Array {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
-    static func viewsInContainer(view: Any) throws -> LazyGroup<Content> {
-        let unwrappedContainer = try Inspector.unwrap(content: Content(view))
+    static func viewsInContainer(view: Any, heritage: Content.Heritage) throws -> LazyGroup<Content> {
+        let unwrappedContainer = try Inspector.unwrap(content: Content(view, heritage: heritage))
         guard Inspector.isTupleView(unwrappedContainer.view) else {
             return LazyGroup(count: 1) { _ in unwrappedContainer }
         }
@@ -157,8 +157,8 @@ extension Inspector {
         return Inspector.typeName(value: view, prefixOnly: true) == ViewType.TupleView.typePrefix
     }
     
-    static func unwrap(view: Any, modifiers: [Any]) throws -> Content {
-        return try unwrap(content: Content(view, modifiers: modifiers))
+    static func unwrap(view: Any, modifiers: [Any], heritage: Content.Heritage) throws -> Content {
+        return try unwrap(content: Content(view, modifiers: modifiers, heritage: heritage))
     }
     
     static func unwrap(content: Content) throws -> Content {

@@ -36,8 +36,8 @@ public extension InspectableView where View: MultipleViewContent {
 extension ViewType.DisclosureGroup: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        let content = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.viewsInContainer(view: content)
+        let view = try Inspector.attribute(label: "content", value: content.view)
+        return try Inspector.viewsInContainer(view: view, heritage: content.heritage)
     }
 }
 

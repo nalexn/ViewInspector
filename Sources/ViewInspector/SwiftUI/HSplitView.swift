@@ -25,7 +25,7 @@ extension ViewType.HSplitView: MultipleViewContent {
             path = "_tree|content"
         }
         let container = try Inspector.attribute(path: path, value: content.view)
-        return try Inspector.viewsInContainer(view: container)
+        return try Inspector.viewsInContainer(view: container, heritage: content.heritage)
     }
 }
 
