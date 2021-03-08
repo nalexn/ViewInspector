@@ -15,7 +15,7 @@ final class EquatableViewTests: XCTestCase {
     func testRetainsModifiers() throws {
         let view = Text("Test").equatable().padding().padding()
         let sut = try view.inspect().text()
-        XCTAssertEqual(sut.content.modifiers.count, 2)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 2)
     }
     
     func testExtractionFromSingleViewContainer() throws {

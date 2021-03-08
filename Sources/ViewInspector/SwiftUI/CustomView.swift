@@ -36,9 +36,9 @@ extension ViewType.View: SingleViewContent {
 internal extension Content {
     func extractCustomView() throws -> Content {
         let inspectable = try Inspector.cast(value: self.view, type: Inspectable.self)
-        return try Inspector.unwrap(
-            view: try inspectable.extractContent(environmentObjects: heritage.environmentObjects),
-            modifiers: [], heritage: heritage)
+        let view = try inspectable.extractContent(environmentObjects: medium.environmentObjects)
+        let medium = self.medium.resettingViewModifiers()
+        return try Inspector.unwrap(view: view, medium: medium)
     }
 }
 
@@ -47,9 +47,8 @@ extension ViewType.View: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let inspectable = try Inspector.cast(value: content.view, type: Inspectable.self)
-        return try Inspector.viewsInContainer(
-            view: try inspectable.extractContent(environmentObjects: content.heritage.environmentObjects),
-            heritage: content.heritage)
+        let view = try inspectable.extractContent(environmentObjects: content.medium.environmentObjects)
+        return try Inspector.viewsInContainer(view: view, medium: content.medium)
     }
 }
 

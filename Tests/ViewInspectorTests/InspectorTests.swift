@@ -89,14 +89,14 @@ final class InspectorTests: XCTestCase {
     
     func testUnwrapNoModifiers() throws {
         let view = Text(testString)
-        let sut = try Inspector.unwrap(view: view, modifiers: [], heritage: .empty)
+        let sut = try Inspector.unwrap(view: view, medium: .empty)
         let text = try (sut.view as? Text)?.inspect().text().string()
         XCTAssertEqual(text, testString)
     }
     
     func testUnwrapOneModifier() throws {
         let view = Text(testString).transition(.offset(.zero))
-        let sut = try Inspector.unwrap(view: view, modifiers: [], heritage: .empty)
+        let sut = try Inspector.unwrap(view: view, medium: .empty)
         let text = try (sut.view as? Text)?.inspect().text().string()
         XCTAssertEqual(text, testString)
     }
@@ -106,7 +106,7 @@ final class InspectorTests: XCTestCase {
         let view = Text(testString)
             .transition(.offset(.zero))
             .onReceive(publisher) { _ in }
-        let sut = try Inspector.unwrap(view: view, modifiers: [], heritage: .empty)
+        let sut = try Inspector.unwrap(view: view, medium: .empty)
         let text = try (sut.view as? Text)?.inspect().text().string()
         XCTAssertEqual(text, testString)
     }

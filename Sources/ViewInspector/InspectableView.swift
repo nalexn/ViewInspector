@@ -130,7 +130,7 @@ internal extension InspectableView where View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
     func inspect() throws -> InspectableView<ViewType.ParentView> {
-        return try .init(try Inspector.unwrap(view: self, modifiers: [], heritage: .empty), parent: nil, call: "")
+        return try .init(try Inspector.unwrap(view: self, medium: .empty), parent: nil, call: "")
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
@@ -205,7 +205,7 @@ internal extension Content {
             }
             return true
         }
-        let modifiers = self.modifiers.lazy
+        let modifiers = medium.viewModifiers.lazy
             .compactMap({ $0 as? ModifierNameProvider })
             .filter(modifyNameProvider)
 
@@ -235,7 +235,7 @@ internal extension Content {
     }
 
     func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
-        let modifiers = self.modifiers.lazy
+        let modifiers = medium.viewModifiers.lazy
             .compactMap({ $0 as? ModifierNameProvider })
             .filter(modifierLookup)
 

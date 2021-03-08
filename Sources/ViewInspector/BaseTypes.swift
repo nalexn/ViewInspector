@@ -54,7 +54,8 @@ extension SupplementaryChildrenLabelView {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 1) { _ in
             let child = try Inspector.attribute(path: labelViewPath, value: parent.content.view)
-            let content = try Inspector.unwrap(content: Content(child, heritage: parent.content.heritage))
+            let medium = parent.content.medium.resettingViewModifiers()
+            let content = try Inspector.unwrap(content: Content(child, medium: medium))
             return try .init(content, parent: parent, call: "labelView()")
         }
     }
@@ -110,27 +111,38 @@ internal extension ViewType {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct Content {
     let view: Any
-    let modifiers: [Any]
-    let heritage: Heritage
+    let medium: Medium
     
-    internal init(_ view: Any, modifiers: [Any] = [], heritage: Heritage = .empty) {
+    internal init(_ view: Any, medium: Medium = .empty) {
         self.view = view
-        self.modifiers = modifiers
-        self.heritage = heritage
+        self.medium = medium
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
-    struct Heritage {
+    struct Medium {
+        let viewModifiers: [Any]
         let environmentObjects: [AnyObject]
         
-        static var empty: Heritage {
-            return .init(environmentObjects: [])
+        static var empty: Medium {
+            return .init(viewModifiers: [],
+                         environmentObjects: [])
         }
         
-        func appending(environmentObject: AnyObject) -> Heritage {
-            return .init(environmentObjects: environmentObjects + [environmentObject])
+        func appending(viewModifier: Any) -> Medium {
+            return .init(viewModifiers: viewModifiers + [viewModifier],
+                         environmentObjects: environmentObjects)
+        }
+        
+        func appending(environmentObject: AnyObject) -> Medium {
+            return .init(viewModifiers: viewModifiers,
+                         environmentObjects: environmentObjects + [environmentObject])
+        }
+        
+        func resettingViewModifiers() -> Medium {
+            return .init(viewModifiers: [],
+                         environmentObjects: environmentObjects)
         }
     }
 }

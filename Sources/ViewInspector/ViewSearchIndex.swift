@@ -243,7 +243,7 @@ internal extension ViewSearch {
 internal extension Content {
     
     func modifierDescendants(parent: UnwrappedView) -> LazyGroup<UnwrappedView> {
-        let modifierNames = self.modifiers
+        let modifierNames = medium.viewModifiers
                 .compactMap { $0 as? ModifierNameProvider }
                 .map { $0.modifierType }
         let identities = ViewSearch.modifierIdentities.filter({ identity -> Bool in
@@ -254,9 +254,9 @@ internal extension Content {
             try identities[index].builder(parent)
         }) + .init(count: customModifiers.count, { index -> UnwrappedView in
             let modifier = customModifiers[index]
-            let content = try Inspector.unwrap(
-                view: try modifier.extractContent(environmentObjects: heritage.environmentObjects),
-                modifiers: [], heritage: heritage)
+            let view = try modifier.extractContent(environmentObjects: medium.environmentObjects)
+            let medium = self.medium.resettingViewModifiers()
+            let content = try Inspector.unwrap(view: view, medium: medium)
             let name = Inspector.typeName(value: modifier)
             let call = ViewType.ModifiedContent.inspectionCall(typeName: name)
             let modifierView = try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: call)

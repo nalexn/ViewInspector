@@ -12,6 +12,6 @@ extension ViewType.OptionalContent: SingleViewContent {
         guard let child = try? Inspector.attribute(label: "some", value: content.view) else {
             throw InspectionError.viewNotFound(parent: Inspector.typeName(value: content.view as Any))
         }
-        return try Inspector.unwrap(view: child, modifiers: content.modifiers, heritage: content.heritage)
+        return try Inspector.unwrap(view: child, medium: content.medium)
     }
 }

@@ -15,7 +15,7 @@ extension ViewType.TabView: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let view = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.viewsInContainer(view: view, heritage: content.heritage)
+        return try Inspector.viewsInContainer(view: view, medium: content.medium)
     }
 }
 
@@ -79,8 +79,9 @@ internal extension Content {
         let rootView = try modifierAttribute(
             modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
             type: Any.self, call: "tabItem")
+        let medium = self.medium.resettingViewModifiers()
         let view = try InspectableView<ViewType.ClassifiedView>(
-            try Inspector.unwrap(content: Content(rootView, heritage: heritage)), parent: parent, call: "tabItem()")
+            try Inspector.unwrap(content: Content(rootView, medium: medium)), parent: parent, call: "tabItem()")
         if #available(iOS 14.2, tvOS 14.2, *) {
             return try InspectableView<ViewType.ClassifiedView>(
             try Inspector.unwrap(content: try view.zStack().child(at: 0)), parent: parent, call: "tabItem()")

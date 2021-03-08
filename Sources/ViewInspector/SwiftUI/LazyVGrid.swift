@@ -35,7 +35,7 @@ extension ViewType.LazyVGrid: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let view = try Inspector.attribute(path: "tree|content", value: content.view)
-        return try Inspector.viewsInContainer(view: view, heritage: content.heritage)
+        return try Inspector.viewsInContainer(view: view, medium: content.medium)
     }
 }
 

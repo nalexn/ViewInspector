@@ -15,7 +15,8 @@ extension ViewType.ScrollView: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [], heritage: content.heritage)
+        let medium = content.medium.resettingViewModifiers()
+        return try Inspector.unwrap(view: view, medium: medium)
     }
 }
 

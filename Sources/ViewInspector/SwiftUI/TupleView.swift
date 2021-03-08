@@ -18,7 +18,8 @@ extension ViewType.TupleView: MultipleViewContent {
         let childrenCount = Mirror(reflecting: tupleViews).children.count
         return LazyGroup(count: childrenCount) { index in
             let child = try Inspector.attribute(label: ".\(index)", value: tupleViews)
-            return try Inspector.unwrap(content: Content(child, heritage: content.heritage))
+            let medium = content.medium.resettingViewModifiers()
+            return try Inspector.unwrap(content: Content(child, medium: medium))
         }
     }
 }

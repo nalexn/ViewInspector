@@ -14,7 +14,7 @@ final class ButtonTests: XCTestCase {
     func testResetsModifiers() throws {
         let view = Button(action: {}, label: { Text("") }).padding()
         let sut = try view.inspect().button().labelView().text()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

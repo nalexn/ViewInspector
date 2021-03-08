@@ -15,7 +15,7 @@ extension ViewType.HStack: MultipleViewContent {
 
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let container = try Inspector.attribute(path: "_tree|content", value: content.view)
-        return try Inspector.viewsInContainer(view: container, heritage: content.heritage)
+        return try Inspector.viewsInContainer(view: container, medium: content.medium)
     }
 }
 

@@ -74,7 +74,7 @@ internal extension InspectableView {
             $0.bindMemory(to: Closure.self).first
         }) else { throw InspectionError.typeMismatch(closure, Closure.self) }
         let view = typedClosure(EnvironmentValues())
-        return try .init(try Inspector.unwrap(view: view, modifiers: content.modifiers, heritage: content.heritage), parent: self)
+        return try .init(try Inspector.unwrap(view: view, medium: content.medium), parent: self)
     }
 }
 

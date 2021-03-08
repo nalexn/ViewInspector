@@ -21,7 +21,7 @@ extension ViewType.NavigationView: MultipleViewContent {
             path = "_tree|content"
         }
         let view = try Inspector.attribute(path: path, value: content.view)
-        return try Inspector.viewsInContainer(view: view, heritage: content.heritage)
+        return try Inspector.viewsInContainer(view: view, medium: content.medium)
     }
 }
 

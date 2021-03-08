@@ -15,7 +15,7 @@ final class ScrollViewTests: XCTestCase {
     func testResetsModifiers() throws {
         let view = ScrollView { Text("Test") }.padding()
         let sut = try view.inspect().scrollView().text()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

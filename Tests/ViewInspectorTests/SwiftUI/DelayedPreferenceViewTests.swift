@@ -28,7 +28,7 @@ final class DelayedPreferenceViewTests: XCTestCase {
             .backgroundPreferenceValue(Key.self) { _ in EmptyView() }
             .padding().padding()
         let sut = try view.inspect().text()
-        XCTAssertEqual(sut.content.modifiers.count, 3)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 3)
         */
     }
     

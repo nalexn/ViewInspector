@@ -46,15 +46,15 @@ public extension InspectableView {
     func modifier<T>(_ type: T.Type) throws -> InspectableView<ViewType.ClassifiedView>
     where T: ViewModifier, T: Inspectable {
         let name = Inspector.typeName(type: type)
-        guard let modifier = content.modifiers.compactMap({ modifier in
+        guard let modifier = content.medium.viewModifiers.compactMap({ modifier in
             try? Inspector.attribute(label: "modifier", value: modifier, type: type)
         }).first else {
             throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: content.view),
                                                    modifier: name)
         }
-        let modifierContent = try Inspector.unwrap(
-            view: try modifier.extractContent(environmentObjects: content.heritage.environmentObjects),
-            modifiers: [], heritage: content.heritage)
+        let view = try modifier.extractContent(environmentObjects: content.medium.environmentObjects)
+        let medium = content.medium.resettingViewModifiers()
+        let modifierContent = try Inspector.unwrap(view: view, medium: medium)
         let call = ViewType.ModifiedContent.inspectionCall(typeName: name)
         return try .init(modifierContent, parent: self, call: call)
     }
@@ -63,7 +63,7 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     func customViewModifiers() -> [Inspectable] {
-        return modifiers.compactMap({ modifier in
+        return medium.viewModifiers.compactMap({ modifier in
             try? Inspector.attribute(label: "modifier", value: modifier, type: Inspectable.self)
         })
     }
@@ -82,9 +82,11 @@ extension ViewType.ModifiedContent: SingleViewContent {
            let object = try? Inspector.attribute(
             path: "modifier|value|some", value: content.view, type: AnyObject.self),
            !(object is NSObject) {
-            return try Inspector.unwrap(view: view, modifiers: content.modifiers, heritage: content.heritage.appending(environmentObject: object))
+            let medium = content.medium.appending(environmentObject: object)
+            return try Inspector.unwrap(view: view, medium: medium)
         } else {
-            return try Inspector.unwrap(view: view, modifiers: content.modifiers + [content.view], heritage: content.heritage)
+            let medium = content.medium.appending(viewModifier: content.view)
+            return try Inspector.unwrap(view: view, medium: medium)
         }
     }
 }

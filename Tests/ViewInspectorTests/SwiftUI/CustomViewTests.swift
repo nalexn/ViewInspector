@@ -53,14 +53,14 @@ final class CustomViewTests: XCTestCase {
     func testResetsModifiers() throws {
         let view = SimpleTestView().padding()
         let sut = try view.inspect().view(SimpleTestView.self).emptyView()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testEnvViewResetsModifiers() throws {
         let sut = EnvironmentStateTestView()
         let exp = sut.inspection.inspect { view in
             let sut = try view.text()
-            XCTAssertEqual(sut.content.modifiers.count, 0)
+            XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
         }
         ViewHosting.host(view: sut.environmentObject(ExternalState()).padding())
         wait(for: [exp], timeout: 0.1)
@@ -155,7 +155,7 @@ final class CustomViewTests: XCTestCase {
     }
     
     func testActualViewTypeMismatch() throws {
-        let sut = try InspectableView<ViewType.Test<SimpleTestView>>(Content("", heritage: .empty), parent: nil, index: nil)
+        let sut = try InspectableView<ViewType.Test<SimpleTestView>>(Content("", medium: .empty), parent: nil, index: nil)
         XCTAssertThrows(
             try sut.actualView(),
             "Type mismatch: String is not SimpleTestView")

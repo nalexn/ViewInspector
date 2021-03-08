@@ -15,7 +15,8 @@ extension ViewType.GeometryReader: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
         let provider = try Inspector.cast(value: content.view, type: GeometryReaderContentProvider.self)
-        return try Inspector.unwrap(view: provider.view(), modifiers: [], heritage: content.heritage)
+        let medium = content.medium.resettingViewModifiers()
+        return try Inspector.unwrap(view: provider.view(), medium: medium)
     }
 }
 

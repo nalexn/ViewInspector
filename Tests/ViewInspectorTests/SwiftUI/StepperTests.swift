@@ -21,7 +21,7 @@ final class StepperTests: XCTestCase {
         let binding = Binding<Int>(wrappedValue: 0)
         let view = Stepper("Title1", value: binding).padding()
         let sut = try view.inspect().stepper().labelView().text()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {
