@@ -90,6 +90,12 @@ public extension InspectableView {
         guard let parent = self.parentView else {
             throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
         }
+        if parent.parentView == nil,
+           parent is InspectableView<ViewType.ClassifiedView>,
+           Inspector.typeName(value: parent.content.view, namespaced: true)
+            == Inspector.typeName(value: content.view, namespaced: true) {
+            throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
+        }
         return try .init(parent.content, parent: parent.parentView, call: parent.inspectionCall)
     }
     
@@ -129,12 +135,12 @@ internal extension InspectableView where View: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
-    func inspect() throws -> InspectableView<ViewType.ParentView> {
+    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         return try .init(try Inspector.unwrap(view: self, medium: .empty), parent: nil, call: "")
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
-                 inspection: (InspectableView<ViewType.ParentView>) throws -> Void) {
+                 inspection: (InspectableView<ViewType.ClassifiedView>) throws -> Void) {
         do {
             try inspection(try inspect())
         } catch {

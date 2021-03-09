@@ -133,21 +133,17 @@ extension View {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension DefaultHelloWorldStyle {
-    func inspect() throws -> InspectableView<ViewType.ClassifiedView>
-    {
+    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let configuration = HelloWorldStyleConfiguration()
-        let view = try makeBody(configuration: configuration).inspect()
-        return try view.classify()
+        return try makeBody(configuration: configuration).inspect()
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension RedOutlineHelloWorldStyle {
-    func inspect() throws -> InspectableView<ViewType.ClassifiedView>
-    {
+    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let configuration = HelloWorldStyleConfiguration()
-        let view = try makeBody(configuration: configuration).inspect()
-        return try view.classify()
+        return try makeBody(configuration: configuration).inspect()
     }
 }
 

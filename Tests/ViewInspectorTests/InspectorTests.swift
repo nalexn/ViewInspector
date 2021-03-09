@@ -185,8 +185,9 @@ final class InspectableViewModifiersTests: XCTestCase {
         XCTAssertNoThrow(try hStack.parent().overlay())
         XCTAssertNoThrow(try hStack.parent().parent().emptyView())
         let group = try hStack.parent().parent().parent().group()
-        XCTAssertNoThrow(try group.parent().anyView())
-        XCTAssertThrows(try group.parent().parent(), "AnyView does not have parent")
+        let anyView = try group.parent()
+        XCTAssertNoThrow(try anyView.anyView())
+        XCTAssertThrows(try anyView.parent(), "AnyView does not have parent")
         XCTAssertThrows(try view.inspect().parent(), "AnyView does not have parent")
     }
     
