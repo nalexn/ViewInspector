@@ -12,6 +12,8 @@ final class ViewEnvironmentTests: XCTestCase {
         let sut = EmptyView().environment(\.testKey, key)
         XCTAssertNoThrow(try sut.inspect().emptyView())
         XCTAssertNoThrow(try sut.inspect().emptyView().environment(\.testKey))
+        XCTAssertThrows(try EmptyView().inspect().emptyView().environment(\.testKey),
+                        "EmptyView does not have 'environment(TestEnvKey)' modifier")
     }
     
     func testEnvironmentObject() throws {

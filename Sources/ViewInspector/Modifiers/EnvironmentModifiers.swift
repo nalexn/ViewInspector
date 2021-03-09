@@ -6,7 +6,7 @@ import SwiftUI
 public extension InspectableView {
 
     func environment<T>(_ keyPath: WritableKeyPath<EnvironmentValues, T>) throws -> T {
-        return try environment(keyPath, call: "")
+        return try environment(keyPath, call: "environment(\(Inspector.typeName(type: T.self)))")
     }
 }
 
