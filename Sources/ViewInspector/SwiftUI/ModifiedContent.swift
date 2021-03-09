@@ -77,17 +77,19 @@ extension ViewType.ModifiedContent: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "content", value: content.view)
-        if Inspector.typeName(value: content.view)
-            .contains("_EnvironmentKeyWritingModifier"),
-           let object = try? Inspector.attribute(
-            path: "modifier|value|some", value: content.view, type: AnyObject.self),
-           !(object is NSObject) {
-            let medium = content.medium.appending(environmentObject: object)
-            return try Inspector.unwrap(view: view, medium: medium)
+        let medium: Content.Medium
+        if let modifier = content.view as? EnvironmentModifier {
+            if let value = try? modifier.value(),
+               let object = try? Inspector.attribute(label: "some", value: value, type: AnyObject.self),
+               !(object is NSObject) {
+                medium = content.medium.appending(environmentObject: object)
+            } else {
+                medium = content.medium.appending(environmentModifier: modifier)
+            }
         } else {
-            let medium = content.medium.appending(viewModifier: content.view)
-            return try Inspector.unwrap(view: view, medium: medium)
+            medium = content.medium.appending(viewModifier: content.view)
         }
+        return try Inspector.unwrap(view: view, medium: medium)
     }
 }
 

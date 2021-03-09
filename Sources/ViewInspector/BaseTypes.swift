@@ -123,25 +123,36 @@ public struct Content {
 internal extension Content {
     struct Medium {
         let viewModifiers: [Any]
+        let environmentModifiers: [EnvironmentModifier]
         let environmentObjects: [AnyObject]
         
         static var empty: Medium {
             return .init(viewModifiers: [],
+                         environmentModifiers: [],
                          environmentObjects: [])
         }
         
         func appending(viewModifier: Any) -> Medium {
             return .init(viewModifiers: viewModifiers + [viewModifier],
+                         environmentModifiers: environmentModifiers,
+                         environmentObjects: environmentObjects)
+        }
+        
+        func appending(environmentModifier: EnvironmentModifier) -> Medium {
+            return .init(viewModifiers: viewModifiers,
+                         environmentModifiers: environmentModifiers + [environmentModifier],
                          environmentObjects: environmentObjects)
         }
         
         func appending(environmentObject: AnyObject) -> Medium {
             return .init(viewModifiers: viewModifiers,
+                         environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects + [environmentObject])
         }
         
         func resettingViewModifiers() -> Medium {
             return .init(viewModifiers: [],
+                         environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects)
         }
     }

@@ -13,12 +13,15 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
     func environment<T>(_ reference: WritableKeyPath<EnvironmentValues, T>, call: String) throws -> T {
-        return try modifierAttribute(modifierLookup: { modifier -> Bool in
-            guard let modifier = modifier as? EnvironmentModifier,
-                  let keyPath = try? modifier.keyPath() as? WritableKeyPath<EnvironmentValues, T>
+        guard let modifier = content.medium.environmentModifiers.last(where: { modifier in
+            guard let keyPath = try? modifier.keyPath() as? WritableKeyPath<EnvironmentValues, T>
             else { return false }
             return keyPath == reference
-        }, path: "modifier|value", type: T.self, call: call)
+        }) else {
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: content.view), modifier: call)
+        }
+        return try Inspector.cast(value: try modifier.value(), type: T.self)
     }
 }
 
