@@ -64,10 +64,10 @@ internal extension InspectableView {
         
         let expectedViewType = closureDesc.navigationBarItemsWrappedViewType
         guard Inspector.typeName(type: viewType) == expectedViewType else {
-            //swiftlint:disable line_length
+            // swiftlint:disable line_length
             throw InspectionError.notSupported(
                 "Please substitute '\(expectedViewType).self' as the parameter for 'navigationBarItems()' inspection call")
-            //swiftlint:enable line_length
+            // swiftlint:enable line_length
         }
         
         guard let typedClosure = withUnsafeBytes(of: closure, {

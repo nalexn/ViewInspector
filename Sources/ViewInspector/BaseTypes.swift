@@ -262,7 +262,8 @@ extension Inspectable {
                     let pointerToValue = rawPointer.assumingMemoryBound(to: Int.self)
                     pointerToValue.pointee = -1
                 }
-                if let seed = try? Inspector.attribute(path: label + "|_seed", value: copy, type: Int.self), seed == -1 {
+                if let seed = try? Inspector.attribute(path: label + "|_seed", value: copy, type: Int.self),
+                   seed == -1 {
                     withUnsafeMutableBytes(of: &copy) { bytes in
                         let rawPointer = bytes.baseAddress! + offset
                         let pointerToValue = rawPointer.assumingMemoryBound(to: EnvObject.Forgery.self)

@@ -220,13 +220,12 @@ internal extension Content {
 
     func modifierAttribute<Type>(modifierName: String, path: String,
                                  type: Type.Type, call: String, index: Int = 0) throws -> Type {
-
-        let modifyNameProvider : ModifierLookupClosure = { modifier -> Bool in
+        let modifyNameProvider: ModifierLookupClosure = { modifier -> Bool in
             guard modifier.modifierType.contains(modifierName) else { return false }
             return (try? Inspector.attribute(path: path, value: modifier) as? Type) != nil
         }
-
-        return try modifierAttribute(modifierLookup: modifyNameProvider, path: path, type: type, call: call, index: index)
+        return try modifierAttribute(modifierLookup: modifyNameProvider, path: path,
+                                     type: type, call: call, index: index)
     }
     
     func modifierAttribute<Type>(modifierLookup: ModifierLookupClosure, path: String,

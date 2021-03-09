@@ -37,7 +37,6 @@ final class ViewPaddingTests: XCTestCase {
         XCTAssertEqual(sut, EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
     }
 
-
     func testHasDefaultPadding() throws {
         let sut = Text("Test").padding()
 
@@ -57,7 +56,6 @@ final class ViewPaddingTests: XCTestCase {
         XCTAssertFalse(try sut.inspect().hasPadding([.trailing, .top]))
         XCTAssertFalse(try sut.inspect().hasPadding([.all]))
     }
-
 
     func testHasLeadingAndTrailingPadding() throws {
         let sut = Text("Test").padding([.leading, .trailing])
@@ -90,8 +88,10 @@ final class ViewPaddingTests: XCTestCase {
 
         XCTAssertEqual(try sut.inspect().padding([.top]), 10)
         XCTAssertEqual(try sut.inspect().padding([.bottom]), 20)
-        XCTAssertThrowsError(try sut.inspect().padding([.leading]))
-        XCTAssertThrowsError(try sut.inspect().padding([.trailing]))
+        XCTAssertThrows(try sut.inspect().padding([.leading]),
+                        "InspectableView<ClassifiedView> does not have 'padding' modifier")
+        XCTAssertThrows(try sut.inspect().padding([.trailing]),
+                        "InspectableView<ClassifiedView> does not have 'padding' modifier")
     }
 
     func testHasDifferentPaddingForEdges() throws {
@@ -102,6 +102,4 @@ final class ViewPaddingTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().padding([.leading]), 20)
         XCTAssertEqual(try sut.inspect().padding([.trailing]), 20)
     }
-
 }
-

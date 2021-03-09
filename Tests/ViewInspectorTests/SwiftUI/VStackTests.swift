@@ -70,8 +70,6 @@ final class VStackTests: XCTestCase {
             "anyView().vStack().emptyView(0)")
     }
 
-
-
     func testSpacingInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let view = VStack(spacing: 6) {
@@ -80,7 +78,6 @@ final class VStackTests: XCTestCase {
         let sut = try view.inspect().vStack().spacing()
         XCTAssertEqual(sut, 6)
     }
-
 
     func testAlignmentInspectionLeading() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else {
@@ -108,7 +105,7 @@ final class VStackTests: XCTestCase {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else {
             return
         }
-        let view = VStack() {
+        let view = VStack {
             Text("")
         }
         let sut = try view.inspect().vStack().alignment()

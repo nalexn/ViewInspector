@@ -109,7 +109,6 @@ struct AnyHelloWorldStyle: HelloWorldStyle {
     }
 }
 
-
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 struct HelloWorldStyleModifier<S: HelloWorldStyle>: ViewModifier {
     let style: S
