@@ -31,14 +31,23 @@ public extension InspectableView {
     #endif
     
     func font() throws -> Font? {
+        return try font(checkIfText: true)
+    }
+    
+    internal func font(checkIfText: Bool) throws -> Font? {
         let reference = EmptyView().font(.callout)
         let keyPath = try Inspector.environmentKeyPath(Optional<Font>.self, reference)
+        let throwIfText: () throws -> Void = {
+            guard checkIfText, content.view is Text else { return }
+            throw InspectionError.notSupported(
+                "Please use .attributes().font() for inspecting Font on a Text")
+        }
         do {
-            return try environment(keyPath, call: "font")
+            let font = try environment(keyPath, call: "font")
+            try throwIfText()
+            return font
         } catch {
-            if content.view is Text {
-                throw InspectionError.notSupported("Please use .attributes() for inspecting Font on a Text")
-            }
+            try throwIfText()
             throw error
         }
     }

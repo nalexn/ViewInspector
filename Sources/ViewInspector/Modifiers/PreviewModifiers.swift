@@ -6,14 +6,23 @@ import SwiftUI
 public extension InspectableView {
     
     func foregroundColor() throws -> Color? {
+        return try foregroundColor(checkIfText: true)
+    }
+    
+    internal func foregroundColor(checkIfText: Bool) throws -> Color? {
         let reference = EmptyView().foregroundColor(nil)
         let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
+        let throwIfText: () throws -> Void = {
+            guard checkIfText, content.view is Text else { return }
+            throw InspectionError.notSupported(
+                "Please use .attributes().foregroundColor() for inspecting foregroundColor on a Text")
+        }
         do {
-            return try environment(keyPath, call: "foregroundColor")
+            let color = try environment(keyPath, call: "foregroundColor")
+            try throwIfText()
+            return color
         } catch {
-            if content.view is Text {
-                throw InspectionError.notSupported("Please use .attributes() for inspecting foregroundColor on a Text")
-            }
+            try throwIfText()
             throw error
         }
     }

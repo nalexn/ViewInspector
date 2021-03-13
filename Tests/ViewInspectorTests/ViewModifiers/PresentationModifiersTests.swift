@@ -47,7 +47,7 @@ final class ViewColorTests: XCTestCase {
     func testNaiveForegroundColorInspectionError() throws {
         let sut = Text("Test").foregroundColor(.purple)
         XCTAssertThrows(try sut.inspect().text().foregroundColor(),
-                        "Please use .attributes() for inspecting foregroundColor on a Text")
+                        "Please use .attributes().foregroundColor() for inspecting foregroundColor on a Text")
         XCTAssertEqual(try sut.inspect().text().attributes().foregroundColor(), .purple)
     }
     
@@ -64,8 +64,8 @@ final class ViewColorTests: XCTestCase {
     }
     
     func testForegroundWithAccentColorInspection() throws {
-        let sut = AnyView(Text("")).accentColor(.purple).foregroundColor(.red)
-        let view = try sut.inspect().anyView().text()
+        let sut = AnyView(EmptyView()).accentColor(.purple).foregroundColor(.red)
+        let view = try sut.inspect().anyView().emptyView()
         XCTAssertEqual(try view.accentColor(), .purple)
         XCTAssertEqual(try view.foregroundColor(), .red)
     }
