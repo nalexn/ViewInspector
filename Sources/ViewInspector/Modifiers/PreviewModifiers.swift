@@ -8,7 +8,14 @@ public extension InspectableView {
     func foregroundColor() throws -> Color? {
         let reference = EmptyView().foregroundColor(nil)
         let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
-        return try environment(keyPath, call: "foregroundColor")
+        do {
+            return try environment(keyPath, call: "foregroundColor")
+        } catch {
+            if content.view is Text {
+                throw InspectionError.notSupported("Please use .attributes() for inspecting foregroundColor on a Text")
+            }
+            throw error
+        }
     }
     
     #if !os(macOS)
