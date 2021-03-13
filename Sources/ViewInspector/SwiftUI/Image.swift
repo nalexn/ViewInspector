@@ -58,44 +58,6 @@ public extension InspectableView where View == ViewType.Image {
     }
 }
 
-// MARK: - Deprecated Attributes
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectableView where View == ViewType.Image {
-    
-    @available(*, deprecated, message: "Use actualImage().name() instead")
-    func imageName() throws -> String {
-        return try actualImage().name()
-    }
-    
-    #if os(iOS) || os(tvOS)
-    @available(*, deprecated, message: "Use actualImage().uiImage() instead")
-    func uiImage() throws -> UIImage? {
-        return try actualImage().uiImage()
-    }
-    #else
-    @available(*, deprecated, message: "Use actualImage().nsImage() instead")
-    func nsImage() throws -> NSImage? {
-        return try actualImage().nsImage()
-    }
-    #endif
-    
-    @available(*, deprecated, message: "Use actualImage().cgImage() instead")
-    func cgImage() throws -> CGImage? {
-        return try actualImage().cgImage()
-    }
-    
-    @available(*, deprecated, message: "Use actualImage().orientation() instead")
-    func orientation() throws -> Image.Orientation {
-        return try actualImage().orientation()
-    }
-    
-    @available(*, deprecated, message: "Use actualImage().scale() instead")
-    func scale() throws -> CGFloat {
-        return try actualImage().scale()
-    }
-}
-
 // MARK: - Image
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
