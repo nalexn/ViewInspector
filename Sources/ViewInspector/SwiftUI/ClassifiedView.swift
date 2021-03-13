@@ -34,6 +34,6 @@ extension ViewType.ParentView: SingleViewContent {
 extension ViewType.ClassifiedView: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        return try Inspector.viewsInContainer(view: content.view)
+        return try Inspector.viewsInContainer(view: content.view, medium: content.medium)
     }
 }

@@ -92,7 +92,7 @@ public extension InspectableView {
     func imageScale() throws -> Image.Scale {
         let reference = EmptyView().imageScale(.large)
         let keyPath = try Inspector.environmentKeyPath(Image.Scale.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "imageScale")
+        return try environment(keyPath, call: "imageScale")
     }
     #endif
     

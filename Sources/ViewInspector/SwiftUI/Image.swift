@@ -37,7 +37,8 @@ extension ViewType.Image: SupplementaryChildren {
             let image = try Inspector.cast(value: parent.content.view, type: Image.self)
                 .rootImage()
             let labelView = try Inspector.attribute(path: "provider|base|label", value: image)
-            let content = try Inspector.unwrap(content: Content(labelView))
+            let medium = parent.content.medium.resettingViewModifiers()
+            let content = try Inspector.unwrap(content: Content(labelView, medium: medium))
             return try .init(content, parent: parent, call: "labelView()")
         }
     }
@@ -54,44 +55,6 @@ public extension InspectableView where View == ViewType.Image {
     
     func labelView() throws -> InspectableView<ViewType.Text> {
         return try View.supplementaryChildren(self).element(at: 0).text()
-    }
-}
-
-// MARK: - Deprecated Attributes
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectableView where View == ViewType.Image {
-    
-    @available(*, deprecated, message: "Use actualImage().name() instead")
-    func imageName() throws -> String {
-        return try actualImage().name()
-    }
-    
-    #if os(iOS) || os(tvOS)
-    @available(*, deprecated, message: "Use actualImage().uiImage() instead")
-    func uiImage() throws -> UIImage? {
-        return try actualImage().uiImage()
-    }
-    #else
-    @available(*, deprecated, message: "Use actualImage().nsImage() instead")
-    func nsImage() throws -> NSImage? {
-        return try actualImage().nsImage()
-    }
-    #endif
-    
-    @available(*, deprecated, message: "Use actualImage().cgImage() instead")
-    func cgImage() throws -> CGImage? {
-        return try actualImage().cgImage()
-    }
-    
-    @available(*, deprecated, message: "Use actualImage().orientation() instead")
-    func orientation() throws -> Image.Orientation {
-        return try actualImage().orientation()
-    }
-    
-    @available(*, deprecated, message: "Use actualImage().scale() instead")
-    func scale() throws -> CGFloat {
-        return try actualImage().scale()
     }
 }
 
@@ -149,8 +112,9 @@ private extension Inspector {
         let provider = try Inspector.attribute(path: "provider|base", value: image)
         if let child = try? Inspector.attribute(label: "base", value: provider, type: Image.self) {
             let content = try unwrap(image: child)
-            return Content(content.view, modifiers: content.modifiers + [provider])
+            let medium = content.medium.appending(viewModifier: provider)
+            return Content(content.view, medium: medium)
         }
-        return Content(image, modifiers: [])
+        return Content(image)
     }
 }

@@ -102,7 +102,7 @@ public extension ViewModifier where Self: Inspectable {
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self.Body) -> Void)?>,
                      file: StaticString = #file, line: UInt = #line,
                      viewId: String = #function,
-                     perform: @escaping ((InspectableView<ViewType.ParentView>) throws -> Void)
+                     perform: @escaping ((InspectableView<ViewType.ClassifiedView>) throws -> Void)
     ) -> XCTestExpectation {
         let description = Inspector.typeName(value: self) + " callback at line #\(line)"
         let expectation = XCTestExpectation(description: description)

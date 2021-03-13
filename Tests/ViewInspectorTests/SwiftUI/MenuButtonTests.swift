@@ -17,7 +17,7 @@ final class MenuButtonTests: XCTestCase {
     func testResetsModifiers() throws {
         let view = MenuButton(label: Text("")) { EmptyView() }.padding()
         let sut = try view.inspect().menuButton().emptyView()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

@@ -16,7 +16,7 @@ final class ToggleTests: XCTestCase {
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("Test") }.padding()
         let sut = try view.inspect().toggle().labelView().text()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testTapAndIsOn() throws {

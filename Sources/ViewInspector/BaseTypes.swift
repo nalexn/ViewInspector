@@ -4,18 +4,24 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol Inspectable {
-    func extractContent() throws -> Any
+    func extractContent(environmentObjects: [AnyObject]) throws -> Any
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: View {
-    func extractContent() throws -> Any { body }
+    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
+        var copy = self
+        environmentObjects.forEach { copy.inject(environmentObject: $0) }
+        return copy.body
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: ViewModifier {
-    func extractContent() throws -> Any {
-        body(content: _ViewModifier_Content<Self>())
+    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
+        var copy = self
+        environmentObjects.forEach { copy.inject(environmentObject: $0) }
+        return copy.body(content: _ViewModifier_Content<Self>())
     }
 }
 
@@ -48,7 +54,8 @@ extension SupplementaryChildrenLabelView {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 1) { _ in
             let child = try Inspector.attribute(path: labelViewPath, value: parent.content.view)
-            let content = try Inspector.unwrap(content: Content(child))
+            let medium = parent.content.medium.resettingViewModifiers()
+            let content = try Inspector.unwrap(content: Content(child, medium: medium))
             return try .init(content, parent: parent, call: "labelView()")
         }
     }
@@ -99,16 +106,59 @@ internal extension ViewType {
     }
 }
 
+// MARK: - Content
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct Content {
     let view: Any
-    let modifiers: [Any]
+    let medium: Medium
     
-    internal init(_ view: Any, modifiers: [Any] = []) {
+    internal init(_ view: Any, medium: Medium = .empty) {
         self.view = view
-        self.modifiers = modifiers
+        self.medium = medium
     }
 }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    struct Medium {
+        let viewModifiers: [Any]
+        let environmentModifiers: [EnvironmentModifier]
+        let environmentObjects: [AnyObject]
+        
+        static var empty: Medium {
+            return .init(viewModifiers: [],
+                         environmentModifiers: [],
+                         environmentObjects: [])
+        }
+        
+        func appending(viewModifier: Any) -> Medium {
+            return .init(viewModifiers: viewModifiers + [viewModifier],
+                         environmentModifiers: environmentModifiers,
+                         environmentObjects: environmentObjects)
+        }
+        
+        func appending(environmentModifier: EnvironmentModifier) -> Medium {
+            return .init(viewModifiers: viewModifiers,
+                         environmentModifiers: environmentModifiers + [environmentModifier],
+                         environmentObjects: environmentObjects)
+        }
+        
+        func appending(environmentObject: AnyObject) -> Medium {
+            return .init(viewModifiers: viewModifiers,
+                         environmentModifiers: environmentModifiers,
+                         environmentObjects: environmentObjects + [environmentObject])
+        }
+        
+        func resettingViewModifiers() -> Medium {
+            return .init(viewModifiers: [],
+                         environmentModifiers: environmentModifiers,
+                         environmentObjects: environmentObjects)
+        }
+    }
+}
+
+// MARK: - Binding helper
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Binding {
@@ -180,5 +230,61 @@ extension BinaryEquatable {
                 lhsBytes.elementsEqual(rhsBytes)
             }
         }
+    }
+}
+
+// MARK: - EnvironmentObject injection
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension Inspectable {
+    mutating func inject(environmentObject: AnyObject) {
+        let type = "SwiftUI.EnvironmentObject<\(Inspector.typeName(value: environmentObject, namespaced: true))>"
+        let mirror = Mirror(reflecting: self)
+        guard let label = mirror.children
+                .first(where: {
+                    Inspector.typeName(value: $0.value, namespaced: true) == type
+                })?.label
+        else { return }
+        let envObjSize = EnvObject.structSize
+        let viewSize = MemoryLayout<Self>.size
+        var offset = MemoryLayout<Self>.stride - envObjSize
+        let step = MemoryLayout<Self>.alignment
+        while offset + envObjSize > viewSize {
+            offset -= step
+        }
+        withUnsafeBytes(of: EnvObject.Forgery(object: nil)) { reference in
+            while offset >= 0 {
+                var copy = self
+                withUnsafeMutableBytes(of: &copy) { bytes in
+                    guard bytes[offset..<offset + envObjSize].elementsEqual(reference)
+                    else { return }
+                    let rawPointer = bytes.baseAddress! + offset + EnvObject.seedOffset
+                    let pointerToValue = rawPointer.assumingMemoryBound(to: Int.self)
+                    pointerToValue.pointee = -1
+                }
+                if let seed = try? Inspector.attribute(path: label + "|_seed", value: copy, type: Int.self),
+                   seed == -1 {
+                    withUnsafeMutableBytes(of: &copy) { bytes in
+                        let rawPointer = bytes.baseAddress! + offset
+                        let pointerToValue = rawPointer.assumingMemoryBound(to: EnvObject.Forgery.self)
+                        pointerToValue.pointee = .init(object: environmentObject)
+                    }
+                    self = copy
+                    return
+                }
+                offset -= step
+            }
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal struct EnvObject {
+    static var seedOffset: Int { 8 }
+    static var structSize: Int { 16 }
+    
+    struct Forgery {
+        let object: AnyObject?
+        let seed: Int = 0
     }
 }

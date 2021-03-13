@@ -68,7 +68,8 @@ extension Inspector {
         ```
      */
     public static func print(_ value: Any) -> String {
-        return typeName(value: value) + print(attributesTree(value: value), level: 1)
+        let tree = attributesTree(value: value, medium: .empty)
+        return typeName(value: value) + print(tree, level: 1)
     }
     
     fileprivate static func print(_ value: Any, level: Int) -> String {
@@ -95,21 +96,22 @@ extension Inspector {
         return needsNewLine ? "\n" : ""
     }
     
-    private static func attributesTree(value: Any) -> Any {
+    private static func attributesTree(value: Any, medium: Content.Medium) -> Any {
         if let array = value as? [Any] {
-            return array.map { attributesTree(value: $0) }
+            return array.map { attributesTree(value: $0, medium: medium) }
         }
+        let medium = (try? unwrap(content: Content(value, medium: medium)).medium) ?? medium
         let mirror = Mirror(reflecting: value)
         var dict: [String: Any] = [:]
         mirror.children.enumerated().forEach { child in
             let childName = child.element.label ?? "[\(child.offset)]"
             let childType = typeName(value: child.element.value)
-            dict[childName + ": " + childType] = attributesTree(value: child.element.value)
+            dict[childName + ": " + childType] = attributesTree(value: child.element.value, medium: medium)
         }
         if let inspectable = value as? Inspectable,
-           let content = try? inspectable.extractContent() {
+           let content = try? inspectable.extractContent(environmentObjects: medium.environmentObjects) {
             let childType = typeName(value: content)
-            dict["body: " + childType] = attributesTree(value: content)
+            dict["body: " + childType] = attributesTree(value: content, medium: medium)
         }
         if dict.count == 0 {
             return " = " + String(describing: value)
@@ -145,8 +147,8 @@ fileprivate extension Array {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspector {
     
-    static func viewsInContainer(view: Any) throws -> LazyGroup<Content> {
-        let unwrappedContainer = try Inspector.unwrap(content: Content(view))
+    static func viewsInContainer(view: Any, medium: Content.Medium) throws -> LazyGroup<Content> {
+        let unwrappedContainer = try Inspector.unwrap(content: Content(view, medium: medium.resettingViewModifiers()))
         guard Inspector.isTupleView(unwrappedContainer.view) else {
             return LazyGroup(count: 1) { _ in unwrappedContainer }
         }
@@ -157,8 +159,8 @@ extension Inspector {
         return Inspector.typeName(value: view, prefixOnly: true) == ViewType.TupleView.typePrefix
     }
     
-    static func unwrap(view: Any, modifiers: [Any]) throws -> Content {
-        return try unwrap(content: Content(view, modifiers: modifiers))
+    static func unwrap(view: Any, medium: Content.Medium) throws -> Content {
+        return try unwrap(content: Content(view, medium: medium))
     }
     
     static func unwrap(content: Content) throws -> Content {

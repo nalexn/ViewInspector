@@ -58,7 +58,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
         let sut = try view.inspect().navigationView()
             .navigationBarItems(ModifiedContent<Text, _PaddingLayout>.self)
             .text()
-        XCTAssertEqual(sut.content.modifiers.count, 4)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 4)
     }
     
     func testMissingModifier() throws {

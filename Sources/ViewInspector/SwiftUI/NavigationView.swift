@@ -20,8 +20,8 @@ extension ViewType.NavigationView: MultipleViewContent {
         } else {
             path = "_tree|content"
         }
-        let content = try Inspector.attribute(path: path, value: content.view)
-        return try Inspector.viewsInContainer(view: content)
+        let view = try Inspector.attribute(path: path, value: content.view)
+        return try Inspector.viewsInContainer(view: view, medium: content.medium)
     }
 }
 

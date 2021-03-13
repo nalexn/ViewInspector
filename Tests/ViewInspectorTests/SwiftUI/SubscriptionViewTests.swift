@@ -20,7 +20,7 @@ final class SubscriptionViewTests: XCTestCase {
             .onReceive(subject, perform: { })
             .padding().padding()
         let sut = try view.inspect().text()
-        XCTAssertEqual(sut.content.modifiers.count, 3)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 3)
     }
 }
 

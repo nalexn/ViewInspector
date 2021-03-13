@@ -14,7 +14,10 @@ internal extension ViewType.Text.Attributes {
         }
         let string = try view.string()
         let modifiers = try Inspector.attribute(label: "modifiers", value: view.content.view, type: [Any].self)
-        return .init(string: string, modifiers: modifiers)
+        let environment = Environment(
+            font: try? view.font(checkIfText: false),
+            foregroundColor: try? view.foregroundColor(checkIfText: false))
+        return .init(string: string, modifiers: modifiers, environment: environment)
     }
 }
 
@@ -26,7 +29,7 @@ public extension ViewType.Text.Attributes {
         let chunksInRange = zip(chunkRanges, chunks)
             .filter { relativeRange.overlaps($0.0) }
             .map { $0.1 }
-        return .init(chunks: chunksInRange)
+        return .init(chunks: chunksInRange, environment: environment)
     }
 
     subscript<Range>(_ range: Range) -> Self where Range: RangeExpression, Range.Bound == String.Index {
@@ -34,7 +37,7 @@ public extension ViewType.Text.Attributes {
         let chunksInRange = zip(chunkStringRanges, chunks)
             .filter { relativeRange.overlaps($0.0) }
             .map { $0.1 }
-        return .init(chunks: chunksInRange)
+        return .init(chunks: chunksInRange, environment: environment)
     }
     
     func isItalic() throws -> Bool {
@@ -72,17 +75,33 @@ public extension ViewType.Text.Attributes {
     }
     
     func font() throws -> Font {
-        return try commonTrait(name: "font") { modifier -> Font? in
-            return try? Inspector.attribute(path: "font|some", value: modifier, type: Font.self)
+        do {
+            return try commonTrait(name: "font") { modifier -> Font? in
+                return try? Inspector.attribute(path: "font|some", value: modifier, type: Font.self)
+            }
+        } catch {
+            if let err = error as? InspectionError, case .modifierNotFound = err,
+               let font = environment.font {
+                return font
+            }
+            throw error
         }
     }
     
     func foregroundColor() throws -> Color {
-        return try commonTrait(name: "foregroundColor") { modifier -> Color? in
-            guard let color = try? Inspector
-                .attribute(path: "color|some", value: modifier, type: Color.self)
-                else { return nil }
-            return color
+        do {
+            return try commonTrait(name: "foregroundColor") { modifier -> Color? in
+                guard let color = try? Inspector
+                    .attribute(path: "color|some", value: modifier, type: Color.self)
+                    else { return nil }
+                return color
+            }
+        } catch {
+            if let err = error as? InspectionError, case .modifierNotFound = err,
+               let font = environment.foregroundColor {
+                return font
+            }
+            throw error
         }
     }
     
@@ -161,7 +180,10 @@ public extension ViewType.Text.Attributes {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType.Text {
     struct Attributes {
-        
+        fileprivate struct Environment {
+            let font: Font?
+            let foregroundColor: Color?
+        }
         private struct Chunk {
             let string: String
             let modifiers: [Any]
@@ -171,17 +193,19 @@ public extension ViewType.Text {
             }
         }
         private let chunks: [Chunk]
+        private let environment: Environment
         
-        private init(chunks: [Chunk]) {
+        private init(chunks: [Chunk], environment: Environment) {
             self.chunks = chunks
+            self.environment = environment
         }
         
-        fileprivate init(string: String, modifiers: [Any]) {
-            self.init(chunks: [Chunk(string: string, modifiers: modifiers)])
+        fileprivate init(string: String, modifiers: [Any], environment: Environment) {
+            self.init(chunks: [Chunk(string: string, modifiers: modifiers)], environment: environment)
         }
         
         fileprivate static func + (lhs: Attributes, rhs: Attributes) -> Attributes {
-            return Attributes(chunks: lhs.chunks + rhs.chunks)
+            return Attributes(chunks: lhs.chunks + rhs.chunks, environment: lhs.environment)
         }
         
         private var chunkRanges: [Range<Int>] {

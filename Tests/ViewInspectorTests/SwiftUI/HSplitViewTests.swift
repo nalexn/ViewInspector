@@ -57,7 +57,7 @@ final class HSplitViewTests: XCTestCase {
     func testResetsModifiers() throws {
         let view = HSplitView { Text("Test") }.padding()
         let sut = try view.inspect().hSplitView().text(0)
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

@@ -15,7 +15,7 @@ extension ViewType.HStack: MultipleViewContent {
 
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let container = try Inspector.attribute(path: "_tree|content", value: content.view)
-        return try Inspector.viewsInContainer(view: container)
+        return try Inspector.viewsInContainer(view: container, medium: content.medium)
     }
 }
 
@@ -39,12 +39,10 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
-
 // MARK: - Custom Attributes
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.HStack {
-
 
     func spacing() throws -> CGFloat? {
         return try Inspector.attribute(

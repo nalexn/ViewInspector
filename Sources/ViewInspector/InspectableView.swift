@@ -90,6 +90,12 @@ public extension InspectableView {
         guard let parent = self.parentView else {
             throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
         }
+        if parent.parentView == nil,
+           parent is InspectableView<ViewType.ClassifiedView>,
+           Inspector.typeName(value: parent.content.view, namespaced: true)
+            == Inspector.typeName(value: content.view, namespaced: true) {
+            throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
+        }
         return try .init(parent.content, parent: parent.parentView, call: parent.inspectionCall)
     }
     
@@ -129,12 +135,12 @@ internal extension InspectableView where View: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
-    func inspect() throws -> InspectableView<ViewType.ParentView> {
-        return try .init(try Inspector.unwrap(view: self, modifiers: []), parent: nil, call: "")
+    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try .init(try Inspector.unwrap(view: self, medium: .empty), parent: nil, call: "")
     }
     
     func inspect(file: StaticString = #file, line: UInt = #line,
-                 inspection: (InspectableView<ViewType.ParentView>) throws -> Void) {
+                 inspection: (InspectableView<ViewType.ClassifiedView>) throws -> Void) {
         do {
             try inspection(try inspect())
         } catch {
@@ -205,7 +211,7 @@ internal extension Content {
             }
             return true
         }
-        let modifiers = self.modifiers.lazy
+        let modifiers = medium.viewModifiers.lazy
             .compactMap({ $0 as? ModifierNameProvider })
             .filter(modifyNameProvider)
 
@@ -214,13 +220,12 @@ internal extension Content {
 
     func modifierAttribute<Type>(modifierName: String, path: String,
                                  type: Type.Type, call: String, index: Int = 0) throws -> Type {
-
-        let modifyNameProvider : ModifierLookupClosure = { modifier -> Bool in
+        let modifyNameProvider: ModifierLookupClosure = { modifier -> Bool in
             guard modifier.modifierType.contains(modifierName) else { return false }
             return (try? Inspector.attribute(path: path, value: modifier) as? Type) != nil
         }
-
-        return try modifierAttribute(modifierLookup: modifyNameProvider, path: path, type: type, call: call, index: index)
+        return try modifierAttribute(modifierLookup: modifyNameProvider, path: path,
+                                     type: type, call: call, index: index)
     }
     
     func modifierAttribute<Type>(modifierLookup: ModifierLookupClosure, path: String,
@@ -235,7 +240,7 @@ internal extension Content {
     }
 
     func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
-        let modifiers = self.modifiers.lazy
+        let modifiers = medium.viewModifiers.lazy
             .compactMap({ $0 as? ModifierNameProvider })
             .filter(modifierLookup)
 

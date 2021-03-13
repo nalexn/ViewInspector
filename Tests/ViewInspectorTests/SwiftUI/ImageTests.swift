@@ -90,21 +90,6 @@ final class ImageTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().image(1))
     }
     
-    func testDeprecatedFunctions() throws {
-        let sut = try imageView().inspect().image()
-        #if os(iOS) || os(tvOS)
-        let name = "UIImage"
-        XCTAssertNoThrow(try sut.uiImage())
-        #else
-        let name = "NSImage"
-        XCTAssertNoThrow(try sut.nsImage())
-        #endif
-        XCTAssertThrows(try sut.imageName(), "\(name) does not have 'name' attribute")
-        XCTAssertThrows(try sut.cgImage(), "\(name) does not have 'image' attribute")
-        XCTAssertThrows(try sut.orientation(), "\(name) does not have 'orientation' attribute")
-        XCTAssertThrows(try sut.scale(), "\(name) does not have 'scale' attribute")
-    }
-    
     private func imageView() -> Image {
         #if os(iOS) || os(tvOS)
         return Image(uiImage: testImage)

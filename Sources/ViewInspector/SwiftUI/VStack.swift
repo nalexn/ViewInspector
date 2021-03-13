@@ -43,7 +43,6 @@ public extension InspectableView where View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.VStack {
 
-
     func spacing() throws -> CGFloat? {
         return try Inspector.attribute(
             path: "spacing", value: vStackLayout(), type: CGFloat?.self)

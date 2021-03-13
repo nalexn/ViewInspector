@@ -46,13 +46,15 @@ public extension InspectableView {
     func modifier<T>(_ type: T.Type) throws -> InspectableView<ViewType.ClassifiedView>
     where T: ViewModifier, T: Inspectable {
         let name = Inspector.typeName(type: type)
-        guard let modifier = content.modifiers.compactMap({ modifier in
+        guard let modifier = content.medium.viewModifiers.compactMap({ modifier in
             try? Inspector.attribute(label: "modifier", value: modifier, type: type)
         }).first else {
             throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: content.view),
                                                    modifier: name)
         }
-        let modifierContent = try Inspector.unwrap(view: try modifier.extractContent(), modifiers: [])
+        let view = try modifier.extractContent(environmentObjects: content.medium.environmentObjects)
+        let medium = content.medium.resettingViewModifiers()
+        let modifierContent = try Inspector.unwrap(view: view, medium: medium)
         let call = ViewType.ModifiedContent.inspectionCall(typeName: name)
         return try .init(modifierContent, parent: self, call: call)
     }
@@ -61,7 +63,7 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     func customViewModifiers() -> [Inspectable] {
-        return modifiers.compactMap({ modifier in
+        return medium.viewModifiers.compactMap({ modifier in
             try? Inspector.attribute(label: "modifier", value: modifier, type: Inspectable.self)
         })
     }
@@ -75,7 +77,19 @@ extension ViewType.ModifiedContent: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: content.modifiers + [content.view])
+        let medium: Content.Medium
+        if let modifier = content.view as? EnvironmentModifier {
+            if let value = try? modifier.value(),
+               let object = try? Inspector.attribute(label: "some", value: value, type: AnyObject.self),
+               !(object is NSObject) {
+                medium = content.medium.appending(environmentObject: object)
+            } else {
+                medium = content.medium.appending(environmentModifier: modifier)
+            }
+        } else {
+            medium = content.medium.appending(viewModifier: content.view)
+        }
+        return try Inspector.unwrap(view: view, medium: medium)
     }
 }
 

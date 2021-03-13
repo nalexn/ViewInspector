@@ -17,7 +17,7 @@ final class SliderTests: XCTestCase {
         let binding = Binding<Float>(wrappedValue: 0)
         let view = Slider(value: binding, label: { Text("Title") }).padding()
         let sut = try view.inspect().slider().labelView().text()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

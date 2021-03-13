@@ -81,7 +81,7 @@ public extension ButtonStyle {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension PrimitiveButtonStyle {
-    func inspect(onTrigger: @escaping () -> Void = { }) throws -> InspectableView<ViewType.ParentView> {
+    func inspect(onTrigger: @escaping () -> Void = { }) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = PrimitiveButtonStyleConfiguration(onTrigger: onTrigger)
         return try makeBody(configuration: config).inspect()
     }

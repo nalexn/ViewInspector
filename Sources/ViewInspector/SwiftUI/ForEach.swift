@@ -18,7 +18,8 @@ extension ViewType.ForEach: MultipleViewContent {
         let provider = try Inspector.cast(value: content.view, type: ForEachContentProvider.self)
         let children = try provider.views()
         return LazyGroup(count: children.count) { index in
-            try Inspector.unwrap(view: try children.element(at: index), modifiers: [])
+            try Inspector.unwrap(view: try children.element(at: index),
+                                 medium: content.medium.resettingViewModifiers())
         }
     }
 }

@@ -108,7 +108,6 @@ public extension InspectableView {
         return false
     }
 
-
     private func edgeValue(attribute: PaddingAttributes, edge: Edge.Set) -> CGFloat? {
         guard let edgeInsets = attribute.edgeInsets else {
             return nil
@@ -140,7 +139,7 @@ public extension InspectableView {
     }
 
     private func paddingAttributes() throws -> [PaddingAttributes] {
-        let count = numberModifierAttributes(modifierName:"_PaddingLayout", path: "modifier|edges", call: "padding")
+        let count = numberModifierAttributes(modifierName: "_PaddingLayout", path: "modifier|edges", call: "padding")
 
         var attributes = [PaddingAttributes]()
 
@@ -159,8 +158,6 @@ public extension InspectableView {
             attributes.append(PaddingAttributes(edgeInsets: insets, edges: edges))
         }
 
-
         return attributes
     }
-
 }

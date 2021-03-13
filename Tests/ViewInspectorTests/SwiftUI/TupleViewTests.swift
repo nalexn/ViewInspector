@@ -44,7 +44,7 @@ final class TupleViewTests: XCTestCase {
     func testResetsModifiers() throws {
         let view = TupleInsideTupleView(flag: true)
         let sut = try view.inspect().hStack().tupleView(1).text(0)
-        XCTAssertEqual(sut.content.modifiers.count, 2)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 2)
     }
 }
 

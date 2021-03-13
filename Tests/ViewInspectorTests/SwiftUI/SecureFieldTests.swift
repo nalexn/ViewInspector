@@ -16,7 +16,7 @@ final class SecureFieldTests: XCTestCase {
         let binding = Binding(wrappedValue: "")
         let view = SecureField("Title", text: binding).padding()
         let sut = try view.inspect().secureField().labelView().text()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

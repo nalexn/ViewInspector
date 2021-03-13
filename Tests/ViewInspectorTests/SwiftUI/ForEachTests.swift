@@ -64,7 +64,7 @@ final class ForEachTests: XCTestCase {
         let view = ForEach(Array(0 ... 10), id: \.self) { Text("\($0)") }
             .padding()
         let sut = try view.inspect().forEach().text(5)
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

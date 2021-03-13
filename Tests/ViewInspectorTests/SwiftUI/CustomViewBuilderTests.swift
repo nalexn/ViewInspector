@@ -45,10 +45,10 @@ final class CustomViewBuilderTests: XCTestCase {
     func testResetsModifiers() throws {
         let view1 = TestViewBuilderView { Text("Test") }.padding().offset()
         let sut1 = try view1.inspect().view(TestViewBuilderView<Text>.self).text(0)
-        XCTAssertEqual(sut1.content.modifiers.count, 1)
+        XCTAssertEqual(sut1.content.medium.viewModifiers.count, 1)
         let view2 = TestViewBuilderView { Text("Test"); EmptyView() }.padding().offset()
         let sut2 = try view2.inspect().view(TestViewBuilderView<Text>.self).text(0)
-        XCTAssertEqual(sut2.content.modifiers.count, 0)
+        XCTAssertEqual(sut2.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

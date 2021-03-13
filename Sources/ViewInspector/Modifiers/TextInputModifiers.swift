@@ -9,7 +9,7 @@ public extension InspectableView {
     func textContentType() throws -> UITextContentType? {
         let reference = EmptyView().textContentType(.emailAddress)
         let keyPath = try Inspector.environmentKeyPath(Optional<String>.self, reference)
-        let value = try environmentModifier(keyPath: keyPath, call: "textContentType")
+        let value = try environment(keyPath, call: "textContentType")
         return value.flatMap { UITextContentType(rawValue: $0) }
     }
     #endif
@@ -18,27 +18,36 @@ public extension InspectableView {
     func keyboardType() throws -> UIKeyboardType {
         let reference = EmptyView().keyboardType(.default)
         let keyPath = try Inspector.environmentKeyPath(Int.self, reference)
-        let value = try environmentModifier(keyPath: keyPath, call: "keyboardType")
+        let value = try environment(keyPath, call: "keyboardType")
         return UIKeyboardType(rawValue: value)!
     }
     
     func autocapitalization() throws -> UITextAutocapitalizationType {
         let reference = EmptyView().autocapitalization(.none)
         let keyPath = try Inspector.environmentKeyPath(Int.self, reference)
-        let value = try environmentModifier(keyPath: keyPath, call: "autocapitalization")
+        let value = try environment(keyPath, call: "autocapitalization")
         return UITextAutocapitalizationType(rawValue: value)!
     }
     #endif
     
     func font() throws -> Font? {
+        return try font(checkIfText: true)
+    }
+    
+    internal func font(checkIfText: Bool) throws -> Font? {
         let reference = EmptyView().font(.callout)
         let keyPath = try Inspector.environmentKeyPath(Optional<Font>.self, reference)
+        let throwIfText: () throws -> Void = {
+            guard checkIfText, content.view is Text else { return }
+            throw InspectionError.notSupported(
+                "Please use .attributes().font() for inspecting Font on a Text")
+        }
         do {
-            return try environmentModifier(keyPath: keyPath, call: "font")
+            let font = try environment(keyPath, call: "font")
+            try throwIfText()
+            return font
         } catch {
-            if content.view is Text {
-                throw InspectionError.notSupported("Please use .attributes() for inspecting Font on a Text")
-            }
+            try throwIfText()
             throw error
         }
     }
@@ -46,69 +55,48 @@ public extension InspectableView {
     func lineLimit() throws -> Int? {
         let reference = EmptyView().lineLimit(nil)
         let keyPath = try Inspector.environmentKeyPath(Optional<Int>.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "lineLimit")
+        return try environment(keyPath, call: "lineLimit")
     }
     
     func lineSpacing() throws -> CGFloat {
         let reference = EmptyView().lineSpacing(0)
         let keyPath = try Inspector.environmentKeyPath(CGFloat.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "lineSpacing")
+        return try environment(keyPath, call: "lineSpacing")
     }
     
     func multilineTextAlignment() throws -> TextAlignment {
         let reference = EmptyView().multilineTextAlignment(.leading)
         let keyPath = try Inspector.environmentKeyPath(TextAlignment.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "multilineTextAlignment")
+        return try environment(keyPath, call: "multilineTextAlignment")
     }
     
     func minimumScaleFactor() throws -> CGFloat {
         let reference = EmptyView().minimumScaleFactor(3)
         let keyPath = try Inspector.environmentKeyPath(CGFloat.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "minimumScaleFactor")
+        return try environment(keyPath, call: "minimumScaleFactor")
     }
     
     func truncationMode() throws -> Text.TruncationMode {
         let reference = EmptyView().truncationMode(.head)
         let keyPath = try Inspector.environmentKeyPath(Text.TruncationMode.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "truncationMode")
+        return try environment(keyPath, call: "truncationMode")
     }
     
     func allowsTightening() throws -> Bool {
         let reference = EmptyView().allowsTightening(true)
         let keyPath = try Inspector.environmentKeyPath(Bool.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "allowsTightening")
+        return try environment(keyPath, call: "allowsTightening")
     }
     
     func disableAutocorrection() throws -> Bool? {
         let reference = EmptyView().disableAutocorrection(false)
         let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)
-        return try environmentModifier(keyPath: keyPath, call: "disableAutocorrection")
+        return try environment(keyPath, call: "disableAutocorrection")
     }
     
     func flipsForRightToLeftLayoutDirection() throws -> Bool? {
         return try modifierAttribute(
             modifierName: "_FlipForRTLEffect", path: "modifier|isEnabled",
             type: Optional<Bool>.self, call: "flipsForRightToLeftLayoutDirection")
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension InspectableView {
-    func environmentModifier<T>(keyPath reference: WritableKeyPath<EnvironmentValues, T>, call: String) throws -> T {
-        let name = Inspector.typeName(type: T.self)
-        return try modifierAttribute(modifierLookup: { modifier -> Bool in
-            guard modifier.modifierType == "_EnvironmentKeyWritingModifier<\(name)>",
-                  let keyPath = try? Inspector.environmentKeyPath(T.self, modifier)
-            else { return false }
-            return keyPath == reference
-        }, path: "modifier|value", type: T.self, call: call)
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension Inspector {
-    static func environmentKeyPath<T>(_ type: T.Type, _ value: Any) throws -> WritableKeyPath<EnvironmentValues, T> {
-        return try Inspector.attribute(path: "modifier|keyPath", value: value,
-                                       type: WritableKeyPath<EnvironmentValues, T>.self)
     }
 }

@@ -42,7 +42,6 @@ final class HStackTests: XCTestCase {
             "Enclosed view index '2' is out of bounds: '0 ..< 2'")
     }
 
-    
     func testSearch() throws {
         let view = AnyView(HStack { EmptyView() })
         XCTAssertEqual(try view.inspect().find(ViewType.HStack.self).pathToRoot,
@@ -51,11 +50,10 @@ final class HStackTests: XCTestCase {
                        "anyView().hStack().emptyView(0)")
     }
     
-
     func testResetsModifiers() throws {
         let view = HStack { Text("Test") }.padding()
         let sut = try view.inspect().hStack().text(0)
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
 
     func testExtractionFromSingleViewContainer() throws {
@@ -107,13 +105,10 @@ final class HStackTests: XCTestCase {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else {
             return
         }
-        let view = HStack() {
+        let view = HStack {
             Text("")
         }
         let sut = try view.inspect().hStack().alignment()
         XCTAssertEqual(sut, .center)
     }
-
-
-
 }
