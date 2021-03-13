@@ -14,8 +14,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testTextContentTypeInspection() throws {
-        let sut = EmptyView().textContentType(.emailAddress)
-        XCTAssertEqual(try sut.inspect().emptyView().textContentType(), .emailAddress)
+        let sut = AnyView(EmptyView()).textContentType(.emailAddress)
+        XCTAssertEqual(try sut.inspect().anyView().textContentType(), .emailAddress)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().textContentType(), .emailAddress)
     }
     #endif
     
@@ -26,8 +27,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testKeyboardTypeInspection() throws {
-        let sut = EmptyView().keyboardType(.namePhonePad)
-        XCTAssertEqual(try sut.inspect().emptyView().keyboardType(), .namePhonePad)
+        let sut = AnyView(EmptyView()).keyboardType(.namePhonePad)
+        XCTAssertEqual(try sut.inspect().anyView().keyboardType(), .namePhonePad)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().keyboardType(), .namePhonePad)
     }
     
     func testAutocapitalization() throws {
@@ -36,8 +38,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testAutocapitalizationInspection() throws {
-        let sut = EmptyView().autocapitalization(.words)
-        XCTAssertEqual(try sut.inspect().emptyView().autocapitalization(), .words)
+        let sut = AnyView(EmptyView()).autocapitalization(.words)
+        XCTAssertEqual(try sut.inspect().anyView().autocapitalization(), .words)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().autocapitalization(), .words)
     }
     #endif
     
@@ -47,8 +50,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testFontInspection() throws {
-        let sut = EmptyView().font(.body)
-        XCTAssertEqual(try sut.inspect().emptyView().font(), .body)
+        let sut = AnyView(EmptyView()).font(.largeTitle)
+        XCTAssertEqual(try sut.inspect().anyView().font(), .largeTitle)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().font(), .largeTitle)
     }
     
     func testTextFontInspection() throws {
@@ -66,8 +70,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testLineLimitInspection() throws {
-        let sut = EmptyView().lineLimit(5)
-        XCTAssertEqual(try sut.inspect().emptyView().lineLimit(), 5)
+        let sut = AnyView(EmptyView()).lineLimit(5)
+        XCTAssertEqual(try sut.inspect().anyView().lineLimit(), 5)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().lineLimit(), 5)
     }
     
     func testLineSpacing() throws {
@@ -76,8 +81,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testLineSpacingInspection() throws {
-        let sut = EmptyView().lineSpacing(4)
-        XCTAssertEqual(try sut.inspect().emptyView().lineSpacing(), 4)
+        let sut = AnyView(EmptyView()).lineSpacing(4)
+        XCTAssertEqual(try sut.inspect().anyView().lineSpacing(), 4)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().lineSpacing(), 4)
     }
     
     func testMultilineTextAlignment() throws {
@@ -86,8 +92,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testMultilineTextAlignmentInspection() throws {
-        let sut = EmptyView().multilineTextAlignment(.center)
-        XCTAssertEqual(try sut.inspect().emptyView().multilineTextAlignment(), .center)
+        let sut = AnyView(EmptyView()).multilineTextAlignment(.center)
+        XCTAssertEqual(try sut.inspect().anyView().multilineTextAlignment(), .center)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().multilineTextAlignment(), .center)
     }
     
     func testMinimumScaleFactor() throws {
@@ -96,8 +103,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testMinimumScaleFactorInspection() throws {
-        let sut = EmptyView().minimumScaleFactor(2)
-        XCTAssertEqual(try sut.inspect().emptyView().minimumScaleFactor(), 2)
+        let sut = AnyView(EmptyView()).minimumScaleFactor(2)
+        XCTAssertEqual(try sut.inspect().anyView().minimumScaleFactor(), 2)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().minimumScaleFactor(), 2)
     }
     
     func testTruncationMode() throws {
@@ -106,8 +114,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testTruncationModeInspection() throws {
-        let sut = EmptyView().truncationMode(.tail)
-        XCTAssertEqual(try sut.inspect().emptyView().truncationMode(), .tail)
+        let sut = AnyView(EmptyView()).truncationMode(.tail)
+        XCTAssertEqual(try sut.inspect().anyView().truncationMode(), .tail)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().truncationMode(), .tail)
     }
     
     func testAllowsTightening() throws {
@@ -116,8 +125,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testAllowsTighteningInspection() throws {
-        let sut = EmptyView().allowsTightening(true)
-        XCTAssertTrue(try sut.inspect().emptyView().allowsTightening())
+        let sut = AnyView(EmptyView()).allowsTightening(true)
+        XCTAssertTrue(try sut.inspect().anyView().allowsTightening())
+        XCTAssertTrue(try sut.inspect().anyView().emptyView().allowsTightening())
     }
     
     func testDisableAutocorrection() throws {
@@ -126,8 +136,9 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testDisableAutocorrectionInspection() throws {
-        let sut = EmptyView().disableAutocorrection(false)
-        XCTAssertEqual(try sut.inspect().emptyView().disableAutocorrection(), false)
+        let sut = AnyView(EmptyView()).disableAutocorrection(false)
+        XCTAssertEqual(try sut.inspect().anyView().disableAutocorrection(), false)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().disableAutocorrection(), false)
     }
     
     func testFlipsForRightToLeftLayoutDirection() throws {
