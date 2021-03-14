@@ -37,7 +37,7 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "env_true")
     }
     
-    func testEnvironmentObjectInjectionDuringInspection() throws {
+    func testEnvironmentObjectInjectionDuringSyncInspection() throws {
         let obj1 = TestEnvObject1()
         let obj2 = TestEnvObject2()
         let sut = EnvironmentObjectOuterView()
@@ -46,6 +46,37 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "env_true")
         try sut.inspect().find(button: "Flag").tap()
         XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "env_false")
+    }
+    
+    func testEnvironmentObjectInjectionOnDidAppearInspection() throws {
+        let obj1 = TestEnvObject1()
+        let obj2 = TestEnvObject2()
+        var sut = EnvironmentObjectOuterView()
+        let exp = sut.on(\.didAppear) { view in
+            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_true")
+            try view.find(button: "Flag").tap()
+            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_false")
+        }
+        ViewHosting.host(view: sut.environmentObject(obj1).environmentObject(obj2))
+        wait(for: [exp], timeout: 0.5)
+    }
+    
+    func testEnvironmentObjectInjectionDuringAsyncInspection() throws {
+        let obj1 = TestEnvObject1()
+        let obj2 = TestEnvObject2()
+        let sut = EnvironmentObjectOuterView()
+        let exp1 = sut.inspection.inspect { view in
+            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_true")
+            try view.find(button: "Flag").tap()
+            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_false")
+        }
+        let exp2 = sut.inspection.inspect(after: 0.1) { view in
+            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_false")
+            try view.find(button: "Flag").tap()
+            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_true")
+        }
+        ViewHosting.host(view: sut.environmentObject(obj1).environmentObject(obj2))
+        wait(for: [exp1, exp2], timeout: 0.5)
     }
 }
 
@@ -87,8 +118,12 @@ private struct EnvironmentObjectOuterView: View, Inspectable {
     @EnvironmentObject var obj1: TestEnvObject1
     private var iVar2: Int8 = 0
     @EnvironmentObject var obj2: TestEnvObject2
+    var didAppear: ((Self) -> Void)?
+    let inspection = Inspection<Self>()
     
     var body: some View {
         EnvironmentObjectInnerView()
+            .onAppear { self.didAppear?(self) }
+            .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
 }

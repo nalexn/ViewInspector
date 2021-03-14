@@ -135,14 +135,16 @@ internal extension InspectableView where View: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
-    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try .init(try Inspector.unwrap(view: self, medium: .empty), parent: nil, call: "")
+    func inspect(function: String = #function) throws -> InspectableView<ViewType.ClassifiedView> {
+        let medium = ViewHosting.medium(function: function)
+        let content = try Inspector.unwrap(view: self, medium: medium)
+        return try .init(content, parent: nil, call: "")
     }
     
-    func inspect(file: StaticString = #file, line: UInt = #line,
+    func inspect(function: String = #function, file: StaticString = #file, line: UInt = #line,
                  inspection: (InspectableView<ViewType.ClassifiedView>) throws -> Void) {
         do {
-            try inspection(try inspect())
+            try inspection(try inspect(function: function))
         } catch {
             XCTFail("\(error.localizedDescription)", file: file, line: line)
         }
@@ -152,15 +154,17 @@ public extension View {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View where Self: Inspectable {
     
-    func inspect() throws -> InspectableView<ViewType.View<Self>> {
+    func inspect(function: String = #function) throws -> InspectableView<ViewType.View<Self>> {
         let call = "view(\(ViewType.View<Self>.typePrefix).self)"
-        return try .init(Content(self), parent: nil, call: call)
+        let medium = ViewHosting.medium(function: function)
+        let content = Content(self, medium: medium)
+        return try .init(content, parent: nil, call: call)
     }
     
-    func inspect(file: StaticString = #file, line: UInt = #line,
+    func inspect(function: String = #function, file: StaticString = #file, line: UInt = #line,
                  inspection: (InspectableView<ViewType.View<Self>>) throws -> Void) {
         do {
-            try inspection(try inspect())
+            try inspection(try inspect(function: function))
         } catch {
             XCTFail("\(error.localizedDescription)", file: file, line: line)
         }
