@@ -43,9 +43,9 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         let sut = EnvironmentObjectOuterView()
             .environmentObject(obj1)
             .environmentObject(obj2)
-        XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "env_true")
+        XCTAssertNoThrow(try sut.inspect().find(text: "env_true"))
         try sut.inspect().find(button: "Flag").tap()
-        XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "env_false")
+        XCTAssertNoThrow(try sut.inspect().find(text: "env_false"))
     }
     
     func testEnvironmentObjectInjectionOnDidAppearInspection() throws {
@@ -53,9 +53,9 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         let obj2 = TestEnvObject2()
         var sut = EnvironmentObjectOuterView()
         let exp = sut.on(\.didAppear) { view in
-            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_true")
+            XCTAssertNoThrow(try view.find(text: "env_true"))
             try view.find(button: "Flag").tap()
-            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_false")
+            XCTAssertNoThrow(try view.find(text: "env_false"))
         }
         ViewHosting.host(view: sut.environmentObject(obj1).environmentObject(obj2))
         wait(for: [exp], timeout: 0.5)
@@ -66,14 +66,14 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         let obj2 = TestEnvObject2()
         let sut = EnvironmentObjectOuterView()
         let exp1 = sut.inspection.inspect { view in
-            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_true")
+            XCTAssertNoThrow(try view.find(text: "env_true"))
             try view.find(button: "Flag").tap()
-            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_false")
+            XCTAssertNoThrow(try view.find(text: "env_false"))
         }
         let exp2 = sut.inspection.inspect(after: 0.1) { view in
-            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_false")
+            XCTAssertNoThrow(try view.find(text: "env_false"))
             try view.find(button: "Flag").tap()
-            XCTAssertEqual(try view.find(ViewType.Text.self).string(), "env_true")
+            XCTAssertNoThrow(try view.find(text: "env_true"))
         }
         ViewHosting.host(view: sut.environmentObject(obj1).environmentObject(obj2))
         wait(for: [exp1, exp2], timeout: 0.5)
