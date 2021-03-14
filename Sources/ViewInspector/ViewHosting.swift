@@ -8,11 +8,17 @@ public struct ViewHosting { }
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewHosting {
     
-    static func host<V>(view: V, size: CGSize? = nil, viewId: String = #function) where V: View {
+    struct ViewId: Hashable {
+        let function: String
+    }
+    
+    static func host<V>(view: V, size: CGSize? = nil, function: String = #function) where V: View {
+        let viewId = ViewId(function: function)
+        let medium = try? Inspector.unwrap(view: view, medium: .empty).medium
         let parentVC = rootViewController
         let childVC = hostVC(view)
         let size = size ?? parentVC.view.bounds.size
-        mark(childVC, viewId: viewId)
+        store(Hosted(viewController: childVC, medium: medium), viewId: viewId)
         childVC.view.translatesAutoresizingMaskIntoConstraints = false
         childVC.view.frame = parentVC.view.frame
         willMove(childVC, to: parentVC)
@@ -28,12 +34,19 @@ public extension ViewHosting {
         window.layoutIfNeeded()
     }
     
-    static func expel(viewId: String = #function) {
-        guard let childVC = extractViewController(viewId: viewId) else { return }
+    static func expel(function: String = #function) {
+        let viewId = ViewId(function: function)
+        guard let hosted = expel(viewId: viewId) else { return }
+        let childVC = hosted.viewController
         willMove(childVC, to: nil)
         childVC.view.removeFromSuperview()
         childVC.removeFromParent()
         didMove(childVC, to: nil)
+    }
+    
+    internal static func medium(function: String = #function) -> Content.Medium {
+        let viewId = ViewHosting.ViewId(function: function)
+        return hosted[viewId]?.medium ?? .empty
     }
 }
 
@@ -42,12 +55,19 @@ public extension ViewHosting {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension ViewHosting {
     
+    struct Hosted {
+        #if os(macOS)
+        let viewController: NSViewController
+        #else
+        let viewController: UIViewController
+        #endif
+        let medium: Content.Medium?
+    }
+    private static var hosted: [ViewId: Hosted] = [:]
     #if os(macOS)
     static var window: NSWindow = makeWindow()
-    static var viewControllers = [String: NSViewController]()
     #else
     static var window: UIWindow = makeWindow()
-    static var viewControllers = [String: UIViewController]()
     #endif
     
     // MARK: - Window construction
@@ -111,21 +131,13 @@ private extension ViewHosting {
     
     // MARK: - ViewController identification
     
-    #if os(macOS)
-    static func mark(_ viewController: NSViewController, viewId: String) {
-        viewControllers[viewId] = viewController
+    static func store(_ hosted: Hosted, viewId: ViewId) {
+        self.hosted[viewId] = hosted
     }
-    static func extractViewController(viewId: String) -> NSViewController? {
-        return viewControllers.removeValue(forKey: viewId)
+    
+    static func expel(viewId: ViewId) -> Hosted? {
+        return hosted.removeValue(forKey: viewId)
     }
-    #else
-    static func mark(_ viewController: UIViewController, viewId: String) {
-        viewControllers[viewId] = viewController
-    }
-    static func extractViewController(viewId: String) -> UIViewController? {
-        return viewControllers.removeValue(forKey: viewId)
-    }
-    #endif
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
