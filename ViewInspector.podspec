@@ -19,6 +19,7 @@ Pod::Spec.new do |s|
 
   s.test_spec 'Tests' do |unit|
     unit.source_files = 'Tests/ViewInspectorTests/**/*.swift'
+    unit.resources = 'Tests/ViewInspectorTests/TestResources/**/*'
   end
 
 end

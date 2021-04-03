@@ -217,8 +217,8 @@ extension LocalizedStringKey.StringInterpolation {
 extension Bundle {
     
     static func testResources(file: StaticString = #file, line: UInt = #line) throws -> Bundle {
-        guard let bundle = Bundle(identifier: "ViewInspectorTests"),
-              bundle.path(forResource: "Test", ofType: "strings") != nil else {
+        let bundle = Bundle(for: TextTests.self)
+        guard bundle.path(forResource: "Test", ofType: "strings") != nil else {
             XCTFail("Failed to load test Bundle", file: file, line: line)
             return .main
         }
