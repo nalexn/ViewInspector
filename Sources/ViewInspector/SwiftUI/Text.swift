@@ -1,6 +1,20 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension Locale {
+    /**
+     A global value used as a default parameter for `Text` string inspection
+     and `find` functions. You can set to other value before the tests run:
+     ````
+     override class func setUp() {
+        Locale.testsDefault = .current
+     }
+     ````
+     */
+    static var testsDefault: Locale = Locale(identifier: "en")
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Text: KnownViewType {
@@ -33,7 +47,12 @@ public extension InspectableView where View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Text {
     
-    func string(locale: Locale = .current) throws -> String {
+    /**
+     Extracts the formatted an localized string value from the Text view
+
+      - Parameter locale: Defaults to `Locale(identifier: "en")`, which is a global default value in the tests scope. You can change it by assigning a value to Locale.testsDefault
+    */
+    func string(locale: Locale = .testsDefault) throws -> String {
         return try ViewType.Text.extractString(from: self, locale: locale)
     }
     
