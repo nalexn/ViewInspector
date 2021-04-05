@@ -11,7 +11,7 @@ private struct Test {
             Button(action: { }, label: {
                 HStack { Text("Btn") }
             }).mask(Group {
-                Text("Test")
+                Text("Test", tableName: "Test", bundle: (try? .testResources()) ?? .main)
             })
         }
     }
@@ -89,7 +89,7 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertEqual(try testView.inspect().findAll(ViewType.HStack.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Button.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self).map({ try $0.string() }),
-                       ["Btn", "Test", "123", "xyz", "Modifier"])
+                       ["Btn", "Test_en", "123", "xyz", "Modifier"])
         XCTAssertEqual(try testView.inspect().findAll(Test.InnerView.self).count, 1)
         XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 2)
     }
@@ -98,7 +98,7 @@ final class ViewSearchTests: XCTestCase {
         let testView = Test.MainView()
         XCTAssertEqual(try testView.inspect().find(text: "123").pathToRoot,
         "view(MainView.self).anyView().group().text(1)")
-        XCTAssertEqual(try testView.inspect().find(text: "Test").pathToRoot,
+        XCTAssertEqual(try testView.inspect().find(text: "Test_en").pathToRoot,
         """
         view(MainView.self).anyView().group().emptyView(0).overlay().hStack()\
         .view(InnerView.self, 1).button().mask().group().text(0)
@@ -123,6 +123,32 @@ final class ViewSearchTests: XCTestCase {
                         "Search did not find a match")
         XCTAssertThrows(try testView.inspect().find(ViewType.Text.self, relation: .parent),
                         "Search did not find a match")
+    }
+    
+    func testFindLocalizedTextWithLocaleParameter() throws {
+        let testView = Test.MainView()
+        XCTAssertThrows(try testView.inspect().find(text: "Test"),
+                        "Search did not find a match")
+        XCTAssertNoThrow(try testView.inspect().find(text: "Test",
+                                                     locale: Locale(identifier: "fr")))
+        XCTAssertNoThrow(try testView.inspect().find(text: "Test_en"))
+        XCTAssertNoThrow(try testView.inspect().find(text: "Test_en",
+                                                     locale: Locale(identifier: "en")))
+        XCTAssertNoThrow(try testView.inspect().find(text: "Test_en_au",
+                                                     locale: Locale(identifier: "en_AU")))
+        XCTAssertNoThrow(try testView.inspect().find(text: "Тест_ru",
+                                                     locale: Locale(identifier: "ru")))
+        XCTAssertThrows(try testView.inspect().find(text: "Тест_ru",
+                                                    locale: Locale(identifier: "en")),
+                        "Search did not find a match")
+    }
+    
+    func testFindLocalizedTextWithGlobalDefault() throws {
+        let testView = Test.MainView()
+        let defaultLocale = Locale.testsDefault
+        Locale.testsDefault = Locale(identifier: "ru")
+        XCTAssertNoThrow(try testView.inspect().find(text: "Тест_ru"))
+        Locale.testsDefault = defaultLocale
     }
     
     func testFindButton() throws {

@@ -38,10 +38,10 @@ final class TextTests: XCTestCase {
     }
     
     func testResourceLocalizationStringNoParams() throws {
-        guard let bundle = Bundle.testResources else { return }
+        let bundle = try Bundle.testResources()
         let sut = Text("Test", tableName: "Test", bundle: bundle)
         let text = try sut.inspect().text()
-        let value1 = try text.string()
+        let value1 = try text.string(locale: Locale(identifier: "fr"))
         XCTAssertEqual(value1, "Test")
         let value2 = try text.string(locale: Locale(identifier: "en"))
         XCTAssertEqual(value2, "Test_en")
@@ -49,6 +49,21 @@ final class TextTests: XCTestCase {
         XCTAssertEqual(value3, "Test_en_au")
         let value4 = try text.string(locale: Locale(identifier: "ru"))
         XCTAssertEqual(value4, "Тест_ru")
+    }
+    
+    func testLocalizationGlobalDefault() throws {
+        let bundle = try Bundle.testResources()
+        let sut = Text("Test", tableName: "Test", bundle: bundle)
+        let text = try sut.inspect().text()
+        
+        let value1 = try text.string()
+        XCTAssertEqual(value1, "Test_en")
+        
+        let defaultLocale = Locale.testsDefault
+        Locale.testsDefault = Locale(identifier: "ru")
+        let value2 = try text.string()
+        XCTAssertEqual(value2, "Тест_ru")
+        Locale.testsDefault = defaultLocale
     }
     
     func testVerbatimStringNoParams() throws {
@@ -199,24 +214,14 @@ extension LocalizedStringKey.StringInterpolation {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private extension Bundle {
+extension Bundle {
     
-    static var testResources: Bundle? = {
-        let bundleName = "ViewInspector_ViewInspectorTests"
-
-        let candidates = [
-            Bundle.main.resourceURL,
-            Bundle(for: TextTests.self).resourceURL,
-            Bundle.main.bundleURL,
-        ]
-
-        for candidate in candidates {
-            let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
-            if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
-                return bundle
-            }
+    static func testResources(file: StaticString = #file, line: UInt = #line) throws -> Bundle {
+        let bundle = Bundle(for: TextTests.self)
+        guard bundle.path(forResource: "Test", ofType: "strings") != nil else {
+            XCTFail("Failed to load test Bundle", file: file, line: line)
+            return .main
         }
-        
-        return nil
-    }()
+        return bundle
+    }
 }
