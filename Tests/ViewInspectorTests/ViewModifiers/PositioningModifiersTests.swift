@@ -107,13 +107,13 @@ final class ViewLayeringTests: XCTestCase {
     func testOverlayAlignmentIsCenter() throws {
         let sut = EmptyView().overlay(Text(""), alignment: .center)
         let overlay = try sut.inspect().emptyView().overlay()
-        XCTAssertEqual(try overlay.alignment(), .center)
+        XCTAssertEqual(try overlay.fixedAlignment(), .center)
     }
 
     func testOverlayAlignmentIsBottom() throws {
         let sut = EmptyView().overlay(Text(""), alignment: .bottom)
         let overlay = try sut.inspect().emptyView().overlay()
-        XCTAssertEqual(try overlay.alignment(), .bottom)
+        XCTAssertEqual(try overlay.fixedAlignment(), .bottom)
     }
 
     func testOverlayInspection() throws {
@@ -136,13 +136,13 @@ final class ViewLayeringTests: XCTestCase {
     func testBackgroundAlignmentIsCenter() throws {
         let sut = EmptyView().background(Text(""), alignment: .center)
         let background = try sut.inspect().emptyView().background()
-        XCTAssertEqual(try background.alignment(), .center)
+        XCTAssertEqual(try background.fixedAlignment(), .center)
     }
 
     func testBackgroundAlignmentIsBottom() throws {
         let sut = EmptyView().background(Text(""), alignment: .bottom)
         let background = try sut.inspect().emptyView().background()
-        XCTAssertEqual(try background.alignment(), .bottom)
+        XCTAssertEqual(try background.fixedAlignment(), .bottom)
     }
     
     func testBackgroundInspection() throws {
