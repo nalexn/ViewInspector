@@ -16,19 +16,24 @@ public struct ViewSearch {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
-    func find(text: String) throws -> InspectableView<ViewType.Text> {
-        return try find(textWhere: { value, _ in value == text })
+    func find(text: String,
+              locale: Locale = .testsDefault
+    ) throws -> InspectableView<ViewType.Text> {
+        return try find(textWhere: { value, _ in value == text }, locale: locale)
     }
     
-    func find(textWhere condition: (String, ViewType.Text.Attributes) throws -> Bool
+    func find(textWhere condition: (String, ViewType.Text.Attributes) throws -> Bool,
+              locale: Locale = .testsDefault
     ) throws -> InspectableView<ViewType.Text> {
         return try find(ViewType.Text.self, where: {
-            try condition(try $0.string(), try $0.attributes())
+            try condition(try $0.string(locale: locale), try $0.attributes())
         })
     }
     
-    func find(button title: String) throws -> InspectableView<ViewType.Button> {
-        return try find(ViewType.Button.self, containing: title)
+    func find(button title: String,
+              locale: Locale = .testsDefault
+    ) throws -> InspectableView<ViewType.Button> {
+        return try find(ViewType.Button.self, containing: title, locale: locale)
     }
     
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
@@ -39,12 +44,16 @@ public extension InspectableView {
     }
     
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
-    func find(link label: String) throws -> InspectableView<ViewType.Link> {
-        return try find(ViewType.Link.self, containing: label)
+    func find(link label: String,
+              locale: Locale = .testsDefault
+    ) throws -> InspectableView<ViewType.Link> {
+        return try find(ViewType.Link.self, containing: label, locale: locale)
     }
     
-    func find(navigationLink string: String) throws -> InspectableView<ViewType.NavigationLink> {
-        return try find(ViewType.NavigationLink.self, containing: string)
+    func find(navigationLink string: String,
+              locale: Locale = .testsDefault
+    ) throws -> InspectableView<ViewType.NavigationLink> {
+        return try find(ViewType.NavigationLink.self, containing: string, locale: locale)
     }
     
     func find(viewWithId id: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
@@ -63,13 +72,18 @@ public extension InspectableView {
     }
     
     func find<V>(_ inspectable: V.Type,
-                 containing string: String) throws -> InspectableView<ViewType.View<V>> {
-        return try find(ViewType.View<V>.self, containing: string)
+                 containing string: String,
+                 locale: Locale = .testsDefault
+    ) throws -> InspectableView<ViewType.View<V>> {
+        return try find(ViewType.View<V>.self, containing: string, locale: locale)
     }
     
-    func find<T>(_ viewType: T.Type, containing string: String) throws -> InspectableView<T> {
+    func find<T>(_ viewType: T.Type,
+                 containing string: String,
+                 locale: Locale = .testsDefault
+    ) throws -> InspectableView<T> {
         return try find(ViewType.Text.self, where: { text in
-            (try? text.string()) == string &&
+            (try? text.string(locale: locale)) == string &&
             (try? text.find(T.self, relation: .parent)) != nil
         }).find(T.self, relation: .parent)
     }

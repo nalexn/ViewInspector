@@ -27,6 +27,7 @@
 		5214803A25F803DC002D974D /* CustomStyleModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */; };
 		52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5298500125FF5B7A00C717AB /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6FEBEF4256AE732006C28F5 /* Test.strings */; };
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
@@ -761,6 +762,7 @@
 			buildConfigurationList = OBJ_58 /* Build configuration list for PBXNativeTarget "ViewInspectorTests" */;
 			buildPhases = (
 				OBJ_61 /* Sources */,
+				52984FEA25FF5A3600C717AB /* Resources */,
 				OBJ_68 /* Frameworks */,
 			);
 			buildRules = (
@@ -805,6 +807,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		52984FEA25FF5A3600C717AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5298500125FF5B7A00C717AB /* Test.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXShellScriptBuildPhase section */
 		F6602F46238096C200BDCAAC /* Run swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -822,7 +835,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if command -v swiftlint > /dev/null; then\n  swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\nelse\n\tif [ ${CARTHAGE} == 'YES' ]; then\n\t\texit 0\n\tfi\n\techo \"Please install swiftlint: 'brew install swiftlint'\"\n  exit -1\nfi\n";
+			shellScript = "if command -v swiftlint2 > /dev/null; then\n  swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\nelse\n  echo \"warning: swiftlint is not installed: 'brew install swiftlint'\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1266,6 +1279,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = ViewInspectorTests;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
@@ -1289,6 +1303,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = ViewInspectorTests;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
