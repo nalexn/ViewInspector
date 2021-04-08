@@ -11,7 +11,9 @@ final class ViewEnvironmentTests: XCTestCase {
         let key = TestEnvKey()
         let sut = EmptyView().environment(\.testKey, key)
         XCTAssertNoThrow(try sut.inspect().emptyView())
-        XCTAssertNoThrow(try sut.inspect().emptyView().environment(keyPath: \.testKey))
+        XCTAssertNoThrow(try sut.inspect().emptyView().environment(\.testKey))
+        XCTAssertThrows(try EmptyView().inspect().emptyView().environment(\.testKey),
+                        "EmptyView does not have 'environment(TestEnvKey)' modifier")
     }
     
     func testEnvironmentObject() throws {
@@ -75,21 +77,21 @@ final class ViewPreferenceTests: XCTestCase {
     func testBackgroundPreferenceValue() throws {
         let sut = EmptyView().backgroundPreferenceValue(Key.self) { _ in Text("") }
         // Not supported
-        //swiftlint:disable line_length
+        // swiftlint:disable line_length
         XCTAssertThrows(
             try sut.inspect().emptyView(),
             "'PreferenceValue' modifiers are currently not supported. Consider extracting the enclosed view for direct inspection.")
-        //swiftlint:enable line_length
+        // swiftlint:enable line_length
     }
     
     func testOverlayPreferenceValue() throws {
         let sut = EmptyView().overlayPreferenceValue(Key.self) { _ in Text("") }
         // Not supported
-        //swiftlint:disable line_length
+        // swiftlint:disable line_length
         XCTAssertThrows(
             try sut.inspect().emptyView(),
             "'PreferenceValue' modifiers are currently not supported. Consider extracting the enclosed view for direct inspection.")
-        //swiftlint:enable line_length
+        // swiftlint:enable line_length
     }
     
     struct Key: PreferenceKey {

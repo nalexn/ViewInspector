@@ -51,7 +51,7 @@ final class GroupBoxTests: XCTestCase {
         guard #available(iOS 14, *) else { return }
         let view = GroupBox { Text("Test") }.padding()
         let sut = try view.inspect().groupBox().text(0)
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {

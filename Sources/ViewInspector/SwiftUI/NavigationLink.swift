@@ -15,7 +15,8 @@ extension ViewType.NavigationLink: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
         let view = try Inspector.attribute(label: "destination", value: content.view)
-        return try Inspector.unwrap(view: view, modifiers: [])
+        let medium = content.medium.resettingViewModifiers()
+        return try Inspector.unwrap(view: view, medium: medium)
     }
 }
 
@@ -70,9 +71,9 @@ public extension InspectableView where View == ViewType.NavigationLink {
         } else {
             // @State mutation from outside is ignored by SwiftUI
             // try isActiveState().wrappedValue = isActive
-            //swiftlint:disable line_length
+            // swiftlint:disable line_length
             throw InspectionError.notSupported("Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
-            //swiftlint:enable line_length
+            // swiftlint:enable line_length
         }
     }
 }

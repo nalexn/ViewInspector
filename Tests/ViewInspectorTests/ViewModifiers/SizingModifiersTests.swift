@@ -74,11 +74,10 @@ final class ViewSizingTests: XCTestCase {
     func testFrameMinWidth() throws {
         let sut = try EmptyView().frame(minWidth: 100)
             .inspect().emptyView().flexFrame()
-        XCTAssertEqual(sut.minWidth, 100);
+        XCTAssertEqual(sut.minWidth, 100)
         XCTAssertTrue(sut.maxWidth.isNaN)
     }
 
-    
     func testFixedSize() throws {
         let sut = EmptyView().fixedSize()
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -113,4 +112,3 @@ final class ViewSizingTests: XCTestCase {
         XCTAssertEqual(sut, priority)
     }
 }
-

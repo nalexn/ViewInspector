@@ -45,7 +45,7 @@ final class PickerTests: XCTestCase {
             Text("Second Option").tag(1)
         }.padding().padding()
         let sut = try view.inspect().picker().text(0)
-        XCTAssertEqual(sut.content.modifiers.count, 1)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 1)
     }
     
     func testExtractionFromSingleViewContainer() throws {

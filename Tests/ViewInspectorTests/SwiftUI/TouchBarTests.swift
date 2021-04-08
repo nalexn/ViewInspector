@@ -45,7 +45,7 @@ final class GlobalModifiersForTouchBar: XCTestCase {
     func testTouchBarInspection() throws {
         let view = EmptyView().touchBar(TouchBar(content: { Text("") })).padding()
         let sut = try view.inspect().emptyView().touchBar()
-        XCTAssertEqual(sut.content.modifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testTouchBarItemPrincipal() throws {

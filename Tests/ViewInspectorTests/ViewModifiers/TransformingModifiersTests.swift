@@ -144,8 +144,9 @@ final class ViewScalingTests: XCTestCase {
     }
     
     func testImageScaleInspection() throws {
-        let sut = EmptyView().imageScale(.small)
-        XCTAssertEqual(try sut.inspect().emptyView().imageScale(), .small)
+        let sut = AnyView(EmptyView()).imageScale(.small)
+        XCTAssertEqual(try sut.inspect().anyView().imageScale(), .small)
+        XCTAssertEqual(try sut.inspect().anyView().emptyView().imageScale(), .small)
     }
     #endif
 }

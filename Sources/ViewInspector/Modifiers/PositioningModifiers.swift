@@ -57,7 +57,8 @@ internal extension Content {
         let rootView = try modifierAttribute(
             modifierName: "_OverlayModifier", path: "modifier|overlay",
             type: Any.self, call: "overlay")
-        return try .init(try Inspector.unwrap(content: Content(rootView)),
+        let medium = self.medium.resettingViewModifiers()
+        return try .init(try Inspector.unwrap(content: Content(rootView, medium: medium)),
                          parent: parent, call: "overlay()")
     }
     
@@ -65,7 +66,8 @@ internal extension Content {
         let rootView = try modifierAttribute(
             modifierName: "_BackgroundModifier", path: "modifier|background",
             type: Any.self, call: "background")
-        return try .init(try Inspector.unwrap(content: Content(rootView)),
+        let medium = self.medium.resettingViewModifiers()
+        return try .init(try Inspector.unwrap(content: Content(rootView, medium: medium)),
                          parent: parent, call: "background()")
     }
 }

@@ -39,8 +39,16 @@ final class ViewColorTests: XCTestCase {
     }
     
     func testForegroundColorInspection() throws {
-        let sut = EmptyView().padding().foregroundColor(.purple).padding()
-        XCTAssertEqual(try sut.inspect().emptyView().foregroundColor(), .purple)
+        let sut = Group { EmptyView().padding() }.foregroundColor(.purple).padding()
+        XCTAssertEqual(try sut.inspect().group().foregroundColor(), .purple)
+        XCTAssertEqual(try sut.inspect().group().emptyView(0).foregroundColor(), .purple)
+    }
+    
+    func testNaiveForegroundColorInspectionError() throws {
+        let sut = Text("Test").foregroundColor(.purple)
+        XCTAssertThrows(try sut.inspect().text().foregroundColor(),
+                        "Please use .attributes().foregroundColor() for inspecting foregroundColor on a Text")
+        XCTAssertEqual(try sut.inspect().text().attributes().foregroundColor(), .purple)
     }
     
     #if !os(macOS)
@@ -50,13 +58,14 @@ final class ViewColorTests: XCTestCase {
     }
     
     func testAccentColorInspection() throws {
-        let sut = EmptyView().padding().accentColor(.purple).padding()
-        XCTAssertEqual(try sut.inspect().emptyView().accentColor(), .purple)
+        let sut = Group { EmptyView() }.accentColor(.purple)
+        XCTAssertEqual(try sut.inspect().group().accentColor(), .purple)
+        XCTAssertEqual(try sut.inspect().group().emptyView(0).accentColor(), .purple)
     }
     
     func testForegroundWithAccentColorInspection() throws {
-        let sut = Text("").accentColor(.purple).foregroundColor(.red)
-        let view = try sut.inspect().text()
+        let sut = AnyView(EmptyView()).accentColor(.purple).foregroundColor(.red)
+        let view = try sut.inspect().anyView().emptyView()
         XCTAssertEqual(try view.accentColor(), .purple)
         XCTAssertEqual(try view.foregroundColor(), .red)
     }
@@ -68,8 +77,10 @@ final class ViewColorTests: XCTestCase {
     }
     
     func testColorSchemeInspection() throws {
-        let sut = EmptyView().colorScheme(.light)
-        XCTAssertEqual(try sut.inspect().emptyView().colorScheme(), .light)
+        let sut = AnyView(Group { EmptyView() }.colorScheme(.light)).colorScheme(.dark)
+        XCTAssertEqual(try sut.inspect().anyView().colorScheme(), .dark)
+        XCTAssertEqual(try sut.inspect().anyView().group().colorScheme(), .light)
+        XCTAssertEqual(try sut.inspect().anyView().group().emptyView(0).colorScheme(), .light)
     }
     
     #if !os(macOS)

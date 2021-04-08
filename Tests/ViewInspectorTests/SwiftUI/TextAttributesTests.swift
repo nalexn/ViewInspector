@@ -32,7 +32,7 @@ final class TextAttributesTests: XCTestCase {
     func testNaiveFontInspectionError() throws {
         let sut = Text("Test").font(.body)
         XCTAssertThrows(try sut.inspect().text().font(),
-                        "Please use .attributes() for inspecting Font on a Text")
+                        "Please use .attributes().font() for inspecting Font on a Text")
         XCTAssertEqual(try sut.inspect().text().attributes().font(), .body)
     }
     
@@ -49,6 +49,34 @@ final class TextAttributesTests: XCTestCase {
         let view3 = Text("Test").font(custom)
         let sut3 = try view3.inspect().text().attributes()
         XCTAssertEqual(try sut3.font(), custom)
+    }
+    
+    func testEnvironmentFontAttribute() throws {
+        let sut1 = Group { Group { Text("").font(.caption) }.font(.body) }.font(.title)
+        XCTAssertEqual(try sut1.inspect().find(ViewType.Text.self).attributes().font(), .caption)
+        XCTAssertThrows(try sut1.inspect().find(ViewType.Text.self).font(),
+                        "Please use .attributes().font() for inspecting Font on a Text")
+        
+        let sut2 = Group { Group { Text("") }.font(.body) }.font(.title)
+        XCTAssertEqual(try sut2.inspect().find(ViewType.Text.self).attributes().font(), .body)
+        XCTAssertThrows(try sut2.inspect().find(ViewType.Text.self).font(),
+                        "Please use .attributes().font() for inspecting Font on a Text")
+    }
+    
+    func testEnvironmentForegroundColorAttribute() throws {
+        let sut1 = Group { Group { Text("").foregroundColor(.red) }
+            .foregroundColor(.green) }.foregroundColor(.blue)
+        XCTAssertEqual(try sut1.inspect().find(ViewType.Text.self)
+                        .attributes().foregroundColor(), .red)
+        XCTAssertThrows(try sut1.inspect().find(ViewType.Text.self).foregroundColor(),
+            "Please use .attributes().foregroundColor() for inspecting foregroundColor on a Text")
+        
+        let sut2 = Group { Group { Text("") }
+            .foregroundColor(.green) }.foregroundColor(.blue)
+        XCTAssertEqual(try sut2.inspect().find(ViewType.Text.self)
+                        .attributes().foregroundColor(), .green)
+        XCTAssertThrows(try sut2.inspect().find(ViewType.Text.self).foregroundColor(),
+            "Please use .attributes().foregroundColor() for inspecting foregroundColor on a Text")
     }
 
     func testFontWeightAttribute() throws {

@@ -13,13 +13,13 @@ public protocol InspectionEmissary: class {
     
     @discardableResult
     func inspect(after delay: TimeInterval,
-                 file: StaticString, line: UInt, function: String,
+                 function: String, file: StaticString, line: UInt,
                  _ inspection: @escaping Inspection
     ) -> XCTestExpectation
     
     @discardableResult
     func inspect<P>(onReceive publisher: P,
-                    file: StaticString, line: UInt, function: String,
+                    function: String, file: StaticString, line: UInt,
                     _ inspection: @escaping Inspection
     ) -> XCTestExpectation where P: Publisher, P.Failure == Never
 }
@@ -31,11 +31,11 @@ public extension InspectionEmissary {
     
     @discardableResult
     func inspect(after delay: TimeInterval = 0,
-                 file: StaticString = #file, line: UInt = #line, function: String = #function,
+                 function: String = #function, file: StaticString = #file, line: UInt = #line,
                  _ inspection: @escaping Inspection
     ) -> XCTestExpectation {
         let exp = XCTestExpectation(description: "Inspection at line \(line)")
-        setup(inspection: inspection, expectation: exp, file: file, line: line, function: function)
+        setup(inspection: inspection, expectation: exp, function: function, file: file, line: line)
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak notice] in
             notice?.send(line)
         }
@@ -44,11 +44,11 @@ public extension InspectionEmissary {
     
     @discardableResult
     func inspect<P>(onReceive publisher: P,
-                    file: StaticString = #file, line: UInt = #line, function: String = #function,
+                    function: String = #function, file: StaticString = #file, line: UInt = #line,
                     _ inspection: @escaping Inspection
     ) -> XCTestExpectation where P: Publisher, P.Failure == Never {
         let exp = XCTestExpectation(description: "Inspection at line \(line)")
-        setup(inspection: inspection, expectation: exp, file: file, line: line, function: function)
+        setup(inspection: inspection, expectation: exp, function: function, file: file, line: line)
         var subscription: AnyCancellable?
         _ = subscription
         subscription = publisher.sink { [weak notice] _ in
@@ -62,15 +62,15 @@ public extension InspectionEmissary {
     
     private func setup(inspection: @escaping Inspection,
                        expectation: XCTestExpectation,
-                       file: StaticString, line: UInt, function: String) {
+                       function: String, file: StaticString, line: UInt) {
         callbacks[line] = { [weak self] view in
             do {
-                try inspection(try view.inspect())
+                try inspection(try view.inspect(function: function))
             } catch let error {
                 XCTFail("\(error.localizedDescription)", file: file, line: line)
             }
             if self?.callbacks.count == 0 {
-                ViewHosting.expel(viewId: function)
+                ViewHosting.expel(function: function)
             }
             expectation.fulfill()
         }
@@ -81,15 +81,14 @@ public extension InspectionEmissary {
 public extension View where Self: Inspectable {
     @discardableResult
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
-                     file: StaticString = #file, line: UInt = #line,
-                     viewId: String = #function,
+                     function: String = #function, file: StaticString = #file, line: UInt = #line,
                      perform: @escaping ((InspectableView<ViewType.View<Self>>) throws -> Void)
     ) -> XCTestExpectation {
         let description = Inspector.typeName(value: self) + " callback at line #\(line)"
         let expectation = XCTestExpectation(description: description)
         self[keyPath: keyPath] = { view in
-            view.inspect(file: file, line: line, inspection: perform)
-            ViewHosting.expel(viewId: viewId)
+            view.inspect(function: function, file: file, line: line, inspection: perform)
+            ViewHosting.expel(function: function)
             expectation.fulfill()
         }
         return expectation
@@ -100,15 +99,14 @@ public extension View where Self: Inspectable {
 public extension ViewModifier where Self: Inspectable {
     @discardableResult
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self.Body) -> Void)?>,
-                     file: StaticString = #file, line: UInt = #line,
-                     viewId: String = #function,
-                     perform: @escaping ((InspectableView<ViewType.ParentView>) throws -> Void)
+                     function: String = #function, file: StaticString = #file, line: UInt = #line,
+                     perform: @escaping ((InspectableView<ViewType.ClassifiedView>) throws -> Void)
     ) -> XCTestExpectation {
         let description = Inspector.typeName(value: self) + " callback at line #\(line)"
         let expectation = XCTestExpectation(description: description)
         self[keyPath: keyPath] = { body in
-            body.inspect(file: file, line: line, inspection: perform)
-            ViewHosting.expel(viewId: viewId)
+            body.inspect(function: function, file: file, line: line, inspection: perform)
+            ViewHosting.expel(function: function)
             expectation.fulfill()
         }
         return expectation

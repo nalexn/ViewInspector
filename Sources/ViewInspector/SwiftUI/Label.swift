@@ -37,13 +37,14 @@ public extension InspectableView where View: MultipleViewContent {
 extension ViewType.Label: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 2) { index in
+            let medium = parent.content.medium.resettingViewModifiers()
             if index == 0 {
                 let child = try Inspector.attribute(label: "title", value: parent.content.view)
-                let content = try Inspector.unwrap(content: Content(child))
+                let content = try Inspector.unwrap(content: Content(child, medium: medium))
                 return try .init(content, parent: parent, call: "title()")
             } else {
                 let child = try Inspector.attribute(label: "icon", value: parent.content.view)
-                let content = try Inspector.unwrap(content: Content(child))
+                let content = try Inspector.unwrap(content: Content(child, medium: medium))
                 return try .init(content, parent: parent, call: "icon()")
             }
         }

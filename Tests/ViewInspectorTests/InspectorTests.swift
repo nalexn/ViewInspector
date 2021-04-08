@@ -89,14 +89,14 @@ final class InspectorTests: XCTestCase {
     
     func testUnwrapNoModifiers() throws {
         let view = Text(testString)
-        let sut = try Inspector.unwrap(view: view, modifiers: [])
+        let sut = try Inspector.unwrap(view: view, medium: .empty)
         let text = try (sut.view as? Text)?.inspect().text().string()
         XCTAssertEqual(text, testString)
     }
     
     func testUnwrapOneModifier() throws {
         let view = Text(testString).transition(.offset(.zero))
-        let sut = try Inspector.unwrap(view: view, modifiers: [])
+        let sut = try Inspector.unwrap(view: view, medium: .empty)
         let text = try (sut.view as? Text)?.inspect().text().string()
         XCTAssertEqual(text, testString)
     }
@@ -106,7 +106,7 @@ final class InspectorTests: XCTestCase {
         let view = Text(testString)
             .transition(.offset(.zero))
             .onReceive(publisher) { _ in }
-        let sut = try Inspector.unwrap(view: view, modifiers: [])
+        let sut = try Inspector.unwrap(view: view, medium: .empty)
         let text = try (sut.view as? Text)?.inspect().text().string()
         XCTAssertEqual(text, testString)
     }
@@ -185,8 +185,9 @@ final class InspectableViewModifiersTests: XCTestCase {
         XCTAssertNoThrow(try hStack.parent().overlay())
         XCTAssertNoThrow(try hStack.parent().parent().emptyView())
         let group = try hStack.parent().parent().parent().group()
-        XCTAssertNoThrow(try group.parent().anyView())
-        XCTAssertThrows(try group.parent().parent(), "AnyView does not have parent")
+        let anyView = try group.parent()
+        XCTAssertNoThrow(try anyView.anyView())
+        XCTAssertThrows(try anyView.parent(), "AnyView does not have parent")
         XCTAssertThrows(try view.inspect().parent(), "AnyView does not have parent")
     }
     

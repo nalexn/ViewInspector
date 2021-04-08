@@ -36,8 +36,8 @@ public extension InspectableView where View: MultipleViewContent {
 extension ViewType.DisclosureGroup: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        let content = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.viewsInContainer(view: content)
+        let view = try Inspector.attribute(label: "content", value: content.view)
+        return try Inspector.viewsInContainer(view: view, medium: content.medium)
     }
 }
 
@@ -73,9 +73,9 @@ public extension InspectableView where View == ViewType.DisclosureGroup {
         } else {
             // @State mutation from outside is ignored by SwiftUI
             // try isExpandedState().wrappedValue = isExpanded
-            //swiftlint:disable line_length
+            // swiftlint:disable line_length
             throw InspectionError.notSupported("You need to enable programmatic expansion by using `DisclosureGroup(isExpanded:, content:, label:`")
-            //swiftlint:enable line_length
+            // swiftlint:enable line_length
         }
     }
 }
