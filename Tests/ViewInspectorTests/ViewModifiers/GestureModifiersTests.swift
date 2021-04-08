@@ -36,21 +36,6 @@ final class ViewGesturesTests: XCTestCase {
         try sut.inspect().emptyView().callOnLongPressGesture()
         wait(for: [exp], timeout: 0.1)
     }
-    
-    func testGesture() throws {
-        let sut = EmptyView().gesture(MagnificationGesture(), including: .subviews)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testHighPriorityGesture() throws {
-        let sut = EmptyView().highPriorityGesture(MagnificationGesture(), including: .subviews)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testSimultaneousGesture() throws {
-        let sut = EmptyView().simultaneousGesture(MagnificationGesture(), including: .subviews)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
     #endif
 }
 
