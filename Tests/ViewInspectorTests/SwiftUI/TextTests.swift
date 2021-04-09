@@ -217,11 +217,22 @@ extension LocalizedStringKey.StringInterpolation {
 extension Bundle {
     
     static func testResources(file: StaticString = #file, line: UInt = #line) throws -> Bundle {
-        let bundle = Bundle(for: TextTests.self)
+        let bundle = Bundle.testResources
         guard bundle.path(forResource: "Test", ofType: "strings") != nil else {
             XCTFail("Failed to load test Bundle", file: file, line: line)
-            return .main
+            return bundle
         }
         return bundle
     }
+    
+    private static var testResources: Bundle = {
+        let bundleName = "ViewInspector_ViewInspectorTests"
+        let bundle = Bundle(for: TextTests.self)
+        if let resourcePath = bundle.resourceURL?
+            .appendingPathComponent(bundleName + ".bundle"),
+           let resources = Bundle(url: resourcePath) {
+            return resources
+        }
+        return bundle
+    }()
 }
