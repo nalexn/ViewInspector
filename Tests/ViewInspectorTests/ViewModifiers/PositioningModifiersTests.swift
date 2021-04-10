@@ -119,8 +119,9 @@ final class ViewLayeringTests: XCTestCase {
     func testOverlayInspection() throws {
         let text = "Abc"
         let sut = try EmptyView().overlay(Text(text).padding(), alignment: .center)
-            .inspect().emptyView().overlay().text().string()
-        XCTAssertEqual(sut, text)
+            .inspect().emptyView().overlay().text()
+        XCTAssertEqual(try sut.string(), text)
+        XCTAssertEqual(sut.pathToRoot, "emptyView().overlay().text()")
     }
     
     func testOverlaySearch() throws {
@@ -148,8 +149,9 @@ final class ViewLayeringTests: XCTestCase {
     func testBackgroundInspection() throws {
         let text = "Abc"
         let sut = try EmptyView().background(Text(text), alignment: .center)
-            .inspect().emptyView().background().text().string()
-        XCTAssertEqual(sut, text)
+            .inspect().emptyView().background().text()
+        XCTAssertEqual(try sut.string(), text)
+        XCTAssertEqual(sut.pathToRoot, "emptyView().background().text()")
     }
     
     func testBackgroundSearch() throws {
