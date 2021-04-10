@@ -230,10 +230,13 @@ internal extension ViewSearch {
         init(name: String, builder: @escaping (UnwrappedView) throws -> UnwrappedView) {
             self.name = name
             self.builder = { parent in
-                let modifier = try builder(parent)
-                guard modifier is InspectableView<ViewType.ClassifiedView>
-                else { return modifier }
-                return try InspectableView<ViewType.ClassifiedView>(modifier.content, parent: modifier)
+                let view = try builder(parent)
+                if view.isTransitive {
+                    return try InspectableView<ViewType.ClassifiedView>(
+                        view.content, parent: view)
+                } else {
+                    return view
+                }
             }
         }
     }

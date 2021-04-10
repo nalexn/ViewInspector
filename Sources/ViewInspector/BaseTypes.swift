@@ -65,6 +65,7 @@ extension SupplementaryChildrenLabelView {
 public protocol KnownViewType {
     static var typePrefix: String { get }
     static var namespacedPrefixes: [String] { get }
+    static var isTransitive: Bool { get }
     static func inspectionCall(typeName: String) -> String
 }
 
@@ -74,6 +75,7 @@ public extension KnownViewType {
         guard !typePrefix.isEmpty else { return [] }
         return ["SwiftUI." + typePrefix]
     }
+    static var isTransitive: Bool { false }
     static func inspectionCall(typeName: String) -> String {
         let baseName = typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
         return "\(baseName)(\(ViewType.indexPlaceholder))"
@@ -112,7 +114,7 @@ internal extension ViewType {
 public struct Content {
     let view: Any
     let medium: Medium
-
+    
     internal init(_ view: Any, medium: Medium = .empty) {
         self.view = view
         self.medium = medium
@@ -125,49 +127,35 @@ internal extension Content {
         let viewModifiers: [Any]
         let environmentModifiers: [EnvironmentModifier]
         let environmentObjects: [AnyObject]
-        let alignment: Alignment?
-
+        
         static var empty: Medium {
             return .init(viewModifiers: [],
                          environmentModifiers: [],
-                         environmentObjects: [],
-                         alignment: nil
-                )
+                         environmentObjects: [])
         }
         
         func appending(viewModifier: Any) -> Medium {
             return .init(viewModifiers: viewModifiers + [viewModifier],
                          environmentModifiers: environmentModifiers,
-                         environmentObjects: environmentObjects,
-                         alignment: alignment)
+                         environmentObjects: environmentObjects)
         }
         
         func appending(environmentModifier: EnvironmentModifier) -> Medium {
             return .init(viewModifiers: viewModifiers,
                          environmentModifiers: environmentModifiers + [environmentModifier],
-                         environmentObjects: environmentObjects,
-                         alignment: alignment)
+                         environmentObjects: environmentObjects)
         }
         
         func appending(environmentObject: AnyObject) -> Medium {
             return .init(viewModifiers: viewModifiers,
                          environmentModifiers: environmentModifiers,
-                         environmentObjects: environmentObjects + [environmentObject],
-                         alignment: alignment)
-        }
-
-        func set(alignment: Alignment) -> Medium {
-            return .init(viewModifiers: viewModifiers,
-                environmentModifiers: environmentModifiers,
-                environmentObjects: environmentObjects,
-                alignment: alignment)
+                         environmentObjects: environmentObjects + [environmentObject])
         }
         
         func resettingViewModifiers() -> Medium {
             return .init(viewModifiers: [],
                          environmentModifiers: environmentModifiers,
-                         environmentObjects: environmentObjects,
-                         alignment: alignment)
+                         environmentObjects: environmentObjects)
         }
     }
 }

@@ -34,51 +34,10 @@ public extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
-
-    func overlay() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try contentForModifierLookup.overlay(parent: self)
-    }
-    
-    func background() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try contentForModifierLookup.background(parent: self)
-    }
     
     func zIndex() throws -> Double {
         return try modifierAttribute(
             modifierName: "ZIndexTraitKey", path: "modifier|value",
             type: Double.self, call: "zIndex")
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension Content {
-    
-    func overlay(parent: UnwrappedView) throws -> InspectableView<ViewType.ClassifiedView> {
-        let rootView = try modifierAttribute(
-            modifierName: "_OverlayModifier", path: "modifier|overlay",
-            type: Any.self, call: "overlay")
-
-        let alignment = try modifierAttribute(
-            modifierName: "_OverlayModifier", path: "modifier|alignment",
-            type: Alignment.self, call: "alignment")
-
-        let medium = self.medium.resettingViewModifiers().set(alignment: alignment)
-
-        return try .init(try Inspector.unwrap(content: Content(rootView, medium: medium)),
-                         parent: parent, call: "overlay()")
-    }
-    
-    func background(parent: UnwrappedView) throws -> InspectableView<ViewType.ClassifiedView> {
-        let rootView = try modifierAttribute(
-            modifierName: "_BackgroundModifier", path: "modifier|background",
-            type: Any.self, call: "background")
-
-        let alignment = try modifierAttribute(
-            modifierName: "_BackgroundModifier", path: "modifier|alignment",
-            type: Alignment.self, call: "alignment")
-
-        let medium = self.medium.resettingViewModifiers().set(alignment: alignment)
-        return try .init(try Inspector.unwrap(content: Content(rootView, medium: medium)),
-                         parent: parent, call: "background()")
     }
 }

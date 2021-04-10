@@ -65,10 +65,13 @@ internal protocol UnwrappedView {
     var inspectionCall: String { get }
     var inspectionIndex: Int? { get }
     var pathToRoot: String { get }
+    var isTransitive: Bool { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension InspectableView: UnwrappedView { }
+extension InspectableView: UnwrappedView {
+    var isTransitive: Bool { View.isTransitive }
+}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension UnwrappedView {
