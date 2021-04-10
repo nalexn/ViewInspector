@@ -39,7 +39,7 @@ public extension InspectableView {
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func find(link url: URL) throws -> InspectableView<ViewType.Link> {
         return try find(ViewType.Link.self, where: { view in
-            (try? view.url()) == url
+            try view.url() == url
         })
     }
     
@@ -83,8 +83,8 @@ public extension InspectableView {
                  locale: Locale = .testsDefault
     ) throws -> InspectableView<T> {
         return try find(ViewType.Text.self, where: { text in
-            (try? text.string(locale: locale)) == string &&
-            (try? text.find(T.self, relation: .parent)) != nil
+            try text.string(locale: locale) == string
+            && (try? text.find(T.self, relation: .parent)) != nil
         }).find(T.self, relation: .parent)
     }
     
@@ -95,7 +95,7 @@ public extension InspectableView {
         let view = try find(relation: relation, where: { view -> Bool in
             guard let typedView = try? view.asInspectableView(ofType: T.self)
             else { return false }
-            return (try? condition(typedView)) == true
+            return try condition(typedView)
         })
         return try view.asInspectableView(ofType: T.self)
     }
@@ -123,7 +123,7 @@ public extension InspectableView {
         return findAll(where: { view in
             guard let typedView = try? view.asInspectableView(ofType: T.self)
             else { return false }
-            return (try? condition(typedView)) == true
+            return try condition(typedView)
         }).compactMap({ try? $0.asInspectableView(ofType: T.self) })
     }
     
