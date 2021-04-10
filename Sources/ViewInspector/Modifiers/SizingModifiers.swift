@@ -25,6 +25,9 @@ public extension InspectableView {
     }
 
     func fixedAlignment() throws -> Alignment {
+        if let alignment = content.medium.alignment {
+            return alignment
+        }
         return try modifierAttribute(
             modifierName: "_FrameLayout", path: "modifier|alignment",
             type: Alignment.self, call: "frame(alignment:)")

@@ -112,7 +112,7 @@ internal extension ViewType {
 public struct Content {
     let view: Any
     let medium: Medium
-    
+
     internal init(_ view: Any, medium: Medium = .empty) {
         self.view = view
         self.medium = medium
@@ -125,35 +125,49 @@ internal extension Content {
         let viewModifiers: [Any]
         let environmentModifiers: [EnvironmentModifier]
         let environmentObjects: [AnyObject]
-        
+        let alignment: Alignment?
+
         static var empty: Medium {
             return .init(viewModifiers: [],
                          environmentModifiers: [],
-                         environmentObjects: [])
+                         environmentObjects: [],
+                         alignment: nil
+                )
         }
         
         func appending(viewModifier: Any) -> Medium {
             return .init(viewModifiers: viewModifiers + [viewModifier],
                          environmentModifiers: environmentModifiers,
-                         environmentObjects: environmentObjects)
+                         environmentObjects: environmentObjects,
+                         alignment: alignment)
         }
         
         func appending(environmentModifier: EnvironmentModifier) -> Medium {
             return .init(viewModifiers: viewModifiers,
                          environmentModifiers: environmentModifiers + [environmentModifier],
-                         environmentObjects: environmentObjects)
+                         environmentObjects: environmentObjects,
+                         alignment: alignment)
         }
         
         func appending(environmentObject: AnyObject) -> Medium {
             return .init(viewModifiers: viewModifiers,
                          environmentModifiers: environmentModifiers,
-                         environmentObjects: environmentObjects + [environmentObject])
+                         environmentObjects: environmentObjects + [environmentObject],
+                         alignment: alignment)
+        }
+
+        func set(alignment: Alignment) -> Medium {
+            return .init(viewModifiers: viewModifiers,
+                environmentModifiers: environmentModifiers,
+                environmentObjects: environmentObjects,
+                alignment: alignment)
         }
         
         func resettingViewModifiers() -> Medium {
             return .init(viewModifiers: [],
                          environmentModifiers: environmentModifiers,
-                         environmentObjects: environmentObjects)
+                         environmentObjects: environmentObjects,
+                         alignment: alignment)
         }
     }
 }
