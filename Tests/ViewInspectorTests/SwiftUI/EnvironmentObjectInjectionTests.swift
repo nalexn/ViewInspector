@@ -46,6 +46,7 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().find(text: "env_true"))
         try sut.inspect().find(button: "Flag").tap()
         XCTAssertNoThrow(try sut.inspect().find(text: "env_false"))
+        XCTAssertEqual(try sut.inspect().findAll(ViewType.Text.self).first?.string(), "env_false")
     }
     
     func testEnvironmentObjectInjectionOnDidAppearInspection() throws {
