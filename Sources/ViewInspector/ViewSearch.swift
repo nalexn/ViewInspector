@@ -8,6 +8,10 @@ public struct ViewSearch {
         case child
         case parent
     }
+    public enum Traversal {
+        case depthFirst
+        case breadthFirst
+    }
     public typealias Condition = (InspectableView<ViewType.ClassifiedView>) throws -> Bool
 }
 
@@ -90,24 +94,28 @@ public extension InspectableView {
     
     func find<T>(_ viewType: T.Type,
                  relation: ViewSearch.Relation = .child,
+                 traversal: ViewSearch.Traversal = .breadthFirst,
+                 skipFound: Int = 0,
                  where condition: (InspectableView<T>) throws -> Bool = { _ in true }
     ) throws -> InspectableView<T> where T: KnownViewType {
-        let view = try find(relation: relation, where: { view -> Bool in
-            guard let typedView = try? view.asInspectableView(ofType: T.self)
-            else { return false }
+        let view = try find(relation: relation, traversal: traversal, skipFound: skipFound, where: { view -> Bool in
+            let typedView = try view.asInspectableView(ofType: T.self)
             return try condition(typedView)
         })
         return try view.asInspectableView(ofType: T.self)
     }
     
     func find(relation: ViewSearch.Relation = .child,
+              traversal: ViewSearch.Traversal = .breadthFirst,
+              skipFound: Int = 0,
               where condition: ViewSearch.Condition
     ) throws -> InspectableView<ViewType.ClassifiedView> {
+        precondition(skipFound >= 0)
         switch relation {
         case .child:
-            return try findChild(condition: condition)
+            return try findChild(condition: condition, traversal: traversal, skipFound: skipFound)
         case .parent:
-            return try findParent(condition: condition)
+            return try findParent(condition: condition, skipFound: skipFound)
         }
     }
     
@@ -128,8 +136,14 @@ public extension InspectableView {
     }
     
     func findAll(where condition: ViewSearch.Condition) -> [InspectableView<ViewType.ClassifiedView>] {
-        return depthFirstFullTraversal(condition)
-            .compactMap { try? $0.asInspectableView() }
+        var results: [InspectableView<ViewType.ClassifiedView>] = []
+        depthFirstTraversal(condition, stopOnFoundMatch: { view in
+            if let view = try? view.asInspectableView() {
+                results.append(view)
+            }
+            return false
+        }, identificationFailure: { _ in })
+        return results
     }
 }
 
@@ -138,26 +152,44 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension UnwrappedView {
     
-    func findParent(condition: ViewSearch.Condition) throws -> InspectableView<ViewType.ClassifiedView> {
+    func findParent(condition: ViewSearch.Condition, skipFound: Int
+    ) throws -> InspectableView<ViewType.ClassifiedView> {
         var current = parentView
+        var counter = skipFound + 1
         while let parent = try? current?.asInspectableView() {
             if (try? condition(parent)) == true {
+                counter -= 1
+            }
+            if counter == 0 {
                 return parent
             }
             current = parent.parentView
         }
-        throw InspectionError.searchFailure(blockers: [])
+        throw InspectionError.searchFailure(skipped: skipFound + 1 - counter, blockers: [])
     }
     
-    func findChild(condition: ViewSearch.Condition) throws -> InspectableView<ViewType.ClassifiedView> {
+    func findChild(condition: ViewSearch.Condition,
+                   traversal: ViewSearch.Traversal,
+                   skipFound: Int
+    ) throws -> InspectableView<ViewType.ClassifiedView> {
         var unknownViews: [Any] = []
-        guard let result = breadthFirstSearch(condition, identificationFailure: { content in
+        var result: UnwrappedView?
+        var counter = skipFound + 1
+        traversal.search(in: self, condition: condition, stopOnFoundMatch: { view -> Bool in
+            counter -= 1
+            if counter == 0 {
+                result = view
+                return true
+            }
+            return false
+        }, identificationFailure: { content in
             unknownViews.append(content.view)
-        }) else {
-            let blockers = blockersDescription(unknownViews)
-            throw InspectionError.searchFailure(blockers: blockers)
+        })
+        if let result = result {
+            return try result.asInspectableView()
         }
-        return try result.asInspectableView()
+        let blockers = blockersDescription(unknownViews)
+        throw InspectionError.searchFailure(skipped: skipFound + 1 - counter, blockers: blockers)
     }
     
     func blockersDescription(_ views: [Any]) -> [String] {
@@ -173,8 +205,9 @@ private extension UnwrappedView {
         }
     }
     
-    func breadthFirstSearch(_ condition: ViewSearch.Condition,
-                            identificationFailure: (Content) -> Void) -> UnwrappedView? {
+    func breadthFirstTraversal(_ condition: ViewSearch.Condition,
+                               stopOnFoundMatch: (UnwrappedView) -> Bool,
+                               identificationFailure: (Content) -> Void) {
         var queue: [(isSingle: Bool, children: LazyGroup<UnwrappedView>)] = []
         queue.append((true, .init(count: 1, { _ in self })))
         while !queue.isEmpty {
@@ -185,51 +218,93 @@ private extension UnwrappedView {
                 guard let (identity, instance) = ViewSearch
                         .identifyAndInstantiate(view, index: index)
                 else {
-                    if (try? condition(try view.asInspectableView())) == true {
-                        return view
+                    if (try? condition(try view.asInspectableView())) == true,
+                       stopOnFoundMatch(view) {
+                        return
                     }
                     identificationFailure(view.content)
                     continue
                 }
-                if (try? condition(try instance.asInspectableView())) == true {
-                    return instance
+                if (try? condition(try instance.asInspectableView())) == true,
+                   stopOnFoundMatch(instance) {
+                    return
                 }
-                if let descendants = try? identity.children(instance), descendants.count > 0 {
+                if let descendants = try? identity.children(instance),
+                   descendants.count > 0 {
                     let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1
                     queue.append((isSingle, descendants))
                 }
-                if let descendants = try? identity.modifiers(instance), descendants.count > 0 {
+                if let descendants = try? identity.modifiers(instance),
+                   descendants.count > 0 {
                     queue.append((true, descendants))
                 }
-                if let descendants = try? identity.supplementary(instance), descendants.count > 0 {
+                if let descendants = try? identity.supplementary(instance),
+                   descendants.count > 0 {
                     queue.append((true, descendants))
                 }
             }
         }
-        return nil
     }
     
-    func depthFirstFullTraversal(isSingle: Bool = true, offset: Int = 0,
-                                 _ condition: ViewSearch.Condition) -> [UnwrappedView] {
-        
-        var result: [UnwrappedView] = []
-        if (try? condition(try self.asInspectableView())) == true {
-            result.append(self)
+    func depthFirstTraversal(_ condition: ViewSearch.Condition,
+                             stopOnFoundMatch: (UnwrappedView) -> Bool,
+                             identificationFailure: (Content) -> Void) {
+        var shouldContinue: Bool = true
+        depthFirstRecursion(shouldContinue: &shouldContinue, isSingle: true, offset: 0,
+                            condition: condition, stopOnFoundMatch: stopOnFoundMatch,
+                            identificationFailure: identificationFailure)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    func depthFirstRecursion(shouldContinue: inout Bool,
+                             isSingle: Bool, offset: Int,
+                             condition: ViewSearch.Condition,
+                             stopOnFoundMatch: (UnwrappedView) -> Bool,
+                             identificationFailure: (Content) -> Void) {
+    // swiftlint:enable function_parameter_count
+        if (try? condition(try self.asInspectableView())) == true,
+           stopOnFoundMatch(self) {
+            shouldContinue = false
         }
+        guard shouldContinue else { return }
         
         let index = isSingle ? nil : offset
-        guard let (identity, instance) = ViewSearch
-                .identifyAndInstantiate(self, index: index),
-              let descendants = try? identity.allDescendants(instance)
-        else { return result }
         
-        let isSingle = (identity.viewType is SingleViewContent.Type) && descendants.count == 1
+        guard let (identity, instance) = ViewSearch
+                .identifyAndInstantiate(self, index: index) else {
+            identificationFailure(self.content)
+            return
+        }
+        guard let descendants = try? identity.allDescendants(instance)
+        else { return }
+        
+        let isSingle = (identity.viewType is SingleViewContent.Type)
+            && descendants.count == 1
         
         for offset in 0..<descendants.count {
             guard let descendant = try? descendants.element(at: offset) else { continue }
-            let views = descendant.depthFirstFullTraversal(isSingle: isSingle, offset: offset, condition)
-            result.append(contentsOf: views)
+            descendant.depthFirstRecursion(
+                shouldContinue: &shouldContinue, isSingle: isSingle, offset: offset,
+                condition: condition, stopOnFoundMatch: stopOnFoundMatch,
+                identificationFailure: identificationFailure)
+            guard shouldContinue else { return }
         }
-        return result
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension ViewSearch.Traversal {
+    func search(in view: UnwrappedView,
+                condition: ViewSearch.Condition,
+                stopOnFoundMatch: (UnwrappedView) -> Bool,
+                identificationFailure: (Content) -> Void) {
+        switch self {
+        case .breadthFirst:
+            view.breadthFirstTraversal(condition, stopOnFoundMatch: stopOnFoundMatch,
+                                       identificationFailure: identificationFailure)
+        case .depthFirst:
+            view.depthFirstTraversal(condition, stopOnFoundMatch: stopOnFoundMatch,
+                                     identificationFailure: identificationFailure)
+        }
     }
 }
