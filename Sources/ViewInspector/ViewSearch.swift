@@ -350,6 +350,14 @@ private extension UnwrappedView {
             if name.hasPrefix("PopoverPresentationModifier") {
                 return "popover"
             }
+            if let inspectable = view as? Inspectable {
+                let missingObjects = inspectable.missingEnvironmentObjects
+                if missingObjects.count > 0 {
+                    return InspectionError
+                        .missingEnvironmentObjects(view: name, objects: missingObjects)
+                        .localizedDescription
+                }
+            }
             return name
         }
     }

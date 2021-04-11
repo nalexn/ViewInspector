@@ -79,6 +79,21 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         ViewHosting.host(view: sut.environmentObject(obj1).environmentObject(obj2))
         wait(for: [exp1, exp2], timeout: 0.5)
     }
+    
+    func testMissingEnvironmentObjectErrorForView() throws {
+        var sut = EnvironmentObjectInnerView()
+        XCTAssertThrows(try sut.inspect().find(ViewType.Text.self),
+            """
+            Search did not find a match. Possible blockers: EnvironmentObjectInnerView is \
+            missing EnvironmentObjects: [\"obj2: TestEnvObject2\", \"obj1: TestEnvObject1\"]
+            """)
+        sut.inject(environmentObject: TestEnvObject1())
+        XCTAssertThrows(try sut.inspect().find(ViewType.Text.self),
+            """
+            Search did not find a match. Possible blockers: EnvironmentObjectInnerView is \
+            missing EnvironmentObjects: [\"obj2: TestEnvObject2\"]
+            """)
+    }
 }
 
 // MARK: -
@@ -124,7 +139,23 @@ private struct EnvironmentObjectOuterView: View, Inspectable {
     
     var body: some View {
         EnvironmentObjectInnerView()
+            .modifier(EnvironmentObjectViewModifier())
             .onAppear { self.didAppear?(self) }
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct EnvironmentObjectViewModifier: ViewModifier, Inspectable {
+    private var iVar1: Bool = false
+    @EnvironmentObject var obj2: TestEnvObject2
+    @EnvironmentObject var obj1: TestEnvObject1
+    private var iVar2: Int8 = 0
+    
+    func body(content: Self.Content) -> some View {
+        VStack {
+            Text(obj1.value1 + "+\(obj2.value2)")
+            content
+        }
     }
 }
