@@ -12,6 +12,12 @@ public extension Inspectable where Self: View {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
         environmentObjects.forEach { copy.inject(environmentObject: $0) }
+        let missingObjects = copy.missingEnvironmentObjects
+        if missingObjects.count > 0 {
+            let view = Inspector.typeName(value: self)
+            throw InspectionError
+                .missingEnvironmentObjects(view: view, objects: missingObjects)
+        }
         return copy.body
     }
 }
@@ -21,6 +27,12 @@ public extension Inspectable where Self: ViewModifier {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
         environmentObjects.forEach { copy.inject(environmentObject: $0) }
+        let missingObjects = copy.missingEnvironmentObjects
+        if missingObjects.count > 0 {
+            let view = Inspector.typeName(value: self)
+            throw InspectionError
+                .missingEnvironmentObjects(view: view, objects: missingObjects)
+        }
         return copy.body(content: _ViewModifier_Content<Self>())
     }
 }
@@ -65,6 +77,7 @@ extension SupplementaryChildrenLabelView {
 public protocol KnownViewType {
     static var typePrefix: String { get }
     static var namespacedPrefixes: [String] { get }
+    static var isTransitive: Bool { get }
     static func inspectionCall(typeName: String) -> String
 }
 
@@ -74,6 +87,7 @@ public extension KnownViewType {
         guard !typePrefix.isEmpty else { return [] }
         return ["SwiftUI." + typePrefix]
     }
+    static var isTransitive: Bool { false }
     static func inspectionCall(typeName: String) -> String {
         let baseName = typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
         return "\(baseName)(\(ViewType.indexPlaceholder))"
@@ -179,9 +193,10 @@ public enum InspectionError: Swift.Error {
     case viewNotFound(parent: String)
     case parentViewNotFound(view: String)
     case modifierNotFound(parent: String, modifier: String)
+    case missingEnvironmentObjects(view: String, objects: [String])
     case notSupported(String)
     case textAttribute(String)
-    case searchFailure(blockers: [String])
+    case searchFailure(skipped: Int, blockers: [String])
     case gestureNotFound(parent: String)
     case callbackNotFound(parent: String, callback: String)
 }
@@ -205,17 +220,21 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
             return "\(view) does not have parent"
         case let .modifierNotFound(parent, modifier):
             return "\(parent) does not have '\(modifier)' modifier"
+        case let .missingEnvironmentObjects(view, objects):
+            return "\(view) is missing EnvironmentObjects: \(objects)"
         case let .notSupported(message), let .textAttribute(message):
             return message
-        case let .searchFailure(blockers):
-            let suffix = blockers.count == 0 ? "" :
+        case let .searchFailure(skipped, blockers):
+            let blockersDescription = blockers.count == 0 ? "" :
                 ". Possible blockers: \(blockers.joined(separator: ", "))"
             return "Search did not find a match" + suffix
+            let conclusion = skipped == 0 ?
+                "Search did not find a match" : "Search did only find \(skipped) matches"
+            return conclusion + blockersDescription
         case let .gestureNotFound(parent):
             return "Gesture for \(parent) is absent"
         case let .callbackNotFound(parent, callback):
             return "Callback \(callback) for parent \(parent) is absent"
-        }
     }
     
     public var errorDescription: String? {
@@ -242,7 +261,21 @@ extension BinaryEquatable {
 // MARK: - EnvironmentObject injection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspectable {
+internal extension Inspectable {
+    var missingEnvironmentObjects: [String] {
+        let prefix = "SwiftUI.EnvironmentObject<"
+        let mirror = Mirror(reflecting: self)
+        return mirror.children.compactMap {
+            let fullName = Inspector.typeName(value: $0.value, namespaced: true)
+            guard fullName.hasPrefix(prefix),
+                  (try? Inspector.attribute(path: "_store|some", value: $0.value)) == nil,
+                  let ivarName = $0.label
+            else { return nil }
+            var objName = Inspector.typeName(value: $0.value)
+            objName = objName[18..<objName.count - 1]
+            return "\(ivarName[1..<ivarName.count]): \(objName)"
+        }
+    }
     mutating func inject(environmentObject: AnyObject) {
         let type = "SwiftUI.EnvironmentObject<\(Inspector.typeName(value: environmentObject, namespaced: true))>"
         let mirror = Mirror(reflecting: self)
@@ -292,5 +325,15 @@ internal struct EnvObject {
     struct Forgery {
         let object: AnyObject?
         let seed: Int = 0
+    }
+}
+
+internal extension String {
+    subscript(intRange: Range<Int>) -> String {
+        let range = Range(uncheckedBounds: (lower: max(0, min(count, intRange.lowerBound)),
+                                            upper: min(count, max(0, intRange.upperBound))))
+        let start = index(startIndex, offsetBy: range.lowerBound)
+        let end = index(start, offsetBy: range.upperBound - range.lowerBound)
+        return String(self[start ..< end])
     }
 }

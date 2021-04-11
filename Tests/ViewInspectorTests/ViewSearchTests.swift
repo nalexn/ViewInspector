@@ -125,6 +125,22 @@ final class ViewSearchTests: XCTestCase {
                         "Search did not find a match")
     }
     
+    func testSkipFound() throws {
+        let testView = Test.MainView()
+        let depthOrdered = try testView.inspect().findAll(ViewType.Text.self)
+            .map { try $0.string() }
+        XCTAssertEqual(depthOrdered, ["Btn", "Test_en", "123", "xyz", "Modifier"])
+        for index in 0..<depthOrdered.count {
+            let string = try testView.inspect().find(ViewType.Text.self,
+                                                     traversal: .depthFirst,
+                                                     skipFound: index).string()
+            XCTAssertEqual(string, depthOrdered[index])
+        }
+        XCTAssertThrows(try testView.inspect().find(
+            ViewType.Text.self, traversal: .depthFirst, skipFound: depthOrdered.count),
+                        "Search did only find 5 matches")
+    }
+    
     func testFindLocalizedTextWithLocaleParameter() throws {
         let testView = Test.MainView()
         XCTAssertThrows(try testView.inspect().find(text: "Test"),
@@ -193,8 +209,11 @@ final class ViewSearchTests: XCTestCase {
     func testFindMatchingBlockerView() {
         let view = AnyView(Test.NonInspectableView().id(5))
         XCTAssertNoThrow(try view.inspect().find(viewWithId: 5))
-        XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self),
-                        "Search did not find a match. Possible blockers: NonInspectableView")
+        let err = "Search did not find a match. Possible blockers: NonInspectableView"
+        XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self,
+                                                traversal: .breadthFirst), err)
+        XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self,
+                                                traversal: .depthFirst), err)
     }
     
     func testConflictingViewTypeNames() throws {

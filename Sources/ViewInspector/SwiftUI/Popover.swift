@@ -5,6 +5,7 @@ public extension ViewType {
     
     struct Popover: KnownViewType {
         public static var typePrefix: String = ""
+        public static var isTransitive: Bool { true }
     }
 }
 

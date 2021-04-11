@@ -38,6 +38,14 @@ excluded: # paths to ignore during linting. overridden by `included`.
 identifier_name:
   min_length: 2
 
+file_length:
+  warning: 500
+  error: 1000
+
+function_parameter_count:
+  warning: 6
+  error: 10
+
 custom_rules:
   assert_throws_error:
     name: 'API usage'
