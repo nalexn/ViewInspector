@@ -225,16 +225,16 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
         case let .notSupported(message), let .textAttribute(message):
             return message
         case let .searchFailure(skipped, blockers):
-            let blockersDescription = blockers.count == 0 ? "" :
-                ". Possible blockers: \(blockers.joined(separator: ", "))"
-            return "Search did not find a match" + suffix
-            let conclusion = skipped == 0 ?
-                "Search did not find a match" : "Search did only find \(skipped) matches"
-            return conclusion + blockersDescription
+             let blockersDescription = blockers.count == 0 ? "" :
+                 ". Possible blockers: \(blockers.joined(separator: ", "))"
+             let conclusion = skipped == 0 ?
+                 "Search did not find a match" : "Search did only find \(skipped) matches"
+             return conclusion + blockersDescription
         case let .gestureNotFound(parent):
             return "Gesture for \(parent) is absent"
         case let .callbackNotFound(parent, callback):
             return "Callback \(callback) for parent \(parent) is absent"
+        }
     }
     
     public var errorDescription: String? {
