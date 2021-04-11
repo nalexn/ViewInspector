@@ -20,12 +20,31 @@ public struct ViewSearch {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
+    /**
+     Searches for a `Text` view containing the specified string
+
+      - Parameter text: The string to look up for
+      - Parameter locale: The locale for the string extraction.
+     Defaults to `testsDefault` (i.e. `Locale(identifier: "en")`)
+      - Throws: An error if the view cannot be found
+      - Returns: A found `Text` view
+     */
     func find(text: String,
               locale: Locale = .testsDefault
     ) throws -> InspectableView<ViewType.Text> {
         return try find(textWhere: { value, _ in value == text }, locale: locale)
     }
     
+    /**
+     Searches for a `Text` view matching a given condition, based on its string and attributes
+
+      - Parameter textWhere: The condition closure for detecting a matching `Text`.
+     Thrown errors are interpreted as "this view does not match"
+      - Parameter locale: The locale for the string extraction.
+     Defaults to `testsDefault` (i.e. `Locale(identifier: "en")`)
+      - Throws: An error if the view cannot be found
+      - Returns: A found `Text` view
+     */
     func find(textWhere condition: (String, ViewType.Text.Attributes) throws -> Bool,
               locale: Locale = .testsDefault
     ) throws -> InspectableView<ViewType.Text> {
@@ -34,12 +53,28 @@ public extension InspectableView {
         })
     }
     
+    /**
+     Searches for a `Button` view with matching title
+
+      - Parameter button: The title to look up for
+      - Parameter locale: The locale for the title extraction.
+     Defaults to `testsDefault` (i.e. `Locale(identifier: "en")`)
+      - Throws: An error if the view cannot be found
+      - Returns: A found `Button` view
+     */
     func find(button title: String,
               locale: Locale = .testsDefault
     ) throws -> InspectableView<ViewType.Button> {
         return try find(ViewType.Button.self, containing: title, locale: locale)
     }
     
+    /**
+     Searches for a `Link` view with matching `URL` parameter
+
+      - Parameter link: The `URL` to look up for
+      - Throws: An error if the view cannot be found
+      - Returns: A found `Link` view
+     */
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func find(link url: URL) throws -> InspectableView<ViewType.Link> {
         return try find(ViewType.Link.self, where: { view in
@@ -47,6 +82,15 @@ public extension InspectableView {
         })
     }
     
+    /**
+     Searches for a `Link` view with matching label parameter
+
+      - Parameter link: The string to look up for as Link's label
+      - Parameter locale: The locale for the label extraction.
+     Defaults to `testsDefault` (i.e. `Locale(identifier: "en")`)
+      - Throws: An error if the view cannot be found
+      - Returns: A found `Link` view
+     */
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func find(link label: String,
               locale: Locale = .testsDefault
@@ -54,20 +98,53 @@ public extension InspectableView {
         return try find(ViewType.Link.self, containing: label, locale: locale)
     }
     
+    /**
+     Searches for a `NavigationLink` view with matching label parameter
+
+      - Parameter navigationLink: The string to look up for
+      - Parameter locale: The locale for the label extraction.
+     Defaults to `testsDefault` (i.e. `Locale(identifier: "en")`)
+      - Throws: An error if the view cannot be found
+      - Returns: A found `NavigationLink` view
+     */
     func find(navigationLink string: String,
               locale: Locale = .testsDefault
     ) throws -> InspectableView<ViewType.NavigationLink> {
         return try find(ViewType.NavigationLink.self, containing: string, locale: locale)
     }
     
+    /**
+     Searches for a view with given `id`
+
+      - Parameter viewWithId: The `id` to look up for
+      - Throws: An error if the view cannot be found
+      - Returns: A found view
+     */
     func find(viewWithId id: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
         return try find { try $0.id() == id }
     }
     
+    /**
+     Searches for a view with given `tag`
+
+      - Parameter viewWithTag: The `tag` to look up for
+      - Throws: An error if the view cannot be found
+      - Returns: A found view
+     */
     func find(viewWithTag tag: AnyHashable) throws -> InspectableView<ViewType.ClassifiedView> {
         return try find { try $0.tag() == tag }
     }
     
+    /**
+     Searches for a view of a specific type that matches a given condition
+
+      - Parameter inspectable: Your custom `Inspectable` view type. For example: `ContentView.self`
+      - Parameter relation: The direction of the search. Defaults to `.child`
+      - Parameter where: The condition closure for detecting a matching view.
+     Thrown errors are interpreted as "this view does not match"
+      - Throws: An error if the view cannot be found
+      - Returns: A found view
+     */
     func find<V>(_ inspectable: V.Type,
                  relation: ViewSearch.Relation = .child,
                  where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
@@ -75,6 +152,16 @@ public extension InspectableView {
         return try find(ViewType.View<V>.self, relation: relation, where: condition)
     }
     
+    /**
+     Searches for a view of a specific type, which enclosed hierarchy contains a `Text` with the provided string
+
+      - Parameter inspectable: Your custom `Inspectable` view type. For example: `ContentView.self`
+      - Parameter containing: The string to look up for
+      - Parameter locale: The locale for the text extraction.
+     Defaults to `testsDefault` (i.e. `Locale(identifier: "en")`)
+      - Throws: An error if the view cannot be found
+      - Returns: A found view
+     */
     func find<V>(_ inspectable: V.Type,
                  containing string: String,
                  locale: Locale = .testsDefault
@@ -82,6 +169,16 @@ public extension InspectableView {
         return try find(ViewType.View<V>.self, containing: string, locale: locale)
     }
     
+    /**
+     Searches for a view of a specific type, which enclosed hierarchy contains a `Text` with the provided string
+
+      - Parameter viewType: The type of the view. For example: `ViewType.HStack.self`
+      - Parameter containing: The string to look up for
+      - Parameter locale: The locale for the text extraction.
+     Defaults to `testsDefault` (i.e. `Locale(identifier: "en")`)
+      - Throws: An error if the view cannot be found
+      - Returns: A found view
+     */
     func find<T>(_ viewType: T.Type,
                  containing string: String,
                  locale: Locale = .testsDefault
@@ -92,6 +189,18 @@ public extension InspectableView {
         }).find(T.self, relation: .parent)
     }
     
+    /**
+     Searches for a view of a specific type that matches a given condition
+
+      - Parameter viewType: The type of the view. For example: `ViewType.HStack.self`
+      - Parameter relation: The direction of the search. Defaults to `.child`
+      - Parameter traversal: The algorithm for view hierarchy traversal. Defaults to `.breadthFirst`
+      - Parameter skipFound: How many matching views to skip. Defaults to `0`
+      - Parameter where: The condition closure for detecting a matching view.
+     Thrown errors are interpreted as "this view does not match"
+      - Throws: An error if the view cannot be found
+      - Returns: A found view of the given type.
+     */
     func find<T>(_ viewType: T.Type,
                  relation: ViewSearch.Relation = .child,
                  traversal: ViewSearch.Traversal = .breadthFirst,
@@ -105,6 +214,17 @@ public extension InspectableView {
         return try view.asInspectableView(ofType: T.self)
     }
     
+    /**
+     Searches for a view that matches a given condition
+
+      - Parameter relation: The direction of the search. Defaults to `.child`
+      - Parameter traversal: The algorithm for view hierarchy traversal. Defaults to `.breadthFirst`
+      - Parameter skipFound: How many matching views to skip. Defaults to `0`
+      - Parameter where: The condition closure for detecting a matching view.
+     Thrown errors are interpreted as "this view does not match"
+      - Throws: An error if the view cannot be found
+      - Returns: A found view of the given type.
+     */
     func find(relation: ViewSearch.Relation = .child,
               traversal: ViewSearch.Traversal = .breadthFirst,
               skipFound: Int = 0,
@@ -119,12 +239,32 @@ public extension InspectableView {
         }
     }
     
+    /**
+     Searches for all the views of a specific type that match a given condition.
+     The hierarchy is traversed in depth-first order, meaning that you'll get views
+     ordered top-to-bottom as they appear in the code, regardless of their nesting depth.
+
+      - Parameter inspectable: Your custom `Inspectable` view type. For example: `ContentView.self`
+      - Parameter where: The condition closure for detecting a matching view.
+     Thrown errors are interpreted as "this view does not match"
+      - Returns: An array of all matching views or an empty array if none are found.
+     */
     func findAll<V>(_ inspectable: V.Type,
                     where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
     ) -> [InspectableView<ViewType.View<V>>] where V: Inspectable {
         return findAll(ViewType.View<V>.self, where: condition)
     }
     
+    /**
+     Searches for all the views of a specific type that match a given condition.
+     The hierarchy is traversed in depth-first order, meaning that you'll get views
+     ordered top-to-bottom as they appear in the code, regardless of their nesting depth.
+
+      - Parameter viewType: The type of the view. For example: `ViewType.HStack.self`
+      - Parameter where: The condition closure for detecting a matching view.
+     Thrown errors are interpreted as "this view does not match"
+      - Returns: An array of all matching views or an empty array if none are found.
+     */
     func findAll<T>(_ viewType: T.Type,
                     where condition: (InspectableView<T>) throws -> Bool = { _ in true }
     ) -> [InspectableView<T>] where T: KnownViewType {
@@ -135,6 +275,15 @@ public extension InspectableView {
         }).compactMap({ try? $0.asInspectableView(ofType: T.self) })
     }
     
+    /**
+     Searches for all the views that match a given condition.
+     The hierarchy is traversed in depth-first order, meaning that you'll get views
+     ordered top-to-bottom as they appear in the code, regardless of their nesting depth.
+
+      - Parameter where: The condition closure for detecting a matching view.
+     Thrown errors are interpreted as "this view does not match"
+      - Returns: An array of all matching views or an empty array if none are found.
+     */
     func findAll(where condition: ViewSearch.Condition) -> [InspectableView<ViewType.ClassifiedView>] {
         var results: [InspectableView<ViewType.ClassifiedView>] = []
         depthFirstTraversal(condition, stopOnFoundMatch: { view in
@@ -255,13 +404,11 @@ private extension UnwrappedView {
                             identificationFailure: identificationFailure)
     }
     
-    // swiftlint:disable function_parameter_count
     func depthFirstRecursion(shouldContinue: inout Bool,
                              isSingle: Bool, offset: Int,
                              condition: ViewSearch.Condition,
                              stopOnFoundMatch: (UnwrappedView) -> Bool,
                              identificationFailure: (Content) -> Void) {
-    // swiftlint:enable function_parameter_count
         if (try? condition(try self.asInspectableView())) == true,
            stopOnFoundMatch(self) {
             shouldContinue = false
