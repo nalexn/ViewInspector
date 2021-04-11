@@ -384,7 +384,8 @@ internal extension InspectableView {
             "_EndedGesture"               : "_body|content",
             "_MapGesture"                 : "_body|content",
             "_ModifiersGesture"           : "_body|content",
-            "GestureStateGesture"         : "base"
+            "GestureStateGesture"         : "base",
+            "Optional"                    : "some",
         ]
         return knownGestureModifiers[name]
     }
