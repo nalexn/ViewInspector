@@ -28,6 +28,7 @@
 		52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5298500125FF5B7A00C717AB /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6FEBEF4256AE732006C28F5 /* Test.strings */; };
+		52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A4A7632621F4AE0063E00B /* Overlay.swift */; };
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
@@ -232,6 +233,7 @@
 		5214802A25F803B7002D974D /* CustomStyleModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiers.swift; sourceTree = "<group>"; };
 		5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiersTests.swift; sourceTree = "<group>"; };
 		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				F605E76425606AA300DE9B07 /* Popover.swift */,
 				F6C15AA2254DA270000240F1 /* ProgressView.swift */,
 				F6684BFD23AA863400DECCB3 /* RadialGradient.swift */,
+				52A4A7632621F4AE0063E00B /* Overlay.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F6C15AB6254DB173000240F1 /* ScrollViewReader.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
@@ -835,7 +838,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if command -v swiftlint2 > /dev/null; then\n  swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\nelse\n  echo \"warning: swiftlint is not installed: 'brew install swiftlint'\"\nfi\n";
+			shellScript = "if command -v swiftlint > /dev/null; then\n  swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\nelse\n  echo \"warning: swiftlint is not installed: 'brew install swiftlint'\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -855,6 +858,7 @@
 				F6ECF6D623A695FB000FC591 /* ClassifiedView.swift in Sources */,
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
 				F6FB7F5825476431006658EF /* ColorPicker.swift in Sources */,
+				52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
 				F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */,

@@ -103,12 +103,25 @@ final class ViewLayeringTests: XCTestCase {
         let sut = EmptyView().overlay(Text(""), alignment: .center)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
-    
+
+    func testOverlayAlignmentIsCenter() throws {
+        let sut = EmptyView().overlay(Text(""), alignment: .center)
+        let overlay = try sut.inspect().emptyView().overlay()
+        XCTAssertEqual(try overlay.alignment(), .center)
+    }
+
+    func testOverlayAlignmentIsBottom() throws {
+        let sut = EmptyView().overlay(Text(""), alignment: .bottom)
+        let overlay = try sut.inspect().emptyView().overlay()
+        XCTAssertEqual(try overlay.alignment(), .bottom)
+    }
+
     func testOverlayInspection() throws {
         let text = "Abc"
         let sut = try EmptyView().overlay(Text(text).padding(), alignment: .center)
-            .inspect().emptyView().overlay().text().string()
-        XCTAssertEqual(sut, text)
+            .inspect().emptyView().overlay().text()
+        XCTAssertEqual(try sut.string(), text)
+        XCTAssertEqual(sut.pathToRoot, "emptyView().overlay().text()")
     }
     
     func testOverlaySearch() throws {
@@ -120,12 +133,25 @@ final class ViewLayeringTests: XCTestCase {
         let sut = EmptyView().background(Text(""), alignment: .center)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+
+    func testBackgroundAlignmentIsCenter() throws {
+        let sut = EmptyView().background(Text(""), alignment: .center)
+        let background = try sut.inspect().emptyView().background()
+        XCTAssertEqual(try background.alignment(), .center)
+    }
+
+    func testBackgroundAlignmentIsBottom() throws {
+        let sut = EmptyView().background(Text(""), alignment: .bottom)
+        let background = try sut.inspect().emptyView().background()
+        XCTAssertEqual(try background.alignment(), .bottom)
+    }
     
     func testBackgroundInspection() throws {
         let text = "Abc"
         let sut = try EmptyView().background(Text(text), alignment: .center)
-            .inspect().emptyView().background().text().string()
-        XCTAssertEqual(sut, text)
+            .inspect().emptyView().background().text()
+        XCTAssertEqual(try sut.string(), text)
+        XCTAssertEqual(sut.pathToRoot, "emptyView().background().text()")
     }
     
     func testBackgroundSearch() throws {

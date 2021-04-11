@@ -180,15 +180,19 @@ This function accepts either `Inspectable` custom view or types like `ViewType.H
 
 #### Generic `find` function
 
-Don't be freaked out by the number of different `find` functions, in fact, they all are based on just one most generic version, that only takes the `relation` and `where` parameters:
+All the `find` functions are based on one most generic version, that takes the `relation`, `traversal`, `skipFound` and `where` parameters:
 
 ```swift
 let text = try sut.inspect()
-    .find(where: {
+    .find(relation: .child, traversal: .breadthFirst, skipFound: 2, where: {
         try $0.text().string() == "abc"
     })
     .text()
 ```
+
+The parameter `traversal` allows you to toggle between "breadth-first" and "depth-first" traversal algorithms (defaults to `breadthFirst`).
+
+The parameter `skipFound` is the number of matches you want to skip before returning the matching view you need (defaults to 0).
 
 The condition is called with an anonymous view, giving you the flexibility of either unwrapping it for verifying it's type or just assuring a certain modifier is applied.
 
