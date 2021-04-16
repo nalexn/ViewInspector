@@ -2840,6 +2840,92 @@ final class GestureExampleTests: XCTestCase {
     #endif
 }
 
+@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
+final class ComposedGestureExampleTests: XCTestCase {
+    
+    func testComposedGestureFirst() throws {
+        let sut = TestGestureView10()
+        let exp1 = sut.inspection.inspect { view in
+            let simultaneousGesture = try view
+                .vStack()
+                .image(0)
+                .gesture(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
+            let magnificationGesture = try simultaneousGesture
+                .first(MagnificationGesture.self)
+            let value = MagnificationGesture.Value(2.0)
+            try magnificationGesture.gestureCallChanged(value: value)
+            sut.publisher.send()
+        }
+        
+        let exp2 = sut.inspection.inspect { view in
+            XCTAssertEqual(try view.actualView().scale, 2.0)
+        }
+
+        ViewHosting.host(view: sut)
+        wait(for: [exp1, exp2], timeout: 0.1)
+    }
+
+    func testComposedGestureSecond() throws {
+        let sut = TestGestureView10()
+        let exp1 = sut.inspection.inspect { view in
+            let simultaneousGesture = try view
+                .vStack()
+                .image(0)
+                .gesture(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
+            let rotationGesture = try simultaneousGesture
+                .second(RotationGesture.self)
+            let value = RotationGesture.Value(angle: Angle(degrees: 5))
+            try rotationGesture.gestureCallChanged(value: value)
+            sut.publisher.send()
+        }
+        
+        let exp2 = sut.inspection.inspect { view in
+            XCTAssertEqual(try view.actualView().angle, Angle(degrees: 5))
+        }
+
+        ViewHosting.host(view: sut)
+        wait(for: [exp1, exp2], timeout: 0.1)
+    }
+    
+    func testComposedGestureAltFirst() throws {
+        let sut = TestGestureView11()
+        let exp1 = sut.inspection.inspect { view in
+            let simultaneousGesture = try view
+                .vStack()
+                .image(0)
+                .gesture(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
+            let magnificationGesture = try simultaneousGesture
+                .first(MagnificationGesture.self)
+            let value = MagnificationGesture.Value(2.0)
+            try magnificationGesture.gestureCallChanged(value: value)
+            sut.publisher.send()
+        }
+        
+        let exp2 = sut.inspection.inspect { view in
+            XCTAssertEqual(try view.actualView().scale, 2.0)
+        }
+
+        ViewHosting.host(view: sut)
+        wait(for: [exp1, exp2], timeout: 0.1)
+    }
+    
+    func testComposedGestureComplex() throws {
+        let sut = TestGestureView12()
+        let exp = sut.inspection.inspect { view in
+            let outerSimultaneousGesture = try view
+                .vStack()
+                .image(0)
+                .gesture(SimultaneousGesture<SimultaneousGesture<MagnificationGesture, RotationGesture>, DragGesture>.self)
+            let innerSimultaneousGesture = try outerSimultaneousGesture.first(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
+            XCTAssertNoThrow(try innerSimultaneousGesture.first(MagnificationGesture.self))
+        }
+
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TestGestureView1: View & Inspectable {
     @State var tapped = false
         
@@ -2854,6 +2940,7 @@ struct TestGestureView1: View & Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TestGestureView2: View & Inspectable {
     @State var tapped = false
         
@@ -2868,6 +2955,7 @@ struct TestGestureView2: View & Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TestGestureView3: View & Inspectable {
     @State var tapped = false
         
@@ -2882,6 +2970,7 @@ struct TestGestureView3: View & Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TestGestureView4: View & Inspectable {
     @State var isDragging = false
     
@@ -2897,6 +2986,7 @@ struct TestGestureView4: View & Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TestGestureView5: View & Inspectable {
     @GestureState var isDetectingLongPress = false
 
@@ -2918,6 +3008,7 @@ struct TestGestureView5: View & Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TestGestureView6: View & Inspectable {
     @GestureState var isDetectingLongPress = false
     @State var totalNumberOfTaps = 0
@@ -2951,6 +3042,7 @@ struct TestGestureView6: View & Inspectable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TestGestureView7: View & Inspectable {
     @GestureState var isDetectingLongPress = false
     @State var totalNumberOfTaps = 0
@@ -2984,7 +3076,7 @@ struct TestGestureView7: View & Inspectable {
     }
 }
 
-#if os(macOS)
+@available(macOS 10.15, *)
 struct TestGestureView8: View & Inspectable {
     @State var tapped = false
         
@@ -3000,8 +3092,8 @@ struct TestGestureView8: View & Inspectable {
             .gesture(gesture)
     }
 }
-#endif
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TestGestureView9: View & Inspectable {
     @State var tapped = false
         
@@ -3013,5 +3105,92 @@ struct TestGestureView9: View & Inspectable {
             .fill(self.tapped ? Color.blue : Color.red)
             .frame(width: 10, height: 10)
             .gesture(gesture, including: .gesture)
+    }
+}
+
+@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
+struct TestGestureView10: View & Inspectable {
+    @State var scale: CGFloat = 1.0
+    @State var angle = Angle(degrees: 0)
+    
+    internal let inspection = Inspection<Self>()
+    internal let publisher = PassthroughSubject<Void, Never>()
+
+    var body: some View {
+        let magnificationGesture = MagnificationGesture()
+            .onChanged { value in self.scale = value.magnitude }
+        
+        let rotationGesture = RotationGesture()
+            .onChanged { value in self.angle = value }
+        
+        let gesture = SimultaneousGesture(magnificationGesture, rotationGesture)
+        
+        VStack {
+            Image(systemName: "star.circle.fill")
+                .font(.system(size: 200))
+                .foregroundColor(Color.red)
+                .gesture(gesture)
+                .rotationEffect(angle)
+                .scaleEffect(scale)
+                .animation(.easeInOut)
+       }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .onReceive(publisher) { }
+    }
+}
+
+@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
+struct TestGestureView11: View & Inspectable {
+    @State var scale: CGFloat = 1.0
+    @State var angle = Angle(degrees: 0)
+    
+    internal let inspection = Inspection<Self>()
+    internal let publisher = PassthroughSubject<Void, Never>()
+
+    var body: some View {
+        let rotationGesture = RotationGesture()
+            .onChanged { value in self.angle = value }
+        
+        let gesture = MagnificationGesture()
+            .onChanged { value in self.scale = value.magnitude }
+            .simultaneously(with: rotationGesture)
+                
+        VStack {
+            Image(systemName: "star.circle.fill")
+                .font(.system(size: 200))
+                .foregroundColor(Color.red)
+                .gesture(gesture)
+                .rotationEffect(angle)
+                .scaleEffect(scale)
+                .animation(.easeInOut)
+       }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .onReceive(publisher) { }
+    }
+}
+
+@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
+struct TestGestureView12: View & Inspectable {
+    
+    internal let inspection = Inspection<Self>()
+    internal let publisher = PassthroughSubject<Void, Never>()
+    
+    var body: some View {
+        let rotationGesture = RotationGesture()
+        let magnificationGesture = MagnificationGesture()
+        let dragGesture = DragGesture()
+        
+        let gesture = SimultaneousGesture(
+            SimultaneousGesture(magnificationGesture, rotationGesture),
+            dragGesture)
+        
+        VStack {
+            Image(systemName: "star.circle.fill")
+                .font(.system(size: 200))
+                .foregroundColor(Color.red)
+                .gesture(gesture)
+        }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .onReceive(publisher) { }
     }
 }

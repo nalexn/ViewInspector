@@ -1351,3 +1351,165 @@ func testGestureModifiers() throws {
 Observe that `gestureModifiers()` finds all keyboard combined with a gesture and returns
 the aggregated `EventModifiers`.
 
+### **Composed Gestures**
+
+An application can compose more complex gestures from the simple gestures that ship with
+SwiftUI, including `DragGesture`, `LongPressGesture`, `MagnificationGesture`,
+`RotationGesture`, and `TapGesture`. **ViewInspector** provides a number of methods to
+traverse composed gestures.
+
+If a test inspects a gesture using `gesture(_:)`, `highPriorityGesture(_:)`, or 
+`simultaneousGesture(_:)`, and the gesture is a composed gesture (i.e., it is an
+`ExclusiveGesture`, `SequenceGesture`, or `SimultaneousGesture`), then the test
+can use the following methods for this gesture:
+* `gestureProperties(_:)`: To obtain the properties of the composed gesture.
+* `gestureModifiers(_:)`: To obtain keyboard modifiers for the composed gesture.
+* `gestureCallUpdating(value:state:transacation:)`: To invoke updating callbacks
+attached to the composed gesture.
+* `gestureCallEnded(value:)`: To invoke ended callbacks attached to the composed
+gesture.
+
+However, these methods only provide access to the composed gesture, as opposed to the
+gestures in the composition. To access the gestures in the composition, consider the following
+view:
+
+```Swift
+@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
+struct TestGestureView10: View & Inspectable {
+    @State var scale: CGFloat = 1.0
+    @State var angle = Angle(degrees: 0)
+    
+    internal let inspection = Inspection<Self>()
+    internal let publisher = PassthroughSubject<Void, Never>()
+
+    var body: some View {
+        let magnificationGesture = MagnificationGesture()
+            .onChanged { value in self.scale = value.magnitude }
+        
+        let rotationGesture = RotationGesture()
+            .onChanged { value in self.angle = value }
+        
+        let gesture = SimultaneousGesture(magnificationGesture, rotationGesture)
+        
+        VStack {
+            Image(systemName: "star.circle.fill")
+                .font(.system(size: 200))
+                .foregroundColor(Color.red)
+                .gesture(gesture)
+                .rotationEffect(angle)
+                .scaleEffect(scale)
+                .animation(.easeInOut)
+                .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+                .onReceive(publisher) { }
+       }
+    }
+}
+```
+
+Think of a gesture composition as a binary tree. In this example, the view uses a gesture
+composition where the root is a simultaneous gesture containing two children: a magnification
+gesture and a rotation gesture. A test can inspect the first (or left) gesture of composed 
+gesture using the `first(_:)` method:
+
+```Swift
+func testComposedGestureFirst() throws {
+    let sut = TestGestureView10()
+    let exp1 = sut.inspection.inspect { view in
+        let simultaneousGesture = try view
+            .vStack()
+            .image(0)
+            .gesture(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
+        let magnificationGesture = try simultaneousGesture
+            .first(MagnificationGesture.self)
+        let value = MagnificationGesture.Value(2.0)
+        try magnificationGesture.gestureCallChanged(value: value)
+        sut.publisher.send()
+    }
+    
+    let exp2 = sut.inspection.inspect { view in
+        XCTAssertEqual(try view.actualView().scale, 2.0)
+    }
+
+    ViewHosting.host(view: sut)
+    wait(for: [exp1, exp2], timeout: 0.1)
+}
+```
+
+A test can inspect the second (or right) gesture of a composed gesture using the `second(_:)`
+method:
+
+```Swift
+func testComposedGestureSecond() throws {
+    let sut = TestGestureView10()
+    let exp1 = sut.inspection.inspect { view in
+        let simultaneousGesture = try view
+            .vStack()
+            .image(0)
+            .gesture(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
+        let rotationGesture = try simultaneousGesture
+            .second(RotationGesture.self)
+        let value = RotationGesture.Value(angle: Angle(degrees: 5))
+        try rotationGesture.gestureCallChanged(value: value)
+        sut.publisher.send()
+    }
+    
+    let exp2 = sut.inspection.inspect { view in
+        XCTAssertEqual(try view.actualView().angle, Angle(degrees: 5))
+    }
+
+    ViewHosting.host(view: sut)
+    wait(for: [exp1, exp2], timeout: 0.1)
+}
+```
+
+This method of inspecting more gesture compositions works as well. For example, the following
+view uses a gesture composed of three simple gestures. While the gesture itself isn't wired 
+into the view, the example is useful for demonstration purposes:
+
+```Swift
+@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
+struct TestGestureView12: View & Inspectable {
+    
+    internal let inspection = Inspection<Self>()
+    internal let publisher = PassthroughSubject<Void, Never>()
+    
+    var body: some View {
+        let rotationGesture = RotationGesture()
+        let magnificationGesture = MagnificationGesture()
+        let dragGesture = DragGesture()
+        
+        let gesture = SimultaneousGesture(
+            SimultaneousGesture(magnificationGesture, rotationGesture),
+            dragGesture)
+        
+        VStack {
+            Image(systemName: "star.circle.fill")
+                .font(.system(size: 200))
+                .foregroundColor(Color.red)
+                .gesture(gesture)
+        }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .onReceive(publisher) { }
+    }
+}
+```
+
+The following test demonstrates how to inspect the magnification gesture contained by the
+gesture composition:
+
+```Swift
+func testComposedGestureComplex() throws {
+    let sut = TestGestureView12()
+    let exp = sut.inspection.inspect { view in
+        let outerSimultaneousGesture = try view
+            .vStack()
+            .image(0)
+            .gesture(SimultaneousGesture<SimultaneousGesture<MagnificationGesture, RotationGesture>, DragGesture>.self)
+        let innerSimultaneousGesture = try outerSimultaneousGesture.first(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
+        XCTAssertNoThrow(try innerSimultaneousGesture.first(MagnificationGesture.self))
+    }
+
+    ViewHosting.host(view: sut)
+    wait(for: [exp], timeout: 0.1)
+}
+```
