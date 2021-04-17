@@ -247,9 +247,10 @@ internal extension Content {
     }
 
     func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
-        let modifiers = medium.viewModifiers.lazy
+        let modifiers: [ModifierNameProvider] = medium.viewModifiers.lazy
             .compactMap({ $0 as? ModifierNameProvider })
             .filter(modifierLookup)
+            .reversed()
 
         if index < modifiers.count {
             return modifiers[index]
