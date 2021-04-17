@@ -95,7 +95,8 @@ public extension InspectableView {
                 }
             }
         }
-        throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: self), modifier: "padding")
+        throw InspectionError.modifierNotFound(
+            parent: Inspector.typeName(value: self), modifier: "padding", index: 0)
     }
 
     func hasPadding(_ edge: Edge.Set = .all)  throws -> Bool {

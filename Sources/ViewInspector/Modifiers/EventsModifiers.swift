@@ -17,18 +17,12 @@ public extension InspectableView {
         callback()
     }
 
-    func callOnChange<E: Equatable>(newValue value: E, index: UInt = 0) throws {
-        let modifierName = "_ValueActionModifier<\(type(of: value))>"
-        let path = "modifier|action"
-        let call = "onChange"
-
+    func callOnChange<E: Equatable>(newValue value: E, index: Int = 0) throws {
         let callback = try modifierAttribute(
-            modifierName: modifierName,
-            path: path,
+            modifierName: "_ValueActionModifier<\(type(of: value))>",
+            path: "modifier|action",
             type: ((E) -> Void).self,
-            call: call,
-            index: Int(index))
-
+            call: "onChange", index: index)
         callback(value)
     }
 }

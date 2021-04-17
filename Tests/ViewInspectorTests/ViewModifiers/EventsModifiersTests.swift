@@ -14,7 +14,7 @@ final class ViewEventsTests: XCTestCase {
     }
     
     func testOnAppearInspection() throws {
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().padding().onAppear {
             exp.fulfill()
         }.padding().onDisappear(perform: { })
@@ -28,7 +28,7 @@ final class ViewEventsTests: XCTestCase {
     }
     
     func testOnDisappearInspection() throws {
-        let exp = XCTestExpectation(description: "onDisappear")
+        let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().onAppear(perform: { }).padding()
             .onDisappear {
                 exp.fulfill()
@@ -37,35 +37,35 @@ final class ViewEventsTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
 
-    @available(iOS 14.0, *)
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func testOnChange() throws {
         let val = ""
         let sut = EmptyView().onChange(of: val) { value in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 
-    @available(iOS 14.0, *)
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func testOnChangeInspection() throws {
         let val = "initial"
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().padding().onChange(of: val) { [val] value in
-            exp.fulfill()
             XCTAssertEqual(val, "initial")
             XCTAssertEqual(value, "expected")
+            exp.fulfill()
         }.padding()
         try sut.inspect().emptyView().callOnChange(newValue: "expected")
         wait(for: [exp], timeout: 0.1)
     }
 
-    @available(iOS 14.0, *)
-    func testOnChangeInspectionWithMultipleOnChangeModifiersOfTheSameType() throws {
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    func testMultipleOnChangeModifiersSameTypeCallFirst() throws {
         var val = "initial"
         let other = ""
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().padding().onChange(of: val) { [val] value in
-            exp.fulfill()
             XCTAssertEqual(val, "initial")
             XCTAssertEqual(value, "expected")
+            exp.fulfill()
         }.onChange(of: other) { value in
             XCTFail("This should never have been called")
         }.padding()
@@ -74,21 +74,40 @@ final class ViewEventsTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
 
-    @available(iOS 14.0, *)
-    func testOnChangeInspectionWithMultipleOnChangeModifiersOfTheSameType_CanCallOnChangeByIndex() throws {
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    func testMultipleOnChangeModifiersSameTypeCallByIndex() throws {
         var val = "initial"
         let other = ""
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().padding().onChange(of: other) { value in
             XCTFail("This should never have been called")
         }.onChange(of: val) { [val] value in
-            exp.fulfill()
             XCTAssertEqual(val, "initial")
             XCTAssertEqual(value, "expected")
+            exp.fulfill()
         }.padding()
         val = "expected"
         try sut.inspect().emptyView().callOnChange(newValue: val, index: 1)
+        XCTAssertThrows(try sut.inspect().emptyView().callOnChange(newValue: val, index: 2),
+                        "EmptyView does not have 'onChange' modifier at index 2")
         wait(for: [exp], timeout: 0.1)
+    }
+    
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    func testMultipleOnChangeModifiersDifferentTypes() throws {
+        let exp1 = XCTestExpectation(description: "onChange1")
+        let exp2 = XCTestExpectation(description: "onChange2")
+        [exp1, exp2].forEach {
+            $0.assertForOverFulfill = true
+        }
+        let sut = EmptyView().padding().onChange(of: "str") { value in
+            exp1.fulfill()
+        }.onChange(of: 1) { value in
+            exp2.fulfill()
+        }.padding()
+        try sut.inspect().emptyView().callOnChange(newValue: "abc")
+        try sut.inspect().emptyView().callOnChange(newValue: 5)
+        wait(for: [exp1, exp2], timeout: 0.1)
     }
 }
 

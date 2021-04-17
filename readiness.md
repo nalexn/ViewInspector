@@ -294,7 +294,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 | Status | Modifier |
 |:---:|---|
 |:heavy_check_mark:| `func onReceive<P>(P, perform: (P.Output) -> Void) -> some View` |
-|:technologist:| `func onChange<V>(of: V, perform: (V) -> Void) -> some View` |
+|:white_check_mark:| `func onChange<V>(of: V, perform: (V) -> Void) -> some View` |
 
 ### Handling Keyboard Shortcuts
 

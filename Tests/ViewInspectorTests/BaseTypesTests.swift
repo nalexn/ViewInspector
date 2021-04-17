@@ -13,14 +13,18 @@ final class BaseTypesTests: XCTestCase {
         let desc3 = InspectionError.viewIndexOutOfBounds(index: 5, count: 3)
             .localizedDescription
         let desc4 = InspectionError.viewNotFound(parent: "Optional<Text>").localizedDescription
-        let desc5 = InspectionError.modifierNotFound(parent: "Text", modifier: "onAppear").localizedDescription
+        let desc51 = InspectionError
+            .modifierNotFound(parent: "Text", modifier: "onAppear", index: 0).localizedDescription
+        let desc52 = InspectionError
+            .modifierNotFound(parent: "Text", modifier: "onAppear", index: 3).localizedDescription
         let desc6 = InspectionError.notSupported("Not supported").localizedDescription
         let desc7 = InspectionError.textAttribute("Not found").localizedDescription
         XCTAssertEqual(desc1, "Type mismatch: 1 is not 2")
         XCTAssertEqual(desc2, "2 does not have '1' attribute")
         XCTAssertEqual(desc3, "Enclosed view index '5' is out of bounds: '0 ..< 3'")
         XCTAssertEqual(desc4, "View for Optional<Text> is absent")
-        XCTAssertEqual(desc5, "Text does not have 'onAppear' modifier")
+        XCTAssertEqual(desc51, "Text does not have 'onAppear' modifier")
+        XCTAssertEqual(desc52, "Text does not have 'onAppear' modifier at index 3")
         XCTAssertEqual(desc6, "Not supported")
         XCTAssertEqual(desc7, "Not found")
     }

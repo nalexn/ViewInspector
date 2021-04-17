@@ -242,7 +242,7 @@ public extension ViewType.Text {
                 return nil
             }
             guard let trait = traits.first else {
-                throw InspectionError.modifierNotFound(parent: "Text", modifier: name)
+                throw InspectionError.modifierNotFound(parent: "Text", modifier: name, index: 0)
             }
             guard traits.count == chunks.count else {
                 throw InspectionError.textAttribute("Modifier '\(name)' is applied only to a subrange")

@@ -30,6 +30,7 @@
 		5298500125FF5B7A00C717AB /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6FEBEF4256AE732006C28F5 /* Test.strings */; };
 		52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A4A7632621F4AE0063E00B /* Overlay.swift */; };
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
+		52D37480262B1F0C00B1BFBA /* NestedModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
 		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
@@ -235,6 +236,7 @@
 		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
+		52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModifiersTests.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
 		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
@@ -664,6 +666,7 @@
 				F6ECF6C323A66BF6000FC591 /* EventsModifiersTests.swift */,
 				F6ECF6C123A66B42000FC591 /* GestureModifiersTests.swift */,
 				F6ECF6C523A66D98000FC591 /* InteractionModifiersTests.swift */,
+				52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */,
 				F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */,
 				F6ECF6CF23A67D11000FC591 /* SizingModifiersTests.swift */,
 				F6DB5A0A253510CC0056FC83 /* TextInputModifiersTests.swift */,
@@ -1028,6 +1031,7 @@
 				F609EFC523A4350700B9256A /* IDViewTests.swift in Sources */,
 				F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */,
 				F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */,
+				52D37480262B1F0C00B1BFBA /* NestedModifiersTests.swift in Sources */,
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
 				F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */,
 				F6ECF6CC23A6702B000FC591 /* AnimationModifiersTests.swift in Sources */,

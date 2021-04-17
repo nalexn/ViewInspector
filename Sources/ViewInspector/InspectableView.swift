@@ -241,14 +241,14 @@ internal extension Content {
         guard let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
             throw InspectionError.modifierNotFound(
-                parent: Inspector.typeName(value: self.view), modifier: call)
+                parent: Inspector.typeName(value: self.view), modifier: call, index: index)
         }
         return attribute
     }
 
     func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
         let modifiers: [ModifierNameProvider] = medium.viewModifiers.lazy
-            .compactMap({ $0 as? ModifierNameProvider })
+            .compactMap { $0 as? ModifierNameProvider }
             .filter(modifierLookup)
             .reversed()
 
@@ -256,8 +256,7 @@ internal extension Content {
             return modifiers[index]
         }
         throw InspectionError.modifierNotFound(
-            parent: Inspector.typeName(value: self.view), modifier: call)
-
+            parent: Inspector.typeName(value: self.view), modifier: call, index: index)
     }
 }
 
