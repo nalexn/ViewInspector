@@ -66,8 +66,7 @@ extension TapGesture: Inspectable {}
 public extension InspectableView {
     
     func gesture<T>(_ type: T.Type, _ index: Int = 0) throws -> InspectableView<ViewType.Gesture<T>>
-    where T: Gesture & Inspectable
-    {
+        where T: Gesture & Inspectable {
         return try gestureModifier(
             modifierName: "AddGestureModifier",
             path: "modifier",
@@ -77,8 +76,7 @@ public extension InspectableView {
     }
     
     func highPriorityGesture<T>(_ type: T.Type, _ index: Int = 0) throws -> InspectableView<ViewType.Gesture<T>>
-    where T: Gesture & Inspectable
-    {
+        where T: Gesture & Inspectable {
         return try gestureModifier(
             modifierName: "HighPriorityGestureModifier",
             path: "modifier",
@@ -88,8 +86,7 @@ public extension InspectableView {
     }
     
     func simultaneousGesture<T>(_ type: T.Type, _ index: Int = 0) throws -> InspectableView<ViewType.Gesture<T>>
-    where T: Gesture & Inspectable
-    {
+        where T: Gesture & Inspectable {
         return try gestureModifier(
             modifierName: "SimultaneousGestureModifier",
             path: "modifier",
@@ -117,9 +114,8 @@ public extension InspectableView {
     func gestureCallUpdating<Value, State>(
         value: Value,
         state: inout State,
-        transaction: inout Transaction) throws
-    {
-        typealias Callback = (Value, inout State, inout Transaction) -> ()
+        transaction: inout Transaction) throws {
+        typealias Callback = (Value, inout State, inout Transaction) -> Void
         let callbacks = try gestureCallbacks(
             name: "GestureStateGesture",
             path: "body",
@@ -130,7 +126,7 @@ public extension InspectableView {
     }
     
     func gestureCallChanged<Value>(value: Value) throws {
-        typealias Callback = (Value) -> ()
+        typealias Callback = (Value) -> Void
         let callbacks = try gestureCallbacks(
             name: "_ChangedGesture",
             path: "_body|modifier|callbacks|changed",
@@ -141,7 +137,7 @@ public extension InspectableView {
     }
     
     func gestureCallEnded<Value>(value: Value) throws {
-        typealias Callback = (Value) -> ()
+        typealias Callback = (Value) -> Void
         let callbacks = try gestureCallbacks(
             name: "_EndedGesture",
             path: "_body|modifier|callbacks|ended",
@@ -152,8 +148,7 @@ public extension InspectableView {
     }
 
     func gestureProperties<T>() throws -> T
-    where T: Gesture & Inspectable, View == ViewType.Gesture<T>
-    {
+        where T: Gesture & Inspectable, View == ViewType.Gesture<T> {
         let typeName = Inspector.typeName(type: T.self)
         let valueName = Inspector.typeName(value: content.view)
         guard let (_, modifiers) = gestureName(typeName, valueName) else {
@@ -204,8 +199,7 @@ internal extension InspectableView {
         type: T.Type,
         call: String,
         index: Int = 0) throws -> InspectableView<ViewType.Gesture<T>>
-    where T: Gesture, T: Inspectable
-    {
+        where T: Gesture, T: Inspectable {
         let typeName = Inspector.typeName(type: type)
         let modifierCall = ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: index)
 
@@ -214,7 +208,8 @@ internal extension InspectableView {
             throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: content.view), modifier: call)
         }
         
-        let rootView = try modifierAttribute(modifierName: modifierName, path: path, type: Any.self, call: modifierCall, index: count - 1 - index)
+        let rootView = try modifierAttribute(modifierName: modifierName, path: path, type: Any.self,
+                                             call: modifierCall, index: count - 1 - index)
         
         guard let (name, _) = gestureName(typeName, Inspector.typeName(value: rootView)) else {
             throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
@@ -223,7 +218,9 @@ internal extension InspectableView {
             throw InspectionError.typeMismatch(factual: name, expected: typeName)
         }
 
-        return try InspectableView<ViewType.Gesture<T>>.init(Content(rootView), parent: self, call: ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: index))
+        return try InspectableView<ViewType.Gesture<T>>.init(
+            Content(rootView), parent: self,
+            call: ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: index))
     }
 
     enum GestureOrder {
@@ -231,15 +228,18 @@ internal extension InspectableView {
         case second
     }
     
-    func gestureFromComposedGesture<T: Gesture>(_ type: T.Type, _ order: GestureOrder) throws -> InspectableView<ViewType.Gesture<T>>
-    {
+    func gestureFromComposedGesture<T: Gesture>(
+        _ type: T.Type,
+        _ order: GestureOrder) throws -> InspectableView<ViewType.Gesture<T>> {
         let valueName = Inspector.typeName(value: content.view)
         let typeName = Inspector.typeName(type: type)
         guard let (name1, modifiers1) = gestureName(typeName, valueName) else {
             throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
         }
         guard isComposedGesture(name1) else {
-            throw InspectionError.typeMismatch(factual: name1, expected: "ExclusiveGesture, SequenceGesture, or SimultaneousGesture")
+            throw InspectionError.typeMismatch(
+                factual: name1,
+                expected: "ExclusiveGesture, SequenceGesture, or SimultaneousGesture")
         }
         
         var path = modifiers1.reduce("") { addSegment(knownGestureModifier($1)!, to: $0) }
@@ -268,8 +268,7 @@ internal extension InspectableView {
     func gestureCallbacks<T>(
         name: String,
         path callbackPath: String,
-        type: T.Type) throws -> [T]
-    {
+        type: T.Type) throws -> [T] {
         let valueName = Inspector.typeName(value: content.view)
         let typeName = Inspector.typeName(type: type)
         guard let (_, modifiers) = gestureName(typeName, valueName) else {
@@ -316,24 +315,14 @@ internal extension InspectableView {
                 return (modifier, [])
                 
             case .composed:
-                if let (first, _) = gestureName(name, &modifiers) {
-                    if let (second, _) = gestureName(name, &modifiers) {
-                        return ("\(modifier)<\(first), \(second)>", [])
-                    }
-                }
-                return nil
+                return traverseComposedGesture(modifier, name, &modifiers)
                 
             case .state :
-                if let result = gestureName(name, &modifiers) {
-                    if let _ = modifiers.popLast() {
-                        return (result.0, [modifier] + result.1)
-                    }
-                    return nil
-                }
+                return traverseStateGesture(modifier, name, &modifiers)
             }
         } else if modifier == name {
-            
-        } else if let _ = knownGestureModifier(modifier) {
+            return (modifier, [])
+        } else if knownGestureModifier(modifier) != nil {
             if let result = gestureName(name, &modifiers) {
                 return (result.0, [modifier] + result.1)
             }
@@ -350,6 +339,27 @@ internal extension InspectableView {
             .reversed()
     }
     
+    func traverseComposedGesture(_ modifier: String, _ name: String,
+                                 _ modifiers: inout [String]) -> (String, [String])? {
+        if let (first, _) = gestureName(name, &modifiers) {
+            if let (second, _) = gestureName(name, &modifiers) {
+                return ("\(modifier)<\(first), \(second)>", [])
+            }
+        }
+        return nil
+    }
+    
+    func traverseStateGesture(_ modifier: String, _ name: String,
+                              _ modifiers: inout [String]) -> (String, [String])? {
+        if let result = gestureName(name, &modifiers) {
+            if modifiers.popLast() != nil {
+                return (result.0, [modifier] + result.1)
+            }
+            return nil
+        }
+        return nil
+    }
+    
     func addSegment(_ segment: String, to path: String) -> String {
         return (path == "") ? segment : path + "|" + segment
     }
@@ -361,31 +371,31 @@ internal extension InspectableView {
     }
     
     func knownGesture(_ name: String) -> GestureClass? {
-        let knownGestures: [String : GestureClass] = [
-            "DragGesture"          : .simple,
-            "ExclusiveGesture"     : .composed,
-            "GestureStateGesture"  : .state,
-            "LongPressGesture"     : .simple,
-            "MagnificationGesture" : .simple,
-            "RotationGesture"      : .simple,
-            "SequenceGesture"      : .composed,
-            "SimultaneousGesture"  : .composed,
-            "TapGesture"           : .simple,
+        let knownGestures: [String: GestureClass] = [
+            "DragGesture": .simple,
+            "ExclusiveGesture": .composed,
+            "GestureStateGesture": .state,
+            "LongPressGesture": .simple,
+            "MagnificationGesture": .simple,
+            "RotationGesture": .simple,
+            "SequenceGesture": .composed,
+            "SimultaneousGesture": .composed,
+            "TapGesture": .simple,
         ]
         return knownGestures[name]
     }
     
     func knownGestureModifier(_ name: String) -> String? {
-        let knownGestureModifiers: [String : String] = [
-            "AddGestureModifier"          : "gesture",
-            "HighPriorityGestureModifier" : "gesture",
-            "SimultaneousGestureModifier" : "gesture",
-            "_ChangedGesture"             : "_body|content",
-            "_EndedGesture"               : "_body|content",
-            "_MapGesture"                 : "_body|content",
-            "_ModifiersGesture"           : "_body|content",
-            "GestureStateGesture"         : "base",
-            "Optional"                    : "some",
+        let knownGestureModifiers: [String: String] = [
+            "AddGestureModifier": "gesture",
+            "HighPriorityGestureModifier": "gesture",
+            "SimultaneousGestureModifier": "gesture",
+            "_ChangedGesture": "_body|content",
+            "_EndedGesture": "_body|content",
+            "_MapGesture": "_body|content",
+            "_ModifiersGesture": "_body|content",
+            "GestureStateGesture": "base",
+            "Optional": "some",
         ]
         return knownGestureModifiers[name]
     }
