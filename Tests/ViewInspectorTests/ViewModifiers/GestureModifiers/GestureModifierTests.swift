@@ -81,7 +81,7 @@ final class GestureModifierTests: XCTestCase {
             .padding(100)
             .gesture(DragGesture())
         let path = try sut.inspect().emptyView().gesture(DragGesture.self).pathToRoot
-        XCTAssertEqual(path, "emptyView().gesture(DragGesture.self, 0)")
+        XCTAssertEqual(path, "emptyView().gesture(DragGesture.self)")
     }
     
     func testGestureInspectionWithIndexPathToRoot() throws {

@@ -33,6 +33,11 @@ final class SequenceGestureChildrenTests: XCTestCase {
         try gestureTests!.gestureTest(.second) { first, second in SequenceGesture(first, second) }
     }
     
+    func testSequenceGestureChildrenPath() throws {
+        try gestureTests!.gesturePathTest(.first) { first, second in SequenceGesture(first, second) }
+        try gestureTests!.gesturePathTest(.second) { first, second in SequenceGesture(first, second) }
+    }
+    
     func testSequenceGestureChildrenFailure() throws {
         try gestureTests!.gestureFailureTest(.first) { first, second in SequenceGesture(first, second) }
         try gestureTests!.gestureFailureTest(.second) { first, second in SequenceGesture(first, second) }

@@ -33,6 +33,11 @@ final class SimultaneousGestureChildrenTests: XCTestCase {
         try gestureTests!.gestureTest(.second) { first, second in SimultaneousGesture(first, second) }
     }
     
+    func testSequenceGestureChildrenPath() throws {
+        try gestureTests!.gesturePathTest(.first) { first, second in SimultaneousGesture(first, second) }
+        try gestureTests!.gesturePathTest(.second) { first, second in SimultaneousGesture(first, second) }
+    }
+    
     func testSimultaneousGestureChildrenFailure() throws {
         try gestureTests!.gestureFailureTest(.first) { first, second in SimultaneousGesture(first, second) }
         try gestureTests!.gestureFailureTest(.second) { first, second in SimultaneousGesture(first, second) }

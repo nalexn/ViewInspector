@@ -83,7 +83,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
             .padding(100)
             .highPriorityGesture(DragGesture())
         let path = try sut.inspect().emptyView().highPriorityGesture(DragGesture.self).pathToRoot
-        XCTAssertEqual(path, "emptyView().highPriorityGesture(DragGesture.self, 0)")
+        XCTAssertEqual(path, "emptyView().highPriorityGesture(DragGesture.self)")
     }
     
     func testHighPriorityGestureInspectionWithIndexPathToRoot() throws {

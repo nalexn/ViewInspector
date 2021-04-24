@@ -23,8 +23,12 @@ public extension ViewType {
             return prefixes
         }
         
-        public static func inspectionCall(call: String, typeName: String, index: Int) -> String {
-            return "\(call)(\(typeName.self).self, \(index))"
+        public static func inspectionCall(call: String, typeName: String, index: Int? = nil) -> String {
+            if let index = index {
+                return "\(call)(\(typeName.self).self, \(index))"
+            } else {
+                return "\(call)(\(typeName.self).self)"
+            }
         }
     }
 }
@@ -65,7 +69,7 @@ extension TapGesture: Inspectable {}
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension InspectableView {
     
-    func gesture<T>(_ type: T.Type, _ index: Int = 0) throws -> InspectableView<ViewType.Gesture<T>>
+    func gesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
         where T: Gesture & Inspectable {
         return try gestureModifier(
             modifierName: "AddGestureModifier",
@@ -75,7 +79,7 @@ public extension InspectableView {
             index: index)
     }
     
-    func highPriorityGesture<T>(_ type: T.Type, _ index: Int = 0) throws -> InspectableView<ViewType.Gesture<T>>
+    func highPriorityGesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
         where T: Gesture & Inspectable {
         return try gestureModifier(
             modifierName: "HighPriorityGestureModifier",
@@ -85,7 +89,7 @@ public extension InspectableView {
             index: index)
     }
     
-    func simultaneousGesture<T>(_ type: T.Type, _ index: Int = 0) throws -> InspectableView<ViewType.Gesture<T>>
+    func simultaneousGesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
         where T: Gesture & Inspectable {
         return try gestureModifier(
             modifierName: "SimultaneousGestureModifier",
@@ -198,18 +202,18 @@ internal extension InspectableView {
         path: String,
         type: T.Type,
         call: String,
-        index: Int = 0) throws -> InspectableView<ViewType.Gesture<T>>
+        index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
         where T: Gesture, T: Inspectable {
         let typeName = Inspector.typeName(type: type)
         let modifierCall = ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: index)
 
         let count = numberModifierAttributes(modifierName: modifierName, path: path, call: modifierCall)
-        if index >= count {
+        if (index ?? 0) >= count {
             throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: content.view), modifier: call)
         }
         
         let rootView = try modifierAttribute(modifierName: modifierName, path: path, type: Any.self,
-                                             call: modifierCall, index: count - 1 - index)
+                                             call: modifierCall, index: count - 1 - (index ?? 0))
         
         guard let (name, _) = gestureName(typeName, Inspector.typeName(value: rootView)) else {
             throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
@@ -247,10 +251,10 @@ internal extension InspectableView {
         switch order {
         case .first:
             path = addSegment("first", to: path)
-            call = "first()"
+            call = ViewType.Gesture<T>.inspectionCall(call: "first", typeName: typeName)
         case .second:
             path = addSegment("second", to: path)
-            call = "second()"
+            call = ViewType.Gesture<T>.inspectionCall(call: "second", typeName: typeName)
         }
         
         let rootView = try Inspector.attribute(path: path, value: content.view, type: Any.self)

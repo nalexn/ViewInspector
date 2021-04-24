@@ -33,6 +33,11 @@ final class ExclusiveGestureChildrenTests: XCTestCase {
         try gestureTests!.gestureTest(.second) { first, second in ExclusiveGesture(first, second) }
     }
     
+    func testExclusiveGestureChildrenPath() throws {
+        try gestureTests!.gesturePathTest(.first) { first, second in ExclusiveGesture(first, second) }
+        try gestureTests!.gesturePathTest(.second) { first, second in ExclusiveGesture(first, second) }
+    }
+    
     func testExclusiveGestureChildrenFailure() throws {
         try gestureTests!.gestureFailureTest(.first) { first, second in ExclusiveGesture(first, second) }
         try gestureTests!.gestureFailureTest(.second) { first, second in ExclusiveGesture(first, second) }

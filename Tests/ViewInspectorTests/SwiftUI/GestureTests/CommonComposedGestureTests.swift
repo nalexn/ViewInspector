@@ -39,6 +39,22 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         }
     }
 
+    func gesturePathTest<T: Gesture & Inspectable>(
+        _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
+        file: StaticString = #filePath, line: UInt = #line,
+        _ factory: (MagnificationGesture, RotationGesture) -> T) throws {
+        let sut = EmptyView().gesture(factory(magnificationGesture, rotationGesture))
+        let composedGesture = try sut.inspect().emptyView().gesture(type)
+        switch order {
+        case .first:
+            let path = try composedGesture.first(MagnificationGesture.self).pathToRoot
+            XCTAssertEqual(path, "emptyView().gesture(\(T.self).self).first(MagnificationGesture.self)")
+        case .second:
+            let path = try composedGesture.second(RotationGesture.self).pathToRoot
+            XCTAssertEqual(path, "emptyView().gesture(\(T.self).self).second(RotationGesture.self)")
+        }
+    }
+    
     func gestureFailureTest<T: Gesture & Inspectable>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
@@ -58,7 +74,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
                 file: file, line: line)
         }
     }
-
+    
     #if os(macOS)
     typealias ComposedGestureModifiers<T> =
         (_ModifiersGesture<MagnificationGesture>,

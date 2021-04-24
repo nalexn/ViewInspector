@@ -83,7 +83,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
             .padding(100)
             .simultaneousGesture(DragGesture())
         let path = try sut.inspect().emptyView().simultaneousGesture(DragGesture.self).pathToRoot
-        XCTAssertEqual(path, "emptyView().simultaneousGesture(DragGesture.self, 0)")
+        XCTAssertEqual(path, "emptyView().simultaneousGesture(DragGesture.self)")
     }
     
     func testSimultaneousGestureInspectionWithIndexPathToRoot() throws {
