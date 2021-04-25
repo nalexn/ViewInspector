@@ -199,6 +199,10 @@ internal extension InspectableView {
         return try contentForModifierLookup.modifier(modifierLookup, call: call)
     }
     
+    func modifiersMatching(_ modifierLookup: (ModifierNameProvider) -> Bool) -> [ModifierNameProvider] {
+        return contentForModifierLookup.modifiersMatching(modifierLookup)
+    }
+    
     var contentForModifierLookup: Content {
         if self is InspectableView<ViewType.ParentView>, let parent = parentView {
             return parent.content
@@ -247,16 +251,19 @@ internal extension Content {
     }
 
     func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
-        let modifiers: [ModifierNameProvider] = medium.viewModifiers.lazy
-            .compactMap { $0 as? ModifierNameProvider }
-            .filter(modifierLookup)
-            .reversed()
-
+        let modifiers = modifiersMatching(modifierLookup)
         if index < modifiers.count {
             return modifiers[index]
         }
         throw InspectionError.modifierNotFound(
             parent: Inspector.typeName(value: self.view), modifier: call, index: index)
+    }
+    
+    func modifiersMatching(_ modifierLookup: ModifierLookupClosure) -> [ModifierNameProvider] {
+        return medium.viewModifiers.lazy
+            .compactMap { $0 as? ModifierNameProvider }
+            .filter(modifierLookup)
+            .reversed()
     }
 }
 
