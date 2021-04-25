@@ -179,10 +179,6 @@ public extension View where Self: Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
 
-    func numberModifierAttributes(modifierName: String, path: String, call: String) -> Int {
-        return contentForModifierLookup.numberModifierAttributes(modifierName: modifierName, path: path, call: call)
-    }
-
     func modifierAttribute<Type>(modifierName: String, path: String,
                                  type: Type.Type, call: String, index: Int = 0) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
@@ -214,20 +210,6 @@ internal extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     typealias ModifierLookupClosure = (ModifierNameProvider) -> Bool
-
-    func numberModifierAttributes(modifierName: String, path: String, call: String) -> Int {
-        let modifyNameProvider: ModifierLookupClosure = { modifier -> Bool in
-            guard modifier.modifierType.contains(modifierName) else {
-                return false
-            }
-            return true
-        }
-        let modifiers = medium.viewModifiers.lazy
-            .compactMap({ $0 as? ModifierNameProvider })
-            .filter(modifyNameProvider)
-
-        return modifiers.count
-    }
 
     func modifierAttribute<Type>(modifierName: String, path: String,
                                  type: Type.Type, call: String, index: Int = 0) throws -> Type {

@@ -64,7 +64,7 @@ final class RotationGestureTests: XCTestCase {
     #endif
     
     func testRotationGestureFailure() throws {
-        try gestureTests!.propertiesFailureTest()
+        try gestureTests!.propertiesFailureTest("RotationGesture")
     }
 
     func testRotationGestureCallUpdating() throws {

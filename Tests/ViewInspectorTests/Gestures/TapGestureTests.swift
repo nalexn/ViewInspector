@@ -56,7 +56,7 @@ final class TapGestureTests: XCTestCase {
     #endif
     
     func testTapGestureFailure() throws {
-        try gestureTests!.propertiesFailureTest()
+        try gestureTests!.propertiesFailureTest("TapGesture")
     }
 
     func testTapGestureCallUpdating() throws {

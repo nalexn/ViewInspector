@@ -29,7 +29,7 @@ final class GestureModifierTests: XCTestCase {
         let sut = EmptyView()
         XCTAssertThrows(
             try sut.inspect().emptyView().gesture(DragGesture.self),
-            "EmptyView does not have 'gesture' modifier")
+            "EmptyView does not have 'gesture(DragGesture.self)' modifier")
     }
     
     func testGestureInspectionFailureDueToTypeMismatch() throws {
@@ -63,7 +63,7 @@ final class GestureModifierTests: XCTestCase {
             .gesture(LongPressGesture())
         XCTAssertThrows(
             try sut.inspect().emptyView().gesture(DragGesture.self, 2),
-            "EmptyView does not have 'gesture' modifier")
+            "EmptyView does not have 'gesture(DragGesture.self)' modifier at index 2")
     }
     
     func testGestureInspectionWithIndexFailureDueToTypeMismatch() throws {

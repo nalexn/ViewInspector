@@ -66,7 +66,7 @@ final class LongPressGestureTests: XCTestCase {
     #endif
     
     func testLongPressGestureFailure() throws {
-        try gestureTests!.propertiesFailureTest()
+        try gestureTests!.propertiesFailureTest("LongPressGesture")
     }
 
     func testLongPressGestureCallUpdating() throws {

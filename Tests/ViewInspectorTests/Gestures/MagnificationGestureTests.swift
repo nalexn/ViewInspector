@@ -65,7 +65,7 @@ final class MagnificationGestureTests: XCTestCase {
     #endif
     
     func testMagnificationGestureFailure() throws {
-        try gestureTests!.propertiesFailureTest()
+        try gestureTests!.propertiesFailureTest("MagnificationGesture")
     }
 
     func testMagnificationGestureCallUpdating() throws {

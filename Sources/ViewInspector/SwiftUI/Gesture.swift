@@ -205,17 +205,10 @@ internal extension InspectableView {
         index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
         where T: Gesture, T: Inspectable {
         let typeName = Inspector.typeName(type: type)
-        let modifierCall = ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: index)
-
-        let count = numberModifierAttributes(modifierName: modifierName, path: path, call: modifierCall)
-        let indexOrZero = index ?? 0
-        if indexOrZero >= count {
-            throw InspectionError.modifierNotFound(
-                parent: Inspector.typeName(value: content.view), modifier: call, index: indexOrZero)
-        }
+        let modifierCall = ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: nil)
         
         let rootView = try modifierAttribute(modifierName: modifierName, path: path, type: Any.self,
-                                             call: modifierCall, index: count - 1 - indexOrZero)
+                                             call: modifierCall, index: index ?? 0)
         
         guard let (name, _) = gestureName(typeName, Inspector.typeName(value: rootView)) else {
             throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))

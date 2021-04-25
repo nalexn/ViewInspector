@@ -75,7 +75,8 @@ final class ExclusiveGestureTests: XCTestCase {
     #endif
     
     func testExclusiveGestureFailure() throws {
-        try gestureTests!.propertiesFailureTest()
+        let type = "ExclusiveGesture<MagnificationGesture, RotationGesture>"
+        try gestureTests!.propertiesFailureTest(type)
     }
     
     func testExclusiveGestureCallUpdating() throws {

@@ -83,7 +83,7 @@ final class DragGestureTests: XCTestCase {
     #endif
     
     func testDragGestureFailure() throws {
-        try gestureTests!.propertiesFailureTest()
+        try gestureTests!.propertiesFailureTest("DragGesture")
     }
 
     func testDragGestureCallUpdating() throws {

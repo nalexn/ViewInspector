@@ -86,7 +86,8 @@ final class SimultaneousGestureTests: XCTestCase {
     #endif
     
     func testSimultaneousGestureFailure() throws {
-        try gestureTests!.propertiesFailureTest()
+        let type = "SimultaneousGesture<MagnificationGesture, RotationGesture>"
+        try gestureTests!.propertiesFailureTest(type)
     }
     
     func testSimultaneousGestureCallUpdating() throws {

@@ -76,7 +76,8 @@ final class SequenceGestureTests: XCTestCase {
     #endif
     
     func testSequenceGestureFailure() throws {
-        try gestureTests!.propertiesFailureTest()
+        let type = "SequenceGesture<MagnificationGesture, RotationGesture>"
+        try gestureTests!.propertiesFailureTest(type)
     }
     
     func testSequenceGestureCallUpdating() throws {

@@ -32,7 +32,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
         let sut = EmptyView()
         XCTAssertThrows(
             try sut.inspect().emptyView().simultaneousGesture(DragGesture.self),
-            "EmptyView does not have 'simultaneousGesture' modifier")
+            "EmptyView does not have 'simultaneousGesture(DragGesture.self)' modifier")
     }
     
     func testSimultaneousGestureInspectionFailureDueToTypeMismatch() throws {
@@ -66,7 +66,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
             .simultaneousGesture(LongPressGesture())
         XCTAssertThrows(
             try sut.inspect().emptyView().simultaneousGesture(DragGesture.self, 2),
-            "EmptyView does not have 'simultaneousGesture' modifier")
+            "EmptyView does not have 'simultaneousGesture(DragGesture.self)' modifier at index 2")
     }
     
     func testSimultaneousGestureInspectionWithIndexFailureDueToTypeMismatch() throws {

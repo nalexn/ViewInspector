@@ -59,11 +59,12 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
     }
     #endif
 
-    func propertiesFailureTest(file: StaticString = #filePath, line: UInt = #line) throws {
+    func propertiesFailureTest(_ expectedGesture: String,
+                               file: StaticString = #filePath, line: UInt = #line) throws {
         let sut = EmptyView()
         XCTAssertThrows(
             try sut.inspect().emptyView().gesture(T.self).gestureProperties() as T,
-            "EmptyView does not have 'gesture' modifier",
+            "EmptyView does not have 'gesture(\(expectedGesture).self)' modifier",
             file: file, line: line)
     }
 

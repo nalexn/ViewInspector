@@ -32,7 +32,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
         let sut = EmptyView()
         XCTAssertThrows(
             try sut.inspect().emptyView().highPriorityGesture(DragGesture.self),
-            "EmptyView does not have 'highPriorityGesture' modifier")
+            "EmptyView does not have 'highPriorityGesture(DragGesture.self)' modifier")
     }
     
     func testHighPriorityGestureInspectionFailureDueToTypeMismatch() throws {
@@ -66,7 +66,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
             .highPriorityGesture(LongPressGesture())
         XCTAssertThrows(
             try sut.inspect().emptyView().highPriorityGesture(DragGesture.self, 2),
-            "EmptyView does not have 'highPriorityGesture' modifier")
+            "EmptyView does not have 'highPriorityGesture(DragGesture.self)' modifier at index 2")
     }
     
     func testHighPriorityGestureInspectionWithIndexFailureDueToTypeMismatch() throws {
