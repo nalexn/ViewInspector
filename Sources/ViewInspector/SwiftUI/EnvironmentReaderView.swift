@@ -59,7 +59,7 @@ internal extension InspectableView {
             let closureDesc = Inspector.typeName(value: closure) as String?,
             closureDesc.contains("_PreferenceWritingModifier<NavigationBarItemsKey>>") else {
             throw InspectionError.modifierNotFound(parent:
-                Inspector.typeName(value: content.view), modifier: "navigationBarItems")
+                Inspector.typeName(value: content.view), modifier: "navigationBarItems", index: 0)
         }
         
         let expectedViewType = closureDesc.navigationBarItemsWrappedViewType

@@ -55,13 +55,19 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().anyView().emptyView().font(), .largeTitle)
     }
     
-    func testTextFontInspection() throws {
+    func testTextFontOverrideWithNativeModifier() throws {
         let sut = Group { Text("test").font(.callout) }.font(.footnote)
         let group = try sut.inspect().group()
         XCTAssertEqual(try group.font(), .footnote)
         XCTAssertThrows(try EmptyView().inspect().font(),
                         "EmptyView does not have 'font' modifier")
         XCTAssertEqual(try group.text(0).attributes().font(), .callout)
+    }
+    
+    func testTextFontOverrideWithInnerModifier() throws {
+        let sut = AnyView(AnyView(Text("test")).font(.footnote)).font(.callout)
+        let text = try sut.inspect().find(text: "test")
+        XCTAssertEqual(try text.attributes().font(), .footnote)
     }
     
     func testLineLimit() throws {

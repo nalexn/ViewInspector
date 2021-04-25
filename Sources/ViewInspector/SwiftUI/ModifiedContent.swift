@@ -49,8 +49,9 @@ public extension InspectableView {
         guard let modifier = content.medium.viewModifiers.compactMap({ modifier in
             try? Inspector.attribute(label: "modifier", value: modifier, type: type)
         }).first else {
-            throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: content.view),
-                                                   modifier: name)
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: content.view),
+                modifier: name, index: 0)
         }
         let view = try modifier.extractContent(environmentObjects: content.medium.environmentObjects)
         let medium = content.medium.resettingViewModifiers()

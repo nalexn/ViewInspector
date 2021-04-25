@@ -179,10 +179,6 @@ public extension View where Self: Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
 
-    func numberModifierAttributes(modifierName: String, path: String, call: String) -> Int {
-        return contentForModifierLookup.numberModifierAttributes(modifierName: modifierName, path: path, call: call)
-    }
-
     func modifierAttribute<Type>(modifierName: String, path: String,
                                  type: Type.Type, call: String, index: Int = 0) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
@@ -199,6 +195,10 @@ internal extension InspectableView {
         return try contentForModifierLookup.modifier(modifierLookup, call: call)
     }
     
+    func modifiersMatching(_ modifierLookup: (ModifierNameProvider) -> Bool) -> [ModifierNameProvider] {
+        return contentForModifierLookup.modifiersMatching(modifierLookup)
+    }
+    
     var contentForModifierLookup: Content {
         if self is InspectableView<ViewType.ParentView>, let parent = parentView {
             return parent.content
@@ -210,20 +210,6 @@ internal extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     typealias ModifierLookupClosure = (ModifierNameProvider) -> Bool
-
-    func numberModifierAttributes(modifierName: String, path: String, call: String) -> Int {
-        let modifyNameProvider: ModifierLookupClosure = { modifier -> Bool in
-            guard modifier.modifierType.contains(modifierName) else {
-                return false
-            }
-            return true
-        }
-        let modifiers = medium.viewModifiers.lazy
-            .compactMap({ $0 as? ModifierNameProvider })
-            .filter(modifyNameProvider)
-
-        return modifiers.count
-    }
 
     func modifierAttribute<Type>(modifierName: String, path: String,
                                  type: Type.Type, call: String, index: Int = 0) throws -> Type {
@@ -241,22 +227,25 @@ internal extension Content {
         guard let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
             throw InspectionError.modifierNotFound(
-                parent: Inspector.typeName(value: self.view), modifier: call)
+                parent: Inspector.typeName(value: self.view), modifier: call, index: index)
         }
         return attribute
     }
 
     func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
-        let modifiers = medium.viewModifiers.lazy
-            .compactMap({ $0 as? ModifierNameProvider })
-            .filter(modifierLookup)
-
+        let modifiers = modifiersMatching(modifierLookup)
         if index < modifiers.count {
             return modifiers[index]
         }
         throw InspectionError.modifierNotFound(
-            parent: Inspector.typeName(value: self.view), modifier: call)
-
+            parent: Inspector.typeName(value: self.view), modifier: call, index: index)
+    }
+    
+    func modifiersMatching(_ modifierLookup: ModifierLookupClosure) -> [ModifierNameProvider] {
+        return medium.viewModifiers.lazy
+            .compactMap { $0 as? ModifierNameProvider }
+            .filter(modifierLookup)
+            .reversed()
     }
 }
 

@@ -95,7 +95,8 @@ public extension InspectableView {
                 }
             }
         }
-        throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: self), modifier: "padding")
+        throw InspectionError.modifierNotFound(
+            parent: Inspector.typeName(value: self), modifier: "padding", index: 0)
     }
 
     func hasPadding(_ edge: Edge.Set = .all)  throws -> Bool {
@@ -139,25 +140,22 @@ public extension InspectableView {
     }
 
     private func paddingAttributes() throws -> [PaddingAttributes] {
-        let count = numberModifierAttributes(modifierName: "_PaddingLayout", path: "modifier|edges", call: "padding")
-
-        var attributes = [PaddingAttributes]()
-
-        for index in 0..<count {
-            let edges = try modifierAttribute(
-                modifierName: "_PaddingLayout", path: "modifier|edges",
-                type: SwiftUI.Edge.Set.self, call: "padding", index: index)
-            let insets: EdgeInsets?
-            do {
-                insets = try modifierAttribute(
-                    modifierName: "_PaddingLayout", path: "modifier|insets",
-                    type: EdgeInsets.self, call: "padding", index: index)
-            } catch {
-                insets = nil
+        
+        return try modifiersMatching({ $0.modifierType.contains("_PaddingLayout") })
+            .enumerated()
+            .map { index, modifier -> PaddingAttributes in
+                let edges = try modifierAttribute(
+                    modifierName: "_PaddingLayout", path: "modifier|edges",
+                    type: SwiftUI.Edge.Set.self, call: "padding", index: index)
+                let insets: EdgeInsets?
+                do {
+                    insets = try modifierAttribute(
+                        modifierName: "_PaddingLayout", path: "modifier|insets",
+                        type: EdgeInsets.self, call: "padding", index: index)
+                } catch {
+                    insets = nil
+                }
+                return .init(edgeInsets: insets, edges: edges)
             }
-            attributes.append(PaddingAttributes(edgeInsets: insets, edges: edges))
-        }
-
-        return attributes
     }
 }

@@ -95,11 +95,6 @@ public extension KnownViewType {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol CustomViewType {
-    associatedtype T: Inspectable
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct ViewType { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -192,11 +187,12 @@ public enum InspectionError: Swift.Error {
     case viewIndexOutOfBounds(index: Int, count: Int)
     case viewNotFound(parent: String)
     case parentViewNotFound(view: String)
-    case modifierNotFound(parent: String, modifier: String)
+    case modifierNotFound(parent: String, modifier: String, index: Int)
     case missingEnvironmentObjects(view: String, objects: [String])
     case notSupported(String)
     case textAttribute(String)
     case searchFailure(skipped: Int, blockers: [String])
+    case callbackNotFound(parent: String, callback: String)
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -216,18 +212,21 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
             return "View for \(parent) is absent"
         case let .parentViewNotFound(view):
             return "\(view) does not have parent"
-        case let .modifierNotFound(parent, modifier):
+        case let .modifierNotFound(parent, modifier, index):
             return "\(parent) does not have '\(modifier)' modifier"
+                + (index == 0 ? "" : " at index \(index)")
         case let .missingEnvironmentObjects(view, objects):
             return "\(view) is missing EnvironmentObjects: \(objects)"
         case let .notSupported(message), let .textAttribute(message):
             return message
         case let .searchFailure(skipped, blockers):
-            let blockersDescription = blockers.count == 0 ? "" :
-                ". Possible blockers: \(blockers.joined(separator: ", "))"
-            let conclusion = skipped == 0 ?
-                "Search did not find a match" : "Search did only find \(skipped) matches"
-            return conclusion + blockersDescription
+             let blockersDescription = blockers.count == 0 ? "" :
+                 ". Possible blockers: \(blockers.joined(separator: ", "))"
+             let conclusion = skipped == 0 ?
+                 "Search did not find a match" : "Search did only find \(skipped) matches"
+             return conclusion + blockersDescription
+        case let .callbackNotFound(parent, callback):
+            return "\(parent) does not have '\(callback)' callback"
         }
     }
     

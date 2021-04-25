@@ -19,7 +19,7 @@ internal extension InspectableView {
             return keyPath == reference
         }) else {
             throw InspectionError.modifierNotFound(
-                parent: Inspector.typeName(value: content.view), modifier: call)
+                parent: Inspector.typeName(value: content.view), modifier: call, index: 0)
         }
         return try Inspector.cast(value: try modifier.value(), type: T.self)
     }

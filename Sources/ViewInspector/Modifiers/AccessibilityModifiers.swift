@@ -103,7 +103,7 @@ private extension InspectableView {
         guard let attribute = lookupAttributeWithName(name, item: item),
             let value = try? Inspector.attribute(path: path, value: attribute) as? T else {
             throw InspectionError.modifierNotFound(parent:
-                Inspector.typeName(value: content.view), modifier: call)
+                Inspector.typeName(value: content.view), modifier: call, index: 0)
         }
         return value
     }
@@ -129,7 +129,7 @@ private extension InspectableView {
         }), let callback = try? Inspector.attribute(path: "box|handler", value: handler) as? T
         else {
             throw InspectionError.modifierNotFound(parent:
-                Inspector.typeName(value: content.view), modifier: call)
+                Inspector.typeName(value: content.view), modifier: call, index: 0)
         }
         return callback
     }
