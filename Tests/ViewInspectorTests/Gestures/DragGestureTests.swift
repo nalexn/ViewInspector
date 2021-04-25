@@ -43,6 +43,19 @@ final class DragGestureTests: XCTestCase {
         dragValue = nil
         gestureTests = nil
     }
+    
+    func testDragGestureValueAllocator() throws {
+        let date = Date(timeIntervalSince1970: 53513627)
+        let location = CGPoint(x: 0.5, y: 145)
+        let startLocation = CGPoint(x: 7325, y: -76.3)
+        let sut = DragGesture.Value(time: date, location: location,
+                                    startLocation: startLocation,
+                                    velocity: CGVector(dx: 10, dy: 0))
+        XCTAssertEqual(sut.time, date)
+        XCTAssertEqual(sut.location, location)
+        XCTAssertEqual(sut.startLocation, startLocation)
+        XCTAssertEqual(sut.predictedEndLocation, CGPoint(x: 3, y: location.y))
+    }
 
     func testCreateDragGestureValue() throws {
         XCTAssertNotNil(dragTime)
