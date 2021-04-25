@@ -144,13 +144,13 @@ final class CommonComposedGestureEndedTests<U: Gesture & Inspectable> {
             let gesture2 = try gesture1.first(MagnificationGesture.self)
             XCTAssertThrows(
                 try gesture2.gestureCallEnded(value: magnificationValue),
-                "Callback _EndedGesture for parent MagnificationGesture is absent",
+                "MagnificationGesture does not have 'onEnded' callback",
                 file: file, line: line)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
             XCTAssertThrows(
                 try gesture2.gestureCallEnded(value: rotationValue),
-                "Callback _EndedGesture for parent RotationGesture is absent",
+                "RotationGesture does not have 'onEnded' callback",
                 file: file, line: line)
         }
     }

@@ -144,13 +144,13 @@ final class CommonComposedGestureChangedTests<U: Gesture & Inspectable> {
             let gesture2 = try gesture1.first(MagnificationGesture.self)
             XCTAssertThrows(
                 try gesture2.gestureCallChanged(value: magnificationValue),
-                "Callback _ChangedGesture for parent MagnificationGesture is absent",
+                "MagnificationGesture does not have 'onChanged' callback",
                 file: file, line: line)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
             XCTAssertThrows(
                 try gesture2.gestureCallChanged(value: rotationValue),
-                "Callback _ChangedGesture for parent RotationGesture is absent",
+                "RotationGesture does not have 'onChanged' callback",
                 file: file, line: line)
         }
     }

@@ -126,7 +126,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         XCTAssertThrows(
             try sut.inspect().gesture(T.self)
                 .gestureCallUpdating(value: value, state: &state, transaction: &transaction),
-            "Callback GestureStateGesture for parent AddGestureModifier<\(String(describing: T.self))> is absent",
+            "AddGestureModifier<\(String(describing: T.self))> does not have 'updating' callback",
             file: file, line: line
         )
     }
@@ -181,7 +181,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         let sut = EmptyView().gesture(gesture)
         XCTAssertThrows(
             try sut.inspect().gesture(T.self).gestureCallChanged(value: value),
-            "Callback _ChangedGesture for parent AddGestureModifier<\(String(describing: T.self))> is absent",
+            "AddGestureModifier<\(String(describing: T.self))> does not have 'onChanged' callback",
             file: file, line: line)
     }
     
@@ -234,7 +234,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         let sut = EmptyView().gesture(gesture)
         XCTAssertThrows(
             try sut.inspect().gesture(T.self).gestureCallEnded(value: value),
-            "Callback _EndedGesture for parent AddGestureModifier<\(String(describing: T.self))> is absent",
+            "AddGestureModifier<\(String(describing: T.self))> does not have 'onEnded' callback",
             file: file, line: line)
     }
 

@@ -234,7 +234,7 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
         case let .gestureNotFound(parent):
             return "Gesture for \(parent) is absent"
         case let .callbackNotFound(parent, callback):
-            return "Callback \(callback) for parent \(parent) is absent"
+            return "\(parent) does not have '\(callback)' callback"
         }
     }
     

@@ -146,14 +146,14 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & Inspectable> {
             let gesture2 = try gesture1.first(MagnificationGesture.self)
             XCTAssertThrows(
                 try gesture2.gestureCallUpdating(value: magnificationValue, state: &state, transaction: &transaction),
-                "Callback GestureStateGesture for parent MagnificationGesture is absent",
+                "MagnificationGesture does not have 'updating' callback",
                 file: file, line: line
             )
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
             XCTAssertThrows(
                 try gesture2.gestureCallUpdating(value: rotationValue, state: &state, transaction: &transaction),
-                "Callback GestureStateGesture for parent RotationGesture is absent",
+                "RotationGesture does not have 'updating' callback",
                 file: file, line: line)
         }
     }

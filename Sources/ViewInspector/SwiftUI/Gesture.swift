@@ -127,7 +127,8 @@ public extension InspectableView {
         let callbacks = try gestureCallbacks(
             name: "GestureStateGesture",
             path: "body",
-            type: Callback.self)
+            type: Callback.self,
+            call: "updating")
         for callback in callbacks {
             callback(value, &state, &transaction)
         }
@@ -138,7 +139,8 @@ public extension InspectableView {
         let callbacks = try gestureCallbacks(
             name: "_ChangedGesture",
             path: "_body|modifier|callbacks|changed",
-            type: Callback.self)
+            type: Callback.self,
+            call: "onChanged")
         for callback in callbacks {
             callback(value)
         }
@@ -149,7 +151,8 @@ public extension InspectableView {
         let callbacks = try gestureCallbacks(
             name: "_EndedGesture",
             path: "_body|modifier|callbacks|ended",
-            type: Callback.self)
+            type: Callback.self,
+            call: "onEnded")
         for callback in callbacks {
             callback(value)
         }
@@ -274,7 +277,8 @@ internal extension InspectableView {
     func gestureCallbacks<T>(
         name: String,
         path callbackPath: String,
-        type: T.Type) throws -> [T] {
+        type: T.Type,
+        call: String) throws -> [T] {
         let valueName = Inspector.typeName(value: content.view)
         let typeName = Inspector.typeName(type: type)
         guard let (_, modifiers) = gestureName(typeName, valueName) else {
@@ -292,7 +296,7 @@ internal extension InspectableView {
                 } else {
                     throw InspectionError.callbackNotFound(
                         parent: Inspector.typeName(value: content.view),
-                        callback: name)
+                        callback: call)
                 }
             }
             return (path: addSegment(knownGestureModifier(modifier)!, to: result.path), callbacks: callbacks)
@@ -301,7 +305,7 @@ internal extension InspectableView {
         if result.callbacks.count == 0 {
             throw InspectionError.callbackNotFound(
                 parent: Inspector.typeName(value: content.view),
-                callback: name)
+                callback: call)
         }
         return result.callbacks.reversed()
     }

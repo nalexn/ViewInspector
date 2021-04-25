@@ -19,6 +19,11 @@ final class BaseTypesTests: XCTestCase {
             .modifierNotFound(parent: "Text", modifier: "onAppear", index: 3).localizedDescription
         let desc6 = InspectionError.notSupported("Not supported").localizedDescription
         let desc7 = InspectionError.textAttribute("Not found").localizedDescription
+        let desc81 = InspectionError.searchFailure(skipped: 0, blockers: ["Abc", "Def"]).localizedDescription
+        let desc82 = InspectionError.searchFailure(skipped: 1, blockers: ["Xyz"]).localizedDescription
+        let desc83 = InspectionError.searchFailure(skipped: 3, blockers: []).localizedDescription
+        let desc9 = InspectionError.gestureNotFound(parent: "Abc").localizedDescription
+        let desc10 = InspectionError.callbackNotFound(parent: "Abc", callback: "Xyz").localizedDescription
         XCTAssertEqual(desc1, "Type mismatch: 1 is not 2")
         XCTAssertEqual(desc2, "2 does not have '1' attribute")
         XCTAssertEqual(desc3, "Enclosed view index '5' is out of bounds: '0 ..< 3'")
@@ -27,6 +32,11 @@ final class BaseTypesTests: XCTestCase {
         XCTAssertEqual(desc52, "Text does not have 'onAppear' modifier at index 3")
         XCTAssertEqual(desc6, "Not supported")
         XCTAssertEqual(desc7, "Not found")
+        XCTAssertEqual(desc81, "Search did not find a match. Possible blockers: Abc, Def")
+        XCTAssertEqual(desc82, "Search did only find 1 matches. Possible blockers: Xyz")
+        XCTAssertEqual(desc83, "Search did only find 3 matches")
+        XCTAssertEqual(desc9, "Gesture for Abc is absent")
+        XCTAssertEqual(desc10, "Abc does not have 'Xyz' callback")
     }
     
     func testBindingExtension() {
