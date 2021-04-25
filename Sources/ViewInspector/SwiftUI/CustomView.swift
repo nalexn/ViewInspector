@@ -1,6 +1,11 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public protocol CustomViewType {
+    associatedtype T: Inspectable
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct View<T>: KnownViewType, CustomViewType where T: Inspectable {

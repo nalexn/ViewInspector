@@ -17,7 +17,7 @@ final class ComposedGestureExampleTests: XCTestCase {
             let magnificationGesture = try simultaneousGesture
                 .first(MagnificationGesture.self)
             let value = MagnificationGesture.Value(2.0)
-            try magnificationGesture.gestureCallChanged(value: value)
+            try magnificationGesture.callOnChanged(value: value)
             sut.publisher.send()
         }
         
@@ -39,7 +39,7 @@ final class ComposedGestureExampleTests: XCTestCase {
             let rotationGesture = try simultaneousGesture
                 .second(RotationGesture.self)
             let value = RotationGesture.Value(angle: Angle(degrees: 5))
-            try rotationGesture.gestureCallChanged(value: value)
+            try rotationGesture.callOnChanged(value: value)
             sut.publisher.send()
         }
         
@@ -61,7 +61,7 @@ final class ComposedGestureExampleTests: XCTestCase {
             let magnificationGesture = try simultaneousGesture
                 .first(MagnificationGesture.self)
             let value = MagnificationGesture.Value(2.0)
-            try magnificationGesture.gestureCallChanged(value: value)
+            try magnificationGesture.callOnChanged(value: value)
             sut.publisher.send()
         }
         

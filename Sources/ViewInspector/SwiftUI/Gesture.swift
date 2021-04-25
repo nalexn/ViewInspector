@@ -1,9 +1,14 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public protocol GestureViewType {
+    associatedtype T: Inspectable
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
-    struct Gesture<T>: KnownViewType, CustomViewType where T: SwiftUI.Gesture, T: Inspectable {
+    struct Gesture<T>: KnownViewType, GestureViewType where T: SwiftUI.Gesture, T: Inspectable {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
@@ -76,32 +81,27 @@ public extension InspectableView {
     func gesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
         where T: Gesture & Inspectable {
         return try gestureModifier(
-            modifierName: "AddGestureModifier",
-            path: "modifier",
-            type: type,
-            call: "gesture",
-            index: index)
+            modifierName: "AddGestureModifier", path: "modifier",
+            type: type, call: "gesture", index: index)
     }
     
     func highPriorityGesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
         where T: Gesture & Inspectable {
         return try gestureModifier(
-            modifierName: "HighPriorityGestureModifier",
-            path: "modifier",
-            type: type,
-            call: "highPriorityGesture",
-            index: index)
+            modifierName: "HighPriorityGestureModifier", path: "modifier",
+            type: type, call: "highPriorityGesture", index: index)
     }
     
     func simultaneousGesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
         where T: Gesture & Inspectable {
         return try gestureModifier(
-            modifierName: "SimultaneousGestureModifier",
-            path: "modifier",
-            type: type,
-            call: "simultaneousGesture",
-            index: index)
+            modifierName: "SimultaneousGestureModifier", path: "modifier",
+            type: type, call: "simultaneousGesture", index: index)
     }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View: GestureViewType {
 
     func first<T: Gesture>(_ type: T.Type) throws -> InspectableView<ViewType.Gesture<T>> {
         return try gestureFromComposedGesture(type, .first)
@@ -112,47 +112,38 @@ public extension InspectableView {
     }
     
     func gestureMask() throws -> GestureMask {
-        let gestureMask = try Inspector.attribute(
-            path: "gestureMask",
-            value: content.view,
-            type: GestureMask.self)
-        return gestureMask
+        return try Inspector.attribute(
+            path: "gestureMask", value: content.view, type: GestureMask.self)
     }
     
-    func gestureCallUpdating<Value, State>(
+    func callUpdating<Value, State>(
         value: Value,
         state: inout State,
         transaction: inout Transaction) throws {
         typealias Callback = (Value, inout State, inout Transaction) -> Void
         let callbacks = try gestureCallbacks(
-            name: "GestureStateGesture",
-            path: "body",
-            type: Callback.self,
-            call: "updating")
+            name: "GestureStateGesture", path: "body",
+            type: Callback.self, call: "updating")
         for callback in callbacks {
             callback(value, &state, &transaction)
         }
     }
     
-    func gestureCallChanged<Value>(value: Value) throws {
+    func callOnChanged<Value>(value: Value) throws {
         typealias Callback = (Value) -> Void
         let callbacks = try gestureCallbacks(
-            name: "_ChangedGesture",
-            path: "_body|modifier|callbacks|changed",
-            type: Callback.self,
-            call: "onChanged")
+            name: "_ChangedGesture", path: "_body|modifier|callbacks|changed",
+            type: Callback.self, call: "onChanged")
         for callback in callbacks {
             callback(value)
         }
     }
     
-    func gestureCallEnded<Value>(value: Value) throws {
+    func callOnEnded<Value>(value: Value) throws {
         typealias Callback = (Value) -> Void
         let callbacks = try gestureCallbacks(
-            name: "_EndedGesture",
-            path: "_body|modifier|callbacks|ended",
-            type: Callback.self,
-            call: "onEnded")
+            name: "_EndedGesture", path: "_body|modifier|callbacks|ended",
+            type: Callback.self, call: "onEnded")
         for callback in callbacks {
             callback(value)
         }

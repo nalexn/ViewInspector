@@ -54,7 +54,7 @@ final class GestureExampleTests: XCTestCase {
             let value = LongPressGesture.Value(finished: true)
             var state: Bool = false
             var transaction = Transaction()
-            try gesture.gestureCallUpdating(value: value, state: &state, transaction: &transaction)
+            try gesture.callUpdating(value: value, state: &state, transaction: &transaction)
             sut.publisher.send()
         }
 
@@ -74,7 +74,7 @@ final class GestureExampleTests: XCTestCase {
             XCTAssertEqual(try view.vStack().text(0).string(), "0")
             let gesture = try view.vStack().shape(1).gesture(LongPressGesture.self)
             let value = LongPressGesture.Value(finished: true)
-            try gesture.gestureCallChanged(value: value)
+            try gesture.callOnChanged(value: value)
             sut.publisher.send()
         }
 
@@ -96,7 +96,7 @@ final class GestureExampleTests: XCTestCase {
             XCTAssertEqual(try circle.fillShapeStyle(Color.self), Color.green)
             let gesture = try circle.gesture(LongPressGesture.self)
             let value = LongPressGesture.Value(finished: true)
-            try gesture.gestureCallEnded(value: value)
+            try gesture.callOnEnded(value: value)
             sut.publisher.send()
         }
 

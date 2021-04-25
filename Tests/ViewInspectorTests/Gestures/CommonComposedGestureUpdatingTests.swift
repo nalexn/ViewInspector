@@ -52,10 +52,10 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & Inspectable> {
         switch order {
         case .first:
             let gesture2 = try gesture1.first(MagnificationGesture.self)
-            try gesture2.gestureCallUpdating(value: magnificationValue, state: &state, transaction: &transaction)
+            try gesture2.callUpdating(value: magnificationValue, state: &state, transaction: &transaction)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
-            try gesture2.gestureCallUpdating(value: rotationValue, state: &state, transaction: &transaction)
+            try gesture2.callUpdating(value: rotationValue, state: &state, transaction: &transaction)
         }
         testCase.wait(for: [exp], timeout: 0.1)
     }
@@ -86,10 +86,10 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & Inspectable> {
         switch order {
         case .first:
             let gesture2 = try gesture1.first(MagnificationGesture.self)
-            try gesture2.gestureCallUpdating(value: magnificationValue, state: &state, transaction: &transaction)
+            try gesture2.callUpdating(value: magnificationValue, state: &state, transaction: &transaction)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
-            try gesture2.gestureCallUpdating(value: rotationValue, state: &state, transaction: &transaction)
+            try gesture2.callUpdating(value: rotationValue, state: &state, transaction: &transaction)
         }
         testCase.wait(for: [exp], timeout: 0.1)
     }
@@ -127,10 +127,10 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & Inspectable> {
         switch order {
         case .first:
             let gesture2 = try gesture1.first(MagnificationGesture.self)
-            try gesture2.gestureCallUpdating(value: magnificationValue, state: &state, transaction: &transaction)
+            try gesture2.callUpdating(value: magnificationValue, state: &state, transaction: &transaction)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
-            try gesture2.gestureCallUpdating(value: rotationValue, state: &state, transaction: &transaction)
+            try gesture2.callUpdating(value: rotationValue, state: &state, transaction: &transaction)
         }
         testCase.wait(for: [exp1, exp2], timeout: 0.1)
     }
@@ -145,14 +145,14 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & Inspectable> {
         case .first:
             let gesture2 = try gesture1.first(MagnificationGesture.self)
             XCTAssertThrows(
-                try gesture2.gestureCallUpdating(value: magnificationValue, state: &state, transaction: &transaction),
+                try gesture2.callUpdating(value: magnificationValue, state: &state, transaction: &transaction),
                 "MagnificationGesture does not have 'updating' callback",
                 file: file, line: line
             )
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
             XCTAssertThrows(
-                try gesture2.gestureCallUpdating(value: rotationValue, state: &state, transaction: &transaction),
+                try gesture2.callUpdating(value: rotationValue, state: &state, transaction: &transaction),
                 "RotationGesture does not have 'updating' callback",
                 file: file, line: line)
         }

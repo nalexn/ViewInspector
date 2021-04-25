@@ -50,10 +50,10 @@ final class CommonComposedGestureEndedTests<U: Gesture & Inspectable> {
         switch order {
         case .first:
             let gesture2 = try gesture1.first(MagnificationGesture.self)
-            try gesture2.gestureCallEnded(value: magnificationValue)
+            try gesture2.callOnEnded(value: magnificationValue)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
-            try gesture2.gestureCallEnded(value: rotationValue)
+            try gesture2.callOnEnded(value: rotationValue)
         }
         testCase.wait(for: [exp], timeout: 0.1)
     }
@@ -84,10 +84,10 @@ final class CommonComposedGestureEndedTests<U: Gesture & Inspectable> {
         switch order {
         case .first:
             let gesture2 = try gesture1.first(MagnificationGesture.self)
-            try gesture2.gestureCallEnded(value: magnificationValue)
+            try gesture2.callOnEnded(value: magnificationValue)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
-            try gesture2.gestureCallEnded(value: rotationValue)
+            try gesture2.callOnEnded(value: rotationValue)
         }
         testCase.wait(for: [exp], timeout: 0.1)
     }
@@ -125,10 +125,10 @@ final class CommonComposedGestureEndedTests<U: Gesture & Inspectable> {
         switch order {
         case .first:
             let gesture2 = try gesture1.first(MagnificationGesture.self)
-            try gesture2.gestureCallEnded(value: magnificationValue)
+            try gesture2.callOnEnded(value: magnificationValue)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
-            try gesture2.gestureCallEnded(value: rotationValue)
+            try gesture2.callOnEnded(value: rotationValue)
         }
         testCase.wait(for: [exp1, exp2], timeout: 0.1)
     }
@@ -143,13 +143,13 @@ final class CommonComposedGestureEndedTests<U: Gesture & Inspectable> {
         case .first:
             let gesture2 = try gesture1.first(MagnificationGesture.self)
             XCTAssertThrows(
-                try gesture2.gestureCallEnded(value: magnificationValue),
+                try gesture2.callOnEnded(value: magnificationValue),
                 "MagnificationGesture does not have 'onEnded' callback",
                 file: file, line: line)
         case .second:
             let gesture2 = try gesture1.second(RotationGesture.self)
             XCTAssertThrows(
-                try gesture2.gestureCallEnded(value: rotationValue),
+                try gesture2.callOnEnded(value: rotationValue),
                 "RotationGesture does not have 'onEnded' callback",
                 file: file, line: line)
         }

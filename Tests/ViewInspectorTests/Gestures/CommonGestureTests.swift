@@ -79,7 +79,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         var state = CGSize.zero
         var transaction = Transaction()
         try sut.inspect().emptyView().gesture(T.self)
-            .gestureCallUpdating(value: value, state: &state, transaction: &transaction)
+            .callUpdating(value: value, state: &state, transaction: &transaction)
         testCase.wait(for: [exp], timeout: 0.1)
     }
 
@@ -95,7 +95,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         var state = CGSize.zero
         var transaction = Transaction()
         try sut.inspect().emptyView().gesture(T.self)
-            .gestureCallUpdating(value: value, state: &state, transaction: &transaction)
+            .callUpdating(value: value, state: &state, transaction: &transaction)
         testCase.wait(for: [exp], timeout: 0.1)
     }
 
@@ -115,7 +115,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         var state = CGSize.zero
         var transaction = Transaction()
         try sut.inspect().emptyView().gesture(T.self)
-            .gestureCallUpdating(value: value, state: &state, transaction: &transaction)
+            .callUpdating(value: value, state: &state, transaction: &transaction)
         testCase.wait(for: [exp1, exp2], timeout: 0.1)
     }
 
@@ -125,7 +125,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         var transaction = Transaction()
         XCTAssertThrows(
             try sut.inspect().gesture(T.self)
-                .gestureCallUpdating(value: value, state: &state, transaction: &transaction),
+                .callUpdating(value: value, state: &state, transaction: &transaction),
             "AddGestureModifier<\(String(describing: T.self))> does not have 'updating' callback",
             file: file, line: line
         )
@@ -140,7 +140,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
                 exp.fulfill()
             }
         let sut = EmptyView().gesture(modifiedGesture)
-        try sut.inspect().emptyView().gesture(T.self).gestureCallChanged(value: value)
+        try sut.inspect().emptyView().gesture(T.self).callOnChanged(value: value)
         testCase.wait(for: [exp], timeout: 0.1)
     }
 
@@ -154,7 +154,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
                 exp.fulfill()
             }
         let sut = EmptyView().gesture(modifiedGesture)
-        try sut.inspect().emptyView().gesture(T.self).gestureCallChanged(value: value)
+        try sut.inspect().emptyView().gesture(T.self).callOnChanged(value: value)
         testCase.wait(for: [exp], timeout: 0.1)
     }
 
@@ -172,7 +172,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
                 exp2.fulfill()
             }
         let sut = EmptyView().gesture(modifiedGesture)
-        try sut.inspect().emptyView().gesture(T.self).gestureCallChanged(value: value)
+        try sut.inspect().emptyView().gesture(T.self).callOnChanged(value: value)
         testCase.wait(for: [exp1, exp2], timeout: 0.1)
     }
 
@@ -180,7 +180,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         where T.Value: Equatable {
         let sut = EmptyView().gesture(gesture)
         XCTAssertThrows(
-            try sut.inspect().gesture(T.self).gestureCallChanged(value: value),
+            try sut.inspect().gesture(T.self).callOnChanged(value: value),
             "AddGestureModifier<\(String(describing: T.self))> does not have 'onChanged' callback",
             file: file, line: line)
     }
@@ -194,7 +194,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
             }
         let sut = EmptyView().gesture(modifiedGesture)
         
-        try sut.inspect().emptyView().gesture(T.self).gestureCallEnded(value: value)
+        try sut.inspect().emptyView().gesture(T.self).callOnEnded(value: value)
         testCase.wait(for: [exp], timeout: 0.1)
     }
 
@@ -208,7 +208,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
             }
         let sut = EmptyView().gesture(modifiedGesture)
         
-        try sut.inspect().emptyView().gesture(T.self).gestureCallEnded(value: value)
+        try sut.inspect().emptyView().gesture(T.self).callOnEnded(value: value)
         testCase.wait(for: [exp], timeout: 0.1)
     }
 
@@ -226,14 +226,14 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
             }
         let sut = EmptyView().gesture(modifiedGesture)
         
-        try sut.inspect().emptyView().gesture(T.self).gestureCallEnded(value: value)
+        try sut.inspect().emptyView().gesture(T.self).callOnEnded(value: value)
         testCase.wait(for: [exp1, exp2], timeout: 0.1)
     }
 
     func callOnEndedFailureTest(file: StaticString = #filePath, line: UInt = #line) throws {
         let sut = EmptyView().gesture(gesture)
         XCTAssertThrows(
-            try sut.inspect().gesture(T.self).gestureCallEnded(value: value),
+            try sut.inspect().gesture(T.self).callOnEnded(value: value),
             "AddGestureModifier<\(String(describing: T.self))> does not have 'onEnded' callback",
             file: file, line: line)
     }
