@@ -1089,7 +1089,7 @@ A test can inspect the gesture using the following code:
 func testTestGestureModifier() throws {
     let sut = TestGestureView()
     let rectangle = try sut.inspect().shape(0)
-    let gesture = try rectangle.gesture(DragGesture.self).gestureProperties()
+    let gesture = try rectangle.gesture(DragGesture.self).actualGesture()
     XCTAssertEqual(gesture.minimumDistance, 20)
     XCTAssertEqual(gesture.coordinateSpace, .global)
 }
@@ -1136,7 +1136,7 @@ func testTestGestureUpdating() throws {
         let value = LongPressGesture.Value(finished: true)
         var state: Bool = false
         var transaction = Transaction()
-        try gesture.gestureCallUpdating(value: value, state: &state, transaction: &transaction)
+        try gesture.callUpdating(value: value, state: &state, transaction: &transaction)
         sut.publisher.send()
     }
 
@@ -1153,7 +1153,7 @@ In this test, the first inspection invokes the updating callback. However, in th
 inspection, the changes resulting from the change in the `isDetectingLongPress` are not
 visible. Thus, it is necessary to perform another inspection.
 
-The `gestureCallUpdating(value:state:transaction:)` method calls all updating
+The `callUpdating(value:state:transaction:)` method calls all `updating`
 callbacks added to a gesture in the order the callbacks were added to the gesture using the
 gesture's `updating(_:body:)` method.
 
@@ -1215,7 +1215,7 @@ func testTestGestureChanged() throws {
         XCTAssertEqual(try view.vStack().text(0).string(), "0")
         let gesture = try view.vStack().shape(1).gesture(LongPressGesture.self)
         let value = LongPressGesture.Value(finished: true)
-        try gesture.gestureCallChanged(value: value)
+        try gesture.callOnChanged(value: value)
         sut.publisher.send()
     }
 
@@ -1233,7 +1233,7 @@ In this test, the first inspection invokes the changed callback. However, in the
 inspection, the changes resulting from the change in the `totalNumberOfTaps` are not
 visible. Thus, it is necessary to perform another inspection.
 
-The `gestureCallChanged(value:)` method calls all changed callbacks added to a gesture 
+The `callOnChanged(value:)` method calls all `onChanged` callbacks added to a gesture 
 in the order the callbacks were added to the gesture using the gesture's `onChanged(_:body:)`
 method.
 
@@ -1289,7 +1289,7 @@ func testTestGestureEnded() throws {
         XCTAssertEqual(try circle.fillShapeStyle(Color.self), Color.green)
         let gesture = try circle.gesture(LongPressGesture.self)
         let value = LongPressGesture.Value(finished: true)
-        try gesture.gestureCallEnded(value: value)
+        try gesture.callOnEnded(value: value)
         sut.publisher.send()
     }
 
@@ -1307,7 +1307,7 @@ In this test, the first inspection invokes the changed callback. However, in the
 inspection, the changes resulting from the change in the `doneCounting` are not
 visible. Thus, it is necessary to perform another inspection.
 
-The `gestureCallEnded(value:)` method calls all ended callbacks added to a gesture 
+The `callOnEnded(value:)` method calls all `onEnded` callbacks added to a gesture 
 in the order the callbacks were added to the gesture using the gesture's `onEnded(_:body:)`
 method.
 
@@ -1362,11 +1362,11 @@ If a test inspects a gesture using `gesture(_:)`, `highPriorityGesture(_:)`, or
 `simultaneousGesture(_:)`, and the gesture is a composed gesture (i.e., it is an
 `ExclusiveGesture`, `SequenceGesture`, or `SimultaneousGesture`), then the test
 can use the following methods for this gesture:
-* `gestureProperties(_:)`: To obtain the properties of the composed gesture.
+* `actualGesture(_:)`: To obtain the properties of the composed gesture.
 * `gestureModifiers(_:)`: To obtain keyboard modifiers for the composed gesture.
-* `gestureCallUpdating(value:state:transacation:)`: To invoke updating callbacks
+* `callUpdating(value:state:transacation:)`: To invoke updating callbacks
 attached to the composed gesture.
-* `gestureCallEnded(value:)`: To invoke ended callbacks attached to the composed
+* `callOnEnded(value:)`: To invoke `onEnded` callbacks attached to the composed
 gesture.
 
 However, these methods only provide access to the composed gesture, as opposed to the
@@ -1422,7 +1422,7 @@ func testComposedGestureFirst() throws {
         let magnificationGesture = try simultaneousGesture
             .first(MagnificationGesture.self)
         let value = MagnificationGesture.Value(2.0)
-        try magnificationGesture.gestureCallChanged(value: value)
+        try magnificationGesture.callOnChanged(value: value)
         sut.publisher.send()
     }
     
@@ -1449,7 +1449,7 @@ func testComposedGestureSecond() throws {
         let rotationGesture = try simultaneousGesture
             .second(RotationGesture.self)
         let value = RotationGesture.Value(angle: Angle(degrees: 5))
-        try rotationGesture.gestureCallChanged(value: value)
+        try rotationGesture.callOnChanged(value: value)
         sut.publisher.send()
     }
     

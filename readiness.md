@@ -112,7 +112,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `@FetchRequest` |
 |:technologist:| `@FocusedBinding` |
 |:technologist:| `@FocusedValue` |
-|:technologist:| `@GestureState` |
+|:white_check_mark:| `@GestureState` |
 |:technologist:| `@Namespace` |
 |:white_check_mark:| `@ObservedObject` |
 |:technologist:| `@ScaledMetric` |
