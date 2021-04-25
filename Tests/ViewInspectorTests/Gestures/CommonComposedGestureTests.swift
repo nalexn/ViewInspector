@@ -32,10 +32,10 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         let composedGesture = try sut.inspect().emptyView().gesture(type)
         switch order {
         case .first:
-            let firstGesture = try composedGesture.first(MagnificationGesture.self).gestureProperties()
+            let firstGesture = try composedGesture.first(MagnificationGesture.self).actualGesture()
             XCTAssertEqual(firstGesture.minimumScaleDelta, 1.5, file: file, line: line)
         case .second:
-            let secondGesture = try composedGesture.second(RotationGesture.self).gestureProperties()
+            let secondGesture = try composedGesture.second(RotationGesture.self).actualGesture()
             XCTAssertEqual(secondGesture.minimumAngleDelta, Angle(degrees: 5), file: file, line: line)
         }
     }

@@ -558,7 +558,6 @@
 		F60EEBBD2382EED0007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				CDA84477262B6C3E00C56C98 /* Gesture.swift */,
 				F6684BF523AA587700DECCB3 /* AngularGradient.swift */,
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
@@ -578,6 +577,7 @@
 				F60EEBCC2382EED0007DB53A /* ForEach.swift */,
 				F60EEBC52382EED0007DB53A /* Form.swift */,
 				F6D9339A2385AD9100358E0E /* GeometryReader.swift */,
+				CDA84477262B6C3E00C56C98 /* Gesture.swift */,
 				F60EEBC62382EED0007DB53A /* Group.swift */,
 				F6D933AA2385EAD400358E0E /* GroupBox.swift */,
 				F6D933AE2385EBD900358E0E /* HSplitView.swift */,

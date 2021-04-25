@@ -38,7 +38,7 @@ final class TapGestureTests: XCTestCase {
     
     func testTapGesture() throws {
         let sut = EmptyView().gesture(TapGesture(count: 2))
-        let tapGesture = try sut.inspect().emptyView().gesture(TapGesture.self).gestureProperties()
+        let tapGesture = try sut.inspect().emptyView().gesture(TapGesture.self).actualGesture()
         XCTAssertEqual(tapGesture.count, 2)
     }
     

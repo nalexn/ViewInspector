@@ -42,7 +42,7 @@ final class RotationGestureTests: XCTestCase {
     
     func testRotationGesture() throws {
         let sut = EmptyView().gesture(RotationGesture(minimumAngleDelta: Angle(degrees: 5)))
-        let rotationGesture = try sut.inspect().emptyView().gesture(RotationGesture.self).gestureProperties()
+        let rotationGesture = try sut.inspect().emptyView().gesture(RotationGesture.self).actualGesture()
         XCTAssertEqual(rotationGesture.minimumAngleDelta, Angle(degrees: 5))
     }
     

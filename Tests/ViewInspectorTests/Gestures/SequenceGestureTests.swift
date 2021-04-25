@@ -53,7 +53,7 @@ final class SequenceGestureTests: XCTestCase {
             RotationGesture(minimumAngleDelta: Angle(degrees: 5))))
         let emptyView = try sut.inspect().emptyView()
         let gesture = try emptyView.gesture(SequenceGesture<MagnificationGesture, RotationGesture>.self)
-        let sequenceGesture = try gesture.gestureProperties()
+        let sequenceGesture = try gesture.actualGesture()
         XCTAssertEqual(sequenceGesture.first.minimumScaleDelta, 1.5)
         XCTAssertEqual(sequenceGesture.second.minimumAngleDelta, Angle(degrees: 5))
     }

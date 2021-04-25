@@ -32,7 +32,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         let modifiedGesture = gesture
             .updating($gestureState) { value, state, transaction in }
         let sut = EmptyView().gesture(modifiedGesture)
-        XCTAssertNoThrow(try sut.inspect().emptyView().gesture(T.self).gestureProperties() as T, file: file, line: line)
+        XCTAssertNoThrow(try sut.inspect().emptyView().gesture(T.self).actualGesture() as T, file: file, line: line)
     }
 
     func propertiesWithOnChangedModifierTest(file: StaticString = #filePath, line: UInt = #line) throws
@@ -40,14 +40,14 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         let modifiedGesture = gesture
             .onChanged { value in }
         let sut = EmptyView().gesture(modifiedGesture)
-        XCTAssertNoThrow(try sut.inspect().emptyView().gesture(T.self).gestureProperties() as T, file: file, line: line)
+        XCTAssertNoThrow(try sut.inspect().emptyView().gesture(T.self).actualGesture() as T, file: file, line: line)
     }
 
     func propertiesWithOnEndedModifierTest(file: StaticString = #filePath, line: UInt = #line) throws {
         let modifiedGesture = gesture
             .onEnded { value in }
         let sut = EmptyView().gesture(modifiedGesture)
-        XCTAssertNoThrow(try sut.inspect().emptyView().gesture(T.self).gestureProperties() as T, file: file, line: line)
+        XCTAssertNoThrow(try sut.inspect().emptyView().gesture(T.self).actualGesture() as T, file: file, line: line)
     }
 
     #if os(macOS)
@@ -55,7 +55,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
         let modifiedGesture = gesture
             .modifiers(.shift)
         let sut = EmptyView().gesture(modifiedGesture)
-        XCTAssertNoThrow(try sut.inspect().emptyView().gesture(T.self).gestureProperties() as T, file: file, line: line)
+        XCTAssertNoThrow(try sut.inspect().emptyView().gesture(T.self).actualGesture() as T, file: file, line: line)
     }
     #endif
 
@@ -63,7 +63,7 @@ final class CommonGestureTests<T: Gesture & Inspectable> {
                                file: StaticString = #filePath, line: UInt = #line) throws {
         let sut = EmptyView()
         XCTAssertThrows(
-            try sut.inspect().emptyView().gesture(T.self).gestureProperties() as T,
+            try sut.inspect().emptyView().gesture(T.self).actualGesture() as T,
             "EmptyView does not have 'gesture(\(expectedGesture).self)' modifier",
             file: file, line: line)
     }

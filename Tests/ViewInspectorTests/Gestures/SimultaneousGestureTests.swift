@@ -63,7 +63,7 @@ final class SimultaneousGestureTests: XCTestCase {
             RotationGesture(minimumAngleDelta: Angle(degrees: 5))))
         let emptyView = try sut.inspect().emptyView()
         let gesture = try emptyView.gesture(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
-        let simultaneousGesture = try gesture.gestureProperties()
+        let simultaneousGesture = try gesture.actualGesture()
         XCTAssertEqual(simultaneousGesture.first.minimumScaleDelta, 1.5)
         XCTAssertEqual(simultaneousGesture.second.minimumAngleDelta, Angle(degrees: 5))
     }

@@ -155,7 +155,7 @@ public extension InspectableView {
         }
     }
 
-    func gestureProperties<T>() throws -> T
+    func actualGesture<T>() throws -> T
         where T: Gesture & Inspectable, View == ViewType.Gesture<T> {
         let typeName = Inspector.typeName(type: T.self)
         let valueName = Inspector.typeName(value: content.view)

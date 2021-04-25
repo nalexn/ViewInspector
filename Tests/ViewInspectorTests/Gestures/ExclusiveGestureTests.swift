@@ -52,7 +52,7 @@ final class ExclusiveGestureTests: XCTestCase {
             RotationGesture(minimumAngleDelta: Angle(degrees: 5))))
         let emptyView = try sut.inspect().emptyView()
         let gesture = try emptyView.gesture(ExclusiveGesture<MagnificationGesture, RotationGesture>.self)
-        let exclusiveGesture = try gesture.gestureProperties()
+        let exclusiveGesture = try gesture.actualGesture()
         XCTAssertEqual(exclusiveGesture.first.minimumScaleDelta, 1.5)
         XCTAssertEqual(exclusiveGesture.second.minimumAngleDelta, Angle(degrees: 5))
     }

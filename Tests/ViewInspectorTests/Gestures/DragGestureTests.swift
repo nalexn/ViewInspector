@@ -60,7 +60,7 @@ final class DragGestureTests: XCTestCase {
     func testDragGesture() throws {
         let sut = EmptyView()
             .gesture(DragGesture(minimumDistance: 1, coordinateSpace: .global))
-        let dragGesture = try sut.inspect().emptyView().gesture(DragGesture.self).gestureProperties()
+        let dragGesture = try sut.inspect().emptyView().gesture(DragGesture.self).actualGesture()
         XCTAssertEqual(dragGesture.minimumDistance, 1)
         XCTAssertEqual(dragGesture.coordinateSpace, .global)
     }

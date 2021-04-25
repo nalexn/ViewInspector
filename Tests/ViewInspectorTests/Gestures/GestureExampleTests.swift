@@ -39,7 +39,7 @@ final class GestureExampleTests: XCTestCase {
         guard #available(iOS 14.0, *) else { return }
         let sut = TestGestureView4()
         let rectangle = try sut.inspect().shape(0)
-        let gesture = try rectangle.gesture(DragGesture.self).gestureProperties()
+        let gesture = try rectangle.gesture(DragGesture.self).actualGesture()
         XCTAssertEqual(gesture.minimumDistance, 20)
         XCTAssertEqual(gesture.coordinateSpace, .global)
     }

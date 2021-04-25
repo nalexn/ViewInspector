@@ -43,7 +43,7 @@ final class LongPressGestureTests: XCTestCase {
     func testLongPressGesture() throws {
         let sut = EmptyView()
             .gesture(LongPressGesture(minimumDuration: 5, maximumDistance: 1))
-        let longPressGesture = try sut.inspect().emptyView().gesture(LongPressGesture.self).gestureProperties()
+        let longPressGesture = try sut.inspect().emptyView().gesture(LongPressGesture.self).actualGesture()
         XCTAssertEqual(longPressGesture.minimumDuration, 5)
         XCTAssertEqual(longPressGesture.maximumDistance, 1)
     }

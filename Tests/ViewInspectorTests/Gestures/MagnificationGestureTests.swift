@@ -43,7 +43,7 @@ final class MagnificationGestureTests: XCTestCase {
     func testMagnificationGesture() throws {
         let sut = EmptyView()
             .gesture(MagnificationGesture(minimumScaleDelta: 1.5))
-        let magnificationGesture = try sut.inspect().emptyView().gesture(MagnificationGesture.self).gestureProperties()
+        let magnificationGesture = try sut.inspect().emptyView().gesture(MagnificationGesture.self).actualGesture()
         XCTAssertEqual(magnificationGesture.minimumScaleDelta, 1.5)
     }
 
