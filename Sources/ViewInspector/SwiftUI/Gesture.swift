@@ -174,6 +174,9 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
+    @available(macOS 10.15, *)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     func gestureModifiers<T>() throws -> EventModifiers
     where T: Gesture & Inspectable, View == ViewType.Gesture<T> {
         let typeName = Inspector.typeName(type: T.self)
@@ -316,10 +319,8 @@ internal extension InspectableView {
             switch gestureClass {
             case .simple:
                 return (modifier, [])
-                
             case .composed:
                 return traverseComposedGesture(modifier, name, &modifiers)
-                
             case .state :
                 return traverseStateGesture(modifier, name, &modifiers)
             }
@@ -344,23 +345,18 @@ internal extension InspectableView {
     
     func traverseComposedGesture(_ modifier: String, _ name: String,
                                  _ modifiers: inout [String]) -> (String, [String])? {
-        if let (first, _) = gestureName(name, &modifiers) {
-            if let (second, _) = gestureName(name, &modifiers) {
-                return ("\(modifier)<\(first), \(second)>", [])
-            }
-        }
-        return nil
+        guard let (first, _) = gestureName(name, &modifiers),
+              let (second, _) = gestureName(name, &modifiers)
+        else { return nil }
+        return ("\(modifier)<\(first), \(second)>", [])
     }
     
     func traverseStateGesture(_ modifier: String, _ name: String,
                               _ modifiers: inout [String]) -> (String, [String])? {
-        if let result = gestureName(name, &modifiers) {
-            if modifiers.popLast() != nil {
-                return (result.0, [modifier] + result.1)
-            }
-            return nil
-        }
-        return nil
+        guard let result = gestureName(name, &modifiers),
+              modifiers.popLast() != nil
+        else { return nil }
+        return (result.0, [modifier] + result.1)
     }
     
     func addSegment(_ segment: String, to path: String) -> String {
