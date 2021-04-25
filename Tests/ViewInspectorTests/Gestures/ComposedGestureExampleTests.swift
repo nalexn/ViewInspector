@@ -73,6 +73,14 @@ final class ComposedGestureExampleTests: XCTestCase {
         wait(for: [exp1, exp2], timeout: 0.1)
     }
     
+    func testNotAComposedGestureError() throws {
+        let sut = TestGestureView1()
+        let rectangle = try sut.inspect().shape(0)
+        let tapGesture = try rectangle.gesture(TapGesture.self)
+        XCTAssertThrows(try tapGesture.first(MagnificationGesture.self),
+            "Type mismatch: TapGesture is not ExclusiveGesture, SequenceGesture, or SimultaneousGesture")
+    }
+    
     func testComposedGestureComplex() throws {
         let sut = TestGestureView12()
         let exp = sut.inspection.inspect { view in
