@@ -2,13 +2,14 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol GestureViewType {
-    associatedtype T: Inspectable
+    associatedtype T: SwiftUI.Gesture & Inspectable
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
-    struct Gesture<T>: KnownViewType, GestureViewType where T: SwiftUI.Gesture, T: Inspectable {
+    struct Gesture<T>: KnownViewType, GestureViewType
+    where T: SwiftUI.Gesture & Inspectable {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self, prefixOnly: true)
         }
@@ -103,11 +104,11 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: GestureViewType {
 
-    func first<T: Gesture>(_ type: T.Type) throws -> InspectableView<ViewType.Gesture<T>> {
+    func first<G: Gesture>(_ type: G.Type) throws -> InspectableView<ViewType.Gesture<G>> {
         return try gestureFromComposedGesture(type, .first)
     }
     
-    func second<T: Gesture>(_ type: T.Type) throws -> InspectableView<ViewType.Gesture<T>> {
+    func second<G: Gesture>(_ type: G.Type) throws -> InspectableView<ViewType.Gesture<G>> {
         return try gestureFromComposedGesture(type, .second)
     }
     
@@ -149,18 +150,17 @@ public extension InspectableView where View: GestureViewType {
         }
     }
 
-    func actualGesture<T>() throws -> T
-        where T: Gesture & Inspectable, View == ViewType.Gesture<T> {
-        let typeName = Inspector.typeName(type: T.self)
+    func actualGesture() throws -> View.T {
+        let typeName = Inspector.typeName(type: View.T.self)
         let valueName = Inspector.typeName(value: content.view)
         guard let (_, modifiers) = gestureName(typeName, valueName) else {
             throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
         }
         if modifiers.count > 0 {
             let path = modifiers.reduce("") { return addSegment(knownGestureModifier($1)!, to: $0) }
-            return try Inspector.attribute(path: path, value: content.view, type: T.self)
+            return try Inspector.attribute(path: path, value: content.view, type: View.T.self)
         } else {
-            return try Inspector.cast(value: content.view, type: T.self)
+            return try Inspector.cast(value: content.view, type: View.T.self)
         }
     }
 }
