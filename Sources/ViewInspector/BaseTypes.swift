@@ -192,7 +192,6 @@ public enum InspectionError: Swift.Error {
     case notSupported(String)
     case textAttribute(String)
     case searchFailure(skipped: Int, blockers: [String])
-    case gestureNotFound(parent: String)
     case callbackNotFound(parent: String, callback: String)
 }
 
@@ -226,8 +225,6 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
              let conclusion = skipped == 0 ?
                  "Search did not find a match" : "Search did only find \(skipped) matches"
              return conclusion + blockersDescription
-        case let .gestureNotFound(parent):
-            return "Gesture for \(parent) is absent"
         case let .callbackNotFound(parent, callback):
             return "\(parent) does not have '\(callback)' callback"
         }

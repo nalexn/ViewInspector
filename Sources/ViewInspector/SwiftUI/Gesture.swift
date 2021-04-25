@@ -244,7 +244,7 @@ internal extension InspectableView {
             call = ViewType.Gesture<T>.inspectionCall(call: "second", typeName: typeName)
         }
         
-        let rootView = try Inspector.attribute(path: path, value: content.view, type: Any.self)
+        let rootView = try Inspector.attribute(path: path, value: content.view)
         
         let (name2, _) = try gestureName(typeName, Inspector.typeName(value: rootView))
         let gestureTypeName = Inspector.typeName(type: type)
@@ -285,15 +285,13 @@ internal extension InspectableView {
     func gestureName(_ name: String, _ valueName: String) throws -> (String, [String]) {
         var modifiers = parseModifiers(valueName)
         guard let result = gestureName(name, &modifiers) else {
-            throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
+            throw InspectionError.notSupported("Never happens")
         }
         return result
     }
     
     func gestureName(_ name: String, _ modifiers: inout [String]) -> (String, [String])? {
-        guard let modifier = modifiers.popLast() else {
-            return nil
-        }
+        let modifier = modifiers.removeLast()
         if let gestureClass = knownGesture(modifier) {
             switch gestureClass {
             case .simple:
@@ -305,11 +303,9 @@ internal extension InspectableView {
             }
         } else if modifier == name {
             return (modifier, [])
-        } else if knownGestureModifier(modifier) != nil {
-            if let result = gestureName(name, &modifiers) {
-                return (result.0, [modifier] + result.1)
-            }
-            return nil
+        } else if knownGestureModifier(modifier) != nil,
+                  let result = gestureName(name, &modifiers) {
+            return (result.0, [modifier] + result.1)
         }
         return nil
     }
