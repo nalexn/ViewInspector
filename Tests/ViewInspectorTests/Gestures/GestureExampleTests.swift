@@ -3,34 +3,40 @@ import SwiftUI
 import Combine
 @testable import ViewInspector
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 final class GestureExampleTests: XCTestCase {
 
     func testGestureModifier() throws {
+        guard #available(iOS 14.0, *) else { return }
         let sut = TestGestureView1()
         let rectangle = try sut.inspect().shape(0)
         XCTAssertNoThrow(try rectangle.gesture(TapGesture.self))
     }
 
     func testHighPriorityGestureModifier() throws {
+        guard #available(iOS 14.0, *) else { return }
         let sut = TestGestureView2()
         let rectangle = try sut.inspect().shape(0)
         XCTAssertNoThrow(try rectangle.highPriorityGesture(TapGesture.self))
     }
 
     func testSimultaneousGestureModifier() throws {
+        guard #available(iOS 14.0, *) else { return }
         let sut = TestGestureView3()
         let rectangle = try sut.inspect().shape(0)
         XCTAssertNoThrow(try rectangle.simultaneousGesture(TapGesture.self))
     }
 
     func testGestureMask() throws {
+        guard #available(iOS 14.0, *) else { return }
         let sut = TestGestureView9()
         let gesture = try sut.inspect().shape(0).gesture(TapGesture.self)
         XCTAssertEqual(try gesture.gestureMask(), .gesture)
     }
 
     func testGestureProperties() throws {
+        guard #available(iOS 14.0, *) else { return }
         let sut = TestGestureView4()
         let rectangle = try sut.inspect().shape(0)
         let gesture = try rectangle.gesture(DragGesture.self).gestureProperties()
@@ -38,6 +44,7 @@ final class GestureExampleTests: XCTestCase {
         XCTAssertEqual(gesture.coordinateSpace, .global)
     }
     
+    @available(tvOS 14.0, *)
     func testTestGestureUpdating() throws {
         let sut = TestGestureView5()
         let exp1 = sut.inspection.inspect { view in
@@ -59,6 +66,7 @@ final class GestureExampleTests: XCTestCase {
         wait(for: [exp1, exp2], timeout: 0.1)
     }
 
+    @available(tvOS 14.0, *)
     func testTestGestureChanged() throws {
         let sut = TestGestureView6()
         let exp1 = sut.inspection.inspect { view in
@@ -79,6 +87,7 @@ final class GestureExampleTests: XCTestCase {
         wait(for: [exp1, exp2], timeout: 0.1)
     }
     
+    @available(tvOS 14.0, *)
     func testTestGestureEnded() throws {
         let sut = TestGestureView7()
         let exp1 = sut.inspection.inspect { view in
@@ -109,7 +118,8 @@ final class GestureExampleTests: XCTestCase {
     #endif
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 struct TestGestureView1: View & Inspectable {
     @State var tapped = false
         
@@ -124,7 +134,8 @@ struct TestGestureView1: View & Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 struct TestGestureView2: View & Inspectable {
     @State var tapped = false
         
@@ -139,7 +150,8 @@ struct TestGestureView2: View & Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 struct TestGestureView3: View & Inspectable {
     @State var tapped = false
         
@@ -154,7 +166,8 @@ struct TestGestureView3: View & Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 struct TestGestureView4: View & Inspectable {
     @State var isDragging = false
     
@@ -170,7 +183,7 @@ struct TestGestureView4: View & Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
 struct TestGestureView5: View & Inspectable {
     @GestureState var isDetectingLongPress = false
 
@@ -192,7 +205,7 @@ struct TestGestureView5: View & Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
 struct TestGestureView6: View & Inspectable {
     @GestureState var isDetectingLongPress = false
     @State var totalNumberOfTaps = 0
@@ -226,7 +239,7 @@ struct TestGestureView6: View & Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
 struct TestGestureView7: View & Inspectable {
     @GestureState var isDetectingLongPress = false
     @State var totalNumberOfTaps = 0
@@ -260,6 +273,7 @@ struct TestGestureView7: View & Inspectable {
     }
 }
 
+#if os(macOS)
 @available(macOS 10.15, *)
 struct TestGestureView8: View & Inspectable {
     @State var tapped = false
@@ -276,8 +290,10 @@ struct TestGestureView8: View & Inspectable {
             .gesture(gesture)
     }
 }
+#endif
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 struct TestGestureView9: View & Inspectable {
     @State var tapped = false
         

@@ -1,6 +1,6 @@
 import SwiftUI
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Gesture<T>: KnownViewType, CustomViewType where T: SwiftUI.Gesture, T: Inspectable {
@@ -33,40 +33,44 @@ public extension ViewType {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Gesture where Self: Inspectable {
 
     func extractContent(environmentObjects: [AnyObject]) throws -> Any { () }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension AnyGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 extension DragGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ExclusiveGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
 extension LongPressGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 extension MagnificationGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 extension RotationGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension SequenceGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension SimultaneousGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 extension TapGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func gesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
@@ -194,7 +198,7 @@ public extension InspectableView {
 
 // MARK: - Private
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
     
     func gestureModifier<T>(
@@ -407,7 +411,8 @@ internal extension InspectableView {
 
 // MARK: - Gesture Value initializers
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension DragGesture.Value {
     
     private struct Allocator {
@@ -429,7 +434,7 @@ public extension DragGesture.Value {
    }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
 public extension LongPressGesture.Value {
     
     private struct Allocator {
@@ -444,7 +449,8 @@ public extension LongPressGesture.Value {
    }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension MagnificationGesture.Value {
     
     private struct Allocator {
@@ -459,7 +465,8 @@ public extension MagnificationGesture.Value {
    }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 public extension RotationGesture.Value {
     
     private struct Allocator {
@@ -474,7 +481,7 @@ public extension RotationGesture.Value {
    }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension SimultaneousGesture.Value {
     
     private struct Allocator {

@@ -5,7 +5,7 @@ import Combine
 
 // MARK: - Long Press Gesture Tests
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
 final class LongPressGestureTests: XCTestCase {
     
     var longPressFinished: Bool?
@@ -39,6 +39,7 @@ final class LongPressGestureTests: XCTestCase {
         try gestureTests!.maskTest()
     }
     
+    @available(tvOS, unavailable)
     func testLongPressGesture() throws {
         let sut = EmptyView()
             .gesture(LongPressGesture(minimumDuration: 5, maximumDistance: 1))

@@ -37,15 +37,17 @@ final class ViewEventsTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
 
-    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func testOnChange() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
         let val = ""
         let sut = EmptyView().onChange(of: val) { value in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 
-    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func testOnChangeInspection() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
         let val = "initial"
         let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().padding().onChange(of: val) { [val] value in
@@ -57,8 +59,9 @@ final class ViewEventsTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
 
-    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func testMultipleOnChangeModifiersSameTypeCallFirst() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
         var val = "initial"
         let other = ""
         let exp = XCTestExpectation(description: #function)
@@ -74,8 +77,9 @@ final class ViewEventsTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
 
-    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func testMultipleOnChangeModifiersSameTypeCallByIndex() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
         var val = "initial"
         let other = ""
         let exp = XCTestExpectation(description: #function)
@@ -93,8 +97,9 @@ final class ViewEventsTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
-    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
     func testMultipleOnChangeModifiersDifferentTypes() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { return }
         let exp1 = XCTestExpectation(description: "onChange1")
         let exp2 = XCTestExpectation(description: "onChange2")
         [exp1, exp2].forEach {

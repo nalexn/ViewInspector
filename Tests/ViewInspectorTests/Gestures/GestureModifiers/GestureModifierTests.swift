@@ -5,7 +5,8 @@ import Combine
 
 // MARK: - Gesture Modifier Tests
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 final class GestureModifierTests: XCTestCase {
     
     func testGesture() throws {
@@ -32,6 +33,7 @@ final class GestureModifierTests: XCTestCase {
             "EmptyView does not have 'gesture(DragGesture.self)' modifier")
     }
     
+    @available(tvOS 14.0, *)
     func testGestureInspectionFailureDueToTypeMismatch() throws {
         let sut = EmptyView()
             .gesture(LongPressGesture())
@@ -40,6 +42,7 @@ final class GestureModifierTests: XCTestCase {
             "Type mismatch: LongPressGesture is not DragGesture")
     }
     
+    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndex1() throws {
         let sut = EmptyView()
             .gesture(DragGesture())
@@ -48,6 +51,7 @@ final class GestureModifierTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView().gesture(LongPressGesture.self, 1))
     }
     
+    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndex2() throws {
         let sut = EmptyView()
             .gesture(DragGesture())
@@ -57,6 +61,7 @@ final class GestureModifierTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView().gesture(LongPressGesture.self, 1))
     }
     
+    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndexFailureDueToNoModifier() throws {
         let sut = EmptyView()
             .gesture(DragGesture())
@@ -66,6 +71,7 @@ final class GestureModifierTests: XCTestCase {
             "EmptyView does not have 'gesture(DragGesture.self)' modifier at index 2")
     }
     
+    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndexFailureDueToTypeMismatch() throws {
         let sut = EmptyView()
             .gesture(DragGesture())
@@ -84,6 +90,7 @@ final class GestureModifierTests: XCTestCase {
         XCTAssertEqual(path, "emptyView().gesture(DragGesture.self)")
     }
     
+    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndexPathToRoot() throws {
         let sut = EmptyView()
             .padding(100)
