@@ -503,9 +503,10 @@
 			path = GestureModifiers;
 			sourceTree = "<group>";
 		};
-		CDA844AA262B749E00C56C98 /* GestureTests */ = {
+		CDA844AA262B749E00C56C98 /* Gestures */ = {
 			isa = PBXGroup;
 			children = (
+				CD2CA0B5262B67CC00E0F203 /* GestureModifiers */,
 				CDA844A0262B747000C56C98 /* CommonGestureTests.swift */,
 				CDA84501262B885600C56C98 /* CommonComposedGestureTests.swift */,
 				CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */,
@@ -525,7 +526,7 @@
 				CDA844F1262B86D900C56C98 /* GestureExampleTests.swift */,
 				CDA844F7262B879A00C56C98 /* ComposedGestureExampleTests.swift */,
 			);
-			path = GestureTests;
+			path = Gestures;
 			sourceTree = "<group>";
 		};
 		F60EEBB82382EED0007DB53A /* Sources */ = {
@@ -648,6 +649,7 @@
 				F60385D623D3CDED008F31BD /* InspectionEmissaryTests.swift */,
 				F64105CD257C3E1F0033D82D /* ViewSearchTests.swift */,
 				F62AEAFB23E705D5003E69D9 /* ViewHostingTests.swift */,
+				CDA844AA262B749E00C56C98 /* Gestures */,
 				F67540ED23A3D8820022AC33 /* ViewModifiers */,
 				F60EEBE62382F004007DB53A /* SwiftUI */,
 				F6FEBEF3256AE732006C28F5 /* TestResources */,
@@ -658,7 +660,6 @@
 		F60EEBE62382F004007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				CDA844AA262B749E00C56C98 /* GestureTests */,
 				F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */,
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
@@ -743,7 +744,6 @@
 		F67540ED23A3D8820022AC33 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
-				CD2CA0B5262B67CC00E0F203 /* GestureModifiers */,
 				5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */,
 				F6F08E7023A3BD0C001F04DF /* AccessibilityModifiersTests.swift */,
 				F6ECF6CB23A6702B000FC591 /* AnimationModifiersTests.swift */,
