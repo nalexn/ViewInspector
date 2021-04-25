@@ -167,7 +167,7 @@ public extension InspectableView {
     }
 }
 
-@available(macOS 10.15, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func gestureModifiers<T>() throws -> EventModifiers
@@ -208,12 +208,14 @@ internal extension InspectableView {
         let modifierCall = ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: index)
 
         let count = numberModifierAttributes(modifierName: modifierName, path: path, call: modifierCall)
-        if (index ?? 0) >= count {
-            throw InspectionError.modifierNotFound(parent: Inspector.typeName(value: content.view), modifier: call)
+        let indexOrZero = index ?? 0
+        if indexOrZero >= count {
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: content.view), modifier: call, index: indexOrZero)
         }
         
         let rootView = try modifierAttribute(modifierName: modifierName, path: path, type: Any.self,
-                                             call: modifierCall, index: count - 1 - (index ?? 0))
+                                             call: modifierCall, index: count - 1 - indexOrZero)
         
         guard let (name, _) = gestureName(typeName, Inspector.typeName(value: rootView)) else {
             throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
