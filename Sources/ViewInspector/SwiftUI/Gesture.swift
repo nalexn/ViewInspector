@@ -153,15 +153,12 @@ public extension InspectableView where View: GestureViewType {
     func actualGesture() throws -> View.T {
         let typeName = Inspector.typeName(type: View.T.self)
         let valueName = Inspector.typeName(value: content.view)
-        guard let (_, modifiers) = gestureName(typeName, valueName) else {
-            throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
-        }
+        let (_, modifiers) = try gestureName(typeName, valueName)
         if modifiers.count > 0 {
             let path = modifiers.reduce("") { return addSegment(knownGestureModifier($1)!, to: $0) }
             return try Inspector.attribute(path: path, value: content.view, type: View.T.self)
-        } else {
-            return try Inspector.cast(value: content.view, type: View.T.self)
         }
+        return try Inspector.cast(value: content.view, type: View.T.self)
     }
 }
 
@@ -175,9 +172,7 @@ public extension InspectableView {
     where T: Gesture & Inspectable, View == ViewType.Gesture<T> {
         let typeName = Inspector.typeName(type: T.self)
         let valueName = Inspector.typeName(value: content.view)
-        guard let (_, modifiers) = gestureName(typeName, valueName) else {
-            throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
-        }
+        let (_, modifiers) = try gestureName(typeName, valueName)
         let result = try modifiers.reduce((path: "", eventModifiers: EventModifiers())) { result, modifier in
             var eventModifiers = result.eventModifiers
             if modifier == "_ModifiersGesture" {
@@ -211,9 +206,7 @@ internal extension InspectableView {
         let rootView = try modifierAttribute(modifierName: modifierName, path: path, type: Any.self,
                                              call: modifierCall, index: index ?? 0)
         
-        guard let (name, _) = gestureName(typeName, Inspector.typeName(value: rootView)) else {
-            throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
-        }
+        let (name, _) = try gestureName(typeName, Inspector.typeName(value: rootView))
         guard name == typeName else {
             throw InspectionError.typeMismatch(factual: name, expected: typeName)
         }
@@ -233,9 +226,7 @@ internal extension InspectableView {
         _ order: GestureOrder) throws -> InspectableView<ViewType.Gesture<T>> {
         let valueName = Inspector.typeName(value: content.view)
         let typeName = Inspector.typeName(type: type)
-        guard let (name1, modifiers1) = gestureName(typeName, valueName) else {
-            throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
-        }
+        let (name1, modifiers1) = try gestureName(typeName, valueName)
         guard isComposedGesture(name1) else {
             throw InspectionError.typeMismatch(
                 factual: name1,
@@ -255,9 +246,7 @@ internal extension InspectableView {
         
         let rootView = try Inspector.attribute(path: path, value: content.view, type: Any.self)
         
-        guard let (name2, _) = gestureName(typeName, Inspector.typeName(value: rootView)) else {
-            throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
-        }
+        let (name2, _) = try gestureName(typeName, Inspector.typeName(value: rootView))
         let gestureTypeName = Inspector.typeName(type: type)
         guard name2 == gestureTypeName else {
             throw InspectionError.typeMismatch(factual: name2, expected: gestureTypeName)
@@ -272,23 +261,15 @@ internal extension InspectableView {
         call: String) throws -> [T] {
         let valueName = Inspector.typeName(value: content.view)
         let typeName = Inspector.typeName(type: type)
-        guard let (_, modifiers) = gestureName(typeName, valueName) else {
-            throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
-        }
+        let (_, modifiers) = try gestureName(typeName, valueName)
         let result = try modifiers.reduce((path: "", callbacks: [T]())) { result, modifier in
             var callbacks = result.callbacks
             if modifier == name {
                 let object = try Inspector.attribute(
                     path: addSegment(callbackPath, to: result.path),
                     value: content.view,
-                    type: Any.self)
-                if let callback = object as? T {
-                    callbacks.append(callback)
-                } else {
-                    throw InspectionError.callbackNotFound(
-                        parent: Inspector.typeName(value: content.view),
-                        callback: call)
-                }
+                    type: T.self)
+                callbacks.append(object)
             }
             return (path: addSegment(knownGestureModifier(modifier)!, to: result.path), callbacks: callbacks)
         }
@@ -301,9 +282,12 @@ internal extension InspectableView {
         return result.callbacks.reversed()
     }
     
-    func gestureName(_ name: String, _ valueName: String) -> (String, [String])? {
+    func gestureName(_ name: String, _ valueName: String) throws -> (String, [String]) {
         var modifiers = parseModifiers(valueName)
-        return gestureName(name, &modifiers)
+        guard let result = gestureName(name, &modifiers) else {
+            throw InspectionError.gestureNotFound(parent: Inspector.typeName(value: self))
+        }
+        return result
     }
     
     func gestureName(_ name: String, _ modifiers: inout [String]) -> (String, [String])? {
