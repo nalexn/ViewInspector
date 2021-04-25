@@ -121,6 +121,20 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `@StateObject` |
 |:technologist:| `@UIApplicationDelegateAdaptor` |
 
+## Gestures
+ | Status | Modifier |
+ |:---:|---|
+ |:white_check_mark:|`AnyGesture`|
+ |:white_check_mark:|`DragGesture`|
+ |:white_check_mark:|`ExclusiveGesture`|
+ |:white_check_mark:|`GestureStateGesture`|
+ |:white_check_mark:|`LongPressGesture`|
+ |:white_check_mark:|`MagnificationGesture`|
+ |:white_check_mark:|`RotationGesture`|
+ |:white_check_mark:|`SequenceGesture`|
+ |:white_check_mark:|`SimultaneousGesture`|
+ |:white_check_mark:|`TapGesture`|
+
 ## View Modifiers
 
 ### Sizing a View
@@ -253,9 +267,9 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:---:|---|
 |:white_check_mark:| `func onTapGesture(count: Int, perform: () -> Void) -> some View` |
 |:white_check_mark:| `func onLongPressGesture(minimumDuration: Double, maximumDistance: CGFloat, pressing: ((Bool) -> Void)?, perform: () -> Void) -> some View` |
-|:heavy_check_mark:| `func gesture<T>(T, including: GestureMask) -> some View` |
-|:heavy_check_mark:| `func highPriorityGesture<T>(T, including: GestureMask) -> some View` |
-|:heavy_check_mark:| `func simultaneousGesture<T>(T, including: GestureMask) -> some View` |
+|:white_check_mark:| `func gesture<T>(T, including: GestureMask) -> some View` |
+|:white_check_mark:| `func highPriorityGesture<T>(T, including: GestureMask) -> some View` |
+|:white_check_mark:| `func simultaneousGesture<T>(T, including: GestureMask) -> some View` |
 |:white_check_mark:| `func transaction((inout Transaction) -> Void) -> some View` |
 
 ### Handling Application Life Cycle Events

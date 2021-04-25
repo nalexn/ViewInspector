@@ -32,6 +32,30 @@
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
 		52D37480262B1F0C00B1BFBA /* NestedModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
+		CDA8444D262B6A7100C56C98 /* HitTestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8443D262B68E100C56C98 /* HitTestingTests.swift */; };
+		CDA84452262B6A7A00C56C98 /* GestureActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84443262B693C00C56C98 /* GestureActionTests.swift */; };
+		CDA8445F262B6ABB00C56C98 /* GestureModifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84433262B688F00C56C98 /* GestureModifierTests.swift */; };
+		CDA84472262B6B4E00C56C98 /* HighPriorityGestureModifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84464262B6AD500C56C98 /* HighPriorityGestureModifierTests.swift */; };
+		CDA84478262B6C3E00C56C98 /* Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84477262B6C3E00C56C98 /* Gesture.swift */; };
+		CDA8449B262B723D00C56C98 /* SimultaneousGestureModifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8447D262B6D2F00C56C98 /* SimultaneousGestureModifierTests.swift */; };
+		CDA844A1262B747000C56C98 /* CommonGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844A0262B747000C56C98 /* CommonGestureTests.swift */; };
+		CDA844AC262B771F00C56C98 /* DragGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844AB262B771F00C56C98 /* DragGestureTests.swift */; };
+		CDA844B6262B7E6900C56C98 /* LongPressGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844B5262B7E6900C56C98 /* LongPressGestureTests.swift */; };
+		CDA844BC262B7EA800C56C98 /* MagnificationGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844BB262B7EA800C56C98 /* MagnificationGestureTests.swift */; };
+		CDA844C2262B7EEE00C56C98 /* RotationGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844C1262B7EEE00C56C98 /* RotationGestureTests.swift */; };
+		CDA844C8262B7F3100C56C98 /* TapGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844C7262B7F3100C56C98 /* TapGestureTests.swift */; };
+		CDA844CE262B817800C56C98 /* ExclusiveGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844CD262B817800C56C98 /* ExclusiveGestureTests.swift */; };
+		CDA844D4262B81AB00C56C98 /* SequenceGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844D3262B81AB00C56C98 /* SequenceGestureTests.swift */; };
+		CDA844DA262B81CD00C56C98 /* SimultaneousGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844D9262B81CD00C56C98 /* SimultaneousGestureTests.swift */; };
+		CDA844E0262B84DC00C56C98 /* ExclusiveGestureChildrenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844DF262B84DC00C56C98 /* ExclusiveGestureChildrenTests.swift */; };
+		CDA844E6262B84ED00C56C98 /* SequenceGestureChildrenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844E5262B84ED00C56C98 /* SequenceGestureChildrenTests.swift */; };
+		CDA844EC262B84FD00C56C98 /* SimultaneousGestureChildrenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844EB262B84FD00C56C98 /* SimultaneousGestureChildrenTests.swift */; };
+		CDA844F2262B86D900C56C98 /* GestureExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844F1262B86D900C56C98 /* GestureExampleTests.swift */; };
+		CDA844F8262B879A00C56C98 /* ComposedGestureExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA844F7262B879A00C56C98 /* ComposedGestureExampleTests.swift */; };
+		CDA84502262B885600C56C98 /* CommonComposedGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84501262B885600C56C98 /* CommonComposedGestureTests.swift */; };
+		CDA8450C262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8450B262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift */; };
+		CDA84516262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */; };
+		CDA8451C262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
 		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
 		F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D423D3C74B008F31BD /* InspectionEmissary.swift */; };
@@ -187,7 +211,6 @@
 		F6DFD88423830E9F0028E84D /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD88323830E9F0028E84D /* List.swift */; };
 		F6DFD88623830EB80028E84D /* ListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFD88523830EB80028E84D /* ListTests.swift */; };
 		F6E4B4062386F511003E1534 /* OpaqueViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */; };
-		F6ECF6C223A66B42000FC591 /* GestureModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECF6C123A66B42000FC591 /* GestureModifiersTests.swift */; };
 		F6ECF6C423A66BF6000FC591 /* EventsModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECF6C323A66BF6000FC591 /* EventsModifiersTests.swift */; };
 		F6ECF6C623A66D98000FC591 /* InteractionModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECF6C523A66D98000FC591 /* InteractionModifiersTests.swift */; };
 		F6ECF6C823A66E54000FC591 /* InteractionModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECF6C723A66E54000FC591 /* InteractionModifiers.swift */; };
@@ -238,6 +261,30 @@
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
 		52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModifiersTests.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
+		CDA84433262B688F00C56C98 /* GestureModifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifierTests.swift; sourceTree = "<group>"; };
+		CDA8443D262B68E100C56C98 /* HitTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTestingTests.swift; sourceTree = "<group>"; };
+		CDA84443262B693C00C56C98 /* GestureActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActionTests.swift; sourceTree = "<group>"; };
+		CDA84464262B6AD500C56C98 /* HighPriorityGestureModifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighPriorityGestureModifierTests.swift; sourceTree = "<group>"; };
+		CDA84477262B6C3E00C56C98 /* Gesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture.swift; sourceTree = "<group>"; };
+		CDA8447D262B6D2F00C56C98 /* SimultaneousGestureModifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimultaneousGestureModifierTests.swift; sourceTree = "<group>"; };
+		CDA844A0262B747000C56C98 /* CommonGestureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonGestureTests.swift; sourceTree = "<group>"; };
+		CDA844AB262B771F00C56C98 /* DragGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureTests.swift; sourceTree = "<group>"; };
+		CDA844B5262B7E6900C56C98 /* LongPressGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressGestureTests.swift; sourceTree = "<group>"; };
+		CDA844BB262B7EA800C56C98 /* MagnificationGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagnificationGestureTests.swift; sourceTree = "<group>"; };
+		CDA844C1262B7EEE00C56C98 /* RotationGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotationGestureTests.swift; sourceTree = "<group>"; };
+		CDA844C7262B7F3100C56C98 /* TapGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureTests.swift; sourceTree = "<group>"; };
+		CDA844CD262B817800C56C98 /* ExclusiveGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExclusiveGestureTests.swift; sourceTree = "<group>"; };
+		CDA844D3262B81AB00C56C98 /* SequenceGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceGestureTests.swift; sourceTree = "<group>"; };
+		CDA844D9262B81CD00C56C98 /* SimultaneousGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimultaneousGestureTests.swift; sourceTree = "<group>"; };
+		CDA844DF262B84DC00C56C98 /* ExclusiveGestureChildrenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExclusiveGestureChildrenTests.swift; sourceTree = "<group>"; };
+		CDA844E5262B84ED00C56C98 /* SequenceGestureChildrenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceGestureChildrenTests.swift; sourceTree = "<group>"; };
+		CDA844EB262B84FD00C56C98 /* SimultaneousGestureChildrenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimultaneousGestureChildrenTests.swift; sourceTree = "<group>"; };
+		CDA844F1262B86D900C56C98 /* GestureExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureExampleTests.swift; sourceTree = "<group>"; };
+		CDA844F7262B879A00C56C98 /* ComposedGestureExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedGestureExampleTests.swift; sourceTree = "<group>"; };
+		CDA84501262B885600C56C98 /* CommonComposedGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureTests.swift; sourceTree = "<group>"; };
+		CDA8450B262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureEndedTests.swift; sourceTree = "<group>"; };
+		CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureUpdatingTests.swift; sourceTree = "<group>"; };
+		CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureChangedTests.swift; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
 		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
 		F60385D423D3C74B008F31BD /* InspectionEmissary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissary.swift; sourceTree = "<group>"; };
@@ -393,7 +440,6 @@
 		F6DFD88323830E9F0028E84D /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		F6DFD88523830EB80028E84D /* ListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTests.swift; sourceTree = "<group>"; };
 		F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpaqueViewTests.swift; sourceTree = "<group>"; };
-		F6ECF6C123A66B42000FC591 /* GestureModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifiersTests.swift; sourceTree = "<group>"; };
 		F6ECF6C323A66BF6000FC591 /* EventsModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModifiersTests.swift; sourceTree = "<group>"; };
 		F6ECF6C523A66D98000FC591 /* InteractionModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionModifiersTests.swift; sourceTree = "<group>"; };
 		F6ECF6C723A66E54000FC591 /* InteractionModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionModifiers.swift; sourceTree = "<group>"; };
@@ -445,6 +491,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD2CA0B5262B67CC00E0F203 /* GestureModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				CDA84433262B688F00C56C98 /* GestureModifierTests.swift */,
+				CDA8443D262B68E100C56C98 /* HitTestingTests.swift */,
+				CDA84443262B693C00C56C98 /* GestureActionTests.swift */,
+				CDA84464262B6AD500C56C98 /* HighPriorityGestureModifierTests.swift */,
+				CDA8447D262B6D2F00C56C98 /* SimultaneousGestureModifierTests.swift */,
+			);
+			path = GestureModifiers;
+			sourceTree = "<group>";
+		};
+		CDA844AA262B749E00C56C98 /* GestureTests */ = {
+			isa = PBXGroup;
+			children = (
+				CDA844A0262B747000C56C98 /* CommonGestureTests.swift */,
+				CDA84501262B885600C56C98 /* CommonComposedGestureTests.swift */,
+				CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */,
+				CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */,
+				CDA8450B262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift */,
+				CDA844AB262B771F00C56C98 /* DragGestureTests.swift */,
+				CDA844B5262B7E6900C56C98 /* LongPressGestureTests.swift */,
+				CDA844BB262B7EA800C56C98 /* MagnificationGestureTests.swift */,
+				CDA844C1262B7EEE00C56C98 /* RotationGestureTests.swift */,
+				CDA844C7262B7F3100C56C98 /* TapGestureTests.swift */,
+				CDA844CD262B817800C56C98 /* ExclusiveGestureTests.swift */,
+				CDA844D3262B81AB00C56C98 /* SequenceGestureTests.swift */,
+				CDA844D9262B81CD00C56C98 /* SimultaneousGestureTests.swift */,
+				CDA844DF262B84DC00C56C98 /* ExclusiveGestureChildrenTests.swift */,
+				CDA844E5262B84ED00C56C98 /* SequenceGestureChildrenTests.swift */,
+				CDA844EB262B84FD00C56C98 /* SimultaneousGestureChildrenTests.swift */,
+				CDA844F1262B86D900C56C98 /* GestureExampleTests.swift */,
+				CDA844F7262B879A00C56C98 /* ComposedGestureExampleTests.swift */,
+			);
+			path = GestureTests;
+			sourceTree = "<group>";
+		};
 		F60EEBB82382EED0007DB53A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,6 +557,7 @@
 		F60EEBBD2382EED0007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				CDA84477262B6C3E00C56C98 /* Gesture.swift */,
 				F6684BF523AA587700DECCB3 /* AngularGradient.swift */,
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
@@ -574,6 +658,7 @@
 		F60EEBE62382F004007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				CDA844AA262B749E00C56C98 /* GestureTests */,
 				F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */,
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
@@ -658,13 +743,13 @@
 		F67540ED23A3D8820022AC33 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
+				CD2CA0B5262B67CC00E0F203 /* GestureModifiers */,
 				5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */,
 				F6F08E7023A3BD0C001F04DF /* AccessibilityModifiersTests.swift */,
 				F6ECF6CB23A6702B000FC591 /* AnimationModifiersTests.swift */,
 				F64A2C6523A3F0A900A4853A /* ConfigurationModifiersTests.swift */,
 				F609EFBE23A424D800B9256A /* EnvironmentModifiersTests.swift */,
 				F6ECF6C323A66BF6000FC591 /* EventsModifiersTests.swift */,
-				F6ECF6C123A66B42000FC591 /* GestureModifiersTests.swift */,
 				F6ECF6C523A66D98000FC591 /* InteractionModifiersTests.swift */,
 				52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */,
 				F67540EE23A3D8B20022AC33 /* PositioningModifiersTests.swift */,
@@ -857,6 +942,7 @@
 				F6F08E6D23A2A9D4001F04DF /* EnvironmentReaderView.swift in Sources */,
 				F6119FD62549EECC0000C54A /* Label.swift in Sources */,
 				F6DFD88423830E9F0028E84D /* List.swift in Sources */,
+				CDA84478262B6C3E00C56C98 /* Gesture.swift in Sources */,
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,
 				F6ECF6D623A695FB000FC591 /* ClassifiedView.swift in Sources */,
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
@@ -961,6 +1047,7 @@
 				F60EEBFE2382F004007DB53A /* FormTests.swift in Sources */,
 				F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */,
 				F60385D723D3CDED008F31BD /* InspectionEmissaryTests.swift in Sources */,
+				CDA844F2262B86D900C56C98 /* GestureExampleTests.swift in Sources */,
 				F6D933C92385FC1A00358E0E /* StepperTests.swift in Sources */,
 				F60EEC012382F004007DB53A /* ButtonTests.swift in Sources */,
 				F60EEC042382F004007DB53A /* GroupTests.swift in Sources */,
@@ -972,23 +1059,28 @@
 				F6119FDC2549EF170000C54A /* LabelTests.swift in Sources */,
 				F6ECF6C423A66BF6000FC591 /* EventsModifiersTests.swift in Sources */,
 				F6FB7F6225476480006658EF /* ColorPickerTests.swift in Sources */,
+				CDA8451C262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift in Sources */,
 				F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */,
 				F6D933A52385DC0F00358E0E /* TabViewTests.swift in Sources */,
-				F6ECF6C223A66B42000FC591 /* GestureModifiersTests.swift in Sources */,
 				F6D933A12385B48100358E0E /* NavigationLinkTests.swift in Sources */,
 				F6C15A7B254B7555000240F1 /* OutlineGroupTests.swift in Sources */,
+				CDA844A1262B747000C56C98 /* CommonGestureTests.swift in Sources */,
 				F64105CE257C3E1F0033D82D /* ViewSearchTests.swift in Sources */,
+				CDA844D4262B81AB00C56C98 /* SequenceGestureTests.swift in Sources */,
 				F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */,
 				F6C15AAD254DB0AB000240F1 /* ScrollViewReaderTests.swift in Sources */,
+				CDA844E6262B84ED00C56C98 /* SequenceGestureChildrenTests.swift in Sources */,
 				F6D933A92385E9F700358E0E /* EquatableViewTests.swift in Sources */,
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
 				F6C15A99254D9F26000240F1 /* ProgressViewTests.swift in Sources */,
 				F6D933C52385FB1D00358E0E /* SecureFieldTests.swift in Sources */,
 				F609EFBF23A424D800B9256A /* EnvironmentModifiersTests.swift in Sources */,
+				CDA844F8262B879A00C56C98 /* ComposedGestureExampleTests.swift in Sources */,
 				F614E66625B36ACC000C4F66 /* InspectableViewTests.swift in Sources */,
 				F6684BF823AA58F200DECCB3 /* AngularGradientTests.swift in Sources */,
 				F6684C0023AA864F00DECCB3 /* RadialGradientTests.swift in Sources */,
 				F6C15A31254A0F29000240F1 /* LazyVStackTests.swift in Sources */,
+				CDA844DA262B81CD00C56C98 /* SimultaneousGestureTests.swift in Sources */,
 				F6D933B92385EDDF00358E0E /* PickerTests.swift in Sources */,
 				F6C15AC1254EDA17000240F1 /* TextEditorTests.swift in Sources */,
 				F64A2C6623A3F0A900A4853A /* ConfigurationModifiersTests.swift in Sources */,
@@ -998,16 +1090,20 @@
 				F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */,
 				F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */,
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
+				CDA844EC262B84FD00C56C98 /* SimultaneousGestureChildrenTests.swift in Sources */,
 				F64A2C6423A3E74E00A4853A /* PresentationModifiersTests.swift in Sources */,
 				F64C4E30250CD71400A69FF9 /* ColorTests.swift in Sources */,
+				CDA84516262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift in Sources */,
 				F6BD820A2565AD5D00A772D4 /* PopoverTests.swift in Sources */,
 				F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6C15A17254A0BB5000240F1 /* LazyHStackTests.swift in Sources */,
+				CDA8449B262B723D00C56C98 /* SimultaneousGestureModifierTests.swift in Sources */,
 				5214800325F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift in Sources */,
 				5214803A25F803DC002D974D /* CustomStyleModifiersTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
 				F682A00C254772C3005F1B70 /* DisclosureGroupTests.swift in Sources */,
+				CDA844BC262B7EA800C56C98 /* MagnificationGestureTests.swift in Sources */,
 				F6C15A3F254B4835000240F1 /* LinkTests.swift in Sources */,
 				F6ECF6D823A69CB5000FC591 /* VisualEffectModifiersTests.swift in Sources */,
 				F6DB5A0B253510CC0056FC83 /* TextInputModifiersTests.swift in Sources */,
@@ -1015,16 +1111,24 @@
 				F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */,
 				F6D933AD2385EB0100358E0E /* GroupBoxTests.swift in Sources */,
 				F6ECF6D223A680DA000FC591 /* TransformingModifiersTests.swift in Sources */,
+				CDA84502262B885600C56C98 /* CommonComposedGestureTests.swift in Sources */,
+				CDA8445F262B6ABB00C56C98 /* GestureModifierTests.swift in Sources */,
+				CDA8450C262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift in Sources */,
 				F6F08E6B23A2A849001F04DF /* ConditionalContentTests.swift in Sources */,
 				F653BDED25569D2E001FA688 /* TupleViewTests.swift in Sources */,
+				CDA8444D262B6A7100C56C98 /* HitTestingTests.swift in Sources */,
 				F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */,
+				CDA844AC262B771F00C56C98 /* DragGestureTests.swift in Sources */,
+				CDA844CE262B817800C56C98 /* ExclusiveGestureTests.swift in Sources */,
 				F60EEC062382F004007DB53A /* DatePickerTests.swift in Sources */,
 				F60EEBFA2382F004007DB53A /* ZStackTests.swift in Sources */,
 				F6D933BD2385F45A00358E0E /* ToggleTests.swift in Sources */,
 				F6ECF6C623A66D98000FC591 /* InteractionModifiersTests.swift in Sources */,
+				CDA84472262B6B4E00C56C98 /* HighPriorityGestureModifierTests.swift in Sources */,
 				F6F08E7123A3BD0C001F04DF /* AccessibilityModifiersTests.swift in Sources */,
 				F66EDB5923ED72B800A01B9F /* ShapeTests.swift in Sources */,
 				F6D933C12385F62500358E0E /* TextFieldTests.swift in Sources */,
+				CDA844C2262B7EEE00C56C98 /* RotationGestureTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F66EDB5D23EDC1D800A01B9F /* SpacerTests.swift in Sources */,
 				F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */,
@@ -1035,10 +1139,14 @@
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
 				F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */,
 				F6ECF6CC23A6702B000FC591 /* AnimationModifiersTests.swift in Sources */,
+				CDA844B6262B7E6900C56C98 /* LongPressGestureTests.swift in Sources */,
+				CDA844E0262B84DC00C56C98 /* ExclusiveGestureChildrenTests.swift in Sources */,
 				F6A35A4A25B35F710068B8B2 /* LazyGroupTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
+				CDA84452262B6A7A00C56C98 /* GestureActionTests.swift in Sources */,
 				F6C15A6B254B669F000240F1 /* MenuTests.swift in Sources */,
 				F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */,
+				CDA844C8262B7F3100C56C98 /* TapGestureTests.swift in Sources */,
 				F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */,
 				F64057F3238E9F600029D9BA /* OptionalViewTests.swift in Sources */,
 				F6684BFC23AA842000DECCB3 /* LinearGradientTests.swift in Sources */,

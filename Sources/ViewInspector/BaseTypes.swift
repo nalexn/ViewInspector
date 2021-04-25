@@ -197,6 +197,8 @@ public enum InspectionError: Swift.Error {
     case notSupported(String)
     case textAttribute(String)
     case searchFailure(skipped: Int, blockers: [String])
+    case gestureNotFound(parent: String)
+    case callbackNotFound(parent: String, callback: String)
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -224,11 +226,15 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
         case let .notSupported(message), let .textAttribute(message):
             return message
         case let .searchFailure(skipped, blockers):
-            let blockersDescription = blockers.count == 0 ? "" :
-                ". Possible blockers: \(blockers.joined(separator: ", "))"
-            let conclusion = skipped == 0 ?
-                "Search did not find a match" : "Search did only find \(skipped) matches"
-            return conclusion + blockersDescription
+             let blockersDescription = blockers.count == 0 ? "" :
+                 ". Possible blockers: \(blockers.joined(separator: ", "))"
+             let conclusion = skipped == 0 ?
+                 "Search did not find a match" : "Search did only find \(skipped) matches"
+             return conclusion + blockersDescription
+        case let .gestureNotFound(parent):
+            return "Gesture for \(parent) is absent"
+        case let .callbackNotFound(parent, callback):
+            return "Callback \(callback) for parent \(parent) is absent"
         }
     }
     
