@@ -61,8 +61,13 @@ public extension InspectableView where View == ViewType.ProgressView {
     }
     
     func progress() throws -> Progress {
-        return try Inspector
+        if let value = try? Inspector
             .attribute(path: "base|observing|_progress|wrappedValue|base",
+                       value: content.view, type: Progress.self) {
+            return value
+        }
+        return try Inspector
+            .attribute(path: "base|observing|progress",
                        value: content.view, type: Progress.self)
     }
     

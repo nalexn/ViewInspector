@@ -64,6 +64,13 @@ final class ImageTests: XCTestCase {
         #endif
     }
     
+    func testLabelImageText() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        let view = Label("tx", image: "img")
+        let text = try view.inspect().label().icon().image().labelView()
+        XCTAssertEqual(try text.string(), "img")
+    }
+    
     func testSearch() throws {
         let cgImage = testImage.cgImage!
         let view = AnyView(Image(cgImage, scale: 2.0, orientation: .down, label: Text("abc")).resizable())
