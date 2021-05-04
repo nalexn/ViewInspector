@@ -42,12 +42,31 @@ final class ButtonTests: XCTestCase {
         XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
                        "group().button(0).labelView().anyView().text()")
     }
-    
-    func testCallback() throws {
+
+    func testWhenButtonDoesNotHaveTheDisabledModifier_InvokesCallback() throws {
         let exp = XCTestExpectation(description: "Callback")
         let button = Button(action: {
             exp.fulfill()
         }, label: { Text("Test") })
+        try button.inspect().button().tap()
+        wait(for: [exp], timeout: 0.5)
+    }
+
+    func testWhenButtonIsNotDisabled_InvokesCallback() throws {
+        let exp = XCTestExpectation(description: "Callback")
+        let button = Button(action: {
+            exp.fulfill()
+        }, label: { Text("Test") }).disabled(false)
+        try button.inspect().button().tap()
+        wait(for: [exp], timeout: 0.5)
+    }
+
+    func testWhenButtonIsDisabled_DoesNotInvokeCallback() throws {
+        let exp = XCTestExpectation(description: "Callback")
+        exp.isInverted = true
+        let button = Button(action: {
+            exp.fulfill()
+        }, label: { Text("Test") }).disabled(true)
         try button.inspect().button().tap()
         wait(for: [exp], timeout: 0.5)
     }
