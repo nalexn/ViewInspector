@@ -23,6 +23,16 @@ final class DatePickerTests: XCTestCase {
         XCTAssertEqual(sut, sampleView)
     }
     
+    func testValueSelection() throws {
+        let binding = Binding<Date>(wrappedValue: Date())
+        let view = DatePicker("Title", selection: binding)
+        let expectedDate = Date().advanced(by: 100)
+        
+        try view.inspect().datePicker().selectDate(value: expectedDate)
+        
+        XCTAssertEqual(binding.wrappedValue, expectedDate)
+    }
+    
     func testResetsModifiers() throws {
         let view = DatePicker("Test", selection: $state.selectedDate1).padding()
         let sut = try view.inspect().datePicker().labelView().text()

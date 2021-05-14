@@ -44,6 +44,18 @@ public extension InspectableView where View == ViewType.DatePicker {
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
     }
+    
+    func selectDate<SelectionValue>(value: SelectionValue) throws where SelectionValue: Hashable {
+        let binding = try Inspector.attribute(path: "selection", value: content.view)
+        let typeName = Inspector.typeName(value: binding)
+        guard let casted = binding as? Binding<SelectionValue> else {
+            let expected = String(Array(Array(typeName)[8..<typeName.count - 1]))
+            let factual = Inspector.typeName(type: SelectionValue.self)
+            throw InspectionError
+            .notSupported("select(value:) expects a value of type \(expected) but received \(factual)")
+        }
+        casted.wrappedValue = value
+    }
 }
 
 // MARK: - Global View Modifiers
