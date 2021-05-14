@@ -30,7 +30,7 @@ final class ToggleTests: XCTestCase {
         XCTAssertTrue(try sut.isOn())
     }
     
-    func testTapOnDisabledToggle() throws {
+    func testTapWhenDisabled() throws {
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("") }.disabled(true)
         let sut = try view.inspect().toggle()

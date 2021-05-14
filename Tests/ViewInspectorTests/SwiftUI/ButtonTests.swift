@@ -52,7 +52,7 @@ final class ButtonTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 
-    func testWhenButtonIsNotDisabled_InvokesCallback() throws {
+    func testTap() throws {
         let exp = XCTestExpectation(description: "Callback")
         let button = Button(action: {
             exp.fulfill()
@@ -61,7 +61,7 @@ final class ButtonTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 
-    func testWhenButtonIsDisabled_DoesNotInvokeCallback() throws {
+    func testTapWhenDisabled() throws {
         let exp = XCTestExpectation(description: "Callback")
         exp.isInverted = true
         let button = Button(action: {

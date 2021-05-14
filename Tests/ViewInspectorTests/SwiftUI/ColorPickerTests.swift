@@ -69,7 +69,7 @@ final class ColorPickerTests: XCTestCase {
         XCTAssertEqual(binding2.wrappedValue.rgba(), Color.yellow.rgba())
     }
     
-    func testColorSelectionOnDisabledPicker() throws {
+    func testColorSelectionWhenDisabled() throws {
         guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         
         let cgColor = CGColor(red: 0.5, green: 0.2, blue: 0.7, alpha: 0.1)

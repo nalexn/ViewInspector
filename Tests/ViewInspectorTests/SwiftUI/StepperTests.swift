@@ -52,31 +52,51 @@ final class StepperTests: XCTestCase {
     }
     
     func testIncrement() throws {
-        let exp = XCTestExpectation(description: "Callback")
+        let exp = XCTestExpectation(description: #function)
         let view = Stepper("", onIncrement: {
             exp.fulfill()
         }, onDecrement: nil, onEditingChanged: { _ in })
         try view.inspect().stepper().increment()
-        wait(for: [exp], timeout: 0.5)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testIncrementWhenDisabled() throws {
+        let exp = XCTestExpectation(description: #function)
+        exp.isInverted = true
+        let view = Stepper("", onIncrement: {
+            exp.fulfill()
+        }, onDecrement: nil, onEditingChanged: { _ in }).disabled(true)
+        try view.inspect().stepper().increment()
+        wait(for: [exp], timeout: 0.1)
     }
     
     func testDecrement() throws {
-        let exp = XCTestExpectation(description: "Callback")
+        let exp = XCTestExpectation(description: #function)
         let view = Stepper("", onIncrement: nil, onDecrement: {
             exp.fulfill()
         }, onEditingChanged: { _ in })
         try view.inspect().stepper().decrement()
-        wait(for: [exp], timeout: 0.5)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testDecrementWhenDisabled() throws {
+        let exp = XCTestExpectation(description: #function)
+        exp.isInverted = true
+        let view = Stepper("", onIncrement: nil, onDecrement: {
+            exp.fulfill()
+        }, onEditingChanged: { _ in }).disabled(true)
+        try view.inspect().stepper().decrement()
+        wait(for: [exp], timeout: 0.1)
     }
     
     func testEditingChanged() throws {
-        let exp = XCTestExpectation(description: "Callback")
+        let exp = XCTestExpectation(description: #function)
         let view = Stepper("", onIncrement: nil, onDecrement: nil,
                            onEditingChanged: { _ in
             exp.fulfill()
         })
         try view.inspect().stepper().callOnEditingChanged()
-        wait(for: [exp], timeout: 0.5)
+        wait(for: [exp], timeout: 0.1)
     }
 }
 

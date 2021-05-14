@@ -31,7 +31,7 @@ final class DatePickerTests: XCTestCase {
         XCTAssertEqual(binding.wrappedValue, expectedDate)
     }
     
-    func testValueSelectionOnDisabledPicker() throws {
+    func testValueSelectionWhenDisabled() throws {
         let originalDate = Date()
         let binding = Binding<Date>(wrappedValue: originalDate)
         let view = DatePicker("Title", selection: binding).disabled(true)
