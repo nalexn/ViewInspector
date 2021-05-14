@@ -3,7 +3,7 @@ import Combine
 import XCTest
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol InspectionEmissary: class {
+public protocol InspectionEmissary: AnyObject {
     
     associatedtype V: View & Inspectable
     typealias Inspection = (InspectableView<ViewType.View<V>>) throws -> Void
