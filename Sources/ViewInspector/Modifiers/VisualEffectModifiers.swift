@@ -155,16 +155,17 @@ public extension InspectableView {
             type: Any.self, call: "hidden")) != nil
     }
     
-    func isDisabled() throws -> Bool {
+    func isDisabled() -> Bool {
         let reference = EmptyView().disabled(true)
         typealias Closure = (inout Bool) -> Void
-        let referenceKeyPath = try Inspector.environmentKeyPath(Bool.self, reference)
-        let closure = try modifierAttribute(modifierLookup: { modifier -> Bool in
-            guard modifier.modifierType == "_EnvironmentKeyTransformModifier<Bool>",
-                  let keyPath = try? Inspector.environmentKeyPath(Bool.self, modifier)
-            else { return false }
-            return keyPath == referenceKeyPath
-        }, path: "modifier|transform", type: Closure.self, call: "disabled")
+        guard let referenceKeyPath = try? Inspector.environmentKeyPath(Bool.self, reference),
+              let closure = try? modifierAttribute(modifierLookup: { modifier -> Bool in
+                guard modifier.modifierType == "_EnvironmentKeyTransformModifier<Bool>",
+                      let keyPath = try? Inspector.environmentKeyPath(Bool.self, modifier)
+                else { return false }
+                return keyPath == referenceKeyPath
+            }, path: "modifier|transform", type: Closure.self, call: "disabled")
+        else { return false }
         var value = true
         closure(&value)
         return !value
