@@ -38,6 +38,17 @@ final class PickerTests: XCTestCase {
         XCTAssertEqual(binding.wrappedValue, 1)
     }
     
+    func testValueSelectionOnDisabledPicker() throws {
+        let binding = Binding<Int>(wrappedValue: 4)
+        let view = Picker(selection: binding, label: Text("Title")) {
+            Text("").tag(0)
+            Text("").tag(1)
+        }.disabled(true)
+        XCTAssertEqual(binding.wrappedValue, 4)
+        try view.inspect().picker().select(value: 6)
+        XCTAssertEqual(binding.wrappedValue, 4)
+    }
+    
     func testResetsModifiers() throws {
         let binding = Binding<Int?>(wrappedValue: nil)
         let view = Picker(selection: binding, label: Text("Title")) {

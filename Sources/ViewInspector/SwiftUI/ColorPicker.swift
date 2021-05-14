@@ -47,6 +47,7 @@ public extension InspectableView where View == ViewType.ColorPicker {
     
     @available(tvOS 14.0, *)
     func select(color: Color) throws {
+        guard !isDisabled() else { return }
         #if os(macOS)
         try select(color: NSColor(color))
         #else
@@ -55,6 +56,7 @@ public extension InspectableView where View == ViewType.ColorPicker {
     }
     
     func select(color: CGColor) throws {
+        guard !isDisabled() else { return }
         #if os(macOS)
         try select(color: NSColor(cgColor: color)!)
         #else
@@ -64,11 +66,13 @@ public extension InspectableView where View == ViewType.ColorPicker {
     
     #if os(macOS)
     func select(color: NSColor) throws {
+        guard !isDisabled() else { return }
         let binding = try Inspector.attribute(label: "_color", value: content.view, type: Binding<NSColor>.self)
         binding.wrappedValue = color
     }
     #else
     func select(color: UIColor) throws {
+        guard !isDisabled() else { return }
         let binding = try Inspector.attribute(label: "_color", value: content.view, type: Binding<UIColor>.self)
         binding.wrappedValue = color
     }

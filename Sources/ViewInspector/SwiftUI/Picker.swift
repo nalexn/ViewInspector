@@ -54,6 +54,7 @@ public extension InspectableView where View == ViewType.Picker {
     }
     
     func select<SelectionValue>(value: SelectionValue) throws where SelectionValue: Hashable {
+        guard !isDisabled() else { return }
         let binding = try Inspector.attribute(path: "selection", value: content.view)
         let typeName = Inspector.typeName(value: binding)
         guard let casted = binding as? Binding<SelectionValue> else {
