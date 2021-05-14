@@ -27,9 +27,7 @@ final class DatePickerTests: XCTestCase {
         let binding = Binding<Date>(wrappedValue: Date())
         let view = DatePicker("Title", selection: binding)
         let expectedDate = Date().advanced(by: 100)
-        
-        try view.inspect().datePicker().selectDate(value: expectedDate)
-        
+        try view.inspect().datePicker().select(date: expectedDate)
         XCTAssertEqual(binding.wrappedValue, expectedDate)
     }
     
