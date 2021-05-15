@@ -20,12 +20,6 @@ final class ViewPresentationTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif
-    
-    func testAlert() throws {
-        let binding = Binding(wrappedValue: true)
-        let sut = EmptyView().alert(isPresented: binding) { Alert(title: Text("")) }
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
 }
 
 // MARK: - ViewColorTests

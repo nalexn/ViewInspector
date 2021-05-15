@@ -25,6 +25,8 @@
 		5214800325F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */; };
 		5214802B25F803B7002D974D /* CustomStyleModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214802A25F803B7002D974D /* CustomStyleModifiers.swift */; };
 		5214803A25F803DC002D974D /* CustomStyleModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */; };
+		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
+		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5298500125FF5B7A00C717AB /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6FEBEF4256AE732006C28F5 /* Test.strings */; };
@@ -256,6 +258,8 @@
 		5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentObjectInjectionTests.swift; sourceTree = "<group>"; };
 		5214802A25F803B7002D974D /* CustomStyleModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiers.swift; sourceTree = "<group>"; };
 		5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiersTests.swift; sourceTree = "<group>"; };
+		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
@@ -558,6 +562,7 @@
 		F60EEBBD2382EED0007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				52507625264FC0F400ADE4E7 /* Alert.swift */,
 				F6684BF523AA587700DECCB3 /* AngularGradient.swift */,
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
@@ -660,6 +665,7 @@
 		F60EEBE62382F004007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				525076272650000600ADE4E7 /* AlertTests.swift */,
 				F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */,
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
@@ -959,6 +965,7 @@
 				F6C15A71254B68C0000240F1 /* Menu.swift in Sources */,
 				F6C15ADD254F26B9000240F1 /* StyleConfiguration.swift in Sources */,
 				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
+				52507626264FC0F400ADE4E7 /* Alert.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				5214802B25F803B7002D974D /* CustomStyleModifiers.swift in Sources */,
 				F6ECF6CE23A67C64000FC591 /* SizingModifiers.swift in Sources */,
@@ -1060,6 +1067,7 @@
 				F6ECF6C423A66BF6000FC591 /* EventsModifiersTests.swift in Sources */,
 				F6FB7F6225476480006658EF /* ColorPickerTests.swift in Sources */,
 				CDA8451C262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift in Sources */,
+				525076282650000600ADE4E7 /* AlertTests.swift in Sources */,
 				F60EEBF92382F004007DB53A /* InspectorTests.swift in Sources */,
 				F6D933A52385DC0F00358E0E /* TabViewTests.swift in Sources */,
 				F6D933A12385B48100358E0E /* NavigationLinkTests.swift in Sources */,

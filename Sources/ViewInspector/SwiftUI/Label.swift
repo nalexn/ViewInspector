@@ -31,9 +31,6 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-// MARK: - Non Standard Children
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.Label: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 2) { index in
