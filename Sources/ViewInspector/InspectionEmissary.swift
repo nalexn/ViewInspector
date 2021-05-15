@@ -2,55 +2,39 @@ import SwiftUI
 import Combine
 import XCTest
 
+// MARK: - InspectionEmissaryBase
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol InspectionEmissary: class {
-    
-    associatedtype V: View & Inspectable
-    typealias Inspection = (InspectableView<ViewType.View<V>>) throws -> Void
+public protocol InspectionEmissaryBase: AnyObject {
+
+    associatedtype V
+    associatedtype Body
+    associatedtype InspectedBody
+    typealias Inspection = (InspectedBody) throws -> Void
     
     var notice: PassthroughSubject<UInt, Never> { get }
-    var callbacks: [UInt: (V) -> Void] { get set }
-    
+    var callbacks: [UInt: (Body) -> Void] { get set }
+
     @discardableResult
     func inspect(after delay: TimeInterval,
                  function: String, file: StaticString, line: UInt,
                  _ inspection: @escaping Inspection
     ) -> XCTestExpectation
-    
+
     @discardableResult
     func inspect<P>(onReceive publisher: P,
                     function: String, file: StaticString, line: UInt,
                     _ inspection: @escaping Inspection
     ) -> XCTestExpectation where P: Publisher, P.Failure == Never
+
+    func setup(inspection: @escaping (InspectedBody) throws -> Void,
+               expectation: XCTestExpectation,
+               function: String, file: StaticString, line: UInt)
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol InspectionEmissaryForViewModifier: class {
-    
-    associatedtype V: ViewModifier & Inspectable
-    typealias Inspection = (InspectableView<ViewType.ClassifiedView>) throws -> Void
-    
-    var notice: PassthroughSubject<UInt, Never> { get }
-    var callbacks: [UInt: (V.Body) -> Void] { get set }
-    
-    @discardableResult
-    func inspect(after delay: TimeInterval,
-                 function: String, file: StaticString, line: UInt,
-                 _ inspection: @escaping Inspection
-    ) -> XCTestExpectation
-    
-    @discardableResult
-    func inspect<P>(onReceive publisher: P,
-                    function: String, file: StaticString, line: UInt,
-                    _ inspection: @escaping Inspection
-    ) -> XCTestExpectation where P: Publisher, P.Failure == Never
-}
+public extension InspectionEmissaryBase {
 
-// MARK: - Default Implementation
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissary {
-    
     @discardableResult
     func inspect(after delay: TimeInterval = 0,
                  function: String = #function, file: StaticString = #file, line: UInt = #line,
@@ -63,7 +47,7 @@ public extension InspectionEmissary {
         }
         return exp
     }
-    
+
     @discardableResult
     func inspect<P>(onReceive publisher: P,
                     function: String = #function, file: StaticString = #file, line: UInt = #line,
@@ -81,10 +65,20 @@ public extension InspectionEmissary {
         }
         return exp
     }
-    
-    private func setup(inspection: @escaping Inspection,
-                       expectation: XCTestExpectation,
-                       function: String, file: StaticString, line: UInt) {
+}
+
+// MARK: - InspectionEmissary for Inspectable Views
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public protocol InspectionEmissary: InspectionEmissaryBase where
+    V: View & Inspectable, Body == V, InspectedBody == InspectableView<ViewType.View<V>> {
+}
+
+extension InspectionEmissary {
+
+    func setup(inspection: @escaping Inspection,
+               expectation: XCTestExpectation,
+               function: String, file: StaticString, line: UInt) {
         callbacks[line] = { [weak self] view in
             do {
                 try inspection(try view.inspect(function: function))
@@ -99,43 +93,18 @@ public extension InspectionEmissary {
     }
 }
 
+// MARK: - InspectionEmissary for View Modifiers
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissaryForViewModifier {
+public protocol InspectionEmissaryForViewModifier: InspectionEmissaryBase where
+    V: ViewModifier & Inspectable, Body == V.Body, InspectedBody == InspectableView<ViewType.ClassifiedView> {
+}
+
+extension InspectionEmissaryForViewModifier {
     
-    @discardableResult
-    func inspect(after delay: TimeInterval = 0,
-                 function: String = #function, file: StaticString = #file, line: UInt = #line,
-                 _ inspection: @escaping Inspection
-    ) -> XCTestExpectation {
-        let exp = XCTestExpectation(description: "Inspection at line \(line)")
-        setup(inspection: inspection, expectation: exp, function: function, file: file, line: line)
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak notice] in
-            notice?.send(line)
-        }
-        return exp
-    }
-    
-    @discardableResult
-    func inspect<P>(onReceive publisher: P,
-                    function: String = #function, file: StaticString = #file, line: UInt = #line,
-                    _ inspection: @escaping Inspection
-    ) -> XCTestExpectation where P: Publisher, P.Failure == Never {
-        let exp = XCTestExpectation(description: "Inspection at line \(line)")
-        setup(inspection: inspection, expectation: exp, function: function, file: file, line: line)
-        var subscription: AnyCancellable?
-        _ = subscription
-        subscription = publisher.sink { [weak notice] _ in
-            subscription = nil
-            DispatchQueue.main.async {
-                notice?.send(line)
-            }
-        }
-        return exp
-    }
-    
-    private func setup(inspection: @escaping Inspection,
-                       expectation: XCTestExpectation,
-                       function: String, file: StaticString, line: UInt) {
+    func setup(inspection: @escaping Inspection,
+               expectation: XCTestExpectation,
+               function: String, file: StaticString, line: UInt) {
         callbacks[line] = { [weak self] view in
             do {
                 try inspection(try view.inspect(function: function))
@@ -149,6 +118,8 @@ public extension InspectionEmissaryForViewModifier {
         }
     }
 }
+
+// MARK: - On Functions
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View where Self: Inspectable {
