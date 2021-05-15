@@ -205,7 +205,7 @@ extension Inspector {
                     "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
             }
         }
-        guard namespacedPrefixes.contains(where: { longName.hasPrefix($0) }) else {
+        guard namespacedPrefixes.contains(longName) else {
             throw InspectionError.typeMismatch(factual: longName, expected: firstPrefix)
         }
     }
