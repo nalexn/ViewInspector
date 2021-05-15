@@ -61,7 +61,8 @@ final class InspectionEmissaryTests: XCTestCase {
             try body.hStack().button(1).tap()
             XCTAssertEqual(try body.hStack().button(1).labelView().text().string(), "true")
         }
-        ViewHosting.host(view: Circle().modifier(sut))
+        let view = EmptyView().modifier(sut)
+        ViewHosting.host(view: view)
         wait(for: [exp], timeout: 3.2)
     }
 
