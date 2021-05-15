@@ -93,23 +93,23 @@ extension ViewType.Alert: SupplementaryChildren {
             switch index {
             case 0:
                 let view = try Inspector.attribute(path: "alert|title", value: parent.content.view)
-                return try .init(Content(view, medium: medium), parent: parent)
+                return try .init(Content(view, medium: medium), parent: parent, call: "title()")
             case 1:
                 let view = try Inspector.attribute(path: "alert|message", value: parent.content.view, type: Text?.self)
                 guard let view = view else {
                     throw InspectionError.viewNotFound(parent: "message")
                 }
-                return try .init(Content(view, medium: medium), parent: parent)
+                return try .init(Content(view, medium: medium), parent: parent, call: "message()")
             case 2:
                 let view = try Inspector.attribute(path: "alert|primaryButton", value: parent.content.view)
-                return try .init(Content(view, medium: medium), parent: parent)
+                return try .init(Content(view, medium: medium), parent: parent, call: "primaryButton()")
             default:
                 let view = try Inspector.attribute(
                     path: "alert|secondaryButton", value: parent.content.view, type: Alert.Button?.self)
                 guard let view = view else {
                     throw InspectionError.viewNotFound(parent: "secondaryButton")
                 }
-                return try .init(Content(view, medium: medium), parent: parent)
+                return try .init(Content(view, medium: medium), parent: parent, call: "secondaryButton()")
             }
         }
     }

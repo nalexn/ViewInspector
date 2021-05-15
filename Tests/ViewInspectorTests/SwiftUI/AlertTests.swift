@@ -46,7 +46,9 @@ final class AlertTests: XCTestCase {
     func testTitleInspection() throws {
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().alert2(isPresented: binding) { Alert(title: Text("abc")) }
-        XCTAssertEqual(try sut.inspect().emptyView().alert().title().string(), "abc")
+        let title = try sut.inspect().emptyView().alert().title()
+        XCTAssertEqual(try title.string(), "abc")
+        XCTAssertEqual(title.pathToRoot, "emptyView().alert().title()")
     }
     
     func testMessageInspection() throws {
@@ -54,7 +56,9 @@ final class AlertTests: XCTestCase {
         let sut = EmptyView().alert2(isPresented: binding) {
             Alert(title: Text("abc"), message: Text("123"), dismissButton: nil)
         }
-        XCTAssertEqual(try sut.inspect().emptyView().alert().message().string(), "123")
+        let message = try sut.inspect().emptyView().alert().message()
+        XCTAssertEqual(try message.string(), "123")
+        XCTAssertEqual(message.pathToRoot, "emptyView().alert().message()")
     }
     
     func testNoMessageError() throws {
@@ -70,8 +74,9 @@ final class AlertTests: XCTestCase {
             Alert(title: Text("abc"), message: Text("123"),
                   dismissButton: .default(Text("xyz")))
         }
-        XCTAssertEqual(try sut.inspect().emptyView().alert()
-                        .primaryButton().labelView().string(), "xyz")
+        let label = try sut.inspect().emptyView().alert().primaryButton().labelView()
+        XCTAssertEqual(try label.string(), "xyz")
+        XCTAssertEqual(label.pathToRoot, "emptyView().alert().primaryButton().labelView()")
     }
     
     func testSecondaryButtonInspection() throws {
@@ -80,8 +85,9 @@ final class AlertTests: XCTestCase {
             Alert(title: Text(""), primaryButton: .cancel(),
                   secondaryButton: .default(Text("xyz")))
         }
-        XCTAssertEqual(try sut.inspect().emptyView().alert()
-                        .secondaryButton().labelView().string(), "xyz")
+        let label = try sut.inspect().emptyView().alert().secondaryButton().labelView()
+        XCTAssertEqual(try label.string(), "xyz")
+        XCTAssertEqual(label.pathToRoot, "emptyView().alert().secondaryButton().labelView()")
     }
     
     func testNoSecondaryButtonError() throws {
