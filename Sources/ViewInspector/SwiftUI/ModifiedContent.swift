@@ -68,7 +68,6 @@ internal extension Content {
             try? Inspector.attribute(label: "modifier", value: modifier, type: Inspectable.self)
         })
     }
-    
 }
 
 // MARK: - ModifiedContent Child Extraction
@@ -87,6 +86,9 @@ extension ViewType.ModifiedContent: SingleViewContent {
             } else {
                 medium = content.medium.appending(environmentModifier: modifier)
             }
+        } else if let modifier = content.view as? PossiblyTransitiveModifier,
+                  modifier.isTransitive() {
+            medium = content.medium.appending(transitiveViewModifier: modifier)
         } else {
             medium = content.medium.appending(viewModifier: content.view)
         }

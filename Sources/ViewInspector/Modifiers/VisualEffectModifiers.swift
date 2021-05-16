@@ -151,8 +151,8 @@ public extension InspectableView {
     
     func isHidden() -> Bool {
         return (try? modifierAttribute(
-            modifierName: "_HiddenModifier", path: "modifier",
-            type: Any.self, call: "hidden")) != nil
+                    modifierName: "_HiddenModifier", transitive: true,
+                    path: "modifier", type: Any.self, call: "hidden")) != nil
     }
     
     func isDisabled() -> Bool {

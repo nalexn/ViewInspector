@@ -185,24 +185,36 @@ public extension View where Self: Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
 
-    func modifierAttribute<Type>(modifierName: String, path: String,
-                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
+    func modifierAttribute<Type>(
+        modifierName: String, transitive: Bool = false,
+        path: String, type: Type.Type, call: String, index: Int = 0
+    ) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
-            modifierName: modifierName, path: path, type: type, call: call, index: index)
+            modifierName: modifierName, transitive: transitive,
+            path: path, type: type, call: call, index: index)
     }
     
-    func modifierAttribute<Type>(modifierLookup: (ModifierNameProvider) -> Bool, path: String,
-                                 type: Type.Type, call: String) throws -> Type {
+    func modifierAttribute<Type>(
+        modifierLookup: (ModifierNameProvider) -> Bool, transitive: Bool = false,
+        path: String, type: Type.Type, call: String
+    ) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
-            modifierLookup: modifierLookup, path: path, type: type, call: call)
+            modifierLookup: modifierLookup, transitive: transitive, path: path, type: type, call: call)
     }
     
-    func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
-        return try contentForModifierLookup.modifier(modifierLookup, call: call)
+    func modifier(
+        _ modifierLookup: (ModifierNameProvider) -> Bool,
+        transitive: Bool = false, call: String
+    ) throws -> Any {
+        return try contentForModifierLookup.modifier(
+            modifierLookup, transitive: transitive, call: call)
     }
     
-    func modifiersMatching(_ modifierLookup: (ModifierNameProvider) -> Bool) -> [ModifierNameProvider] {
-        return contentForModifierLookup.modifiersMatching(modifierLookup)
+    func modifiersMatching(_ modifierLookup: (ModifierNameProvider) -> Bool,
+                           transitive: Bool = false
+    ) -> [ModifierNameProvider] {
+        return contentForModifierLookup
+            .modifiersMatching(modifierLookup, transitive: transitive)
     }
     
     var contentForModifierLookup: Content {
@@ -217,19 +229,24 @@ internal extension InspectableView {
 internal extension Content {
     typealias ModifierLookupClosure = (ModifierNameProvider) -> Bool
 
-    func modifierAttribute<Type>(modifierName: String, path: String,
-                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
+    func modifierAttribute<Type>(
+        modifierName: String, transitive: Bool = false,
+        path: String, type: Type.Type, call: String, index: Int = 0
+    ) throws -> Type {
         let modifyNameProvider: ModifierLookupClosure = { modifier -> Bool in
             guard modifier.modifierType.contains(modifierName) else { return false }
             return (try? Inspector.attribute(path: path, value: modifier) as? Type) != nil
         }
-        return try modifierAttribute(modifierLookup: modifyNameProvider, path: path,
-                                     type: type, call: call, index: index)
+        return try modifierAttribute(
+            modifierLookup: modifyNameProvider, transitive: transitive,
+            path: path, type: type, call: call, index: index)
     }
     
-    func modifierAttribute<Type>(modifierLookup: ModifierLookupClosure, path: String,
-                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
-        let modifier = try self.modifier(modifierLookup, call: call, index: index)
+    func modifierAttribute<Type>(
+        modifierLookup: ModifierLookupClosure, transitive: Bool = false,
+        path: String, type: Type.Type, call: String, index: Int = 0
+    ) throws -> Type {
+        let modifier = try self.modifier(modifierLookup, transitive: transitive, call: call, index: index)
         guard let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
             throw InspectionError.modifierNotFound(
@@ -238,8 +255,9 @@ internal extension Content {
         return attribute
     }
 
-    func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
-        let modifiers = modifiersMatching(modifierLookup)
+    func modifier(_ modifierLookup: ModifierLookupClosure, transitive: Bool = false,
+                  call: String, index: Int = 0) throws -> Any {
+        let modifiers = modifiersMatching(modifierLookup, transitive: transitive)
         if index < modifiers.count {
             return modifiers[index]
         }
@@ -247,8 +265,10 @@ internal extension Content {
             parent: Inspector.typeName(value: self.view), modifier: call, index: index)
     }
     
-    func modifiersMatching(_ modifierLookup: ModifierLookupClosure) -> [ModifierNameProvider] {
-        return medium.viewModifiers.lazy
+    func modifiersMatching(_ modifierLookup: ModifierLookupClosure,
+                           transitive: Bool = false) -> [ModifierNameProvider] {
+        let modifiers = transitive ? medium.transitiveViewModifiers : medium.viewModifiers
+        return modifiers.lazy
             .compactMap { $0 as? ModifierNameProvider }
             .filter(modifierLookup)
             .reversed()

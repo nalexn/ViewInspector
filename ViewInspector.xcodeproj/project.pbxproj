@@ -27,6 +27,8 @@
 		5214803A25F803DC002D974D /* CustomStyleModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
+		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
+		52507649265155E200ADE4E7 /* TransitiveModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507648265155E200ADE4E7 /* TransitiveModifiers.swift */; };
 		52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5298500125FF5B7A00C717AB /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6FEBEF4256AE732006C28F5 /* Test.strings */; };
@@ -260,6 +262,8 @@
 		5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiersTests.swift; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
+		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
+		52507648265155E200ADE4E7 /* TransitiveModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiers.swift; sourceTree = "<group>"; };
 		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
@@ -762,6 +766,7 @@
 				F6ECF6CF23A67D11000FC591 /* SizingModifiersTests.swift */,
 				F6DB5A0A253510CC0056FC83 /* TextInputModifiersTests.swift */,
 				F6ECF6D123A680DA000FC591 /* TransformingModifiersTests.swift */,
+				52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */,
 				F64A2C6323A3E74E00A4853A /* PresentationModifiersTests.swift */,
 				F6ECF6D723A69CB5000FC591 /* VisualEffectModifiersTests.swift */,
 				355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */,
@@ -785,6 +790,7 @@
 				F6ECF6CD23A67C64000FC591 /* SizingModifiers.swift */,
 				F6DB5A00253510350056FC83 /* TextInputModifiers.swift */,
 				F63E9269249FCF92005861F0 /* TransformingModifiers.swift */,
+				52507648265155E200ADE4E7 /* TransitiveModifiers.swift */,
 				F6C2E4D523AB214A00C7308F /* VisualEffectModifiers.swift */,
 			);
 			path = Modifiers;
@@ -962,6 +968,7 @@
 				F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */,
 				F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */,
 				F6C15A49254B4A3A000240F1 /* Link.swift in Sources */,
+				52507649265155E200ADE4E7 /* TransitiveModifiers.swift in Sources */,
 				F6C15A71254B68C0000240F1 /* Menu.swift in Sources */,
 				F6C15ADD254F26B9000240F1 /* StyleConfiguration.swift in Sources */,
 				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
@@ -1090,6 +1097,7 @@
 				F6C15A31254A0F29000240F1 /* LazyVStackTests.swift in Sources */,
 				CDA844DA262B81CD00C56C98 /* SimultaneousGestureTests.swift in Sources */,
 				F6D933B92385EDDF00358E0E /* PickerTests.swift in Sources */,
+				52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */,
 				F6C15AC1254EDA17000240F1 /* TextEditorTests.swift in Sources */,
 				F64A2C6623A3F0A900A4853A /* ConfigurationModifiersTests.swift in Sources */,
 				F6ECF6D023A67D11000FC591 /* SizingModifiersTests.swift in Sources */,

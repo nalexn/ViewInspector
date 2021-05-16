@@ -132,35 +132,48 @@ public struct Content {
 internal extension Content {
     struct Medium {
         let viewModifiers: [Any]
+        let transitiveViewModifiers: [Any]
         let environmentModifiers: [EnvironmentModifier]
         let environmentObjects: [AnyObject]
         
         static var empty: Medium {
             return .init(viewModifiers: [],
+                         transitiveViewModifiers: [],
                          environmentModifiers: [],
                          environmentObjects: [])
         }
         
         func appending(viewModifier: Any) -> Medium {
             return .init(viewModifiers: viewModifiers + [viewModifier],
+                         transitiveViewModifiers: transitiveViewModifiers,
+                         environmentModifiers: environmentModifiers,
+                         environmentObjects: environmentObjects)
+        }
+        
+        func appending(transitiveViewModifier: Any) -> Medium {
+            return .init(viewModifiers: viewModifiers,
+                         transitiveViewModifiers: transitiveViewModifiers + [transitiveViewModifier],
                          environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects)
         }
         
         func appending(environmentModifier: EnvironmentModifier) -> Medium {
             return .init(viewModifiers: viewModifiers,
+                         transitiveViewModifiers: transitiveViewModifiers,
                          environmentModifiers: environmentModifiers + [environmentModifier],
                          environmentObjects: environmentObjects)
         }
         
         func appending(environmentObject: AnyObject) -> Medium {
             return .init(viewModifiers: viewModifiers,
+                         transitiveViewModifiers: transitiveViewModifiers,
                          environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects + [environmentObject])
         }
         
         func resettingViewModifiers() -> Medium {
             return .init(viewModifiers: [],
+                         transitiveViewModifiers: transitiveViewModifiers,
                          environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects)
         }
