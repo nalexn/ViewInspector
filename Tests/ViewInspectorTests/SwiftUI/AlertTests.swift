@@ -178,7 +178,10 @@ final class AlertTests: XCTestCase {
     }
     
     func testMultipleAlertsInspection() throws {
-        let sut = AlertFindTestView()
+        let binding1 = Binding(wrappedValue: true)
+        let binding2 = Binding(wrappedValue: true)
+        let binding3 = Binding(wrappedValue: true)
+        let sut = AlertFindTestView(alert1: binding1, alert2: binding2, alert3: binding3)
         let title1 = try sut.inspect().hStack().emptyView(0).alert().title()
         XCTAssertEqual(try title1.string(), "title_1")
         XCTAssertEqual(title1.pathToRoot,
@@ -187,10 +190,17 @@ final class AlertTests: XCTestCase {
         XCTAssertEqual(try title2.string(), "title_3")
         XCTAssertEqual(title2.pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).title()")
+        
+        XCTAssertEqual(try sut.inspect().find(ViewType.Alert.self).title().string(), "title_1")
+        binding1.wrappedValue = false
+        XCTAssertEqual(try sut.inspect().find(ViewType.Alert.self).title().string(), "title_3")
+        binding3.wrappedValue = false
+        XCTAssertThrows(try sut.inspect().find(ViewType.Alert.self), "Search did not find a match")
     }
     
     func testFindAndPathToRoots() throws {
-        let sut = AlertFindTestView()
+        let binding = Binding(wrappedValue: true)
+        let sut = AlertFindTestView(alert1: binding, alert2: binding, alert3: binding)
         
         // 1
         XCTAssertEqual(try sut.inspect().find(text: "title_1").pathToRoot,
@@ -212,7 +222,6 @@ final class AlertTests: XCTestCase {
             "Search did not find a match")
         XCTAssertEqual(try sut.inspect().find(text: "primary_3").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).primaryButton().labelView()")
-
     }
 }
 
@@ -258,20 +267,30 @@ private struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier, Alert
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct AlertFindTestView: View, Inspectable {
-    @Binding var isAlertPresented = true
+    
+    @Binding var isAlert1Presented = false
+    @Binding var isAlert2Presented = false
+    @Binding var isAlert3Presented = false
+    
+    init(alert1: Binding<Bool>, alert2: Binding<Bool>, alert3: Binding<Bool>) {
+        _isAlert1Presented = alert1
+        _isAlert2Presented = alert2
+        _isAlert3Presented = alert3
+    }
+    
     var body: some View {
         HStack {
             EmptyView()
-                .alert2(isPresented: $isAlertPresented) {
+                .alert2(isPresented: $isAlert1Presented) {
                     Alert(title: Text("title_1"),
                           message: Text("message_1"),
                           primaryButton: .default(Text("primary_1")),
                           secondaryButton: .destructive(Text("secondary_1")))
                 }
-                .alert(isPresented: $isAlertPresented) {
+                .alert(isPresented: $isAlert2Presented) {
                     Alert(title: Text("title_2"))
                 }
-                .alert2(isPresented: $isAlertPresented) {
+                .alert2(isPresented: $isAlert3Presented) {
                     Alert(title: Text("title_3"), message: nil,
                           dismissButton: .cancel(Text("primary_3")))
                 }

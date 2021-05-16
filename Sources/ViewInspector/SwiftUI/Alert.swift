@@ -148,13 +148,6 @@ extension ViewType.Alert: SupplementaryChildren {
 // MARK: - AlertButton
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Alert.Button {
-    enum Style: String {
-        case `default`, cancel, destructive
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct AlertButton: KnownViewType {
@@ -182,6 +175,13 @@ extension ViewType.AlertButton: SupplementaryChildren {
 }
 
 // MARK: - Custom Attributes
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension Alert.Button {
+    enum Style: String {
+        case `default`, cancel, destructive
+    }
+}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.AlertButton {
