@@ -39,12 +39,14 @@ extension ViewType.ProgressView: SupplementaryChildren {
                 let child = try Inspector.attribute(
                     path: "base|custom|label|some", value: parent.content.view)
                 let content = try Inspector.unwrap(content: Content(child, medium: medium))
-                return try .init(content, parent: parent, call: "labelView()")
+                return try InspectableView<ViewType.ClassifiedView>(
+                    content, parent: parent, call: "labelView()")
             } else {
                 let child = try Inspector.attribute(
                     path: "base|custom|currentValueLabel|some", value: parent.content.view)
                 let content = try Inspector.unwrap(content: Content(child, medium: medium))
-                return try .init(content, parent: parent, call: "currentValueLabelView()")
+                return try InspectableView<ViewType.ClassifiedView>(
+                    content, parent: parent, call: "currentValueLabelView()")
             }
         }
     }
@@ -73,10 +75,12 @@ public extension InspectableView where View == ViewType.ProgressView {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
     func currentValueLabelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 1)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
 }
 

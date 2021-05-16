@@ -48,7 +48,7 @@ public protocol MultipleViewContent {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal typealias SupplementaryView = InspectableView<ViewType.ClassifiedView>
+internal typealias SupplementaryView = UnwrappedView
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol SupplementaryChildren {
@@ -68,7 +68,7 @@ extension SupplementaryChildrenLabelView {
             let child = try Inspector.attribute(path: labelViewPath, value: parent.content.view)
             let medium = parent.content.medium.resettingViewModifiers()
             let content = try Inspector.unwrap(content: Content(child, medium: medium))
-            return try .init(content, parent: parent, call: "labelView()")
+            return try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: "labelView()")
         }
     }
 }

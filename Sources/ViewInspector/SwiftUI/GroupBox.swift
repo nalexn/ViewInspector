@@ -54,6 +54,7 @@ public extension InspectableView where View == ViewType.GroupBox {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
 }
 

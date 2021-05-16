@@ -159,6 +159,43 @@ final class AlertTests: XCTestCase {
         try sut.inspect().emptyView().alert().primaryButton().tap()
         XCTAssertNil(binding.wrappedValue)
     }
+    
+    func testMultipleAlertsInspection() throws {
+        let sut = AlertFindTestView()
+        let title1 = try sut.inspect().hStack().emptyView(0).alert().title()
+        XCTAssertEqual(try title1.string(), "title_1")
+        XCTAssertEqual(title1.pathToRoot,
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert().title()")
+        let title2 = try sut.inspect().hStack().emptyView(0).alert(1).title()
+        XCTAssertEqual(try title2.string(), "title_3")
+        XCTAssertEqual(title2.pathToRoot,
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).title()")
+    }
+    
+    func testFindAndPathToRoots() throws {
+        let sut = AlertFindTestView()
+        
+        // 1
+        XCTAssertEqual(try sut.inspect().find(text: "title_1").pathToRoot,
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert().title()")
+        XCTAssertEqual(try sut.inspect().find(text: "message_1").pathToRoot,
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert().message()")
+        XCTAssertEqual(try sut.inspect().find(text: "primary_1").pathToRoot,
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert().primaryButton().labelView()")
+        XCTAssertEqual(try sut.inspect().find(text: "secondary_1").pathToRoot,
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert().secondaryButton().labelView()")
+        // 2
+        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot,
+            "Search did not find a match")
+        
+        // 3
+        XCTAssertEqual(try sut.inspect().find(text: "title_3").pathToRoot,
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).title()")
+        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot,
+            "Search did not find a match")
+        XCTAssertEqual(try sut.inspect().find(text: "primary_3").pathToRoot,
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).primaryButton().labelView()")
+    }
 }
 
 extension Int: Identifiable {
@@ -198,5 +235,28 @@ private struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier, Alert
     
     func body(content: Self.Content) -> some View {
         content.alert(item: item, content: alertBuilder)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct AlertFindTestView: View, Inspectable {
+    @Binding var isAlertPresented = true
+    var body: some View {
+        HStack {
+            EmptyView()
+                .alert2(isPresented: $isAlertPresented) {
+                    Alert(title: Text("title_1"),
+                          message: Text("message_1"),
+                          primaryButton: .default(Text("primary_1")),
+                          secondaryButton: .destructive(Text("secondary_1")))
+                }
+                .alert(isPresented: $isAlertPresented) {
+                    Alert(title: Text("title_2"))
+                }
+                .alert2(isPresented: $isAlertPresented) {
+                    Alert(title: Text("title_3"), message: nil,
+                          dismissButton: .cancel(Text("primary_3")))
+                }
+        }
     }
 }

@@ -10,7 +10,9 @@ public extension ViewType {
         public static var namespacedPrefixes: [String] {
             return ["ViewInspector." + typePrefix]
         }
-        public static var isTransitive: Bool { true }
+        public static func inspectionCall(typeName: String) -> String {
+            return "alert(\(ViewType.indexPlaceholder))"
+        }
     }
 }
 
@@ -19,18 +21,18 @@ public extension ViewType {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
 
-    func alert() throws -> InspectableView<ViewType.Alert> {
-        return try contentForModifierLookup.alert(parent: self)
+    func alert(_ index: Int? = nil) throws -> InspectableView<ViewType.Alert> {
+        return try contentForModifierLookup.alert(parent: self, index: index)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func alert(parent: UnwrappedView) throws -> InspectableView<ViewType.Alert> {
+    func alert(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Alert> {
         guard let alertBuilder = try? self.modifierAttribute(
-                modifierLookup: { _ in true }, path: "modifier",
-                type: AlertBuilder.self, call: "")
+                modifierLookup: { isAlertBuilder(modifier: $0) }, path: "modifier",
+                type: AlertBuilder.self, call: "", index: index ?? 0)
         else {
             _ = try self.modifier({
                 $0.modifierType.contains("AlertTransformModifier")
@@ -45,15 +47,35 @@ internal extension Content {
         let container = ViewType.Alert.Container(alert: alert, builder: alertBuilder)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
-        return try .init(content, parent: parent, call: "alert()")
+        let call = ViewType.inspectionCall(
+            base: ViewType.Alert.inspectionCall(typeName: ""), index: index)
+        return try .init(content, parent: parent, call: call, index: index)
+    }
+    
+    func alertsForSearch() -> [ViewSearch.ModifierIdentity] {
+        let count = medium.viewModifiers
+            .compactMap { isAlertBuilder(modifier: $0) }
+            .count
+        return Array(0..<count).map { _ in
+            .init(name: "", builder: { parent, index in
+                try parent.content.alert(parent: parent, index: index)
+            })
+        }
+    }
+    
+    private func isAlertBuilder(modifier: Any) -> Bool {
+        return (try? Inspector.attribute(
+            label: "modifier", value: modifier, type: AlertBuilder.self)) != nil
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType.Alert {
-    struct Container {
+    struct Container: CustomViewIdentityMapping {
         let alert: SwiftUI.Alert
         let builder: AlertBuilder
+        
+        var viewTypeForSearch: KnownViewType.Type { ViewType.Alert.self }
     }
 }
 
@@ -93,23 +115,31 @@ extension ViewType.Alert: SupplementaryChildren {
             switch index {
             case 0:
                 let view = try Inspector.attribute(path: "alert|title", value: parent.content.view)
-                return try .init(Content(view, medium: medium), parent: parent, call: "title()")
+                let content = try Inspector.unwrap(content: Content(view, medium: medium))
+                return try InspectableView<ViewType.Text>(
+                    content, parent: parent, call: "title()")
             case 1:
                 let view = try Inspector.attribute(path: "alert|message", value: parent.content.view, type: Text?.self)
                 guard let view = view else {
                     throw InspectionError.viewNotFound(parent: "message")
                 }
-                return try .init(Content(view, medium: medium), parent: parent, call: "message()")
+                let content = try Inspector.unwrap(content: Content(view, medium: medium))
+                return try InspectableView<ViewType.Text>(
+                    content, parent: parent, call: "message()")
             case 2:
                 let view = try Inspector.attribute(path: "alert|primaryButton", value: parent.content.view)
-                return try .init(Content(view, medium: medium), parent: parent, call: "primaryButton()")
+                let content = try Inspector.unwrap(content: Content(view, medium: medium))
+                return try InspectableView<ViewType.AlertButton>(
+                    content, parent: parent, call: "primaryButton()")
             default:
                 let view = try Inspector.attribute(
                     path: "alert|secondaryButton", value: parent.content.view, type: Alert.Button?.self)
                 guard let view = view else {
                     throw InspectionError.viewNotFound(parent: "secondaryButton")
                 }
-                return try .init(Content(view, medium: medium), parent: parent, call: "secondaryButton()")
+                let content = try Inspector.unwrap(content: Content(view, medium: medium))
+                return try InspectableView<ViewType.AlertButton>(
+                    content, parent: parent, call: "secondaryButton()")
             }
         }
     }
@@ -126,7 +156,23 @@ public extension ViewType {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.AlertButton: SupplementaryChildrenLabelView { }
+extension SwiftUI.Alert.Button: CustomViewIdentityMapping {
+    var viewTypeForSearch: KnownViewType.Type { ViewType.AlertButton.self }
+}
+
+// MARK: - Non Standard Children
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.AlertButton: SupplementaryChildren {
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
+        return .init(count: 1) { _ in
+            let child = try Inspector.attribute(path: "label", value: parent.content.view)
+            let medium = parent.content.medium.resettingViewModifiers()
+            let content = try Inspector.unwrap(content: Content(child, medium: medium))
+            return try InspectableView<ViewType.Text>(content, parent: parent, call: "labelView()")
+        }
+    }
+}
 
 // MARK: - Custom Attributes
 
@@ -134,8 +180,8 @@ extension ViewType.AlertButton: SupplementaryChildrenLabelView { }
 public extension InspectableView where View == ViewType.AlertButton {
     
     func labelView() throws -> InspectableView<ViewType.Text> {
-        let view = try View.supplementaryChildren(self).element(at: 0)
-        return try .init(view.content, parent: view.parentView)
+        return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.Text.self)
     }
     
     func tap() throws {

@@ -42,6 +42,7 @@ public extension InspectableView where View == ViewType.Button {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
     func tap() throws {

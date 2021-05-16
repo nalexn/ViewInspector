@@ -371,7 +371,8 @@ private extension UnwrappedView {
             let (isSingle, children) = queue.remove(at: 0)
             for offset in 0..<children.count {
                 guard let view = try? children.element(at: offset) else { continue }
-                let index = isSingle ? nil : offset
+                let viewIndex = view.inspectionIndex ?? 0
+                let index = isSingle && viewIndex == 0 ? nil : offset
                 guard let (identity, instance) = ViewSearch
                         .identifyAndInstantiate(view, index: index)
                 else {

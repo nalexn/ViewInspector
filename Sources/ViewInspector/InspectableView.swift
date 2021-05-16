@@ -8,6 +8,7 @@ public struct InspectableView<View> where View: KnownViewType {
     internal let parentView: UnwrappedView?
     internal let inspectionCall: String
     internal let inspectionIndex: Int?
+    internal var isUnwrappedSupplementaryChild: Bool = false
     
     internal init(_ content: Content, parent: UnwrappedView?,
                   call: String = #function, index: Int? = nil) throws {
@@ -66,6 +67,7 @@ internal protocol UnwrappedView {
     var inspectionIndex: Int? { get }
     var pathToRoot: String { get }
     var isTransitive: Bool { get }
+    var isUnwrappedSupplementaryChild: Bool { get set }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
