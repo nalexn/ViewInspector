@@ -12,14 +12,6 @@ final class ViewPresentationTests: XCTestCase {
         let sut = EmptyView().sheet(isPresented: binding) { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
-    
-    #if !os(macOS)
-    func testActionSheet() throws {
-        let binding = Binding(wrappedValue: true)
-        let sut = EmptyView().actionSheet(isPresented: binding) { ActionSheet(title: Text("")) }
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
 }
 
 // MARK: - ViewColorTests

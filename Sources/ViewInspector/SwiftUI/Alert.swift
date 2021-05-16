@@ -202,9 +202,12 @@ public extension InspectableView where View == ViewType.AlertButton {
     
     func tap() throws {
         guard !isDisabled() else { return }
-        guard let parent = self.parentView?.content.view as? ViewType.Alert.Container
+        guard let container = self.parentView?.content.view,
+            let presenter = try? Inspector.attribute(
+                label: "builder", value: container,
+                type: SystemPopupPresenter.self)
         else { throw InspectionError.parentViewNotFound(view: "Alert.Button") }
-        parent.builder.dismissAlert()
+        presenter.dismissPopup()
         typealias Callback = () -> Void
         let callback = try Inspector
             .attribute(label: "action", value: content.view, type: Callback.self)
@@ -215,9 +218,13 @@ public extension InspectableView where View == ViewType.AlertButton {
 // MARK: - Alert inspection protocols
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol AlertBuilder {
+public protocol SystemPopupPresenter {
+    func dismissPopup()
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public protocol AlertBuilder: SystemPopupPresenter {
     func buildAlert() throws -> Alert
-    func dismissAlert()
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -242,7 +249,7 @@ public extension AlertProvider {
         return alertBuilder()
     }
     
-    func dismissAlert() {
+    func dismissPopup() {
         isPresented.wrappedValue = false
     }
 }
@@ -256,7 +263,7 @@ public extension AlertItemProvider {
         return alertBuilder(value)
     }
     
-    func dismissAlert() {
+    func dismissPopup() {
         item.wrappedValue = nil
     }
 }

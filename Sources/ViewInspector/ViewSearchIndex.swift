@@ -7,7 +7,7 @@ internal extension ViewSearch {
     
     private static var index: [String: [ViewIdentity]] = {
         let identities: [ViewIdentity] = [
-            .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
+            .init(ViewType.ActionSheet.self), .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
             .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
             .init(ViewType.Button.self),
             .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
@@ -274,12 +274,16 @@ internal extension Content {
                 modifierNames.contains(where: { $0.hasPrefix(identity.name) })
             })
         let alertModifiers = alertsForSearch()
+        let sheetModifiers = sheetsForSearch()
         let customModifiers = customViewModifiers()
         return .init(count: identities.count, { index -> UnwrappedView in
             try identities[index].builder(parent, nil)
         })
         + .init(count: alertModifiers.count, { index -> UnwrappedView in
             try alertModifiers[index].builder(parent, index)
+        })
+        + .init(count: sheetModifiers.count, { index -> UnwrappedView in
+            try sheetModifiers[index].builder(parent, index)
         })
         + .init(count: customModifiers.count, { index -> UnwrappedView in
             let modifier = customModifiers[index]

@@ -372,7 +372,7 @@ private extension UnwrappedView {
             for offset in 0..<children.count {
                 guard let view = try? children.element(at: offset) else { continue }
                 let viewIndex = view.inspectionIndex ?? 0
-                let index = isSingle && viewIndex == 0 ? nil : offset
+                let index = isSingle && viewIndex == 0 ? nil : viewIndex
                 guard let (identity, instance) = ViewSearch
                         .identifyAndInstantiate(view, index: index)
                 else {

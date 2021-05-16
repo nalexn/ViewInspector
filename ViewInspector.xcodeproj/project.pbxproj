@@ -29,6 +29,8 @@
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
 		52507649265155E200ADE4E7 /* TransitiveModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507648265155E200ADE4E7 /* TransitiveModifiers.swift */; };
+		5250764B2651800800ADE4E7 /* ActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5250764A2651800800ADE4E7 /* ActionSheet.swift */; };
+		5250764D265185A800ADE4E7 /* ActionSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5250764C265185A800ADE4E7 /* ActionSheetTests.swift */; };
 		52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5298500125FF5B7A00C717AB /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6FEBEF4256AE732006C28F5 /* Test.strings */; };
@@ -264,6 +266,8 @@
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
 		52507648265155E200ADE4E7 /* TransitiveModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiers.swift; sourceTree = "<group>"; };
+		5250764A2651800800ADE4E7 /* ActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheet.swift; sourceTree = "<group>"; };
+		5250764C265185A800ADE4E7 /* ActionSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetTests.swift; sourceTree = "<group>"; };
 		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
@@ -566,6 +570,7 @@
 		F60EEBBD2382EED0007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				5250764A2651800800ADE4E7 /* ActionSheet.swift */,
 				52507625264FC0F400ADE4E7 /* Alert.swift */,
 				F6684BF523AA587700DECCB3 /* AngularGradient.swift */,
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
@@ -669,6 +674,7 @@
 		F60EEBE62382F004007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				5250764C265185A800ADE4E7 /* ActionSheetTests.swift */,
 				525076272650000600ADE4E7 /* AlertTests.swift */,
 				F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */,
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
@@ -1005,6 +1011,7 @@
 				F653BDE3255698A6001FA688 /* TupleView.swift in Sources */,
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
 				F6C15A0D254A05A4000240F1 /* LazyVGrid.swift in Sources */,
+				5250764B2651800800ADE4E7 /* ActionSheet.swift in Sources */,
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
 				F64105C4257BF9A70033D82D /* ViewSearch.swift in Sources */,
 				F6D933BF2385F5CB00358E0E /* TextField.swift in Sources */,
@@ -1111,6 +1118,7 @@
 				F64C4E30250CD71400A69FF9 /* ColorTests.swift in Sources */,
 				CDA84516262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift in Sources */,
 				F6BD820A2565AD5D00A772D4 /* PopoverTests.swift in Sources */,
+				5250764D265185A800ADE4E7 /* ActionSheetTests.swift in Sources */,
 				F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6C15A17254A0BB5000240F1 /* LazyHStackTests.swift in Sources */,
