@@ -27,27 +27,35 @@ public extension InspectableView {
         }
     }
     
-    #if !os(macOS)
+    @available(macOS 11.0, *)
     func accentColor() throws -> Color? {
         let reference = EmptyView().accentColor(nil)
         let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
         return try environment(keyPath, call: "accentColor")
     }
-    #endif
     
     func colorScheme() throws -> ColorScheme {
         let reference = EmptyView().colorScheme(.light)
-        let keyPath = try Inspector.environmentKeyPath(ColorScheme.self, reference)
-        return try environment(keyPath, call: "colorScheme")
+        do {
+            let keyPath = try Inspector.environmentKeyPath(ColorScheme.self, reference)
+            return try environment(keyPath, call: "colorScheme")
+        } catch {
+            if #available(macOS 11.0, *) {
+                if let preferred = try? preferredColorScheme() {
+                    return preferred
+                }
+            }
+            throw error
+        }
     }
     
-    #if !os(macOS)
+    @available(macOS 11.0, *)
     func preferredColorScheme() throws -> ColorScheme? {
         return try modifierAttribute(
             modifierName: "_PreferenceWritingModifier<PreferredColorSchemeKey>",
+            transitive: true,
             path: "modifier|value", type: Optional<ColorScheme>.self, call: "preferredColorScheme")
     }
-    #endif
 }
 
 // MARK: - ViewPreview

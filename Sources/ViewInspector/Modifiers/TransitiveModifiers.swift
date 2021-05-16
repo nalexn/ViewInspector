@@ -12,6 +12,7 @@ extension ModifiedContent: PossiblyTransitiveModifier {
         if [
             "_HiddenModifier",
             "_FlipForRTLEffect",
+            "_PreferenceWritingModifier<PreferredColorSchemeKey>",
         ].contains(name) { return true }
         if self.isDisabledEnvironmentKeyTransformModifier() {
             return true

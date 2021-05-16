@@ -267,11 +267,11 @@ internal extension Content {
     
     func modifiersMatching(_ modifierLookup: ModifierLookupClosure,
                            transitive: Bool = false) -> [ModifierNameProvider] {
-        let modifiers = transitive ? medium.transitiveViewModifiers : medium.viewModifiers
+        let modifiers = transitive ? medium.transitiveViewModifiers
+            : medium.viewModifiers.reversed()
         return modifiers.lazy
             .compactMap { $0 as? ModifierNameProvider }
             .filter(modifierLookup)
-            .reversed()
     }
 }
 
