@@ -149,6 +149,23 @@ final class AlertTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
+    func testAlertButtonStyle() throws {
+        let binding = Binding(wrappedValue: true)
+        let sut1 = EmptyView().alert2(isPresented: binding) {
+            Alert(title: Text(""), primaryButton: .default(Text("")),
+                  secondaryButton: .cancel(Text("")))
+        }
+        let sut2 = EmptyView().alert2(isPresented: binding) {
+            Alert(title: Text(""), message: nil, dismissButton: .destructive(Text("")))
+        }
+        XCTAssertEqual(
+            try sut1.inspect().emptyView().alert().primaryButton().style(), .default)
+        XCTAssertEqual(
+            try sut1.inspect().emptyView().alert().secondaryButton().style(), .cancel)
+        XCTAssertEqual(
+            try sut2.inspect().emptyView().alert().primaryButton().style(), .destructive)
+    }
+    
     func testAlertWithItem() throws {
         let binding = Binding<Int?>(wrappedValue: 6)
         let sut = EmptyView().alert2(item: binding) { value in
@@ -195,6 +212,7 @@ final class AlertTests: XCTestCase {
             "Search did not find a match")
         XCTAssertEqual(try sut.inspect().find(text: "primary_3").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).primaryButton().labelView()")
+
     }
 }
 

@@ -148,6 +148,13 @@ extension ViewType.Alert: SupplementaryChildren {
 // MARK: - AlertButton
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension Alert.Button {
+    enum Style: String {
+        case `default`, cancel, destructive
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct AlertButton: KnownViewType {
@@ -182,6 +189,15 @@ public extension InspectableView where View == ViewType.AlertButton {
     func labelView() throws -> InspectableView<ViewType.Text> {
         return try View.supplementaryChildren(self).element(at: 0)
             .asInspectableView(ofType: ViewType.Text.self)
+    }
+    
+    func style() throws -> Alert.Button.Style {
+        let value = try Inspector.attribute(label: "style", value: content.view)
+        let stringValue = String(describing: value)
+        guard let style = Alert.Button.Style(rawValue: stringValue) else {
+            throw InspectionError.notSupported("Unknown Alert.Button.Style: \(stringValue)")
+        }
+        return style
     }
     
     func tap() throws {
