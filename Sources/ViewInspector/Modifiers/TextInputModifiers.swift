@@ -82,21 +82,30 @@ public extension InspectableView {
         return try environment(keyPath, call: "truncationMode")
     }
     
-    func allowsTightening() throws -> Bool {
+    func allowsTightening() -> Bool {
         let reference = EmptyView().allowsTightening(true)
-        let keyPath = try Inspector.environmentKeyPath(Bool.self, reference)
-        return try environment(keyPath, call: "allowsTightening")
+        if let keyPath = try? Inspector.environmentKeyPath(Bool.self, reference),
+           let value = try? environment(keyPath, call: "allowsTightening") {
+            return value
+        }
+        return false
     }
     
-    func disableAutocorrection() throws -> Bool? {
+    func disableAutocorrection() -> Bool {
         let reference = EmptyView().disableAutocorrection(false)
-        let keyPath = try Inspector.environmentKeyPath(Optional<Bool>.self, reference)
-        return try environment(keyPath, call: "disableAutocorrection")
+        if let keyPath = try? Inspector.environmentKeyPath(Optional<Bool>.self, reference),
+           let value = try? environment(keyPath, call: "disableAutocorrection") {
+            return value
+        }
+        return false
     }
     
-    func flipsForRightToLeftLayoutDirection() throws -> Bool? {
-        return try modifierAttribute(
-            modifierName: "_FlipForRTLEffect", path: "modifier|isEnabled",
-            type: Optional<Bool>.self, call: "flipsForRightToLeftLayoutDirection")
+    func flipsForRightToLeftLayoutDirection() -> Bool {
+        return modifiersMatching({ $0.modifierType == "_FlipForRTLEffect" },
+                                 transitive: true)
+            .compactMap {
+                try? Inspector.attribute(path: "modifier|isEnabled", value: $0, type: Optional<Bool>.self)
+            }
+            .contains(true)
     }
 }

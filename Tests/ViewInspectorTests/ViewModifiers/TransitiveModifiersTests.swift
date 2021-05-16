@@ -17,6 +17,12 @@ final class TransitiveModifiersTests: XCTestCase {
         XCTAssertFalse(try sut.find(button: "2").isDisabled())
         XCTAssertTrue(try sut.find(button: "3").isDisabled())
     }
+    
+    func testFlipsRightToLeftInheritance() throws {
+        let sut = try FlipsRightToLeftTestView().inspect()
+        XCTAssertFalse(try sut.find(text: "1").flipsForRightToLeftLayoutDirection())
+        XCTAssertTrue(try sut.find(text: "2").flipsForRightToLeftLayoutDirection())
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -49,5 +55,18 @@ private struct TestDisabledView: View, Inspectable {
                 }.disabled(true)
             }.disabled(false)
         }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct FlipsRightToLeftTestView: View, Inspectable {
+    var body: some View {
+        VStack {
+            Stepper("1", onIncrement: nil, onDecrement: nil)
+            VStack {
+                Stepper("2", onIncrement: nil, onDecrement: nil)
+                    .flipsForRightToLeftLayoutDirection(false)
+            }.flipsForRightToLeftLayoutDirection(true)
+        }.flipsForRightToLeftLayoutDirection(false)
     }
 }

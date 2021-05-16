@@ -11,6 +11,7 @@ extension ModifiedContent: PossiblyTransitiveModifier {
         let name = Inspector.typeName(type: Modifier.self)
         if [
             "_HiddenModifier",
+            "_FlipForRTLEffect",
         ].contains(name) { return true }
         if self.isDisabledEnvironmentKeyTransformModifier() {
             return true
