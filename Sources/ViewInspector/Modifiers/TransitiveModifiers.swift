@@ -14,7 +14,11 @@ extension ModifiedContent: PossiblyTransitiveModifier {
             "_FlipForRTLEffect",
             "_AllowsHitTestingModifier",
             "_PreferenceWritingModifier<PreferredColorSchemeKey>",
-        ].contains(name) { return true }
+        ].contains(name) || [
+            "_LabeledViewStyleModifier<HiddenLabel",
+        ].contains(where: { name.hasPrefix($0) }) {
+            return true
+        }
         if self.isDisabledEnvironmentKeyTransformModifier() {
             return true
         }

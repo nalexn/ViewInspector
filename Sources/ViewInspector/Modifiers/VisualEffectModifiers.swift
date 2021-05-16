@@ -150,6 +150,9 @@ internal extension Content {
 public extension InspectableView {
     
     func isHidden() -> Bool {
+        if labelsHidden() && isControlLabelDescendant() {
+            return true
+        }
         return (try? modifierAttribute(
                     modifierName: "_HiddenModifier", transitive: true,
                     path: "modifier", type: Any.self, call: "hidden")) != nil
@@ -166,6 +169,26 @@ public extension InspectableView {
             closure(&value)
             return !value
         }, transitive: true).count > 0
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension UnwrappedView {
+    func isControlLabelDescendant() -> Bool {
+        guard let parent = parentView, let grandParent = parent.parentView
+        else { return false }
+        if parent.inspectionCall == "labelView()",
+           grandParent is InspectableView<ViewType.ColorPicker>
+        || grandParent is InspectableView<ViewType.DatePicker>
+        || grandParent is InspectableView<ViewType.Picker>
+        || grandParent is InspectableView<ViewType.ProgressView>
+        || grandParent is InspectableView<ViewType.Slider>
+        || grandParent is InspectableView<ViewType.Stepper>
+        || grandParent is InspectableView<ViewType.TextField>
+        || grandParent is InspectableView<ViewType.Toggle> {
+            return true
+        }
+        return parent.isControlLabelDescendant()
     }
 }
 

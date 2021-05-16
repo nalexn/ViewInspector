@@ -47,6 +47,16 @@ final class TransitiveModifiersTests: XCTestCase {
         XCTAssertTrue(try sut.find(button: "2").allowsHitTesting())
         XCTAssertFalse(try sut.find(button: "3").allowsHitTesting())
     }
+    
+    func testLabelsHiddenInheritance() throws {
+        let sut = try TestLabelsHiddenView().inspect()
+        let text1 = try sut.find(text: "1")
+        let text2 = try sut.find(text: "2")
+        XCTAssertFalse(text1.labelsHidden())
+        XCTAssertFalse(text1.isHidden())
+        XCTAssertTrue(text2.labelsHidden())
+        XCTAssertTrue(text2.isHidden())
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -126,6 +136,22 @@ private struct AllowsHitTestingTestView: View, Inspectable {
                         .allowsHitTesting(true)
                 }.allowsHitTesting(false)
             }.allowsHitTesting(true)
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestLabelsHiddenView: View, Inspectable {
+    var body: some View {
+        VStack {
+            Stepper(onIncrement: nil, onDecrement: nil, label: {
+                VStack { HStack { Text("1") } }
+            })
+            VStack {
+                Stepper(onIncrement: nil, onDecrement: nil, label: {
+                    VStack { HStack { Text("2") } }
+                })
+            }.labelsHidden()
         }
     }
 }
