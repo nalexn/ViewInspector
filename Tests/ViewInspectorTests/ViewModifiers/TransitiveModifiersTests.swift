@@ -40,6 +40,13 @@ final class TransitiveModifiersTests: XCTestCase {
         XCTAssertEqual(try text3.colorScheme(), .dark)
         XCTAssertEqual(try text4.colorScheme(), .light)
     }
+    
+    func testAllowsHitTestingInheritance() throws {
+        let sut = try AllowsHitTestingTestView().inspect()
+        XCTAssertTrue(try sut.find(button: "1").allowsHitTesting())
+        XCTAssertTrue(try sut.find(button: "2").allowsHitTesting())
+        XCTAssertFalse(try sut.find(button: "3").allowsHitTesting())
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -103,5 +110,22 @@ private struct ColorSchemeTestView: View, Inspectable {
                 }.colorScheme(.dark)
             }.preferredColorScheme(.dark)
         }.preferredColorScheme(.light)
+    }
+}
+
+@available(iOS 13.0, macOS 11.0, tvOS 13.0, *)
+private struct AllowsHitTestingTestView: View, Inspectable {
+    
+    var body: some View {
+        VStack {
+            Button("1", action: { print("1") })
+            VStack {
+                Button("2", action: { print("2") })
+                VStack {
+                    Button("3", action: { print("3") })
+                        .allowsHitTesting(true)
+                }.allowsHitTesting(false)
+            }.allowsHitTesting(true)
+        }
     }
 }
