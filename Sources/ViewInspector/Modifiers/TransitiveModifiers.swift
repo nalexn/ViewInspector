@@ -9,8 +9,12 @@ internal protocol PossiblyTransitiveModifier {
 extension ModifiedContent: PossiblyTransitiveModifier {
     func isTransitive() -> Bool {
         let name = Inspector.typeName(type: Modifier.self)
-        return [
+        if [
             "_HiddenModifier",
-        ].contains(name)
+        ].contains(name) { return true }
+        if self.isDisabledEnvironmentKeyTransformModifier() {
+            return true
+        }
+        return false
     }
 }

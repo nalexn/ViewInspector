@@ -156,18 +156,28 @@ public extension InspectableView {
     }
     
     func isDisabled() -> Bool {
-        let reference = EmptyView().disabled(true)
         typealias Closure = (inout Bool) -> Void
+        return modifiersMatching({ modifier -> Bool in
+            guard modifier.isDisabledEnvironmentKeyTransformModifier(),
+                  let closure = try? Inspector.attribute(
+                    path: "modifier|transform", value: modifier, type: Closure.self)
+            else { return false }
+            var value = true
+            closure(&value)
+            return !value
+        }, transitive: true).count > 0
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ModifierNameProvider {
+    func isDisabledEnvironmentKeyTransformModifier() -> Bool {
+        let reference = EmptyView().disabled(true)
         guard let referenceKeyPath = try? Inspector.environmentKeyPath(Bool.self, reference),
-              let closure = try? modifierAttribute(modifierLookup: { modifier -> Bool in
-                guard modifier.modifierType == "_EnvironmentKeyTransformModifier<Bool>",
-                      let keyPath = try? Inspector.environmentKeyPath(Bool.self, modifier)
-                else { return false }
-                return keyPath == referenceKeyPath
-            }, path: "modifier|transform", type: Closure.self, call: "disabled")
+              self.modifierType == "_EnvironmentKeyTransformModifier<Bool>",
+              let keyPath = try? Inspector.environmentKeyPath(Bool.self, self),
+              keyPath == referenceKeyPath
         else { return false }
-        var value = true
-        closure(&value)
-        return !value
+        return true
     }
 }

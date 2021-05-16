@@ -10,6 +10,13 @@ final class TransitiveModifiersTests: XCTestCase {
         XCTAssertFalse(try sut.find(text: "abc").isHidden())
         XCTAssertTrue(try sut.find(text: "123").isHidden())
     }
+    
+    func testDisabledStateInheritance() throws {
+        let sut = try TestDisabledView().inspect()
+        XCTAssertFalse(try sut.find(button: "1").isDisabled())
+        XCTAssertFalse(try sut.find(button: "2").isDisabled())
+        XCTAssertTrue(try sut.find(button: "3").isDisabled())
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -20,6 +27,27 @@ private struct HittenTestView: View, Inspectable {
             HStack {
                 Text("123")
             }.hidden()
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestDisabledView: View, Inspectable {
+    var body: some View {
+        VStack {
+            Button(action: { }, label: {
+                Text("1")
+            })
+            VStack {
+                Button(action: { }, label: {
+                    Text("2")
+                })
+                VStack {
+                    Button(action: { }, label: {
+                        Text("3").disabled(false)
+                    }).disabled(false)
+                }.disabled(true)
+            }.disabled(false)
         }
     }
 }
