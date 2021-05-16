@@ -46,7 +46,7 @@ public extension InspectableView where View == ViewType.Toggle {
     }
     
     func tap() throws {
-        guard !isDisabled() else { return }
+        guard isInteractive() else { return }
         try isOnBinding().wrappedValue.toggle()
     }
     

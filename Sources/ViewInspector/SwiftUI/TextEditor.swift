@@ -41,7 +41,7 @@ public extension InspectableView where View == ViewType.TextEditor {
     }
     
     func setInput(_ value: String) throws {
-        guard !isDisabled() else { return }
+        guard isInteractive() else { return }
         try inputBinding().wrappedValue = value
     }
     

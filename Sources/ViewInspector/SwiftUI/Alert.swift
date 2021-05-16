@@ -201,7 +201,6 @@ public extension InspectableView where View == ViewType.AlertButton {
     }
     
     func tap() throws {
-        guard !isDisabled() else { return }
         guard let container = self.parentView?.content.view,
             let presenter = try? Inspector.attribute(
                 label: "builder", value: container,

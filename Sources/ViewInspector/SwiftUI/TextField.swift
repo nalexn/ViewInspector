@@ -44,7 +44,7 @@ public extension InspectableView where View == ViewType.TextField {
     }
     
     func callOnEditingChanged() throws {
-        guard !isDisabled() else { return }
+        guard isInteractive() else { return }
         typealias Callback = (Bool) -> Void
         let callback = try Inspector
             .attribute(label: "onEditingChanged", value: content.view, type: Callback.self)
@@ -52,7 +52,7 @@ public extension InspectableView where View == ViewType.TextField {
     }
     
     func callOnCommit() throws {
-        guard !isDisabled() else { return }
+        guard isInteractive() else { return }
         typealias Callback = () -> Void
         let callback = try Inspector
             .attribute(label: "onCommit", value: content.view, type: Callback.self)
@@ -64,7 +64,7 @@ public extension InspectableView where View == ViewType.TextField {
     }
     
     func setInput(_ value: String) throws {
-        guard !isDisabled() else { return }
+        guard isInteractive() else { return }
         try inputBinding().wrappedValue = value
     }
     

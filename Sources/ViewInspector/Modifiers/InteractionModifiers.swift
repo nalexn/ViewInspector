@@ -1,5 +1,12 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension InspectableView {
+    func isInteractive() -> Bool {
+        return !isDisabled() && !isHidden() && allowsHitTesting()
+    }
+}
+
 // MARK: - InteractionEvents
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

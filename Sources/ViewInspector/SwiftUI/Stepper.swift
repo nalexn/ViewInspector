@@ -47,7 +47,7 @@ public extension InspectableView where View == ViewType.Stepper {
     }
     
     func increment() throws {
-        guard !isDisabled() else { return }
+        guard isInteractive() else { return }
         typealias Callback = () -> Void
         let callback = try Inspector
             .attribute(path: path(to: "onIncrement"), value: content.view, type: Callback.self)
@@ -55,7 +55,7 @@ public extension InspectableView where View == ViewType.Stepper {
     }
     
     func decrement() throws {
-        guard !isDisabled() else { return }
+        guard isInteractive() else { return }
         typealias Callback = () -> Void
         let callback = try Inspector
             .attribute(path: path(to: "onDecrement"), value: content.view, type: Callback.self)
