@@ -216,26 +216,26 @@ public extension InspectableView where View == ViewType.AlertButton {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol AlertBuilder {
-    func buildAlert() throws -> SwiftUI.Alert
+    func buildAlert() throws -> Alert
     func dismissAlert()
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol AlertProvider: AlertBuilder {
     var isPresented: Binding<Bool> { get }
-    var alertBuilder: () -> SwiftUI.Alert { get }
+    var alertBuilder: () -> Alert { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol AlertItemProvider: AlertBuilder {
     associatedtype Item: Identifiable
     var item: Binding<Item?> { get }
-    var alertBuilder: (Item) -> SwiftUI.Alert { get }
+    var alertBuilder: (Item) -> Alert { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension AlertProvider {
-    func buildAlert() throws -> SwiftUI.Alert {
+    func buildAlert() throws -> Alert {
         guard isPresented.wrappedValue else {
             throw InspectionError.viewNotFound(parent: "Alert")
         }
@@ -249,7 +249,7 @@ public extension AlertProvider {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension AlertItemProvider {
-    func buildAlert() throws -> SwiftUI.Alert {
+    func buildAlert() throws -> Alert {
         guard let value = item.wrappedValue else {
             throw InspectionError.viewNotFound(parent: "Alert")
         }
