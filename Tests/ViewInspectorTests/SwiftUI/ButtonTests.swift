@@ -67,7 +67,8 @@ final class ButtonTests: XCTestCase {
         let button = Button(action: {
             exp.fulfill()
         }, label: { Text("Test") }).disabled(true)
-        try button.inspect().button().tap()
+        XCTAssertThrows(try button.inspect().button().tap(),
+            "Button is unresponsive: it is disabled")
         wait(for: [exp], timeout: 0.5)
     }
 }

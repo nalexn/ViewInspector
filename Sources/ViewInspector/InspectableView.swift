@@ -286,3 +286,58 @@ extension ModifiedContent: ModifierNameProvider {
         return Inspector.typeName(type: Modifier.self)
     }
 }
+
+// MARK: - isResponsive check for controls
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView {
+    
+    /**
+     A function to check if the view is responsive to the user's touch input.
+     Returns `false` if the view or any of its parent views are `disabled`,
+     `hidden`, or if `allowsHitTesting` is set to `false`.
+
+      - Returns: `true` if the view is responsive to the user's interaction
+     */
+    func isResponsive() -> Bool {
+        do {
+            try guardIsResponsive()
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    internal func guardIsResponsive() throws {
+        let name = Inspector.typeName(value: content.view, prefixOnly: true)
+        if isDisabled() {
+            let blocker = farthestParent(where: { $0.isDisabled() }) ?? self
+            throw InspectionError.unresponsiveControl(
+                name: name, reason: blocker.pathToRoot.ifEmpty(use: "it") + " is disabled")
+        }
+        if isHidden() {
+            let blocker = farthestParent(where: { $0.isHidden() }) ?? self
+            throw InspectionError.unresponsiveControl(
+                name: name, reason: blocker.pathToRoot.ifEmpty(use: "it") + " is hidden")
+        }
+        if !allowsHitTesting() {
+            let blocker = farthestParent(where: { !$0.allowsHitTesting() }) ?? self
+            throw InspectionError.unresponsiveControl(
+                name: name, reason: blocker.pathToRoot.ifEmpty(use: "it") + " has allowsHitTesting set to false")
+        }
+    }
+    
+    private func farthestParent(where condition: (InspectableView<ViewType.ClassifiedView>) -> Bool) -> UnwrappedView? {
+        if let parent = try? self.parentView?.asInspectableView(),
+           condition(parent) {
+            return parent.farthestParent(where: condition) ?? parent
+        }
+        return nil
+    }
+}
+
+private extension String {
+    func ifEmpty(use replacement: String) -> String {
+        return isEmpty ? replacement : self
+    }
+}

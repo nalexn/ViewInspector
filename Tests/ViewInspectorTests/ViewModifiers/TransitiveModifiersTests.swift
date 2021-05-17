@@ -9,6 +9,8 @@ final class TransitiveModifiersTests: XCTestCase {
         let sut = try HittenTestView().inspect()
         XCTAssertFalse(try sut.find(text: "abc").isHidden())
         XCTAssertTrue(try sut.find(text: "123").isHidden())
+        XCTAssertThrows(try sut.find(button: "123").tap(),
+            "Button is unresponsive: view(HittenTestView.self).vStack().hStack(1) is hidden")
     }
     
     func testDisabledStateInheritance() throws {
@@ -16,6 +18,8 @@ final class TransitiveModifiersTests: XCTestCase {
         XCTAssertFalse(try sut.find(button: "1").isDisabled())
         XCTAssertFalse(try sut.find(button: "2").isDisabled())
         XCTAssertTrue(try sut.find(button: "3").isDisabled())
+        XCTAssertThrows(try sut.find(button: "3").tap(),
+            "Button is unresponsive: view(TestDisabledView.self).vStack().vStack(1).vStack(1) is disabled")
     }
     
     func testFlipsRightToLeftInheritance() throws {
@@ -46,6 +50,11 @@ final class TransitiveModifiersTests: XCTestCase {
         XCTAssertTrue(try sut.find(button: "1").allowsHitTesting())
         XCTAssertTrue(try sut.find(button: "2").allowsHitTesting())
         XCTAssertFalse(try sut.find(button: "3").allowsHitTesting())
+        XCTAssertThrows(try sut.find(button: "3").tap(),
+            """
+            Button is unresponsive: view(AllowsHitTestingTestView.self).vStack()\
+            .vStack(1).vStack(1) has allowsHitTesting set to false
+            """)
     }
     
     func testLabelsHiddenInheritance() throws {
@@ -63,9 +72,9 @@ final class TransitiveModifiersTests: XCTestCase {
 private struct HittenTestView: View, Inspectable {
     var body: some View {
         VStack {
-            Text("abc")
+            Button("abc", action: { })
             HStack {
-                Text("123")
+                Button("123", action: { })
             }.hidden()
         }
     }

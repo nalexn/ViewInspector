@@ -61,7 +61,8 @@ final class TextFieldTests: XCTestCase {
         let view = TextField("", text: binding, onEditingChanged: { _ in
             exp.fulfill()
         }, onCommit: { }).disabled(true)
-        try view.inspect().textField().callOnEditingChanged()
+        XCTAssertThrows(try view.inspect().textField().callOnEditingChanged(),
+            "TextField is unresponsive: it is disabled")
         wait(for: [exp], timeout: 0.1)
     }
     
@@ -82,7 +83,8 @@ final class TextFieldTests: XCTestCase {
         let view = TextField("", text: binding, onEditingChanged: { _ in }, onCommit: {
             exp.fulfill()
         }).disabled(true)
-        try view.inspect().textField().callOnCommit()
+        XCTAssertThrows(try view.inspect().textField().callOnCommit(),
+            "TextField is unresponsive: it is disabled")
         wait(for: [exp], timeout: 0.1)
     }
     
@@ -99,7 +101,8 @@ final class TextFieldTests: XCTestCase {
         let binding = Binding(wrappedValue: "123")
         let view = TextField("", text: binding).disabled(true)
         let sut = try view.inspect().textField()
-        try sut.setInput("abc")
+        XCTAssertThrows(try sut.setInput("abc"),
+            "TextField is unresponsive: it is disabled")
         XCTAssertEqual(try sut.input(), "123")
     }
 }

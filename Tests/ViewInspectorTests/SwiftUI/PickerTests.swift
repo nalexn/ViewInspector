@@ -45,7 +45,8 @@ final class PickerTests: XCTestCase {
             Text("").tag(1)
         }.disabled(true)
         XCTAssertEqual(binding.wrappedValue, 4)
-        try view.inspect().picker().select(value: 6)
+        XCTAssertThrows(try view.inspect().picker().select(value: 6),
+            "Picker is unresponsive: it is disabled")
         XCTAssertEqual(binding.wrappedValue, 4)
     }
     

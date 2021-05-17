@@ -36,7 +36,7 @@ final class ToggleTests: XCTestCase {
         let sut = try view.inspect().toggle()
         XCTAssertFalse(binding.wrappedValue)
         XCTAssertFalse(try sut.isOn())
-        try sut.tap()
+        XCTAssertThrows(try sut.tap(), "Toggle is unresponsive: it is disabled")
         XCTAssertFalse(binding.wrappedValue)
         XCTAssertFalse(try sut.isOn())
     }

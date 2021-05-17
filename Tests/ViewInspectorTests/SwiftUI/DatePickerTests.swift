@@ -35,7 +35,9 @@ final class DatePickerTests: XCTestCase {
         let originalDate = Date()
         let binding = Binding<Date>(wrappedValue: originalDate)
         let view = DatePicker("Title", selection: binding).disabled(true)
-        try view.inspect().datePicker().select(date: originalDate.advanced(by: 100))
+        XCTAssertThrows(try view.inspect().datePicker()
+                            .select(date: originalDate.advanced(by: 100)),
+            "DatePicker is unresponsive: it is disabled")
         XCTAssertEqual(binding.wrappedValue, originalDate)
     }
     

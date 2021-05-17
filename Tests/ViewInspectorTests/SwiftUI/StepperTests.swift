@@ -66,7 +66,8 @@ final class StepperTests: XCTestCase {
         let view = Stepper("", onIncrement: {
             exp.fulfill()
         }, onDecrement: nil, onEditingChanged: { _ in }).disabled(true)
-        try view.inspect().stepper().increment()
+        XCTAssertThrows(try view.inspect().stepper().increment(),
+            "Stepper is unresponsive: it is disabled")
         wait(for: [exp], timeout: 0.1)
     }
     
@@ -85,7 +86,8 @@ final class StepperTests: XCTestCase {
         let view = Stepper("", onIncrement: nil, onDecrement: {
             exp.fulfill()
         }, onEditingChanged: { _ in }).disabled(true)
-        try view.inspect().stepper().decrement()
+        XCTAssertThrows(try view.inspect().stepper().decrement(),
+            "Stepper is unresponsive: it is disabled")
         wait(for: [exp], timeout: 0.1)
     }
     

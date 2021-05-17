@@ -206,6 +206,7 @@ public enum InspectionError: Swift.Error {
     case textAttribute(String)
     case searchFailure(skipped: Int, blockers: [String])
     case callbackNotFound(parent: String, callback: String)
+    case unresponsiveControl(name: String, reason: String)
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -240,6 +241,8 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
              return conclusion + blockersDescription
         case let .callbackNotFound(parent, callback):
             return "\(parent) does not have '\(callback)' callback"
+        case let .unresponsiveControl(name, reason):
+            return "\(name) is unresponsive: \(reason)"
         }
     }
     

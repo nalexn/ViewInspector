@@ -46,7 +46,8 @@ final class TextEditorTests: XCTestCase {
         let binding = Binding(wrappedValue: "123")
         let view = TextEditor(text: binding).disabled(true)
         let sut = try view.inspect().textEditor()
-        try sut.setInput("abc")
+        XCTAssertThrows(try sut.setInput("abc"),
+            "TextEditor is unresponsive: it is disabled")
         XCTAssertEqual(try sut.input(), "123")
     }
 }
