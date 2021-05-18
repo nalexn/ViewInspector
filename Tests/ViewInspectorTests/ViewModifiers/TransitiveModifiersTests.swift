@@ -22,9 +22,15 @@ final class TransitiveModifiersTests: XCTestCase {
             "Button is unresponsive: view(TestDisabledView.self).vStack().vStack(1).vStack(1) is disabled")
     }
     
+    @available(tvOS, unavailable)
     func testFlipsRightToLeftInheritance() throws {
         let sut = try FlipsRightToLeftTestView().inspect()
-        XCTAssertFalse(try sut.find(text: "1").flipsForRightToLeftLayoutDirection())
+        if #available(iOS 14.0, *) {
+            XCTAssertFalse(try sut.find(text: "1").flipsForRightToLeftLayoutDirection())
+        } else {
+            // Prior to iOS 14 flipsForRightToLeftLayoutDirection is ignoring the Bool parameter
+            XCTAssertTrue(try sut.find(text: "1").flipsForRightToLeftLayoutDirection())
+        }
         XCTAssertTrue(try sut.find(text: "2").flipsForRightToLeftLayoutDirection())
     }
     
@@ -46,6 +52,7 @@ final class TransitiveModifiersTests: XCTestCase {
     }
     
     func testAllowsHitTestingInheritance() throws {
+        guard #available(macOS 11.0, *) else { return }
         let sut = try AllowsHitTestingTestView().inspect()
         XCTAssertTrue(try sut.find(button: "1").allowsHitTesting())
         XCTAssertTrue(try sut.find(button: "2").allowsHitTesting())
@@ -57,6 +64,7 @@ final class TransitiveModifiersTests: XCTestCase {
             """)
     }
     
+    @available(tvOS, unavailable)
     func testLabelsHiddenInheritance() throws {
         let sut = try TestLabelsHiddenView().inspect()
         let text1 = try sut.find(text: "1")
@@ -101,7 +109,8 @@ private struct TestDisabledView: View, Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 private struct FlipsRightToLeftTestView: View, Inspectable {
     var body: some View {
         VStack {
@@ -149,7 +158,8 @@ private struct AllowsHitTestingTestView: View, Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 private struct TestLabelsHiddenView: View, Inspectable {
     var body: some View {
         VStack {

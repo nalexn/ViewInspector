@@ -18,7 +18,8 @@ public extension ViewType {
 
 // MARK: - Extraction
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 public extension InspectableView {
 
     func actionSheet(_ index: Int? = nil) throws -> InspectableView<ViewType.ActionSheet> {
@@ -26,7 +27,8 @@ public extension InspectableView {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 internal extension Content {
     
     func actionSheet(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ActionSheet> {
@@ -35,7 +37,8 @@ internal extension Content {
                 type: ActionSheetBuilder.self, call: "", index: index ?? 0)
         else {
             _ = try self.modifier({
-                $0.modifierType.contains("AlertTransformModifier")
+                $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
+                || $0.modifierType.contains("AlertTransformModifier")
             }, call: "actionSheet")
             throw InspectionError.notSupported(
                 """
@@ -69,7 +72,8 @@ internal extension Content {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 internal extension ViewType.ActionSheet {
     struct Container: CustomViewIdentityMapping {
         let sheet: SwiftUI.ActionSheet
@@ -143,25 +147,29 @@ extension ViewType.ActionSheet: SupplementaryChildren {
 
 // MARK: - ActionSheet inspection protocols
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 public protocol ActionSheetBuilder: SystemPopupPresenter {
     func buildSheet() throws -> ActionSheet
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 public protocol ActionSheetProvider: ActionSheetBuilder {
     var isPresented: Binding<Bool> { get }
     var sheetBuilder: () -> ActionSheet { get }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 public protocol ActionSheetItemProvider: ActionSheetBuilder {
     associatedtype Item: Identifiable
     var item: Binding<Item?> { get }
     var sheetBuilder: (Item) -> ActionSheet { get }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 public extension ActionSheetProvider {
     func buildSheet() throws -> ActionSheet {
         guard isPresented.wrappedValue else {
@@ -175,7 +183,8 @@ public extension ActionSheetProvider {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 public extension ActionSheetItemProvider {
     func buildSheet() throws -> ActionSheet {
         guard let value = item.wrappedValue else {

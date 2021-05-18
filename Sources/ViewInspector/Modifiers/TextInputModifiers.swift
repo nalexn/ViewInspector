@@ -104,7 +104,7 @@ public extension InspectableView {
         return modifiersMatching({ $0.modifierType == "_FlipForRTLEffect" },
                                  transitive: true)
             .compactMap {
-                try? Inspector.attribute(path: "modifier|isEnabled", value: $0, type: Optional<Bool>.self)
+                try? Inspector.attribute(path: "modifier|isEnabled", value: $0, type: Bool.self)
             }
             .contains(true)
     }

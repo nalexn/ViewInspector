@@ -35,7 +35,8 @@ internal extension Content {
                 type: AlertBuilder.self, call: "", index: index ?? 0)
         else {
             _ = try self.modifier({
-                $0.modifierType.contains("AlertTransformModifier")
+                $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
+                || $0.modifierType.contains("AlertTransformModifier")
             }, call: "alert")
             throw InspectionError.notSupported(
                 """

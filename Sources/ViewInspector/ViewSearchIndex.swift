@@ -274,7 +274,11 @@ internal extension Content {
                 modifierNames.contains(where: { $0.hasPrefix(identity.name) })
             })
         let alertModifiers = alertsForSearch()
+        #if os(macOS)
+        let sheetModifiers: [ViewSearch.ModifierIdentity] = []
+        #else
         let sheetModifiers = sheetsForSearch()
+        #endif
         let customModifiers = customViewModifiers()
         return .init(count: identities.count, { index -> UnwrappedView in
             try identities[index].builder(parent, nil)
