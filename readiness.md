@@ -352,15 +352,15 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func actionSheet(isPresented: Binding<Bool>, content: () -> ActionSheet) -> some View` |
-|:heavy_check_mark:| `func actionSheet<T>(item: Binding<T?>, content: (T) -> ActionSheet) -> some View` |
+|:white_check_mark:| `func actionSheet(isPresented: Binding<Bool>, content: () -> ActionSheet) -> some View` |
+|:white_check_mark:| `func actionSheet<T>(item: Binding<T?>, content: (T) -> ActionSheet) -> some View` |
 
 ### Presenting Sheets
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func sheet<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
-|:heavy_check_mark:| `func sheet<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
+|:white_check_mark:| `func sheet<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
+|:white_check_mark:| `func sheet<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
 |:technologist:| `func fullScreenCover<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
 |:technologist:| `func fullScreenCover<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
 
@@ -368,8 +368,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func alert(isPresented: Binding<Bool>, content: () -> Alert) -> some View` |
-|:heavy_check_mark:| `func alert<Item>(item: Binding<Item?>, content: (Item) -> Alert) -> some View` |
+|:white_check_mark:| `func alert(isPresented: Binding<Bool>, content: () -> Alert) -> some View` |
+|:white_check_mark:| `func alert<Item>(item: Binding<Item?>, content: (Item) -> Alert) -> some View` |
 
 ### Presenting Popovers
 
