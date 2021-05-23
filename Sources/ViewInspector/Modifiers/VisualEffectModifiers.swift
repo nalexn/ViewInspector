@@ -150,23 +150,57 @@ internal extension Content {
 public extension InspectableView {
     
     func isHidden() -> Bool {
+        if labelsHidden() && isControlLabelDescendant() {
+            return true
+        }
         return (try? modifierAttribute(
-            modifierName: "_HiddenModifier", path: "modifier",
-            type: Any.self, call: "hidden")) != nil
+                    modifierName: "_HiddenModifier", transitive: true,
+                    path: "modifier", type: Any.self, call: "hidden")) != nil
     }
     
-    func isDisabled() throws -> Bool {
-        let reference = EmptyView().disabled(true)
+    func isDisabled() -> Bool {
         typealias Closure = (inout Bool) -> Void
-        let referenceKeyPath = try Inspector.environmentKeyPath(Bool.self, reference)
-        let closure = try modifierAttribute(modifierLookup: { modifier -> Bool in
-            guard modifier.modifierType == "_EnvironmentKeyTransformModifier<Bool>",
-                  let keyPath = try? Inspector.environmentKeyPath(Bool.self, modifier)
+        return modifiersMatching({ modifier -> Bool in
+            guard modifier.isDisabledEnvironmentKeyTransformModifier(),
+                  let closure = try? Inspector.attribute(
+                    path: "modifier|transform", value: modifier, type: Closure.self)
             else { return false }
-            return keyPath == referenceKeyPath
-        }, path: "modifier|transform", type: Closure.self, call: "disabled")
-        var value = true
-        closure(&value)
-        return !value
+            var value = true
+            closure(&value)
+            return !value
+        }, transitive: true).count > 0
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension UnwrappedView {
+    func isControlLabelDescendant() -> Bool {
+        guard let parent = parentView, let grandParent = parent.parentView
+        else { return false }
+        if parent.inspectionCall == "labelView()",
+           grandParent is InspectableView<ViewType.ColorPicker>
+        || grandParent is InspectableView<ViewType.DatePicker>
+        || grandParent is InspectableView<ViewType.Picker>
+        || grandParent is InspectableView<ViewType.ProgressView>
+        || grandParent is InspectableView<ViewType.Slider>
+        || grandParent is InspectableView<ViewType.Stepper>
+        || grandParent is InspectableView<ViewType.TextField>
+        || grandParent is InspectableView<ViewType.Toggle> {
+            return true
+        }
+        return parent.isControlLabelDescendant()
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ModifierNameProvider {
+    func isDisabledEnvironmentKeyTransformModifier() -> Bool {
+        let reference = EmptyView().disabled(true)
+        guard let referenceKeyPath = try? Inspector.environmentKeyPath(Bool.self, reference),
+              self.modifierType == "_EnvironmentKeyTransformModifier<Bool>",
+              let keyPath = try? Inspector.environmentKeyPath(Bool.self, self),
+              keyPath == referenceKeyPath
+        else { return false }
+        return true
     }
 }

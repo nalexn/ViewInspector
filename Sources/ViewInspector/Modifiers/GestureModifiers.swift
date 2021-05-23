@@ -39,10 +39,13 @@ public struct ContentShape<S>: Equatable where S: Shape {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
-    func allowsHitTesting() throws -> Bool {
-        return try modifierAttribute(
-            modifierName: "_AllowsHitTestingModifier", path: "modifier|allowsHitTesting",
-            type: Bool.self, call: "allowsHitTesting")
+    func allowsHitTesting() -> Bool {
+        return !modifiersMatching({ $0.modifierType == "_AllowsHitTestingModifier" }, transitive: true)
+            .lazy
+            .compactMap {
+                try? Inspector.attribute(path: "modifier|allowsHitTesting", value: $0, type: Bool.self)
+            }
+            .contains(false)
     }
     
     func contentShape<S>(_ shape: S.Type) throws -> ContentShape<S> where S: Shape {

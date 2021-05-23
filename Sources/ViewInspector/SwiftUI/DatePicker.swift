@@ -43,6 +43,13 @@ public extension InspectableView where View == ViewType.DatePicker {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
+    }
+    
+    func select(date: Date) throws {
+        try guardIsResponsive()
+        let binding = try Inspector.attribute(path: "selection", value: content.view, type: Binding<Date>.self)
+        binding.wrappedValue = date
     }
 }
 

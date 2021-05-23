@@ -48,7 +48,7 @@ public protocol MultipleViewContent {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal typealias SupplementaryView = InspectableView<ViewType.ClassifiedView>
+internal typealias SupplementaryView = UnwrappedView
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol SupplementaryChildren {
@@ -68,7 +68,7 @@ extension SupplementaryChildrenLabelView {
             let child = try Inspector.attribute(path: labelViewPath, value: parent.content.view)
             let medium = parent.content.medium.resettingViewModifiers()
             let content = try Inspector.unwrap(content: Content(child, medium: medium))
-            return try .init(content, parent: parent, call: "labelView()")
+            return try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: "labelView()")
         }
     }
 }
@@ -132,35 +132,48 @@ public struct Content {
 internal extension Content {
     struct Medium {
         let viewModifiers: [Any]
+        let transitiveViewModifiers: [Any]
         let environmentModifiers: [EnvironmentModifier]
         let environmentObjects: [AnyObject]
         
         static var empty: Medium {
             return .init(viewModifiers: [],
+                         transitiveViewModifiers: [],
                          environmentModifiers: [],
                          environmentObjects: [])
         }
         
         func appending(viewModifier: Any) -> Medium {
             return .init(viewModifiers: viewModifiers + [viewModifier],
+                         transitiveViewModifiers: transitiveViewModifiers,
+                         environmentModifiers: environmentModifiers,
+                         environmentObjects: environmentObjects)
+        }
+        
+        func appending(transitiveViewModifier: Any) -> Medium {
+            return .init(viewModifiers: viewModifiers,
+                         transitiveViewModifiers: transitiveViewModifiers + [transitiveViewModifier],
                          environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects)
         }
         
         func appending(environmentModifier: EnvironmentModifier) -> Medium {
             return .init(viewModifiers: viewModifiers,
+                         transitiveViewModifiers: transitiveViewModifiers,
                          environmentModifiers: environmentModifiers + [environmentModifier],
                          environmentObjects: environmentObjects)
         }
         
         func appending(environmentObject: AnyObject) -> Medium {
             return .init(viewModifiers: viewModifiers,
+                         transitiveViewModifiers: transitiveViewModifiers,
                          environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects + [environmentObject])
         }
         
         func resettingViewModifiers() -> Medium {
             return .init(viewModifiers: [],
+                         transitiveViewModifiers: transitiveViewModifiers,
                          environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects)
         }
@@ -193,6 +206,7 @@ public enum InspectionError: Swift.Error {
     case textAttribute(String)
     case searchFailure(skipped: Int, blockers: [String])
     case callbackNotFound(parent: String, callback: String)
+    case unresponsiveControl(name: String, reason: String)
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -227,6 +241,8 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
              return conclusion + blockersDescription
         case let .callbackNotFound(parent, callback):
             return "\(parent) does not have '\(callback)' callback"
+        case let .unresponsiveControl(name, reason):
+            return "\(name) is unresponsive: \(reason)"
         }
     }
     

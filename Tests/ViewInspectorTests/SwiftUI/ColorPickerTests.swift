@@ -69,6 +69,25 @@ final class ColorPickerTests: XCTestCase {
         XCTAssertEqual(binding2.wrappedValue.rgba(), Color.yellow.rgba())
     }
     
+    func testColorSelectionWhenDisabled() throws {
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        
+        let cgColor = CGColor(red: 0.5, green: 0.2, blue: 0.7, alpha: 0.1)
+        let binding1 = Binding<CGColor>(wrappedValue: cgColor)
+        let sut1 = ColorPicker(selection: binding1) { Text("") }.disabled(true)
+        XCTAssertEqual(binding1.wrappedValue.rgba(), cgColor.rgba())
+        XCTAssertThrows(try sut1.inspect().colorPicker().select(color: CGColor.test),
+            "ColorPicker is unresponsive: it is disabled")
+        XCTAssertEqual(binding1.wrappedValue.rgba(), cgColor.rgba())
+        
+        let binding2 = Binding<Color>(wrappedValue: .red)
+        let sut2 = ColorPicker(selection: binding2) { Text("") }.disabled(true)
+        XCTAssertEqual(binding2.wrappedValue.rgba(), Color.red.rgba())
+        XCTAssertThrows(try sut2.inspect().colorPicker().select(color: Color.yellow),
+            "ColorPicker is unresponsive: it is disabled")
+        XCTAssertEqual(binding2.wrappedValue.rgba(), Color.red.rgba())
+    }
+    
     func testRGBA() throws {
         guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         #if os(macOS)

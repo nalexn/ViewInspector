@@ -43,10 +43,12 @@ public extension InspectableView where View == ViewType.ColorPicker {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
     @available(tvOS 14.0, *)
     func select(color: Color) throws {
+        try guardIsResponsive()
         #if os(macOS)
         try select(color: NSColor(color))
         #else
@@ -55,6 +57,7 @@ public extension InspectableView where View == ViewType.ColorPicker {
     }
     
     func select(color: CGColor) throws {
+        try guardIsResponsive()
         #if os(macOS)
         try select(color: NSColor(cgColor: color)!)
         #else
@@ -64,11 +67,13 @@ public extension InspectableView where View == ViewType.ColorPicker {
     
     #if os(macOS)
     func select(color: NSColor) throws {
+        try guardIsResponsive()
         let binding = try Inspector.attribute(label: "_color", value: content.view, type: Binding<NSColor>.self)
         binding.wrappedValue = color
     }
     #else
     func select(color: UIColor) throws {
+        try guardIsResponsive()
         let binding = try Inspector.attribute(label: "_color", value: content.view, type: Binding<UIColor>.self)
         binding.wrappedValue = color
     }

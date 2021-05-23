@@ -1,19 +1,14 @@
 # Inspection guide
 
-
 - [The Basics](#the-basics)
 - [Dynamic query with **find**](#dynamic-query-with-find)
 - [Views using **@Binding**](#views-using-binding)
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
 - [Custom **ViewModifier**](#custom-viewmodifier)
-- [Custom **ButtonStyle** or **PrimitiveButtonStyle**](#custom-buttonstyle-or-primitivebuttonstyle)
-- [Custom **LabelStyle**](#custom-labelstyle)
-- [Custom **GroupBoxStyle**](#custom-groupboxstyle)
-- [Custom **ToggleStyle**](#custom-togglestyle)
-- [Custom **ProgressViewStyle**](#custom-progressviewstyle)
-- [Custom Styles](#custom-styles)
-- [Gestures](#gestures)
+- [Alert, Sheet and ActionSheet](#alert-sheet-and-actionsheet)
+- [Styles](guide_styles.md)
+- [Gestures](guide_gestures.md)
 
 ## The Basics
 
@@ -515,1001 +510,227 @@ func testViewModifier() {
 
 An example of an asynchronous `ViewModifier` inspection can be found in the sample project: [ViewModifier](https://github.com/nalexn/clean-architecture-swiftui/blob/master/CountriesSwiftUI/UI/RootViewModifier.swift) | [Tests](https://github.com/nalexn/clean-architecture-swiftui/blob/master/UnitTests/UI/RootViewAppearanceTests.swift)
 
-## Custom `ButtonStyle` or `PrimitiveButtonStyle`
+## Alert, Sheet and ActionSheet
 
-Verifying the button style in use is easy:
+These three types of views have many in common, so is their inspection mechanism. Due to limited capabilities of what can be achieved in reflection, the native SwiftUI modifiers for presenting these views (`.alert`, `.sheet`, `.actionSheet`) cannot be inspected as-is by the ViewInspector.
+
+This section discusses how you still can gain the full access to the internals of these views by adding a couple of code snippets to your source code while not making ViewInspector a dependency for the main target.
+
+### Making `Alert` inspectable
+
+Add the following snippet to your main target:
 
 ```swift
-XCTAssertTrue(try sut.inspect().buttonStyle() is PlainButtonStyle)
-```
+extension View {
+    func alert2(isPresented: Binding<Bool>, content: @escaping () -> Alert) -> some View {
+        return self.modifier(InspectableAlert(isPresented: isPresented, alertBuilder: content))
+    }
+}
 
-Assuming you want to test how your custom `ButtonStyle` works for different `isPressed` status, consider the following example:
-
-```swift
-struct CustomButtonStyle: ButtonStyle {
+struct InspectableAlert: ViewModifier {
     
-    public func makeBody(configuration: CustomButtonStyle.Configuration) -> some View {
-        configuration.label
-            .blur(radius: configuration.isPressed ? 5 : 0)
-    }
-}
-```
-
-The library provides a custom inspection function `inspect(isPressed: Bool)` for testing the `ButtonStyle`:
-
-```swift
-func testCustomButtonStyle() throws {
-    let sut = CustomButtonStyle()
-    XCTAssertEqual(try sut.inspect(isPressed: false).blur().radius, 0)
-    XCTAssertEqual(try sut.inspect(isPressed: true).blur().radius, 5)
-}
-```
-
-Now an example for a custom `PrimitiveButtonStyle`:
-
-```swift
-struct CustomPrimitiveButtonStyle: PrimitiveButtonStyle {
+    let isPresented: Binding<Bool>
+    let alertBuilder: () -> Alert
     
-    func makeBody(configuration: PrimitiveButtonStyle.Configuration) -> some View {
-        CustomButton(configuration: configuration)
+    func body(content: Self.Content) -> some View {
+        content.alert(isPresented: isPresented, content: alertBuilder)
     }
+}
+```
+
+And tweak the code of your view to use `alert2` instead of `alert`. Feel free to use another name instead of `alert2`.
+
+Then, add this line in your test target scope:
+
+```swift
+extension InspectableAlert: AlertProvider { }
+```
+
+After that you'll be able to inspect the `Alert` in the tests: read the `title`, `message`, and access the buttons:
+
+```swift
+func testAlertExample() throws {
+    let binding = Binding(wrappedValue: true)
+    let sut = EmptyView().alert2(isPresented: binding) {
+        Alert(title: Text("Title"), message: Text("Message"),
+              primaryButton: .destructive(Text("Delete")),
+              secondaryButton: .cancel(Text("Cancel")))
+    }
+    let alert = try sut.inspect().emptyView().alert()
+    XCTAssertEqual(try alert.title().string(), "Title")
+    XCTAssertEqual(try alert.message().string(), "Message")
+    XCTAssertEqual(try alert.primaryButton().style(), .destructive)
+    try sut.inspect().find(ViewType.AlertButton.self, containing: "Cancel").tap()
+}
+```
+
+SwiftUI has a second variant of the `Alert` presentation API, which takes a generic `Item` parameter.
+
+Here is the corresponding snippet for the main target:
+
+```swift
+extension View {
+    func alert2<Item>(item: Binding<Item?>, content: @escaping (Item) -> Alert) -> some View where Item: Identifiable {
+        return self.modifier(InspectableAlertWithItem(item: item, alertBuilder: content))
+    }
+}
+
+struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier {
     
-    struct CustomButton: View {
-        
-        let configuration: PrimitiveButtonStyle.Configuration
-        @State private(set) var isPressed = false
-
-        var body: some View {
-            configuration.label
-                .blur(radius: isPressed ? 5 : 0)
-                .onTapGesture {
-                    self.isPressed = true
-                    self.configuration.trigger()
-                }
-        }
-    }
-}
-```
-
-You can get access to the root view:
-
-```swift
-func testCustomPrimitiveButtonStyle() throws {
-    let sut = CustomPrimitiveButtonStyle()
-    let view = try sut.inspect().view(CustomPrimitiveButtonStyle.CustomButton.self)
-    ...
-}
-```
-However, since that root view is likely to be a custom view itself, it's better to inspect it directly. There is a helper initializer available for `PrimitiveButtonStyleConfiguration` where you provide `onTrigger` closure for verifying that your `PrimitiveButtonStyle` calls `trigger()` in the right time:
-
-```swift
-func testCustomPrimitiveButtonStyleButton() throws {
-    let triggerExp = XCTestExpectation(description: "trigger()")
-    triggerExp.expectedFulfillmentCount = 1
-    triggerExp.assertForOverFulfill = true
-    let config = PrimitiveButtonStyleConfiguration(onTrigger: {
-        triggerExp.fulfill()
-    })
-    let view = CustomPrimitiveButtonStyle.CustomButton(configuration: config)
-    let exp = view.inspection.inspect { view in
-        let label = try view.styleConfigurationLabel()
-        XCTAssertEqual(try label.blur().radius, 0)
-        try label.callOnTapGesture()
-        let updatedLabel = try view.styleConfigurationLabel()
-        XCTAssertEqual(try updatedLabel.blur().radius, 5)
-    }
-    ViewHosting.host(view: view)
-    wait(for: [exp, triggerExp], timeout: 0.1)
-}
-```
-
-## Custom **LabelStyle**
-
-For verifying the label style you can just do:
-
-```swift
-XCTAssertTrue(try sut.inspect().labelStyle() is IconOnlyLabelStyle)
-```
-
-Consider the following example:
-
-```swift
-struct CustomLabelStyle: LabelStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        VStack {
-            configuration.title
-                .blur(radius: 3)
-            configuration.icon
-                .padding(5)
-        }
-    }
-}
-```
-
-The test for this style may look like this:
-
-```swift
-func testCustomLabelStyle() throws {
-    let sut = CustomLabelStyle()
-    let title = try sut.inspect().vStack().styleConfigurationTitle(0)
-    let icon = try sut.inspect().vStack().styleConfigurationIcon(1)
-    XCTAssertEqual(try title.blur().radius, 3)
-    XCTAssertEqual(try icon.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
-    XCTAssertEqual(try icon.padding(.all), 5)
-}
-```
-
-## Custom **GroupBoxStyle**
-
-Consider the following example:
-
-```swift
-struct CustomGroupBoxStyle: GroupBoxStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        VStack {
-            configuration.label
-                .brightness(3)
-            configuration.content
-                .blur(radius: 5)
-        }
-    }
-}
-```
-
-The test for this style may look like this:
-
-```swift
-func testCustomGroupBoxStyleInspection() throws {
-    let sut = CustomGroupBoxStyle()
-    XCTAssertEqual(try sut.inspect().vStack().styleConfigurationLabel(0).brightness(), 3)
-    XCTAssertEqual(try sut.inspect().vStack().styleConfigurationContent(1).blur().radius, 5)
-}
-```
-
-## Custom **ToggleStyle**
-
-Consider the following example:
-
-```swift
-struct CustomToggleStyle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .blur(radius: configuration.isOn ? 5 : 0)
-    }
-}
-```
-
-The library provides a custom inspection function `inspect(isOn: Bool)` for testing the custom `ToggleStyle`:
-
-```swift
-func testCustomToggleStyle() throws {
-    let sut = CustomToggleStyle()
-    XCTAssertEqual(try sut.inspect(isOn: false).styleConfigurationLabel().blur().radius, 0)
-    XCTAssertEqual(try sut.inspect(isOn: true).styleConfigurationLabel().blur().radius, 5)
-}
-```
-
-## Custom **ProgressViewStyle**
-
-Consider the following example:
-
-```swift
-struct CustomProgressViewStyle: ProgressViewStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        VStack {
-            configuration.label
-                .brightness(3)
-            configuration.currentValueLabel
-                .blur(radius: 5)
-            Text("Completed: \(Int(configuration.fractionCompleted.flatMap { $0 * 100 } ?? 0))%")
-        }
-    }
-}
-```
-
-The library provides a custom inspection function `inspect(fractionCompleted: Double?)` for testing the custom `ProgressViewStyle`:
-
-```swift
-func testCustomProgressViewStyle() throws {
-    let sut = CustomProgressViewStyle()
-    XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationLabel(0).brightness(), 3)
-    XCTAssertEqual(try sut.inspect(fractionCompleted: nil).vStack().styleConfigurationCurrentValueLabel(1).blur().radius, 5)
-    XCTAssertEqual(try sut.inspect(fractionCompleted: 0.42).vStack().text(2).string(), "Completed: 42%")
-}
-```
-## **Custom Styles**
-
-A custom style is a type that implements standard interaction behavior and/or a custom 
-appearance for all views that apply the custom style in a view hiearchy.
-
-A custom style starts with a protocol that concrete styles must conform to. Such a protocol
-has the following requirements:
-* An associated type called `Body` that conforms to `View`.
-* A type alias called `Configuration` equal to the type used to pass configuration information
-to `makeBody(configuration:)`.
-* A method called `makeBody(configuration:)` that constructs a view of type `Body`.
-
-The following example illustrates a protocol defining a style, a concrete style conforming to
-the style, and a view that applies the style.
-
-```swift
-struct HelloWorldStyleConfiguration {}
-
-protocol HelloWorldStyle {
-    associatedtype Body: View
-
-    typealias Configuration = HelloWorldStyleConfiguration
+    let item: Binding<Item?>
+    let alertBuilder: (Item) -> Alert
     
-    func makeBody(configuration: Self.Configuration) -> Self.Body
-}
-
-struct DefaultHelloWorldStyle: HelloWorldStyle {
-    func makeBody(configuration: HelloWorldStyleConfiguration) -> some View {
-        ZStack {
-            Rectangle()
-                .strokeBorder(Color.accentColor, lineWidth: 1, antialiased: true)
-        }
-    }
-}
-
-struct HelloWorld: View {
-    @Environment(\.helloWorldStyle) var style
-    var body: some View {
-        ZStack {
-            Text("Hello World!")
-            style.makeBody(configuration: HelloWorldStyle.Configuration())
-        }
+    func body(content: Self.Content) -> some View {
+        content.alert(item: item, content: alertBuilder)
     }
 }
 ```
 
-Observe that  `HelloWorld` reads an environment value with the key `helloWorldStyle`
-and applies this style by calling its `makeBody(configuration:)` method. In order to enable
-this capability, it is necessary to define a custom enviroment value, as illustrated below:
+And for the test scope:
 
-```Swift
-struct HelloWorldStyleKey: EnvironmentKey {
-    static var defaultValue: AnyHelloWorldStyle = AnyHelloWorldStyle(DefaultHelloWorldStyle())
-}
-
-extension EnvironmentValues {
-    var helloWorldStyle: AnyHelloWorldStyle {
-        get { self[HelloWorldStyleKey.self] }
-        set { self[HelloWorldStyleKey.self] = newValue }
-    }
-}
+```swift
+extension InspectableAlertWithItem: AlertItemProvider { }
 ```
 
-Swift doesn't allow the environment value with the type `HelloWorldStyle` because it has
-an associated type. As of this writing, Swift does not support computed properties having
-opaque types. Hence, the environment variable has to hold a type-erased `HelloWorldStyle`. 
-The following type illustrates the simplest method for type-erasing `HellowWorldStyle`:
+Feel free to add both sets to the project as needed.
 
-```Swift
-struct AnyHelloWorldStyle: HelloWorldStyle {
-    private var _makeBody: (HelloWorldStyle.Configuration) -> AnyView
+### Making `ActionSheet` inspectable
 
-    init<S: HelloWorldStyle>(_ style: S) {
-        _makeBody = { configuration in
-            AnyView(style.makeBody(configuration: configuration))
-        }
-    }
+Just like with `Alert`, there are two APIs for showing `ActionSheet` in SwiftUI - a simple one taking a `isPresented: Binding<Bool>` parameter, and a generic version taking `item: Binding<Item?>` parameter.
 
-    func makeBody(configuration: HelloWorldStyle.Configuration) -> some View {
-        _makeBody(configuration)
+Variant with `isPresented: Binding<Bool>` - main target snippet:
+
+```swift
+extension View {
+    func actionSheet2(isPresented: Binding<Bool>, content: @escaping () -> ActionSheet) -> some View {
+        return self.modifier(InspectableActionSheet(isPresented: isPresented, sheetBuilder: content))
     }
 }
-```
 
-To emulate SwiftUI's approach to styles, it is necessary to wrap setting the environment value.
-This not only encapsulates the type-erasure of the style, but it retains the type of the style as
-part of the view's hiearchy. The following view modifier illustrates how to accomplish this:
-
-```Swift
-struct HelloWorldStyleModifier<S: HelloWorldStyle>: ViewModifier {
-    let style: S
+struct InspectableActionSheet: ViewModifier {
     
-    init(_ style: S) {
-        self.style = style
+    let isPresented: Binding<Bool>
+    let sheetBuilder: () -> ActionSheet
+    
+    func body(content: Self.Content) -> some View {
+        content.actionSheet(isPresented: isPresented, content: sheetBuilder)
+    }
+}
+```
+
+Test target:
+
+```swift
+extension InspectableActionSheet: ActionSheetProvider { }
+```
+
+Variant with `item: Binding<Item?>` - main target snippet:
+
+```swift
+extension View {
+    func actionSheet2<Item>(item: Binding<Item?>, content: @escaping (Item) -> ActionSheet) -> some View where Item: Identifiable {
+        return self.modifier(InspectableActionSheetWithItem(item: item, sheetBuilder: content))
+    }
+}
+
+struct InspectableActionSheetWithItem<Item: Identifiable>: ViewModifier {
+    
+    let item: Binding<Item?>
+    let sheetBuilder: (Item) -> ActionSheet
+    
+    func body(content: Self.Content) -> some View {
+        content.actionSheet(item: item, content: sheetBuilder)
+    }
+}
+```
+
+Test target:
+
+```swift
+extension InspectableActionSheetWithItem: ActionSheetItemProvider { }
+```
+
+Make sure to use `actionSheet2` in your view's body (or a different name of your choice).
+
+### Making `Sheet` inspectable
+
+Similarly to the `Alert` and `ActionSheet`, there are two APIs for presenting the `Sheet` thus two sets of snippets to add to the project, depending on your needs.
+
+Variant with `isPresented: Binding<Bool>` - main target snippet:
+
+```swift
+extension View {
+    func sheet2<Sheet>(isPresented: Binding<Bool>, onDismiss: (() -> Void)? = nil, @ViewBuilder content: @escaping () -> Sheet
+    ) -> some View where Sheet: View {
+        return self.modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, content: content))
+    }
+}
+
+struct InspectableSheet<Sheet>: ViewModifier where Sheet: View {
+    
+    let isPresented: Binding<Bool>
+    let onDismiss: (() -> Void)?
+    let content: () -> Sheet
+    let sheetBuilder: () -> Any
+    
+    init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> Sheet) {
+        self.isPresented = isPresented
+        self.onDismiss = onDismiss
+        self.content = content
+        self.sheetBuilder = { content() as Any }
     }
     
     func body(content: Self.Content) -> some View {
-        content
-            .environment(\.helloWorldStyle, AnyHelloWorldStyle(style))
+        content.sheet(isPresented: isPresented, content: self.content)
     }
 }
+```
 
+Test target:
+
+```swift
+extension InspectableSheet: SheetProvider { }
+```
+
+Variant with `item: Binding<Item?>` - main target snippet:
+
+```swift
 extension View {
-    func helloWorldStyle<S: helloWorldStyle>(_ style: S) -> some View {
-        modifier(HelloWorldStyleModifier(style))
-    }
-}
-```
-
-The following example illustrates how to define a concrete style and apply it to a view 
-hiearchy:
-
-```Swift
-struct Content: View {
-    var body: some View {
-        HelloWorld()
-            .helloWorldStyle(RedOutlineHelloWorldStyle())
+    func sheet2<Item, Sheet>(item: Binding<Item?>, onDismiss: (() -> Void)? = nil, content: @escaping (Item) -> Sheet
+    ) -> some View where Item: Identifiable, Sheet: View {
+        return self.modifier(InspectableSheetWithItem(item: item, onDismiss: onDismiss, content: content))
     }
 }
 
-struct RedOutlineHelloWorldStyle: HelloWorldStyle {
-    func makeBody(configuration: HelloWorldStyleConfiguration) -> some View {
-        ZStack {
-            Rectangle()
-                .strokeBorder(Color.red, lineWidth: 3, antialiased: true)
-        }
-    }
-}
-```
-
-**ViewInspector** provides support for custom styles.
-
-A test can verify the style applied to a view hiearchy. For example:
-
-```Swift
-let sut = EmptyView().helloWorldStyle(RedOutlineHelloWorldStyle())
-XCTAssertNoThrow(try sut.inspect().customStyle("helloWorldStyle") is RedOutlineHelloWorldStyle)
-```
-
-Note, the `customStyle(_:)` method accepts a string-value indicating the name of the 
-convenience method used to apply the style. This method only works if the style definition
-meets the following conditions:
-* A type defines a view modifier that wraps setting the environment value used by the
-custom style. The name of this type has the format `<style>Modifier`, where `style` is the
-of the style protocol.
-* An extension of `View` defines a convenience method that applies the modifier to a view.  
-
-A test can inspect a style by defining a custom inspector. For example:
-
-```Swift
-extension RedOutlineHelloWorldStyle {
-    func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
-        let configuration = HelloWorldStyleConfiguration()
-        let view = try makeBody(configuration: configuration).inspect()
-        return try view.classify()
-    }
-}
-```
-
-With this extension, test can inspect the concrete style `RedOutlineHelloWorldStyle`. For
-example:
-
-```Swift
-    let style = RedOutlineHelloWorldStyle()
-    XCTAssertNoThrow(try style.inspect().zStack()
-```
-
-A test may need to use asynchronous inspection of a concrete style; for example, if it
-contains state. This requires refactoring the concrete style:
-
-```Swift
-struct RedOutlineHelloWorldStyle: HelloWorldStyle {
-    func makeBody(configuration: HelloWorldStyleConfiguration) -> some View {
-        StyleBody(configuration: configuration))
+struct InspectableSheetWithItem<Item, Sheet>: ViewModifier where Item: Identifiable, Sheet: View {
+    
+    let item: Binding<Item?>
+    let onDismiss: (() -> Void)?
+    let content: (Item) -> Sheet
+    let sheetBuilder: (Item) -> Any
+    
+    init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> Sheet) {
+        self.item = item
+        self.onDismiss = onDismiss
+        self.content = content
+        self.sheetBuilder = { content($0) as Any }
     }
     
-    struct StyleBody: View {
-        let configuration: HelloWorldStyleConfiguration
-        
-        internal var didAppear: ((Self) -> Void)?
-        
-        var body: some View {
-            ZStack {
-                Rectangle()
-                    .strokeBorder(Color.red, lineWidth: 3, antialiased: true)
-            }
-            .onAppear { self.didAppear?(self) }
-        }
+    func body(content: Self.Content) -> some View {
+        content.sheet(item: item, onDismiss: onDismiss, content: self.content)
     }
 }
 ```
 
-Inspection becomes fully functional in the scope of  `didAppear(_:)`. The test can manually
-configure `didAppear(_:)` or use the `on(_:)` convenience method:
+Test target:
 
-```Swift
-extension RedOutlineHelloWorldStyle.StyleBody: InspectableView {}
-
-final class HelloWorldStyleTest: XCTestCase {
-
-    func testRedOutlineHelloWorldStyle() {
-        let style = RedOutlineHelloWorldStyle(configuration: HelloWorldStyleConfiguration())
-        var body = try style.inspect().view(RedOutlineHelloWorldStyle.StyleBody.self).actualView()
-        let expectation = body.on(\.didAppear) { inspectedBody in
-            let zStack = try inspectedBody.zStack()
-            let rectangle = try zStack.shape(0)
-            XCTAssertEqual(try rectangle.fillShapeStyle(Color.self), Color.red)
-            XCTAssertEqual(try rectangle.strokeStyle().lineWidth, 1)
-            XCTAssertEqual(try rectangle.fillStyle().isAntialiased, true)
-        }
-        ViewHosting.host(view: body)
-        wait(for: [expectation], timeout: 1.0)
-    }
-}
-```
-## **Gestures**
-
-SwiftUI defines a number of built-in gestures, including: `DragGesture`, `LongPressGesture`,
-`MagnificationGesture`, `RotationGesture`, and `TapGesture`. An application can compose
-these gestures using `ExclusiveGesture`, `SequenceGesture`, and `SimultaneousGesture`.
-
-**ViewInspector** provides supports for both simple and composed gesture. Given the complex
-nature of gestures, the following sections discuss different aspects of this support.
-
-### **Gesture Modifiers**
-
-A test can inspect a gesture attached to a view using the `gesture(_:including:)` view
-modifier. For example, consider the following view:
-
-```Swift
-struct TestGestureView1: View & Inspectable {
-    @State var tapped = false
-        
-    var body: some View {
-        let gesture = TapGesture()
-            .onEnded { _ in self.tapped.toggle() }
-        
-        return Rectangle()
-            .fill(self.tapped ? Color.blue : Color.red)
-            .frame(width: 10, height: 10)
-            .gesture(gesture)
-    }
-}
+```swift
+extension InspectableSheetWithItem: SheetItemProvider { }
 ```
 
-A test can inspect the gesture using the following code:
+Don't forget that you'll need to use `sheet2` in place of `sheet` in your views.
 
-```Swift
-func testGestureModifier() throws {
-    let sut = TestGestureView1()
-    let rectangle = try sut.inspect().shape(0)
-    XCTAssertNoThrow(try rectangle.gesture(TapGesture.self))
-}
-```
+## Advanced topics
 
-A test can inspect a gesture attached to a view using the `highPriorityGesture(_:including)`
-view modifier. For example, consider the following view:
-
-```Swift
-struct TestGestureView2: View & Inspectable {
-    @State var tapped = false
-        
-    var body: some View {
-        let gesture = TapGesture()
-            .onEnded { _ in self.tapped.toggle() }
-        
-        return Rectangle()
-            .fill(self.tapped ? Color.blue : Color.red)
-            .frame(width: 10, height: 10)
-            .highPriorityGesture(gesture)
-    }
-}
-```
-
-A test can inspect the gesture using the following code:
-
-```Swift
-func testHighPriorityGestureModifier() throws {
-    let sut = TestGestureView2()
-    let rectangle = try sut.inspect().shape(0)
-    XCTAssertNoThrow(try rectangle.highPriorityGesture(TapGesture.self))
-}
-```
-
-A test can inspect a gesture attached using the `simultaneousGesture(_:including)`
-view modifier. For example, consider the following view:
-
-```Swift
-struct TestGestureView3: View & Inspectable {
-    @State var tapped = false
-        
-    var body: some View {
-        let gesture = TapGesture()
-            .onEnded { _ in self.tapped.toggle() }
-        
-        return Rectangle()
-            .fill(self.tapped ? Color.blue : Color.red)
-            .frame(width: 10, height: 10)
-            .simultaneousGesture(gesture)
-    }
-}
-```
-
-A test can inspect the gesture using the following code:
-
-```Swift
-func testSimultaneousGestureModifier() throws {
-    let sut = TestGestureView3()
-    let rectangle = try sut.inspect().shape(0)
-    XCTAssertNoThrow(try rectangle.simultaneousGesture(TapGesture.self))
-}
-```
-
-### **Gesture Mask**
-
-A test can inspect the mask used when a gesture was attached to a view hierarchy. For example,
-consider the following view:
-
-```Swift
-struct TestGestureView9: View & Inspectable {
-    @State var tapped = false
-        
-    var body: some View {
-        let gesture = TapGesture()
-            .onEnded { _ in self.tapped.toggle() }
-        
-        return Rectangle()
-            .fill(self.tapped ? Color.blue : Color.red)
-            .frame(width: 10, height: 10)
-            .gesture(gesture, including: .gesture)
-    }
-}
-```
-
-A test can inspect the mask using the following code:
-
-```Swift
-func testGestureMask() throws {
-    let sut = TestGestureView9()
-    let gesture = try sut.inspect().shape(0).gesture(TapGesture.self)
-    XCTAssertEqual(try gesture.gestureMask(), .gesture)
-}
-```
-
-### **Gesture Properties**
-
-A test can inspect the properties of a gesture attached to a view. For example, consider the
-following view:
-
-```Swift
-struct TestGestureView4: View {
-    @State var isDragging = false
-    
-    var body: some View {
-        let drag = DragGesture(minimumDistance: 20, coordinateSpace: .global)
-            .onChanged { _ in self.isDragging = true }
-            .onEnded { _ in self.isDragging = false }
-                    
-        return Rectangle()
-            .fill(self.isDragging ? Color.blue : Color.red)
-            .frame(width: 10, height: 10)
-            .gesture(drag)
-    }
-}
-```
-
-A test can inspect the gesture using the following code:
-
-```Swift
-func testTestGestureModifier() throws {
-    let sut = TestGestureView()
-    let rectangle = try sut.inspect().shape(0)
-    let gesture = try rectangle.gesture(DragGesture.self).actualGesture()
-    XCTAssertEqual(gesture.minimumDistance, 20)
-    XCTAssertEqual(gesture.coordinateSpace, .global)
-}
-```
-
-### **Invoking Gesture Updating Callback**
-
-A test can invoke the updating callbacks added to a gesture. For example, consider the following
-view:
-
-```Swift
-struct TestGestureView5: View & Inspectable {
-    @GestureState var isDetectingLongPress = false
-
-    internal let inspection = Inspection<Self>()
-    internal let publisher = PassthroughSubject<Void, Never>()
-
-    var body: some View {
-        let press = LongPressGesture(minimumDuration: 1)
-            .updating($isDetectingLongPress) { currentState, gestureState, transaction in
-                gestureState = currentState
-            }
-
-        return Circle()
-            .fill(isDetectingLongPress ? Color.yellow : Color.green)
-            .frame(width: 100, height: 100, alignment: .center)
-            .gesture(press)
-            .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
-            .onReceive(publisher) { }
-    }
-}
-```
-
-A test can invoke the updating callback for the gesture used by `TestGestureView5` using the
-following code:
-
-```Swift
-func testTestGestureUpdating() throws {
-    let sut = TestGestureView5()
-    let exp1 = sut.inspection.inspect { view in
-        XCTAssertEqual(try view.actualView().isDetectingLongPress, false)
-        XCTAssertEqual(try view.shape(0).fillShapeStyle(Color.self), Color.green)
-        let gesture = try view.shape(0).gesture(LongPressGesture.self)
-        let value = LongPressGesture.Value(finished: true)
-        var state: Bool = false
-        var transaction = Transaction()
-        try gesture.callUpdating(value: value, state: &state, transaction: &transaction)
-        sut.publisher.send()
-    }
-
-    let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
-        XCTAssertEqual(try view.shape(0).fillShapeStyle(Color.self), Color.green)
-    }
-
-    ViewHosting.host(view: sut)
-    wait(for: [exp1, exp2], timeout: 0.1)
-}
-```
-
-In this test, the first inspection invokes the updating callback. However, in the context of this
-inspection, the changes resulting from the change in the `isDetectingLongPress` are not
-visible. Thus, it is necessary to perform another inspection.
-
-The `callUpdating(value:state:transaction:)` method calls all `updating`
-callbacks added to a gesture in the order the callbacks were added to the gesture using the
-gesture's `updating(_:body:)` method.
-
-Note, a `@GestureState` property wrapper updates the property while the user performs a
-gesture and reset the property back to its initial state when the gesture ends. While 
-**ViewInspector** provides the means to invoke the updating callbacks added to a gesture, 
-the the callback is not actually performing the gesture, and hence `@GestureState` properties
-alway read as their initital state.
-
-
-### **Invoking Gesture Changed Callback**
-
-A test can invoke the changed callbacks added to a gesture. For example, consider the following
-view:
-
-```Swift
-struct TestGestureView6: View & Inspectable {
-    @GestureState var isDetectingLongPress = false
-    @State var totalNumberOfTaps = 0
-
-    internal let inspection = Inspection<Self>()
-    internal let publisher = PassthroughSubject<Void, Never>()
-
-    var press: some Gesture {
-        LongPressGesture(minimumDuration: 1)
-            .updating($isDetectingLongPress) { currentState, gestureState, transaction in
-                gestureState = currentState
-            }
-            .onChanged { _ in
-                totalNumberOfTaps += 1
-            }
-
-    }
-
-    var body: some View {
-        VStack {
-            Text("\(totalNumberOfTaps)")
-                .font(.largeTitle)
-
-            Circle()
-                .fill(isDetectingLongPress ? Color.yellow : Color.green)
-                .frame(width: 100, height: 100, alignment: .center)
-                .gesture(press)
-        }
-        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
-        .onReceive(publisher) { }
-    }
-}
-```
-
-A test can invoke the changed callback for the gesture used by `TestGestureView6` using the 
-following code:
-
-```Swift
-func testTestGestureChanged() throws {
-    let sut = TestGestureView6()
-    let exp1 = sut.inspection.inspect { view in
-        XCTAssertEqual(try view.actualView().totalNumberOfTaps, 0)
-        XCTAssertEqual(try view.vStack().text(0).string(), "0")
-        let gesture = try view.vStack().shape(1).gesture(LongPressGesture.self)
-        let value = LongPressGesture.Value(finished: true)
-        try gesture.callOnChanged(value: value)
-        sut.publisher.send()
-    }
-
-    let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
-        XCTAssertEqual(try view.actualView().totalNumberOfTaps, 1)
-        XCTAssertEqual(try view.vStack().text(0).string(), "1")
-    }
-
-    ViewHosting.host(view: sut)
-    wait(for: [exp1, exp2], timeout: 0.1)
-}
-```
-
-In this test, the first inspection invokes the changed callback. However, in the context of this
-inspection, the changes resulting from the change in the `totalNumberOfTaps` are not
-visible. Thus, it is necessary to perform another inspection.
-
-The `callOnChanged(value:)` method calls all `onChanged` callbacks added to a gesture 
-in the order the callbacks were added to the gesture using the gesture's `onChanged(_:body:)`
-method.
-
-### **Invoking Gesture Ended Callback**
-
-A test can invoke the ended callbacks added to a gesture. For example, consider the following
-view:
-
-```Swift
-struct TestGestureView7: View & Inspectable {
-    @GestureState var isDetectingLongPress = false
-    @State var totalNumberOfTaps = 0
-    @State var doneCounting = false
-    
-    internal let inspection = Inspection<Self>()
-    internal let publisher = PassthroughSubject<Void, Never>()
-
-    var body: some View {
-        let press = LongPressGesture(minimumDuration: 1)
-            .updating($isDetectingLongPress) { currentState, gestureState, transaction in
-                gestureState = currentState
-            }.onChanged { _ in
-                self.totalNumberOfTaps += 1
-            }
-            .onEnded { _ in
-                self.doneCounting = true
-            }
-        
-        return VStack {
-            Text("\(totalNumberOfTaps)")
-                .font(.largeTitle)
-            
-            Circle()
-                .fill(doneCounting ? Color.red : isDetectingLongPress ? Color.yellow : Color.green)
-                .frame(width: 100, height: 100, alignment: .center)
-                .gesture(doneCounting ? nil : press)
-        }
-        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
-        .onReceive(publisher) { }
-    }
-}
-```
-
-A test can invoke the changed callback for the gesture used by `TestGestureView7` using the 
-following code:
-
-```Swift
-func testTestGestureEnded() throws {
-    let sut = TestGestureView7()
-    let exp1 = sut.inspection.inspect { view in
-        XCTAssertEqual(try view.actualView().doneCounting, false)
-        let circle = try view.vStack().shape(1)
-        XCTAssertEqual(try circle.fillShapeStyle(Color.self), Color.green)
-        let gesture = try circle.gesture(LongPressGesture.self)
-        let value = LongPressGesture.Value(finished: true)
-        try gesture.callOnEnded(value: value)
-        sut.publisher.send()
-    }
-
-    let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
-        XCTAssertEqual(try view.actualView().doneCounting, true)
-        XCTAssertEqual(try view.vStack().shape(1).fillShapeStyle(Color.self), Color.red)
-    }
-
-    ViewHosting.host(view: sut)
-    wait(for: [exp1, exp2], timeout: 0.1)
-}
-```
-
-In this test, the first inspection invokes the changed callback. However, in the context of this
-inspection, the changes resulting from the change in the `doneCounting` are not
-visible. Thus, it is necessary to perform another inspection.
-
-The `callOnEnded(value:)` method calls all `onEnded` callbacks added to a gesture 
-in the order the callbacks were added to the gesture using the gesture's `onEnded(_:body:)`
-method.
-
-### **Gesture Keyboard Modifiers**
-
-A test can inspect the keyboard modifiers of a gesture attached to a view. For example, 
-consider the following view:
-
-```Swift
-#if os(macOS)
-struct TestGestureView8: View & Inspectable {
-    @State var tapped = false
-        
-    var body: some View {
-        let gesture = TapGesture()
-            .onEnded { _ in self.tapped.toggle() }
-            .modifiers(.shift)
-            .modifiers(.control)
-        
-        return Rectangle()
-            .fill(self.tapped ? Color.blue : Color.red)
-            .frame(width: 10, height: 10)
-            .gesture(gesture)
-    }
-}
-#endif
-```
-
-A test can inspect the gesture's keyboard modifiers using the following code:
-
-```Swift
-#if os(macOS)
-func testGestureModifiers() throws {
-    let sut = TestGestureView8()
-    let gesture = try sut.inspect().shape(0).gesture(TapGesture.self)
-    XCTAssertEqual(try gesture.gestureModifiers(), [.shift, .control])
-}
-#endif
-```
-
-Observe that `gestureModifiers()` finds all keyboard combined with a gesture and returns
-the aggregated `EventModifiers`.
-
-### **Composed Gestures**
-
-An application can compose more complex gestures from the simple gestures that ship with
-SwiftUI, including `DragGesture`, `LongPressGesture`, `MagnificationGesture`,
-`RotationGesture`, and `TapGesture`. **ViewInspector** provides a number of methods to
-traverse composed gestures.
-
-If a test inspects a gesture using `gesture(_:)`, `highPriorityGesture(_:)`, or 
-`simultaneousGesture(_:)`, and the gesture is a composed gesture (i.e., it is an
-`ExclusiveGesture`, `SequenceGesture`, or `SimultaneousGesture`), then the test
-can use the following methods for this gesture:
-* `actualGesture(_:)`: To obtain the properties of the composed gesture.
-* `gestureModifiers(_:)`: To obtain keyboard modifiers for the composed gesture.
-* `callUpdating(value:state:transacation:)`: To invoke updating callbacks
-attached to the composed gesture.
-* `callOnEnded(value:)`: To invoke `onEnded` callbacks attached to the composed
-gesture.
-
-However, these methods only provide access to the composed gesture, as opposed to the
-gestures in the composition. To access the gestures in the composition, consider the following
-view:
-
-```Swift
-@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
-struct TestGestureView10: View & Inspectable {
-    @State var scale: CGFloat = 1.0
-    @State var angle = Angle(degrees: 0)
-    
-    internal let inspection = Inspection<Self>()
-    internal let publisher = PassthroughSubject<Void, Never>()
-
-    var body: some View {
-        let magnificationGesture = MagnificationGesture()
-            .onChanged { value in self.scale = value.magnitude }
-        
-        let rotationGesture = RotationGesture()
-            .onChanged { value in self.angle = value }
-        
-        let gesture = SimultaneousGesture(magnificationGesture, rotationGesture)
-        
-        VStack {
-            Image(systemName: "star.circle.fill")
-                .font(.system(size: 200))
-                .foregroundColor(Color.red)
-                .gesture(gesture)
-                .rotationEffect(angle)
-                .scaleEffect(scale)
-                .animation(.easeInOut)
-                .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
-                .onReceive(publisher) { }
-       }
-    }
-}
-```
-
-Think of a gesture composition as a binary tree. In this example, the view uses a gesture
-composition where the root is a simultaneous gesture containing two children: a magnification
-gesture and a rotation gesture. A test can inspect the first (or left) gesture of composed 
-gesture using the `first(_:)` method:
-
-```Swift
-func testComposedGestureFirst() throws {
-    let sut = TestGestureView10()
-    let exp1 = sut.inspection.inspect { view in
-        let simultaneousGesture = try view
-            .vStack()
-            .image(0)
-            .gesture(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
-        let magnificationGesture = try simultaneousGesture
-            .first(MagnificationGesture.self)
-        let value = MagnificationGesture.Value(2.0)
-        try magnificationGesture.callOnChanged(value: value)
-        sut.publisher.send()
-    }
-    
-    let exp2 = sut.inspection.inspect { view in
-        XCTAssertEqual(try view.actualView().scale, 2.0)
-    }
-
-    ViewHosting.host(view: sut)
-    wait(for: [exp1, exp2], timeout: 0.1)
-}
-```
-
-A test can inspect the second (or right) gesture of a composed gesture using the `second(_:)`
-method:
-
-```Swift
-func testComposedGestureSecond() throws {
-    let sut = TestGestureView10()
-    let exp1 = sut.inspection.inspect { view in
-        let simultaneousGesture = try view
-            .vStack()
-            .image(0)
-            .gesture(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
-        let rotationGesture = try simultaneousGesture
-            .second(RotationGesture.self)
-        let value = RotationGesture.Value(angle: Angle(degrees: 5))
-        try rotationGesture.callOnChanged(value: value)
-        sut.publisher.send()
-    }
-    
-    let exp2 = sut.inspection.inspect { view in
-        XCTAssertEqual(try view.actualView().angle, Angle(degrees: 5))
-    }
-
-    ViewHosting.host(view: sut)
-    wait(for: [exp1, exp2], timeout: 0.1)
-}
-```
-
-This method of inspecting more gesture compositions works as well. For example, the following
-view uses a gesture composed of three simple gestures. While the gesture itself isn't wired 
-into the view, the example is useful for demonstration purposes:
-
-```Swift
-@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
-struct TestGestureView12: View & Inspectable {
-    
-    internal let inspection = Inspection<Self>()
-    internal let publisher = PassthroughSubject<Void, Never>()
-    
-    var body: some View {
-        let rotationGesture = RotationGesture()
-        let magnificationGesture = MagnificationGesture()
-        let dragGesture = DragGesture()
-        
-        let gesture = SimultaneousGesture(
-            SimultaneousGesture(magnificationGesture, rotationGesture),
-            dragGesture)
-        
-        VStack {
-            Image(systemName: "star.circle.fill")
-                .font(.system(size: 200))
-                .foregroundColor(Color.red)
-                .gesture(gesture)
-        }
-        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
-        .onReceive(publisher) { }
-    }
-}
-```
-
-The following test demonstrates how to inspect the magnification gesture contained by the
-gesture composition:
-
-```Swift
-func testComposedGestureComplex() throws {
-    let sut = TestGestureView12()
-    let exp = sut.inspection.inspect { view in
-        let outerSimultaneousGesture = try view
-            .vStack()
-            .image(0)
-            .gesture(SimultaneousGesture<SimultaneousGesture<MagnificationGesture, RotationGesture>, DragGesture>.self)
-        let innerSimultaneousGesture = try outerSimultaneousGesture.first(SimultaneousGesture<MagnificationGesture, RotationGesture>.self)
-        XCTAssertNoThrow(try innerSimultaneousGesture.first(MagnificationGesture.self))
-    }
-
-    ViewHosting.host(view: sut)
-    wait(for: [exp], timeout: 0.1)
-}
-```
+- [Styles](guide_styles.md)
+- [Gestures](guide_gestures.md)

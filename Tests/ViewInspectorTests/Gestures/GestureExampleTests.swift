@@ -44,8 +44,8 @@ final class GestureExampleTests: XCTestCase {
         XCTAssertEqual(gesture.coordinateSpace, .global)
     }
     
-    @available(tvOS 14.0, *)
     func testTestGestureUpdating() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = TestGestureView5()
         let exp1 = sut.inspection.inspect { view in
             XCTAssertEqual(try view.actualView().isDetectingLongPress, false)
@@ -66,8 +66,8 @@ final class GestureExampleTests: XCTestCase {
         wait(for: [exp1, exp2], timeout: 0.1)
     }
 
-    @available(tvOS 14.0, *)
     func testTestGestureChanged() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = TestGestureView6()
         let exp1 = sut.inspection.inspect { view in
             XCTAssertEqual(try view.actualView().totalNumberOfTaps, 0)
@@ -87,8 +87,8 @@ final class GestureExampleTests: XCTestCase {
         wait(for: [exp1, exp2], timeout: 0.1)
     }
     
-    @available(tvOS 14.0, *)
     func testTestGestureEnded() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = TestGestureView7()
         let exp1 = sut.inspection.inspect { view in
             XCTAssertEqual(try view.actualView().doneCounting, false)

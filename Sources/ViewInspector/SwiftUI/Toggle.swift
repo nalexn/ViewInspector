@@ -42,9 +42,11 @@ public extension InspectableView where View == ViewType.Toggle {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
     func tap() throws {
+        try guardIsResponsive()
         try isOnBinding().wrappedValue.toggle()
     }
     

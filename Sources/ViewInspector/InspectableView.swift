@@ -8,6 +8,7 @@ public struct InspectableView<View> where View: KnownViewType {
     internal let parentView: UnwrappedView?
     internal let inspectionCall: String
     internal let inspectionIndex: Int?
+    internal var isUnwrappedSupplementaryChild: Bool = false
     
     internal init(_ content: Content, parent: UnwrappedView?,
                   call: String = #function, index: Int? = nil) throws {
@@ -66,6 +67,7 @@ internal protocol UnwrappedView {
     var inspectionIndex: Int? { get }
     var pathToRoot: String { get }
     var isTransitive: Bool { get }
+    var isUnwrappedSupplementaryChild: Bool { get set }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -76,6 +78,10 @@ extension InspectableView: UnwrappedView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension UnwrappedView {
     func asInspectableView() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try .init(content, parent: parentView, call: inspectionCall, index: inspectionIndex)
+    }
+    
+    func asInspectableView<T>(ofType type: T.Type) throws -> InspectableView<T> where T: KnownViewType {
         return try .init(content, parent: parentView, call: inspectionCall, index: inspectionIndex)
     }
 }
@@ -179,24 +185,36 @@ public extension View where Self: Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
 
-    func modifierAttribute<Type>(modifierName: String, path: String,
-                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
+    func modifierAttribute<Type>(
+        modifierName: String, transitive: Bool = false,
+        path: String, type: Type.Type, call: String, index: Int = 0
+    ) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
-            modifierName: modifierName, path: path, type: type, call: call, index: index)
+            modifierName: modifierName, transitive: transitive,
+            path: path, type: type, call: call, index: index)
     }
     
-    func modifierAttribute<Type>(modifierLookup: (ModifierNameProvider) -> Bool, path: String,
-                                 type: Type.Type, call: String) throws -> Type {
+    func modifierAttribute<Type>(
+        modifierLookup: (ModifierNameProvider) -> Bool, transitive: Bool = false,
+        path: String, type: Type.Type, call: String
+    ) throws -> Type {
         return try contentForModifierLookup.modifierAttribute(
-            modifierLookup: modifierLookup, path: path, type: type, call: call)
+            modifierLookup: modifierLookup, transitive: transitive, path: path, type: type, call: call)
     }
     
-    func modifier(_ modifierLookup: (ModifierNameProvider) -> Bool, call: String) throws -> Any {
-        return try contentForModifierLookup.modifier(modifierLookup, call: call)
+    func modifier(
+        _ modifierLookup: (ModifierNameProvider) -> Bool,
+        transitive: Bool = false, call: String
+    ) throws -> Any {
+        return try contentForModifierLookup.modifier(
+            modifierLookup, transitive: transitive, call: call)
     }
     
-    func modifiersMatching(_ modifierLookup: (ModifierNameProvider) -> Bool) -> [ModifierNameProvider] {
-        return contentForModifierLookup.modifiersMatching(modifierLookup)
+    func modifiersMatching(_ modifierLookup: (ModifierNameProvider) -> Bool,
+                           transitive: Bool = false
+    ) -> [ModifierNameProvider] {
+        return contentForModifierLookup
+            .modifiersMatching(modifierLookup, transitive: transitive)
     }
     
     var contentForModifierLookup: Content {
@@ -211,19 +229,24 @@ internal extension InspectableView {
 internal extension Content {
     typealias ModifierLookupClosure = (ModifierNameProvider) -> Bool
 
-    func modifierAttribute<Type>(modifierName: String, path: String,
-                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
+    func modifierAttribute<Type>(
+        modifierName: String, transitive: Bool = false,
+        path: String, type: Type.Type, call: String, index: Int = 0
+    ) throws -> Type {
         let modifyNameProvider: ModifierLookupClosure = { modifier -> Bool in
             guard modifier.modifierType.contains(modifierName) else { return false }
             return (try? Inspector.attribute(path: path, value: modifier) as? Type) != nil
         }
-        return try modifierAttribute(modifierLookup: modifyNameProvider, path: path,
-                                     type: type, call: call, index: index)
+        return try modifierAttribute(
+            modifierLookup: modifyNameProvider, transitive: transitive,
+            path: path, type: type, call: call, index: index)
     }
     
-    func modifierAttribute<Type>(modifierLookup: ModifierLookupClosure, path: String,
-                                 type: Type.Type, call: String, index: Int = 0) throws -> Type {
-        let modifier = try self.modifier(modifierLookup, call: call, index: index)
+    func modifierAttribute<Type>(
+        modifierLookup: ModifierLookupClosure, transitive: Bool = false,
+        path: String, type: Type.Type, call: String, index: Int = 0
+    ) throws -> Type {
+        let modifier = try self.modifier(modifierLookup, transitive: transitive, call: call, index: index)
         guard let attribute = try? Inspector.attribute(path: path, value: modifier) as? Type
         else {
             throw InspectionError.modifierNotFound(
@@ -232,8 +255,9 @@ internal extension Content {
         return attribute
     }
 
-    func modifier(_ modifierLookup: ModifierLookupClosure, call: String, index: Int = 0) throws -> Any {
-        let modifiers = modifiersMatching(modifierLookup)
+    func modifier(_ modifierLookup: ModifierLookupClosure, transitive: Bool = false,
+                  call: String, index: Int = 0) throws -> Any {
+        let modifiers = modifiersMatching(modifierLookup, transitive: transitive)
         if index < modifiers.count {
             return modifiers[index]
         }
@@ -241,11 +265,13 @@ internal extension Content {
             parent: Inspector.typeName(value: self.view), modifier: call, index: index)
     }
     
-    func modifiersMatching(_ modifierLookup: ModifierLookupClosure) -> [ModifierNameProvider] {
-        return medium.viewModifiers.lazy
+    func modifiersMatching(_ modifierLookup: ModifierLookupClosure,
+                           transitive: Bool = false) -> [ModifierNameProvider] {
+        let modifiers = transitive ? medium.transitiveViewModifiers
+            : medium.viewModifiers.reversed()
+        return modifiers.lazy
             .compactMap { $0 as? ModifierNameProvider }
             .filter(modifierLookup)
-            .reversed()
     }
 }
 
@@ -258,5 +284,60 @@ internal protocol ModifierNameProvider {
 extension ModifiedContent: ModifierNameProvider {
     var modifierType: String {
         return Inspector.typeName(type: Modifier.self)
+    }
+}
+
+// MARK: - isResponsive check for controls
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView {
+    
+    /**
+     A function to check if the view is responsive to the user's touch input.
+     Returns `false` if the view or any of its parent views are `disabled`,
+     `hidden`, or if `allowsHitTesting` is set to `false`.
+
+      - Returns: `true` if the view is responsive to the user's interaction
+     */
+    func isResponsive() -> Bool {
+        do {
+            try guardIsResponsive()
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    internal func guardIsResponsive() throws {
+        let name = Inspector.typeName(value: content.view, prefixOnly: true)
+        if isDisabled() {
+            let blocker = farthestParent(where: { $0.isDisabled() }) ?? self
+            throw InspectionError.unresponsiveControl(
+                name: name, reason: blocker.pathToRoot.ifEmpty(use: "it") + " is disabled")
+        }
+        if isHidden() {
+            let blocker = farthestParent(where: { $0.isHidden() }) ?? self
+            throw InspectionError.unresponsiveControl(
+                name: name, reason: blocker.pathToRoot.ifEmpty(use: "it") + " is hidden")
+        }
+        if !allowsHitTesting() {
+            let blocker = farthestParent(where: { !$0.allowsHitTesting() }) ?? self
+            throw InspectionError.unresponsiveControl(
+                name: name, reason: blocker.pathToRoot.ifEmpty(use: "it") + " has allowsHitTesting set to false")
+        }
+    }
+    
+    private func farthestParent(where condition: (InspectableView<ViewType.ClassifiedView>) -> Bool) -> UnwrappedView? {
+        if let parent = try? self.parentView?.asInspectableView(),
+           condition(parent) {
+            return parent.farthestParent(where: condition) ?? parent
+        }
+        return nil
+    }
+}
+
+private extension String {
+    func ifEmpty(use replacement: String) -> String {
+        return isEmpty ? replacement : self
     }
 }

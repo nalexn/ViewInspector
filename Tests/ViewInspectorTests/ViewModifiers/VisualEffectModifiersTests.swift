@@ -252,7 +252,6 @@ final class ViewHidingTests: XCTestCase {
         let sut3 = EmptyView().padding()
         XCTAssertTrue(try sut1.inspect().emptyView().isDisabled())
         XCTAssertFalse(try sut2.inspect().emptyView().isDisabled())
-        XCTAssertThrows(try sut3.inspect().emptyView().isDisabled(),
-                        "EmptyView does not have 'disabled' modifier")
+        XCTAssertFalse(try sut3.inspect().emptyView().isDisabled())
     }
 }

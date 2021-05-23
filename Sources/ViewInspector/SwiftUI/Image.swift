@@ -44,7 +44,8 @@ extension ViewType.Image: SupplementaryChildren {
             }()
             let medium = parent.content.medium.resettingViewModifiers()
             let content = try Inspector.unwrap(content: Content(labelView, medium: medium))
-            return try .init(content, parent: parent, call: "labelView()")
+            return try InspectableView<ViewType.ClassifiedView>(
+                content, parent: parent, call: "labelView()")
         }
     }
 }
@@ -59,7 +60,8 @@ public extension InspectableView where View == ViewType.Image {
     }
     
     func labelView() throws -> InspectableView<ViewType.Text> {
-        return try View.supplementaryChildren(self).element(at: 0).text()
+        return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.Text.self)
     }
 }
 

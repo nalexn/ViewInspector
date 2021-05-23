@@ -2,32 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-// MARK: - ViewPresentationTests
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-final class ViewPresentationTests: XCTestCase {
-    
-    func testSheet() throws {
-        let binding = Binding(wrappedValue: true)
-        let sut = EmptyView().sheet(isPresented: binding) { Text("") }
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    #if !os(macOS)
-    func testActionSheet() throws {
-        let binding = Binding(wrappedValue: true)
-        let sut = EmptyView().actionSheet(isPresented: binding) { ActionSheet(title: Text("")) }
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
-    func testAlert() throws {
-        let binding = Binding(wrappedValue: true)
-        let sut = EmptyView().alert(isPresented: binding) { Alert(title: Text("")) }
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
-
 // MARK: - ViewColorTests
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

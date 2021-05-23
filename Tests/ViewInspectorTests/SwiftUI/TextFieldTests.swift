@@ -45,23 +45,47 @@ final class TextFieldTests: XCTestCase {
     }
     
     func testCallOnEditingChanged() throws {
-        let exp = XCTestExpectation(description: "Callback")
+        let exp = XCTestExpectation(description: #function)
         let binding = Binding(wrappedValue: "")
         let view = TextField("", text: binding, onEditingChanged: { _ in
             exp.fulfill()
         }, onCommit: { })
         try view.inspect().textField().callOnEditingChanged()
-        wait(for: [exp], timeout: 0.5)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testCallOnEditingChangedWhenDisabled() throws {
+        let exp = XCTestExpectation(description: #function)
+        exp.isInverted = true
+        let binding = Binding(wrappedValue: "")
+        let view = TextField("", text: binding, onEditingChanged: { _ in
+            exp.fulfill()
+        }, onCommit: { }).disabled(true)
+        XCTAssertThrows(try view.inspect().textField().callOnEditingChanged(),
+            "TextField is unresponsive: it is disabled")
+        wait(for: [exp], timeout: 0.1)
     }
     
     func testCallOnCommit() throws {
-        let exp = XCTestExpectation(description: "Callback")
+        let exp = XCTestExpectation(description: #function)
         let binding = Binding(wrappedValue: "")
         let view = TextField("", text: binding, onEditingChanged: { _ in }, onCommit: {
             exp.fulfill()
         })
         try view.inspect().textField().callOnCommit()
-        wait(for: [exp], timeout: 0.5)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testCallOnCommitWhenDisabled() throws {
+        let exp = XCTestExpectation(description: #function)
+        exp.isInverted = true
+        let binding = Binding(wrappedValue: "")
+        let view = TextField("", text: binding, onEditingChanged: { _ in }, onCommit: {
+            exp.fulfill()
+        }).disabled(true)
+        XCTAssertThrows(try view.inspect().textField().callOnCommit(),
+            "TextField is unresponsive: it is disabled")
+        wait(for: [exp], timeout: 0.1)
     }
     
     func testInput() throws {
@@ -71,6 +95,15 @@ final class TextFieldTests: XCTestCase {
         XCTAssertEqual(try sut.input(), "123")
         try sut.setInput("abc")
         XCTAssertEqual(try sut.input(), "abc")
+    }
+    
+    func testSetInputWhenDisabled() throws {
+        let binding = Binding(wrappedValue: "123")
+        let view = TextField("", text: binding).disabled(true)
+        let sut = try view.inspect().textField()
+        XCTAssertThrows(try sut.setInput("abc"),
+            "TextField is unresponsive: it is disabled")
+        XCTAssertEqual(try sut.input(), "123")
     }
 }
 

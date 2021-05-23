@@ -40,6 +40,7 @@ public extension InspectableView where View == ViewType.Link {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
     func url() throws -> URL {

@@ -40,9 +40,11 @@ public extension InspectableView where View == ViewType.TextField {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
     func callOnEditingChanged() throws {
+        try guardIsResponsive()
         typealias Callback = (Bool) -> Void
         let callback = try Inspector
             .attribute(label: "onEditingChanged", value: content.view, type: Callback.self)
@@ -50,6 +52,7 @@ public extension InspectableView where View == ViewType.TextField {
     }
     
     func callOnCommit() throws {
+        try guardIsResponsive()
         typealias Callback = () -> Void
         let callback = try Inspector
             .attribute(label: "onCommit", value: content.view, type: Callback.self)
@@ -61,6 +64,7 @@ public extension InspectableView where View == ViewType.TextField {
     }
     
     func setInput(_ value: String) throws {
+        try guardIsResponsive()
         try inputBinding().wrappedValue = value
     }
     
