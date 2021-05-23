@@ -32,6 +32,7 @@ internal extension ViewSearch {
             .init(ViewType.RadialGradient.self),
             .init(ViewType.ScrollView.self), .init(ViewType.ScrollViewReader.self),
             .init(ViewType.Section.self), .init(ViewType.SecureField.self),
+            .init(ViewType.Sheet.self, genericTypeName: nil),
             .init(ViewType.Slider.self), .init(ViewType.Spacer.self), .init(ViewType.Stepper.self),
             .init(ViewType.StyleConfiguration.Label.self), .init(ViewType.StyleConfiguration.Content.self),
             .init(ViewType.StyleConfiguration.Title.self), .init(ViewType.StyleConfiguration.Icon.self),
@@ -273,23 +274,11 @@ internal extension Content {
             .filter({ identity -> Bool in
                 modifierNames.contains(where: { $0.hasPrefix(identity.name) })
             })
-        let alertModifiers = alertsForSearch()
-        #if os(macOS)
-        let sheetModifiers: [ViewSearch.ModifierIdentity] = []
-        #else
-        let sheetModifiers = sheetsForSearch()
-        #endif
+        let sheets = sheetModifierDescendants(parent: parent)
         let customModifiers = customViewModifiers()
         return .init(count: identities.count, { index -> UnwrappedView in
             try identities[index].builder(parent, nil)
-        })
-        + .init(count: alertModifiers.count, { index -> UnwrappedView in
-            try alertModifiers[index].builder(parent, index)
-        })
-        + .init(count: sheetModifiers.count, { index -> UnwrappedView in
-            try sheetModifiers[index].builder(parent, index)
-        })
-        + .init(count: customModifiers.count, { index -> UnwrappedView in
+        }) + sheets + .init(count: customModifiers.count, { index -> UnwrappedView in
             let modifier = customModifiers[index]
             let view = try modifier.extractContent(environmentObjects: medium.environmentObjects)
             let medium = self.medium.resettingViewModifiers()
@@ -298,6 +287,23 @@ internal extension Content {
             let call = ViewType.ModifiedContent.inspectionCall(typeName: name)
             let modifierView = try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: call)
             return try InspectableView<ViewType.ClassifiedView>(content, parent: modifierView)
+        })
+    }
+    
+    private func sheetModifierDescendants(parent: UnwrappedView) -> LazyGroup<UnwrappedView> {
+        let sheetModifiers = sheetsForSearch()
+        #if os(macOS)
+        let actionSheetModifiers: [ViewSearch.ModifierIdentity] = []
+        #else
+        let actionSheetModifiers = actionSheetsForSearch()
+        #endif
+        let alertModifiers = alertsForSearch()
+        return .init(count: sheetModifiers.count, { index -> UnwrappedView in
+            try sheetModifiers[index].builder(parent, index)
+        }) + .init(count: actionSheetModifiers.count, { index -> UnwrappedView in
+            try actionSheetModifiers[index].builder(parent, index)
+        }) + .init(count: alertModifiers.count, { index -> UnwrappedView in
+            try alertModifiers[index].builder(parent, index)
         })
     }
 }

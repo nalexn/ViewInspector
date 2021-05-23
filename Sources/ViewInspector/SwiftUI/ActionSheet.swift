@@ -55,7 +55,7 @@ internal extension Content {
         return try .init(content, parent: parent, call: call, index: index)
     }
     
-    func sheetsForSearch() -> [ViewSearch.ModifierIdentity] {
+    func actionSheetsForSearch() -> [ViewSearch.ModifierIdentity] {
         let count = medium.viewModifiers
             .compactMap { isActionSheetBuilder(modifier: $0) }
             .count
