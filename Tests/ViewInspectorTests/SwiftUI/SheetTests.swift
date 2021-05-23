@@ -134,10 +134,10 @@ final class SheetTests: XCTestCase {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension View {
-    func sheet2<SheetContent>(isPresented: Binding<Bool>,
+    func sheet2<Sheet>(isPresented: Binding<Bool>,
                               onDismiss: (() -> Void)? = nil,
-                              @ViewBuilder content: @escaping () -> SheetContent
-    ) -> some View where SheetContent: View {
+                              @ViewBuilder content: @escaping () -> Sheet
+    ) -> some View where Sheet: View {
         return self.modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, content: content))
     }
     
