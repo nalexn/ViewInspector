@@ -32,6 +32,7 @@ final class AlertTests: XCTestCase {
         let sut = EmptyView().alert2(isPresented: binding) { Alert(title: Text("abc")) }
         XCTAssertThrows(try sut.inspect().emptyView().alert(),
                         "View for Alert is absent")
+        XCTAssertThrows(try sut.inspect().find(text: "abc"), "Search did not find a match")
     }
     
     func testInspectionErrorAlertWithItemNotPresented() throws {
