@@ -120,8 +120,8 @@ extension ViewType.Alert: SupplementaryChildren {
                 return try InspectableView<ViewType.Text>(
                     content, parent: parent, call: "title()")
             case 1:
-                let view = try Inspector.attribute(path: "alert|message", value: parent.content.view, type: Text?.self)
-                guard let view = view else {
+                let maybeView = try Inspector.attribute(path: "alert|message", value: parent.content.view, type: Text?.self)
+                guard let view = maybeView else {
                     throw InspectionError.viewNotFound(parent: "message")
                 }
                 let content = try Inspector.unwrap(content: Content(view, medium: medium))
@@ -133,9 +133,9 @@ extension ViewType.Alert: SupplementaryChildren {
                 return try InspectableView<ViewType.AlertButton>(
                     content, parent: parent, call: "primaryButton()")
             default:
-                let view = try Inspector.attribute(
+                let maybeView = try Inspector.attribute(
                     path: "alert|secondaryButton", value: parent.content.view, type: Alert.Button?.self)
-                guard let view = view else {
+                guard let view = maybeView else {
                     throw InspectionError.viewNotFound(parent: "secondaryButton")
                 }
                 let content = try Inspector.unwrap(content: Content(view, medium: medium))
