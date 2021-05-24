@@ -124,8 +124,9 @@ extension ViewType.ActionSheet: SupplementaryChildren {
                 return try InspectableView<ViewType.Text>(
                     content, parent: parent, call: "title()")
             case 1:
-                let view = try Inspector.attribute(path: "sheet|message", value: parent.content.view, type: Text?.self)
-                guard let view = view else {
+                let maybeView = try Inspector.attribute(
+                    path: "sheet|message", value: parent.content.view, type: Text?.self)
+                guard let view = maybeView else {
                     throw InspectionError.viewNotFound(parent: "message")
                 }
                 let content = try Inspector.unwrap(content: Content(view, medium: medium))
