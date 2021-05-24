@@ -120,7 +120,8 @@ extension ViewType.Alert: SupplementaryChildren {
                 return try InspectableView<ViewType.Text>(
                     content, parent: parent, call: "title()")
             case 1:
-                let maybeView = try Inspector.attribute(path: "alert|message", value: parent.content.view, type: Text?.self)
+                let maybeView = try Inspector.attribute(
+                    path: "alert|message", value: parent.content.view, type: Text?.self)
                 guard let view = maybeView else {
                     throw InspectionError.viewNotFound(parent: "message")
                 }
