@@ -33,9 +33,7 @@ class MapTests: XCTestCase {
         XCTAssertEqual(try view.inspect().find(ViewType.Map.self).pathToRoot, "anyView().map()")
     }
 
-    // MARK: - coordinateRegion()
-
-    func testExternalCoordinateRegionValue() throws {
+    func testExtractingCoordinateRegionValue() throws {
         let region = MKCoordinateRegion()
         let sut = Map(coordinateRegion: .constant(MKCoordinateRegion()))
         let value = try sut.inspect().map().coordinateRegion().wrappedValue
@@ -74,5 +72,17 @@ class MapTests: XCTestCase {
         let value = try sut.inspect().map().userTrackingMode()
         XCTAssertEqual(value?.wrappedValue, .follow)
     }
+
+    func testExtractingMapRectValue() throws {
+        let rect = MKMapRect()
+        let sut = Map(mapRect: .constant(rect),
+                      interactionModes: .all,
+                      showsUserLocation: false,
+                      userTrackingMode: .constant(.none))
+        let value = try sut.inspect().map().mapRect().wrappedValue
+        XCTAssertEqual(value.size.height, rect.size.height)
+        XCTAssertEqual(value.size.width, rect.size.width)
+    }
+
 }
 #endif
