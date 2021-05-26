@@ -28,10 +28,10 @@ class MapTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().map(1))
     }
 
-//    func testSearch() throws {
-//        let view = AnyView(Map(coordinateRegion: .constant(MKCoordinateRegion())))
-//        XCTAssertEqual(try view.inspect().find(ViewType.Map.self).pathToRoot, "anyView().map()")
-//    }
+    func testSearch() throws {
+        let view = AnyView(Map(coordinateRegion: .constant(MKCoordinateRegion())))
+        XCTAssertEqual(try view.inspect().find(ViewType.Map.self).pathToRoot, "anyView().map()")
+    }
 
     // MARK: - coordinateRegion()
 
