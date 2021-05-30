@@ -191,22 +191,22 @@ extension Inspector {
     static func guardType(value: Any, namespacedPrefixes: [String], inspectionCall: String) throws {
         guard let firstPrefix = namespacedPrefixes.first
         else { return }
-        let shortName = typeName(type: type(of: value))
-        let longName = typeName(type: type(of: value), namespaced: true, prefixOnly: true)
-        if longName.hasPrefix("SwiftUI.EnvironmentReaderView") {
-            if shortName.contains("NavigationBarItemsKey") {
+        let typeWithParams = typeName(type: type(of: value))
+        let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: true)
+        if typePrefix == "SwiftUI.EnvironmentReaderView" {
+            if typeWithParams.contains("NavigationBarItemsKey") {
                 throw InspectionError.notSupported(
                     """
                     Please insert '.navigationBarItems()' before \(inspectionCall) \
                     for unwrapping the underlying view hierarchy.
                     """)
-            } else if shortName.contains("_AnchorWritingModifier") {
+            } else if typeWithParams.contains("_AnchorWritingModifier") {
                 throw InspectionError.notSupported(
                     "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
             }
         }
-        guard namespacedPrefixes.contains(where: { longName.hasPrefix($0) }) else {
-            throw InspectionError.typeMismatch(factual: longName, expected: firstPrefix)
+        guard namespacedPrefixes.contains(typePrefix) else {
+            throw InspectionError.typeMismatch(factual: typePrefix, expected: firstPrefix)
         }
     }
 }

@@ -23,6 +23,7 @@ final class BaseTypesTests: XCTestCase {
         let desc82 = InspectionError.searchFailure(skipped: 1, blockers: ["Xyz"]).localizedDescription
         let desc83 = InspectionError.searchFailure(skipped: 3, blockers: []).localizedDescription
         let desc9 = InspectionError.callbackNotFound(parent: "Abc", callback: "Xyz").localizedDescription
+        let desc10 = InspectionError.unresponsiveControl(name: "Abc", reason: "Def").localizedDescription
         XCTAssertEqual(desc1, "Type mismatch: 1 is not 2")
         XCTAssertEqual(desc2, "2 does not have '1' attribute")
         XCTAssertEqual(desc3, "Enclosed view index '5' is out of bounds: '0 ..< 3'")
@@ -35,6 +36,7 @@ final class BaseTypesTests: XCTestCase {
         XCTAssertEqual(desc82, "Search did only find 1 matches. Possible blockers: Xyz")
         XCTAssertEqual(desc83, "Search did only find 3 matches")
         XCTAssertEqual(desc9, "Abc does not have 'Xyz' callback")
+        XCTAssertEqual(desc10, "Abc is unresponsive: Def")
     }
     
     func testBindingExtension() {

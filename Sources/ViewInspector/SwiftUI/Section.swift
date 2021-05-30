@@ -49,11 +49,11 @@ extension ViewType.Section: SupplementaryChildren {
             if index == 0 {
                 let child = try Inspector.attribute(label: "header", value: parent.content.view)
                 let content = try Inspector.unwrap(content: Content(child, medium: medium))
-                return try .init(content, parent: parent, call: "header()")
+                return try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: "header()")
             } else {
                 let child = try Inspector.attribute(label: "footer", value: parent.content.view)
                 let content = try Inspector.unwrap(content: Content(child, medium: medium))
-                return try .init(content, parent: parent, call: "footer()")
+                return try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: "footer()")
             }
         }
     }
@@ -66,9 +66,11 @@ public extension InspectableView where View == ViewType.Section {
     
     func header() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
     func footer() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 1)
+            .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
 }

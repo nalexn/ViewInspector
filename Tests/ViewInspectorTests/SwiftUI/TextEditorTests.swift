@@ -40,4 +40,14 @@ final class TextEditorTests: XCTestCase {
         try sut.setInput("abc")
         XCTAssertEqual(try sut.input(), "abc")
     }
+    
+    func testSetInputWhenDisabled() throws {
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        let binding = Binding(wrappedValue: "123")
+        let view = TextEditor(text: binding).disabled(true)
+        let sut = try view.inspect().textEditor()
+        XCTAssertThrows(try sut.setInput("abc"),
+            "TextEditor is unresponsive: it is disabled")
+        XCTAssertEqual(try sut.input(), "123")
+    }
 }
