@@ -456,7 +456,7 @@ struct MyViewModifier: ViewModifier {
 }
 ```
 
-Just like with the custom views, in order to inspect a custom `ViewModifier` extend it to conform to `Inspectable` protocol in the tests scope.
+Just like with the custom views, in order to inspect a custom `MyViewModifier` extend it to conform to the  `Inspectable` protocol in the test's scope.
 
 ```swift
 extension MyViewModifier: Inspectable { }
@@ -478,37 +478,143 @@ If your `ViewModifier` uses references to SwiftUI state or environment, you may 
 
 ```swift
 struct MyViewModifier: ViewModifier {
+
+    typealias Body = BodyView
     
-    var didAppear: ((Self.Body) -> Void)? // 1.
+    @Binding var flag: Bool
+    var didAppear: ((Self.Body) -> Void)?
+
+    func body(content: Self.Content) -> BodyView {
+        BodyView(content: content, flag: $flag, didAppear: didAppear)
+    }
     
-    func body(content: Self.Content) -> some View {
-        content
-            .padding(.top, 15)
-            .onAppear { self.didAppear?(self.body(content: content)) } // 2.
+    struct BodyView: View & Inspectable {
+        
+        let content: MyViewModifier.Content
+        @Binding var flag: Bool
+        var didAppear: ((Self) -> Void)?
+        
+        var body: some View {
+            HStack {
+                content
+                Button(
+                    action: { self.flag.toggle() },
+                    label: { Text(flag ? "true" : "false").id("label") }
+                )
+            }
+            .onAppear { self.didAppear?(self) }
+        }
     }
 }
 ```
 
-Here is how you'd verify that `MyViewModifier` applies the padding:
+In order to inspect `MyViewModifier`, extend it and its body to conform to the  `Inspectable` protocol in the test's scope.
 
 ```swift
-func testViewModifier() {
-    var sut = MyViewModifier()
-    let exp = XCTestExpectation(description: #function)
-    sut.didAppear = { body in
-        body.inspect { view in
-            XCTAssertEqual(try view.padding(.top), 15)
-        }
-        ViewHosting.expel()
-        exp.fulfill()
+extension MyViewModifier: Inspectable {}
+extension MyViewModifier.Body: Inspectable {}
+```
+
+Here is how you'd verify  `MyViewModifier`:
+
+```swift
+func testViewModifierUsingOnFunction() {
+    @Binding var flag = false
+    var sut = MyTestModifier(flag: $flag)
+    let exp = sut.on(\.didAppear) { body in
+        XCTAssertEqual(try body.hStack().button(1).labelView().text().string(), "false")
+        try body.hStack().button(1).tap()
+        XCTAssertEqual(try body.hStack().button(1).labelView().text().string(), "true")
     }
     let view = EmptyView().modifier(sut)
     ViewHosting.host(view: view)
-    wait(for: [exp], timeout: 0.1)
+    wait(for: [exp], timeout: 0.2)
 }
 ```
 
-An example of an asynchronous `ViewModifier` inspection can be found in the sample project: [ViewModifier](https://github.com/nalexn/clean-architecture-swiftui/blob/master/CountriesSwiftUI/UI/RootViewModifier.swift) | [Tests](https://github.com/nalexn/clean-architecture-swiftui/blob/master/UnitTests/UI/RootViewAppearanceTests.swift)
+You can also take a slightly modified approach #2 described above:
+
+```Swift
+struct MyViewModifier: ViewModifier {
+
+    typealias Body = BodyView
+    
+    @Binding var flag: Bool
+    let publisher = PassthroughSubject<Bool, Never>()
+    let inspection = InspectionForViewModifier<Self>()
+
+    func body(content: Self.Content) -> BodyView {
+        BodyView(content: content, flag: $flag, publisher: publisher, inspection: inspection)
+    }
+    
+    struct BodyView: View {
+        
+        let content: InspectableTestModifier.Content
+        @Binding var flag: Bool
+        let publisher: PassthroughSubject<Bool, Never>
+        let inspection: InspectionForViewModifier<InspectableTestModifier>
+        
+        var body: some View {
+            HStack {
+                content
+                Button(
+                    action: { self.flag.toggle() },
+                    label: { Text(flag ? "true" : "false").id("label") }
+                )
+            }
+            .onReceive(publisher) { self.flag = $0 }
+            .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        }
+    }
+}
+```
+
+Here are some examples how you'd verify `MyViewModifier`:
+
+```Swift
+func testViewModifierUsingInspectAfter() throws {
+    let flag = Binding<Bool>(wrappedValue: false)
+
+    let sut = MyViewModifier(flag: flag)
+    let exp1 = sut.inspection.inspect { view in
+        let text = try view.hStack().button(1).labelView().text().string()
+        XCTAssertEqual(text, "false")
+        sut.publisher.send(true)
+    }
+    let exp2 = sut.inspection.inspect(after: 0.1) { view in
+        let text = try view.hStack().button(1).labelView().text().string()
+        XCTAssertEqual(text, "true")
+    }
+    let view = EmptyView().modifier(sut)
+    ViewHosting.host(view: view)
+    wait(for: [exp1, exp2], timeout: 0.1)
+}
+
+func testViewModifierUsingOnReceive() throws {
+    let flag = Binding<Bool>(wrappedValue: false)
+    
+    let sut = MyViewModifier(flag: flag)
+    let exp1 = sut.inspection.inspect { view in
+        let text = try view.hStack().button(1).labelView().text().string()
+        XCTAssertEqual(text, "false")
+        sut.publisher.send(true)
+    }
+    let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
+        let text = try view.hStack().button(1).labelView().text().string()
+        XCTAssertEqual(text, "true")
+        sut.publisher.send(false)
+    }
+    let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
+        let text = try view.hStack().button(1).labelView().text().string()
+        XCTAssertEqual(text, "false")
+    }
+    let view = EmptyView().modifier(sut)
+    ViewHosting.host(view: view)
+    wait(for: [exp1, exp2, exp3], timeout: 0.2)
+}
+```
+
+Additionally, you can find example of an asynchronous `ViewModifier` inspection can be found in the sample project: [ViewModifier](https://github.com/nalexn/clean-architecture-swiftui/blob/master/CountriesSwiftUI/UI/RootViewModifier.swift) | [Tests](https://github.com/nalexn/clean-architecture-swiftui/blob/master/UnitTests/UI/RootViewAppearanceTests.swift)
 
 ## Alert, Sheet and ActionSheet
 
