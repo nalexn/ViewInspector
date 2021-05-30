@@ -63,7 +63,7 @@ final class InspectionEmissaryTests: XCTestCase {
         }
         let view = EmptyView().modifier(sut)
         ViewHosting.host(view: view)
-        wait(for: [exp], timeout: 3.2)
+        wait(for: [exp], timeout: 0.2)
     }
 
     func testViewModifierInspectAfter() throws {
@@ -83,6 +83,29 @@ final class InspectionEmissaryTests: XCTestCase {
         ViewHosting.host(view: view)
         wait(for: [exp1, exp2], timeout: 0.1)
     }
+    
+    func testViewModifierOnReceive() throws {
+        let flag = Binding<Bool>(wrappedValue: false)
+        
+        let sut = InspectableTestModifier(flag: flag)
+        let exp1 = sut.inspection.inspect { view in
+            let text = try view.hStack().button(1).labelView().text().string()
+            XCTAssertEqual(text, "false")
+            sut.publisher.send(true)
+        }
+        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
+            let text = try view.hStack().button(1).labelView().text().string()
+            XCTAssertEqual(text, "true")
+            sut.publisher.send(false)
+        }
+        let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
+            let text = try view.hStack().button(1).labelView().text().string()
+            XCTAssertEqual(text, "false")
+        }
+        let view = EmptyView().modifier(sut)
+        ViewHosting.host(view: view)
+        wait(for: [exp1, exp2, exp3], timeout: 0.2)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -98,10 +121,11 @@ class Inspection<V>: InspectionEmissary where V: View & Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-class InspectionForViewModifier<V>: InspectionEmissaryForViewModifier where V: ViewModifier & Inspectable {
+class InspectionForViewModifier<V>: InspectionEmissaryForViewModifier where
+    V: ViewModifier & Inspectable, V.Body: Inspectable {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V.Body) -> Void]()
-    
+
     func visit(_ body: V.Body, _ line: UInt) {
         if let callback = callbacks.removeValue(forKey: line) {
             callback(body)
@@ -130,22 +154,36 @@ private struct TestView: View, Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct InspectableTestModifier: ViewModifier, Inspectable {
 
+    typealias Body = BodyView
+    
     @Binding var flag: Bool
-
     let publisher = PassthroughSubject<Bool, Never>()
     let inspection = InspectionForViewModifier<Self>()
     var didAppear: ((Self.Body) -> Void)?
 
-    func body(content: Self.Content) -> some View {
-        HStack {
-            content
-            Button(
-                action: { self.flag.toggle() },
-                label: { Text(flag ? "true" : "false").id("label") }
-            )
+    func body(content: Self.Content) -> BodyView {
+        BodyView(content: content, flag: $flag, publisher: publisher, inspection: inspection, didAppear: didAppear)
+    }
+    
+    struct BodyView: View & Inspectable {
+        
+        let content: InspectableTestModifier.Content
+        @Binding var flag: Bool
+        let publisher: PassthroughSubject<Bool, Never>
+        let inspection: InspectionForViewModifier<InspectableTestModifier>
+        var didAppear: ((Self) -> Void)?
+        
+        var body: some View {
+            HStack {
+                content
+                Button(
+                    action: { self.flag.toggle() },
+                    label: { Text(flag ? "true" : "false").id("label") }
+                )
+            }
+            .onReceive(publisher) { self.flag = $0 }
+            .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+            .onAppear { self.didAppear?(self) }
         }
-        .onReceive(publisher) { self.flag = $0 }
-        .onReceive(inspection.notice) { self.inspection.visit(self.body(content: content), $0) }
-        .onAppear { self.didAppear?(self.body(content: content)) }
     }
 }

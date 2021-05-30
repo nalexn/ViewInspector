@@ -97,7 +97,8 @@ extension InspectionEmissary {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol InspectionEmissaryForViewModifier: InspectionEmissaryBase where
-    V: ViewModifier & Inspectable, Body == V.Body, InspectedBody == InspectableView<ViewType.ClassifiedView> {
+    V: ViewModifier & Inspectable, V.Body: Inspectable, Body == V.Body,
+    InspectedBody == InspectableView<ViewType.View<Self.Body>> {
 }
 
 extension InspectionEmissaryForViewModifier {
@@ -107,7 +108,10 @@ extension InspectionEmissaryForViewModifier {
                function: String, file: StaticString, line: UInt) {
         callbacks[line] = { [weak self] view in
             do {
-                try inspection(try view.inspect(function: function))
+                //try inspection(try view.inspect(function: function))
+                let view: InspectableView<ViewType.ClassifiedView> = try view.inspect(function: function)
+                let body = try view.view(Body.self)
+                try inspection(body)
             } catch let error {
                 XCTFail("\(error.localizedDescription)", file: file, line: line)
             }
@@ -140,16 +144,22 @@ public extension View where Self: Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension ViewModifier where Self: Inspectable {
+public extension ViewModifier where Self: Inspectable, Self.Body: Inspectable {
     @discardableResult
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self.Body) -> Void)?>,
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
-                     perform: @escaping ((InspectableView<ViewType.ClassifiedView>) throws -> Void)
+                     perform: @escaping ((InspectableView<ViewType.View<Self.Body>>) throws -> Void)
     ) -> XCTestExpectation {
         let description = Inspector.typeName(value: self) + " callback at line #\(line)"
         let expectation = XCTestExpectation(description: description)
-        self[keyPath: keyPath] = { body in
-            body.inspect(function: function, file: file, line: line, inspection: perform)
+        self[keyPath: keyPath] = { view in
+            do {
+                let view: InspectableView<ViewType.ClassifiedView> = try view.inspect(function: function)
+                let body = try view.view(Self.Body.self)
+                try perform(body)
+            } catch {
+                XCTFail("\(error.localizedDescription)", file: file, line: line)
+            }
             ViewHosting.expel(function: function)
             expectation.fulfill()
         }
