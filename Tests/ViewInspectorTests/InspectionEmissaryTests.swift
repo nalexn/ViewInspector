@@ -77,13 +77,18 @@ final class InspectionEmissaryTests: XCTestCase {
         let flag = Binding<Bool>(wrappedValue: false)
 
         let sut = InspectableTestModifier(title: title, flag: flag)
-        let exp1 = sut.inspection.inspect { view in
-            let text = try view.hStack().button(1).labelView().text().string()
+        let exp1 = sut.inspection.inspect { body in
+            let content = try body.hStack().viewModifierContent(0)
+            XCTAssertEqual(try content.offset(), CGSize(width: 10, height: 10))
+            let object = content.content.medium.environmentObjects[0] as? Title
+            XCTAssertEqual(object?.value, "Monkey Wrench")
+
+            let text = try body.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
             sut.publisher.send(true)
         }
-        let exp2 = sut.inspection.inspect(after: 0.1) { view in
-            let text = try view.hStack().button(1).labelView().text().string()
+        let exp2 = sut.inspection.inspect(after: 0.1) { body in
+            let text = try body.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "true")
         }
         let view = EmptyView().modifier(sut)
@@ -96,18 +101,23 @@ final class InspectionEmissaryTests: XCTestCase {
         let flag = Binding<Bool>(wrappedValue: false)
         
         let sut = InspectableTestModifier(title: title, flag: flag)
-        let exp1 = sut.inspection.inspect { view in
-            let text = try view.hStack().button(1).labelView().text().string()
+        let exp1 = sut.inspection.inspect { body in
+            let text = try body.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
             sut.publisher.send(true)
         }
-        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
-            let text = try view.hStack().button(1).labelView().text().string()
+        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { body in
+            let content = try body.hStack().viewModifierContent(0)
+            XCTAssertEqual(try content.offset(), CGSize(width: 10, height: 10))
+            let object = content.content.medium.environmentObjects[0] as? Title
+            XCTAssertEqual(object?.value, "Monkey Wrench")
+
+            let text = try body.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "true")
             sut.publisher.send(false)
         }
-        let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
-            let text = try view.hStack().button(1).labelView().text().string()
+        let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { body in
+            let text = try body.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
         }
         let view = EmptyView().modifier(sut)
