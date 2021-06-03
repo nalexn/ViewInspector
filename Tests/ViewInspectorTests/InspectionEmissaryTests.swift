@@ -54,9 +54,15 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierOnFunction() throws {
+        let title = Title()
         @Binding var flag = false
-        var sut = InspectableTestModifier(flag: $flag)
+        var sut = InspectableTestModifier(title: title, flag: $flag)
         let exp = sut.on(\.didAppear) { body in
+            let content = try body.hStack().viewModifierContent(0)
+            XCTAssertEqual(try content.offset(), CGSize(width: 10, height: 10))
+            let object = content.content.medium.environmentObjects[0] as? Title
+            XCTAssertEqual(object?.value, "Monkey Wrench")
+            
             XCTAssertEqual(try body.hStack().button(1).labelView().text().string(), "false")
             try body.hStack().button(1).tap()
             XCTAssertEqual(try body.hStack().button(1).labelView().text().string(), "true")
@@ -67,9 +73,10 @@ final class InspectionEmissaryTests: XCTestCase {
     }
 
     func testViewModifierInspectAfter() throws {
+        let title = Title()
         let flag = Binding<Bool>(wrappedValue: false)
 
-        let sut = InspectableTestModifier(flag: flag)
+        let sut = InspectableTestModifier(title: title, flag: flag)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
@@ -85,9 +92,10 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierOnReceive() throws {
+        let title = Title()
         let flag = Binding<Bool>(wrappedValue: false)
         
-        let sut = InspectableTestModifier(flag: flag)
+        let sut = InspectableTestModifier(title: title, flag: flag)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
@@ -152,22 +160,30 @@ private struct TestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+class Title: ObservableObject {
+    @Published var value = "Monkey Wrench"
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct InspectableTestModifier: ViewModifier, Inspectable {
 
     typealias Body = BodyView
     
+    @ObservedObject var title: Title
     @Binding var flag: Bool
     let publisher = PassthroughSubject<Bool, Never>()
     let inspection = InspectionForViewModifier<Self>()
     var didAppear: ((Self.Body) -> Void)?
 
     func body(content: Self.Content) -> BodyView {
-        BodyView(content: content, flag: $flag, publisher: publisher, inspection: inspection, didAppear: didAppear)
+        BodyView(content: content, title: title, flag: $flag,
+                 publisher: publisher, inspection: inspection, didAppear: didAppear)
     }
     
     struct BodyView: View & Inspectable {
         
         let content: InspectableTestModifier.Content
+        @ObservedObject var title: Title
         @Binding var flag: Bool
         let publisher: PassthroughSubject<Bool, Never>
         let inspection: InspectionForViewModifier<InspectableTestModifier>
@@ -176,6 +192,8 @@ private struct InspectableTestModifier: ViewModifier, Inspectable {
         var body: some View {
             HStack {
                 content
+                    .offset(x: 10, y: 10)
+                    .environmentObject(title)
                 Button(
                     action: { self.flag.toggle() },
                     label: { Text(flag ? "true" : "false").id("label") }
