@@ -338,7 +338,6 @@ This code is intentionally not included in the **ViewInspector** so that your bu
 After you add that `class Inspection<V>` to the build target, you should extend it in the **test target** with conformance to `InspectionEmissary` protocol:
 
 ```swift
-extension Inspection: InspectionEmissaryBase where V: Inspectable { }
 extension Inspection: InspectionEmissary where V: Inspectable { }
 ```
 

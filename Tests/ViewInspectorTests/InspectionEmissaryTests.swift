@@ -127,9 +127,6 @@ final class InspectionEmissaryTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspection: InspectionEmissaryBase where V: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension Inspection: InspectionEmissary where V: Inspectable {}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -144,10 +141,6 @@ class Inspection<V> where V: View {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension InspectionForViewModifier: InspectionEmissaryBase where V: Inspectable, V.Body: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectionForViewModifier: InspectionEmissaryForViewModifier where V: Inspectable, V.Body: Inspectable {}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
