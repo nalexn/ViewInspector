@@ -338,6 +338,7 @@ This code is intentionally not included in the **ViewInspector** so that your bu
 After you add that `class Inspection<V>` to the build target, you should extend it in the **test target** with conformance to `InspectionEmissary` protocol:
 
 ```swift
+extension Inspection: InspectionEmissaryBase where V: Inspectable { }
 extension Inspection: InspectionEmissary where V: Inspectable { }
 ```
 
@@ -511,8 +512,8 @@ struct MyViewModifier: ViewModifier {
 In order to inspect `MyViewModifier`, extend it and its body to conform to the  `Inspectable` protocol in the test's scope.
 
 ```swift
-extension MyViewModifier: Inspectable {}
-extension MyViewModifier.Body: Inspectable {}
+extension MyViewModifier: Inspectable { }
+extension MyViewModifier.Body: Inspectable { }
 ```
 
 Here is how you'd verify  `MyViewModifier`:

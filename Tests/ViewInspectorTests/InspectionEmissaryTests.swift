@@ -127,7 +127,13 @@ final class InspectionEmissaryTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-class Inspection<V>: InspectionEmissary where V: View & Inspectable {
+extension Inspection: InspectionEmissaryBase where V: Inspectable {}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension Inspection: InspectionEmissary where V: Inspectable {}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+class Inspection<V> where V: View {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
 
@@ -139,8 +145,13 @@ class Inspection<V>: InspectionEmissary where V: View & Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-class InspectionForViewModifier<V>: InspectionEmissaryForViewModifier where
-    V: ViewModifier & Inspectable, V.Body: Inspectable {
+extension InspectionForViewModifier: InspectionEmissaryBase where V: Inspectable, V.Body: Inspectable {}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension InspectionForViewModifier: InspectionEmissaryForViewModifier where V: Inspectable, V.Body: Inspectable {}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+class InspectionForViewModifier<V> where V: ViewModifier {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V.Body) -> Void]()
 
