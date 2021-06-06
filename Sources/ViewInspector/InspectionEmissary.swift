@@ -84,28 +84,35 @@ public extension View where Self: Inspectable {
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
                      perform: @escaping ((InspectableView<ViewType.View<Self>>) throws -> Void)
     ) -> XCTestExpectation {
-        let description = Inspector.typeName(value: self) + " callback at line #\(line)"
-        let expectation = XCTestExpectation(description: description)
-        self[keyPath: keyPath] = { view in
-            view.inspect(function: function, file: file, line: line, inspection: perform)
-            ViewHosting.expel(function: function)
-            expectation.fulfill()
+        return on(keyPath, function: function, file: file, line: line) { body in
+            body.inspect(function: function, file: file, line: line, inspection: perform)
         }
-        return expectation
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewModifier where Self: Inspectable {
     @discardableResult
-    mutating func on(_ keyPath: WritableKeyPath<Self, ((Self.Body) -> Void)?>,
+    mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
                      perform: @escaping ((InspectableView<ViewType.ClassifiedView>) throws -> Void)
+    ) -> XCTestExpectation {
+        return on(keyPath, function: function, file: file, line: line) { body in
+            body.inspect(function: function, file: file, line: line, inspection: perform)
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension Inspectable {
+    mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
+                     function: String, file: StaticString, line: UInt,
+                     inspect: @escaping ((Self) -> Void)
     ) -> XCTestExpectation {
         let description = Inspector.typeName(value: self) + " callback at line #\(line)"
         let expectation = XCTestExpectation(description: description)
         self[keyPath: keyPath] = { body in
-            body.inspect(function: function, file: file, line: line, inspection: perform)
+            inspect(body)
             ViewHosting.expel(function: function)
             expectation.fulfill()
         }

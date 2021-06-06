@@ -97,7 +97,7 @@ private struct TestView: View, Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct InspectableTestModifier: ViewModifier, Inspectable {
     
-    var didAppear: ((Self.Body) -> Void)?
+    var didAppear: ((Self) -> Void)?
     
     func body(content: Self.Content) -> some View {
         HStack {
@@ -105,6 +105,6 @@ private struct InspectableTestModifier: ViewModifier, Inspectable {
             content
                 .padding(.top, 15)
         }
-        .onAppear { self.didAppear?(self.body(content: content)) }
+        .onAppear { self.didAppear?(self) }
     }
 }
