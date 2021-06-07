@@ -183,15 +183,15 @@ public extension View where Self: Inspectable {
 // MARK: - Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension ViewModifier {
-    func inspect(function: String = #function) throws -> InspectableView<ViewType.ClassifiedView> {
+public extension ViewModifier where Self: Inspectable {
+    func inspect(function: String = #function) throws -> InspectableView<ViewType.ViewModifier<Self>> {
         let medium = ViewHosting.medium(function: function)
-        let content = try Inspector.unwrap(view: self.body(content: _ViewModifier_Content<Self>()), medium: medium)
+        let content = try Inspector.unwrap(view: self, medium: medium)
         return try .init(content, parent: nil, call: "")
     }
     
     func inspect(function: String = #function, file: StaticString = #file, line: UInt = #line,
-                 inspection: (InspectableView<ViewType.ClassifiedView>) throws -> Void) {
+                 inspection: (InspectableView<ViewType.ViewModifier<Self>>) throws -> Void) {
         do {
             try inspection(try inspect(function: function))
         } catch {

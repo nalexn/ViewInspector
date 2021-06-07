@@ -174,7 +174,7 @@ extension Inspector {
         case "EquatableView":
             return try ViewType.EquatableView.child(content)
         case "ModifiedContent":
-            return try ViewType.ModifiedContent.child(content)
+            return try ViewType.ViewModifier<ViewType.Stub>.child(content)
         case "SubscriptionView":
             return try ViewType.SubscriptionView.child(content)
         case "_ConditionalContent":
