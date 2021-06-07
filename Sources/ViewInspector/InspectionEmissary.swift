@@ -5,29 +5,14 @@ import XCTest
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol InspectionEmissary: AnyObject {
     
-    associatedtype V: View & Inspectable
-    typealias Inspection = (InspectableView<ViewType.View<V>>) throws -> Void
-    
+    associatedtype V: Inspectable
     var notice: PassthroughSubject<UInt, Never> { get }
     var callbacks: [UInt: (V) -> Void] { get set }
-    
-    @discardableResult
-    func inspect(after delay: TimeInterval,
-                 function: String, file: StaticString, line: UInt,
-                 _ inspection: @escaping Inspection
-    ) -> XCTestExpectation
-    
-    @discardableResult
-    func inspect<P>(onReceive publisher: P,
-                    function: String, file: StaticString, line: UInt,
-                    _ inspection: @escaping Inspection
-    ) -> XCTestExpectation where P: Publisher, P.Failure == Never
 }
 
-// MARK: - Default Implementation
-
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissary {
+public extension InspectionEmissary where V: View {
+    typealias Inspection = (InspectableView<ViewType.View<V>>) throws -> Void
     
     @discardableResult
     func inspect(after delay: TimeInterval = 0,
@@ -77,6 +62,8 @@ public extension InspectionEmissary {
     }
 }
 
+// MARK: - on keyPath inspection
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View where Self: Inspectable {
     @discardableResult
@@ -95,7 +82,7 @@ public extension ViewModifier where Self: Inspectable {
     @discardableResult
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
-                     perform: @escaping ((InspectableView<ViewType.ClassifiedView>) throws -> Void)
+                     perform: @escaping ((InspectableView<ViewType.ViewModifier<Self>>) throws -> Void)
     ) -> XCTestExpectation {
         return on(keyPath, function: function, file: file, line: line) { body in
             body.inspect(function: function, file: file, line: line, inspection: perform)

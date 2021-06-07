@@ -7,7 +7,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class InspectionEmissaryTests: XCTestCase {
     
-    func testOnFunction() throws {
+    func testViewOnFunction() throws {
         var sut = TestView(flag: false)
         let exp = sut.on(\.didAppear) { view in
             XCTAssertFalse(try view.actualView().flag)
@@ -19,9 +19,11 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierOnFunction() throws {
-        var sut = InspectableTestModifier()
+        var sut = InspectableTestModifier(flag: false)
         let exp = sut.on(\.didAppear) { view in
-            XCTAssertEqual(try view.hStack().viewModifierContent(1).padding().top, 15)
+            XCTAssertFalse(try view.actualView().flag)
+            try view.hStack().button(1).tap()
+            XCTAssertTrue(try view.actualView().flag)
         }
         let view = EmptyView().modifier(sut)
         ViewHosting.host(view: view)
@@ -65,7 +67,7 @@ final class InspectionEmissaryTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-class Inspection<V>: InspectionEmissary where V: View & Inspectable {
+class Inspection<V>: InspectionEmissary where V: Inspectable {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
     
@@ -97,14 +99,19 @@ private struct TestView: View, Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct InspectableTestModifier: ViewModifier, Inspectable {
     
+    @State private(set) var flag: Bool
+    let publisher = PassthroughSubject<Bool, Never>()
+    let inspection = Inspection<Self>()
     var didAppear: ((Self) -> Void)?
     
     func body(content: Self.Content) -> some View {
         HStack {
-            EmptyView()
             content
-                .padding(.top, 15)
+            Button(action: {
+                self.flag.toggle()
+            }, label: { Text(flag ? "true" : "false") })
         }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
         .onAppear { self.didAppear?(self) }
     }
 }
