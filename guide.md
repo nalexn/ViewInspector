@@ -474,7 +474,7 @@ func testCustomViewModifierAppliedToHierarchy() throws {
 }
 ```
 
-If your `ViewModifier` uses references to SwiftUI state or environment, you may need to appeal to asynchronous inspection, similar to the custom view inspection techniques. Notice a special function for hosting `ViewModifier` on screen for inspection: `host(viewModifier: ...)`, as opposed to `host(view: ...)` used for `Views`.
+If your `ViewModifier` uses references to SwiftUI state or environment, you may need to appeal to asynchronous inspection, similar to the custom view inspection techniques.
 
 Approach #1:
 
@@ -499,7 +499,8 @@ func testViewModifier() {
     let exp = sut.on(\.didAppear) { modifier in
         XCTAssertEqual(try modifier.viewModifierContent().padding(.top), 15)
     }
-    ViewHosting.host(viewModifier: sut)
+    let view = EmptyView().modifier(sut)
+    ViewHosting.host(view: view)
     wait(for: [exp], timeout: 0.1)
 }
 ```
@@ -527,9 +528,17 @@ func testViewModifier() {
     let exp = sut.inspection.inspect(after: 0.1) { modifier in
         XCTAssertEqual(try modifier.viewModifierContent().padding(.top), 15)
     }
-    ViewHosting.host(viewModifier: sut)
+    let view = EmptyView().modifier(sut)
+    ViewHosting.host(view: view)
     wait(for: [exp], timeout: 0.2)
 }
+```
+
+If your custom `ViewModifier` references an `@EnvironmentObject` or requires setting an `EnvironmentKey`, you can do that right before hosting a view with the modifier:
+
+```swift
+let view = EmptyView().modifier(sut).environmentObject(envObject)
+ViewHosting.host(view: view)
 ```
 
 ## Alert, Sheet and ActionSheet
