@@ -24,7 +24,7 @@ public extension ViewType {
 
 // MARK: - Extraction from SingleViewContent parent
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension InspectableView where View: SingleViewContent {
     func map() throws -> InspectableView<ViewType.Map> {
         let call = ViewType.inspectionCall(
@@ -33,7 +33,7 @@ public extension InspectableView where View: SingleViewContent {
     }
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension InspectableView where View: MultipleViewContent {
     func map(_ index: Int) throws -> InspectableView<ViewType.Map> {
         let call = ViewType.inspectionCall(
@@ -42,14 +42,36 @@ public extension InspectableView where View: MultipleViewContent {
     }
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension InspectableView where View == ViewType.Map {
-    func coordinateRegion() throws -> Binding<MKCoordinateRegion> {
-        return try Inspector.attribute(path: "provider|region|region",
-                                       value: content.view,
-                                       type: Binding<MKCoordinateRegion>.self)
+    
+    func coordinateRegion() throws -> MKCoordinateRegion {
+        return try coordinateRegionBinding().wrappedValue
     }
-
+    
+    func setCoordinateRegion(_ region: MKCoordinateRegion) throws {
+        try guardIsResponsive()
+        try coordinateRegionBinding().wrappedValue = region
+    }
+    
+    func mapRect() throws -> MKMapRect {
+        return try mapRectBinding().wrappedValue
+    }
+    
+    func setMapRect(_ rect: MKMapRect) throws {
+        try guardIsResponsive()
+        try mapRectBinding().wrappedValue = rect
+    }
+    
+    func userTrackingMode() throws -> MapUserTrackingMode {
+        return try userTrackingModeBinding()?.wrappedValue ?? .none
+    }
+    
+    func setUserTrackingMode(_ mode: MapUserTrackingMode) throws {
+        try guardIsResponsive()
+        try userTrackingModeBinding()?.wrappedValue = mode
+    }
+    
     func interactionModes() throws -> MapInteractionModes {
         return try Inspector.attribute(path: "provider|interactionModes",
                                        value: content.view,
@@ -61,17 +83,28 @@ public extension InspectableView where View == ViewType.Map {
                                        value: content.view,
                                        type: Bool.self)
     }
+}
 
-    func userTrackingMode() throws -> Binding<MapUserTrackingMode>? {
-        return try Inspector.attribute(path: "provider|userTrackingMode",
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
+private extension InspectableView where View == ViewType.Map {
+    
+    func coordinateRegionBinding() throws -> Binding<MKCoordinateRegion> {
+        return try Inspector.attribute(path: "provider|region|region",
                                        value: content.view,
-                                       type: Binding<MapUserTrackingMode>?.self)
+                                       type: Binding<MKCoordinateRegion>.self)
     }
-
-    func mapRect() throws -> Binding<MKMapRect> {
+    
+    func mapRectBinding() throws -> Binding<MKMapRect> {
         return try Inspector.attribute(path: "provider|region|rect",
                                        value: content.view,
                                        type: Binding<MKMapRect>.self)
     }
+    
+    func userTrackingModeBinding() throws -> Binding<MapUserTrackingMode>? {
+        return try Inspector.attribute(path: "provider|userTrackingMode",
+                                       value: content.view,
+                                       type: Binding<MapUserTrackingMode>?.self)
+    }
 }
+
 #endif

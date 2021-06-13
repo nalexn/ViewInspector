@@ -48,6 +48,7 @@ public extension InspectableView where View == ViewType.SecureField {
     }
     
     func setInput(_ value: String) throws {
+        try guardIsResponsive()
         try inputBinding().wrappedValue = value
     }
     

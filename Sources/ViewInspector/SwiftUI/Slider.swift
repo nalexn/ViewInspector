@@ -51,6 +51,7 @@ public extension InspectableView where View == ViewType.Slider {
     }
     
     func setValue(_ value: Double) throws {
+        try guardIsResponsive()
         try valueBinding().wrappedValue = value
     }
     

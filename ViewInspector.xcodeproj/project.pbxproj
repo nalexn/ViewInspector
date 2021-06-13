@@ -615,6 +615,7 @@
 				F6684BF923AA809300DECCB3 /* LinearGradient.swift */,
 				F6C15A48254B4A3A000240F1 /* Link.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
+				CA924CDD265DE97800976FEB /* Map.swift */,
 				F6C15A70254B68C0000240F1 /* Menu.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
@@ -650,7 +651,6 @@
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
-				CA924CDD265DE97800976FEB /* Map.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -721,6 +721,7 @@
 				F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */,
 				F6C15A3E254B4835000240F1 /* LinkTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
+				CA924CDB265DE87000976FEB /* MapTests.swift */,
 				F6C15A6A254B669F000240F1 /* MenuTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
 				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
@@ -755,7 +756,6 @@
 				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
-				CA924CDB265DE87000976FEB /* MapTests.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
