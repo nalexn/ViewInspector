@@ -56,7 +56,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:white_check_mark:| Link | `label view`, `url: URL` |
 |:white_check_mark:| List | `contained view` |
-|:white_check_mark:| Map | `coordinateRegion: Binding<MKCoordinateRegion>`, `interactionModes: MapInteractionModes`, `showsUserLocation: Bool`, `userTrackingMode: Binding<MapUserTrackingMode>?`, `mapRect: Binding<MKMapRect>` |
+|:white_check_mark:| Map | `(set)coordinateRegion: MKCoordinateRegion`, `(set)userTrackingMode: MapUserTrackingMode`, `(set)mapRect: MKMapRect`, `interactionModes: MapInteractionModes`, `showsUserLocation: Bool` |
 |:technologist:| MapAnnotation | |
 |:white_check_mark:| Menu | `contained view`, `label view` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
