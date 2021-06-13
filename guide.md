@@ -320,7 +320,7 @@ Here is a code snippet that you need to include in the **build** target to make 
 import Combine
 import SwiftUI
 
-internal final class Inspection<V> where V: View {
+internal final class Inspection<V> {
 
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
@@ -338,7 +338,7 @@ This code is intentionally not included in the **ViewInspector** so that your bu
 After you add that `class Inspection<V>` to the build target, you should extend it in the **test target** with conformance to `InspectionEmissary` protocol:
 
 ```swift
-extension Inspection: InspectionEmissary where V: Inspectable { }
+extension Inspection: InspectionEmissary { }
 ```
 
 Once you add these two snippets, the **ViewInspector** will be fully armed for inspecting any custom views with all types of the state.

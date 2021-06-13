@@ -5,7 +5,7 @@ import XCTest
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol InspectionEmissary: AnyObject {
     
-    associatedtype V: Inspectable
+    associatedtype V
     var notice: PassthroughSubject<UInt, Never> { get }
     var callbacks: [UInt: (V) -> Void] { get set }
 }
@@ -13,7 +13,7 @@ public protocol InspectionEmissary: AnyObject {
 // MARK: - InspectionEmissary for View
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissary where V: View {
+public extension InspectionEmissary where V: View & Inspectable {
     
     typealias ViewInspection = (InspectableView<ViewType.View<V>>) throws -> Void
     
@@ -41,7 +41,7 @@ public extension InspectionEmissary where V: View {
 // MARK: - InspectionEmissary for ViewModifier
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissary where V: ViewModifier {
+public extension InspectionEmissary where V: ViewModifier & Inspectable {
     
     typealias ViewModifierInspection = (InspectableView<ViewType.ViewModifier<V>>) throws -> Void
     
