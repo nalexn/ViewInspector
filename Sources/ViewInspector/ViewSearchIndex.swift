@@ -25,6 +25,7 @@ internal extension ViewSearch {
             .init(ViewType.LinearGradient.self),
             .init(ViewType.Link.self), .init(ViewType.List.self),
             .init(ViewType.Menu.self), .init(ViewType.MenuButton.self),
+            .init(ViewType.Map.self),
             .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
             .init(ViewType.OutlineGroup.self),
             .init(ViewType.PasteButton.self), .init(ViewType.Picker.self),

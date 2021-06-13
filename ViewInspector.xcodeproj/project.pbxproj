@@ -41,6 +41,8 @@
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
 		52D37480262B1F0C00B1BFBA /* NestedModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
+		CA924CDC265DE87000976FEB /* MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA924CDB265DE87000976FEB /* MapTests.swift */; };
+		CA924CDF265DE9A000976FEB /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA924CDD265DE97800976FEB /* Map.swift */; };
 		CDA8444D262B6A7100C56C98 /* HitTestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8443D262B68E100C56C98 /* HitTestingTests.swift */; };
 		CDA84452262B6A7A00C56C98 /* GestureActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84443262B693C00C56C98 /* GestureActionTests.swift */; };
 		CDA8445F262B6ABB00C56C98 /* GestureModifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84433262B688F00C56C98 /* GestureModifierTests.swift */; };
@@ -278,6 +280,8 @@
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
 		52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModifiersTests.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
+		CA924CDB265DE87000976FEB /* MapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTests.swift; sourceTree = "<group>"; };
+		CA924CDD265DE97800976FEB /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		CDA84433262B688F00C56C98 /* GestureModifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifierTests.swift; sourceTree = "<group>"; };
 		CDA8443D262B68E100C56C98 /* HitTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTestingTests.swift; sourceTree = "<group>"; };
 		CDA84443262B693C00C56C98 /* GestureActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActionTests.swift; sourceTree = "<group>"; };
@@ -646,6 +650,7 @@
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
+				CA924CDD265DE97800976FEB /* Map.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -750,6 +755,7 @@
 				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
+				CA924CDB265DE87000976FEB /* MapTests.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -959,6 +965,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				CA924CDF265DE9A000976FEB /* Map.swift in Sources */,
 				F60EEBCE2382EED0007DB53A /* BaseTypes.swift in Sources */,
 				F60EEBD22382EED0007DB53A /* Image.swift in Sources */,
 				F660849B2594AA6800AF59A2 /* ViewSearchIndex.swift in Sources */,
@@ -1162,6 +1169,7 @@
 				CDA844C2262B7EEE00C56C98 /* RotationGestureTests.swift in Sources */,
 				F60EEBF82382F004007DB53A /* BaseTypesTests.swift in Sources */,
 				F66EDB5D23EDC1D800A01B9F /* SpacerTests.swift in Sources */,
+				CA924CDC265DE87000976FEB /* MapTests.swift in Sources */,
 				F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */,
 				F609EFC523A4350700B9256A /* IDViewTests.swift in Sources */,
 				F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */,
