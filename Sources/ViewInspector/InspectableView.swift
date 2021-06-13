@@ -296,17 +296,24 @@ internal extension Content {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol ModifierNameProvider {
     var modifierType: String { get }
-    var isCustom: Bool { get }
+    func modifierType(prefixOnly: Bool) -> String
+    var customModifier: Inspectable? { get }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ModifierNameProvider {
+    var modifierType: String { modifierType(prefixOnly: false) }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ModifiedContent: ModifierNameProvider {
-    var modifierType: String {
-        return Inspector.typeName(type: Modifier.self)
+    
+    func modifierType(prefixOnly: Bool) -> String {
+        return Inspector.typeName(type: Modifier.self, prefixOnly: prefixOnly)
     }
     
-    var isCustom: Bool {
-        return (try? Inspector.attribute(label: "modifier", value: self, type: Inspectable.self)) != nil
+    var customModifier: Inspectable? {
+        return try? Inspector.attribute(label: "modifier", value: self, type: Inspectable.self)
     }
 }
 

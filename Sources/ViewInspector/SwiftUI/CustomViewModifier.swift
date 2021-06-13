@@ -65,7 +65,7 @@ extension ViewType.ViewModifier: MultipleViewContent {
 internal extension Content {
     func unwrappedModifiedContent() throws -> Content {
         let view = try Inspector.attribute(label: "content", value: self.view)
-        let medium: Content.Medium
+        var medium: Content.Medium
         if let modifier = self.view as? EnvironmentModifier {
             if let value = try? modifier.value(),
                let object = try? Inspector.attribute(label: "some", value: value, type: AnyObject.self),
@@ -79,6 +79,30 @@ internal extension Content {
             medium = self.medium.appending(transitiveViewModifier: modifier)
         } else {
             medium = self.medium.appending(viewModifier: self.view)
+            if let modifier = (self.view as? ModifierNameProvider)?.customModifier,
+               let modifierBodyContent = try? Content(modifier, medium: self.medium).extractCustomView(),
+               let modifierBodyView = try? InspectableView<ViewType.ClassifiedView>(modifierBodyContent, parent: nil),
+               let viewModifierContent = try? modifierBodyView.find(ViewType.ViewModifierContent.self) {
+                let overlayModifiers = Set(ViewSearch.modifierIdentities.map({ $0.name }))
+                viewModifierContent.content.medium.viewModifiers
+                    .filter { modifier in
+                        return (modifier as? ModifierNameProvider)
+                            .map { $0.modifierType(prefixOnly: true) }
+                            .map { !overlayModifiers.contains($0) } ?? true
+                    }
+                    .forEach {
+                        medium = medium.appending(viewModifier: $0)
+                    }
+                viewModifierContent.content.medium.transitiveViewModifiers.forEach {
+                    medium = medium.appending(transitiveViewModifier: $0)
+                }
+                viewModifierContent.content.medium.environmentModifiers.forEach {
+                    medium = medium.appending(environmentModifier: $0)
+                }
+                viewModifierContent.content.medium.environmentObjects.forEach {
+                    medium = medium.appending(environmentObject: $0)
+                }
+            }
         }
         return try Inspector.unwrap(view: view, medium: medium)
     }

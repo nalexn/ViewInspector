@@ -58,8 +58,7 @@ private struct Test {
     struct Modifier: ViewModifier, Inspectable {
         let text: String
         func body(content: Modifier.Content) -> some View {
-            AnyView(content
-                .overlay(Text(text)))
+            AnyView(content.overlay(Text(text)))
         }
     }
     struct NonInspectableView: View {

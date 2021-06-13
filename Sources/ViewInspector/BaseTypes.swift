@@ -197,7 +197,7 @@ internal extension Content {
             let modifiers = viewModifiers
                 .filter {
                     guard let modifier = $0 as? ModifierNameProvider else { return true }
-                    return !modifier.isCustom
+                    return modifier.customModifier == nil
                 }
             return .init(viewModifiers: modifiers,
                          transitiveViewModifiers: transitiveViewModifiers,

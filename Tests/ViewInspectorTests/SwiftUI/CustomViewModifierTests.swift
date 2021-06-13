@@ -17,12 +17,12 @@ final class ModifiedContentTests: XCTestCase {
             .padding().modifier(TestModifier())
             .padding().padding()
         let sut = try view.inspect().text()
-        XCTAssertEqual(sut.content.medium.viewModifiers.count, 4)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 5)
     }
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(Text("Test").modifier(TestModifier()))
-        XCTAssertEqual(try view.inspect().anyView().text().content.medium.viewModifiers.count, 1)
+        XCTAssertEqual(try view.inspect().anyView().text().content.medium.viewModifiers.count, 2)
     }
     
     func testExtractionFromMultipleViewContainer() throws {
@@ -30,8 +30,8 @@ final class ModifiedContentTests: XCTestCase {
             ModifiedContent(content: Text("Test"), modifier: TestModifier())
             ModifiedContent(content: Text("Test"), modifier: TestModifier())
         }
-        XCTAssertEqual(try view.inspect().hStack().text(0).content.medium.viewModifiers.count, 1)
-        XCTAssertEqual(try view.inspect().hStack().text(1).content.medium.viewModifiers.count, 1)
+        XCTAssertEqual(try view.inspect().hStack().text(0).content.medium.viewModifiers.count, 2)
+        XCTAssertEqual(try view.inspect().hStack().text(1).content.medium.viewModifiers.count, 2)
     }
     
     func testNonInspectableModifier() throws {
@@ -131,6 +131,22 @@ final class ModifiedContentTests: XCTestCase {
         XCTAssertEqual(try sut2.inspect().find(text: "obj1").pathToRoot,
             "emptyView().modifier(TestModifier3.self).text(1)")
     }
+    
+    func testApplyingInnerModifiersToTheContent() throws {
+        let obj = ExternalState()
+        let sut = TestModifier4.ViewWithEnvObject()
+            .modifier(TestModifier4(injection: obj))
+        let view1 = try sut.inspect().view(TestModifier4.ViewWithEnvObject.self)
+        XCTAssertThrows(try view1.padding(), "ViewWithEnvObject does not have 'padding' modifier")
+        XCTAssertTrue(view1.isHidden())
+        XCTAssertTrue(view1.allowsTightening())
+        obj.value = "other"
+        let view2 = try sut.inspect().view(TestModifier4.ViewWithEnvObject.self)
+        XCTAssertEqual(try view2.padding(), EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+        XCTAssertThrows(try view2.offset(), "ViewWithEnvObject does not have 'offset' modifier")
+        XCTAssertFalse(view2.isHidden())
+        XCTAssertEqual(try view2.text().string(), "other")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -178,4 +194,37 @@ private struct TestModifier3: ViewModifier, Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private class ExternalState: ObservableObject {
     @Published var value = "obj1"
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestModifier4: ViewModifier, Inspectable {
+    
+    let injection: ExternalState
+    
+    func body(content: Self.Content) -> some View {
+        EmptyView()
+        if injection.value == "obj1" {
+            AnyView(content)
+                .environment(\.allowsTightening, true)
+                .hidden()
+        } else {
+            HStack {
+                content
+                    .padding(5)
+                    .environmentObject(injection)
+            }.offset()
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension TestModifier4 {
+    struct ViewWithEnvObject: View, Inspectable {
+        
+        @EnvironmentObject var envObj: ExternalState
+        
+        var body: some View {
+            Text(envObj.value)
+        }
+    }
 }
