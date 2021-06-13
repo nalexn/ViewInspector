@@ -192,6 +192,18 @@ internal extension Content {
                          environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects)
         }
+        
+        func removingCustomViewModifiers() -> Medium {
+            let modifiers = viewModifiers
+                .filter {
+                    guard let modifier = $0 as? ModifierNameProvider else { return true }
+                    return !modifier.isCustom
+                }
+            return .init(viewModifiers: modifiers,
+                         transitiveViewModifiers: transitiveViewModifiers,
+                         environmentModifiers: environmentModifiers,
+                         environmentObjects: environmentObjects)
+        }
     }
 }
 

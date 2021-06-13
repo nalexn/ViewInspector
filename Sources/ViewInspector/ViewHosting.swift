@@ -12,22 +12,20 @@ public extension ViewHosting {
         let function: String
     }
     
-    static func host<V>(viewModifier: V, function: String = #function) where V: ViewModifier & Inspectable {
-        let view = EmptyView().modifier(viewModifier)
-        host(view: view, function: function, medium: .empty)
-    }
-    
     static func host<V>(view: V, size: CGSize? = nil, function: String = #function) where V: View {
-        host(view: view, size: size, function: function, medium: nil)
-    }
-    
-    private static func host<V>(view: V, size: CGSize? = nil, function: String, medium: Content.Medium?) where V: View {
         let viewId = ViewId(function: function)
-        let mediumToStore = medium ?? (try? Inspector.unwrap(view: view, medium: .empty).medium)
+        let medium = { () -> Content.Medium in
+            guard let unwrapped = try? Inspector.unwrap(view: view, medium: .empty)
+            else { return .empty }
+            if !unwrapped.isCustomView {
+                return unwrapped.medium.removingCustomViewModifiers()
+            }
+            return unwrapped.medium
+        }()
         let parentVC = rootViewController
         let childVC = hostVC(view)
         let size = size ?? parentVC.view.bounds.size
-        store(Hosted(viewController: childVC, medium: mediumToStore), viewId: viewId)
+        store(Hosted(viewController: childVC, medium: medium), viewId: viewId)
         childVC.view.translatesAutoresizingMaskIntoConstraints = false
         childVC.view.frame = parentVC.view.frame
         willMove(childVC, to: parentVC)
@@ -70,7 +68,7 @@ private extension ViewHosting {
         #else
         let viewController: UIViewController
         #endif
-        let medium: Content.Medium?
+        let medium: Content.Medium
     }
     private static var hosted: [ViewId: Hosted] = [:]
     #if os(macOS)

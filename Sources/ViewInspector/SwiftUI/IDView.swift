@@ -23,6 +23,7 @@ extension ViewType.IDView: SingleViewContent {
 private struct IDViewModifier: ModifierNameProvider {
     static var modifierName: String { "IDView" }
     var modifierType: String { IDViewModifier.modifierName }
+    var isCustom: Bool { false }
     let view: Any
 }
 

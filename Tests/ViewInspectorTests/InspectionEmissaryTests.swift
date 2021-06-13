@@ -25,7 +25,10 @@ final class InspectionEmissaryTests: XCTestCase {
             try view.hStack().button(1).tap()
             XCTAssertTrue(try view.actualView().flag)
         }
-        ViewHosting.host(viewModifier: sut)
+        let view = EmptyView()
+            .modifier(sut)
+            .environmentObject(ExternalState())
+        ViewHosting.host(view: view)
         wait(for: [exp], timeout: 0.1)
     }
     
@@ -53,11 +56,14 @@ final class InspectionEmissaryTests: XCTestCase {
         }
         let exp2 = sut.inspection.inspect(after: 0.1) { view in
             let texts = view.findAll(ViewType.Text.self)
-            XCTAssertEqual(texts.count, 1)
+            XCTAssertEqual(texts.count, 2)
             let text = try view.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "true")
         }
-        ViewHosting.host(viewModifier: sut)
+        let view = EmptyView()
+            .modifier(sut)
+            .environmentObject(ExternalState())
+        ViewHosting.host(view: view)
         wait(for: [exp1, exp2], timeout: 0.2)
     }
     
@@ -97,7 +103,10 @@ final class InspectionEmissaryTests: XCTestCase {
             let text = try view.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
         }
-        ViewHosting.host(viewModifier: sut)
+        let view = EmptyView()
+            .modifier(sut)
+            .environmentObject(ExternalState())
+        ViewHosting.host(view: view)
         wait(for: [exp1, exp2, exp3], timeout: 0.2)
     }
 }
@@ -133,9 +142,15 @@ private struct TestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private class ExternalState: ObservableObject {
+    @Published var value = "env_value"
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestTestModifier: ViewModifier, Inspectable {
     
     @State private(set) var flag: Bool
+    @EnvironmentObject var envState: ExternalState
     let publisher = PassthroughSubject<Bool, Never>()
     let inspection = Inspection<Self>()
     var didAppear: ((Self) -> Void)?
@@ -146,6 +161,7 @@ private struct TestTestModifier: ViewModifier, Inspectable {
             Button(action: {
                 self.flag.toggle()
             }, label: { Text(flag ? "true" : "false") })
+            Text(envState.value)
         }
         .onReceive(publisher) { self.flag = $0 }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
