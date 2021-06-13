@@ -33,18 +33,7 @@ try sut.inspect().findAll(ViewType.Text.self,
 
 Check out [this section](guide.md#dynamic-query-with-find) in the guide for the reference.
 
-### 2. Verify your custom view's state
-
-Obtain a copy of your custom view with actual state and references from the hierarchy of any depth:
-
-```swift
-let sut = try view.inspect().find(CustomView.self).actualView()
-XCTAssertTrue(sut.viewModel.isUserLoggedIn)
-```
-
-The library can operate with various types of the view's state, such as `@Binding`, `@State`, `@ObservedObject` and `@EnvironmentObject`.
-
-### 3. Read the inner state of the standard views
+### 2. Read the inner state of the standard views
 
 Standard SwiftUI views are no longer a black box:
 
@@ -58,6 +47,17 @@ XCTAssertEqual(try sut.inspect().text().attributes().font(), .caption)
 ```
 
 Each view has its own set of inspectable parameters, you can refer to the [API coverage](readiness.md) document to see what's available for a particular SwiftUI view.
+
+### 3. Verify your custom view's state
+
+Obtain a copy of your custom view with actual state and references from the hierarchy of any depth:
+
+```swift
+let sut = try view.inspect().find(CustomView.self).actualView()
+XCTAssertTrue(sut.viewModel.isUserLoggedIn)
+```
+
+The library can operate with various types of the view's state, such as `@Binding`, `@State`, `@ObservedObject` and `@EnvironmentObject`.
 
 ### 4. Trigger side effects
 
