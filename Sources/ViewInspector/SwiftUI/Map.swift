@@ -45,56 +45,32 @@ public extension InspectableView where View: MultipleViewContent {
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension InspectableView where View == ViewType.Map {
     func coordinateRegion() throws -> Binding<MKCoordinateRegion> {
-        try ViewType.Map.extractCoordinateRegion(from: self)
+        return try Inspector.attribute(path: "provider|region|region",
+                                       value: content.view,
+                                       type: Binding<MKCoordinateRegion>.self)
     }
 
     func interactionModes() throws -> MapInteractionModes {
-        try ViewType.Map.extractInteractionModes(from: self)
+        return try Inspector.attribute(path: "provider|interactionModes",
+                                       value: content.view,
+                                       type: MapInteractionModes.self)
     }
 
     func showsUserLocation() throws -> Bool {
-        try ViewType.Map.extractShowsUserLocation(from: self)
+        return try Inspector.attribute(path: "provider|showsUserLocation",
+                                       value: content.view,
+                                       type: Bool.self)
     }
 
     func userTrackingMode() throws -> Binding<MapUserTrackingMode>? {
-        try ViewType.Map.extractUserTrackingMode(from: self)
-    }
-
-    func mapRect() throws -> Binding<MKMapRect> {
-        try ViewType.Map.extractMapRect(from: self)
-    }
-}
-
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-private extension ViewType.Map {
-    static func extractCoordinateRegion(from view: InspectableView<ViewType.Map>) throws -> Binding<MKCoordinateRegion> {
-        let provider = try Inspector.attribute(label: "provider", value: view.content.view)
-        let regionContainer = try Inspector.attribute(label: "region", value: provider)
-        return try Inspector.attribute(label: "region", value: regionContainer, type: Binding<MKCoordinateRegion>.self)
-    }
-
-    static func extractInteractionModes(from view: InspectableView<ViewType.Map>) throws -> MapInteractionModes {
-        let provider = try Inspector.attribute(label: "provider", value: view.content.view)
-        return try Inspector.attribute(label: "interactionModes", value: provider, type: MapInteractionModes.self)
-    }
-
-    static func extractShowsUserLocation(from view: InspectableView<ViewType.Map>) throws -> Bool {
-        let provider = try Inspector.attribute(label: "provider", value: view.content.view)
-        return try Inspector.attribute(label: "showsUserLocation", value: provider, type: Bool.self)
-    }
-
-    static func extractUserTrackingMode(from view: InspectableView<ViewType.Map>) throws -> Binding<MapUserTrackingMode>? {
-        let provider = try Inspector.attribute(label: "provider", value: view.content.view)
-        return try Inspector.attribute(label: "userTrackingMode",
-                                       value: provider,
+        return try Inspector.attribute(path: "provider|userTrackingMode",
+                                       value: content.view,
                                        type: Binding<MapUserTrackingMode>?.self)
     }
 
-    static func extractMapRect(from view: InspectableView<ViewType.Map>) throws -> Binding<MKMapRect> {
-        let provider = try Inspector.attribute(label: "provider", value: view.content.view)
-        let regionContainer = try Inspector.attribute(label: "region", value: provider)
-        return try Inspector.attribute(label: "rect",
-                                       value: regionContainer,
+    func mapRect() throws -> Binding<MKMapRect> {
+        return try Inspector.attribute(path: "provider|region|rect",
+                                       value: content.view,
                                        type: Binding<MKMapRect>.self)
     }
 }
