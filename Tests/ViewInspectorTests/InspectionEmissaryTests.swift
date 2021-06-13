@@ -19,7 +19,7 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierOnFunction() throws {
-        var sut = TestTestModifier(flag: false)
+        var sut = TestViewModifier(flag: false)
         let exp = sut.on(\.didAppear) { view in
             XCTAssertFalse(try view.actualView().flag)
             try view.hStack().button(1).tap()
@@ -48,7 +48,7 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierInspectAfter() throws {
-        let sut = TestTestModifier(flag: false)
+        let sut = TestViewModifier(flag: false)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
@@ -88,7 +88,7 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierInspectOnReceive() throws {
-        let sut = TestTestModifier(flag: false)
+        let sut = TestViewModifier(flag: false)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
@@ -147,7 +147,7 @@ private class ExternalState: ObservableObject {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestTestModifier: ViewModifier, Inspectable {
+private struct TestViewModifier: ViewModifier, Inspectable {
     
     @State private(set) var flag: Bool
     @EnvironmentObject var envState: ExternalState
