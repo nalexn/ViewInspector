@@ -1,10 +1,3 @@
-//
-//  Map.swift
-//  ViewInspectorTests
-//
-//  Created by Tyler Thompson on 5/25/21.
-//
-
 #if canImport(MapKit)
 import MapKit
 import SwiftUI
@@ -27,20 +20,18 @@ public extension ViewType {
 @available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension InspectableView where View: SingleViewContent {
     func map() throws -> InspectableView<ViewType.Map> {
-        let call = ViewType.inspectionCall(
-            base: ViewType.Map.inspectionCall(typeName: ""), index: nil)
-        return try .init(try child(), parent: self, call: call)
+        return try .init(try child(), parent: self)
     }
 }
 
 @available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension InspectableView where View: MultipleViewContent {
     func map(_ index: Int) throws -> InspectableView<ViewType.Map> {
-        let call = ViewType.inspectionCall(
-            base: ViewType.Map.inspectionCall(typeName: ""), index: index)
-        return try .init(try child(at: index), parent: self, call: call, index: index)
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
+
+// MARK: - Custom Attributes
 
 @available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension InspectableView where View == ViewType.Map {
@@ -83,6 +74,22 @@ public extension InspectableView where View == ViewType.Map {
                                        value: content.view,
                                        type: Bool.self)
     }
+    
+    func mapAnnotation<I>(_ item: I) throws -> InspectableView<ViewType.MapAnnotation>
+    where I: Identifiable {
+        let call = "mapAnnotation(id<\(item.id)>)"
+        guard let provider = try? Inspector
+                .attribute(label: "provider", value: content.view, type: IdentifiableItemsContainer.self),
+              provider.contains(item) else {
+            throw InspectionError.viewNotFound(parent: call)
+        }
+        typealias Builder = (I) -> _MapAnnotationData
+        let builder = try Inspector.attribute(
+            path: "provider|content|some", value: content.view, type: Builder.self)
+        let annotation = builder(item)
+        let medium = content.medium.resettingViewModifiers()
+        return try .init(Content(annotation, medium: medium), parent: self, call: call)
+    }
 }
 
 @available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
@@ -104,6 +111,21 @@ private extension InspectableView where View == ViewType.Map {
         return try Inspector.attribute(path: "provider|userTrackingMode",
                                        value: content.view,
                                        type: Binding<MapUserTrackingMode>?.self)
+    }
+}
+
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
+internal protocol IdentifiableItemsContainer {
+    func contains<T: Identifiable>(_ item: T) -> Bool
+}
+
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
+extension _DefaultAnnotatedMapContent: IdentifiableItemsContainer {
+    func contains<T: Identifiable>(_ item: T) -> Bool {
+        guard let item = item as? Items.Element,
+              let items = try? Inspector.attribute(label: "items", value: self, type: Items?.self)
+        else { return false }
+        return items.lazy.map({ $0.id }).contains(item.id)
     }
 }
 

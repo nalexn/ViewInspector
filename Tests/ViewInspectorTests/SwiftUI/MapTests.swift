@@ -1,10 +1,3 @@
-//
-//  MapTests.swift
-//  ViewInspectorTests
-//
-//  Created by Tyler Thompson on 5/25/21.
-//
-
 #if canImport(MapKit)
 import MapKit
 import SwiftUI
@@ -12,7 +5,7 @@ import XCTest
 
 @testable import ViewInspector
 
-@available(iOS 14.0, *)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 class MapTests: XCTestCase {
     
     private let testRegion = MKCoordinateRegion(

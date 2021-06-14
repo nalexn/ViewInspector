@@ -40,6 +40,8 @@
 		52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A4A7632621F4AE0063E00B /* Overlay.swift */; };
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
 		52D37480262B1F0C00B1BFBA /* NestedModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */; };
+		52F356AA267692D100695E43 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F356A9267692D100695E43 /* MapAnnotation.swift */; };
+		52F356AC2676940A00695E43 /* MapAnnotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F356AB2676940A00695E43 /* MapAnnotationTests.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
 		CA924CDC265DE87000976FEB /* MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA924CDB265DE87000976FEB /* MapTests.swift */; };
 		CA924CDF265DE9A000976FEB /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA924CDD265DE97800976FEB /* Map.swift */; };
@@ -279,6 +281,8 @@
 		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
 		52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModifiersTests.swift; sourceTree = "<group>"; };
+		52F356A9267692D100695E43 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
+		52F356AB2676940A00695E43 /* MapAnnotationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotationTests.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
 		CA924CDB265DE87000976FEB /* MapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTests.swift; sourceTree = "<group>"; };
 		CA924CDD265DE97800976FEB /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
@@ -616,6 +620,7 @@
 				F6C15A48254B4A3A000240F1 /* Link.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
 				CA924CDD265DE97800976FEB /* Map.swift */,
+				52F356A9267692D100695E43 /* MapAnnotation.swift */,
 				F6C15A70254B68C0000240F1 /* Menu.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
@@ -722,6 +727,7 @@
 				F6C15A3E254B4835000240F1 /* LinkTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
 				CA924CDB265DE87000976FEB /* MapTests.swift */,
+				52F356AB2676940A00695E43 /* MapAnnotationTests.swift */,
 				F6C15A6A254B669F000240F1 /* MenuTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
 				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
@@ -1044,6 +1050,7 @@
 				F6D933C72385FC0100358E0E /* Stepper.swift in Sources */,
 				F6D933A32385DBFD00358E0E /* TabView.swift in Sources */,
 				F6D933A72385E9E000358E0E /* EquatableView.swift in Sources */,
+				52F356AA267692D100695E43 /* MapAnnotation.swift in Sources */,
 				F68108A623A5835E00B32145 /* EventsModifiers.swift in Sources */,
 				F6D933AF2385EBD900358E0E /* HSplitView.swift in Sources */,
 				F60EEBD52382EED0007DB53A /* AnyView.swift in Sources */,
@@ -1184,6 +1191,7 @@
 				F6A35A4A25B35F710068B8B2 /* LazyGroupTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
 				CDA84452262B6A7A00C56C98 /* GestureActionTests.swift in Sources */,
+				52F356AC2676940A00695E43 /* MapAnnotationTests.swift in Sources */,
 				F6C15A6B254B669F000240F1 /* MenuTests.swift in Sources */,
 				F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */,
 				CDA844C8262B7F3100C56C98 /* TapGestureTests.swift in Sources */,
