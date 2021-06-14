@@ -58,6 +58,7 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testMultipleModifiersInspection() throws {
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
         let view = EmptyView()
             .modifier(TestModifier(tag: 1))
             .padding()
@@ -83,6 +84,7 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testDirectAsyncInspection() throws {
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
         var sut = TestModifier2()
         let exp = XCTestExpectation(description: #function)
         sut.didAppear = { rawModifier in
@@ -100,6 +102,7 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testOnAsyncInspection() throws {
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
         var sut = TestModifier2()
         let exp = sut.on(\.didAppear) { modifier in
             XCTAssertEqual(try modifier.hStack().viewModifierContent(1).padding().top, 15)

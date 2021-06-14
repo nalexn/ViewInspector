@@ -19,6 +19,7 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierOnFunction() throws {
+        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
         var sut = TestViewModifier(flag: false)
         let exp = sut.on(\.didAppear) { view in
             XCTAssertFalse(try view.actualView().flag)
@@ -48,6 +49,7 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierInspectAfter() throws {
+        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
         let sut = TestViewModifier(flag: false)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.hStack().button(1).labelView().text().string()
@@ -88,6 +90,7 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierInspectOnReceive() throws {
+        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
         let sut = TestViewModifier(flag: false)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.hStack().button(1).labelView().text().string()
