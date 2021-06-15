@@ -32,7 +32,10 @@ private struct Test {
                     .tag(4)
                     .id(7)
                     .background(Button("xyz", action: { }))
-                Divider().modifier(Test.Modifier())
+                Divider()
+                    .modifier(Test.Modifier(text: "modifier_0"))
+                    .padding()
+                    .modifier(Test.Modifier(text: "modifier_1"))
             })
         }
     }
@@ -53,9 +56,9 @@ private struct Test {
         }
     }
     struct Modifier: ViewModifier, Inspectable {
+        let text: String
         func body(content: Modifier.Content) -> some View {
-            AnyView(content
-                .overlay(Text("Modifier")))
+            AnyView(content.overlay(Text(text)))
         }
     }
     struct NonInspectableView: View {
@@ -89,9 +92,9 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertEqual(try testView.inspect().findAll(ViewType.HStack.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Button.self).count, 2)
         XCTAssertEqual(try testView.inspect().findAll(ViewType.Text.self).map({ try $0.string() }),
-                       ["Btn", "Test_en", "123", "xyz", "Modifier"])
+                       ["Btn", "Test_en", "123", "xyz", "modifier_0", "modifier_1"])
         XCTAssertEqual(try testView.inspect().findAll(Test.InnerView.self).count, 1)
-        XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 2)
+        XCTAssertEqual(try testView.inspect().findAll(where: { (try? $0.overlay()) != nil }).count, 3)
     }
     
     func testFindText() throws {
@@ -110,9 +113,14 @@ final class ViewSearchTests: XCTestCase {
         """)
         XCTAssertEqual(try testView.inspect().find(text: "xyz").pathToRoot,
         "view(MainView.self).anyView().group().text(1).background().button().labelView().text()")
-        XCTAssertEqual(try testView.inspect().find(text: "Modifier").pathToRoot,
+        XCTAssertEqual(try testView.inspect().find(text: "modifier_0").pathToRoot,
         """
         view(MainView.self).anyView().group().divider(2).modifier(Modifier.self)\
+        .anyView().viewModifierContent().overlay().text()
+        """)
+        XCTAssertEqual(try testView.inspect().find(text: "modifier_1").pathToRoot,
+        """
+        view(MainView.self).anyView().group().divider(2).modifier(Modifier.self, 1)\
         .anyView().viewModifierContent().overlay().text()
         """)
         XCTAssertEqual(try testView.inspect().find(
@@ -129,7 +137,7 @@ final class ViewSearchTests: XCTestCase {
         let testView = Test.MainView()
         let depthOrdered = try testView.inspect().findAll(ViewType.Text.self)
             .map { try $0.string() }
-        XCTAssertEqual(depthOrdered, ["Btn", "Test_en", "123", "xyz", "Modifier"])
+        XCTAssertEqual(depthOrdered, ["Btn", "Test_en", "123", "xyz", "modifier_0", "modifier_1"])
         for index in 0..<depthOrdered.count {
             let string = try testView.inspect().find(ViewType.Text.self,
                                                      traversal: .depthFirst,
@@ -138,7 +146,7 @@ final class ViewSearchTests: XCTestCase {
         }
         XCTAssertThrows(try testView.inspect().find(
             ViewType.Text.self, traversal: .depthFirst, skipFound: depthOrdered.count),
-                        "Search did only find 5 matches")
+                        "Search did only find 6 matches")
     }
     
     func testFindLocalizedTextWithLocaleParameter() throws {
@@ -226,9 +234,5 @@ final class ViewSearchTests: XCTestCase {
                        "group().label(1)")
         XCTAssertEqual(try sut.find(ViewType.StyleConfiguration.Label.self).pathToRoot,
                        "group().styleConfigurationLabel(2)")
-    }
-    
-    func testStubViewBody() throws {
-        _ = TraverseStubView().body
     }
 }

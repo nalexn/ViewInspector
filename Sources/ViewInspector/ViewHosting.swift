@@ -14,7 +14,14 @@ public extension ViewHosting {
     
     static func host<V>(view: V, size: CGSize? = nil, function: String = #function) where V: View {
         let viewId = ViewId(function: function)
-        let medium = try? Inspector.unwrap(view: view, medium: .empty).medium
+        let medium = { () -> Content.Medium in
+            guard let unwrapped = try? Inspector.unwrap(view: view, medium: .empty)
+            else { return .empty }
+            if !unwrapped.isCustomView {
+                return unwrapped.medium.removingCustomViewModifiers()
+            }
+            return unwrapped.medium
+        }()
         let parentVC = rootViewController
         let childVC = hostVC(view)
         let size = size ?? parentVC.view.bounds.size
@@ -61,7 +68,7 @@ private extension ViewHosting {
         #else
         let viewController: UIViewController
         #endif
-        let medium: Content.Medium?
+        let medium: Content.Medium
     }
     private static var hosted: [ViewId: Hosted] = [:]
     #if os(macOS)

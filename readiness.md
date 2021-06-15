@@ -56,8 +56,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:white_check_mark:| Link | `label view`, `url: URL` |
 |:white_check_mark:| List | `contained view` |
-|:technologist:| Map | |
-|:technologist:| MapAnnotation | |
+|:white_check_mark:| Map | `(set)coordinateRegion: MKCoordinateRegion`, `(set)userTrackingMode: MapUserTrackingMode`, `(set)mapRect: MKMapRect`, `interactionModes: MapInteractionModes`, `showsUserLocation: Bool` |
+|:white_check_mark:| MapAnnotation | `coordinate: CLLocationCoordinate2D`, `viewType: MapAnnotation.Type`, (*)`anchorPoint: CGPoint`, (*)`tintColor: Color?`, (*)`contained view` |
 |:white_check_mark:| Menu | `contained view`, `label view` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
 |:white_check_mark:| MenuStyleConfiguration.Content | |

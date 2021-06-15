@@ -230,6 +230,10 @@ extension Int: Identifiable {
     public var id: Int { self }
 }
 
+extension String: Identifiable {
+    public var id: String { self }
+}
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension View {
     func alert2(isPresented: Binding<Bool>,

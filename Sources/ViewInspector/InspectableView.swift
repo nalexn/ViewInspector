@@ -183,6 +183,24 @@ public extension View where Self: Inspectable {
 // MARK: - Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension ViewModifier where Self: Inspectable {
+    func inspect(function: String = #function) throws -> InspectableView<ViewType.ViewModifier<Self>> {
+        let medium = ViewHosting.medium(function: function)
+        let content = try Inspector.unwrap(view: self, medium: medium)
+        return try .init(content, parent: nil, call: "")
+    }
+    
+    func inspect(function: String = #function, file: StaticString = #file, line: UInt = #line,
+                 inspection: (InspectableView<ViewType.ViewModifier<Self>>) throws -> Void) {
+        do {
+            try inspection(try inspect(function: function))
+        } catch {
+            XCTFail("\(error.localizedDescription)", file: file, line: line)
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
 
     func modifierAttribute<Type>(
@@ -278,12 +296,24 @@ internal extension Content {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol ModifierNameProvider {
     var modifierType: String { get }
+    func modifierType(prefixOnly: Bool) -> String
+    var customModifier: Inspectable? { get }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ModifierNameProvider {
+    var modifierType: String { modifierType(prefixOnly: false) }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ModifiedContent: ModifierNameProvider {
-    var modifierType: String {
-        return Inspector.typeName(type: Modifier.self)
+    
+    func modifierType(prefixOnly: Bool) -> String {
+        return Inspector.typeName(type: Modifier.self, prefixOnly: prefixOnly)
+    }
+    
+    var customModifier: Inspectable? {
+        return try? Inspector.attribute(label: "modifier", value: self, type: Inspectable.self)
     }
 }
 

@@ -7,7 +7,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class InspectionEmissaryTests: XCTestCase {
     
-    func testOnFunction() throws {
+    func testViewOnFunction() throws {
         var sut = TestView(flag: false)
         let exp = sut.on(\.didAppear) { view in
             XCTAssertFalse(try view.actualView().flag)
@@ -19,16 +19,21 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierOnFunction() throws {
-        var sut = InspectableTestModifier()
+        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
+        var sut = TestViewModifier(flag: false)
         let exp = sut.on(\.didAppear) { view in
-            XCTAssertEqual(try view.hStack().viewModifierContent(1).padding().top, 15)
+            XCTAssertFalse(try view.actualView().flag)
+            try view.hStack().button(1).tap()
+            XCTAssertTrue(try view.actualView().flag)
         }
-        let view = EmptyView().modifier(sut)
+        let view = EmptyView()
+            .modifier(sut)
+            .environmentObject(ExternalState())
         ViewHosting.host(view: view)
         wait(for: [exp], timeout: 0.1)
     }
     
-    func testInspectAfter() throws {
+    func testViewInspectAfter() throws {
         let sut = TestView(flag: false)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.button().labelView().text().string()
@@ -43,7 +48,28 @@ final class InspectionEmissaryTests: XCTestCase {
         wait(for: [exp1, exp2], timeout: 0.2)
     }
     
-    func testInspectOnReceive() throws {
+    func testViewModifierInspectAfter() throws {
+        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
+        let sut = TestViewModifier(flag: false)
+        let exp1 = sut.inspection.inspect { view in
+            let text = try view.hStack().button(1).labelView().text().string()
+            XCTAssertEqual(text, "false")
+            sut.publisher.send(true)
+        }
+        let exp2 = sut.inspection.inspect(after: 0.1) { view in
+            let texts = view.findAll(ViewType.Text.self)
+            XCTAssertEqual(texts.count, 2)
+            let text = try view.hStack().button(1).labelView().text().string()
+            XCTAssertEqual(text, "true")
+        }
+        let view = EmptyView()
+            .modifier(sut)
+            .environmentObject(ExternalState())
+        ViewHosting.host(view: view)
+        wait(for: [exp1, exp2], timeout: 0.2)
+    }
+    
+    func testViewInspectOnReceive() throws {
         let sut = TestView(flag: false)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.button().labelView().text().string()
@@ -62,10 +88,34 @@ final class InspectionEmissaryTests: XCTestCase {
         ViewHosting.host(view: sut)
         wait(for: [exp1, exp2, exp3], timeout: 0.2)
     }
+    
+    func testViewModifierInspectOnReceive() throws {
+        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
+        let sut = TestViewModifier(flag: false)
+        let exp1 = sut.inspection.inspect { view in
+            let text = try view.hStack().button(1).labelView().text().string()
+            XCTAssertEqual(text, "false")
+            sut.publisher.send(true)
+        }
+        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
+            let text = try view.hStack().button(1).labelView().text().string()
+            XCTAssertEqual(text, "true")
+            sut.publisher.send(false)
+        }
+        let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
+            let text = try view.hStack().button(1).labelView().text().string()
+            XCTAssertEqual(text, "false")
+        }
+        let view = EmptyView()
+            .modifier(sut)
+            .environmentObject(ExternalState())
+        ViewHosting.host(view: view)
+        wait(for: [exp1, exp2, exp3], timeout: 0.2)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-class Inspection<V>: InspectionEmissary where V: View & Inspectable {
+final class Inspection<V>: InspectionEmissary {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
     
@@ -95,16 +145,29 @@ private struct TestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableTestModifier: ViewModifier, Inspectable {
+private class ExternalState: ObservableObject {
+    @Published var value = "env_value"
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestViewModifier: ViewModifier, Inspectable {
     
-    var didAppear: ((Self.Body) -> Void)?
+    @State private(set) var flag: Bool
+    @EnvironmentObject var envState: ExternalState
+    let publisher = PassthroughSubject<Bool, Never>()
+    let inspection = Inspection<Self>()
+    var didAppear: ((Self) -> Void)?
     
     func body(content: Self.Content) -> some View {
         HStack {
-            EmptyView()
             content
-                .padding(.top, 15)
+            Button(action: {
+                self.flag.toggle()
+            }, label: { Text(flag ? "true" : "false") })
+            Text(envState.value)
         }
-        .onAppear { self.didAppear?(self.body(content: content)) }
+        .onReceive(publisher) { self.flag = $0 }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .onAppear { self.didAppear?(self) }
     }
 }

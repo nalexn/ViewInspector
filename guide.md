@@ -320,7 +320,7 @@ Here is a code snippet that you need to include in the **build** target to make 
 import Combine
 import SwiftUI
 
-internal final class Inspection<V> where V: View {
+internal final class Inspection<V> {
 
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
@@ -338,7 +338,7 @@ This code is intentionally not included in the **ViewInspector** so that your bu
 After you add that `class Inspection<V>` to the build target, you should extend it in the **test target** with conformance to `InspectionEmissary` protocol:
 
 ```swift
-extension Inspection: InspectionEmissary where V: Inspectable { }
+extension Inspection: InspectionEmissary { }
 ```
 
 Once you add these two snippets, the **ViewInspector** will be fully armed for inspecting any custom views with all types of the state.
@@ -462,7 +462,7 @@ Just like with the custom views, in order to inspect a custom `ViewModifier` ext
 extension MyViewModifier: Inspectable { }
 ```
 
-The following test shows how you can extract the `modifier` and its `content` view using `modifier(_ type: T.Type)` and `viewModifierContent()` inspection calls respectively:
+The following test shows how you can extract the `modifier` and its `content` placeholder view using `modifier(_ type: T.Type)` and `viewModifierContent()` inspection calls respectively:
 
 ```swift
 func testCustomViewModifierAppliedToHierarchy() throws {
@@ -474,17 +474,19 @@ func testCustomViewModifierAppliedToHierarchy() throws {
 }
 ```
 
-If your `ViewModifier` uses references to SwiftUI state or environment, you may need to appeal to asynchronous inspection, similar to custom view inspection techniques. You can take a slightly modified approach #1 described above:
+If your `ViewModifier` uses references to SwiftUI state or environment, you may need to appeal to asynchronous inspection, similar to the custom view inspection techniques.
+
+Approach #1:
 
 ```swift
 struct MyViewModifier: ViewModifier {
     
-    var didAppear: ((Self.Body) -> Void)? // 1.
+    var didAppear: ((Self) -> Void)? // 1.
     
     func body(content: Self.Content) -> some View {
         content
             .padding(.top, 15)
-            .onAppear { self.didAppear?(self.body(content: content)) } // 2.
+            .onAppear { self.didAppear?(self) } // 2.
     }
 }
 ```
@@ -494,13 +496,8 @@ Here is how you'd verify that `MyViewModifier` applies the padding:
 ```swift
 func testViewModifier() {
     var sut = MyViewModifier()
-    let exp = XCTestExpectation(description: #function)
-    sut.didAppear = { body in
-        body.inspect { view in
-            XCTAssertEqual(try view.padding(.top), 15)
-        }
-        ViewHosting.expel()
-        exp.fulfill()
+    let exp = sut.on(\.didAppear) { modifier in
+        XCTAssertEqual(try modifier.viewModifierContent().padding(.top), 15)
     }
     let view = EmptyView().modifier(sut)
     ViewHosting.host(view: view)
@@ -508,7 +505,41 @@ func testViewModifier() {
 }
 ```
 
-An example of an asynchronous `ViewModifier` inspection can be found in the sample project: [ViewModifier](https://github.com/nalexn/clean-architecture-swiftui/blob/master/CountriesSwiftUI/UI/RootViewModifier.swift) | [Tests](https://github.com/nalexn/clean-architecture-swiftui/blob/master/UnitTests/UI/RootViewAppearanceTests.swift)
+Approach #2:
+
+```swift
+struct MyViewModifier: ViewModifier, Inspectable {
+    
+    let inspection = Inspection<Self>() // 1.
+        
+    func body(content: Self.Content) -> some View {
+        content
+            .padding(.top, 15)
+            .onReceive(inspection.notice) { self.inspection.visit(self, $0) } // 2.
+    }
+}
+```
+
+And the test:
+
+```swift
+func testViewModifier() {
+    let sut = MyViewModifier()
+    let exp = sut.inspection.inspect(after: 0.1) { modifier in
+        XCTAssertEqual(try modifier.viewModifierContent().padding(.top), 15)
+    }
+    let view = EmptyView().modifier(sut)
+    ViewHosting.host(view: view)
+    wait(for: [exp], timeout: 0.2)
+}
+```
+
+If your custom `ViewModifier` references an `@EnvironmentObject` or requires setting an `EnvironmentKey`, you can do that right before hosting a view with the modifier:
+
+```swift
+let view = EmptyView().modifier(sut).environmentObject(envObject)
+ViewHosting.host(view: view)
+```
 
 ## Alert, Sheet and ActionSheet
 

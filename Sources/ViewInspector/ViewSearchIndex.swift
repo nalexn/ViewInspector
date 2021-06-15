@@ -24,6 +24,7 @@ internal extension ViewSearch {
             .init(ViewType.LazyVGrid.self), .init(ViewType.LazyVStack.self),
             .init(ViewType.LinearGradient.self),
             .init(ViewType.Link.self), .init(ViewType.List.self),
+            .init(ViewType.Map.self),
             .init(ViewType.Menu.self), .init(ViewType.MenuButton.self),
             .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
             .init(ViewType.OutlineGroup.self),
@@ -66,9 +67,18 @@ internal extension ViewSearch {
             .first(where: { $0.viewType.namespacedPrefixes.contains(longPrefix) }) {
             return identity
         }
-        if (try? content.extractCustomView()) != nil {
+        if (try? content.extractCustomView()) != nil,
+           let inspectable = content.view as? Inspectable {
             let name = Inspector.typeName(value: content.view, prefixOnly: true)
-            return .init(ViewType.View<TraverseStubView>.self, genericTypeName: name)
+            switch inspectable.entity {
+            case .view:
+                return .init(ViewType.View<ViewType.Stub>.self, genericTypeName: name)
+            case .viewModifier:
+                return .init(ViewType.ViewModifier<ViewType.Stub>.self, genericTypeName: name)
+            case .gesture:
+                break
+            }
+            
         }
         return nil
     }
@@ -86,11 +96,14 @@ internal extension ViewSearch {
     }
 }
 
-// MARK: - TraverseStubView
+// MARK: - ViewType.Stub
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal struct TraverseStubView: View, Inspectable {
-    var body: some View { EmptyView() }
+internal extension ViewType {
+    struct Stub: Inspectable {
+        var entity: Content.InspectableEntity
+        func extractContent(environmentObjects: [AnyObject]) throws -> Any { () }
+    }
 }
 
 // MARK: - ViewIdentity
@@ -280,13 +293,18 @@ internal extension Content {
             try identities[index].builder(parent, nil)
         }) + sheets + .init(count: customModifiers.count, { index -> UnwrappedView in
             let modifier = customModifiers[index]
-            let view = try modifier.extractContent(environmentObjects: medium.environmentObjects)
-            let medium = self.medium.resettingViewModifiers()
-            let content = try Inspector.unwrap(view: view, medium: medium)
             let name = Inspector.typeName(value: modifier)
-            let call = ViewType.ModifiedContent.inspectionCall(typeName: name)
-            let modifierView = try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: call)
-            return try InspectableView<ViewType.ClassifiedView>(content, parent: modifierView)
+            let thisTypeModifiersCount = customModifiers
+                .reduce(0, { $0 + (Inspector.typeName(value: $1) == name ? 1 : 0) })
+            let index = thisTypeModifiersCount > 1 ? index : nil
+            let medium = self.medium.resettingViewModifiers()
+            let content = try Inspector.unwrap(view: modifier, medium: medium)
+            
+            let base = ViewType.ViewModifier<ViewType.Stub>
+                .inspectionCall(typeName: name)
+            let call = ViewType.inspectionCall(base: base, index: index)
+            return try InspectableView<ViewType.ViewModifier<ViewType.Stub>>(
+                content, parent: parent, call: call, index: index)
         })
     }
     

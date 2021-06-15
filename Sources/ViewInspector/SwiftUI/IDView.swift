@@ -22,7 +22,8 @@ extension ViewType.IDView: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct IDViewModifier: ModifierNameProvider {
     static var modifierName: String { "IDView" }
-    var modifierType: String { IDViewModifier.modifierName }
+    func modifierType(prefixOnly: Bool) -> String { IDViewModifier.modifierName }
+    var customModifier: Inspectable? { nil }
     let view: Any
 }
 

@@ -4,11 +4,23 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol Inspectable {
+    var entity: Content.InspectableEntity { get }
     func extractContent(environmentObjects: [AnyObject]) throws -> Any
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension Content {
+    enum InspectableEntity {
+        case view
+        case viewModifier
+        case gesture
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: View {
+    var entity: Content.InspectableEntity { .view }
+    
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
         environmentObjects.forEach { copy.inject(environmentObject: $0) }
@@ -24,6 +36,9 @@ public extension Inspectable where Self: View {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: ViewModifier {
+    
+    var entity: ViewInspector.Content.InspectableEntity { .viewModifier }
+    
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
         environmentObjects.forEach { copy.inject(environmentObject: $0) }
@@ -33,7 +48,7 @@ public extension Inspectable where Self: ViewModifier {
             throw InspectionError
                 .missingEnvironmentObjects(view: view, objects: missingObjects)
         }
-        return copy.body(content: _ViewModifier_Content<Self>())
+        return copy.body()
     }
 }
 
@@ -173,6 +188,18 @@ internal extension Content {
         
         func resettingViewModifiers() -> Medium {
             return .init(viewModifiers: [],
+                         transitiveViewModifiers: transitiveViewModifiers,
+                         environmentModifiers: environmentModifiers,
+                         environmentObjects: environmentObjects)
+        }
+        
+        func removingCustomViewModifiers() -> Medium {
+            let modifiers = viewModifiers
+                .filter {
+                    guard let modifier = $0 as? ModifierNameProvider else { return true }
+                    return modifier.customModifier == nil
+                }
+            return .init(viewModifiers: modifiers,
                          transitiveViewModifiers: transitiveViewModifiers,
                          environmentModifiers: environmentModifiers,
                          environmentObjects: environmentObjects)

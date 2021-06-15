@@ -41,7 +41,7 @@ public extension ViewType {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Gesture where Self: Inspectable {
-
+    var entity: Content.InspectableEntity { .gesture }
     func extractContent(environmentObjects: [AnyObject]) throws -> Any { () }
 }
 
