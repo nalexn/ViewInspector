@@ -19,8 +19,8 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierOnFunction() throws {
-        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
-        var sut = TestViewModifier(flag: false)
+        let binding = Binding(wrappedValue: false)
+        var sut = TestViewModifier(flag: binding)
         let exp = sut.on(\.didAppear) { view in
             XCTAssertFalse(try view.actualView().flag)
             try view.hStack().button(1).tap()
@@ -49,8 +49,8 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierInspectAfter() throws {
-        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
-        let sut = TestViewModifier(flag: false)
+        let binding = Binding(wrappedValue: false)
+        let sut = TestViewModifier(flag: binding)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
@@ -90,8 +90,8 @@ final class InspectionEmissaryTests: XCTestCase {
     }
     
     func testViewModifierInspectOnReceive() throws {
-        guard #available(iOS 14.0, tvOS 14.0, *) else { return }
-        let sut = TestViewModifier(flag: false)
+        let binding = Binding(wrappedValue: false)
+        let sut = TestViewModifier(flag: binding)
         let exp1 = sut.inspection.inspect { view in
             let text = try view.hStack().button(1).labelView().text().string()
             XCTAssertEqual(text, "false")
@@ -152,7 +152,7 @@ private class ExternalState: ObservableObject {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestViewModifier: ViewModifier, Inspectable {
     
-    @State private(set) var flag: Bool
+    @Binding var flag: Bool
     @EnvironmentObject var envState: ExternalState
     let publisher = PassthroughSubject<Bool, Never>()
     let inspection = Inspection<Self>()

@@ -58,11 +58,11 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testMultipleModifiersInspection() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        let binding = Binding(wrappedValue: false)
         let view = EmptyView()
             .modifier(TestModifier(tag: 1))
             .padding()
-            .modifier(TestModifier2())
+            .modifier(TestModifier2(value: binding))
             .padding()
             .modifier(TestModifier(tag: 2))
         let sut1 = try view.inspect().emptyView().modifier(TestModifier.self)
@@ -84,8 +84,8 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testDirectAsyncInspection() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
-        var sut = TestModifier2()
+        let binding = Binding(wrappedValue: false)
+        var sut = TestModifier2(value: binding)
         let exp = XCTestExpectation(description: #function)
         sut.didAppear = { rawModifier in
             rawModifier.inspect { modifier in
@@ -102,8 +102,8 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testOnAsyncInspection() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
-        var sut = TestModifier2()
+        let binding = Binding(wrappedValue: false)
+        var sut = TestModifier2(value: binding)
         let exp = sut.on(\.didAppear) { modifier in
             XCTAssertEqual(try modifier.hStack().viewModifierContent(1).padding().top, 15)
             try modifier.hStack().button(0).tap()
@@ -170,7 +170,7 @@ private struct TestModifier: ViewModifier, Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestModifier2: ViewModifier, Inspectable {
     
-    @State var value: Bool = false
+    @Binding var value: Bool
     var didAppear: ((Self) -> Void)?
     
     func body(content: Self.Content) -> some View {
