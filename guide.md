@@ -2,6 +2,7 @@
 
 - [The Basics](#the-basics)
 - [Dynamic query with **find**](#dynamic-query-with-find)
+- [Navigation Links](#navigation-links)
 - [Views using **@Binding**](#views-using-binding)
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
@@ -233,6 +234,41 @@ In addition to that, there are a few SwiftUI modifiers which currently block the
 * `backgroundPreferenceValue`
 
 While the first two can be unwrapped manually, the last two are notorious for blocking the inspection completely. The workaround is under investigation.
+
+## Navigation Links
+
+A `NavigationLink` contains two views: one for the destination, another for the label. You can examine the label with `labelView()`.
+
+The destination is a "contained view" as shown in [ViewInspector's API coverage](readiness.md). Access an inspectable version of the contained view with `view()`, specifying the actual type. From there, you can get the actual view with `actualView()`.
+
+For example, let's say we have a view with a `NavigationLink` inside a `VStack`. The view body looks likes this:
+
+```swift
+var body: some View {
+    NavigationView {
+        VStack {
+            // ...Various subviews...
+            NavigationLink(destination: MyView(parameter: "Screen 1") {
+                Text("Continue")
+            }
+        }
+    }
+}
+```
+
+Test code can find this `NavigationLink` either by traversing the tree or by searching for a navigation link with the given label:
+
+```swift
+let link = try sut.inspect().find(navigationLink: "Continue")
+```
+
+We can unwrap its contained view to test the parameter:
+
+```swift
+let nextView = try link.view(MyView.self).actualView()
+XCTAssertEqual(nextView.parameter, "Screen 1")
+```
+
 
 ## Views using `@Binding`
 
