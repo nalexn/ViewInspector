@@ -14,7 +14,7 @@ public extension ViewType {
 
 @available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension ViewType.MapAnnotation {
-    enum `Type`: String {
+    enum ViewType: String {
         case pin
         case marker
         case custom
@@ -31,11 +31,11 @@ public extension InspectableView where View == ViewType.MapAnnotation {
             label: "coordinate", value: content.view, type: CLLocationCoordinate2D.self)
     }
     
-    var viewType: ViewType.MapAnnotation.`Type` {
+    var viewType: ViewType.MapAnnotation.ViewType {
         let value = try? Inspector.attribute(label: "viewType", value: content.view)
         return value
             .flatMap { String(describing: $0) }
-            .flatMap { .init(rawValue: $0) } ?? .custom
+            .flatMap { ViewType.MapAnnotation.ViewType(rawValue: $0) } ?? .custom
     }
 }
 

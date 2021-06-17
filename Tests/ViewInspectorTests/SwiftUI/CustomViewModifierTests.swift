@@ -125,14 +125,14 @@ final class ModifiedContentTests: XCTestCase {
         """)
         
         let sut2 = EmptyView().modifier(TestModifier3()).environmentObject(ExternalState())
-        let content = try sut2.inspect().emptyView().modifier(TestModifier3.self).viewModifierContent(0)
+        let content = try sut2.inspect().emptyView().modifier(TestModifier3.self).group().viewModifierContent(0)
         XCTAssertEqual(content.pathToRoot,
-            "emptyView().modifier(TestModifier3.self).viewModifierContent(0)")
-        let text = try sut2.inspect().emptyView().modifier(TestModifier3.self).text(1)
+            "emptyView().modifier(TestModifier3.self).group().viewModifierContent(0)")
+        let text = try sut2.inspect().emptyView().modifier(TestModifier3.self).group().text(1)
         XCTAssertEqual(text.pathToRoot,
-            "emptyView().modifier(TestModifier3.self).text(1)")
+            "emptyView().modifier(TestModifier3.self).group().text(1)")
         XCTAssertEqual(try sut2.inspect().find(text: "obj1").pathToRoot,
-            "emptyView().modifier(TestModifier3.self).text(1)")
+            "emptyView().modifier(TestModifier3.self).group().text(1)")
     }
     
     func testApplyingInnerModifiersToTheContent() throws {
@@ -189,8 +189,10 @@ private struct TestModifier3: ViewModifier, Inspectable {
     @EnvironmentObject var viewModel: ExternalState
     
     func body(content: Self.Content) -> some View {
-        content
-        Text(viewModel.value)
+        Group {
+            content
+            Text(viewModel.value)
+        }
     }
 }
 
@@ -205,17 +207,19 @@ private struct TestModifier4: ViewModifier, Inspectable {
     let injection: ExternalState
     
     func body(content: Self.Content) -> some View {
-        EmptyView()
-        if injection.value == "obj1" {
-            AnyView(content)
-                .environment(\.allowsTightening, true)
-                .hidden()
-        } else {
-            HStack {
-                content
-                    .padding(5)
-                    .environmentObject(injection)
-            }.offset()
+        Group {
+            EmptyView()
+            if injection.value == "obj1" {
+                AnyView(content)
+                    .environment(\.allowsTightening, true)
+                    .hidden()
+            } else {
+                HStack {
+                    content
+                        .padding(5)
+                        .environmentObject(injection)
+                }.offset()
+            }
         }
     }
 }
