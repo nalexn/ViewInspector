@@ -76,7 +76,7 @@ The library provides helpers for writing asynchronous tests for views with callb
 
 ### Which views and modifiers are supported?
 
-Check out the [API coverage](readiness.md). There is currently almost full support for SwiftUI 1.0 API, the 2.0 support is under active development.
+Check out the [API coverage](readiness.md). There is currently almost full support for SwiftUI v1 API, the v2 and v3 support is under active development.
 
 ### Is it using private APIs?
 

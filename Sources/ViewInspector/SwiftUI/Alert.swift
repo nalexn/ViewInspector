@@ -41,7 +41,7 @@ internal extension Content {
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the Alert: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert
+                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-and-actionsheet
                 """)
         }
         let alert = try alertBuilder.buildAlert()

@@ -58,11 +58,11 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testMultipleModifiersInspection() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        let binding = Binding(wrappedValue: false)
         let view = EmptyView()
             .modifier(TestModifier(tag: 1))
             .padding()
-            .modifier(TestModifier2())
+            .modifier(TestModifier2(value: binding))
             .padding()
             .modifier(TestModifier(tag: 2))
         let sut1 = try view.inspect().emptyView().modifier(TestModifier.self)
@@ -84,8 +84,8 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testDirectAsyncInspection() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
-        var sut = TestModifier2()
+        let binding = Binding(wrappedValue: false)
+        var sut = TestModifier2(value: binding)
         let exp = XCTestExpectation(description: #function)
         sut.didAppear = { rawModifier in
             rawModifier.inspect { modifier in
@@ -102,8 +102,8 @@ final class ModifiedContentTests: XCTestCase {
     }
     
     func testOnAsyncInspection() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
-        var sut = TestModifier2()
+        let binding = Binding(wrappedValue: false)
+        var sut = TestModifier2(value: binding)
         let exp = sut.on(\.didAppear) { modifier in
             XCTAssertEqual(try modifier.hStack().viewModifierContent(1).padding().top, 15)
             try modifier.hStack().button(0).tap()
@@ -125,14 +125,14 @@ final class ModifiedContentTests: XCTestCase {
         """)
         
         let sut2 = EmptyView().modifier(TestModifier3()).environmentObject(ExternalState())
-        let content = try sut2.inspect().emptyView().modifier(TestModifier3.self).viewModifierContent(0)
+        let content = try sut2.inspect().emptyView().modifier(TestModifier3.self).group().viewModifierContent(0)
         XCTAssertEqual(content.pathToRoot,
-            "emptyView().modifier(TestModifier3.self).viewModifierContent(0)")
-        let text = try sut2.inspect().emptyView().modifier(TestModifier3.self).text(1)
+            "emptyView().modifier(TestModifier3.self).group().viewModifierContent(0)")
+        let text = try sut2.inspect().emptyView().modifier(TestModifier3.self).group().text(1)
         XCTAssertEqual(text.pathToRoot,
-            "emptyView().modifier(TestModifier3.self).text(1)")
+            "emptyView().modifier(TestModifier3.self).group().text(1)")
         XCTAssertEqual(try sut2.inspect().find(text: "obj1").pathToRoot,
-            "emptyView().modifier(TestModifier3.self).text(1)")
+            "emptyView().modifier(TestModifier3.self).group().text(1)")
     }
     
     func testApplyingInnerModifiersToTheContent() throws {
@@ -170,7 +170,7 @@ private struct TestModifier: ViewModifier, Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestModifier2: ViewModifier, Inspectable {
     
-    @State var value: Bool = false
+    @Binding var value: Bool
     var didAppear: ((Self) -> Void)?
     
     func body(content: Self.Content) -> some View {
@@ -189,8 +189,10 @@ private struct TestModifier3: ViewModifier, Inspectable {
     @EnvironmentObject var viewModel: ExternalState
     
     func body(content: Self.Content) -> some View {
-        content
-        Text(viewModel.value)
+        Group {
+            content
+            Text(viewModel.value)
+        }
     }
 }
 
@@ -205,17 +207,19 @@ private struct TestModifier4: ViewModifier, Inspectable {
     let injection: ExternalState
     
     func body(content: Self.Content) -> some View {
-        EmptyView()
-        if injection.value == "obj1" {
-            AnyView(content)
-                .environment(\.allowsTightening, true)
-                .hidden()
-        } else {
-            HStack {
-                content
-                    .padding(5)
-                    .environmentObject(injection)
-            }.offset()
+        Group {
+            EmptyView()
+            if injection.value == "obj1" {
+                AnyView(content)
+                    .environment(\.allowsTightening, true)
+                    .hidden()
+            } else {
+                HStack {
+                    content
+                        .padding(5)
+                        .environmentObject(injection)
+                }.offset()
+            }
         }
     }
 }
