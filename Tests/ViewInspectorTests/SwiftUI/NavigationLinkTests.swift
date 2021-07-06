@@ -7,22 +7,22 @@ final class NavigationLinkTests: XCTestCase {
     
     func testEnclosedView() throws {
         let view = NavigationLink(
-            destination: Text("Screen 1")) { Text("GoTo 1") }
-        let text = try view.inspect().navigationLink().text().string()
-        XCTAssertEqual(text, "Screen 1")
+            destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
+        let nextView = try view.inspect().navigationLink().view(TestView.self).actualView()
+        XCTAssertEqual(nextView.parameter, "Screen 1")
     }
     
     func testLabelView() throws {
         let view = NavigationLink(
-            destination: Text("Screen 1")) { Text("GoTo 1") }
+            destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
         let text = try view.inspect().navigationLink().labelView().text().string()
         XCTAssertEqual(text, "GoTo 1")
     }
     
     func testResetsModifiers() throws {
         let view = NavigationLink(
-            destination: Text("Screen 1")) { Text("GoTo 1") }.padding()
-        let sut1 = try view.inspect().navigationLink().text()
+            destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }.padding()
+        let sut1 = try view.inspect().navigationLink().view((TestView.self))
         XCTAssertEqual(sut1.content.medium.viewModifiers.count, 0)
         let sut2 = try view.inspect().navigationLink().labelView().text()
         XCTAssertEqual(sut2.content.medium.viewModifiers.count, 0)
@@ -30,16 +30,16 @@ final class NavigationLinkTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
         let view = AnyView(NavigationLink(
-            destination: Text("Screen 1")) { Text("GoTo 1") })
+            destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") })
         XCTAssertNoThrow(try view.inspect().anyView().navigationLink())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
         let view = NavigationView {
             NavigationLink(
-                destination: Text("Screen 1")) { Text("GoTo 1") }
+                destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
             NavigationLink(
-                destination: Text("Screen 2")) { Text("GoTo 2") }
+                destination: TestView(parameter: "Screen 1")) { Text("GoTo 2") }
         }
         XCTAssertNoThrow(try view.inspect().navigationView().navigationLink(0))
         XCTAssertNoThrow(try view.inspect().navigationView().navigationLink(1))
@@ -48,9 +48,9 @@ final class NavigationLinkTests: XCTestCase {
     func testSearch() throws {
         let view = AnyView(NavigationView {
             NavigationLink(
-                destination: Text("Screen 1")) { Text("GoTo 1") }
+                destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
             NavigationLink(
-                destination: Text("Screen 2")) { Text("GoTo 2") }
+                destination: TestView(parameter: "Screen 2")) { Text("GoTo 2") }
         })
         XCTAssertEqual(try view.inspect().find(ViewType.NavigationLink.self).pathToRoot,
                        "anyView().navigationView().navigationLink(0)")
@@ -59,7 +59,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertEqual(try view.inspect().find(navigationLink: "Screen 2").pathToRoot,
                        "anyView().navigationView().navigationLink(1)")
         XCTAssertEqual(try view.inspect().find(text: "Screen 1").pathToRoot,
-                       "anyView().navigationView().navigationLink(0).text()")
+                       "anyView().navigationView().navigationLink(0).view(TestView.self).text()")
         XCTAssertEqual(try view.inspect().find(text: "GoTo 2").pathToRoot,
                        "anyView().navigationView().navigationLink(1).labelView().text()")
     }
@@ -68,7 +68,7 @@ final class NavigationLinkTests: XCTestCase {
         guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) else { return }
         let view = NavigationView {
             NavigationLink(
-                destination: Text("Screen 1")) { Text("GoTo 1") }
+                destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
         }
         let isActive = try view.inspect().navigationView().navigationLink(0).isActive()
         XCTAssertFalse(isActive)
@@ -166,6 +166,15 @@ final class NavigationLinkTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestView: View, Inspectable {
+    let parameter: String
+    
+    var body: some View {
+        Text(parameter)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestViewState: View, Inspectable {
     @ObservedObject var state = NavigationState()
     
@@ -174,9 +183,9 @@ private struct TestViewState: View, Inspectable {
     
     var body: some View {
         NavigationView {
-            NavigationLink(destination: Text("Screen 1"), tag: tag1,
+            NavigationLink(destination: TestView(parameter: "Screen 1"), tag: tag1,
                            selection: self.$state.selection) { Text("GoTo 1") }
-            NavigationLink(destination: Text("Screen 2"), tag: tag2,
+            NavigationLink(destination: TestView(parameter: "Screen 2"), tag: tag2,
                            selection: self.$state.selection) { Text("GoTo 2") }
         }
     }
@@ -192,9 +201,9 @@ private struct TestViewBinding: View, Inspectable {
     
     var body: some View {
         NavigationView {
-            NavigationLink(destination: Text("Screen 1"), tag: tag1,
+            NavigationLink(destination: TestView(parameter: "Screen 1"), tag: tag1,
                            selection: self.$selection) { Text("GoTo 1") }
-            NavigationLink(destination: Text("Screen 2"), tag: tag2,
+            NavigationLink(destination: TestView(parameter: "Screen 2"), tag: tag2,
                            selection: self.$selection) { Text("GoTo 2") }
         }
     }
