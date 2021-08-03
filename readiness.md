@@ -93,6 +93,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
 |:white_check_mark:| Toggle | `label view`, `tap()`, `isOn: Bool` |
 |:white_check_mark:| ToggleStyleConfiguration.Label | |
+|:technologist:| ToolbarItem | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:white_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
