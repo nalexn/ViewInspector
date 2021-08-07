@@ -32,9 +32,24 @@ final class ViewPaddingTests: XCTestCase {
     }
 
     func testPaddingEdgeSetInspection() throws {
-        let sut = try EmptyView().padding(.horizontal, 5).inspect().emptyView().padding()
-        // Looks like a bug in SwiftUI. All edges are set:
-        XCTAssertEqual(sut, EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+        let sut = EmptyView().padding(.horizontal, 5)
+        XCTAssertEqual(try sut.inspect().emptyView().padding(),
+                       EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
+    }
+    
+    func testDefaultPaddingValueError() throws {
+        let sut1 = EmptyView().padding()
+        let sut2 = EmptyView().padding([.leading])
+        let sut3 = EmptyView().offset()
+        XCTAssertThrows(try sut1.inspect().emptyView().padding(),
+            "Please use `hasPadding(_:)` for inspecting padding without explicit value.")
+        XCTAssertThrows(try sut2.inspect().emptyView().padding(),
+            """
+            Undefined inset for 'leading' edge. Consider calling `hasPadding(_:)` \
+            instead to assure a default padding is applied.
+            """)
+        XCTAssertThrows(try sut3.inspect().emptyView().padding(),
+            "EmptyView does not have 'padding' modifier")
     }
 
     func testHasDefaultPadding() throws {
@@ -54,7 +69,8 @@ final class ViewPaddingTests: XCTestCase {
 
         XCTAssertFalse(try sut.inspect().hasPadding([.trailing, .bottom]))
         XCTAssertFalse(try sut.inspect().hasPadding([.trailing, .top]))
-        XCTAssertFalse(try sut.inspect().hasPadding([.all]))
+        XCTAssertFalse(try sut.inspect().hasPadding(.all))
+        XCTAssertTrue(try sut.inspect().hasPadding([]))
     }
 
     func testHasLeadingAndTrailingPadding() throws {
@@ -89,17 +105,34 @@ final class ViewPaddingTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().padding([.top]), 10)
         XCTAssertEqual(try sut.inspect().padding([.bottom]), 20)
         XCTAssertThrows(try sut.inspect().padding([.leading]),
-                        "InspectableView<ClassifiedView> does not have 'padding' modifier")
+                        "Text does not have 'padding' modifier")
         XCTAssertThrows(try sut.inspect().padding([.trailing]),
-                        "InspectableView<ClassifiedView> does not have 'padding' modifier")
+                        "Text does not have 'padding' modifier")
+        XCTAssertThrows(try sut.inspect().padding([.top, .bottom]),
+                        """
+                        Insets for edges '[SwiftUI.Edge.top, SwiftUI.Edge.bottom]' have \
+                        different values, consider calling `padding` individually per edge.
+                        """)
+        XCTAssertThrows(try sut.inspect().padding([]), "No edge is specified")
     }
 
     func testHasDifferentPaddingForEdges() throws {
         let sut = Text("Test").padding([.top, .bottom], 10).padding([.leading, .trailing], 20)
 
-        XCTAssertEqual(try sut.inspect().padding([.top]), 10)
-        XCTAssertEqual(try sut.inspect().padding([.bottom]), 10)
-        XCTAssertEqual(try sut.inspect().padding([.leading]), 20)
-        XCTAssertEqual(try sut.inspect().padding([.trailing]), 20)
+        XCTAssertEqual(try sut.inspect().padding(.top), 10)
+        XCTAssertEqual(try sut.inspect().padding(.bottom), 10)
+        XCTAssertEqual(try sut.inspect().padding(.leading), 20)
+        XCTAssertEqual(try sut.inspect().padding(.trailing), 20)
+        XCTAssertEqual(try sut.inspect().padding(), .init(top: 10, leading: 20, bottom: 10, trailing: 20))
+    }
+    
+    func testCumulativePadding() throws {
+        let sut = Text("Test")
+            .padding([.top, .bottom], 10)
+            .padding([.top, .trailing], 20)
+            .padding(5)
+
+        XCTAssertEqual(try sut.inspect().padding(.top), 35)
+        XCTAssertEqual(try sut.inspect().padding(), .init(top: 35, leading: 5, bottom: 15, trailing: 25))
     }
 }
