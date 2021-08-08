@@ -135,4 +135,16 @@ final class ViewPaddingTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().padding(.top), 35)
         XCTAssertEqual(try sut.inspect().padding(), .init(top: 35, leading: 5, bottom: 15, trailing: 25))
     }
+    
+    func testCumulativeUndefinedPaddingError() throws {
+        let sut = Text("Test")
+            .padding(.trailing)
+            .padding(.trailing, 10)
+        XCTAssertThrows(try sut.inspect().padding(.trailing),
+            """
+            Undefined inset for 'trailing' edge. Consider calling `hasPadding(_:)` \
+            instead to assure a default padding is applied.
+            """)
+        XCTAssertTrue(try sut.inspect().hasPadding(.trailing))
+    }
 }
