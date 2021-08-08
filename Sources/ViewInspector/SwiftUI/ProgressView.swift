@@ -99,7 +99,7 @@ public extension InspectableView {
 
 // MARK: - ProgressViewStyle inspection
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension ProgressViewStyle {
     func inspect(fractionCompleted: Double? = nil) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ProgressViewStyleConfiguration(fractionCompleted: fractionCompleted)
@@ -110,7 +110,7 @@ public extension ProgressViewStyle {
 
 // MARK: - Style Configuration initializer
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 internal extension ProgressViewStyleConfiguration {
     private struct Allocator {
         let fractionCompleted: Double?

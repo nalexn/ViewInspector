@@ -81,7 +81,7 @@ public extension InspectableView {
 
 // MARK: - LabelStyle inspection
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension LabelStyle {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let config = LabelStyleConfiguration()
@@ -92,7 +92,7 @@ public extension LabelStyle {
 
 // MARK: - Style Configuration initializer
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 private extension LabelStyleConfiguration {
     struct Allocator { }
     init() {

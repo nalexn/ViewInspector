@@ -46,7 +46,7 @@ public extension InspectableView where View == ViewType.ColorPicker {
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
-    @available(tvOS 14.0, *)
+    @available(tvOS 14.0, watchOS 7.0, *)
     func select(color: Color) throws {
         try guardIsResponsive()
         #if os(macOS)
@@ -101,7 +101,7 @@ public extension ViewType.ColorPicker {
             #endif
         }
         
-        @available(tvOS 14.0, *)
+        @available(tvOS 14.0, watchOS 7.0, *)
         init(color: Color) {
             #if os(macOS)
             self.init(color: NSColor(color))

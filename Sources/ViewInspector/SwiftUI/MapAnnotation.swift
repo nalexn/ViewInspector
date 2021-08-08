@@ -41,7 +41,7 @@ public extension InspectableView where View == ViewType.MapAnnotation {
 
 // MARK: - SwiftUI MapAnnotation
 
-@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *)
 public extension MapAnnotation {
     
     func coordinate() throws -> CLLocationCoordinate2D {
@@ -63,7 +63,7 @@ public extension MapAnnotation {
 
 // MARK: - SwiftUI MapMarker
 
-@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *)
 public extension MapMarker {
     
     func coordinate() throws -> CLLocationCoordinate2D {
@@ -79,7 +79,7 @@ public extension MapMarker {
 
 // MARK: - SwiftUI MapPin
 
-@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *)
 public extension MapPin {
     
     func coordinate() throws -> CLLocationCoordinate2D {

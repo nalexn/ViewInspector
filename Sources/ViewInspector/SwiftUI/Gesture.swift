@@ -60,10 +60,12 @@ extension LongPressGesture: Inspectable {}
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 extension MagnificationGesture: Inspectable {}
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 extension RotationGesture: Inspectable {}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -419,6 +421,7 @@ public extension LongPressGesture.Value {
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 public extension MagnificationGesture.Value {
     
     private struct Allocator {
@@ -435,6 +438,7 @@ public extension MagnificationGesture.Value {
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 public extension RotationGesture.Value {
     
     private struct Allocator {

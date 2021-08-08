@@ -60,6 +60,7 @@ private protocol LeafContentProvider {
 
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 extension OutlineGroup: LeafContentProvider {
     func view(_ element: Any) throws -> Any {
         guard let data = element as? Data.Element else {

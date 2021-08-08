@@ -46,7 +46,7 @@ private protocol ScrollViewReaderContentProvider {
     func view() throws -> Any
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension ScrollViewReader: ScrollViewReaderContentProvider {
     func view() throws -> Any {
         typealias Builder = (ScrollViewProxy) -> Content
@@ -56,7 +56,7 @@ extension ScrollViewReader: ScrollViewReaderContentProvider {
     }
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 private extension ScrollViewProxy {
     struct Allocator8 {
         let data: Int64 = 0
