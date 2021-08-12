@@ -23,6 +23,7 @@ final class TransitiveModifiersTests: XCTestCase {
     }
     
     @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
     func testFlipsRightToLeftInheritance() throws {
         let sut = try FlipsRightToLeftTestView().inspect()
         if #available(iOS 14.0, *) {
@@ -65,6 +66,7 @@ final class TransitiveModifiersTests: XCTestCase {
     }
     
     @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
     func testLabelsHiddenInheritance() throws {
         let sut = try TestLabelsHiddenView().inspect()
         let text1 = try sut.find(text: "1")
@@ -111,6 +113,7 @@ private struct TestDisabledView: View, Inspectable {
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 private struct FlipsRightToLeftTestView: View, Inspectable {
     var body: some View {
         VStack {
@@ -160,6 +163,7 @@ private struct AllowsHitTestingTestView: View, Inspectable {
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 private struct TestLabelsHiddenView: View, Inspectable {
     var body: some View {
         VStack {

@@ -26,7 +26,7 @@ final class ImageTests: XCTestCase {
     }
     
     func testExternalImage() throws {
-        #if os(iOS) || os(tvOS)
+        #if !os(macOS)
         let sut = Image(uiImage: testImage)
         let image = try sut.uiImage()
         #else
@@ -38,7 +38,7 @@ final class ImageTests: XCTestCase {
     
     func testExtractionWithModifiers() throws {
         let view = AnyView(imageView().resizable().interpolation(.low))
-        #if os(iOS) || os(tvOS)
+        #if !os(macOS)
         let image = try view.inspect().anyView().image().actualImage().uiImage()
         #else
         let image = try view.inspect().anyView().image().actualImage().nsImage()
@@ -57,7 +57,7 @@ final class ImageTests: XCTestCase {
         XCTAssertEqual(scale, 2.0)
         XCTAssertEqual(orientation, .down)
         XCTAssertEqual(label, "CGImage")
-        #if os(iOS) || os(tvOS)
+        #if !os(macOS)
         XCTAssertThrows(try image.uiImage(), "Type mismatch: CGImageProvider is not UIImage")
         #else
         XCTAssertThrows(try image.nsImage(), "Type mismatch: CGImageProvider is not NSImage")
@@ -65,7 +65,7 @@ final class ImageTests: XCTestCase {
     }
     
     func testLabelImageText() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = Label("tx", image: "img")
         let text = try view.inspect().label().icon().image().labelView()
         XCTAssertEqual(try text.string(), "img")
@@ -98,7 +98,7 @@ final class ImageTests: XCTestCase {
     }
     
     private func imageView() -> Image {
-        #if os(iOS) || os(tvOS)
+        #if !os(macOS)
         return Image(uiImage: testImage)
         #else
         return Image(nsImage: testImage)
@@ -117,7 +117,19 @@ extension UIColor {
         }
     }
 }
-#else
+#elseif os(watchOS)
+extension UIColor {
+    func image(_ size: CGSize) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        defer {
+            UIGraphicsEndImageContext()
+        }
+        self.setFill()
+        UIRectFill(.init(origin: .zero, size: size))
+        return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+    }
+}
+#elseif os(macOS)
 extension NSColor {
     func image(_ size: CGSize) -> NSImage {
         let image = NSImage(size: size)
@@ -134,7 +146,7 @@ extension NSImage {
 }
 #endif
 
-#if os(iOS) || os(tvOS)
+#if !os(macOS)
 let testColor = UIColor.red
 #else
 let testColor = NSColor.red

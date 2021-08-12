@@ -4,6 +4,7 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class DisclosureGroupTests: XCTestCase {
     
     func testInspect() throws {
@@ -99,6 +100,7 @@ final class DisclosureGroupTests: XCTestCase {
 
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 private struct TestViewState: View, Inspectable {
     @ObservedObject var state = ExpansionState()
     
@@ -116,6 +118,7 @@ private struct TestViewState: View, Inspectable {
 
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 private struct TestViewBinding: View, Inspectable {
 
     @Binding var expanded: Bool = false

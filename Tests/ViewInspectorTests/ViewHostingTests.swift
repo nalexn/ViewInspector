@@ -78,7 +78,7 @@ final class ViewHostingTests: XCTestCase {
         wait(for: [exp], timeout: 0.2)
     }
 }
-#else
+#elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewHostingTests: XCTestCase {
     
@@ -191,7 +191,8 @@ extension NSTestView {
         }
     }
 }
-#else
+#elseif os(iOS) || os(tvOS)
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct UITestView: UIViewRepresentable, Inspectable {
     
@@ -257,7 +258,7 @@ private struct NSTestVC: NSViewControllerRepresentable, Inspectable {
     func updateNSViewController(_ nsViewController: TestVC, context: UpdateContext) {
     }
 }
-#else
+#elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct UITestVC: UIViewControllerRepresentable, Inspectable {
     

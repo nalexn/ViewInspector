@@ -2,7 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 final class TabViewTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -71,11 +71,13 @@ final class GlobalModifiersForTabView: XCTestCase {
         XCTAssertEqual(sut, tag)
     }
     
+    @available(watchOS 7.0, *)
     func testTabItem() throws {
         let sut = EmptyView().tabItem { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    @available(watchOS 7.0, *)
     func testTabItemInspection() throws {
         let string = "abc"
         let tabItem = try EmptyView().tabItem { Text(string).blur(radius: 3) }
@@ -85,12 +87,13 @@ final class GlobalModifiersForTabView: XCTestCase {
         XCTAssertEqual(try sut.blur().radius, 3)
     }
     
+    @available(watchOS 7.0, *)
     func testTabItemSearch() throws {
         let view = EmptyView().tabItem { Text("abc") }
         XCTAssertNoThrow(try view.inspect().find(text: "abc"))
     }
     
-    #if !os(macOS) && !targetEnvironment(macCatalyst)
+    #if !os(macOS) && !targetEnvironment(macCatalyst) && !os(watchOS)
     func testTabViewStyleInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let style = PageTabViewStyle(indexDisplayMode: .never)
@@ -112,6 +115,7 @@ final class GlobalModifiersForTabView: XCTestCase {
     #endif
     
     @available(macOS, unavailable)
+    @available(watchOS, unavailable)
     func testIndexViewStyleInspection() throws {
         guard #available(iOS 14, tvOS 14, *) else { return }
         let sut = EmptyView().indexViewStyle(PageIndexViewStyle())

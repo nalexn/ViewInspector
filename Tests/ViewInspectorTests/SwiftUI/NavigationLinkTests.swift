@@ -34,6 +34,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().anyView().navigationLink())
     }
     
+    @available(watchOS 7.0, *)
     func testExtractionFromMultipleViewContainer() throws {
         let view = NavigationView {
             NavigationLink(
@@ -45,6 +46,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().navigationView().navigationLink(1))
     }
     
+    @available(watchOS 7.0, *)
     func testSearch() throws {
         let view = AnyView(NavigationView {
             NavigationLink(
@@ -64,6 +66,7 @@ final class NavigationLinkTests: XCTestCase {
                        "anyView().navigationView().navigationLink(1).labelView().text()")
     }
     
+    @available(watchOS 7.0, *)
     func testNavigationWithoutBindingAndState() throws {
         guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) else { return }
         let view = NavigationView {
@@ -77,6 +80,7 @@ final class NavigationLinkTests: XCTestCase {
             "Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
     }
     
+    @available(watchOS 7.0, *)
     func testNavigationWithStateActivation() throws {
         let view = TestViewState()
         XCTAssertNil(view.state.selection)
@@ -92,6 +96,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertFalse(isActiveAfter2)
     }
     
+    @available(watchOS 7.0, *)
     func testNavigationWithBindingActivation() throws {
         let selection = Binding<String?>(wrappedValue: nil)
         let view = TestViewBinding(selection: selection)
@@ -108,6 +113,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertFalse(isActiveAfter2)
     }
     
+    @available(watchOS 7.0, *)
     func testNavigationWithStateDeactivation() throws {
         let view = TestViewState()
         view.state.selection = view.tag2
@@ -123,6 +129,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertFalse(isActiveAfter2)
     }
     
+    @available(watchOS 7.0, *)
     func testNavigationWithBindingDeactivation() throws {
         let selection = Binding<String?>(wrappedValue: nil)
         let view = TestViewBinding(selection: selection)
@@ -139,6 +146,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertFalse(isActiveAfter2)
     }
     
+    @available(watchOS 7.0, *)
     func testNavigationWithStateReactivation() throws {
         let view = TestViewState()
         try view.inspect().navigationView().navigationLink(1).activate()
@@ -151,6 +159,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertFalse(isActiveAfter2)
     }
     
+    @available(watchOS 7.0, *)
     func testNavigationWithBindingReactivation() throws {
         let selection = Binding<String?>(wrappedValue: nil)
         let view = TestViewBinding(selection: selection)
@@ -174,7 +183,7 @@ private struct TestView: View, Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 private struct TestViewState: View, Inspectable {
     @ObservedObject var state = NavigationState()
     
@@ -191,7 +200,7 @@ private struct TestViewState: View, Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 private struct TestViewBinding: View, Inspectable {
 
     @Binding var selection: String?
@@ -209,7 +218,7 @@ private struct TestViewBinding: View, Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 extension TestViewState {
     class NavigationState: ObservableObject {
         @Published var selection: String?

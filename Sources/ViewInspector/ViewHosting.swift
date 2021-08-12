@@ -3,9 +3,10 @@ import SwiftUI
 import UIKit
 #endif
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct ViewHosting { }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension ViewHosting {
     
     struct ViewId: Hashable {
@@ -22,6 +23,13 @@ public extension ViewHosting {
             }
             return unwrapped.medium
         }()
+        #if os(watchOS)
+        guard let proxy = ViewHosting.proxy else {
+            // !!!
+            fatalError("View hosting is not set up. Please follow this guide: ")
+        }
+        proxy.host(view: AnyView(view))
+        #else
         let parentVC = rootViewController
         let childVC = hostVC(view)
         let size = size ?? parentVC.view.bounds.size
@@ -39,16 +47,21 @@ public extension ViewHosting {
         ])
         didMove(childVC, to: parentVC)
         window.layoutIfNeeded()
+        #endif
     }
     
     static func expel(function: String = #function) {
         let viewId = ViewId(function: function)
         guard let hosted = expel(viewId: viewId) else { return }
+        #if os(watchOS)
+        ViewHosting.proxy?.host(view: nil)
+        #else
         let childVC = hosted.viewController
         willMove(childVC, to: nil)
         childVC.view.removeFromSuperview()
         childVC.removeFromParent()
         didMove(childVC, to: nil)
+        #endif
     }
     
     internal static func medium(function: String = #function) -> Content.Medium {
@@ -65,7 +78,7 @@ private extension ViewHosting {
     struct Hosted {
         #if os(macOS)
         let viewController: NSViewController
-        #else
+        #elseif os(iOS) || os(tvOS)
         let viewController: UIViewController
         #endif
         let medium: Content.Medium
@@ -73,7 +86,7 @@ private extension ViewHosting {
     private static var hosted: [ViewId: Hosted] = [:]
     #if os(macOS)
     static var window: NSWindow = makeWindow()
-    #else
+    #elseif os(iOS) || os(tvOS)
     static var window: UIWindow = makeWindow()
     #endif
     
@@ -91,7 +104,7 @@ private extension ViewHosting {
         window.layoutIfNeeded()
         return window
     }
-    #else
+    #elseif os(iOS) || os(tvOS)
     static func makeWindow() -> UIWindow {
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = UIViewController()
@@ -111,7 +124,7 @@ private extension ViewHosting {
     static func hostVC<V>(_ view: V) -> NSHostingController<V> where V: View {
         NSHostingController(rootView: view)
     }
-    #else
+    #elseif os(iOS) || os(tvOS)
     static var rootViewController: UIViewController {
         window.rootViewController!
     }
@@ -127,7 +140,7 @@ private extension ViewHosting {
     }
     static func didMove(_ child: NSViewController, to parent: NSViewController?) {
     }
-    #else
+    #elseif os(iOS) || os(tvOS)
     static func willMove(_ child: UIViewController, to parent: UIViewController?) {
         child.willMove(toParent: parent)
     }
@@ -147,6 +160,7 @@ private extension ViewHosting {
     }
 }
 
+#if !os(watchOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension NSLayoutConstraint {
     #if os(macOS)
@@ -161,6 +175,7 @@ private extension NSLayoutConstraint {
     }
     #endif
 }
+#endif
 
 // MARK: - RootViewController for macOS
 
@@ -210,7 +225,7 @@ internal extension ViewHosting {
             else { throw InspectionError.viewNotFound(parent: name) }
             return vc
     }
-    #else
+    #elseif os(iOS) || os(tvOS)
     static func lookup<V>(_ view: V.Type) throws -> V.UIViewType
         where V: Inspectable & UIViewRepresentable {
             let name = Inspector.typeName(type: view)
@@ -263,7 +278,7 @@ private extension NSViewController {
         return presented + children
     }
 }
-#else
+#elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension UIView {
     func descendant(nameTraits: [String]) -> UIView? {

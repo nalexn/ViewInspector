@@ -2,9 +2,9 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(tvOS)
-
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class PopoverTests: XCTestCase {
     
     func testBaseView() throws {
@@ -101,5 +101,3 @@ final class PopoverAttachmentAnchorTests: XCTestCase {
         }
     }
 }
-
-#endif

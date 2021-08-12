@@ -7,6 +7,7 @@ import Combine
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class SequenceGestureTests: XCTestCase {
 
     @GestureState var gestureState = CGSize.zero

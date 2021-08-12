@@ -2,9 +2,8 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(tvOS)
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 final class TreeViewTests: XCTestCase {
     
     func testEnclosedView() throws {
@@ -25,7 +24,8 @@ final class TreeViewTests: XCTestCase {
 
 // MARK: - View Modifiers
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
 final class GlobalModifiersForTreeView: XCTestCase {
     
     func testContextMenu() throws {
@@ -33,5 +33,3 @@ final class GlobalModifiersForTreeView: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
-
-#endif

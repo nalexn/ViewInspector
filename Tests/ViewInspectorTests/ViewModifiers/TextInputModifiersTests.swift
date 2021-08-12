@@ -7,12 +7,14 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TextInputModifiersTests: XCTestCase {
     
-    #if !os(macOS)
+    #if os(iOS) || os(tvOS) || os(watchOS)
     func testTextContentType() throws {
         let sut = EmptyView().textContentType(.emailAddress)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    #endif
     
+    #if os(iOS) || os(tvOS)
     func testTextContentTypeInspection() throws {
         let sut = AnyView(EmptyView()).textContentType(.emailAddress)
         XCTAssertEqual(try sut.inspect().anyView().textContentType(), .emailAddress)
@@ -136,11 +138,13 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertTrue(try sut.inspect().anyView().emptyView().allowsTightening())
     }
     
+    @available(watchOS, unavailable)
     func testDisableAutocorrection() throws {
         let sut = EmptyView().disableAutocorrection(false)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
+    @available(watchOS, unavailable)
     func testDisableAutocorrectionInspection() throws {
         let sut = AnyView(EmptyView()).disableAutocorrection(false)
         XCTAssertEqual(try sut.inspect().anyView().disableAutocorrection(), false)

@@ -135,7 +135,7 @@ public extension Inspectable where Self: NSViewControllerRepresentable {
             "Please use `.actualView().viewController()` for inspecting the contents of NSViewControllerRepresentable")
     }
 }
-#else
+#elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension UIViewRepresentable where Self: Inspectable {
     func uiView() throws -> UIViewType {

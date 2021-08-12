@@ -255,7 +255,7 @@ private struct TestViewControllerRepresentable: NSViewControllerRepresentable, I
     func updateNSViewController(_ uiViewController: NSViewControllerType, context: Context) {
     }
 }
-#else
+#elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestViewRepresentable: UIViewRepresentable, Inspectable {
     
@@ -279,6 +279,18 @@ private struct TestViewControllerRepresentable: UIViewControllerRepresentable, I
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+    }
+}
+#elseif os(watchOS)
+// !!!
+struct TestViewRepresentable: View, Inspectable {
+    var body: some View {
+        EmptyView()
+    }
+}
+struct TestViewControllerRepresentable: View, Inspectable {
+    var body: some View {
+        EmptyView()
     }
 }
 #endif

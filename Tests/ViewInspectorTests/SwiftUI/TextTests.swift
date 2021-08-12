@@ -91,7 +91,7 @@ final class TextTests: XCTestCase {
     }
     
     func testObjectInitialization() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { return }
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -118,7 +118,7 @@ final class TextTests: XCTestCase {
     }
     
     func testReferenceConvertibleInitialization() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { return }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-mm-ss"
@@ -138,7 +138,7 @@ final class TextTests: XCTestCase {
     }
     
     func testDateStyleInitialization() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { return }
         let date = Date(timeIntervalSinceReferenceDate: 123)
         let sut = Text(date, style: .timer)
@@ -147,7 +147,7 @@ final class TextTests: XCTestCase {
     }
     
     func testDateIntervalInitialization() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { return }
         let date1 = Date(timeIntervalSinceReferenceDate: 123)
         let date2 = Date(timeIntervalSinceReferenceDate: 123456)
@@ -161,7 +161,7 @@ final class TextTests: XCTestCase {
     }
     
     func testTextInterpolation() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { return }
         let sut = Text("abc \(Text("xyz").bold()) \(Text("qwe"))")
         let value = try sut.inspect().text().string()
@@ -169,7 +169,7 @@ final class TextTests: XCTestCase {
     }
     
     func testImageInterpolation() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { return }
         let sut = Text("abc \(Image("test"))")
         let value = try sut.inspect().text().string()
@@ -189,7 +189,7 @@ final class TextTests: XCTestCase {
     }
     
     func testImageExtraction() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { return }
         let image1 = Image("abc").antialiased(true)
         let image2 = Image("def").resizable()
