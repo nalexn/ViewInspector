@@ -7,27 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5216473E26C7343E00B3EC2B /* watchOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5216473D26C7343E00B3EC2B /* watchOS_Tests.swift */; };
-		52E3258F26C72E7800CCE47E /* watchOS-App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 52E3258E26C72E7800CCE47E /* watchOS-App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52E3259B26C72E7900CCE47E /* watchOS-Ext.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 52E3259A26C72E7900CCE47E /* watchOS-Ext.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52E325A226C72E7900CCE47E /* watchOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E325A126C72E7900CCE47E /* watchOSApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5216474026C7343E00B3EC2B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 52E3258426C72E7800CCE47E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 52E3259926C72E7900CCE47E;
-			remoteInfo = "watchOS-Ext";
-		};
-		52E3259026C72E7800CCE47E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 52E3258426C72E7800CCE47E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 52E3258D26C72E7800CCE47E;
-			remoteInfo = "watchOS WatchKit App";
-		};
 		52E3259C26C72E7900CCE47E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 52E3258426C72E7800CCE47E /* Project object */;
@@ -49,24 +33,9 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		52E325B426C72E7900CCE47E /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				52E3258F26C72E7800CCE47E /* watchOS-App.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5216473B26C7343E00B3EC2B /* watchOS-Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "watchOS-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5216473D26C7343E00B3EC2B /* watchOS_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOS_Tests.swift; sourceTree = "<group>"; };
-		5216473F26C7343E00B3EC2B /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
-		52E3258A26C72E7800CCE47E /* watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52E3258E26C72E7800CCE47E /* watchOS-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "watchOS-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52E3259526C72E7900CCE47E /* App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "App-Info.plist"; sourceTree = "<group>"; };
 		52E3259A26C72E7900CCE47E /* watchOS-Ext.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS-Ext.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,13 +44,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5216473826C7343E00B3EC2B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		52E3259726C72E7900CCE47E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -92,21 +54,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5216473C26C7343E00B3EC2B /* watchOS-Tests */ = {
-			isa = PBXGroup;
-			children = (
-				5216473D26C7343E00B3EC2B /* watchOS_Tests.swift */,
-				5216473F26C7343E00B3EC2B /* Tests-Info.plist */,
-			);
-			path = "watchOS-Tests";
-			sourceTree = "<group>";
-		};
 		52E3258326C72E7800CCE47E = {
 			isa = PBXGroup;
 			children = (
 				52E3259226C72E7800CCE47E /* watchOS-App */,
 				52E3259E26C72E7900CCE47E /* watchOS-Ext */,
-				5216473C26C7343E00B3EC2B /* watchOS-Tests */,
 				52E3258B26C72E7800CCE47E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -114,10 +66,8 @@
 		52E3258B26C72E7800CCE47E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				52E3258A26C72E7800CCE47E /* watchOS.app */,
 				52E3258E26C72E7800CCE47E /* watchOS-App.app */,
 				52E3259A26C72E7900CCE47E /* watchOS-Ext.appex */,
-				5216473B26C7343E00B3EC2B /* watchOS-Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,41 +92,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5216473A26C7343E00B3EC2B /* watchOS-Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5216474426C7343E00B3EC2B /* Build configuration list for PBXNativeTarget "watchOS-Tests" */;
-			buildPhases = (
-				5216473726C7343E00B3EC2B /* Sources */,
-				5216473826C7343E00B3EC2B /* Frameworks */,
-				5216473926C7343E00B3EC2B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5216474126C7343E00B3EC2B /* PBXTargetDependency */,
-			);
-			name = "watchOS-Tests";
-			productName = "watchOS-Tests";
-			productReference = 5216473B26C7343E00B3EC2B /* watchOS-Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		52E3258926C72E7800CCE47E /* watchOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 52E325B526C72E7900CCE47E /* Build configuration list for PBXNativeTarget "watchOS" */;
-			buildPhases = (
-				52E3258826C72E7800CCE47E /* Resources */,
-				52E325B426C72E7900CCE47E /* Embed Watch Content */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				52E3259126C72E7800CCE47E /* PBXTargetDependency */,
-			);
-			name = watchOS;
-			productName = watchOS;
-			productReference = 52E3258A26C72E7800CCE47E /* watchOS.app */;
-			productType = "com.apple.product-type.application.watchapp2-container";
-		};
 		52E3258D26C72E7800CCE47E /* watchOS-App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 52E325B126C72E7900CCE47E /* Build configuration list for PBXNativeTarget "watchOS-App" */;
@@ -220,13 +135,6 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
-					5216473A26C7343E00B3EC2B = {
-						CreatedOnToolsVersion = 12.5.1;
-						TestTargetID = 52E3259926C72E7900CCE47E;
-					};
-					52E3258926C72E7800CCE47E = {
-						CreatedOnToolsVersion = 12.5.1;
-					};
 					52E3258D26C72E7800CCE47E = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -248,29 +156,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				52E3258926C72E7800CCE47E /* watchOS */,
 				52E3258D26C72E7800CCE47E /* watchOS-App */,
 				52E3259926C72E7900CCE47E /* watchOS-Ext */,
-				5216473A26C7343E00B3EC2B /* watchOS-Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		5216473926C7343E00B3EC2B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		52E3258826C72E7800CCE47E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		52E3258C26C72E7800CCE47E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -288,14 +180,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		5216473726C7343E00B3EC2B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5216473E26C7343E00B3EC2B /* watchOS_Tests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		52E3259626C72E7900CCE47E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -307,16 +191,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5216474126C7343E00B3EC2B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 52E3259926C72E7900CCE47E /* watchOS-Ext */;
-			targetProxy = 5216474026C7343E00B3EC2B /* PBXContainerItemProxy */;
-		};
-		52E3259126C72E7800CCE47E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 52E3258D26C72E7800CCE47E /* watchOS-App */;
-			targetProxy = 52E3259026C72E7800CCE47E /* PBXContainerItemProxy */;
-		};
 		52E3259D26C72E7900CCE47E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 52E3259926C72E7900CCE47E /* watchOS-Ext */;
@@ -325,48 +199,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		5216474226C7343E00B3EC2B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "watchOS-Tests/Tests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.viewinspector.watchOS-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/watchOS-Ext.appex/watchOS-Ext";
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
-			};
-			name = Debug;
-		};
-		5216474326C7343E00B3EC2B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "watchOS-Tests/Tests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.viewinspector.watchOS-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/watchOS-Ext.appex/watchOS-Ext";
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
-			};
-			name = Release;
-		};
 		52E325AB26C72E7900CCE47E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -561,44 +393,9 @@
 			};
 			name = Release;
 		};
-		52E325B626C72E7900CCE47E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.viewinspector.watchOS;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				WATCHOS_DEPLOYMENT_TARGET = 7.0;
-			};
-			name = Debug;
-		};
-		52E325B726C72E7900CCE47E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.viewinspector.watchOS;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				WATCHOS_DEPLOYMENT_TARGET = 7.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5216474426C7343E00B3EC2B /* Build configuration list for PBXNativeTarget "watchOS-Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5216474226C7343E00B3EC2B /* Debug */,
-				5216474326C7343E00B3EC2B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		52E3258726C72E7800CCE47E /* Build configuration list for PBXProject "watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -622,15 +419,6 @@
 			buildConfigurations = (
 				52E325B226C72E7900CCE47E /* Debug */,
 				52E325B326C72E7900CCE47E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		52E325B526C72E7900CCE47E /* Build configuration list for PBXNativeTarget "watchOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				52E325B626C72E7900CCE47E /* Debug */,
-				52E325B726C72E7900CCE47E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
