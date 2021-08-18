@@ -32,7 +32,13 @@ public extension InspectableView where View: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.Button: SupplementaryChildrenLabelView {
-    static var labelViewPath: String { "_label" }
+    static var labelViewPath: String {
+        if #available(iOS 15.0, tvOS 15.0, *) {
+            return "label"
+        } else {
+            return "_label"
+        }
+    }
 }
 
 // MARK: - Custom Attributes
