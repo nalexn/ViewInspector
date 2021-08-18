@@ -13,6 +13,11 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
     func environment<T>(_ reference: WritableKeyPath<EnvironmentValues, T>, call: String) throws -> T {
+        return try environment(reference, call: call, valueType: T.self)
+    }
+    
+    func environment<T, V>(_ reference: WritableKeyPath<EnvironmentValues, T>,
+                           call: String, valueType: V.Type) throws -> V {
         guard let modifier = content.medium.environmentModifiers.last(where: { modifier in
             guard let keyPath = try? modifier.keyPath() as? WritableKeyPath<EnvironmentValues, T>
             else { return false }
@@ -21,7 +26,7 @@ internal extension InspectableView {
             throw InspectionError.modifierNotFound(
                 parent: Inspector.typeName(value: content.view), modifier: call, index: 0)
         }
-        return try Inspector.cast(value: try modifier.value(), type: T.self)
+        return try Inspector.cast(value: try modifier.value(), type: V.self)
     }
 }
 
@@ -61,5 +66,18 @@ extension _EnvironmentKeyWritingModifier: EnvironmentModifier {
     
     func value() throws -> Any {
         return try Inspector.attribute(label: "value", value: self)
+    }
+}
+
+@available(iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+@available(macOS, unavailable)
+extension _EnvironmentKeyTransformModifier: EnvironmentModifier where Value == TextInputAutocapitalization {
+    
+    func keyPath() throws -> Any {
+        return try Inspector.attribute(label: "keyPath", value: self)
+    }
+    
+    func value() throws -> Any {
+        return try Inspector.attribute(label: "transform", value: self)
     }
 }

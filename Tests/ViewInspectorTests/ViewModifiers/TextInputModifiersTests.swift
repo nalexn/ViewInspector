@@ -27,6 +27,13 @@ final class TextInputModifiersTests: XCTestCase {
     }
     
     func testKeyboardTypeInspection() throws {
+        if #available(iOS 15.0, tvOS 15.0, watchOS 8.0, *) {
+            throw XCTSkip(
+                """
+                Implementation should be similar to 'autocapitalization', but new \
+                'KeyboardType' is a private type in SwiftUI
+                """)
+        }
         let sut = AnyView(EmptyView()).keyboardType(.namePhonePad)
         XCTAssertEqual(try sut.inspect().anyView().keyboardType(), .namePhonePad)
         XCTAssertEqual(try sut.inspect().anyView().emptyView().keyboardType(), .namePhonePad)
