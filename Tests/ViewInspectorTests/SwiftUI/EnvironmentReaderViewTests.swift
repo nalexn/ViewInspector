@@ -12,7 +12,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
                 .navigationBarItems(trailing: Text(""))
         }
         XCTAssertThrows(
-            try view.inspect().navigationView().list(0),
+            try view.inspect().navigationView().list(0).text(0),
             "Please insert '.navigationBarItems()' before list(0) for unwrapping the underlying view hierarchy.")
     }
     

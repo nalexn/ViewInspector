@@ -177,6 +177,8 @@ extension Inspector {
             return try ViewType.ViewModifier<ViewType.Stub>.child(content)
         case "SubscriptionView":
             return try ViewType.SubscriptionView.child(content)
+        case "_UnaryViewAdaptor":
+            return try ViewType.UnaryViewAdaptor.child(content)
         case "_ConditionalContent":
             return try ViewType.ConditionalContent.child(content)
         case "EnvironmentReaderView":
