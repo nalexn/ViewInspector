@@ -77,9 +77,10 @@ public extension InspectableView where View == ViewType.Popover {
     
     func dismiss() throws {
         typealias OnDismiss = () -> Void
-        let onDismiss = try Inspector.attribute(
-            label: "onDismiss", value: content.view, type: OnDismiss.self)
-        onDismiss()
+        if let onDismiss = try? Inspector.attribute(
+            label: "onDismiss", value: content.view, type: OnDismiss.self) {
+            onDismiss()
+        }
         try isPresentedBinding().wrappedValue = false
     }
     
