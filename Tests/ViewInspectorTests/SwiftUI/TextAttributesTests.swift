@@ -96,6 +96,9 @@ final class TextAttributesTests: XCTestCase {
         let sut = try view.inspect().text().attributes()
         XCTAssertTrue(try sut.isStrikethrough())
         XCTAssertEqual(try sut.strikethroughColor(), .black)
+        if #available(iOS 15.0, tvOS 15.0, macOS 11.6, *) {
+            XCTAssertEqual(try sut.strikethroughStyle(), .single)
+        }
     }
     
     func testUnderlineAttribute() throws {
@@ -103,6 +106,9 @@ final class TextAttributesTests: XCTestCase {
         let sut = try view.inspect().text().attributes()
         XCTAssertTrue(try sut.isUnderline())
         XCTAssertEqual(try sut.underlineColor(), .black)
+        if #available(iOS 15.0, tvOS 15.0, macOS 11.6, *) {
+            XCTAssertEqual(try sut.underlineStyle(), .single)
+        }
     }
     
     func testKerningAttribute() throws {

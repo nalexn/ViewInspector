@@ -108,11 +108,13 @@ public extension ViewType.Text.Attributes {
     func isStrikethrough() throws -> Bool {
         return try commonTrait(name: "strikethrough") { modifier -> Bool? in
             guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
-                Inspector.typeName(value: child) == "StrikethroughTextModifier",
-                let active = try? Inspector
-                    .attribute(path: "lineStyle|some|active", value: child, type: Bool.self)
+                Inspector.typeName(value: child) == "StrikethroughTextModifier"
                 else { return nil }
-            return active
+            if let active = try? Inspector
+                .attribute(path: "lineStyle|some|active", value: child, type: Bool.self) {
+                return active
+            }
+            return (try? Inspector.attribute(path: "lineStyle|some|nsUnderlineStyle", value: child)) != nil
         }
     }
     
@@ -127,14 +129,28 @@ public extension ViewType.Text.Attributes {
         }
     }
     
+    @available(iOS 15.0, tvOS 15.0, macOS 11.6, *)
+    func strikethroughStyle() throws -> NSUnderlineStyle {
+        return try commonTrait(name: "strikethrough") { modifier -> NSUnderlineStyle? in
+            guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
+                Inspector.typeName(value: child) == "StrikethroughTextModifier",
+                let value = try? Inspector
+                    .attribute(path: "lineStyle|some|nsUnderlineStyle", value: child, type: NSUnderlineStyle.self)
+                else { return nil }
+            return value
+        }
+    }
+    
     func isUnderline() throws -> Bool {
         return try commonTrait(name: "underline") { modifier -> Bool? in
             guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
-                Inspector.typeName(value: child) == "UnderlineTextModifier",
-                let active = try? Inspector
-                    .attribute(path: "lineStyle|some|active", value: child, type: Bool.self)
+                Inspector.typeName(value: child) == "UnderlineTextModifier"
                 else { return nil }
-            return active
+            if let active = try? Inspector
+                .attribute(path: "lineStyle|some|active", value: child, type: Bool.self) {
+                return active
+            }
+            return (try? Inspector.attribute(path: "lineStyle|some|nsUnderlineStyle", value: child)) != nil
         }
     }
     
@@ -146,6 +162,18 @@ public extension ViewType.Text.Attributes {
                     .attribute(path: "lineStyle|some|color", value: child, type: Color?.self)
                 else { return nil }
             return color
+        }
+    }
+    
+    @available(iOS 15.0, tvOS 15.0, macOS 11.6, *)
+    func underlineStyle() throws -> NSUnderlineStyle {
+        return try commonTrait(name: "underline") { modifier -> NSUnderlineStyle? in
+            guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
+                Inspector.typeName(value: child) == "UnderlineTextModifier",
+                let value = try? Inspector
+                    .attribute(path: "lineStyle|some|nsUnderlineStyle", value: child, type: NSUnderlineStyle.self)
+                else { return nil }
+            return value
         }
     }
     
