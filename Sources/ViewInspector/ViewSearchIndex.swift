@@ -249,6 +249,9 @@ internal extension ViewSearch {
         .init(name: "_TraitWritingModifier<TabItemTraitKey>", builder: { parent, index in
             try parent.content.tabItem(parent: parent)
         }),
+        .init(name: "PlatformItemTraitWriter<LabelPlatformItemListFlags", builder: { parent, index in
+            try parent.content.tabItem(parent: parent)
+        }),
         .init(name: "_TraitWritingModifier<ListRowBackgroundTraitKey>", builder: { parent, index in
             try parent.content.listRowBackground(parent: parent)
         }),
