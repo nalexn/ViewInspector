@@ -80,6 +80,14 @@ final class ViewAccessibilityTests: XCTestCase {
         let sut2 = try EmptyView().accessibility(hidden: false)
             .inspect().emptyView().accessibilityHidden()
         XCTAssertFalse(sut2)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut3 = try EmptyView().accessibilityHidden(true)
+                .inspect().emptyView().accessibilityHidden()
+            let sut4 = try EmptyView().accessibilityHidden(false)
+                .inspect().emptyView().accessibilityHidden()
+            XCTAssertTrue(sut3)
+            XCTAssertFalse(sut4)
+        }
     }
     
     func testAccessibilityIdentifier() throws {

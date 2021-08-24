@@ -47,13 +47,20 @@ public extension InspectableView {
     }
     
     func accessibilityHidden() throws -> Bool {
-        let visibility = try v2AccessibilityElement(
-            "VisibilityKey", path: "value", type: (Any?).self, call: "accessibility(hidden:)")
-        switch visibility {
-        case let .some(value):
-            return String(describing: value) == "hidden"
-        case .none:
-            return false
+        if #available(iOS 15.0, tvOS 15.0, *) {
+            let value = try v3AccessibilityElement(
+                path: "value|rawValue", type: UInt32.self,
+                call: "accessibilityHidden", { $0.accessibilityHidden(true) })
+            return value != 0
+        } else {
+            let visibility = try v2AccessibilityElement(
+                "VisibilityKey", path: "value", type: (Any?).self, call: "accessibility(hidden:)")
+            switch visibility {
+            case let .some(value):
+                return String(describing: value) == "hidden"
+            case .none:
+                return false
+            }
         }
     }
     
