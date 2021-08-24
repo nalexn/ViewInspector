@@ -65,10 +65,19 @@ public extension InspectableView {
     }
     
     func accessibilityIdentifier() throws -> String {
-        return try v2AccessibilityElement(
+        if #available(iOS 15.0, tvOS 15.0, *) {
+            return try v3AccessibilityElement(type: String.self,
+                call: "accessibilityIdentifier", { $0.accessibilityIdentifier("") })
+        } else {
+            return try v2AccessibilityElement(
             "IdentifierKey", type: String.self, call: "accessibility(identifier:)")
+        }
     }
     
+    @available(iOS, deprecated, introduced: 13.0)
+    @available(macOS, deprecated, introduced: 10.15)
+    @available(tvOS, deprecated, introduced: 13.0)
+    @available(watchOS, deprecated, introduced: 6)
     func accessibilitySelectionIdentifier() throws -> AnyHashable {
         return try v2AccessibilityElement(
             "SelectionIdentifierKey", type: AnyHashable.self,
@@ -76,9 +85,15 @@ public extension InspectableView {
     }
     
     func accessibilityActivationPoint() throws -> UnitPoint {
-        return try v2AccessibilityElement(
+        if #available(iOS 15.0, tvOS 15.0, *) {
+            return try v3AccessibilityElement(
+                path: "some|unitPoint", type: UnitPoint.self,
+                call: "accessibilityIdentifier", { $0.accessibilityActivationPoint(.center) })
+        } else {
+            return try v2AccessibilityElement(
             "ActivationPointKey", path: "value|some|unitPoint",
             type: UnitPoint.self, call: "accessibility(activationPoint:)")
+        }
     }
     
     func callAccessibilityAction(_ kind: AccessibilityActionKind) throws {

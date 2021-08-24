@@ -97,9 +97,14 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityIdentifierInspection() throws {
         let string = "abc"
-        let sut = try EmptyView().accessibility(identifier: string)
+        let sut1 = try EmptyView().accessibility(identifier: string)
             .inspect().emptyView().accessibilityIdentifier()
-        XCTAssertEqual(sut, string)
+        XCTAssertEqual(sut1, string)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut2 = try EmptyView().accessibilityIdentifier(string)
+                .inspect().emptyView().accessibilityIdentifier()
+            XCTAssertEqual(sut2, string)
+        }
     }
     
     @available(iOS, deprecated, introduced: 13.0)
@@ -116,6 +121,9 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(macOS, deprecated, introduced: 10.15)
     func testAccessibilitySelectionIdentifierInspection() throws {
         guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { return }
+        if #available(iOS 15, tvOS 15, *) {
+            throw XCTSkip("Deprecated modifier with no replacement in iOS 15")
+        }
         let string = "abc"
         let sut = try EmptyView().accessibility(selectionIdentifier: string)
             .inspect().emptyView().accessibilitySelectionIdentifier()
@@ -129,9 +137,14 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityActivationPointInspection() throws {
         let point: UnitPoint = .bottomTrailing
-        let sut = try EmptyView().accessibility(activationPoint: point)
+        let sut1 = try EmptyView().accessibility(activationPoint: point)
             .inspect().emptyView().accessibilityActivationPoint()
-        XCTAssertEqual(sut, point)
+        XCTAssertEqual(sut1, point)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut2 = try EmptyView().accessibilityActivationPoint(point)
+                .inspect().emptyView().accessibilityActivationPoint()
+            XCTAssertEqual(sut2, point)
+        }
     }
     
     func testAccessibilityAction() throws {
