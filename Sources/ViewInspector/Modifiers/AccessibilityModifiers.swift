@@ -22,7 +22,8 @@ public extension InspectableView {
         let text: Text
         if #available(iOS 15.0, tvOS 15.0, *) {
             text = try v3AccessibilityElement(
-                type: Text.self, call: "accessibilityValue", { $0.accessibilityValue("") })
+                path: "some|description|some", type: Text.self,
+                call: "accessibilityValue", { $0.accessibilityValue("") })
         } else {
             text = try v2AccessibilityElement(
             "TypedValueKey", path: "value|some|description|some",
@@ -139,7 +140,7 @@ private struct AccessibilityProperty {
 @available(iOS 15.0, tvOS 15.0, macOS 10.15, *)
 private extension InspectableView {
     func v3AccessibilityElement<V, T>(
-        type: T.Type, call: String, _ reference: (EmptyView) -> V
+        path: String? = nil, type: T.Type, call: String, _ reference: (EmptyView) -> V
     ) throws -> T where V: SwiftUI.View {
         let noiseValues = AccessibilityProperty.noisePointerValues
         guard let referenceValue = try reference(EmptyView()).inspect()
@@ -153,7 +154,11 @@ private extension InspectableView {
                 .modifierNotFound(parent: Inspector.typeName(value: content.view),
                                   modifier: call, index: 0)
         }
-        return try Inspector.cast(value: property.value, type: T.self)
+        if let path = path {
+            return try Inspector.attribute(path: path, value: property.value, type: T.self)
+        } else {
+            return try Inspector.cast(value: property.value, type: T.self)
+        }
     }
     
     func v3AccessibilityProperties(call: String) throws -> [AccessibilityProperty] {
