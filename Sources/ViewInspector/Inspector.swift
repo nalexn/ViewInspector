@@ -101,9 +101,14 @@ extension Inspector {
             return array.map { attributesTree(value: $0, medium: medium) }
         }
         let medium = (try? unwrap(content: Content(value, medium: medium)).medium) ?? medium
-        let mirror = Mirror(reflecting: value)
+        var mirror = Mirror(reflecting: value)
+        var children = Array(mirror.children)
+        while let superclass = mirror.superclassMirror {
+            mirror = superclass
+            children.append(contentsOf: superclass.children)
+        }
         var dict: [String: Any] = [:]
-        mirror.children.enumerated().forEach { child in
+        children.enumerated().forEach { child in
             let childName = child.element.label ?? "[\(child.offset)]"
             let childType = typeName(value: child.element.value)
             dict[childName + ": " + childType] = attributesTree(value: child.element.value, medium: medium)
