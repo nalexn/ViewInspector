@@ -153,11 +153,17 @@ final class ViewAccessibilityTests: XCTestCase {
     }
     
     func testAccessibilityActionInspection() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { return }
         let exp = XCTestExpectation(description: "accessibilityAction")
+        exp.expectedFulfillmentCount = 2
         let sut = EmptyView().accessibilityAction(.default) {
+            exp.fulfill()
+        }.accessibilityAction(named: "custom") {
             exp.fulfill()
         }
         try sut.inspect().emptyView().callAccessibilityAction(.default)
+        try sut.inspect().emptyView().callAccessibilityAction("custom")
         wait(for: [exp], timeout: 0.1)
     }
     
@@ -166,6 +172,9 @@ final class ViewAccessibilityTests: XCTestCase {
         XCTAssertThrows(
             try sut.inspect().emptyView().callAccessibilityAction(.default),
             "EmptyView does not have 'accessibilityAction(.default)' modifier")
+        XCTAssertThrows(
+            try sut.inspect().emptyView().callAccessibilityAction(.init(named: Text("123"))),
+            "EmptyView does not have 'accessibilityAction(named: \"123\")' modifier")
     }
     
     func testAccessibilityActionInspectionMultipleCallbacks() throws {
