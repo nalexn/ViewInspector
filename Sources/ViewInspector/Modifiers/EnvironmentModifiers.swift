@@ -69,6 +69,7 @@ extension _EnvironmentKeyWritingModifier: EnvironmentModifier {
     }
 }
 
+#if !os(macOS)
 @available(iOS 15.0, tvOS 15.0, watchOS 8.0, *)
 @available(macOS, unavailable)
 extension _EnvironmentKeyTransformModifier: EnvironmentModifier where Value == TextInputAutocapitalization {
@@ -81,3 +82,4 @@ extension _EnvironmentKeyTransformModifier: EnvironmentModifier where Value == T
         return try Inspector.attribute(label: "transform", value: self)
     }
 }
+#endif

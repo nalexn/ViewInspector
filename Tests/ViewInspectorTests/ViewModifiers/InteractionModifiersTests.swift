@@ -131,16 +131,16 @@ final class InteractionTests: XCTestCase {
     
     #if os(macOS)
     func testOnCommand() throws {
-        let sut = EmptyView().onCommand(#selector(setUp)) { }
+        let sut = EmptyView().onCommand(#selector(Self.setUp)) { }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testOnCommandInspection() throws {
         let exp = XCTestExpectation(description: "onCommand")
-        let sut = EmptyView().onCommand(#selector(setUp)) {
+        let sut = EmptyView().onCommand(#selector(Self.setUp)) {
             exp.fulfill()
         }
-        try sut.inspect().emptyView().callOnCommand(#selector(setUp))
+        try sut.inspect().emptyView().callOnCommand(#selector(Self.setUp))
         wait(for: [exp], timeout: 0.1)
     }
     #endif

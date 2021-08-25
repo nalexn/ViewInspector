@@ -89,7 +89,7 @@ internal extension Content {
         let medium = self.medium.resettingViewModifiers()
         let view = try InspectableView<ViewType.ClassifiedView>(
             try Inspector.unwrap(content: Content(rootView, medium: medium)), parent: parent, call: "tabItem()")
-        if #available(iOS 15.0, tvOS 15.0, *) {
+        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
             return view
         } else if #available(iOS 14.2, tvOS 14.2, *) {
             return try InspectableView<ViewType.ClassifiedView>(
