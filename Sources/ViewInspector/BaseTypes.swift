@@ -281,11 +281,11 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
 // MARK: - BinaryEquatable
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal protocol BinaryEquatable: Equatable { }
+public protocol BinaryEquatable: Equatable { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension BinaryEquatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         withUnsafeBytes(of: lhs) { lhsBytes -> Bool in
             withUnsafeBytes(of: rhs) { rhsBytes -> Bool in
                 lhsBytes.elementsEqual(rhsBytes)
