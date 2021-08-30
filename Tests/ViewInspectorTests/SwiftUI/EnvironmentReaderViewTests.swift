@@ -3,10 +3,17 @@ import SwiftUI
 @testable import ViewInspector
 
 #if os(iOS) || os(tvOS)
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
 final class EnvironmentReaderViewTests: XCTestCase {
     
+    func skipForiOS15(file: StaticString = #file, line: UInt = #line) throws {
+        if #available(iOS 15.0, tvOS 15.0, *) {
+            throw XCTSkip("Not relevant for iOS 15", file: file, line: line)
+        }
+    }
+    
     func testIncorrectUnwrap() throws {
+        try skipForiOS15()
         let view = NavigationView {
             List { Text("") }
                 .navigationBarItems(trailing: Text(""))
@@ -17,6 +24,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testUnknownHierarchyTypeUnwrap() throws {
+        try skipForiOS15()
         let view = NavigationView {
             List { Text("") }
                 .navigationBarItems(trailing: Text(""))
@@ -27,6 +35,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testKnownHierarchyTypeUnwrap() throws {
+        try skipForiOS15()
         let string = "abc"
         let view = NavigationView {
             List { Text(string) }
@@ -39,6 +48,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testSearchBlocker() throws {
+        try skipForiOS15()
         let view = AnyView(NavigationView {
             Text("abc")
                 .navigationBarItems(trailing: Text(""))
@@ -49,6 +59,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testRetainsModifiers() throws {
+        try skipForiOS15()
         let view = NavigationView {
             Text("")
                 .padding()
@@ -62,6 +73,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testMissingModifier() throws {
+        try skipForiOS15()
         let sut = EmptyView().padding()
         XCTAssertThrows(
             try sut.inspect().navigationBarItems(),
@@ -69,6 +81,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testCustomViewUnwrapStepOne() throws {
+        try skipForiOS15()
         let sut = TestView()
         let exp = sut.inspection.inspect { view in
             XCTAssertThrows(try view.vStack(),
@@ -79,6 +92,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testCustomViewUnwrapStepTwo() throws {
+        try skipForiOS15()
         let sut = TestView()
         let exp = sut.inspection.inspect { view in
             XCTAssertThrows(try view.navigationBarItems().vStack(),
@@ -89,6 +103,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
     }
     
     func testCustomViewUnwrapStepThree() throws {
+        try skipForiOS15()
         let sut = TestView()
         let exp = sut.inspection.inspect { view in
             typealias WrappedView = VStack<Text>
