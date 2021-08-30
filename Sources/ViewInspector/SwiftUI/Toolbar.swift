@@ -4,7 +4,7 @@ import SwiftUI
 public extension ViewType {
     
     struct Toolbar: KnownViewType {
-        public static var typePrefix: String = "ToolbarModifier"
+        public static var typePrefix: String = ""
     }
 }
 
@@ -32,8 +32,14 @@ public extension InspectableView {
 internal extension Content {
     
     func toolbar(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Toolbar> {
+        let modifierName: String
+        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
+            modifierName = "ToolbarModifier"
+        } else {
+            modifierName = "_ToolbarItemGroupModifier"
+        }
         let modifier = try self.modifier({ modifier -> Bool in
-            return modifier.modifierType.contains("ToolbarModifier")
+            return modifier.modifierType.contains(modifierName)
         }, call: "toolbar", index: index ?? 0)
         let root = try Inspector.attribute(label: "modifier", value: modifier)
         let medium = self.medium.resettingViewModifiers()
