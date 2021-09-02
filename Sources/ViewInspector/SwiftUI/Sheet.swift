@@ -63,7 +63,7 @@ internal extension Content {
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the Sheet: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#sheet
+                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-and-actionsheet
                 """)
         }
         let view = try sheetBuilder.buildSheet()
