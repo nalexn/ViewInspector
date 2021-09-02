@@ -67,12 +67,12 @@ internal extension Content {
         else {
             _ = try self.modifier({
                 $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
-                || $0.modifierType.contains("FullScreenCoverPresentationModifier")
+                || $0.modifierType.contains("SheetPresentationModifier")
             }, call: "fullScreenCover")
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the FullScreenCover: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#fullScreenCover
+                https://github.com/nalexn/ViewInspector/blob/master/guide.md#guide.md#alert-sheet-actionsheet-and-fullscreencover
                 """)
         }
         let view = try fullScreenCoverBuilder.buildFullScreenCover()

@@ -15,7 +15,7 @@ internal extension ViewSearch {
             .init(ViewType.Divider.self),
             .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
             .init(ViewType.ForEach.self), .init(ViewType.Form.self),
-            .init(ViewType.Sheet.self, genericTypeName: nil),
+            .init(ViewType.FullScreenCover.self, genericTypeName: nil),
             .init(ViewType.GeometryReader.self),
             .init(ViewType.Group.self), .init(ViewType.GroupBox.self),
             .init(ViewType.HSplitView.self), .init(ViewType.HStack.self),

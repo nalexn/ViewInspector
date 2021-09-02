@@ -577,9 +577,9 @@ let view = EmptyView().modifier(sut).environmentObject(envObject)
 ViewHosting.host(view: view)
 ```
 
-## Alert, Sheet and ActionSheet
+## Alert, Sheet, ActionSheet, and FullScreenCover
 
-These three types of views have many in common, so is their inspection mechanism. Due to limited capabilities of what can be achieved in reflection, the native SwiftUI modifiers for presenting these views (`.alert`, `.sheet`, `.actionSheet`) cannot be inspected as-is by the ViewInspector.
+These four types of views have many in common, so is their inspection mechanism. Due to limited capabilities of what can be achieved in reflection, the native SwiftUI modifiers for presenting these views (`.alert`, `.sheet`, `.actionSheet`, `.fullScreenCover`) cannot be inspected as-is by the ViewInspector.
 
 This section discusses how you still can gain the full access to the internals of these views by adding a couple of code snippets to your source code while not making ViewInspector a dependency for the main target.
 
@@ -796,6 +796,84 @@ extension InspectableSheetWithItem: SheetItemProvider { }
 ```
 
 Don't forget that you'll need to use `sheet2` in place of `sheet` in your views.
+
+### Making `FullScreenCover` inspectable
+
+Similarly to the `Alert` and `Sheet`, there are two APIs for presenting the `FullScreenCover` thus two sets of snippets to add to the project, depending on your needs.
+
+Variant with `isPresented: Binding<Bool>` - main target snippet:
+
+```swift
+extension View {
+    func fullScreenCover2<FullScreenCover>(isPresented: Binding<Bool>, onDismiss: (() -> Void)? = nil, @ViewBuilder content: @escaping () -> FullScreenCover
+    ) -> some View where FullScreenCover: View {
+        return self.modifier(InspectableFullScreenCover(isPresented: isPresented, onDismiss: onDismiss, content: content))
+    }
+}
+
+struct InspectableFullScreenCover<FullScreenCover>: ViewModifier where FullScreenCover: View {
+    
+    let isPresented: Binding<Bool>
+    let onDismiss: (() -> Void)?
+    let content: () -> FullScreenCover
+    let fullScreenCoverBuilder: () -> Any
+    
+    init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> FullScreenCover) {
+        self.isPresented = isPresented
+        self.onDismiss = onDismiss
+        self.content = content
+        self.fullScreenCoverBuilder = { content() as Any }
+    }
+    
+    func body(content: Self.Content) -> some View {
+        content.fullScreenCover(isPresented: isPresented, content: self.content)
+    }
+}
+```
+
+Test target:
+
+```swift
+extension InspectableFullScreenCover: FullScreenCoverProvider { }
+```
+
+Variant with `item: Binding<Item?>` - main target snippet:
+
+```swift
+extension View {
+    func fullScreenCover2<Item, FullScreenCover>(item: Binding<Item?>, onDismiss: (() -> Void)? = nil, content: @escaping (Item) -> FullScreenCover
+    ) -> some View where Item: Identifiable, FullScreenCover: View {
+        return self.modifier(InspectableFullScreenCoverWithItem(item: item, onDismiss: onDismiss, content: content))
+    }
+}
+
+struct InspectableFullScreenCoverWithItem<Item, FullScreenCover>: ViewModifier where Item: Identifiable, FullScreenCover: View {
+    
+    let item: Binding<Item?>
+    let onDismiss: (() -> Void)?
+    let content: (Item) -> FullScreenCover
+    let fullScreenCoverBuilder: (Item) -> Any
+    
+    init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> FullScreenCover) {
+        self.item = item
+        self.onDismiss = onDismiss
+        self.content = content
+        self.fullScreenCoverBuilder = { content($0) as Any }
+    }
+    
+    func body(content: Self.Content) -> some View {
+        content.fullScreenCover(item: item, onDismiss: onDismiss, content: self.content)
+    }
+}
+```
+
+Test target:
+
+```swift
+extension InspectableFullScreenCoverWithItem: FullScreenCoverItemProvider { }
+```
+
+Don't forget that you'll need to use `fullScreenCover2` in place of `fullScreenCover` in your views.
 
 ## Advanced topics
 
