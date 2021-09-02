@@ -72,7 +72,7 @@ internal extension Content {
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the FullScreenCover: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#guide.md#alert-sheet-actionsheet-and-fullscreencover
+                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
                 """)
         }
         let view = try fullScreenCoverBuilder.buildFullScreenCover()
