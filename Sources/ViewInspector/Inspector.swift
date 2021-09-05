@@ -52,8 +52,19 @@ extension Inspector {
                          prefixOnly: Bool = false) -> String {
         let typeName = namespaced ? String(reflecting: type) : String(describing: type)
         guard prefixOnly else { return typeName }
-        return typeName.components(separatedBy: "<").first!
+        let name = typeName.components(separatedBy: "<").first!
+        guard namespaced else { return name }
+        let string = NSMutableString(string: name)
+        let range = NSRange(location: 0, length: string.length)
+        namespaceSanitizeRegex.replaceMatches(in: string, options: [], range: range, withTemplate: "SwiftUI")
+        return String(string)
     }
+    
+    private static var namespaceSanitizeRegex: NSRegularExpression = {
+        guard let regex = try? NSRegularExpression(pattern: "SwiftUI.\\(unknown context at .*\\)", options: [])
+        else { fatalError() }
+        return regex
+    }()
 }
 
 // MARK: - Attributes lookup

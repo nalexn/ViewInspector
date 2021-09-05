@@ -6,10 +6,16 @@ import SwiftUI
 final class ToolbarTests: XCTestCase {
     
     func testToolbarItemPlacementEquatable() throws {
+        #if os(iOS)
         let values: [ToolbarItemPlacement] = [
-            .automatic, .principal, .bottomBar,
-            .primaryAction, .cancellationAction, .confirmationAction, .destructiveAction,
-            .navigation, .navigationBarLeading, .navigationBarTrailing]
+            .automatic, .principal, .bottomBar, .navigation,
+            .navigationBarLeading, .navigationBarTrailing,
+            .primaryAction, .cancellationAction, .confirmationAction, .destructiveAction]
+        #else
+        let values: [ToolbarItemPlacement] = [
+            .automatic, .principal, .navigation,
+            .primaryAction, .cancellationAction, .confirmationAction, .destructiveAction]
+        #endif
         values.enumerated().forEach { lhs in
             values.enumerated().forEach { rhs in
                 if lhs.offset == rhs.offset {

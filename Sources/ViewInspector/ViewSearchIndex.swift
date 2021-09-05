@@ -243,7 +243,7 @@ internal extension ViewSearch {
         .init(name: "_BackgroundModifier", builder: { parent, index in
             try parent.content.background(parent: parent, index: index)
         }),
-        .init(name: "ToolbarModifier", builder: { parent, index in
+        .init(name: ViewType.Toolbar.typePrefix, builder: { parent, index in
             try parent.content.toolbar(parent: parent, index: index)
         }),
         .init(name: "PopoverPresentationModifier", builder: { parent, index in
