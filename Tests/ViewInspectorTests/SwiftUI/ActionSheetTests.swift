@@ -142,7 +142,7 @@ final class ActionSheetTests: XCTestCase {
         let title1 = try sut.inspect().hStack().emptyView(0).actionSheet().title()
         XCTAssertEqual(try title1.string(), "title_1")
         XCTAssertEqual(title1.pathToRoot,
-            "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet().title()")
+            "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet(0).title()")
         let title2 = try sut.inspect().hStack().emptyView(0).actionSheet(1).title()
         XCTAssertEqual(try title2.string(), "title_3")
         XCTAssertEqual(title2.pathToRoot,

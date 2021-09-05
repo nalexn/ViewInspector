@@ -22,7 +22,7 @@ public extension ViewType {
 @available(macOS, unavailable)
 public extension InspectableView {
 
-    func actionSheet(_ index: Int? = nil) throws -> InspectableView<ViewType.ActionSheet> {
+    func actionSheet(_ index: Int = 0) throws -> InspectableView<ViewType.ActionSheet> {
         return try contentForModifierLookup.actionSheet(parent: self, index: index)
     }
 }
@@ -31,10 +31,10 @@ public extension InspectableView {
 @available(macOS, unavailable)
 internal extension Content {
     
-    func actionSheet(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ActionSheet> {
+    func actionSheet(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.ActionSheet> {
         guard let sheetBuilder = try? self.modifierAttribute(
                 modifierLookup: { isActionSheetBuilder(modifier: $0) }, path: "modifier",
-                type: ActionSheetBuilder.self, call: "", index: index ?? 0)
+                type: ActionSheetBuilder.self, call: "", index: index)
         else {
             _ = try self.modifier({
                 $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
@@ -50,6 +50,9 @@ internal extension Content {
         let container = ViewType.ActionSheet.Container(sheet: sheet, builder: sheetBuilder)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
+        let index = self.optionalizeIndex(index) {
+            try self.actionSheet(parent: parent, index: 1)
+        }
         let call = ViewType.inspectionCall(
             base: ViewType.ActionSheet.inspectionCall(typeName: ""), index: index)
         return try .init(content, parent: parent, call: call, index: index)

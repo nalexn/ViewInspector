@@ -6,6 +6,9 @@ public extension ViewType {
     struct Popover: KnownViewType {
         public static var typePrefix: String = ""
         public static var isTransitive: Bool { true }
+        public static func inspectionCall(typeName: String) -> String {
+            return "popover(\(ViewType.indexPlaceholder))"
+        }
     }
 }
 
@@ -15,21 +18,26 @@ public extension ViewType {
 @available(tvOS, unavailable)
 public extension InspectableView {
     
-    func popover() throws -> InspectableView<ViewType.Popover> {
-        return try contentForModifierLookup.popover(parent: self)
+    func popover(_ index: Int = 0) throws -> InspectableView<ViewType.Popover> {
+        return try contentForModifierLookup.popover(parent: self, index: index)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func popover(parent: UnwrappedView) throws -> InspectableView<ViewType.Popover> {
+    func popover(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.Popover> {
         let modifier = try modifierAttribute(
             modifierName: "PopoverPresentationModifier", path: "modifier",
-            type: Any.self, call: "popover")
+            type: Any.self, call: "popover", index: index)
         let medium = self.medium.resettingViewModifiers()
+        let index = self.optionalizeIndex(index) {
+            try self.popover(parent: parent, index: 1)
+        }
+        let call = ViewType.inspectionCall(
+            base: ViewType.Popover.inspectionCall(typeName: ""), index: index)
         return try .init(try Inspector.unwrap(content: Content(modifier, medium: medium)),
-                         parent: parent, call: "popover()")
+                         parent: parent, call: call, index: index)
     }
 }
 

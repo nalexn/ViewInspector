@@ -94,7 +94,7 @@ final class SheetTests: XCTestCase {
         let title1 = try sut.inspect().hStack().emptyView(0).sheet().text(0)
         XCTAssertEqual(try title1.string(), "title_1")
         XCTAssertEqual(title1.pathToRoot,
-            "view(SheetFindTestView.self).hStack().emptyView(0).sheet().text(0)")
+            "view(SheetFindTestView.self).hStack().emptyView(0).sheet(0).text(0)")
         let title2 = try sut.inspect().hStack().emptyView(0).sheet(1).text(0)
         XCTAssertEqual(try title2.string(), "title_3")
         XCTAssertEqual(title2.pathToRoot,

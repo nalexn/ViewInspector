@@ -135,4 +135,24 @@ final class ToolbarTests: XCTestCase {
         XCTAssertFalse(try toolbar.item(0).showsByDefault())
         XCTAssertTrue(try toolbar.item(1).showsByDefault())
     }
+    
+    func testSearchAndPathToRoot() throws {
+        let sut = Group {
+            EmptyView()
+                .toolbar {
+                    ToolbarItem { Text("1"); Text("2") }
+                    ToolbarItemGroup { HStack { Text("3"); Text("4") } }
+                }
+                .padding()
+                .toolbar {
+                    ToolbarItem { Text("5") }
+                }
+        }
+        XCTAssertEqual(try sut.inspect().find(text: "2").pathToRoot,
+                       "group().emptyView(0).toolbar().item(0).text(1)")
+        XCTAssertEqual(try sut.inspect().find(text: "3").pathToRoot,
+                       "group().emptyView(0).toolbar().itemGroup(1).hStack().text(0)")
+        XCTAssertEqual(try sut.inspect().find(text: "5").pathToRoot,
+                       "group().emptyView(0).toolbar(1).item(0).text()")
+    }
 }

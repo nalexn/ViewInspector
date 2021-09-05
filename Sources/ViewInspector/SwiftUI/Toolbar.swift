@@ -4,7 +4,10 @@ import SwiftUI
 public extension ViewType {
     
     struct Toolbar: KnownViewType {
-        public static var typePrefix: String = ""
+        public static var typePrefix: String = "ToolbarModifier"
+        public static func inspectionCall(typeName: String) -> String {
+            return "toolbar(\(ViewType.indexPlaceholder))"
+        }
     }
 }
 
@@ -23,7 +26,7 @@ public extension ViewType.Toolbar {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
 
-    func toolbar(_ index: Int? = nil) throws -> InspectableView<ViewType.Toolbar> {
+    func toolbar(_ index: Int = 0) throws -> InspectableView<ViewType.Toolbar> {
         return try contentForModifierLookup.toolbar(parent: self, index: index)
     }
 }
@@ -31,7 +34,7 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func toolbar(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Toolbar> {
+    func toolbar(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.Toolbar> {
         let modifierName: String
         if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
             modifierName = "ToolbarModifier"
@@ -40,11 +43,16 @@ internal extension Content {
         }
         let modifier = try self.modifier({ modifier -> Bool in
             return modifier.modifierType.contains(modifierName)
-        }, call: "toolbar", index: index ?? 0)
+        }, call: "toolbar", index: index)
         let root = try Inspector.attribute(label: "modifier", value: modifier)
         let medium = self.medium.resettingViewModifiers()
         let content = try Inspector.unwrap(content: Content(root, medium: medium))
-        return try .init(content, parent: parent, call: "toolbar", index: index)
+        let index = self.optionalizeIndex(index) {
+            try self.toolbar(parent: parent, index: 1)
+        }
+        let call = ViewType.inspectionCall(
+            base: ViewType.Toolbar.inspectionCall(typeName: ""), index: index)
+        return try .init(content, parent: parent, call: call, index: index)
     }
 }
 
@@ -115,6 +123,36 @@ public extension InspectableView where View == ViewType.Toolbar {
                 return value
             }
             throw InspectionError.viewNotFound(parent: "toolbar item at index \(index)")
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension Content {
+    func toolbarElementsCount() -> Int {
+        var index: Int = -1
+        var couldLocateItem = false
+        repeat {
+            index += 1
+            couldLocateItem = (try? Inspector.attribute(path: "content|value|.\(index)", value: view)) != nil
+        } while couldLocateItem
+        if index == 0, (try? Inspector.attribute(path: "content|value", value: view)) != nil {
+            return 1
+        }
+        return index
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.Toolbar: SupplementaryChildren {
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
+        guard let toolbar = parent as? InspectableView<ViewType.Toolbar>
+        else { return .empty }
+        return .init(count: parent.content.toolbarElementsCount()) { index in
+            if let itemGroup = try? toolbar.itemGroup(index) {
+                return itemGroup
+            }
+            return try toolbar.item(index)
         }
     }
 }

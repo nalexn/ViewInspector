@@ -40,7 +40,10 @@ internal extension ViewSearch {
             .init(ViewType.StyleConfiguration.CurrentValueLabel.self),
             .init(ViewType.TabView.self), .init(ViewType.Text.self),
             .init(ViewType.TextEditor.self), .init(ViewType.TextField.self),
-            .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self), .init(ViewType.TupleView.self),
+            .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self),
+            .init(ViewType.TupleView.self), .init(ViewType.Toolbar.self),
+            .init(ViewType.Toolbar.Item.self, genericTypeName: nil),
+            .init(ViewType.Toolbar.ItemGroup.self, genericTypeName: nil),
             .init(ViewType.ViewModifierContent.self), .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
             .init(ViewType.ZStack.self)
         ]
@@ -235,33 +238,36 @@ internal extension ViewSearch {
     
     static private(set) var modifierIdentities: [ModifierIdentity] = [
         .init(name: "_OverlayModifier", builder: { parent, index in
-            try parent.content.overlay(parent: parent)
+            try parent.content.overlay(parent: parent, index: index)
         }),
         .init(name: "_BackgroundModifier", builder: { parent, index in
-            try parent.content.background(parent: parent)
+            try parent.content.background(parent: parent, index: index)
+        }),
+        .init(name: "ToolbarModifier", builder: { parent, index in
+            try parent.content.toolbar(parent: parent, index: index)
         }),
         .init(name: "PopoverPresentationModifier", builder: { parent, index in
-            try parent.content.popover(parent: parent)
+            try parent.content.popover(parent: parent, index: index)
         }),
         .init(name: "_MaskEffect", builder: { parent, index in
-            try parent.content.mask(parent: parent)
+            try parent.content.mask(parent: parent, index: index)
         }),
         .init(name: "_TraitWritingModifier<TabItemTraitKey>", builder: { parent, index in
-            try parent.content.tabItem(parent: parent)
+            try parent.content.tabItem(parent: parent, index: index)
         }),
         .init(name: "PlatformItemTraitWriter<LabelPlatformItemListFlags", builder: { parent, index in
-            try parent.content.tabItem(parent: parent)
+            try parent.content.tabItem(parent: parent, index: index)
         }),
         .init(name: "_TraitWritingModifier<ListRowBackgroundTraitKey>", builder: { parent, index in
-            try parent.content.listRowBackground(parent: parent)
+            try parent.content.listRowBackground(parent: parent, index: index)
         }),
         .init(name: "_TouchBarModifier", builder: { parent, index in
-            try parent.content.touchBar(parent: parent)
+            try parent.content.touchBar(parent: parent, index: index)
         }),
     ]
     
     struct ModifierIdentity {
-        typealias Builder = (UnwrappedView, Int?) throws -> UnwrappedView
+        typealias Builder = (UnwrappedView, Int) throws -> UnwrappedView
         let name: String
         let builder: Builder
         
@@ -292,8 +298,9 @@ internal extension Content {
             })
         let sheets = sheetModifierDescendants(parent: parent)
         let customModifiers = customViewModifiers()
-        return .init(count: identities.count, { index -> UnwrappedView in
-            try identities[index].builder(parent, nil)
+        let modifiersCount = modifierNames.count
+        return .init(count: identities.count * modifiersCount, { index -> UnwrappedView in
+            try identities[index / modifiersCount].builder(parent, index % modifiersCount)
         }) + sheets + .init(count: customModifiers.count, { index -> UnwrappedView in
             let modifier = customModifiers[index]
             let name = Inspector.typeName(value: modifier)
