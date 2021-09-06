@@ -32,7 +32,7 @@ public extension ViewType.Toolbar {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
 
-    func toolbar(_ index: Int = 0) throws -> InspectableView<ViewType.Toolbar> {
+    func toolbar(_ index: Int? = nil) throws -> InspectableView<ViewType.Toolbar> {
         return try contentForModifierLookup.toolbar(parent: self, index: index)
     }
 }
@@ -40,17 +40,14 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func toolbar(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.Toolbar> {
+    func toolbar(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Toolbar> {
         let modifierName = ViewType.Toolbar.typePrefix
         let modifier = try self.modifier({ modifier -> Bool in
             return modifier.modifierType.contains(modifierName)
-        }, call: "toolbar", index: index)
+        }, call: "toolbar", index: index ?? 0)
         let root = try Inspector.attribute(label: "modifier", value: modifier)
         let medium = self.medium.resettingViewModifiers()
         let content = try Inspector.unwrap(content: Content(root, medium: medium))
-        let index = self.optionalizeIndex(index) {
-            try self.toolbar(parent: parent, index: 1)
-        }
         let call = ViewType.inspectionCall(
             base: ViewType.Toolbar.inspectionCall(typeName: ""), index: index)
         return try .init(content, parent: parent, call: call, index: index)

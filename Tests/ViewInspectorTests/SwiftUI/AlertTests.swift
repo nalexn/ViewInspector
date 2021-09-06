@@ -186,7 +186,7 @@ final class AlertTests: XCTestCase {
         let title1 = try sut.inspect().hStack().emptyView(0).alert().title()
         XCTAssertEqual(try title1.string(), "title_1")
         XCTAssertEqual(title1.pathToRoot,
-            "view(AlertFindTestView.self).hStack().emptyView(0).alert(0).title()")
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert().title()")
         let title2 = try sut.inspect().hStack().emptyView(0).alert(1).title()
         XCTAssertEqual(try title2.string(), "title_3")
         XCTAssertEqual(title2.pathToRoot,

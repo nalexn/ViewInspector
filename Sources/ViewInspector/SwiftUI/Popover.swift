@@ -18,7 +18,7 @@ public extension ViewType {
 @available(tvOS, unavailable)
 public extension InspectableView {
     
-    func popover(_ index: Int = 0) throws -> InspectableView<ViewType.Popover> {
+    func popover(_ index: Int? = nil) throws -> InspectableView<ViewType.Popover> {
         return try contentForModifierLookup.popover(parent: self, index: index)
     }
 }
@@ -26,14 +26,11 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func popover(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.Popover> {
+    func popover(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Popover> {
         let modifier = try modifierAttribute(
             modifierName: "PopoverPresentationModifier", path: "modifier",
-            type: Any.self, call: "popover", index: index)
+            type: Any.self, call: "popover", index: index ?? 0)
         let medium = self.medium.resettingViewModifiers()
-        let index = self.optionalizeIndex(index) {
-            try self.popover(parent: parent, index: 1)
-        }
         let call = ViewType.inspectionCall(
             base: ViewType.Popover.inspectionCall(typeName: ""), index: index)
         return try .init(try Inspector.unwrap(content: Content(modifier, medium: medium)),

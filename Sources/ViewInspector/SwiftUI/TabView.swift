@@ -75,16 +75,16 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func tabItem(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.ClassifiedView> {
+    func tabItem(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ClassifiedView> {
         let rootView: Any = try {
             if let view = try? modifierAttribute(
                 modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
-                type: Any.self, call: "tabItem", index: index) {
+                type: Any.self, call: "tabItem") {
                 return view
             }
             return try modifierAttribute(
                 modifierName: "PlatformItemTraitWriter", path: "modifier|source|content|content",
-                type: Any.self, call: "tabItem", index: index)
+                type: Any.self, call: "tabItem")
         }()
         let medium = self.medium.resettingViewModifiers()
         let view = try InspectableView<ViewType.ClassifiedView>(

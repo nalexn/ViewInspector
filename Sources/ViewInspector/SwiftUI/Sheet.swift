@@ -43,7 +43,7 @@ extension ViewType.Sheet: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
 
-    func sheet(_ index: Int = 0) throws -> InspectableView<ViewType.Sheet> {
+    func sheet(_ index: Int? = nil) throws -> InspectableView<ViewType.Sheet> {
         return try contentForModifierLookup.sheet(parent: self, index: index)
     }
 }
@@ -51,10 +51,10 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func sheet(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.Sheet> {
+    func sheet(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Sheet> {
         guard let sheetBuilder = try? self.modifierAttribute(
                 modifierLookup: { isSheetBuilder(modifier: $0) }, path: "modifier",
-                type: SheetBuilder.self, call: "", index: index)
+                type: SheetBuilder.self, call: "", index: index ?? 0)
         else {
             _ = try self.modifier({
                 $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
@@ -70,9 +70,6 @@ internal extension Content {
         let container = ViewType.Sheet.Container(view: view, builder: sheetBuilder)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
-        let index = self.optionalizeIndex(index) {
-            try self.sheet(parent: parent, index: 1)
-        }
         let call = ViewType.inspectionCall(
             base: ViewType.Sheet.inspectionCall(typeName: ""), index: index)
         return try .init(content, parent: parent, call: call, index: index)

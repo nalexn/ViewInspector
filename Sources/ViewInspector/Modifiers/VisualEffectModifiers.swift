@@ -127,21 +127,18 @@ public extension InspectableView {
         return shape.cornerSize.width
     }
     
-    func mask(_ index: Int = 0) throws -> InspectableView<ViewType.ClassifiedView> {
+    func mask(_ index: Int? = nil) throws -> InspectableView<ViewType.ClassifiedView> {
         return try contentForModifierLookup.mask(parent: self, index: index)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
-    func mask(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.ClassifiedView> {
+    func mask(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ClassifiedView> {
         let rootView = try modifierAttribute(
             modifierName: "_MaskEffect", path: "modifier|mask",
-            type: Any.self, call: "mask", index: index)
+            type: Any.self, call: "mask", index: index ?? 0)
         let medium = self.medium.resettingViewModifiers()
-        let index = self.optionalizeIndex(index) {
-            try self.mask(parent: parent, index: 1)
-        }
         let call = ViewType.inspectionCall(
             base: "mask(\(ViewType.indexPlaceholder))", index: index)
         return try .init(try Inspector.unwrap(content: Content(rootView, medium: medium)),

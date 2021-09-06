@@ -268,7 +268,7 @@ internal extension ViewSearch {
     ]
     
     struct ModifierIdentity {
-        typealias Builder = (UnwrappedView, Int) throws -> UnwrappedView
+        typealias Builder = (UnwrappedView, Int?) throws -> UnwrappedView
         let name: String
         let builder: Builder
         
@@ -301,7 +301,8 @@ internal extension Content {
         let customModifiers = customViewModifiers()
         let modifiersCount = modifierNames.count
         return .init(count: identities.count * modifiersCount, { index -> UnwrappedView in
-            try identities[index / modifiersCount].builder(parent, index % modifiersCount)
+            try identities[index / modifiersCount]
+                .builder(parent, (index % modifiersCount).nilIfZero)
         }) + sheets + .init(count: customModifiers.count, { index -> UnwrappedView in
             let modifier = customModifiers[index]
             let name = Inspector.typeName(value: modifier)
@@ -338,5 +339,11 @@ internal extension Content {
         }) + .init(count: fullScreenCoverModifiers.count, { index -> UnwrappedView in
             try fullScreenCoverModifiers[index].builder(parent, index)
         })
+    }
+}
+
+private extension Int {
+    var nilIfZero: Int? {
+        return self == 0 ? nil : self
     }
 }

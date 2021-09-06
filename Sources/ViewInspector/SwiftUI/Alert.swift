@@ -21,7 +21,7 @@ public extension ViewType {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
 
-    func alert(_ index: Int = 0) throws -> InspectableView<ViewType.Alert> {
+    func alert(_ index: Int? = nil) throws -> InspectableView<ViewType.Alert> {
         return try contentForModifierLookup.alert(parent: self, index: index)
     }
 }
@@ -29,10 +29,10 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func alert(parent: UnwrappedView, index: Int) throws -> InspectableView<ViewType.Alert> {
+    func alert(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Alert> {
         guard let alertBuilder = try? self.modifierAttribute(
                 modifierLookup: { isAlertBuilder(modifier: $0) }, path: "modifier",
-                type: AlertBuilder.self, call: "", index: index)
+                type: AlertBuilder.self, call: "", index: index ?? 0)
         else {
             _ = try self.modifier({
                 $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
@@ -48,9 +48,6 @@ internal extension Content {
         let container = ViewType.Alert.Container(alert: alert, builder: alertBuilder)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
-        let index = self.optionalizeIndex(index) {
-            try self.alert(parent: parent, index: 1)
-        }
         let call = ViewType.inspectionCall(
             base: ViewType.Alert.inspectionCall(typeName: ""), index: index)
         return try .init(content, parent: parent, call: call, index: index)
