@@ -76,7 +76,7 @@ internal extension Content {
 
     func fullScreenCoversForSearch() -> [ViewSearch.ModifierIdentity] {
         let count = medium.viewModifiers
-            .compactMap { isFullScreenCoverBuilder(modifier: $0) }
+            .filter { isFullScreenCoverBuilder(modifier: $0) }
             .count
         return Array(0..<count).map { _ in
             .init(name: "", builder: { parent, index in

@@ -80,7 +80,7 @@ internal extension Content {
     
     func sheetsForSearch() -> [ViewSearch.ModifierIdentity] {
         let count = medium.viewModifiers
-            .compactMap { isSheetBuilder(modifier: $0) }
+            .filter { isSheetBuilder(modifier: $0) }
             .count
         return Array(0..<count).map { _ in
             .init(name: "", builder: { parent, index in
