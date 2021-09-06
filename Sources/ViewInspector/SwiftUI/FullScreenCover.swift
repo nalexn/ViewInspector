@@ -1,13 +1,4 @@
-//
-//  FullScreenCover.swift
-//  ViewInspector
-//
-//  Created by Richard Gist on 9/2/21.
-//
-
 import SwiftUI
-
-// MARK: - FullScreenCover
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
@@ -47,7 +38,7 @@ extension ViewType.FullScreenCover: MultipleViewContent {
 
 // MARK: - Extraction
 
-@available(iOS 13.0, tvOS 13.0, *)
+@available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 @available(macOS, unavailable)
 public extension InspectableView {
 
@@ -56,8 +47,7 @@ public extension InspectableView {
     }
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
 
     func fullScreenCover(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.FullScreenCover> {
@@ -101,8 +91,7 @@ internal extension Content {
     }
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType.FullScreenCover {
     struct Container: CustomViewIdentityMapping {
         let view: Any
@@ -114,7 +103,7 @@ internal extension ViewType.FullScreenCover {
 
 // MARK: - Custom Attributes
 
-@available(iOS 13.0, tvOS 13.0, *)
+@available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 @available(macOS, unavailable)
 public extension InspectableView where View == ViewType.FullScreenCover {
 
@@ -124,30 +113,26 @@ public extension InspectableView where View == ViewType.FullScreenCover {
     }
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol FullScreenCoverBuilder: SystemPopupPresenter {
     var onDismiss: (() -> Void)? { get }
     func buildFullScreenCover() throws -> Any
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol FullScreenCoverProvider: FullScreenCoverBuilder {
     var isPresented: Binding<Bool> { get }
     var fullScreenCoverBuilder: () -> Any { get }
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol FullScreenCoverItemProvider: FullScreenCoverBuilder {
     associatedtype Item: Identifiable
     var item: Binding<Item?> { get }
     var fullScreenCoverBuilder: (Item) -> Any { get }
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension FullScreenCoverProvider {
 
     func buildFullScreenCover() throws -> Any {
@@ -163,8 +148,7 @@ public extension FullScreenCoverProvider {
     }
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension FullScreenCoverItemProvider {
 
     func buildFullScreenCover() throws -> Any {

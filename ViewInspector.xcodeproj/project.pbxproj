@@ -613,6 +613,7 @@
 				F6D933A62385E9E000358E0E /* EquatableView.swift */,
 				F60EEBCC2382EED0007DB53A /* ForEach.swift */,
 				F60EEBC52382EED0007DB53A /* Form.swift */,
+				D7A6CE8826E17AE900599824 /* FullScreenCover.swift */,
 				F6D9339A2385AD9100358E0E /* GeometryReader.swift */,
 				CDA84477262B6C3E00C56C98 /* Gesture.swift */,
 				F60EEBC62382EED0007DB53A /* Group.swift */,
@@ -668,7 +669,6 @@
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
-				D7A6CE8826E17AE900599824 /* FullScreenCover.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
