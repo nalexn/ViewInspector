@@ -15,6 +15,7 @@ internal extension ViewSearch {
             .init(ViewType.Divider.self),
             .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
             .init(ViewType.ForEach.self), .init(ViewType.Form.self),
+            .init(ViewType.FullScreenCover.self, genericTypeName: nil),
             .init(ViewType.GeometryReader.self),
             .init(ViewType.Group.self), .init(ViewType.GroupBox.self),
             .init(ViewType.HSplitView.self), .init(ViewType.HStack.self),
@@ -322,8 +323,10 @@ internal extension Content {
         let sheetModifiers = sheetsForSearch()
         #if os(macOS)
         let actionSheetModifiers: [ViewSearch.ModifierIdentity] = []
+        let fullScreenCoverModifiers: [ViewSearch.ModifierIdentity] = []
         #else
         let actionSheetModifiers = actionSheetsForSearch()
+        let fullScreenCoverModifiers = fullScreenCoversForSearch()
         #endif
         let alertModifiers = alertsForSearch()
         return .init(count: sheetModifiers.count, { index -> UnwrappedView in
@@ -332,6 +335,8 @@ internal extension Content {
             try actionSheetModifiers[index].builder(parent, index)
         }) + .init(count: alertModifiers.count, { index -> UnwrappedView in
             try alertModifiers[index].builder(parent, index)
+        }) + .init(count: fullScreenCoverModifiers.count, { index -> UnwrappedView in
+            try fullScreenCoverModifiers[index].builder(parent, index)
         })
     }
 }

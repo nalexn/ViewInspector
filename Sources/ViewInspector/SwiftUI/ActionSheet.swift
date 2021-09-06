@@ -43,7 +43,7 @@ internal extension Content {
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the ActionSheet: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#actionsheet
+                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
                 """)
         }
         let sheet = try sheetBuilder.buildSheet()

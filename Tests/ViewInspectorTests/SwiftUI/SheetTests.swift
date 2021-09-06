@@ -24,7 +24,7 @@ final class SheetTests: XCTestCase {
         XCTAssertThrows(try sut.inspect().emptyView().sheet(),
             """
             Please refer to the Guide for inspecting the Sheet: \
-            https://github.com/nalexn/ViewInspector/blob/master/guide.md#sheet
+            https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
             """)
     }
     

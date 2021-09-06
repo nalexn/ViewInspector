@@ -72,6 +72,8 @@
 		CDA8450C262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8450B262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift */; };
 		CDA84516262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */; };
 		CDA8451C262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */; };
+		D766E67026E17F01004AAA80 /* FullScreenCoverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */; };
+		D7A6CE8926E17AE900599824 /* FullScreenCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6CE8826E17AE900599824 /* FullScreenCover.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
 		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
 		F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D423D3C74B008F31BD /* InspectionEmissary.swift */; };
@@ -316,6 +318,8 @@
 		CDA8450B262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureEndedTests.swift; sourceTree = "<group>"; };
 		CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureUpdatingTests.swift; sourceTree = "<group>"; };
 		CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureChangedTests.swift; sourceTree = "<group>"; };
+		D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCoverTests.swift; sourceTree = "<group>"; };
+		D7A6CE8826E17AE900599824 /* FullScreenCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCover.swift; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
 		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
 		F60385D423D3C74B008F31BD /* InspectionEmissary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissary.swift; sourceTree = "<group>"; };
@@ -664,6 +668,7 @@
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
+				D7A6CE8826E17AE900599824 /* FullScreenCover.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -719,6 +724,7 @@
 				5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */,
 				F60EEBED2382F004007DB53A /* ForEachTests.swift */,
 				F60EEBEB2382F004007DB53A /* FormTests.swift */,
+				D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */,
 				F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */,
 				F60EEBF12382F004007DB53A /* GroupTests.swift */,
 				F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */,
@@ -1032,6 +1038,7 @@
 				F6ECF6C823A66E54000FC591 /* InteractionModifiers.swift in Sources */,
 				52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */,
 				F60EEBDC2382EED0007DB53A /* Text.swift in Sources */,
+				D7A6CE8926E17AE900599824 /* FullScreenCover.swift in Sources */,
 				F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */,
 				F6684BFE23AA863400DECCB3 /* RadialGradient.swift in Sources */,
 				F60EEBD42382EED0007DB53A /* ScrollView.swift in Sources */,
@@ -1208,6 +1215,7 @@
 				F64057F1238DBB120029D9BA /* EmptyViewTests.swift in Sources */,
 				CDA844C8262B7F3100C56C98 /* TapGestureTests.swift in Sources */,
 				F6D933B12385EC5F00358E0E /* HSplitViewTests.swift in Sources */,
+				D766E67026E17F01004AAA80 /* FullScreenCoverTests.swift in Sources */,
 				F64057F3238E9F600029D9BA /* OptionalViewTests.swift in Sources */,
 				F6684BFC23AA842000DECCB3 /* LinearGradientTests.swift in Sources */,
 				F62AEAFC23E705D6003E69D9 /* ViewHostingTests.swift in Sources */,
