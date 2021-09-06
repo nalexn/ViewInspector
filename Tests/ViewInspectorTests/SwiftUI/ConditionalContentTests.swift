@@ -24,7 +24,6 @@ final class ConditionalContentTests: XCTestCase {
     
     func testRetainsModifiers() throws {
         let sut = ConditionalViewWithModifier(value: true)
-        print(">> \(Inspector.print(sut) as AnyObject)")
         let text = try sut.inspect().text()
         XCTAssertEqual(try text.string(), "True")
         XCTAssertEqual(try text.padding(), EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))

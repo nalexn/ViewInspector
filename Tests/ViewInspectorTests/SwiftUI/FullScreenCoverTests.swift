@@ -9,7 +9,6 @@ final class FullScreenCoverTests: XCTestCase {
         guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().fullScreenCover(isPresented: binding) { Text("") }
-        print("\(Inspector.print(sut) as AnyObject)")
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 

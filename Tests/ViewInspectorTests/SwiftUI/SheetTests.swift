@@ -8,7 +8,6 @@ final class SheetTests: XCTestCase {
     func testSheet() throws {
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().sheet(isPresented: binding) { Text("") }
-        print("\(Inspector.print(sut) as AnyObject)")
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
@@ -165,7 +164,7 @@ private struct InspectableSheet<Sheet>: ViewModifier, SheetProvider where Sheet:
     }
     
     func body(content: Self.Content) -> some View {
-        content.sheet(isPresented: isPresented, content: self.content)
+        content.sheet(isPresented: isPresented, onDismiss: onDismiss, content: self.content)
     }
 }
 

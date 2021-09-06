@@ -30,7 +30,8 @@ internal extension ViewSearch {
             .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
             .init(ViewType.OutlineGroup.self),
             .init(ViewType.PasteButton.self), .init(ViewType.Picker.self),
-            .init(ViewType.Popover.self), .init(ViewType.ProgressView.self),
+            .init(ViewType.Popover.self, genericTypeName: nil),
+            .init(ViewType.ProgressView.self),
             .init(ViewType.RadialGradient.self),
             .init(ViewType.ScrollView.self), .init(ViewType.ScrollViewReader.self),
             .init(ViewType.Section.self), .init(ViewType.SecureField.self),
@@ -329,16 +330,27 @@ internal extension Content {
         let actionSheetModifiers = actionSheetsForSearch()
         let fullScreenCoverModifiers = fullScreenCoversForSearch()
         #endif
+        #if os(iOS) || os(macOS)
+        let popoverModifiers = popoversForSearch()
+        #else
+        let popoverModifiers: [ViewSearch.ModifierIdentity] = []
+        #endif
         let alertModifiers = alertsForSearch()
-        return .init(count: sheetModifiers.count, { index -> UnwrappedView in
-            try sheetModifiers[index].builder(parent, index)
-        }) + .init(count: actionSheetModifiers.count, { index -> UnwrappedView in
-            try actionSheetModifiers[index].builder(parent, index)
-        }) + .init(count: alertModifiers.count, { index -> UnwrappedView in
-            try alertModifiers[index].builder(parent, index)
-        }) + .init(count: fullScreenCoverModifiers.count, { index -> UnwrappedView in
-            try fullScreenCoverModifiers[index].builder(parent, index)
-        })
+        let group1: LazyGroup<UnwrappedView> =
+            .init(count: sheetModifiers.count, { index -> UnwrappedView in
+                try sheetModifiers[index].builder(parent, index)
+            }) + .init(count: actionSheetModifiers.count, { index -> UnwrappedView in
+                try actionSheetModifiers[index].builder(parent, index)
+            }) + .init(count: alertModifiers.count, { index -> UnwrappedView in
+                try alertModifiers[index].builder(parent, index)
+            })
+        let group2: LazyGroup<UnwrappedView> =
+            .init(count: fullScreenCoverModifiers.count, { index -> UnwrappedView in
+                try fullScreenCoverModifiers[index].builder(parent, index)
+            }) + .init(count: popoverModifiers.count, { index -> UnwrappedView in
+                try popoverModifiers[index].builder(parent, index)
+            })
+        return group1 + group2
     }
 }
 
