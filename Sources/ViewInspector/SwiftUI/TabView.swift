@@ -83,7 +83,7 @@ internal extension Content {
                 return view
             }
             return try modifierAttribute(
-                modifierName: "PlatformItemTraitWriter", path: "modifier|source|content|content|content",
+                modifierName: "PlatformItemTraitWriter", path: "modifier|source|content|content",
                 type: Any.self, call: "tabItem", index: index)
         }()
         let medium = self.medium.resettingViewModifiers()

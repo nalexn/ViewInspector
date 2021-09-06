@@ -39,7 +39,26 @@ internal extension Inspector {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol EnvironmentModifier {
+    static func qualifiesAsEnvironmentModifier() -> Bool
+    func keyPath() throws -> Any
+    func value() throws -> Any
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension EnvironmentModifier {
+    func qualifiesAsEnvironmentModifier() -> Bool {
+        return Self.qualifiesAsEnvironmentModifier()
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ModifiedContent: EnvironmentModifier where Modifier: EnvironmentModifier {
+    
+    static func qualifiesAsEnvironmentModifier() -> Bool {
+        return Modifier.qualifiesAsEnvironmentModifier()
+    }
+    
     func keyPath() throws -> Any {
         return try Inspector.attribute(label: "modifier", value: self,
                                        type: Modifier.self).keyPath()
@@ -52,13 +71,11 @@ extension ModifiedContent: EnvironmentModifier where Modifier: EnvironmentModifi
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal protocol EnvironmentModifier {
-    func keyPath() throws -> Any
-    func value() throws -> Any
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension _EnvironmentKeyWritingModifier: EnvironmentModifier {
+    
+    static func qualifiesAsEnvironmentModifier() -> Bool {
+        return true
+    }
     
     func keyPath() throws -> Any {
         return try Inspector.attribute(label: "keyPath", value: self)
@@ -69,10 +86,18 @@ extension _EnvironmentKeyWritingModifier: EnvironmentModifier {
     }
 }
 
-#if !os(macOS)
-@available(iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-@available(macOS, unavailable)
-extension _EnvironmentKeyTransformModifier: EnvironmentModifier where Value == TextInputAutocapitalization {
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension _EnvironmentKeyTransformModifier: EnvironmentModifier {
+    
+    static func qualifiesAsEnvironmentModifier() -> Bool {
+        #if !os(macOS)
+        if #available(iOS 15.0, tvOS 15.0, watchOS 8.0, *),
+           Value.self == TextInputAutocapitalization.self {
+            return true
+        }
+        #endif
+        return false
+    }
     
     func keyPath() throws -> Any {
         return try Inspector.attribute(label: "keyPath", value: self)
@@ -82,4 +107,3 @@ extension _EnvironmentKeyTransformModifier: EnvironmentModifier where Value == T
         return try Inspector.attribute(label: "transform", value: self)
     }
 }
-#endif
