@@ -149,43 +149,39 @@ private extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableSheet<Sheet>: ViewModifier, SheetProvider where Sheet: View {
+private struct InspectableSheet<Sheet>: ViewModifier, SimplePopupPresenter where Sheet: View {
     
     let isPresented: Binding<Bool>
     let onDismiss: (() -> Void)?
-    let content: () -> Sheet
-    let sheetBuilder: () -> Any
+    let popupBuilder: () -> Sheet
     
     init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> Sheet) {
         self.isPresented = isPresented
         self.onDismiss = onDismiss
-        self.content = content
-        self.sheetBuilder = { content() as Any }
+        self.popupBuilder = content
     }
     
     func body(content: Self.Content) -> some View {
-        content.sheet(isPresented: isPresented, onDismiss: onDismiss, content: self.content)
+        content.sheet(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableSheetWithItem<Item, Sheet>: ViewModifier, SheetItemProvider
+private struct InspectableSheetWithItem<Item, Sheet>: ViewModifier, ItemPopupPresenter
 where Item: Identifiable, Sheet: View {
     
     let item: Binding<Item?>
     let onDismiss: (() -> Void)?
-    let content: (Item) -> Sheet
-    let sheetBuilder: (Item) -> Any
+    let popupBuilder: (Item) -> Sheet
     
     init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> Sheet) {
         self.item = item
         self.onDismiss = onDismiss
-        self.content = content
-        self.sheetBuilder = { content($0) as Any }
+        self.popupBuilder = content
     }
     
     func body(content: Self.Content) -> some View {
-        content.sheet(item: item, onDismiss: onDismiss, content: self.content)
+        content.sheet(item: item, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 

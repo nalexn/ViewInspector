@@ -52,27 +52,31 @@ public extension InspectableView {
 internal extension Content {
     
     func sheet(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Sheet> {
-        guard let sheetBuilder = try? self.modifierAttribute(
+        guard let sheetPresenter = try? self.modifierAttribute(
                 modifierLookup: { isSheetBuilder(modifier: $0) }, path: "modifier",
-                type: SheetBuilder.self, call: "", index: index ?? 0)
+                type: PopupPresenter.self, call: "", index: index ?? 0)
         else {
-            _ = try self.modifier({
-                $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
-                || $0.modifierType.contains("SheetPresentationModifier")
-            }, call: "sheet")
+            _ = try standardSheetModifier()
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the Sheet: \
                 https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
                 """)
         }
-        let view = try sheetBuilder.buildSheet()
-        let container = ViewType.Sheet.Container(view: view, builder: sheetBuilder)
+        let view = try sheetPresenter.buildPopup()
+        let container = ViewType.Sheet.Container(view: view, presenter: sheetPresenter)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
         let call = ViewType.inspectionCall(
             base: ViewType.Sheet.inspectionCall(typeName: ""), index: index)
         return try .init(content, parent: parent, call: call, index: index)
+    }
+    
+    func standardSheetModifier() throws -> Any {
+        return try self.modifier({
+            $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
+            || $0.modifierType.contains("SheetPresentationModifier")
+        }, call: "sheet")
     }
     
     func sheetsForSearch() -> [ViewSearch.ModifierIdentity] {
@@ -87,8 +91,9 @@ internal extension Content {
     }
     
     private func isSheetBuilder(modifier: Any) -> Bool {
-        return (try? Inspector.attribute(
-            label: "modifier", value: modifier, type: SheetBuilder.self)) != nil
+        let modifier = try? Inspector.attribute(
+            label: "modifier", value: modifier, type: PopupPresenter.self)
+        return modifier?.isSheetPresenter == true
     }
 }
 
@@ -96,7 +101,7 @@ internal extension Content {
 internal extension ViewType.Sheet {
     struct Container: CustomViewIdentityMapping {
         let view: Any
-        let builder: SheetBuilder
+        let presenter: PopupPresenter
         
         var viewTypeForSearch: KnownViewType.Type { ViewType.Sheet.self }
     }
@@ -109,57 +114,6 @@ public extension InspectableView where View == ViewType.Sheet {
 
     func callOnDismiss() throws {
         let sheet = try Inspector.cast(value: content.view, type: ViewType.Sheet.Container.self)
-        sheet.builder.dismissPopup()
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol SheetBuilder: SystemPopupPresenter {
-    var onDismiss: (() -> Void)? { get }
-    func buildSheet() throws -> Any
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol SheetProvider: SheetBuilder {
-    var isPresented: Binding<Bool> { get }
-    var sheetBuilder: () -> Any { get }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol SheetItemProvider: SheetBuilder {
-    associatedtype Item: Identifiable
-    var item: Binding<Item?> { get }
-    var sheetBuilder: (Item) -> Any { get }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension SheetProvider {
-    
-    func buildSheet() throws -> Any {
-        guard isPresented.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "Sheet")
-        }
-        return sheetBuilder()
-    }
-    
-    func dismissPopup() {
-        isPresented.wrappedValue = false
-        onDismiss?()
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension SheetItemProvider {
-    
-    func buildSheet() throws -> Any {
-        guard let value = item.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "Sheet")
-        }
-        return sheetBuilder(value)
-    }
-    
-    func dismissPopup() {
-        item.wrappedValue = nil
-        onDismiss?()
+        sheet.presenter.dismissPopup()
     }
 }

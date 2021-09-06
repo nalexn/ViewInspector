@@ -238,35 +238,36 @@ extension String: Identifiable {
 private extension View {
     func alert2(isPresented: Binding<Bool>,
                 content: @escaping () -> Alert) -> some View {
-        return self.modifier(InspectableAlert(isPresented: isPresented, alertBuilder: content))
+        return self.modifier(InspectableAlert(isPresented: isPresented, popupBuilder: content))
     }
     
     func alert2<Item>(item: Binding<Item?>,
                       content: @escaping (Item) -> Alert
     ) -> some View where Item: Identifiable {
-        return self.modifier(InspectableAlertWithItem(item: item, alertBuilder: content))
+        return self.modifier(InspectableAlertWithItem(item: item, popupBuilder: content))
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableAlert: ViewModifier, AlertProvider {
+private struct InspectableAlert: ViewModifier, SimplePopupPresenter {
     
     let isPresented: Binding<Bool>
-    let alertBuilder: () -> Alert
+    let popupBuilder: () -> Alert
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.alert(isPresented: isPresented, content: alertBuilder)
+        content.alert(isPresented: isPresented, content: popupBuilder)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier, AlertItemProvider {
-    
+private struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier, ItemPopupPresenter {
     let item: Binding<Item?>
-    let alertBuilder: (Item) -> Alert
+    let popupBuilder: (Item) -> Alert
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.alert(item: item, content: alertBuilder)
+        content.alert(item: item, content: popupBuilder)
     }
 }
 

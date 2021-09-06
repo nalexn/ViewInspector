@@ -190,35 +190,36 @@ final class ActionSheetTests: XCTestCase {
 private extension View {
     func actionSheet2(isPresented: Binding<Bool>,
                       content: @escaping () -> ActionSheet) -> some View {
-        return self.modifier(InspectableActionSheet(isPresented: isPresented, sheetBuilder: content))
+        return self.modifier(InspectableActionSheet(isPresented: isPresented, popupBuilder: content))
     }
     
     func actionSheet2<Item>(item: Binding<Item?>,
                             content: @escaping (Item) -> ActionSheet
     ) -> some View where Item: Identifiable {
-        return self.modifier(InspectableActionSheetWithItem(item: item, sheetBuilder: content))
+        return self.modifier(InspectableActionSheetWithItem(item: item, popupBuilder: content))
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableActionSheet: ViewModifier, ActionSheetProvider {
-    
+private struct InspectableActionSheet: ViewModifier, SimplePopupPresenter {
     let isPresented: Binding<Bool>
-    let sheetBuilder: () -> ActionSheet
+    let popupBuilder: () -> ActionSheet
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.actionSheet(isPresented: isPresented, content: sheetBuilder)
+        content.actionSheet(isPresented: isPresented, content: popupBuilder)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableActionSheetWithItem<Item: Identifiable>: ViewModifier, ActionSheetItemProvider {
+private struct InspectableActionSheetWithItem<Item: Identifiable>: ViewModifier, ItemPopupPresenter {
     
     let item: Binding<Item?>
-    let sheetBuilder: (Item) -> ActionSheet
+    let popupBuilder: (Item) -> ActionSheet
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.actionSheet(item: item, content: sheetBuilder)
+        content.actionSheet(item: item, content: popupBuilder)
     }
 }
 

@@ -51,27 +51,31 @@ public extension InspectableView {
 internal extension Content {
 
     func fullScreenCover(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.FullScreenCover> {
-        guard let fullScreenCoverBuilder = try? self.modifierAttribute(
+        guard let fullScreenCoverPresenter = try? self.modifierAttribute(
                 modifierLookup: { isFullScreenCoverBuilder(modifier: $0) }, path: "modifier",
-                type: FullScreenCoverBuilder.self, call: "", index: index ?? 0)
+                type: PopupPresenter.self, call: "", index: index ?? 0)
         else {
-            _ = try self.modifier({
-                $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
-                || $0.modifierType.contains("SheetPresentationModifier")
-            }, call: "fullScreenCover")
+            _ = try standardFullScreenCoverModifier()
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the FullScreenCover: \
                 https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
                 """)
         }
-        let view = try fullScreenCoverBuilder.buildFullScreenCover()
-        let container = ViewType.FullScreenCover.Container(view: view, builder: fullScreenCoverBuilder)
+        let view = try fullScreenCoverPresenter.buildPopup()
+        let container = ViewType.FullScreenCover.Container(view: view, presenter: fullScreenCoverPresenter)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
         let call = ViewType.inspectionCall(
             base: ViewType.FullScreenCover.inspectionCall(typeName: ""), index: index)
         return try .init(content, parent: parent, call: call, index: index)
+    }
+    
+    func standardFullScreenCoverModifier() throws -> Any {
+        return try self.modifier({
+            $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
+            || $0.modifierType.contains("SheetPresentationModifier")
+        }, call: "fullScreenCover")
     }
 
     func fullScreenCoversForSearch() -> [ViewSearch.ModifierIdentity] {
@@ -86,8 +90,9 @@ internal extension Content {
     }
 
     private func isFullScreenCoverBuilder(modifier: Any) -> Bool {
-        return (try? Inspector.attribute(
-            label: "modifier", value: modifier, type: FullScreenCoverBuilder.self)) != nil
+        let modifier = try? Inspector.attribute(
+            label: "modifier", value: modifier, type: PopupPresenter.self)
+        return modifier?.isFullScreenCoverPresenter == true
     }
 }
 
@@ -95,7 +100,7 @@ internal extension Content {
 internal extension ViewType.FullScreenCover {
     struct Container: CustomViewIdentityMapping {
         let view: Any
-        let builder: FullScreenCoverBuilder
+        let presenter: PopupPresenter
 
         var viewTypeForSearch: KnownViewType.Type { ViewType.FullScreenCover.self }
     }
@@ -109,57 +114,6 @@ public extension InspectableView where View == ViewType.FullScreenCover {
 
     func callOnDismiss() throws {
         let fullScreenCover = try Inspector.cast(value: content.view, type: ViewType.FullScreenCover.Container.self)
-        fullScreenCover.builder.dismissPopup()
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol FullScreenCoverBuilder: SystemPopupPresenter {
-    var onDismiss: (() -> Void)? { get }
-    func buildFullScreenCover() throws -> Any
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol FullScreenCoverProvider: FullScreenCoverBuilder {
-    var isPresented: Binding<Bool> { get }
-    var fullScreenCoverBuilder: () -> Any { get }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol FullScreenCoverItemProvider: FullScreenCoverBuilder {
-    associatedtype Item: Identifiable
-    var item: Binding<Item?> { get }
-    var fullScreenCoverBuilder: (Item) -> Any { get }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension FullScreenCoverProvider {
-
-    func buildFullScreenCover() throws -> Any {
-        guard isPresented.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "FullScreenCover")
-        }
-        return fullScreenCoverBuilder()
-    }
-
-    func dismissPopup() {
-        isPresented.wrappedValue = false
-        onDismiss?()
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension FullScreenCoverItemProvider {
-
-    func buildFullScreenCover() throws -> Any {
-        guard let value = item.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "FullScreenCover")
-        }
-        return fullScreenCoverBuilder(value)
-    }
-
-    func dismissPopup() {
-        item.wrappedValue = nil
-        onDismiss?()
+        fullScreenCover.presenter.dismissPopup()
     }
 }

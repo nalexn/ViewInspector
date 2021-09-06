@@ -217,13 +217,13 @@ private extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectablePopover<Popover>: ViewModifier, PopoverProvider where Popover: View {
+private struct InspectablePopover<Popover>: ViewModifier, SimplePopupPresenter where Popover: View {
     
     let isPresented: Binding<Bool>
     let attachmentAnchor: PopoverAttachmentAnchor
     let arrowEdge: Edge
-    let content: () -> Popover
-    let popoverBuilder: () -> Any
+    let popupBuilder: () -> Popover
+    let onDismiss: (() -> Void)? = nil
     
     init(isPresented: Binding<Bool>,
          attachmentAnchor: PopoverAttachmentAnchor,
@@ -232,24 +232,24 @@ private struct InspectablePopover<Popover>: ViewModifier, PopoverProvider where 
         self.isPresented = isPresented
         self.attachmentAnchor = attachmentAnchor
         self.arrowEdge = arrowEdge
-        self.content = content
-        self.popoverBuilder = { content() as Any }
+        self.popupBuilder = content
     }
     
     func body(content: Self.Content) -> some View {
-        content.popover(isPresented: isPresented, content: self.content)
+        content.popover(isPresented: isPresented, attachmentAnchor: attachmentAnchor,
+                        arrowEdge: arrowEdge, content: popupBuilder)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectablePopoverWithItem<Item, Popover>: ViewModifier, PopoverItemProvider
+private struct InspectablePopoverWithItem<Item, Popover>: ViewModifier, ItemPopupPresenter
 where Item: Identifiable, Popover: View {
     
     let item: Binding<Item?>
     let attachmentAnchor: PopoverAttachmentAnchor
     let arrowEdge: Edge
-    let content: (Item) -> Popover
-    let popoverBuilder: (Item) -> Any
+    let popupBuilder: (Item) -> Popover
+    let onDismiss: (() -> Void)? = nil
     
     init(item: Binding<Item?>,
          attachmentAnchor: PopoverAttachmentAnchor,
@@ -258,12 +258,12 @@ where Item: Identifiable, Popover: View {
         self.item = item
         self.attachmentAnchor = attachmentAnchor
         self.arrowEdge = arrowEdge
-        self.content = content
-        self.popoverBuilder = { content($0) as Any }
+        self.popupBuilder = content
     }
     
     func body(content: Self.Content) -> some View {
-        content.popover(item: item, content: self.content)
+        content.popover(item: item, attachmentAnchor: attachmentAnchor,
+                        arrowEdge: arrowEdge, content: popupBuilder)
     }
 }
 

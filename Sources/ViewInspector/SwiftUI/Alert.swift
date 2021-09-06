@@ -30,9 +30,9 @@ public extension InspectableView {
 internal extension Content {
     
     func alert(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Alert> {
-        guard let alertBuilder = try? self.modifierAttribute(
-                modifierLookup: { isAlertBuilder(modifier: $0) }, path: "modifier",
-                type: AlertBuilder.self, call: "", index: index ?? 0)
+        guard let alertPresenter = try? self.modifierAttribute(
+                modifierLookup: { isAlertPresenter(modifier: $0) }, path: "modifier",
+                type: PopupPresenter.self, call: "", index: index ?? 0)
         else {
             _ = try self.modifier({
                 $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
@@ -44,8 +44,8 @@ internal extension Content {
                 https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
                 """)
         }
-        let alert = try alertBuilder.buildAlert()
-        let container = ViewType.Alert.Container(alert: alert, builder: alertBuilder)
+        let alert = try alertPresenter.buildPopup()
+        let container = ViewType.Alert.Container(alert: alert, presenter: alertPresenter)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
         let call = ViewType.inspectionCall(
@@ -55,7 +55,7 @@ internal extension Content {
     
     func alertsForSearch() -> [ViewSearch.ModifierIdentity] {
         let count = medium.viewModifiers
-            .filter { isAlertBuilder(modifier: $0) }
+            .filter { isAlertPresenter(modifier: $0) }
             .count
         return Array(0..<count).map { _ in
             .init(name: "", builder: { parent, index in
@@ -64,18 +64,18 @@ internal extension Content {
         }
     }
     
-    private func isAlertBuilder(modifier: Any) -> Bool {
-        return (try? Inspector.attribute(
-            label: "modifier", value: modifier, type: AlertBuilder.self)) != nil
+    private func isAlertPresenter(modifier: Any) -> Bool {
+        let modifier = try? Inspector.attribute(
+            label: "modifier", value: modifier, type: PopupPresenter.self)
+        return modifier?.isAlertPresenter == true
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType.Alert {
     struct Container: CustomViewIdentityMapping {
-        let alert: SwiftUI.Alert
-        let builder: AlertBuilder
-        
+        let alert: Any
+        let presenter: PopupPresenter
         var viewTypeForSearch: KnownViewType.Type { ViewType.Alert.self }
     }
 }
@@ -205,66 +205,13 @@ public extension InspectableView where View == ViewType.AlertButton {
     func tap() throws {
         guard let container = self.parentView?.content.view,
             let presenter = try? Inspector.attribute(
-                label: "builder", value: container,
-                type: SystemPopupPresenter.self)
+                label: "presenter", value: container,
+                type: PopupPresenter.self)
         else { throw InspectionError.parentViewNotFound(view: "Alert.Button") }
         presenter.dismissPopup()
         typealias Callback = () -> Void
         let callback = try Inspector
             .attribute(label: "action", value: content.view, type: Callback.self)
         callback()
-    }
-}
-
-// MARK: - Alert inspection protocols
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol SystemPopupPresenter {
-    func dismissPopup()
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol AlertBuilder: SystemPopupPresenter {
-    func buildAlert() throws -> Alert
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol AlertProvider: AlertBuilder {
-    var isPresented: Binding<Bool> { get }
-    var alertBuilder: () -> Alert { get }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol AlertItemProvider: AlertBuilder {
-    associatedtype Item: Identifiable
-    var item: Binding<Item?> { get }
-    var alertBuilder: (Item) -> Alert { get }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension AlertProvider {
-    func buildAlert() throws -> Alert {
-        guard isPresented.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "Alert")
-        }
-        return alertBuilder()
-    }
-    
-    func dismissPopup() {
-        isPresented.wrappedValue = false
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension AlertItemProvider {
-    func buildAlert() throws -> Alert {
-        guard let value = item.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "Alert")
-        }
-        return alertBuilder(value)
-    }
-    
-    func dismissPopup() {
-        item.wrappedValue = nil
     }
 }

@@ -171,45 +171,41 @@ private extension View {
 
 @available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 @available(macOS, unavailable)
-private struct InspectableFullScreenCover<FullScreenCover>: ViewModifier, FullScreenCoverProvider
+private struct InspectableFullScreenCover<FullScreenCover>: ViewModifier, SimplePopupPresenter
 where FullScreenCover: View {
 
     let isPresented: Binding<Bool>
     let onDismiss: (() -> Void)?
-    let content: () -> FullScreenCover
-    let fullScreenCoverBuilder: () -> Any
+    let popupBuilder: () -> FullScreenCover
 
     init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> FullScreenCover) {
         self.isPresented = isPresented
         self.onDismiss = onDismiss
-        self.content = content
-        self.fullScreenCoverBuilder = { content() as Any }
+        self.popupBuilder = content
     }
 
     func body(content: Self.Content) -> some View {
-        content.fullScreenCover(isPresented: isPresented, content: self.content)
+        content.fullScreenCover(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 
 @available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 @available(macOS, unavailable)
-private struct InspectableFullScreenCoverWithItem<Item, FullScreenCover>: ViewModifier, FullScreenCoverItemProvider
+private struct InspectableFullScreenCoverWithItem<Item, FullScreenCover>: ViewModifier, ItemPopupPresenter
 where Item: Identifiable, FullScreenCover: View {
 
     let item: Binding<Item?>
     let onDismiss: (() -> Void)?
-    let content: (Item) -> FullScreenCover
-    let fullScreenCoverBuilder: (Item) -> Any
+    let popupBuilder: (Item) -> FullScreenCover
 
     init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> FullScreenCover) {
         self.item = item
         self.onDismiss = onDismiss
-        self.content = content
-        self.fullScreenCoverBuilder = { content($0) as Any }
+        self.popupBuilder = content
     }
 
     func body(content: Self.Content) -> some View {
-        content.fullScreenCover(item: item, onDismiss: onDismiss, content: self.content)
+        content.fullScreenCover(item: item, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 

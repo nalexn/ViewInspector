@@ -52,26 +52,30 @@ public extension InspectableView {
 internal extension Content {
     
     func popover(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Popover> {
-        guard let popoverBuilder = try? self.modifierAttribute(
+        guard let popoverPresenter = try? self.modifierAttribute(
             modifierLookup: { isPopoverBuilder(modifier: $0) }, path: "modifier",
-            type: PopoverBuilder.self, call: "", index: index ?? 0)
+            type: PopupPresenter.self, call: "", index: index ?? 0)
         else {
-            _ = try modifierAttribute(
-                modifierName: "PopoverPresentationModifier", path: "modifier",
-                type: Any.self, call: "popover")
+            _ = try standardPopoverModifier()
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the Popover: \
                 https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
                 """)
         }
-        let view = try popoverBuilder.buildPopover()
-        let container = ViewType.Popover.Container(view: view, builder: popoverBuilder)
+        let view = try popoverPresenter.buildPopup()
+        let container = ViewType.Popover.Container(view: view, presenter: popoverPresenter)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
         let call = ViewType.inspectionCall(
             base: ViewType.Popover.inspectionCall(typeName: ""), index: index)
         return try .init(content, parent: parent, call: call, index: index)
+    }
+    
+    func standardPopoverModifier() throws -> Any {
+        return try modifierAttribute(
+            modifierName: "PopoverPresentationModifier", path: "modifier",
+            type: Any.self, call: "popover")
     }
     
     func popoversForSearch() -> [ViewSearch.ModifierIdentity] {
@@ -86,8 +90,9 @@ internal extension Content {
     }
     
     private func isPopoverBuilder(modifier: Any) -> Bool {
-        return (try? Inspector.attribute(
-            label: "modifier", value: modifier, type: PopoverBuilder.self)) != nil
+        let modifier = try? Inspector.attribute(
+            label: "modifier", value: modifier, type: PopupPresenter.self)
+        return modifier?.isPopoverPresenter == true
     }
 }
 
@@ -95,69 +100,9 @@ internal extension Content {
 internal extension ViewType.Popover {
     struct Container: CustomViewIdentityMapping {
         let view: Any
-        let builder: PopoverBuilder
+        let presenter: PopupPresenter
         
         var viewTypeForSearch: KnownViewType.Type { ViewType.Popover.self }
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-public protocol PopoverBuilder: SystemPopupPresenter {
-    var attachmentAnchor: PopoverAttachmentAnchor { get }
-    var arrowEdge: Edge { get }
-    func buildPopover() throws -> Any
-}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-public protocol PopoverProvider: PopoverBuilder {
-    var isPresented: Binding<Bool> { get }
-    var popoverBuilder: () -> Any { get }
-}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-public protocol PopoverItemProvider: PopoverBuilder {
-    associatedtype Item: Identifiable
-    var item: Binding<Item?> { get }
-    var popoverBuilder: (Item) -> Any { get }
-}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-public extension PopoverProvider {
-    
-    func buildPopover() throws -> Any {
-        guard isPresented.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "Popover")
-        }
-        return popoverBuilder()
-    }
-    
-    func dismissPopup() {
-        isPresented.wrappedValue = false
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-public extension PopoverItemProvider {
-    
-    func buildPopover() throws -> Any {
-        guard let value = item.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "Popover")
-        }
-        return popoverBuilder(value)
-    }
-    
-    func dismissPopup() {
-        item.wrappedValue = nil
     }
 }
 
@@ -170,17 +115,21 @@ public extension InspectableView where View == ViewType.Popover {
     
     func callOnDismiss() throws {
         let popover = try Inspector.cast(value: content.view, type: ViewType.Popover.Container.self)
-        popover.builder.dismissPopup()
+        popover.presenter.dismissPopup()
     }
     
     func arrowEdge() throws -> Edge {
         let popover = try Inspector.cast(value: content.view, type: ViewType.Popover.Container.self)
-        return popover.builder.arrowEdge
+        let modifier = try popover.presenter.content().standardPopoverModifier()
+        return try Inspector.attribute(
+            label: "arrowEdge", value: modifier, type: Edge.self)
     }
     
     func attachmentAnchor() throws -> PopoverAttachmentAnchor {
         let popover = try Inspector.cast(value: content.view, type: ViewType.Popover.Container.self)
-        return popover.builder.attachmentAnchor
+        let modifier = try popover.presenter.content().standardPopoverModifier()
+        return try Inspector.attribute(
+            label: "attachmentAnchor", value: modifier, type: PopoverAttachmentAnchor.self)
     }
 }
 
