@@ -6,10 +6,8 @@ import SwiftUI
 public extension ViewType {
     
     struct ActionSheet: KnownViewType {
-        public static var typePrefix: String = "ViewType.ActionSheet.Container"
-        public static var namespacedPrefixes: [String] {
-            return ["ViewInspector." + typePrefix]
-        }
+        public static var typePrefix: String = ViewType.PopupContainer<ActionSheet>.typePrefix
+        public static var namespacedPrefixes: [String] { [typePrefix] }
         public static func inspectionCall(typeName: String) -> String {
             return "actionSheet(\(ViewType.indexPlaceholder))"
         }
@@ -32,27 +30,16 @@ public extension InspectableView {
 internal extension Content {
     
     func actionSheet(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ActionSheet> {
-        guard let sheetPresenter = try? self.modifierAttribute(
-                modifierLookup: { isActionSheetBuilder(modifier: $0) }, path: "modifier",
-                type: PopupPresenter.self, call: "", index: index ?? 0)
-        else {
-            _ = try self.modifier({
-                $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
-                || $0.modifierType.contains("AlertTransformModifier")
-            }, call: "actionSheet")
-            throw InspectionError.notSupported(
-                """
-                Please refer to the Guide for inspecting the ActionSheet: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
-                """)
-        }
-        let sheet = try sheetPresenter.buildPopup()
-        let container = ViewType.ActionSheet.Container(sheet: sheet, presenter: sheetPresenter)
-        let medium = self.medium.resettingViewModifiers()
-        let content = Content(container, medium: medium)
-        let call = ViewType.inspectionCall(
-            base: ViewType.ActionSheet.inspectionCall(typeName: ""), index: index)
-        return try .init(content, parent: parent, call: call, index: index)
+        return try popup(parent: parent, index: index,
+                         modifierPredicate: isActionSheetBuilder(modifier:),
+                         standardPredicate: standardActionSheetModifier)
+    }
+    
+    func standardActionSheetModifier() throws -> Any {
+        return try self.modifier({
+            $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
+            || $0.modifierType.contains("AlertTransformModifier")
+        }, call: "actionSheet")
     }
     
     func actionSheetsForSearch() -> [ViewSearch.ModifierIdentity] {
@@ -70,16 +57,6 @@ internal extension Content {
         let modifier = try? Inspector.attribute(
             label: "modifier", value: modifier, type: PopupPresenter.self)
         return modifier?.isActionSheetPresenter == true
-    }
-}
-
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
-internal extension ViewType.ActionSheet {
-    struct Container: CustomViewIdentityMapping {
-        let sheet: Any
-        let presenter: PopupPresenter
-        var viewTypeForSearch: KnownViewType.Type { ViewType.ActionSheet.self }
     }
 }
 
@@ -114,18 +91,18 @@ public extension InspectableView where View == ViewType.ActionSheet {
 extension ViewType.ActionSheet: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         let buttons = try Inspector.attribute(
-            path: "sheet|buttons", value: parent.content.view, type: [Any].self)
+            path: "popup|buttons", value: parent.content.view, type: [Any].self)
         return .init(count: 2 + buttons.count) { index in
             let medium = parent.content.medium.resettingViewModifiers()
             switch index {
             case 0:
-                let view = try Inspector.attribute(path: "sheet|title", value: parent.content.view)
+                let view = try Inspector.attribute(path: "popup|title", value: parent.content.view)
                 let content = try Inspector.unwrap(content: Content(view, medium: medium))
                 return try InspectableView<ViewType.Text>(
                     content, parent: parent, call: "title()")
             case 1:
                 let maybeView = try Inspector.attribute(
-                    path: "sheet|message", value: parent.content.view, type: Text?.self)
+                    path: "popup|message", value: parent.content.view, type: Text?.self)
                 guard let view = maybeView else {
                     throw InspectionError.viewNotFound(parent: "message")
                 }

@@ -141,3 +141,48 @@ public extension PopupPresenter {
     var isSheetPresenter: Bool { false }
     var isFullScreenCoverPresenter: Bool { false }
 }
+
+// MARK: - PopupContainer
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewType {
+    struct PopupContainer<Popup: KnownViewType>: CustomViewIdentityMapping {
+        let popup: Any
+        let presenter: PopupPresenter
+        var viewTypeForSearch: KnownViewType.Type { Popup.self }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewType.PopupContainer {
+    static var typePrefix: String {
+        "ViewInspector.ViewType.PopupContainer<ViewInspector.ViewType.\(Inspector.typeName(type: Popup.self))>"
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    func popup<Popup: KnownViewType>(
+        parent: UnwrappedView, index: Int?,
+        modifierPredicate: ModifierLookupClosure, standardPredicate: () throws -> Any
+    ) throws -> InspectableView<Popup> {
+        guard let popupPresenter = try? self.modifierAttribute(
+                modifierLookup: modifierPredicate, path: "modifier",
+                type: PopupPresenter.self, call: "", index: index ?? 0)
+        else {
+            _ = try standardPredicate()
+            throw InspectionError.notSupported(
+                """
+                Please refer to the Guide for inspecting the \(Inspector.typeName(type: Popup.self)): \
+                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
+                """)
+        }
+        let popup = try popupPresenter.buildPopup()
+        let container = ViewType.PopupContainer<Popup>(popup: popup, presenter: popupPresenter)
+        let medium = self.medium.resettingViewModifiers()
+        let content = Content(container, medium: medium)
+        let call = ViewType.inspectionCall(
+            base: Popup.inspectionCall(typeName: ""), index: index)
+        return try .init(content, parent: parent, call: call, index: index)
+    }
+}

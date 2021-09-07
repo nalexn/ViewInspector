@@ -6,10 +6,8 @@ import SwiftUI
 public extension ViewType {
     
     struct Alert: KnownViewType {
-        public static var typePrefix: String = "ViewType.Alert.Container"
-        public static var namespacedPrefixes: [String] {
-            return ["ViewInspector." + typePrefix]
-        }
+        public static var typePrefix: String = ViewType.PopupContainer<Alert>.typePrefix
+        public static var namespacedPrefixes: [String] { [typePrefix] }
         public static func inspectionCall(typeName: String) -> String {
             return "alert(\(ViewType.indexPlaceholder))"
         }
@@ -30,27 +28,16 @@ public extension InspectableView {
 internal extension Content {
     
     func alert(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Alert> {
-        guard let alertPresenter = try? self.modifierAttribute(
-                modifierLookup: { isAlertPresenter(modifier: $0) }, path: "modifier",
-                type: PopupPresenter.self, call: "", index: index ?? 0)
-        else {
-            _ = try self.modifier({
-                $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
-                || $0.modifierType.contains("AlertTransformModifier")
-            }, call: "alert")
-            throw InspectionError.notSupported(
-                """
-                Please refer to the Guide for inspecting the Alert: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
-                """)
-        }
-        let alert = try alertPresenter.buildPopup()
-        let container = ViewType.Alert.Container(alert: alert, presenter: alertPresenter)
-        let medium = self.medium.resettingViewModifiers()
-        let content = Content(container, medium: medium)
-        let call = ViewType.inspectionCall(
-            base: ViewType.Alert.inspectionCall(typeName: ""), index: index)
-        return try .init(content, parent: parent, call: call, index: index)
+        return try popup(parent: parent, index: index,
+                         modifierPredicate: isAlertPresenter(modifier:),
+                         standardPredicate: standardAlertModifier)
+    }
+    
+    func standardAlertModifier() throws -> Any {
+        return try self.modifier({
+            $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
+            || $0.modifierType.contains("AlertTransformModifier")
+        }, call: "alert")
     }
     
     func alertsForSearch() -> [ViewSearch.ModifierIdentity] {
@@ -68,15 +55,6 @@ internal extension Content {
         let modifier = try? Inspector.attribute(
             label: "modifier", value: modifier, type: PopupPresenter.self)
         return modifier?.isAlertPresenter == true
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension ViewType.Alert {
-    struct Container: CustomViewIdentityMapping {
-        let alert: Any
-        let presenter: PopupPresenter
-        var viewTypeForSearch: KnownViewType.Type { ViewType.Alert.self }
     }
 }
 
@@ -115,13 +93,13 @@ extension ViewType.Alert: SupplementaryChildren {
             let medium = parent.content.medium.resettingViewModifiers()
             switch index {
             case 0:
-                let view = try Inspector.attribute(path: "alert|title", value: parent.content.view)
+                let view = try Inspector.attribute(path: "popup|title", value: parent.content.view)
                 let content = try Inspector.unwrap(content: Content(view, medium: medium))
                 return try InspectableView<ViewType.Text>(
                     content, parent: parent, call: "title()")
             case 1:
                 let maybeView = try Inspector.attribute(
-                    path: "alert|message", value: parent.content.view, type: Text?.self)
+                    path: "popup|message", value: parent.content.view, type: Text?.self)
                 guard let view = maybeView else {
                     throw InspectionError.viewNotFound(parent: "message")
                 }
@@ -129,13 +107,13 @@ extension ViewType.Alert: SupplementaryChildren {
                 return try InspectableView<ViewType.Text>(
                     content, parent: parent, call: "message()")
             case 2:
-                let view = try Inspector.attribute(path: "alert|primaryButton", value: parent.content.view)
+                let view = try Inspector.attribute(path: "popup|primaryButton", value: parent.content.view)
                 let content = try Inspector.unwrap(content: Content(view, medium: medium))
                 return try InspectableView<ViewType.AlertButton>(
                     content, parent: parent, call: "primaryButton()")
             default:
                 let maybeView = try Inspector.attribute(
-                    path: "alert|secondaryButton", value: parent.content.view, type: Alert.Button?.self)
+                    path: "popup|secondaryButton", value: parent.content.view, type: Alert.Button?.self)
                 guard let view = maybeView else {
                     throw InspectionError.viewNotFound(parent: "secondaryButton")
                 }

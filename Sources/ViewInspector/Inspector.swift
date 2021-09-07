@@ -212,7 +212,8 @@ extension Inspector {
         guard let firstPrefix = namespacedPrefixes.first
         else { return }
         let typeWithParams = typeName(type: type(of: value))
-        let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: true)
+        let withGenericParams = firstPrefix.contains("<")
+        let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: !withGenericParams)
         if typePrefix == "SwiftUI.EnvironmentReaderView" {
             if typeWithParams.contains("NavigationBarItemsKey") {
                 throw InspectionError.notSupported(

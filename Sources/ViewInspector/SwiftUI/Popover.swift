@@ -4,10 +4,8 @@ import SwiftUI
 public extension ViewType {
     
     struct Popover: KnownViewType {
-        public static var typePrefix: String = "ViewType.Popover.Container"
-        public static var namespacedPrefixes: [String] {
-            return ["ViewInspector." + typePrefix]
-        }
+        public static var typePrefix: String = ViewType.PopupContainer<Popover>.typePrefix
+        public static var namespacedPrefixes: [String] { [typePrefix] }
         public static func inspectionCall(typeName: String) -> String {
             return "popover(\(ViewType.indexPlaceholder))"
         }
@@ -20,7 +18,7 @@ public extension ViewType {
 extension ViewType.Popover: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
-        let view = try Inspector.attribute(label: "view", value: content.view)
+        let view = try Inspector.attribute(label: "popup", value: content.view)
         let medium = content.medium.resettingViewModifiers()
         return try Inspector.unwrap(view: view, medium: medium)
     }
@@ -30,7 +28,7 @@ extension ViewType.Popover: SingleViewContent {
 extension ViewType.Popover: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        let view = try Inspector.attribute(label: "view", value: content.view)
+        let view = try Inspector.attribute(label: "popup", value: content.view)
         let medium = content.medium.resettingViewModifiers()
         return try Inspector.viewsInContainer(view: view, medium: medium)
     }
@@ -52,24 +50,9 @@ public extension InspectableView {
 internal extension Content {
     
     func popover(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Popover> {
-        guard let popoverPresenter = try? self.modifierAttribute(
-            modifierLookup: { isPopoverBuilder(modifier: $0) }, path: "modifier",
-            type: PopupPresenter.self, call: "", index: index ?? 0)
-        else {
-            _ = try standardPopoverModifier()
-            throw InspectionError.notSupported(
-                """
-                Please refer to the Guide for inspecting the Popover: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
-                """)
-        }
-        let view = try popoverPresenter.buildPopup()
-        let container = ViewType.Popover.Container(view: view, presenter: popoverPresenter)
-        let medium = self.medium.resettingViewModifiers()
-        let content = Content(container, medium: medium)
-        let call = ViewType.inspectionCall(
-            base: ViewType.Popover.inspectionCall(typeName: ""), index: index)
-        return try .init(content, parent: parent, call: call, index: index)
+        return try popup(parent: parent, index: index,
+                         modifierPredicate: isPopoverBuilder(modifier:),
+                         standardPredicate: standardPopoverModifier)
     }
     
     func standardPopoverModifier() throws -> Any {
@@ -96,16 +79,6 @@ internal extension Content {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension ViewType.Popover {
-    struct Container: CustomViewIdentityMapping {
-        let view: Any
-        let presenter: PopupPresenter
-        
-        var viewTypeForSearch: KnownViewType.Type { ViewType.Popover.self }
-    }
-}
-
 // MARK: - Custom Attributes
 
 @available(iOS 13.0, macOS 10.15, *)
@@ -114,19 +87,19 @@ internal extension ViewType.Popover {
 public extension InspectableView where View == ViewType.Popover {
     
     func callOnDismiss() throws {
-        let popover = try Inspector.cast(value: content.view, type: ViewType.Popover.Container.self)
+        let popover = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
         popover.presenter.dismissPopup()
     }
     
     func arrowEdge() throws -> Edge {
-        let popover = try Inspector.cast(value: content.view, type: ViewType.Popover.Container.self)
+        let popover = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
         let modifier = try popover.presenter.content().standardPopoverModifier()
         return try Inspector.attribute(
             label: "arrowEdge", value: modifier, type: Edge.self)
     }
     
     func attachmentAnchor() throws -> PopoverAttachmentAnchor {
-        let popover = try Inspector.cast(value: content.view, type: ViewType.Popover.Container.self)
+        let popover = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
         let modifier = try popover.presenter.content().standardPopoverModifier()
         return try Inspector.attribute(
             label: "attachmentAnchor", value: modifier, type: PopoverAttachmentAnchor.self)
