@@ -45,6 +45,8 @@
 		52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A4A7632621F4AE0063E00B /* Overlay.swift */; };
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
 		52D37480262B1F0C00B1BFBA /* NestedModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */; };
+		52E24E9926E9378A00711987 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E24E9826E9378A00711987 /* ConfirmationDialog.swift */; };
+		52E24E9B26E93A4700711987 /* ConfirmationDialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E24E9A26E93A4700711987 /* ConfirmationDialogTests.swift */; };
 		52F356AA267692D100695E43 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F356A9267692D100695E43 /* MapAnnotation.swift */; };
 		52F356AC2676940A00695E43 /* MapAnnotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F356AB2676940A00695E43 /* MapAnnotationTests.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
@@ -293,6 +295,8 @@
 		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
 		52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModifiersTests.swift; sourceTree = "<group>"; };
+		52E24E9826E9378A00711987 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
+		52E24E9A26E93A4700711987 /* ConfirmationDialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialogTests.swift; sourceTree = "<group>"; };
 		52F356A9267692D100695E43 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		52F356AB2676940A00695E43 /* MapAnnotationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotationTests.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
@@ -607,6 +611,7 @@
 				F64C4E2B250CD60800A69FF9 /* Color.swift */,
 				F6FB7F5725476431006658EF /* ColorPicker.swift */,
 				F64057EC238DB1530029D9BA /* ConditionalContent.swift */,
+				52E24E9826E9378A00711987 /* ConfirmationDialog.swift */,
 				F60EEBBE2382EED0007DB53A /* CustomView.swift */,
 				520F8C12266D0E600026BC57 /* CustomViewModifier.swift */,
 				F60EEBBF2382EED0007DB53A /* DatePicker.swift */,
@@ -716,6 +721,7 @@
 				F64C4E2F250CD71400A69FF9 /* ColorTests.swift */,
 				F6FB7F6125476480006658EF /* ColorPickerTests.swift */,
 				F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */,
+				52E24E9A26E93A4700711987 /* ConfirmationDialogTests.swift */,
 				F60EEBEF2382F004007DB53A /* CustomViewTests.swift */,
 				F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */,
 				F69C91CB2383189200515A91 /* CustomViewModifierTests.swift */,
@@ -1068,6 +1074,7 @@
 				F609EFBD23A40B8800B9256A /* DelayedPreferenceView.swift in Sources */,
 				F6684BF223AA554500DECCB3 /* PasteButton.swift in Sources */,
 				F60EEBD12382EED0007DB53A /* DatePicker.swift in Sources */,
+				52E24E9926E9378A00711987 /* ConfirmationDialog.swift in Sources */,
 				F64A2C6823A3FD3A00A4853A /* TreeView.swift in Sources */,
 				F6A35A4025B35E920068B8B2 /* LazyGroup.swift in Sources */,
 				F64057EF238DBA800029D9BA /* EmptyView.swift in Sources */,
@@ -1148,6 +1155,7 @@
 				F614E66625B36ACC000C4F66 /* InspectableViewTests.swift in Sources */,
 				F6684BF823AA58F200DECCB3 /* AngularGradientTests.swift in Sources */,
 				F6684C0023AA864F00DECCB3 /* RadialGradientTests.swift in Sources */,
+				52E24E9B26E93A4700711987 /* ConfirmationDialogTests.swift in Sources */,
 				F6C15A31254A0F29000240F1 /* LazyVStackTests.swift in Sources */,
 				CDA844DA262B81CD00C56C98 /* SimultaneousGestureTests.swift in Sources */,
 				F6D933B92385EDDF00358E0E /* PickerTests.swift in Sources */,

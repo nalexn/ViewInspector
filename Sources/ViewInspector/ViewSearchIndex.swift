@@ -11,6 +11,7 @@ internal extension ViewSearch {
             .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
             .init(ViewType.Button.self),
             .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
+            .init(ViewType.ConfirmationDialog.self),
             .init(ViewType.DatePicker.self), .init(ViewType.DisclosureGroup.self),
             .init(ViewType.Divider.self),
             .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
@@ -250,6 +251,9 @@ internal extension ViewSearch {
         }),
         .init(name: ViewType.Toolbar.typePrefix, builder: { parent, index in
             try parent.content.toolbar(parent: parent, index: index)
+        }),
+        .init(name: ViewType.ConfirmationDialog.typePrefix, builder: { parent, index in
+            try parent.content.confirmationDialog(parent: parent, index: index)
         }),
         .init(name: "PopoverPresentationModifier", builder: { parent, index in
             try parent.content.popover(parent: parent, index: index)
