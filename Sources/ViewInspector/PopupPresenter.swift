@@ -85,12 +85,14 @@ public extension ItemPopupPresenter where Popup == Alert {
 
 // MARK: - ActionSheet
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 public extension SimplePopupPresenter where Popup == ActionSheet {
     var isActionSheetPresenter: Bool { true }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
 public extension ItemPopupPresenter where Popup == ActionSheet {
     var isActionSheetPresenter: Bool { true }
 }

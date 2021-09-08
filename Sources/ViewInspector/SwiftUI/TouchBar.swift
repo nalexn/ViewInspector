@@ -73,7 +73,7 @@ internal extension Content {
     func touchBar(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.TouchBar> {
         let rootView = try modifierAttribute(
             modifierName: "_TouchBarModifier", path: "modifier|touchBar",
-            type: Any.self, call: "touchBar", index: index)
+            type: Any.self, call: "touchBar", index: index ?? 0)
         let content = try Inspector.unwrap(content: Content(rootView))
         let call = ViewType.inspectionCall(
             base: ViewType.TouchBar.inspectionCall(typeName: ""), index: nil)
