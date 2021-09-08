@@ -42,7 +42,7 @@ internal extension Content {
     
     func alertsForSearch() -> [ViewSearch.ModifierIdentity] {
         let count = medium.viewModifiers
-            .filter { isAlertPresenter(modifier: $0) }
+            .filter(isAlertPresenter(modifier:))
             .count
         return Array(0..<count).map { _ in
             .init(name: "", builder: { parent, index in

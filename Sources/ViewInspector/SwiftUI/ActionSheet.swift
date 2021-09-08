@@ -44,7 +44,7 @@ internal extension Content {
     
     func actionSheetsForSearch() -> [ViewSearch.ModifierIdentity] {
         let count = medium.viewModifiers
-            .filter { isActionSheetBuilder(modifier: $0) }
+            .filter(isActionSheetBuilder(modifier:))
             .count
         return Array(0..<count).map { _ in
             .init(name: "", builder: { parent, index in

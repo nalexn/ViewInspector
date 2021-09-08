@@ -63,7 +63,7 @@ internal extension Content {
     
     func popoversForSearch() -> [ViewSearch.ModifierIdentity] {
         let count = medium.viewModifiers
-            .filter { isPopoverBuilder(modifier: $0) }
+            .filter(isPopoverBuilder(modifier:))
             .count
         return Array(0..<count).map { _ in
             .init(name: "", builder: { parent, index in
