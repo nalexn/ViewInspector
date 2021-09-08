@@ -5,6 +5,9 @@ public extension ViewType {
     
     struct Shape: KnownViewType {
         public static var typePrefix: String = ""
+        public static func inspectionCall(typeName: String) -> String {
+            return "shape(\(ViewType.indexPlaceholder))"
+        }
     }
 }
 
@@ -15,7 +18,7 @@ public extension InspectableView where View: SingleViewContent {
     
     func shape() throws -> InspectableView<ViewType.Shape> {
         let content = try child()
-        try guardShapeIsInspectable(content.view)
+        try content.throwIfNotShape()
         return try .init(content, parent: self)
     }
 }
@@ -27,7 +30,7 @@ public extension InspectableView where View: MultipleViewContent {
     
     func shape(_ index: Int) throws -> InspectableView<ViewType.Shape> {
         let content = try child(at: index)
-        try guardShapeIsInspectable(content.view)
+        try content.throwIfNotShape()
         return try .init(content, parent: self, index: index)
     }
 }
@@ -97,12 +100,6 @@ public extension InspectableView where View == ViewType.Shape {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension InspectableView {
     
-    func guardShapeIsInspectable(_ view: Any) throws {
-        guard view is InspectableShape || Inspector.typeName(value: view) == "_Inset" else {
-            throw InspectionError.typeMismatch(view, InspectableShape.self)
-        }
-    }
-    
     func shapeAttribute<T>(_ view: Any, _ shapeType: String, _ label: String, _ attributeType: T.Type
     ) throws -> T {
         let shape = try lookupShape(view, typeName: shapeType, label: label)
@@ -119,6 +116,24 @@ private extension InspectableView {
             throw InspectionError.attributeNotFound(label: label, type: typeName)
         }
         return try lookupShape(containedShape, typeName: typeName, label: label)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension Content {
+    var isShape: Bool {
+        do {
+            try throwIfNotShape()
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    fileprivate func throwIfNotShape() throws {
+        guard view is InspectableShape || Inspector.typeName(value: view) == "_Inset" else {
+            throw InspectionError.typeMismatch(view, InspectableShape.self)
+        }
     }
 }
 

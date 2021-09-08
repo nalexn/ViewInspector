@@ -65,6 +65,9 @@ internal extension ViewSearch {
             let letter = String(viewType.typePrefix.prefix(1))
             return index[letter]?.first(where: { $0.viewType == viewType })
         }
+        if content.isShape {
+            return .init(ViewType.Shape.self)
+        }
         let shortPrefix = Inspector.typeName(value: content.view, prefixOnly: true)
         let longPrefix = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
         if shortPrefix.count > 0,
