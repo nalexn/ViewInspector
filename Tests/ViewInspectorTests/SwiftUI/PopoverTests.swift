@@ -65,22 +65,24 @@ final class PopoverTests: XCTestCase {
         XCTAssertEqual(button.pathToRoot, "emptyView().popover().button(1)")
     }
     
-    func testOnDismiss() throws {
+    func testDismiss() throws {
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().popover2(isPresented: binding, content: { Text("") })
         XCTAssertTrue(binding.wrappedValue)
-        try sut.inspect().popover().callOnDismiss()
+        try sut.inspect().popover().dismiss()
         XCTAssertFalse(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().popover(), "View for Popover is absent")
     }
     
-    func testContentWithItemInspection() throws {
+    func testDismissForItemVersion() throws {
         let binding = Binding<Int?>(wrappedValue: 6)
         let sut = EmptyView().popover2(item: binding) { Text("\($0)") }
         let popover = try sut.inspect().emptyView().popover()
         XCTAssertEqual(try popover.text().string(), "6")
         XCTAssertEqual(binding.wrappedValue, 6)
-        try popover.callOnDismiss()
+        try popover.dismiss()
         XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().popover(), "View for Popover is absent")
     }
     
     func testMultiplePopoversInspection() throws {
@@ -217,7 +219,7 @@ private extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectablePopover<Popover>: ViewModifier, SimplePopupPresenter where Popover: View {
+private struct InspectablePopover<Popover>: ViewModifier, PopupPresenter where Popover: View {
     
     let isPresented: Binding<Bool>
     let attachmentAnchor: PopoverAttachmentAnchor

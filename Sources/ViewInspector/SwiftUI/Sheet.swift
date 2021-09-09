@@ -75,7 +75,7 @@ internal extension Content {
     
     private func isSheetBuilder(modifier: Any) -> Bool {
         let modifier = try? Inspector.attribute(
-            label: "modifier", value: modifier, type: PopupPresenter.self)
+            label: "modifier", value: modifier, type: BasePopupPresenter.self)
         return modifier?.isSheetPresenter == true
     }
 }
@@ -85,8 +85,13 @@ internal extension Content {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.Sheet {
 
+    func dismiss() throws {
+        let container = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Sheet>.self)
+        container.presenter.dismissPopup()
+    }
+    
+    @available(*, deprecated, renamed: "dismiss")
     func callOnDismiss() throws {
-        let sheet = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Sheet>.self)
-        sheet.presenter.dismissPopup()
+        try dismiss()
     }
 }

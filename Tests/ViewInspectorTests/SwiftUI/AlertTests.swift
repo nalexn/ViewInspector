@@ -178,6 +178,27 @@ final class AlertTests: XCTestCase {
         XCTAssertNil(binding.wrappedValue)
     }
     
+    func testDismiss() throws {
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().alert2(isPresented: binding) {
+            Alert(title: Text("abc"))
+        }
+        XCTAssertTrue(binding.wrappedValue)
+        try sut.inspect().alert().dismiss()
+        XCTAssertFalse(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().alert(), "View for Alert is absent")
+    }
+    
+    func testDismissForItemVersion() throws {
+        let binding = Binding<Int?>(wrappedValue: 6)
+        let sut = EmptyView().alert2(item: binding) { value in
+            Alert(title: Text("\(value)"))
+        }
+        try sut.inspect().emptyView().alert().dismiss()
+        XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().alert(), "View for Alert is absent")
+    }
+    
     func testMultipleAlertsInspection() throws {
         let binding1 = Binding(wrappedValue: true)
         let binding2 = Binding(wrappedValue: true)
@@ -249,7 +270,7 @@ private extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableAlert: ViewModifier, SimplePopupPresenter {
+private struct InspectableAlert: ViewModifier, PopupPresenter {
     
     let isPresented: Binding<Bool>
     let popupBuilder: () -> Alert

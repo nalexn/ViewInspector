@@ -55,7 +55,7 @@ internal extension Content {
     
     private func isActionSheetBuilder(modifier: Any) -> Bool {
         let modifier = try? Inspector.attribute(
-            label: "modifier", value: modifier, type: PopupPresenter.self)
+            label: "modifier", value: modifier, type: BasePopupPresenter.self)
         return modifier?.isActionSheetPresenter == true
     }
 }
@@ -82,6 +82,12 @@ public extension InspectableView where View == ViewType.ActionSheet {
         }
         return try allViews.element(at: index + 2)
             .asInspectableView(ofType: ViewType.AlertButton.self)
+    }
+    
+    func dismiss() throws {
+        let container = try Inspector.cast(
+            value: content.view, type: ViewType.PopupContainer<ViewType.ActionSheet>.self)
+        container.presenter.dismissPopup()
     }
 }
 

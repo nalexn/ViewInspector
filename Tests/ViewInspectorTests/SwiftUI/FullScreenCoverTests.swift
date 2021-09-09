@@ -70,7 +70,7 @@ final class FullScreenCoverTests: XCTestCase {
         XCTAssertEqual(button.pathToRoot, "emptyView().fullScreenCover().button(1)")
     }
 
-    func testOnDismiss() throws {
+    func testDismiss() throws {
         guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let exp = XCTestExpectation(description: #function)
         let binding = Binding(wrappedValue: true)
@@ -78,20 +78,22 @@ final class FullScreenCoverTests: XCTestCase {
             exp.fulfill()
         }, content: { Text("") })
         XCTAssertTrue(binding.wrappedValue)
-        try sut.inspect().fullScreenCover().callOnDismiss()
+        try sut.inspect().fullScreenCover().dismiss()
         XCTAssertFalse(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().fullScreenCover(), "View for Sheet is absent")
         wait(for: [exp], timeout: 0.1)
     }
 
-    func testContentWithItemInspection() throws {
+    func testDismissForItemVersion() throws {
         guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let binding = Binding<Int?>(wrappedValue: 6)
         let sut = EmptyView().fullScreenCover2(item: binding) { Text("\($0)") }
-        let fullScreenCover = try sut.inspect().emptyView().fullScreenCover()
+        let fullScreenCover = try sut.inspect().fullScreenCover()
         XCTAssertEqual(try fullScreenCover.text().string(), "6")
         XCTAssertEqual(binding.wrappedValue, 6)
-        try fullScreenCover.callOnDismiss()
+        try fullScreenCover.dismiss()
         XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().fullScreenCover(), "View for Sheet is absent")
     }
 
     func testMultipleFullScreenCoversInspection() throws {
@@ -171,7 +173,7 @@ private extension View {
 
 @available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 @available(macOS, unavailable)
-private struct InspectableFullScreenCover<FullScreenCover>: ViewModifier, SimplePopupPresenter
+private struct InspectableFullScreenCover<FullScreenCover>: ViewModifier, PopupPresenter
 where FullScreenCover: View {
 
     let isPresented: Binding<Bool>

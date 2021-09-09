@@ -63,26 +63,28 @@ final class SheetTests: XCTestCase {
         XCTAssertEqual(button.pathToRoot, "emptyView().sheet().button(1)")
     }
     
-    func testOnDismiss() throws {
+    func testDismiss() throws {
         let exp = XCTestExpectation(description: #function)
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().sheet2(isPresented: binding, onDismiss: {
             exp.fulfill()
         }, content: { Text("") })
         XCTAssertTrue(binding.wrappedValue)
-        try sut.inspect().sheet().callOnDismiss()
+        try sut.inspect().sheet().dismiss()
         XCTAssertFalse(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().sheet(), "View for Sheet is absent")
         wait(for: [exp], timeout: 0.1)
     }
     
-    func testContentWithItemInspection() throws {
+    func testDismissForItemVersion() throws {
         let binding = Binding<Int?>(wrappedValue: 6)
         let sut = EmptyView().sheet2(item: binding) { Text("\($0)") }
         let sheet = try sut.inspect().emptyView().sheet()
         XCTAssertEqual(try sheet.text().string(), "6")
         XCTAssertEqual(binding.wrappedValue, 6)
-        try sheet.callOnDismiss()
+        try sheet.dismiss()
         XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().sheet(), "View for Sheet is absent")
     }
     
     func testMultipleSheetsInspection() throws {
@@ -149,7 +151,7 @@ private extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableSheet<Sheet>: ViewModifier, SimplePopupPresenter where Sheet: View {
+private struct InspectableSheet<Sheet>: ViewModifier, PopupPresenter where Sheet: View {
     
     let isPresented: Binding<Bool>
     let onDismiss: (() -> Void)?

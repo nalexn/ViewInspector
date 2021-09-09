@@ -134,6 +134,27 @@ final class ActionSheetTests: XCTestCase {
         XCTAssertNil(binding.wrappedValue)
     }
     
+    func testDismiss() throws {
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().actionSheet2(isPresented: binding) {
+            ActionSheet(title: Text("abc"))
+        }
+        XCTAssertTrue(binding.wrappedValue)
+        try sut.inspect().actionSheet().dismiss()
+        XCTAssertFalse(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().actionSheet(), "View for ActionSheet is absent")
+    }
+    
+    func testDismissForItemVersion() throws {
+        let binding = Binding<Int?>(wrappedValue: 6)
+        let sut = EmptyView().actionSheet2(item: binding) { value in
+            ActionSheet(title: Text("\(value)"))
+        }
+        try sut.inspect().emptyView().actionSheet().dismiss()
+        XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().actionSheet(), "View for ActionSheet is absent")
+    }
+    
     func testMultipleSheetsInspection() throws {
         let binding1 = Binding(wrappedValue: true)
         let binding2 = Binding(wrappedValue: true)
@@ -201,7 +222,7 @@ private extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableActionSheet: ViewModifier, SimplePopupPresenter {
+private struct InspectableActionSheet: ViewModifier, PopupPresenter {
     let isPresented: Binding<Bool>
     let popupBuilder: () -> ActionSheet
     let onDismiss: (() -> Void)? = nil

@@ -1,7 +1,7 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol PopupPresenter {
+public protocol BasePopupPresenter {
     func buildPopup() throws -> Any
     func dismissPopup()
     func content() throws -> ViewInspector.Content
@@ -13,7 +13,7 @@ public protocol PopupPresenter {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol SimplePopupPresenter: PopupPresenter {
+public protocol PopupPresenter: BasePopupPresenter {
     associatedtype Popup
     var isPresented: Binding<Bool> { get }
     var popupBuilder: () -> Popup { get }
@@ -21,7 +21,7 @@ public protocol SimplePopupPresenter: PopupPresenter {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol ItemPopupPresenter: PopupPresenter {
+public protocol ItemPopupPresenter: BasePopupPresenter {
     associatedtype Popup
     associatedtype Item: Identifiable
     var item: Binding<Item?> { get }
@@ -32,7 +32,7 @@ public protocol ItemPopupPresenter: PopupPresenter {
 // MARK: - Extensions
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension PopupPresenter {
+extension BasePopupPresenter {
     func subject<T>(_ type: T.Type) -> String {
         if isPopoverPresenter { return "Popover" }
         if isSheetPresenter { return "Sheet" }
@@ -42,7 +42,7 @@ extension PopupPresenter {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension SimplePopupPresenter {
+public extension PopupPresenter {
     func buildPopup() throws -> Any {
         guard isPresented.wrappedValue else {
             throw InspectionError.viewNotFound(parent: subject(Popup.self))
@@ -74,7 +74,7 @@ public extension ItemPopupPresenter {
 // MARK: - Alert
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension SimplePopupPresenter where Popup == Alert {
+public extension PopupPresenter where Popup == Alert {
     var isAlertPresenter: Bool { true }
 }
 
@@ -87,7 +87,7 @@ public extension ItemPopupPresenter where Popup == Alert {
 
 @available(iOS 13.0, tvOS 13.0, *)
 @available(macOS, unavailable)
-public extension SimplePopupPresenter where Popup == ActionSheet {
+public extension PopupPresenter where Popup == ActionSheet {
     var isActionSheetPresenter: Bool { true }
 }
 
@@ -100,7 +100,7 @@ public extension ItemPopupPresenter where Popup == ActionSheet {
 // MARK: - Popover, Sheet & FullScreenCover
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension ViewModifier where Self: PopupPresenter {
+public extension ViewModifier where Self: BasePopupPresenter {
     func content() throws -> ViewInspector.Content {
         let view = body(content: _ViewModifier_Content())
         return try view.inspect().viewModifierContent().content
@@ -108,7 +108,7 @@ public extension ViewModifier where Self: PopupPresenter {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension ViewModifier where Self: SimplePopupPresenter {
+public extension ViewModifier where Self: PopupPresenter {
     var isPopoverPresenter: Bool {
         return (try? content().standardPopoverModifier()) != nil
     }
@@ -136,7 +136,7 @@ public extension ViewModifier where Self: ItemPopupPresenter {
 // MARK: - Default
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension PopupPresenter {
+public extension BasePopupPresenter {
     var isAlertPresenter: Bool { false }
     var isActionSheetPresenter: Bool { false }
     var isPopoverPresenter: Bool { false }
@@ -150,7 +150,7 @@ public extension PopupPresenter {
 internal extension ViewType {
     struct PopupContainer<Popup: KnownViewType>: CustomViewIdentityMapping {
         let popup: Any
-        let presenter: PopupPresenter
+        let presenter: BasePopupPresenter
         var viewTypeForSearch: KnownViewType.Type { Popup.self }
     }
 }
@@ -170,7 +170,7 @@ internal extension Content {
     ) throws -> InspectableView<Popup> {
         guard let popupPresenter = try? self.modifierAttribute(
                 modifierLookup: modifierPredicate, path: "modifier",
-                type: PopupPresenter.self, call: "", index: index ?? 0)
+                type: BasePopupPresenter.self, call: "", index: index ?? 0)
         else {
             _ = try standardPredicate()
             throw InspectionError.notSupported(

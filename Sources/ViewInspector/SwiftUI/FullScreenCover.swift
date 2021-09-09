@@ -74,7 +74,7 @@ internal extension Content {
 
     private func isFullScreenCoverBuilder(modifier: Any) -> Bool {
         let modifier = try? Inspector.attribute(
-            label: "modifier", value: modifier, type: PopupPresenter.self)
+            label: "modifier", value: modifier, type: BasePopupPresenter.self)
         return modifier?.isFullScreenCoverPresenter == true
     }
 }
@@ -85,9 +85,9 @@ internal extension Content {
 @available(macOS, unavailable)
 public extension InspectableView where View == ViewType.FullScreenCover {
 
-    func callOnDismiss() throws {
-        let fullScreenCover = try Inspector.cast(
+    func dismiss() throws {
+        let container = try Inspector.cast(
             value: content.view, type: ViewType.PopupContainer<ViewType.FullScreenCover>.self)
-        fullScreenCover.presenter.dismissPopup()
+        container.presenter.dismissPopup()
     }
 }

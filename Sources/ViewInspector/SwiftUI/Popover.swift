@@ -74,7 +74,7 @@ internal extension Content {
     
     private func isPopoverBuilder(modifier: Any) -> Bool {
         let modifier = try? Inspector.attribute(
-            label: "modifier", value: modifier, type: PopupPresenter.self)
+            label: "modifier", value: modifier, type: BasePopupPresenter.self)
         return modifier?.isPopoverPresenter == true
     }
 }
@@ -85,11 +85,6 @@ internal extension Content {
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 public extension InspectableView where View == ViewType.Popover {
-    
-    func callOnDismiss() throws {
-        let popover = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
-        popover.presenter.dismissPopup()
-    }
     
     func arrowEdge() throws -> Edge {
         let popover = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
@@ -103,6 +98,11 @@ public extension InspectableView where View == ViewType.Popover {
         let modifier = try popover.presenter.content().standardPopoverModifier()
         return try Inspector.attribute(
             label: "attachmentAnchor", value: modifier, type: PopoverAttachmentAnchor.self)
+    }
+    
+    func dismiss() throws {
+        let container = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
+        container.presenter.dismissPopup()
     }
 }
 
@@ -127,11 +127,6 @@ public extension InspectableView where View == ViewType.Popover {
     @available(*, deprecated, message: "Use `popover` inspection call - it throws if Popover is not presented")
     func isPresented() throws -> Bool {
         return true
-    }
-    
-    @available(*, deprecated, renamed: "callOnDismiss")
-    func dismiss() throws {
-        try callOnDismiss()
     }
 }
 

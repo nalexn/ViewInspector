@@ -36,7 +36,7 @@ internal extension Content {
             base: ViewType.ConfirmationDialog.inspectionCall(typeName: ""), index: index)
         let view = try InspectableView<ViewType.ConfirmationDialog>(
             content, parent: parent, call: call, index: index)
-        guard try view.isPresented().wrappedValue else {
+        guard try view.isPresentedBinding().wrappedValue else {
             throw InspectionError.viewNotFound(parent: "ConfirmationDialog")
         }
         return view
@@ -101,13 +101,13 @@ public extension InspectableView where View == ViewType.ConfirmationDialog {
     }
     
     func dismiss() throws {
-        try isPresented().wrappedValue = false
+        try isPresentedBinding().wrappedValue = false
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension InspectableView where View == ViewType.ConfirmationDialog {
-    func isPresented() throws -> Binding<Bool> {
+    func isPresentedBinding() throws -> Binding<Bool> {
         return try Inspector.attribute(
             label: "isPresented", value: content.view, type: Binding<Bool>.self)
     }

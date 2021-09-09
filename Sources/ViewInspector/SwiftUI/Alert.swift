@@ -53,7 +53,7 @@ internal extension Content {
     
     private func isAlertPresenter(modifier: Any) -> Bool {
         let modifier = try? Inspector.attribute(
-            label: "modifier", value: modifier, type: PopupPresenter.self)
+            label: "modifier", value: modifier, type: BasePopupPresenter.self)
         return modifier?.isAlertPresenter == true
     }
 }
@@ -81,6 +81,12 @@ public extension InspectableView where View == ViewType.Alert {
     func secondaryButton() throws -> InspectableView<ViewType.AlertButton> {
         return try View.supplementaryChildren(self).element(at: 3)
             .asInspectableView(ofType: ViewType.AlertButton.self)
+    }
+    
+    func dismiss() throws {
+        let container = try Inspector.cast(
+            value: content.view, type: ViewType.PopupContainer<ViewType.Alert>.self)
+        container.presenter.dismissPopup()
     }
 }
 
@@ -184,7 +190,7 @@ public extension InspectableView where View == ViewType.AlertButton {
         guard let container = self.parentView?.content.view,
             let presenter = try? Inspector.attribute(
                 label: "presenter", value: container,
-                type: PopupPresenter.self)
+                type: BasePopupPresenter.self)
         else { throw InspectionError.parentViewNotFound(view: "Alert.Button") }
         presenter.dismissPopup()
         typealias Callback = () -> Void
