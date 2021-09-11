@@ -104,8 +104,14 @@ public extension KnownViewType {
     }
     static var isTransitive: Bool { false }
     static func inspectionCall(typeName: String) -> String {
-        let baseName = typePrefix.prefix(1).lowercased() + typePrefix.dropFirst()
+        let baseName = typePrefix.firstLetterLowercased
         return "\(baseName)(\(ViewType.indexPlaceholder))"
+    }
+}
+
+internal extension String {
+    var firstLetterLowercased: String {
+        prefix(1).lowercased() + dropFirst()
     }
 }
 

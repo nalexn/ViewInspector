@@ -45,7 +45,7 @@ internal extension Content {
     private func isConfirmationDialog(modifier: Any) -> Bool {
         guard let modifier = modifier as? ModifierNameProvider
         else { return false }
-        return modifier.modifierType.contains("ConfirmationDialogModifier")
+        return modifier.modifierType.contains(ViewType.ConfirmationDialog.typePrefix)
     }
 }
 
@@ -76,6 +76,8 @@ extension ViewType.ConfirmationDialog: SupplementaryChildren {
         }
     }
 }
+
+// MARK: - Custom Attributes
 
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 public extension InspectableView where View == ViewType.ConfirmationDialog {

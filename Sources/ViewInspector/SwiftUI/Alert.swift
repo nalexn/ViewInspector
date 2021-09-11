@@ -33,11 +33,11 @@ internal extension Content {
                          standardPredicate: standardAlertModifier)
     }
     
-    func standardAlertModifier() throws -> Any {
+    func standardAlertModifier(_ name: String = "Alert") throws -> Any {
         return try self.modifier({
             $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
             || $0.modifierType.contains("AlertTransformModifier")
-        }, call: "alert")
+        }, call: name.firstLetterLowercased)
     }
     
     func alertsForSearch() -> [ViewSearch.ModifierIdentity] {

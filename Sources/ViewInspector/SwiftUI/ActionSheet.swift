@@ -35,11 +35,11 @@ internal extension Content {
                          standardPredicate: standardActionSheetModifier)
     }
     
-    func standardActionSheetModifier() throws -> Any {
+    func standardActionSheetModifier(_ name: String = "ActionSheet") throws -> Any {
         return try self.modifier({
             $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
             || $0.modifierType.contains("AlertTransformModifier")
-        }, call: "actionSheet")
+        }, call: name.firstLetterLowercased)
     }
     
     func actionSheetsForSearch() -> [ViewSearch.ModifierIdentity] {

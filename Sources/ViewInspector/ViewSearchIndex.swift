@@ -16,7 +16,6 @@ internal extension ViewSearch {
             .init(ViewType.Divider.self),
             .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
             .init(ViewType.ForEach.self), .init(ViewType.Form.self),
-            .init(ViewType.FullScreenCover.self, genericTypeName: nil),
             .init(ViewType.GeometryReader.self),
             .init(ViewType.Group.self), .init(ViewType.GroupBox.self),
             .init(ViewType.HSplitView.self), .init(ViewType.HStack.self),
@@ -34,9 +33,10 @@ internal extension ViewSearch {
             .init(ViewType.Popover.self, genericTypeName: nil),
             .init(ViewType.ProgressView.self),
             .init(ViewType.RadialGradient.self),
+            .init(ViewType.SafeAreaInset.self, genericTypeName: nil),
             .init(ViewType.ScrollView.self), .init(ViewType.ScrollViewReader.self),
             .init(ViewType.Section.self), .init(ViewType.SecureField.self),
-            .init(ViewType.Sheet.self, genericTypeName: nil),
+            .init(ViewType.Sheet.self, genericTypeName: "Sheet"),
             .init(ViewType.Slider.self), .init(ViewType.Spacer.self), .init(ViewType.Stepper.self),
             .init(ViewType.StyleConfiguration.Label.self), .init(ViewType.StyleConfiguration.Content.self),
             .init(ViewType.StyleConfiguration.Title.self), .init(ViewType.StyleConfiguration.Icon.self),
@@ -255,6 +255,9 @@ internal extension ViewSearch {
         .init(name: ViewType.ConfirmationDialog.typePrefix, builder: { parent, index in
             try parent.content.confirmationDialog(parent: parent, index: index)
         }),
+        .init(name: ViewType.SafeAreaInset.typePrefix, builder: { parent, index in
+            try parent.content.safeAreaInset(parent: parent, index: index)
+        }),
         .init(name: "PopoverPresentationModifier", builder: { parent, index in
             try parent.content.popover(parent: parent, index: index)
         }),
@@ -330,34 +333,27 @@ internal extension Content {
     
     private func sheetModifierDescendants(parent: UnwrappedView) -> LazyGroup<UnwrappedView> {
         let sheetModifiers = sheetsForSearch()
+        let alertModifiers = alertsForSearch()
         #if os(macOS)
         let actionSheetModifiers: [ViewSearch.ModifierIdentity] = []
-        let fullScreenCoverModifiers: [ViewSearch.ModifierIdentity] = []
         #else
         let actionSheetModifiers = actionSheetsForSearch()
-        let fullScreenCoverModifiers = fullScreenCoversForSearch()
         #endif
         #if os(iOS) || os(macOS)
         let popoverModifiers = popoversForSearch()
         #else
         let popoverModifiers: [ViewSearch.ModifierIdentity] = []
         #endif
-        let alertModifiers = alertsForSearch()
-        let group1: LazyGroup<UnwrappedView> =
+        return
             .init(count: sheetModifiers.count, { index -> UnwrappedView in
                 try sheetModifiers[index].builder(parent, index)
             }) + .init(count: actionSheetModifiers.count, { index -> UnwrappedView in
                 try actionSheetModifiers[index].builder(parent, index)
             }) + .init(count: alertModifiers.count, { index -> UnwrappedView in
                 try alertModifiers[index].builder(parent, index)
-            })
-        let group2: LazyGroup<UnwrappedView> =
-            .init(count: fullScreenCoverModifiers.count, { index -> UnwrappedView in
-                try fullScreenCoverModifiers[index].builder(parent, index)
             }) + .init(count: popoverModifiers.count, { index -> UnwrappedView in
                 try popoverModifiers[index].builder(parent, index)
             })
-        return group1 + group2
     }
 }
 

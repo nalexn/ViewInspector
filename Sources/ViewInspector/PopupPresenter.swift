@@ -9,7 +9,6 @@ public protocol BasePopupPresenter {
     var isActionSheetPresenter: Bool { get }
     var isPopoverPresenter: Bool { get }
     var isSheetPresenter: Bool { get }
-    var isFullScreenCoverPresenter: Bool { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -36,7 +35,6 @@ extension BasePopupPresenter {
     func subject<T>(_ type: T.Type) -> String {
         if isPopoverPresenter { return "Popover" }
         if isSheetPresenter { return "Sheet" }
-        if isFullScreenCoverPresenter { return "FullScreenCover" }
         return Inspector.typeName(type: T.self)
     }
 }
@@ -115,9 +113,6 @@ public extension ViewModifier where Self: PopupPresenter {
     var isSheetPresenter: Bool {
         return (try? content().standardSheetModifier()) != nil
     }
-    var isFullScreenCoverPresenter: Bool {
-        return (try? content().standardFullScreenCoverModifier()) != nil
-    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -127,9 +122,6 @@ public extension ViewModifier where Self: ItemPopupPresenter {
     }
     var isSheetPresenter: Bool {
         return (try? content().standardSheetModifier()) != nil
-    }
-    var isFullScreenCoverPresenter: Bool {
-        return (try? content().standardFullScreenCoverModifier()) != nil
     }
 }
 
@@ -141,7 +133,6 @@ public extension BasePopupPresenter {
     var isActionSheetPresenter: Bool { false }
     var isPopoverPresenter: Bool { false }
     var isSheetPresenter: Bool { false }
-    var isFullScreenCoverPresenter: Bool { false }
 }
 
 // MARK: - PopupContainer
@@ -166,25 +157,36 @@ internal extension ViewType.PopupContainer {
 internal extension Content {
     func popup<Popup: KnownViewType>(
         parent: UnwrappedView, index: Int?,
-        modifierPredicate: ModifierLookupClosure, standardPredicate: () throws -> Any
+        name: String = Inspector.typeName(type: Popup.self),
+        modifierPredicate: ModifierLookupClosure,
+        standardPredicate: (String) throws -> Any
     ) throws -> InspectableView<Popup> {
         guard let popupPresenter = try? self.modifierAttribute(
                 modifierLookup: modifierPredicate, path: "modifier",
                 type: BasePopupPresenter.self, call: "", index: index ?? 0)
         else {
-            _ = try standardPredicate()
+            _ = try standardPredicate(name)
             throw InspectionError.notSupported(
                 """
-                Please refer to the Guide for inspecting the \(Inspector.typeName(type: Popup.self)): \
+                Please refer to the Guide for inspecting the \(name): \
                 https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
                 """)
         }
-        let popup = try popupPresenter.buildPopup()
+        let popup: Any = try {
+            do {
+                return try popupPresenter.buildPopup()
+            } catch {
+                if case InspectionError.viewNotFound = error {
+                    throw InspectionError.viewNotFound(parent: name)
+                }
+                throw error
+            }
+        }()
         let container = ViewType.PopupContainer<Popup>(popup: popup, presenter: popupPresenter)
         let medium = self.medium.resettingViewModifiers()
         let content = Content(container, medium: medium)
         let call = ViewType.inspectionCall(
-            base: Popup.inspectionCall(typeName: ""), index: index)
+            base: Popup.inspectionCall(typeName: name), index: index)
         return try .init(content, parent: parent, call: call, index: index)
     }
 }

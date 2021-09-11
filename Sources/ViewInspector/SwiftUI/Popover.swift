@@ -55,10 +55,10 @@ internal extension Content {
                          standardPredicate: standardPopoverModifier)
     }
     
-    func standardPopoverModifier() throws -> Any {
+    func standardPopoverModifier(_ name: String = "Popover") throws -> Any {
         return try modifierAttribute(
             modifierName: "PopoverPresentationModifier", path: "modifier",
-            type: Any.self, call: "popover")
+            type: Any.self, call: name.firstLetterLowercased)
     }
     
     func popoversForSearch() -> [ViewSearch.ModifierIdentity] {

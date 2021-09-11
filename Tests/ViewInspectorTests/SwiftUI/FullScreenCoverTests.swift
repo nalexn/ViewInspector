@@ -80,7 +80,7 @@ final class FullScreenCoverTests: XCTestCase {
         XCTAssertTrue(binding.wrappedValue)
         try sut.inspect().fullScreenCover().dismiss()
         XCTAssertFalse(binding.wrappedValue)
-        XCTAssertThrows(try sut.inspect().fullScreenCover(), "View for Sheet is absent")
+        XCTAssertThrows(try sut.inspect().fullScreenCover(), "View for FullScreenCover is absent")
         wait(for: [exp], timeout: 0.1)
     }
 
@@ -93,7 +93,7 @@ final class FullScreenCoverTests: XCTestCase {
         XCTAssertEqual(binding.wrappedValue, 6)
         try fullScreenCover.dismiss()
         XCTAssertNil(binding.wrappedValue)
-        XCTAssertThrows(try sut.inspect().fullScreenCover(), "View for Sheet is absent")
+        XCTAssertThrows(try sut.inspect().fullScreenCover(), "View for FullScreenCover is absent")
     }
 
     func testMultipleFullScreenCoversInspection() throws {
@@ -128,11 +128,11 @@ final class FullScreenCoverTests: XCTestCase {
 
         // 1
         XCTAssertEqual(try sut.inspect().find(text: "title_1").pathToRoot,
-            "view(FullScreenCoverFindTestView.self).hStack().emptyView(0).fullScreenCover().text(0)")
+            "view(FullScreenCoverFindTestView.self).hStack().emptyView(0).sheet().text(0)")
         XCTAssertEqual(try sut.inspect().find(text: "button_1").pathToRoot,
             """
             view(FullScreenCoverFindTestView.self).hStack().emptyView(0)\
-            .fullScreenCover().button(1).labelView().text()
+            .sheet().button(1).labelView().text()
             """)
         // 2
         XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot,
@@ -140,14 +140,14 @@ final class FullScreenCoverTests: XCTestCase {
 
         // 3
         XCTAssertEqual(try sut.inspect().find(text: "title_3").pathToRoot,
-            "view(FullScreenCoverFindTestView.self).hStack().emptyView(0).fullScreenCover(1).text(0)")
+            "view(FullScreenCoverFindTestView.self).hStack().emptyView(0).sheet(1).text(0)")
 
         XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot,
             "Search did not find a match")
         XCTAssertEqual(try sut.inspect().find(text: "button_3").pathToRoot,
             """
             view(FullScreenCoverFindTestView.self).hStack().emptyView(0)\
-            .fullScreenCover(1).button(1).labelView().text()
+            .sheet(1).button(1).labelView().text()
             """)
     }
 }

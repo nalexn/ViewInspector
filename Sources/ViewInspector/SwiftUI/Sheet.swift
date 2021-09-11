@@ -9,9 +9,10 @@ public extension ViewType {
         public static var typePrefix: String = ViewType.PopupContainer<Sheet>.typePrefix
         public static var namespacedPrefixes: [String] { [typePrefix] }
         public static func inspectionCall(typeName: String) -> String {
-            return "sheet(\(ViewType.indexPlaceholder))"
+            return "\(typeName.firstLetterLowercased)(\(ViewType.indexPlaceholder))"
         }
     }
+    typealias FullScreenCover = Sheet
 }
 
 // MARK: - Content Extraction
@@ -46,20 +47,29 @@ public extension InspectableView {
     }
 }
 
+@available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+@available(macOS, unavailable)
+public extension InspectableView {
+
+    func fullScreenCover(_ index: Int? = nil) throws -> InspectableView<ViewType.FullScreenCover> {
+        return try contentForModifierLookup.sheet(parent: self, index: index, name: "FullScreenCover")
+    }
+}
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func sheet(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Sheet> {
-        return try popup(parent: parent, index: index,
+    func sheet(parent: UnwrappedView, index: Int?, name: String = "Sheet") throws -> InspectableView<ViewType.Sheet> {
+        return try popup(parent: parent, index: index, name: name,
                          modifierPredicate: isSheetBuilder(modifier:),
                          standardPredicate: standardSheetModifier)
     }
     
-    func standardSheetModifier() throws -> Any {
+    func standardSheetModifier(_ name: String = "Sheet") throws -> Any {
         return try self.modifier({
             $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
             || $0.modifierType.contains("SheetPresentationModifier")
-        }, call: "sheet")
+        }, call: name.firstLetterLowercased)
     }
     
     func sheetsForSearch() -> [ViewSearch.ModifierIdentity] {
