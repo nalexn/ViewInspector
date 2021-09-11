@@ -91,8 +91,18 @@ public extension MenuStyle {
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 private extension MenuStyleConfiguration {
-    struct Allocator { }
+    struct Allocator0 { }
+    struct Allocator16 {
+        let data: (Int64, Int64) = (0, 0)
+    }
     init() {
-        self = unsafeBitCast(Allocator(), to: Self.self)
+        switch MemoryLayout<Self>.size {
+        case 0:
+            self = unsafeBitCast(Allocator0(), to: Self.self)
+        case 16:
+            self = unsafeBitCast(Allocator16(), to: Self.self)
+        default:
+            fatalError(MemoryLayout<Self>.actualSize())
+        }
     }
 }

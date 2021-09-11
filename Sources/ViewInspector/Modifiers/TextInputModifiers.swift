@@ -22,6 +22,21 @@ public extension InspectableView {
     
     func autocapitalization() throws -> UITextAutocapitalizationType {
         let reference = EmptyView().autocapitalization(.none)
+        if #available(iOS 15.0, tvOS 15.0, watchOS 8.0, *) {
+            typealias Closure = (inout TextInputAutocapitalization) -> Void
+            if let keyPath = try? Inspector
+                .environmentKeyPath(TextInputAutocapitalization.self, reference) {
+                let closure = try environment(keyPath, call: "autocapitalization", valueType: Closure.self)
+                var value = TextInputAutocapitalization.never
+                closure(&value)
+                let behavior = try Inspector.attribute(label: "behavior", value: value)
+                let stringValue = String(describing: behavior)
+                guard let style = TextInputAutocapitalization.Behavior(rawValue: stringValue) else {
+                    throw InspectionError.notSupported("Unknown TextInputAutocapitalization.Behavior: \(stringValue)")
+                }
+                return style.autocapitalizationType
+            }
+        }
         let keyPath = try Inspector.environmentKeyPath(Int.self, reference)
         let value = try environment(keyPath, call: "autocapitalization")
         return UITextAutocapitalizationType(rawValue: value)!
@@ -108,3 +123,21 @@ public extension InspectableView {
             .contains(true)
     }
 }
+
+#if os(iOS) || os(tvOS)
+@available(iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+extension TextInputAutocapitalization {
+    enum Behavior: String {
+        case never, words, sentences, characters
+        
+        var autocapitalizationType: UITextAutocapitalizationType {
+            switch self {
+            case .never: return .none
+            case .words: return .words
+            case .sentences: return .sentences
+            case .characters: return .allCharacters
+            }
+        }
+    }
+}
+#endif

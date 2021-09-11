@@ -66,7 +66,8 @@ internal extension Content {
     func unwrappedModifiedContent() throws -> Content {
         let view = try Inspector.attribute(label: "content", value: self.view)
         var medium: Content.Medium
-        if let modifier = self.view as? EnvironmentModifier {
+        if let modifier = self.view as? EnvironmentModifier,
+           modifier.qualifiesAsEnvironmentModifier() {
             if let value = try? modifier.value(),
                let object = try? Inspector.attribute(label: "some", value: value, type: AnyObject.self),
                !(object is NSObject) {

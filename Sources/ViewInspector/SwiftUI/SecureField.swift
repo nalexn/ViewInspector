@@ -53,14 +53,24 @@ public extension InspectableView where View == ViewType.SecureField {
     }
     
     private func inputBinding() throws -> Binding<String> {
+        if let binding = try? Inspector.attribute(
+            label: "text", value: content.view, type: Binding<String>.self) {
+            return binding
+        }
         return try Inspector.attribute(
-            label: "text", value: content.view, type: Binding<String>.self)
+            label: "_text", value: content.view, type: Binding<String>.self)
     }
     
     func callOnCommit() throws {
         typealias Callback = () -> Void
-        let callback = try Inspector
-            .attribute(label: "onCommit", value: content.view, type: Callback.self)
+        let callback: Callback = try {
+            if let value = try? Inspector
+                .attribute(label: "onCommit", value: content.view, type: Callback.self) {
+                return value
+            }
+            return try Inspector
+                .attribute(path: "deprecatedActions|some|commit", value: content.view, type: Callback.self)
+        }()
         callback()
     }
 }

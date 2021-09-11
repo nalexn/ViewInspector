@@ -46,17 +46,33 @@ public extension InspectableView where View == ViewType.TextField {
     func callOnEditingChanged() throws {
         try guardIsResponsive()
         typealias Callback = (Bool) -> Void
-        let callback = try Inspector
-            .attribute(label: "onEditingChanged", value: content.view, type: Callback.self)
+        let callback: Callback = try {
+            if let value = try? Inspector
+                .attribute(label: "onEditingChanged", value: content.view, type: Callback.self) {
+                return value
+            }
+            return try Inspector
+                .attribute(path: deprecatedActionsPath("editingChanged"), value: content.view, type: Callback.self)
+        }()
         callback(false)
     }
     
     func callOnCommit() throws {
         try guardIsResponsive()
         typealias Callback = () -> Void
-        let callback = try Inspector
-            .attribute(label: "onCommit", value: content.view, type: Callback.self)
+        let callback: Callback = try {
+            if let value = try? Inspector
+                .attribute(label: "onCommit", value: content.view, type: Callback.self) {
+                return value
+            }
+            return try Inspector
+                .attribute(path: deprecatedActionsPath("commit"), value: content.view, type: Callback.self)
+        }()
         callback()
+    }
+    
+    private func deprecatedActionsPath(_ action: String) -> String {
+        return "_state|state|_value|deprecatedActions|some|\(action)"
     }
     
     func input() throws -> String {

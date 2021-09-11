@@ -590,28 +590,28 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:technologist:| `func accessibilityLabel<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityLabel(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityLabel(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityValue<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityValue(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityValue(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityHidden(Bool) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityIdentifier(String) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityLabel<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityLabel(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityLabel(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityValue<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityValue(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityValue(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityHidden(Bool) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityIdentifier(String) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 
 ### Customizing Accessibility Interactions of a View
 
 | Status | Modifier |
 |:---:|---|
-|:technologist:| `func accessibilityHint(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityHint(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityHint<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityActivationPoint(CGPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityActivationPoint(UnitPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityHint(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityHint(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityHint<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityActivationPoint(CGPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityActivationPoint(UnitPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityAction(AccessibilityActionKind, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:heavy_check_mark:| `func accessibilityAction(named: Text, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityAction<S>(named: S, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityAction(named: LocalizedStringKey, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityAction(named: Text, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityAction<S>(named: S, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityAction(named: LocalizedStringKey, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityAdjustableAction((AccessibilityAdjustmentDirection) -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityScrollAction((Edge) -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityIgnoresInvertColors(Bool) -> some View` |
@@ -627,7 +627,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `func accessibilityInputLabels([Text]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityAddTraits(AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityRemoveTraits(AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilitySortPriority(Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |` |
+|:white_check_mark:| `func accessibilitySortPriority(Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |` |
 |:technologist:| `func accessibilityLinkedGroup<ID>(id: ID, in: Namespace.ID) -> some View` |
 
 ### Customizing the Help Text of a View

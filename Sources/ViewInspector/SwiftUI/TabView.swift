@@ -51,7 +51,7 @@ public extension InspectableView {
     }
     
     func tabItem() throws -> InspectableView<ViewType.ClassifiedView> {
-        return try contentForModifierLookup.tabItem(parent: self)
+        return try contentForModifierLookup.tabItem(parent: self, index: 0)
     }
 
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
@@ -75,14 +75,23 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func tabItem(parent: UnwrappedView) throws -> InspectableView<ViewType.ClassifiedView> {
-        let rootView = try modifierAttribute(
-            modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
-            type: Any.self, call: "tabItem")
+    func tabItem(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ClassifiedView> {
+        let rootView: Any = try {
+            if let view = try? modifierAttribute(
+                modifierName: "TabItemTraitKey", path: "modifier|value|some|storage|view|content",
+                type: Any.self, call: "tabItem") {
+                return view
+            }
+            return try modifierAttribute(
+                modifierName: "PlatformItemTraitWriter", path: "modifier|source|content|content",
+                type: Any.self, call: "tabItem")
+        }()
         let medium = self.medium.resettingViewModifiers()
         let view = try InspectableView<ViewType.ClassifiedView>(
             try Inspector.unwrap(content: Content(rootView, medium: medium)), parent: parent, call: "tabItem()")
-        if #available(iOS 14.2, tvOS 14.2, *) {
+        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
+            return view
+        } else if #available(iOS 14.2, tvOS 14.2, *) {
             return try InspectableView<ViewType.ClassifiedView>(
             try Inspector.unwrap(content: try view.zStack().child(at: 0)), parent: parent, call: "tabItem()")
         } else {

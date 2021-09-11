@@ -149,11 +149,11 @@ private struct AllowsHitTestingTestView: View, Inspectable {
     
     var body: some View {
         VStack {
-            Button("1", action: { print("1") })
+            Button("1", action: { })
             VStack {
-                Button("2", action: { print("2") })
+                Button("2", action: { })
                 VStack {
-                    Button("3", action: { print("3") })
+                    Button("3", action: { })
                         .allowsHitTesting(true)
                 }.allowsHitTesting(false)
             }.allowsHitTesting(true)

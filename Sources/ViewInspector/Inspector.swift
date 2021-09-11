@@ -52,8 +52,19 @@ extension Inspector {
                          prefixOnly: Bool = false) -> String {
         let typeName = namespaced ? String(reflecting: type) : String(describing: type)
         guard prefixOnly else { return typeName }
-        return typeName.components(separatedBy: "<").first!
+        let name = typeName.components(separatedBy: "<").first!
+        guard namespaced else { return name }
+        let string = NSMutableString(string: name)
+        let range = NSRange(location: 0, length: string.length)
+        namespaceSanitizeRegex.replaceMatches(in: string, options: [], range: range, withTemplate: "SwiftUI")
+        return String(string)
     }
+    
+    private static var namespaceSanitizeRegex: NSRegularExpression = {
+        guard let regex = try? NSRegularExpression(pattern: "SwiftUI.\\(unknown context at .*\\)", options: [])
+        else { fatalError() }
+        return regex
+    }()
 }
 
 // MARK: - Attributes lookup
@@ -101,9 +112,14 @@ extension Inspector {
             return array.map { attributesTree(value: $0, medium: medium) }
         }
         let medium = (try? unwrap(content: Content(value, medium: medium)).medium) ?? medium
-        let mirror = Mirror(reflecting: value)
+        var mirror = Mirror(reflecting: value)
+        var children = Array(mirror.children)
+        while let superclass = mirror.superclassMirror {
+            mirror = superclass
+            children.append(contentsOf: superclass.children)
+        }
         var dict: [String: Any] = [:]
-        mirror.children.enumerated().forEach { child in
+        children.enumerated().forEach { child in
             let childName = child.element.label ?? "[\(child.offset)]"
             let childType = typeName(value: child.element.value)
             dict[childName + ": " + childType] = attributesTree(value: child.element.value, medium: medium)
@@ -163,6 +179,7 @@ extension Inspector {
         return try unwrap(content: Content(view, medium: medium))
     }
     
+    // swiftlint:disable cyclomatic_complexity
     static func unwrap(content: Content) throws -> Content {
         switch Inspector.typeName(value: content.view, prefixOnly: true) {
         case "Tree":
@@ -177,6 +194,8 @@ extension Inspector {
             return try ViewType.ViewModifier<ViewType.Stub>.child(content)
         case "SubscriptionView":
             return try ViewType.SubscriptionView.child(content)
+        case "_UnaryViewAdaptor":
+            return try ViewType.UnaryViewAdaptor.child(content)
         case "_ConditionalContent":
             return try ViewType.ConditionalContent.child(content)
         case "EnvironmentReaderView":
@@ -187,12 +206,14 @@ extension Inspector {
             return content
         }
     }
+    // swiftlint:enable cyclomatic_complexity
     
     static func guardType(value: Any, namespacedPrefixes: [String], inspectionCall: String) throws {
         guard let firstPrefix = namespacedPrefixes.first
         else { return }
         let typeWithParams = typeName(type: type(of: value))
-        let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: true)
+        let withGenericParams = firstPrefix.contains("<")
+        let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: !withGenericParams)
         if typePrefix == "SwiftUI.EnvironmentReaderView" {
             if typeWithParams.contains("NavigationBarItemsKey") {
                 throw InspectionError.notSupported(

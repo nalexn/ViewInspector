@@ -235,4 +235,20 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertEqual(try sut.find(ViewType.StyleConfiguration.Label.self).pathToRoot,
                        "group().styleConfigurationLabel(2)")
     }
+    
+    func testShapesSearching() throws {
+        let sut = Group {
+            Circle().inset(by: 5)
+            Rectangle()
+            Ellipse().offset(x: 2, y: 3)
+        }
+        XCTAssertThrows(try sut.inspect().find(text: "none"),
+                        "Search did not find a match")
+        let testRect = CGRect(x: 0, y: 0, width: 10, height: 100)
+        let refPath = Ellipse().offset(x: 2, y: 3).path(in: testRect)
+        let ellipse = try sut.inspect().find(where: {
+            try $0.shape().path(in: testRect) == refPath
+        })
+        XCTAssertEqual(ellipse.pathToRoot, "group().shape(2)")
+    }
 }

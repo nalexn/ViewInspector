@@ -32,7 +32,13 @@ public extension InspectableView where View: MultipleViewContent {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.Button: SupplementaryChildrenLabelView {
-    static var labelViewPath: String { "_label" }
+    static var labelViewPath: String {
+        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
+            return "label"
+        } else {
+            return "_label"
+        }
+    }
 }
 
 // MARK: - Custom Attributes
@@ -93,23 +99,53 @@ public extension PrimitiveButtonStyle {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ButtonStyleConfiguration {
-    private struct Allocator {
+    private struct Allocator3 {
+        let data: (Bool, Bool, Bool)
+        init(flag: Bool) {
+            data = (false, false, flag)
+        }
+    }
+    private struct Allocator24 {
         let data: (Int64, Int64, Int64)
         init(flag: Bool) {
             data = (flag ? -1 : 0, 0, 0)
         }
     }
     init(isPressed: Bool) {
-        self = unsafeBitCast(Allocator(flag: isPressed), to: Self.self)
+        switch MemoryLayout<Self>.size {
+        case 3:
+            self = unsafeBitCast(Allocator3(flag: isPressed), to: Self.self)
+        case 24:
+            self = unsafeBitCast(Allocator24(flag: isPressed), to: Self.self)
+        default:
+            fatalError(MemoryLayout<Self>.actualSize())
+        }
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension PrimitiveButtonStyleConfiguration {
-    private struct Allocator {
+    private struct Allocator16 {
+        let onTrigger: () -> Void
+    }
+    private struct Allocator24 {
+        let buffer: Int8 = 0
         let onTrigger: () -> Void
     }
     init(onTrigger: @escaping () -> Void) {
-        self = unsafeBitCast(Allocator(onTrigger: onTrigger), to: Self.self)
+        switch MemoryLayout<Self>.size {
+        case 16:
+            self = unsafeBitCast(Allocator16(onTrigger: onTrigger), to: Self.self)
+        case 24:
+            self = unsafeBitCast(Allocator24(onTrigger: onTrigger), to: Self.self)
+        default:
+            fatalError(MemoryLayout<Self>.actualSize())
+        }
+    }
+}
+
+internal extension MemoryLayout {
+    static func actualSize() -> String {
+        fatalError("New size of \(String(describing: type(of: T.self))) is \(Self.size)")
     }
 }

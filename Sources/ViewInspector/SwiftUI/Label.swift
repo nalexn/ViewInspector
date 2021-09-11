@@ -73,7 +73,8 @@ public extension InspectableView {
 
     func labelStyle() throws -> Any {
         let modifier = try self.modifier({ modifier -> Bool in
-            return modifier.modifierType.hasPrefix("LabelStyleModifier")
+            return ["LabelStyleModifier", "LabelStyleWritingModifier"]
+                .contains(where: { modifier.modifierType.hasPrefix($0) })
         }, call: "labelStyle")
         return try Inspector.attribute(path: "modifier|style", value: modifier)
     }

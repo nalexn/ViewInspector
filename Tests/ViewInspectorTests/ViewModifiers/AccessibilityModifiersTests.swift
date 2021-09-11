@@ -15,9 +15,17 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityLabelInspection() throws {
         let string = "abc"
-        let sut = try EmptyView().accessibility(label: Text(string))
+        let sut1 = try EmptyView().accessibility(label: Text(string))
             .inspect().emptyView().accessibilityLabel().string()
-        XCTAssertEqual(sut, string)
+        XCTAssertEqual(sut1, string)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut2 = try EmptyView().accessibilityLabel(Text(string))
+                .inspect().emptyView().accessibilityLabel().string()
+            let sut3 = try EmptyView().accessibilityLabel(string)
+                .inspect().emptyView().accessibilityLabel().string()
+            XCTAssertEqual(sut2, string)
+            XCTAssertEqual(sut3, string)
+        }
     }
     
     func testAccessibilityValue() throws {
@@ -27,9 +35,17 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityValueInspection() throws {
         let string = "abc"
-        let sut = try EmptyView().accessibility(value: Text(string))
+        let sut1 = try EmptyView().accessibility(value: Text(string))
             .inspect().emptyView().accessibilityValue().string()
-        XCTAssertEqual(sut, string)
+        XCTAssertEqual(sut1, string)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut2 = try EmptyView().accessibilityValue(Text(string))
+                .inspect().emptyView().accessibilityValue().string()
+            let sut3 = try EmptyView().accessibilityValue(string)
+                .inspect().emptyView().accessibilityValue().string()
+            XCTAssertEqual(sut2, string)
+            XCTAssertEqual(sut3, string)
+        }
     }
     
     func testAccessibilityHint() throws {
@@ -39,9 +55,17 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityHintInspection() throws {
         let string = "abc"
-        let sut = try EmptyView().accessibility(hint: Text(string))
+        let sut1 = try EmptyView().accessibility(hint: Text(string))
             .inspect().emptyView().accessibilityHint().string()
-        XCTAssertEqual(sut, string)
+        XCTAssertEqual(sut1, string)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut2 = try EmptyView().accessibilityHint(Text(string))
+                .inspect().emptyView().accessibilityHint().string()
+            let sut3 = try EmptyView().accessibilityHint(string)
+                .inspect().emptyView().accessibilityHint().string()
+            XCTAssertEqual(sut2, string)
+            XCTAssertEqual(sut3, string)
+        }
     }
     
     func testAccessibilityHidden() throws {
@@ -56,6 +80,14 @@ final class ViewAccessibilityTests: XCTestCase {
         let sut2 = try EmptyView().accessibility(hidden: false)
             .inspect().emptyView().accessibilityHidden()
         XCTAssertFalse(sut2)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut3 = try EmptyView().accessibilityHidden(true)
+                .inspect().emptyView().accessibilityHidden()
+            let sut4 = try EmptyView().accessibilityHidden(false)
+                .inspect().emptyView().accessibilityHidden()
+            XCTAssertTrue(sut3)
+            XCTAssertFalse(sut4)
+        }
     }
     
     func testAccessibilityIdentifier() throws {
@@ -65,9 +97,14 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityIdentifierInspection() throws {
         let string = "abc"
-        let sut = try EmptyView().accessibility(identifier: string)
+        let sut1 = try EmptyView().accessibility(identifier: string)
             .inspect().emptyView().accessibilityIdentifier()
-        XCTAssertEqual(sut, string)
+        XCTAssertEqual(sut1, string)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut2 = try EmptyView().accessibilityIdentifier(string)
+                .inspect().emptyView().accessibilityIdentifier()
+            XCTAssertEqual(sut2, string)
+        }
     }
     
     @available(iOS, deprecated, introduced: 13.0)
@@ -86,6 +123,9 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(watchOS, deprecated, introduced: 6)
     func testAccessibilitySelectionIdentifierInspection() throws {
         guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { return }
+        if #available(iOS 15, tvOS 15, *) {
+            throw XCTSkip("Deprecated modifier with no replacement in iOS 15")
+        }
         let string = "abc"
         let sut = try EmptyView().accessibility(selectionIdentifier: string)
             .inspect().emptyView().accessibilitySelectionIdentifier()
@@ -99,9 +139,14 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityActivationPointInspection() throws {
         let point: UnitPoint = .bottomTrailing
-        let sut = try EmptyView().accessibility(activationPoint: point)
+        let sut1 = try EmptyView().accessibility(activationPoint: point)
             .inspect().emptyView().accessibilityActivationPoint()
-        XCTAssertEqual(sut, point)
+        XCTAssertEqual(sut1, point)
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            let sut2 = try EmptyView().accessibilityActivationPoint(point)
+                .inspect().emptyView().accessibilityActivationPoint()
+            XCTAssertEqual(sut2, point)
+        }
     }
     
     func testAccessibilityAction() throws {
@@ -110,11 +155,17 @@ final class ViewAccessibilityTests: XCTestCase {
     }
     
     func testAccessibilityActionInspection() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { return }
         let exp = XCTestExpectation(description: "accessibilityAction")
+        exp.expectedFulfillmentCount = 2
         let sut = EmptyView().accessibilityAction(.default) {
+            exp.fulfill()
+        }.accessibilityAction(named: "custom") {
             exp.fulfill()
         }
         try sut.inspect().emptyView().callAccessibilityAction(.default)
+        try sut.inspect().emptyView().callAccessibilityAction("custom")
         wait(for: [exp], timeout: 0.1)
     }
     
@@ -123,6 +174,9 @@ final class ViewAccessibilityTests: XCTestCase {
         XCTAssertThrows(
             try sut.inspect().emptyView().callAccessibilityAction(.default),
             "EmptyView does not have 'accessibilityAction(.default)' modifier")
+        XCTAssertThrows(
+            try sut.inspect().emptyView().callAccessibilityAction(.init(named: Text("123"))),
+            "EmptyView does not have 'accessibilityAction(named: \"123\")' modifier")
     }
     
     func testAccessibilityActionInspectionMultipleCallbacks() throws {
