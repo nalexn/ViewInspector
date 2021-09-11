@@ -44,6 +44,8 @@
 		52A3B51C26591F79001FE17E /* SheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A3B51B26591F79001FE17E /* SheetTests.swift */; };
 		52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A4A7632621F4AE0063E00B /* Overlay.swift */; };
 		52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */; };
+		52B71AA626EB5BED00B719D4 /* SafeAreaInsetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B71AA526EB5BED00B719D4 /* SafeAreaInsetTests.swift */; };
+		52B71AAA26EB5C4500B719D4 /* SafeAreaInset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B71AA926EB5C4500B719D4 /* SafeAreaInset.swift */; };
 		52D37480262B1F0C00B1BFBA /* NestedModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */; };
 		52E24E9926E9378A00711987 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E24E9826E9378A00711987 /* ConfirmationDialog.swift */; };
 		52E24E9B26E93A4700711987 /* ConfirmationDialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E24E9A26E93A4700711987 /* ConfirmationDialogTests.swift */; };
@@ -294,6 +296,8 @@
 		52A3B51B26591F79001FE17E /* SheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetTests.swift; sourceTree = "<group>"; };
 		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		52A5CA0325E1139E00773CF5 /* EnvironmentModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiers.swift; sourceTree = "<group>"; };
+		52B71AA526EB5BED00B719D4 /* SafeAreaInsetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaInsetTests.swift; sourceTree = "<group>"; };
+		52B71AA926EB5C4500B719D4 /* SafeAreaInset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaInset.swift; sourceTree = "<group>"; };
 		52D3747F262B1F0C00B1BFBA /* NestedModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModifiersTests.swift; sourceTree = "<group>"; };
 		52E24E9826E9378A00711987 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
 		52E24E9A26E93A4700711987 /* ConfirmationDialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialogTests.swift; sourceTree = "<group>"; };
@@ -655,6 +659,7 @@
 				F6C15AA2254DA270000240F1 /* ProgressView.swift */,
 				F6684BFD23AA863400DECCB3 /* RadialGradient.swift */,
 				52A4A7632621F4AE0063E00B /* Overlay.swift */,
+				52B71AA926EB5C4500B719D4 /* SafeAreaInset.swift */,
 				F60EEBC22382EED0007DB53A /* ScrollView.swift */,
 				F6C15AB6254DB173000240F1 /* ScrollViewReader.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
@@ -766,6 +771,7 @@
 				F6BD82092565AD5D00A772D4 /* PopoverTests.swift */,
 				F6C15A98254D9F24000240F1 /* ProgressViewTests.swift */,
 				F6684BFF23AA864F00DECCB3 /* RadialGradientTests.swift */,
+				52B71AA526EB5BED00B719D4 /* SafeAreaInsetTests.swift */,
 				F60EEBF42382F004007DB53A /* ScrollViewTests.swift */,
 				F6C15AAC254DB0AA000240F1 /* ScrollViewReaderTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
@@ -1051,6 +1057,7 @@
 				52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */,
 				F60EEBDC2382EED0007DB53A /* Text.swift in Sources */,
 				D7A6CE8926E17AE900599824 /* FullScreenCover.swift in Sources */,
+				52B71AAA26EB5C4500B719D4 /* SafeAreaInset.swift in Sources */,
 				F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */,
 				F6684BFE23AA863400DECCB3 /* RadialGradient.swift in Sources */,
 				520E916226E69E540090BD1F /* PopupPresenter.swift in Sources */,
@@ -1167,6 +1174,7 @@
 				F639DBC523A7DFA6003A6FED /* TouchBarTests.swift in Sources */,
 				F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */,
 				F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */,
+				52B71AA626EB5BED00B719D4 /* SafeAreaInsetTests.swift in Sources */,
 				F60EEC002382F004007DB53A /* ForEachTests.swift in Sources */,
 				CDA844EC262B84FD00C56C98 /* SimultaneousGestureChildrenTests.swift in Sources */,
 				F64A2C6423A3E74E00A4853A /* PresentationModifiersTests.swift in Sources */,
