@@ -104,7 +104,7 @@ public extension InspectableView {
         return false
     }
     
-    @available(watchOS, unavailable)
+    #if !os(watchOS)
     func disableAutocorrection() -> Bool {
         let reference = EmptyView().disableAutocorrection(false)
         if let keyPath = try? Inspector.environmentKeyPath(Optional<Bool>.self, reference),
@@ -113,6 +113,7 @@ public extension InspectableView {
         }
         return false
     }
+    #endif
     
     func flipsForRightToLeftLayoutDirection() -> Bool {
         return modifiersMatching({ $0.modifierType == "_FlipForRTLEffect" },

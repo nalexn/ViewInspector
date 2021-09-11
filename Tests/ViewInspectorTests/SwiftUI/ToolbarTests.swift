@@ -15,8 +15,8 @@ final class ToolbarTests: XCTestCase {
             .primaryAction, .cancellationAction, .confirmationAction, .destructiveAction]
         #else
         let values: [ToolbarItemPlacement] = [
-            .automatic, .principal, .navigation,
-            .primaryAction, .cancellationAction, .confirmationAction, .destructiveAction]
+            .automatic, .primaryAction, .cancellationAction,
+                .confirmationAction, .destructiveAction]
         #endif
         values.enumerated().forEach { lhs in
             values.enumerated().forEach { rhs in
@@ -131,12 +131,12 @@ final class ToolbarTests: XCTestCase {
         else { return }
         let sut = EmptyView().toolbar {
             ToolbarItem(placement: .destructiveAction) { EmptyView() }
-            ToolbarItem(placement: .principal) { EmptyView() }
+            ToolbarItem(placement: .primaryAction) { EmptyView() }
             ToolbarItem { EmptyView() }
         }
         let toolbar = try sut.inspect().toolbar()
         XCTAssertEqual(try toolbar.item(0).placement(), .destructiveAction)
-        XCTAssertEqual(try toolbar.item(1).placement(), .principal)
+        XCTAssertEqual(try toolbar.item(1).placement(), .primaryAction)
         XCTAssertEqual(try toolbar.item(2).placement(), .automatic)
     }
     
@@ -145,12 +145,12 @@ final class ToolbarTests: XCTestCase {
         else { return }
         let sut = EmptyView().toolbar {
             ToolbarItemGroup(placement: .destructiveAction) { EmptyView() }
-            ToolbarItemGroup(placement: .principal) { EmptyView() }
+            ToolbarItemGroup(placement: .primaryAction) { EmptyView() }
             ToolbarItemGroup { EmptyView() }
         }
         let toolbar = try sut.inspect().toolbar()
         XCTAssertEqual(try toolbar.itemGroup(0).placement(), .destructiveAction)
-        XCTAssertEqual(try toolbar.itemGroup(1).placement(), .principal)
+        XCTAssertEqual(try toolbar.itemGroup(1).placement(), .primaryAction)
         XCTAssertEqual(try toolbar.itemGroup(2).placement(), .automatic)
     }
     

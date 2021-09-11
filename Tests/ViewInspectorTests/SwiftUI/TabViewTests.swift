@@ -93,7 +93,7 @@ final class GlobalModifiersForTabView: XCTestCase {
         XCTAssertNoThrow(try view.inspect().find(text: "abc"))
     }
     
-    #if !os(macOS) && !targetEnvironment(macCatalyst) && !os(watchOS)
+    #if os(iOS) || os(tvOS)
     func testTabViewStyleInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
         let style = PageTabViewStyle(indexDisplayMode: .never)
@@ -112,13 +112,11 @@ final class GlobalModifiersForTabView: XCTestCase {
             XCTAssertNotEqual(styles[index], styles[(index + 1) % styles.count])
         }
     }
-    #endif
     
-    @available(macOS, unavailable)
-    @available(watchOS, unavailable)
     func testIndexViewStyleInspection() throws {
         guard #available(iOS 14, tvOS 14, *) else { return }
         let sut = EmptyView().indexViewStyle(PageIndexViewStyle())
         XCTAssertTrue(try sut.inspect().indexViewStyle() is PageIndexViewStyle)
     }
+    #endif
 }

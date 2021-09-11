@@ -145,18 +145,18 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertTrue(try sut.inspect().anyView().emptyView().allowsTightening())
     }
     
-    @available(watchOS, unavailable)
+    #if !os(watchOS)
     func testDisableAutocorrection() throws {
         let sut = EmptyView().disableAutocorrection(false)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
-    @available(watchOS, unavailable)
     func testDisableAutocorrectionInspection() throws {
         let sut = AnyView(EmptyView()).disableAutocorrection(false)
         XCTAssertEqual(try sut.inspect().anyView().disableAutocorrection(), false)
         XCTAssertEqual(try sut.inspect().anyView().emptyView().disableAutocorrection(), false)
     }
+    #endif
     
     func testFlipsForRightToLeftLayoutDirection() throws {
         let sut = EmptyView().flipsForRightToLeftLayoutDirection(true)
