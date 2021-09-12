@@ -132,6 +132,7 @@
 		52CA301026ECC58B00BFD568 /* ViewPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CA2F9426ECC58B00BFD568 /* ViewPaddingTests.swift */; };
 		52CA301126ECC58B00BFD568 /* TransformingModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CA2F9526ECC58B00BFD568 /* TransformingModifiersTests.swift */; };
 		52CA301426ECC5D200BFD568 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 52CA301326ECC5D200BFD568 /* ViewInspector */; };
+		52CA301626ECD64400BFD568 /* watchOSApp+Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CA301526ECD64400BFD568 /* watchOSApp+Testable.swift */; };
 		52E3259B26C72E7900CCE47E /* watchOS-Ext.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 52E3259A26C72E7900CCE47E /* watchOS-Ext.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52E325A226C72E7900CCE47E /* watchOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E325A126C72E7900CCE47E /* watchOSApp.swift */; };
 /* End PBXBuildFile section */
@@ -296,6 +297,7 @@
 		52CA2F9326ECC58B00BFD568 /* EnvironmentModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiersTests.swift; sourceTree = "<group>"; };
 		52CA2F9426ECC58B00BFD568 /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
 		52CA2F9526ECC58B00BFD568 /* TransformingModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformingModifiersTests.swift; sourceTree = "<group>"; };
+		52CA301526ECD64400BFD568 /* watchOSApp+Testable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "watchOSApp+Testable.swift"; sourceTree = "<group>"; };
 		52E3258E26C72E7800CCE47E /* watchOS-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "watchOS-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52E3259526C72E7900CCE47E /* App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "App-Info.plist"; sourceTree = "<group>"; };
 		52E3259A26C72E7900CCE47E /* watchOS-Ext.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS-Ext.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -551,6 +553,7 @@
 			isa = PBXGroup;
 			children = (
 				52E325A126C72E7900CCE47E /* watchOSApp.swift */,
+				52CA301526ECD64400BFD568 /* watchOSApp+Testable.swift */,
 				52E325AA26C72E7900CCE47E /* Ext-Info.plist */,
 			);
 			path = "watchOS-Ext";
@@ -818,6 +821,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52E325A226C72E7900CCE47E /* watchOSApp.swift in Sources */,
+				52CA301626ECD64400BFD568 /* watchOSApp+Testable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

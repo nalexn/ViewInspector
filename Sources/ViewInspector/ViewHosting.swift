@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -24,11 +25,7 @@ public extension ViewHosting {
             return unwrapped.medium
         }()
         #if os(watchOS)
-        guard let proxy = ViewHosting.proxy else {
-            // !!!
-            fatalError("View hosting is not set up. Please follow this guide: ")
-        }
-        proxy.host(view: AnyView(view))
+        watchOS(host: AnyView(view))
         #else
         let parentVC = rootViewController
         let childVC = hostVC(view)
@@ -54,7 +51,7 @@ public extension ViewHosting {
         let viewId = ViewId(function: function)
         guard let hosted = expel(viewId: viewId) else { return }
         #if os(watchOS)
-        ViewHosting.proxy?.host(view: nil)
+        watchOS(host: nil)
         #else
         let childVC = hosted.viewController
         willMove(childVC, to: nil)
@@ -63,6 +60,30 @@ public extension ViewHosting {
         didMove(childVC, to: nil)
         #endif
     }
+    
+    #if os(watchOS)
+    private static func watchOS(host view: AnyView?) {
+        typealias Subject = CurrentValueSubject<AnyView?, Never>
+        let ext = WKExtension.shared()
+        guard let subject: Subject = {
+            if let delegate = ext.delegate,
+               let subject = try? Inspector
+                 .attribute(path: "fallbackDelegate|some|extension|testViewSubject",
+                            value: delegate, type: Subject.self) {
+                return subject
+            }
+            if let rootIC = ext.rootInterfaceController,
+               let subject = try? Inspector
+                 .attribute(label: "testViewSubject", value: rootIC, type: Subject.self) {
+                return subject
+            }
+            return nil
+        }() else {
+            fatalError("View hosting for watchOS is not set up. Please follow this guide: ")
+        }
+        subject.send(view)
+    }
+    #endif
     
     internal static func medium(function: String = #function) -> Content.Medium {
         let viewId = ViewHosting.ViewId(function: function)
