@@ -79,7 +79,7 @@ extension Inspector {
         ```
      */
     public static func print(_ value: Any) -> String {
-        let tree = attributesTree(value: value, medium: .empty)
+        let tree = attributesTree(value: value, medium: .empty, visited: [])
         return typeName(value: value) + print(tree, level: 1)
     }
     
@@ -107,9 +107,16 @@ extension Inspector {
         return needsNewLine ? "\n" : ""
     }
     
-    private static func attributesTree(value: Any, medium: Content.Medium) -> Any {
+    private static func attributesTree(value: Any, medium: Content.Medium, visited: [AnyObject]) -> Any {
+        var visited = visited
+        if type(of: value) is AnyClass {
+            let ref = value as AnyObject
+            guard !visited.contains(where: { $0 === ref })
+            else { return " = { cyclic reference }" }
+            visited.append(ref)
+        }
         if let array = value as? [Any] {
-            return array.map { attributesTree(value: $0, medium: medium) }
+            return array.map { attributesTree(value: $0, medium: medium, visited: visited) }
         }
         let medium = (try? unwrap(content: Content(value, medium: medium)).medium) ?? medium
         var mirror = Mirror(reflecting: value)
@@ -122,12 +129,13 @@ extension Inspector {
         children.enumerated().forEach { child in
             let childName = child.element.label ?? "[\(child.offset)]"
             let childType = typeName(value: child.element.value)
-            dict[childName + ": " + childType] = attributesTree(value: child.element.value, medium: medium)
+            dict[childName + ": " + childType] = attributesTree(
+                value: child.element.value, medium: medium, visited: visited)
         }
         if let inspectable = value as? Inspectable,
            let content = try? inspectable.extractContent(environmentObjects: medium.environmentObjects) {
             let childType = typeName(value: content)
-            dict["body: " + childType] = attributesTree(value: content, medium: medium)
+            dict["body: " + childType] = attributesTree(value: content, medium: medium, visited: visited)
         }
         if dict.count == 0 {
             return " = " + String(describing: value)
