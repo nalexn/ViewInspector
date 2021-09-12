@@ -71,6 +71,44 @@ final class InspectorTests: XCTestCase {
         XCTAssertEqual(Inspector.print(sut), str)
     }
     
+    func testPrintClassHierarchy() {
+        let sut = TestDerivedClass()
+        let str = """
+                TestDerivedClass
+                  reference: Optional<AnyObject> = nil
+                  value: Int = 5
+                
+                """
+        XCTAssertEqual(Inspector.print(sut), str)
+    }
+    
+    func testPrintCyclicReferences() {
+        let obj1 = TestBaseClass()
+        obj1.reference = obj1
+        let obj2 = TestBaseClass(), obj3 = TestBaseClass(), obj4 = TestBaseClass()
+        obj2.reference = obj3
+        obj3.reference = obj4
+        obj4.reference = obj2
+        let str1 = """
+                TestBaseClass
+                  reference: Optional<AnyObject>
+                    some: TestBaseClass = { cyclic reference }
+
+                """
+        let str2 = """
+                TestBaseClass
+                  reference: Optional<AnyObject>
+                    some: TestBaseClass
+                      reference: Optional<AnyObject>
+                        some: TestBaseClass
+                          reference: Optional<AnyObject>
+                            some: TestBaseClass = { cyclic reference }
+
+                """
+        XCTAssertEqual(Inspector.print(obj1), str1)
+        XCTAssertEqual(Inspector.print(obj2), str2)
+    }
+    
     func testTupleView() throws {
         let view = HStack { Text(""); Text("") }
         let content = try Inspector.attribute(path: "_tree|content", value: view)
@@ -261,4 +299,11 @@ private struct TestPrintView: View, Inspectable {
     var body: some View {
         Text(str[0])
     }
+}
+
+private class TestBaseClass {
+    weak var reference: AnyObject?
+}
+private final class TestDerivedClass: TestBaseClass {
+    var value: Int = 5
 }

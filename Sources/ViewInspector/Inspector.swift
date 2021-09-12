@@ -1,10 +1,10 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal struct Inspector { }
+public struct Inspector { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+internal extension Inspector {
     
     static func attribute(label: String, value: Any) throws -> Any {
         if label == "super", let superclass = Mirror(reflecting: value).superclassMirror {
@@ -70,7 +70,7 @@ extension Inspector {
 // MARK: - Attributes lookup
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+public extension Inspector {
     
     /**
         Use this function to lookup the struct content:
@@ -78,8 +78,8 @@ extension Inspector {
         (lldb) po Inspector.print(view) as AnyObject
         ```
      */
-    public static func print(_ value: Any) -> String {
-        let tree = attributesTree(value: value, medium: .empty)
+    static func print(_ value: Any) -> String {
+        let tree = attributesTree(value: value, medium: .empty, visited: [])
         return typeName(value: value) + print(tree, level: 1)
     }
     
@@ -107,9 +107,16 @@ extension Inspector {
         return needsNewLine ? "\n" : ""
     }
     
-    private static func attributesTree(value: Any, medium: Content.Medium) -> Any {
+    private static func attributesTree(value: Any, medium: Content.Medium, visited: [AnyObject]) -> Any {
+        var visited = visited
+        if type(of: value) is AnyClass {
+            let ref = value as AnyObject
+            guard !visited.contains(where: { $0 === ref })
+            else { return " = { cyclic reference }" }
+            visited.append(ref)
+        }
         if let array = value as? [Any] {
-            return array.map { attributesTree(value: $0, medium: medium) }
+            return array.map { attributesTree(value: $0, medium: medium, visited: visited) }
         }
         let medium = (try? unwrap(content: Content(value, medium: medium)).medium) ?? medium
         var mirror = Mirror(reflecting: value)
@@ -122,12 +129,13 @@ extension Inspector {
         children.enumerated().forEach { child in
             let childName = child.element.label ?? "[\(child.offset)]"
             let childType = typeName(value: child.element.value)
-            dict[childName + ": " + childType] = attributesTree(value: child.element.value, medium: medium)
+            dict[childName + ": " + childType] = attributesTree(
+                value: child.element.value, medium: medium, visited: visited)
         }
         if let inspectable = value as? Inspectable,
            let content = try? inspectable.extractContent(environmentObjects: medium.environmentObjects) {
             let childType = typeName(value: content)
-            dict["body: " + childType] = attributesTree(value: content, medium: medium)
+            dict["body: " + childType] = attributesTree(value: content, medium: medium, visited: visited)
         }
         if dict.count == 0 {
             return " = " + String(describing: value)
@@ -161,7 +169,7 @@ fileprivate extension Array {
 // MARK: - View Inspection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+internal extension Inspector {
     
     static func viewsInContainer(view: Any, medium: Content.Medium) throws -> LazyGroup<Content> {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view, medium: medium.resettingViewModifiers()))
