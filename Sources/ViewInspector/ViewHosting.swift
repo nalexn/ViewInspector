@@ -25,7 +25,11 @@ public extension ViewHosting {
             return unwrapped.medium
         }()
         #if os(watchOS)
-        watchOS(host: AnyView(view))
+        do {
+            try watchOS(host: AnyView(view))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
         #else
         let parentVC = rootViewController
         let childVC = hostVC(view)
@@ -51,7 +55,7 @@ public extension ViewHosting {
         let viewId = ViewId(function: function)
         guard let hosted = expel(viewId: viewId) else { return }
         #if os(watchOS)
-        watchOS(host: nil)
+        try? watchOS(host: nil)
         #else
         let childVC = hosted.viewController
         willMove(childVC, to: nil)
@@ -62,7 +66,7 @@ public extension ViewHosting {
     }
     
     #if os(watchOS)
-    private static func watchOS(host view: AnyView?) {
+    private static func watchOS(host view: AnyView?) throws {
         typealias Subject = CurrentValueSubject<AnyView?, Never>
         let ext = WKExtension.shared()
         guard let subject: Subject = {
@@ -79,7 +83,12 @@ public extension ViewHosting {
             }
             return nil
         }() else {
-            fatalError("View hosting for watchOS is not set up. Please follow this guide: ")
+            /*
+             If you're running ViewInspector's tests on watchOS, launch them
+             from another Xcode project at ".watchOS/watchOS.xcodeproj"
+             */
+            throw InspectionError.notSupported(
+                "View hosting for watchOS is not set up. Please follow this guide: ")
         }
         subject.send(view)
     }
