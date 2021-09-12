@@ -1,10 +1,10 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal struct Inspector { }
+public struct Inspector { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+internal extension Inspector {
     
     static func attribute(label: String, value: Any) throws -> Any {
         if label == "super", let superclass = Mirror(reflecting: value).superclassMirror {
@@ -70,7 +70,7 @@ extension Inspector {
 // MARK: - Attributes lookup
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+public extension Inspector {
     
     /**
         Use this function to lookup the struct content:
@@ -78,7 +78,7 @@ extension Inspector {
         (lldb) po Inspector.print(view) as AnyObject
         ```
      */
-    public static func print(_ value: Any) -> String {
+    static func print(_ value: Any) -> String {
         let tree = attributesTree(value: value, medium: .empty, visited: [])
         return typeName(value: value) + print(tree, level: 1)
     }
@@ -169,7 +169,7 @@ fileprivate extension Array {
 // MARK: - View Inspection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+internal extension Inspector {
     
     static func viewsInContainer(view: Any, medium: Content.Medium) throws -> LazyGroup<Content> {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view, medium: medium.resettingViewModifiers()))
