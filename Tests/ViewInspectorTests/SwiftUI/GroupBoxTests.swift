@@ -89,7 +89,7 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertEqual(sut, "abc")
     }
     
-    #if !os(tvOS) && !os(macOS) && !targetEnvironment(macCatalyst)
+    #if os(iOS)
     func testGroupBoxStyleInspection() throws {
         guard #available(iOS 14, *) else { return }
         let sut = EmptyView().groupBoxStyle(DefaultGroupBoxStyle())

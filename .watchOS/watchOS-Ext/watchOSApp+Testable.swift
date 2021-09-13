@@ -2,7 +2,7 @@ import SwiftUI
 import WatchKit
 import Combine
 
-typealias TestViewSubject = CurrentValueSubject<AnyView?, Never>
+typealias TestViewSubject = CurrentValueSubject<[(String, AnyView)], Never>
 
 #if os(watchOS) && DEBUG
 
@@ -14,18 +14,15 @@ extension View {
 
 private struct TestViewHost: ViewModifier {
     
-    @State private var hostedView: AnyView?
+    @State private var hostedViews: [(String, AnyView)] = []
     let injector: TestViewSubject
     
     func body(content: Content) -> some View {
-        Group {
-            if let view = hostedView {
-                view
-            } else {
-                content
-            }
+        ZStack {
+            content
+            ForEach(hostedViews, id: \.0) { $0.1 }
         }
-        .onReceive(injector) { hostedView = $0 }
+        .onReceive(injector) { hostedViews = $0 }
     }
 }
 

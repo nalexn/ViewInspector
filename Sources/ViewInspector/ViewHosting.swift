@@ -12,6 +12,7 @@ public extension ViewHosting {
     
     struct ViewId: Hashable {
         let function: String
+        var key: String { function }
     }
     
     static func host<V>(view: V, size: CGSize? = nil, function: String = #function) where V: View {
@@ -26,7 +27,8 @@ public extension ViewHosting {
         }()
         #if os(watchOS)
         do {
-            try watchOS(host: AnyView(view))
+            store(Hosted(medium: medium), viewId: viewId)
+            try watchOS(host: AnyView(view), viewId: viewId)
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -53,10 +55,11 @@ public extension ViewHosting {
     
     static func expel(function: String = #function) {
         let viewId = ViewId(function: function)
-        guard let hosted = expel(viewId: viewId) else { return }
         #if os(watchOS)
-        try? watchOS(host: nil)
+        _ = expel(viewId: viewId)
+        try? watchOS(host: nil, viewId: viewId)
         #else
+        guard let hosted = expel(viewId: viewId) else { return }
         let childVC = hosted.viewController
         willMove(childVC, to: nil)
         childVC.view.removeFromSuperview()
@@ -66,8 +69,8 @@ public extension ViewHosting {
     }
     
     #if os(watchOS)
-    private static func watchOS(host view: AnyView?) throws {
-        typealias Subject = CurrentValueSubject<AnyView?, Never>
+    private static func watchOS(host view: AnyView?, viewId: ViewId) throws {
+        typealias Subject = CurrentValueSubject<[(String, AnyView)], Never>
         let ext = WKExtension.shared()
         guard let subject: Subject = {
             if let delegate = ext.delegate,
@@ -90,7 +93,13 @@ public extension ViewHosting {
             throw InspectionError.notSupported(
                 "View hosting for watchOS is not set up. Please follow this guide: ")
         }
-        subject.send(view)
+        var array = subject.value
+        if let view = view {
+            array.append((viewId.key, view))
+        } else if let index = array.firstIndex(where: { $0.0 == viewId.key }) {
+            array.remove(at: index)
+        }
+        subject.send(array)
     }
     #endif
     

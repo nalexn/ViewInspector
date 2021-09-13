@@ -16,5 +16,5 @@ struct watchOSApp: App {
 }
 
 final class ExtensionDelegate: NSObject, WKExtensionDelegate {
-    let testViewSubject = TestViewSubject(nil)
+    let testViewSubject = TestViewSubject([])
 }
