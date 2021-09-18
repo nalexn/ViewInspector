@@ -187,7 +187,6 @@ internal extension Inspector {
         return try unwrap(content: Content(view, medium: medium))
     }
     
-    // swiftlint:disable cyclomatic_complexity
     static func unwrap(content: Content) throws -> Content {
         switch Inspector.typeName(value: content.view, prefixOnly: true) {
         case "Tree":
@@ -202,8 +201,6 @@ internal extension Inspector {
             return try ViewType.ViewModifier<ViewType.Stub>.child(content)
         case "SubscriptionView":
             return try ViewType.SubscriptionView.child(content)
-        case "_UnaryViewAdaptor":
-            return try ViewType.UnaryViewAdaptor.child(content)
         case "_ConditionalContent":
             return try ViewType.ConditionalContent.child(content)
         case "EnvironmentReaderView":
@@ -214,7 +211,6 @@ internal extension Inspector {
             return content
         }
     }
-    // swiftlint:enable cyclomatic_complexity
     
     static func guardType(value: Any, namespacedPrefixes: [String], inspectionCall: String) throws {
         guard let firstPrefix = namespacedPrefixes.first

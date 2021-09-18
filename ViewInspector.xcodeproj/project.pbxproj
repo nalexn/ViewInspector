@@ -30,7 +30,6 @@
 		5214803A25F803DC002D974D /* CustomStyleModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */; };
 		5223540026D62CB2008DA52F /* ToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522353FF26D62CB2008DA52F /* ToolbarTests.swift */; };
 		5223540226D63B7A008DA52F /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223540126D63B79008DA52F /* Toolbar.swift */; };
-		5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
@@ -283,7 +282,6 @@
 		5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiersTests.swift; sourceTree = "<group>"; };
 		522353FF26D62CB2008DA52F /* ToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
 		5223540126D63B79008DA52F /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
-		5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewAdaptor.swift; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
@@ -678,7 +676,6 @@
 				F639DBC223A7DDA2003A6FED /* TouchBar.swift */,
 				F64A2C6723A3FD3A00A4853A /* TreeView.swift */,
 				F653BDE2255698A6001FA688 /* TupleView.swift */,
-				5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */,
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
@@ -1027,7 +1024,6 @@
 				F6C15ADD254F26B9000240F1 /* StyleConfiguration.swift in Sources */,
 				F639DBC323A7DDA2003A6FED /* TouchBar.swift in Sources */,
 				52507626264FC0F400ADE4E7 /* Alert.swift in Sources */,
-				5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */,
 				5223540226D63B7A008DA52F /* Toolbar.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				5214802B25F803B7002D974D /* CustomStyleModifiers.swift in Sources */,
