@@ -16,14 +16,17 @@ final class PopoverTests: XCTestCase {
     }
     
     func testInspectionErrorNoModifier() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let sut = EmptyView().offset()
         XCTAssertThrows(try sut.inspect().emptyView().popover(),
                         "EmptyView does not have 'popover' modifier")
     }
     
     func testInspectionErrorCustomModifierRequired() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().popover(isPresented: binding) { Text("") }
+        print("\(Inspector.print(sut) as AnyObject)")
         XCTAssertThrows(try sut.inspect().emptyView().popover(),
             """
             Please refer to the Guide for inspecting the Popover: \
@@ -32,6 +35,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testInspectionErrorPopoverNotPresented() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: false)
         let sut = EmptyView().popover2(isPresented: binding) { Text("") }
         XCTAssertThrows(try sut.inspect().emptyView().popover(),
@@ -39,6 +43,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testInspectionErrorPopoverWithItemNotPresented() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding<Int?>(wrappedValue: nil)
         let sut = EmptyView().popover2(item: binding) { Text("\($0)") }
         XCTAssertThrows(try sut.inspect().emptyView().popover(),
@@ -46,6 +51,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testContentInspection() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().popover2(isPresented: binding) {
             Text("abc")
@@ -56,6 +62,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testContentInteraction() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().popover2(isPresented: binding) {
             Text("abc")
@@ -68,6 +75,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testDismiss() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().popover2(isPresented: binding, content: { Text("") })
         XCTAssertTrue(binding.wrappedValue)
@@ -77,6 +85,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testDismissForItemVersion() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding<Int?>(wrappedValue: 6)
         let sut = EmptyView().popover2(item: binding) { Text("\($0)") }
         let popover = try sut.inspect().emptyView().popover()
@@ -88,6 +97,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testMultiplePopoversInspection() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding1 = Binding(wrappedValue: true)
         let binding2 = Binding(wrappedValue: true)
         let binding3 = Binding(wrappedValue: true)
@@ -110,6 +120,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testFindAndPathToRoots() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: true)
         let sut = PopoverFindTestView(popover1: binding, popover2: binding, popover3: binding)
         
@@ -175,6 +186,7 @@ final class PopoverDeprecatedTests: XCTestCase {
     
     @available(*, deprecated)
     func testContentView() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().popover2(isPresented: binding) { Text("") }
         let popover = try sut.inspect().emptyView().popover()
@@ -184,6 +196,7 @@ final class PopoverDeprecatedTests: XCTestCase {
     
     @available(*, deprecated)
     func testIsPresentedAndDismiss() throws {
+        guard #available(iOS 14.2, macOS 11.0, *) else { return }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().popover2(isPresented: binding) { Text("") }
         XCTAssertTrue(try sut.inspect().emptyView().popover().isPresented())

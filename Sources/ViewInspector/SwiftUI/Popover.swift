@@ -36,7 +36,7 @@ extension ViewType.Popover: MultipleViewContent {
 
 // MARK: - Extraction
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 14.2, macOS 11.0, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 public extension InspectableView {
