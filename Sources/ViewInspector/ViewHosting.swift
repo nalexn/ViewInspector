@@ -31,6 +31,10 @@ public extension ViewHosting {
             try watchOS(host: AnyView(view), viewId: viewId)
         } catch {
             fatalError(error.localizedDescription)
+            /*
+             If you're running ViewInspector's tests on watchOS, launch them
+             from another Xcode project at ".watchOS/watchOS.xcodeproj"
+             */
         }
         #else
         let parentVC = rootViewController
@@ -86,10 +90,6 @@ public extension ViewHosting {
             }
             return nil
         }() else {
-            /*
-             If you're running ViewInspector's tests on watchOS, launch them
-             from another Xcode project at ".watchOS/watchOS.xcodeproj"
-             */
             throw InspectionError.notSupported(
                 "View hosting for watchOS is not set up. Please follow this guide: ")
         }

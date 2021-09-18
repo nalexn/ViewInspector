@@ -178,7 +178,10 @@ public extension WKInterfaceObjectRepresentable where Self: Inspectable {
 public extension Inspectable where Self: WKInterfaceObjectRepresentable {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
-            "Please use `.actualView().interfaceObject()` for inspecting the contents of WKInterfaceObjectRepresentable")
+            """
+            Please use `.actualView().interfaceObject()` for inspecting \
+            the contents of WKInterfaceObjectRepresentable
+            """)
     }
 }
 #endif
