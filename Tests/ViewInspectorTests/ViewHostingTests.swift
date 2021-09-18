@@ -149,6 +149,39 @@ final class ViewHostingTests: XCTestCase {
         wait(for: [exp], timeout: 0.2)
     }
 }
+#elseif os(watchOS)
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+@available(watchOS, deprecated: 7.0)
+final class ViewHostingTests: XCTestCase {
+    
+    func testWKTestView() throws {
+        let exp = XCTestExpectation(description: #function)
+        exp.expectedFulfillmentCount = 2
+        var sut = WKTestView.WrapperView(didUpdate: {
+            exp.fulfill()
+        })
+        sut.didAppear = { view in
+            ViewHosting.expel()
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testWKViewExtraction() throws {
+        let exp = XCTestExpectation(description: #function)
+        let sut = WKTestView(didUpdate: { })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            sut.inspect { view in
+                XCTAssertNoThrow(try view.actualView().interfaceObject())
+                ViewHosting.expel()
+                exp.fulfill()
+            }
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 1)
+    }
+}
 #endif
 
 // MARK: - Test Views
@@ -224,6 +257,38 @@ extension UITestView {
         
         var body: some View {
             UITestView(flag: $flag, didUpdate: didUpdate)
+                .onAppear { self.didAppear?(self) }
+        }
+    }
+}
+#elseif os(watchOS)
+    
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+@available(watchOS, deprecated: 7.0)
+private struct WKTestView: WKInterfaceObjectRepresentable, Inspectable {
+    
+    var didUpdate: () -> Void
+    
+    typealias Context = WKInterfaceObjectRepresentableContext<WKTestView>
+    func makeWKInterfaceObject(context: Context) -> some WKInterfaceObject {
+        return WKInterfaceMap()
+    }
+
+    func updateWKInterfaceObject(_ wkInterfaceObject: WKInterfaceObjectType, context: Context) {
+        didUpdate()
+    }
+}
+    
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+@available(watchOS, deprecated: 7.0)
+extension WKTestView {
+    struct WrapperView: View, Inspectable {
+        
+        var didAppear: ((Self) -> Void)?
+        var didUpdate: () -> Void
+        
+        var body: some View {
+            WKTestView(didUpdate: didUpdate)
                 .onAppear { self.didAppear?(self) }
         }
     }

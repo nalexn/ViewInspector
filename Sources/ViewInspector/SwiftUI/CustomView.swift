@@ -165,4 +165,20 @@ public extension Inspectable where Self: UIViewControllerRepresentable {
             "Please use `.actualView().viewController()` for inspecting the contents of UIViewControllerRepresentable")
     }
 }
+#elseif os(watchOS)
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+public extension WKInterfaceObjectRepresentable where Self: Inspectable {
+    func interfaceObject() throws -> WKInterfaceObjectType {
+        return try ViewHosting.lookup(Self.self)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+public extension Inspectable where Self: WKInterfaceObjectRepresentable {
+    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
+        throw InspectionError.notSupported(
+            "Please use `.actualView().interfaceObject()` for inspecting the contents of WKInterfaceObjectRepresentable")
+    }
+}
 #endif

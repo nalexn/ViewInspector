@@ -283,8 +283,39 @@ internal extension ViewHosting {
                 .first else { throw InspectionError.viewNotFound(parent: name) }
             return vc
     }
+    #elseif os(watchOS)
+    static func lookup<V>(_ view: V.Type) throws -> V.WKInterfaceObjectType
+        where V: Inspectable & WKInterfaceObjectRepresentable {
+            let name = Inspector.typeName(type: view)
+            guard let rootVC = WKExtension.shared().rootInterfaceController,
+                  let viewCache = try? Inspector.attribute(path: """
+                  super|$__lazy_storage_$_hostingController|some|\
+                  host|renderer|renderer|some|viewCache|map
+                  """, value: rootVC, type: ArrayConvertible.self).allValues(),
+                  let object = viewCache.compactMap({ value in
+                      try? Inspector.attribute(
+                        path: "view|representedViewProvider",
+                        value: value, type: V.WKInterfaceObjectType.self)
+                  }).first
+            else {
+                throw InspectionError.viewNotFound(parent: name)
+            }
+            return object
+    }
     #endif
 }
+
+#if os(watchOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+internal protocol ArrayConvertible {
+    func allValues() -> [Any]
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+extension Dictionary: ArrayConvertible {
+    func allValues() -> [Any] { Array(values) as [Any] }
+}
+#endif
 
 #if os(macOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
