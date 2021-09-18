@@ -256,6 +256,7 @@
 		520DC70A26F60FF400FCFFFD /* GeometryReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520DC5C526F60FBA00FCFFFD /* GeometryReaderTests.swift */; };
 		520DC70C26F60FF400FCFFFD /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 520DC68E26F60FF400FCFFFD /* ViewInspector */; };
 		520DC70E26F60FF400FCFFFD /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 520DC5AA26F60FBA00FCFFFD /* Test.strings */; };
+		520DC71526F6115D00FCFFFD /* watchOSApp+Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CA301526ECD64400BFD568 /* watchOSApp+Testable.swift */; };
 		5293010626EFC96600012E90 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5293010426EFC96600012E90 /* Interface.storyboard */; };
 		5293010E26EFC96700012E90 /* watchOS-Ext-2.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5293010D26EFC96700012E90 /* watchOS-Ext-2.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5293012726EFCBD300012E90 /* watchOSApp-2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5293011426EFC96700012E90 /* watchOSApp-2.swift */; };
@@ -1229,6 +1230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5293012726EFCBD300012E90 /* watchOSApp-2.swift in Sources */,
+				520DC71526F6115D00FCFFFD /* watchOSApp+Testable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,15 +4,28 @@ import Combine
 
 typealias TestViewSubject = CurrentValueSubject<[(String, AnyView)], Never>
 
-#if os(watchOS) && DEBUG
+#if !(os(watchOS) && DEBUG)
+
+typealias RootView<T> = T
 
 extension View {
-    func testable(_ injector: TestViewSubject) -> some View {
+    @inline(__always)
+    func testable(_ injector: TestViewSubject) -> Self {
+        self
+    }
+}
+
+#else
+
+typealias RootView<T> = ModifiedContent<T, TestViewHost>
+
+extension View {
+    func testable(_ injector: TestViewSubject) -> ModifiedContent<Self, TestViewHost> {
         modifier(TestViewHost(injector: injector))
     }
 }
 
-private struct TestViewHost: ViewModifier {
+struct TestViewHost: ViewModifier {
     
     @State private var hostedViews: [(String, AnyView)] = []
     let injector: TestViewSubject
@@ -23,15 +36,6 @@ private struct TestViewHost: ViewModifier {
             ForEach(hostedViews, id: \.0) { $0.1 }
         }
         .onReceive(injector) { hostedViews = $0 }
-    }
-}
-
-#else
-
-extension View {
-    @inline(__always)
-    func testable(_ injector: TestViewSubject) -> some View {
-        self
     }
 }
 
