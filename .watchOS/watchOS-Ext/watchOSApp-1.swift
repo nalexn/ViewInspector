@@ -3,7 +3,9 @@ import SwiftUI
 @main
 struct watchOSApp: App {
     
+    // swiftlint:disable weak_delegate
     @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var extDelegate
+    // swiftlint:enable weak_delegate
     
     var body: some Scene {
         WindowGroup {
