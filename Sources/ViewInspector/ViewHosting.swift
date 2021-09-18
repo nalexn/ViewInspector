@@ -241,7 +241,7 @@ private class RootViewController: NSViewController {
 
 // MARK: - UIView lookup
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 internal extension ViewHosting {
     #if os(macOS)
     static func lookup<V>(_ view: V.Type) throws -> V.NSViewType
