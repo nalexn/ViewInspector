@@ -2,11 +2,10 @@ import SwiftUI
 import WatchKit
 import Combine
 
-typealias TestViewSubject = CurrentValueSubject<[(String, AnyView)], Never>
-
 #if !(os(watchOS) && DEBUG)
 
 typealias RootView<T> = T
+typealias TestViewSubject = Set<Int>
 
 extension View {
     @inline(__always)
@@ -18,6 +17,7 @@ extension View {
 #else
 
 typealias RootView<T> = ModifiedContent<T, TestViewHost>
+typealias TestViewSubject = CurrentValueSubject<[(String, AnyView)], Never>
 
 extension View {
     func testable(_ injector: TestViewSubject) -> ModifiedContent<Self, TestViewHost> {

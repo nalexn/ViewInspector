@@ -16,7 +16,3 @@ struct ContentView: View {
         Text("Hi")
     }
 }
-
-final class ExtensionDelegate: NSObject, WKExtensionDelegate {
-
-}

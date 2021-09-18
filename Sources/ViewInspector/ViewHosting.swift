@@ -91,7 +91,10 @@ public extension ViewHosting {
             return nil
         }() else {
             throw InspectionError.notSupported(
-                "View hosting for watchOS is not set up. Please follow this guide: ")
+                """
+                View hosting for watchOS is not set up. Please follow this guide: \
+                https://github.com/nalexn/ViewInspector/blob/master/guide_watchOS.md
+                """)
         }
         var array = subject.value
         if let view = view {
