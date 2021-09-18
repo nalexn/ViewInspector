@@ -5,6 +5,8 @@ import SwiftUI
 #if os(iOS) || os(macOS)
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class PopoverTests: XCTestCase {
     
     func testPopover() throws {

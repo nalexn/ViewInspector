@@ -71,7 +71,7 @@ private struct Test {
             Text("empty")
         }
     }
-    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
     struct ConflictingViewTypeNamesStyle: ButtonStyle {
         public func makeBody(configuration: Configuration) -> some View {
             Group {
@@ -225,7 +225,7 @@ final class ViewSearchTests: XCTestCase {
     }
     
     func testConflictingViewTypeNames() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let style = Test.ConflictingViewTypeNamesStyle()
         let sut = try style.inspect(isPressed: true)
         XCTAssertEqual(try sut.find(text: "empty").pathToRoot,

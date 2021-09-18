@@ -79,7 +79,6 @@
 		CDA84516262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */; };
 		CDA8451C262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */; };
 		D766E67026E17F01004AAA80 /* FullScreenCoverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */; };
-		D7A6CE8926E17AE900599824 /* FullScreenCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6CE8826E17AE900599824 /* FullScreenCover.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
 		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
 		F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D423D3C74B008F31BD /* InspectionEmissary.swift */; };
@@ -331,7 +330,6 @@
 		CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureUpdatingTests.swift; sourceTree = "<group>"; };
 		CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureChangedTests.swift; sourceTree = "<group>"; };
 		D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCoverTests.swift; sourceTree = "<group>"; };
-		D7A6CE8826E17AE900599824 /* FullScreenCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCover.swift; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
 		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
 		F60385D423D3C74B008F31BD /* InspectionEmissary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissary.swift; sourceTree = "<group>"; };
@@ -628,7 +626,6 @@
 				F6D933A62385E9E000358E0E /* EquatableView.swift */,
 				F60EEBCC2382EED0007DB53A /* ForEach.swift */,
 				F60EEBC52382EED0007DB53A /* Form.swift */,
-				D7A6CE8826E17AE900599824 /* FullScreenCover.swift */,
 				F6D9339A2385AD9100358E0E /* GeometryReader.swift */,
 				CDA84477262B6C3E00C56C98 /* Gesture.swift */,
 				F60EEBC62382EED0007DB53A /* Group.swift */,
@@ -1056,7 +1053,6 @@
 				F6ECF6C823A66E54000FC591 /* InteractionModifiers.swift in Sources */,
 				52A5CA0425E1139E00773CF5 /* EnvironmentModifiers.swift in Sources */,
 				F60EEBDC2382EED0007DB53A /* Text.swift in Sources */,
-				D7A6CE8926E17AE900599824 /* FullScreenCover.swift in Sources */,
 				52B71AAA26EB5C4500B719D4 /* SafeAreaInset.swift in Sources */,
 				F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */,
 				F6684BFE23AA863400DECCB3 /* RadialGradient.swift in Sources */,
@@ -1327,11 +1323,13 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator";
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
 				TVOS_DEPLOYMENT_TARGET = 13.0;
 				USE_HEADERMAP = NO;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Debug;
 		};
@@ -1357,7 +1355,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TARGET_NAME = ViewInspector;
 			};
 			name = Debug;
@@ -1384,7 +1381,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TARGET_NAME = ViewInspector;
 			};
 			name = Release;
@@ -1433,11 +1429,13 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator";
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
 				TVOS_DEPLOYMENT_TARGET = 13.0;
 				USE_HEADERMAP = NO;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Release;
 		};
@@ -1490,7 +1488,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ViewInspectorTests;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TARGET_NAME = ViewInspectorTests;
 			};
 			name = Debug;
@@ -1514,7 +1511,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ViewInspectorTests;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TARGET_NAME = ViewInspectorTests;
 			};
 			name = Release;

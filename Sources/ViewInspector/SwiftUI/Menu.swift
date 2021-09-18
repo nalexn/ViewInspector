@@ -76,6 +76,7 @@ public extension InspectableView {
 
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 public extension MenuStyle {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let config = MenuStyleConfiguration()
@@ -88,6 +89,7 @@ public extension MenuStyle {
 
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 private extension MenuStyleConfiguration {
     struct Allocator0 { }
     struct Allocator16 {

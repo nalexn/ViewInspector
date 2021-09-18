@@ -71,7 +71,7 @@ final class VStackTests: XCTestCase {
     }
 
     func testSpacingInspection() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = VStack(spacing: 6) {
             Text("")
         }

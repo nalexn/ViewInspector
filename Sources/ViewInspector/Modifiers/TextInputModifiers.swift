@@ -2,19 +2,17 @@ import SwiftUI
 
 // MARK: - Adjusting Text in a View
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension InspectableView {
     
-    #if !os(macOS)
+    #if os(iOS) || os(tvOS)
     func textContentType() throws -> UITextContentType? {
         let reference = EmptyView().textContentType(.emailAddress)
         let keyPath = try Inspector.environmentKeyPath(Optional<String>.self, reference)
         let value = try environment(keyPath, call: "textContentType")
         return value.flatMap { UITextContentType(rawValue: $0) }
     }
-    #endif
-
-    #if os(iOS) || os(tvOS)
+    
     func keyboardType() throws -> UIKeyboardType {
         let reference = EmptyView().keyboardType(.default)
         let keyPath = try Inspector.environmentKeyPath(Int.self, reference)
@@ -106,6 +104,7 @@ public extension InspectableView {
         return false
     }
     
+    #if !os(watchOS)
     func disableAutocorrection() -> Bool {
         let reference = EmptyView().disableAutocorrection(false)
         if let keyPath = try? Inspector.environmentKeyPath(Optional<Bool>.self, reference),
@@ -114,6 +113,7 @@ public extension InspectableView {
         }
         return false
     }
+    #endif
     
     func flipsForRightToLeftLayoutDirection() -> Bool {
         return modifiersMatching({ $0.modifierType == "_FlipForRTLEffect" },

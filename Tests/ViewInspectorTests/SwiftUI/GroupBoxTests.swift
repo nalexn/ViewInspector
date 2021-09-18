@@ -4,6 +4,7 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class GroupBoxTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
@@ -88,7 +89,7 @@ final class GroupBoxTests: XCTestCase {
         XCTAssertEqual(sut, "abc")
     }
     
-    #if !os(tvOS) && !os(macOS) && !targetEnvironment(macCatalyst)
+    #if os(iOS)
     func testGroupBoxStyleInspection() throws {
         guard #available(iOS 14, *) else { return }
         let sut = EmptyView().groupBoxStyle(DefaultGroupBoxStyle())
@@ -111,6 +112,7 @@ final class GroupBoxTests: XCTestCase {
 
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 private struct TestGroupBoxStyle: GroupBoxStyle {
     func makeBody(configuration: Configuration) -> some View {
         VStack {

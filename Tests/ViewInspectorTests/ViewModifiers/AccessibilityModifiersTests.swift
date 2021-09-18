@@ -110,6 +110,7 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(iOS, deprecated, introduced: 13.0)
     @available(tvOS, deprecated, introduced: 13.0)
     @available(macOS, deprecated, introduced: 10.15)
+    @available(watchOS, deprecated, introduced: 6)
     func testAccessibilitySelectionIdentifier() throws {
         guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { return }
         let sut = EmptyView().accessibility(selectionIdentifier: "")
@@ -119,6 +120,7 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(iOS, deprecated, introduced: 13.0)
     @available(tvOS, deprecated, introduced: 13.0)
     @available(macOS, deprecated, introduced: 10.15)
+    @available(watchOS, deprecated, introduced: 6)
     func testAccessibilitySelectionIdentifierInspection() throws {
         guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { return }
         if #available(iOS 15, tvOS 15, *) {

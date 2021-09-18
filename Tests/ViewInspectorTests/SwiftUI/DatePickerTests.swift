@@ -4,6 +4,7 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class DatePickerTests: XCTestCase {
     
     class StateObject: ObservableObject {
@@ -74,6 +75,7 @@ final class DatePickerTests: XCTestCase {
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class GlobalModifiersForDatePicker: XCTestCase {
     
     func testDatePickerStyle() throws {

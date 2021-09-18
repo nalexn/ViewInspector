@@ -16,9 +16,9 @@ public extension ViewType.StyleConfiguration {
                 ButtonStyleConfiguration.Label.self,
                 ToggleStyleConfiguration.Label.self
             ]
-            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
                 types.append(ProgressViewStyleConfiguration.Label.self)
-                #if !os(tvOS)
+                #if os(iOS) || os(macOS)
                 types.append(GroupBoxStyleConfiguration.Label.self)
                 types.append(MenuStyleConfiguration.Label.self)
                 #endif
@@ -38,7 +38,7 @@ public extension ViewType.StyleConfiguration {
         public static var namespacedPrefixes: [String] {
             var types: [Any.Type] = []
             if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
-                #if !os(tvOS)
+                #if os(iOS) || os(macOS)
                 types.append(GroupBoxStyleConfiguration.Content.self)
                 types.append(MenuStyleConfiguration.Content.self)
                 #endif
@@ -57,7 +57,7 @@ public extension ViewType.StyleConfiguration {
         
         public static var namespacedPrefixes: [String] {
             var types: [Any.Type] = []
-            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
                 types.append(LabelStyleConfiguration.Title.self)
             }
             return types
@@ -74,7 +74,7 @@ public extension ViewType.StyleConfiguration {
         
         public static var namespacedPrefixes: [String] {
             var types: [Any.Type] = []
-            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
                 types.append(LabelStyleConfiguration.Icon.self)
             }
             return types
@@ -91,7 +91,7 @@ public extension ViewType.StyleConfiguration {
         
         public static var namespacedPrefixes: [String] {
             var types: [Any.Type] = []
-            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
                 types.append(ProgressViewStyleConfiguration.CurrentValueLabel.self)
             }
             return types

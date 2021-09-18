@@ -37,7 +37,7 @@ final class TextAttributesTests: XCTestCase {
     }
     
     func testFontAttribute() throws {
-        let system = Font.system(size: 24, weight: .semibold, design: .monospaced)
+        let system = Font.system(size: 24, weight: .semibold, design: .rounded)
         let view1 = Text("Test").kerning(2).font(system)
         let sut1 = try view1.inspect().text().attributes()
         XCTAssertEqual(try sut1.font(), system)
@@ -96,7 +96,7 @@ final class TextAttributesTests: XCTestCase {
         let sut = try view.inspect().text().attributes()
         XCTAssertTrue(try sut.isStrikethrough())
         XCTAssertEqual(try sut.strikethroughColor(), .black)
-        if #available(iOS 15.0, tvOS 15.0, macOS 11.6, *) {
+        if #available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, *) {
             XCTAssertEqual(try sut.strikethroughStyle(), .single)
         }
     }
@@ -106,7 +106,7 @@ final class TextAttributesTests: XCTestCase {
         let sut = try view.inspect().text().attributes()
         XCTAssertTrue(try sut.isUnderline())
         XCTAssertEqual(try sut.underlineColor(), .black)
-        if #available(iOS 15.0, tvOS 15.0, macOS 11.6, *) {
+        if #available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, *) {
             XCTAssertEqual(try sut.underlineStyle(), .single)
         }
     }
@@ -196,7 +196,7 @@ final class FontAttributesTests: XCTestCase {
     
     func testSizeAttribute() throws {
         let sut1 = Font.custom("abc", size: 13)
-        let sut2 = Font.system(size: 15, weight: .bold, design: .monospaced)
+        let sut2 = Font.system(size: 15, weight: .bold, design: .rounded)
         let sut3 = Font.headline
         XCTAssertEqual(try sut1.size(), 13)
         XCTAssertFalse(sut1.isFixedSize())
@@ -205,7 +205,7 @@ final class FontAttributesTests: XCTestCase {
         XCTAssertThrows(try sut3.size(),
                         "Font does not have 'size' attribute")
         XCTAssertFalse(sut3.isFixedSize())
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
             let sut4 = Font.custom("abc", fixedSize: 16)
             XCTAssertEqual(try sut4.size(), 16)
             XCTAssertTrue(sut4.isFixedSize())
@@ -229,10 +229,10 @@ final class FontAttributesTests: XCTestCase {
     }
     
     func testDesignAttribute() throws {
-        let sut1 = Font.system(size: 14, design: .monospaced)
+        let sut1 = Font.system(size: 14, design: .rounded)
         let sut2 = Font.system(size: 13)
         let sut3 = Font.custom("abc", size: 14)
-        XCTAssertEqual(try sut1.design(), .monospaced)
+        XCTAssertEqual(try sut1.design(), .rounded)
         XCTAssertEqual(try sut2.design(), .`default`)
         XCTAssertThrows(try sut3.design(), "Font does not have 'design' attribute")
     }
@@ -248,7 +248,7 @@ final class FontAttributesTests: XCTestCase {
         } else {
             XCTAssertThrows(try sut3.style(), "Font does not have 'style' attribute")
         }
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
             let sut4 = Font.custom("abc", size: 14, relativeTo: .caption2)
             XCTAssertEqual(try sut4.style(), .caption2)
         }
