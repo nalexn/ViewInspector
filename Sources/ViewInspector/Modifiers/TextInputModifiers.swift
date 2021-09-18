@@ -5,7 +5,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension InspectableView {
     
-    #if os(iOS) || os(tvOS)
+    #if (os(iOS) || os(tvOS)) && !targetEnvironment(macCatalyst)
     func textContentType() throws -> UITextContentType? {
         let reference = EmptyView().textContentType(.emailAddress)
         let keyPath = try Inspector.environmentKeyPath(Optional<String>.self, reference)
@@ -125,7 +125,7 @@ public extension InspectableView {
     }
 }
 
-#if os(iOS) || os(tvOS)
+#if (os(iOS) || os(tvOS)) && !targetEnvironment(macCatalyst)
 @available(iOS 15.0, tvOS 15.0, watchOS 8.0, *)
 extension TextInputAutocapitalization {
     enum Behavior: String {

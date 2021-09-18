@@ -40,7 +40,7 @@ final class InteractionTests: XCTestCase {
     }
     
     func testOnPasteCommand() throws {
-        let sut = EmptyView().onPasteCommand(of: []) { _ in }
+        let sut = EmptyView().onPasteCommand(of: [String]()) { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
@@ -58,7 +58,7 @@ final class InteractionTests: XCTestCase {
     
     func testOnPasteCommandPayload() throws {
         let sut = EmptyView()
-            .onPasteCommand(of: [], validator: { _ in nil as Void? }, perform: { _ in })
+            .onPasteCommand(of: [String](), validator: { _ in nil as Void? }, perform: { _ in })
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
@@ -211,13 +211,13 @@ final class ViewDragDropTests: XCTestCase {
     }
     
     func testOnDropDelegate() throws {
-        let sut = EmptyView().onDrop(of: [], delegate: DummyDropDelegate())
+        let sut = EmptyView().onDrop(of: [String](), delegate: DummyDropDelegate())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testOnDropCallback() throws {
         let binding = Binding(wrappedValue: true)
-        let sut = EmptyView().onDrop(of: [], isTargeted: binding, perform: { _ in false })
+        let sut = EmptyView().onDrop(of: [String](), isTargeted: binding, perform: { _ in false })
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     #endif

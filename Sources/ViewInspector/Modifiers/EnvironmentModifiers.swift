@@ -90,7 +90,7 @@ extension _EnvironmentKeyWritingModifier: EnvironmentModifier {
 extension _EnvironmentKeyTransformModifier: EnvironmentModifier {
     
     static func qualifiesAsEnvironmentModifier() -> Bool {
-        #if !os(macOS)
+        #if !os(macOS) && !targetEnvironment(macCatalyst)
         if #available(iOS 15.0, tvOS 15.0, watchOS 8.0, *),
            Value.self == TextInputAutocapitalization.self {
             return true

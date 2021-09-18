@@ -14,7 +14,7 @@ final class TextInputModifiersTests: XCTestCase {
     }
     #endif
     
-    #if os(iOS) || os(tvOS)
+    #if (os(iOS) || os(tvOS)) && !targetEnvironment(macCatalyst)
     func testTextContentTypeInspection() throws {
         let sut = AnyView(EmptyView()).textContentType(.emailAddress)
         XCTAssertEqual(try sut.inspect().anyView().textContentType(), .emailAddress)
@@ -22,7 +22,7 @@ final class TextInputModifiersTests: XCTestCase {
     }
     #endif
     
-    #if os(iOS) || os(tvOS)
+    #if (os(iOS) || os(tvOS)) && !targetEnvironment(macCatalyst)
     func testKeyboardType() throws {
         let sut = EmptyView().keyboardType(.namePhonePad)
         XCTAssertNoThrow(try sut.inspect().emptyView())
