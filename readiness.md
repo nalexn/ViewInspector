@@ -25,6 +25,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
 |:white_check_mark:| ConditionalContent | `contained view` |
+|:white_check_mark:| ConfirmationDialog | `title view`, `message view`, `actions view`, `titleVisibility: Visibility`, `dismiss()` |
 |:white_check_mark:| Custom View | `actualView: CustomView`, `viewBuilder container` |
 |:white_check_mark:| Custom ViewModifier | |
 |:white_check_mark:| Custom ViewModifier.Content | |
@@ -75,6 +76,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
 |:white_check_mark:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
+|:white_check_mark:| SafeAreaInset | `regions: SafeAreaRegions`, `spacing: CGFloat?`, `edge: Edge` |
 |:technologist:| SceneView | |
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
@@ -349,35 +351,21 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func allowsHitTesting(Bool) -> some View` |
 |:white_check_mark:| `func contentShape<S>(S, eoFill: Bool) -> some View` |
 
-### Presenting Action Sheets
+### Presenting system popup views
 
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func actionSheet(isPresented: Binding<Bool>, content: () -> ActionSheet) -> some View` |
 |:white_check_mark:| `func actionSheet<T>(item: Binding<T?>, content: (T) -> ActionSheet) -> some View` |
-
-### Presenting Sheets
-
-| Status | Modifier |
-|:---:|---|
 |:white_check_mark:| `func sheet<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
 |:white_check_mark:| `func sheet<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
-|:technologist:| `func fullScreenCover<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
-|:technologist:| `func fullScreenCover<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
-
-### Presenting Alerts
-
-| Status | Modifier |
-|:---:|---|
+|: white_check_mark:| `func fullScreenCover<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
+|: white_check_mark:| `func fullScreenCover<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
 |:white_check_mark:| `func alert(isPresented: Binding<Bool>, content: () -> Alert) -> some View` |
 |:white_check_mark:| `func alert<Item>(item: Binding<Item?>, content: (Item) -> Alert) -> some View` |
-
-### Presenting Popovers
-
-| Status | Modifier |
-|:---:|---|
 |:white_check_mark:| `func popover<Content>(isPresented: Binding<Bool>, attachmentAnchor: PopoverAttachmentAnchor, arrowEdge: Edge, content: () -> Content) -> some View` |
 |:white_check_mark:| `func popover<Item, Content>(item: Binding<Item?>, attachmentAnchor: PopoverAttachmentAnchor, arrowEdge: Edge, content: (Item) -> Content) -> some View` |
+|:white_check_mark:| `func confirmationDialog<S, A, M>(_ title: S, isPresented: Binding<Bool>, titleVisibility: Visibility, @ViewBuilder actions: () -> A, @ViewBuilder message: () -> M) -> some View` |
 
 ### APIs from other Frameworks
 
@@ -558,9 +546,9 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:technologist:| `func toolbar<Content>(content: () -> Content) -> some View` |
-|:technologist:| `func toolbar<Content>(content: () -> Content) -> some View` |
-|:technologist:| `func toolbar<Content>(id: String, content: () -> Content) -> some View` |
+|: white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
+|: white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
+|: white_check_mark:| `func toolbar<Content>(id: String, content: () -> Content) -> some View` |
 
 ### Configuring Context Menu Views
 
