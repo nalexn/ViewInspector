@@ -2,14 +2,12 @@
 
 - [The Basics](#the-basics)
 - [Dynamic query with **find**](#dynamic-query-with-find)
-- [Navigation Links](#navigation-links)
+- [Inspectable attributes](#inspectable-attributes)
 - [Views using **@Binding**](#views-using-binding)
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
 - [Custom **ViewModifier**](#custom-viewmodifier)
-- [Styles](guide_styles.md)
-- [Gestures](guide_gestures.md)
-- [Alert, Sheet, ActionSheet, FullScreenCover and Popover](guide_popups.md)
+- [Advanced topics](#advanced-topics)
 
 ## The Basics
 
@@ -229,19 +227,28 @@ One of such cases is a custom view that does not conform to `Inspectable`. Addin
 In addition to that, there are a few SwiftUI modifiers which currently block the search:
 
 * `navigationBarItems`
-* `popover`
 * `overlayPreferenceValue`
 * `backgroundPreferenceValue`
 
 While the first two can be unwrapped manually, the last two are notorious for blocking the inspection completely. The workaround is under investigation.
 
-## Navigation Links
+## Inspectable attributes
 
-A `NavigationLink` contains two views: one for the destination, another for the label. You can examine the label with `labelView()`.
+**ViewInspector** provides access to various parameters held inside Views.
 
-The destination is a "contained view" as shown in [ViewInspector's API coverage](readiness.md). Access an inspectable version of the contained view with `view()`, specifying the actual type. From there, you can get the actual view with `actualView()`.
+For a particular view type, there might be available values of `alignment` or `spacing`. For another, there could be `labelView` – a non-standard child view.
 
-For example, let's say we have a view with a `NavigationLink` inside a `VStack`. The view body looks likes this:
+[ViewInspector's API coverage](readiness.md) is the place where you can see all the attributes available for each view type.
+
+Let's consider `NavigationLink` as an example: it offers `contained view`, `label view`, `isActive: Bool`, `activate()` and `deactivate()`.
+
+While the last three are self-explanatory, you can see it contains two views: one for the destination, another for the label.
+
+The destination view is the "default" child, which gets returned as you continue chaining the view inspection calls (such as `hStack()` or `view(MyCustomView.self)`) after the `navigationLink()`. Such a direct descendant view is referred to as "contained view".
+
+Label view, on the other hand, is an additional child view available for inspection on `NavigationLink`. In order to direct ViewInspector to that view, use `labelView()` call after the `navigationLink()`.
+
+Let's say we have a view with a `NavigationLink` inside a `VStack`. The view body looks likes this:
 
 ```swift
 var body: some View {
@@ -269,6 +276,12 @@ let nextView = try link.view(MyView.self).actualView()
 XCTAssertEqual(nextView.parameter, "Screen 1")
 ```
 
+or unwrap the label view and read its contents:
+
+```swift
+let label = try link.labelView().text()
+XCTAssertEqual(try label.string(), "Continue")
+```
 
 ## Views using `@Binding`
 
@@ -581,4 +594,5 @@ ViewHosting.host(view: view)
 
 - [Styles](guide_styles.md)
 - [Gestures](guide_gestures.md)
+- [View Hosting on watchOS](guide_watchOS.md)
 - [Alert, Sheet, ActionSheet, FullScreenCover and Popover](guide_popups.md)
