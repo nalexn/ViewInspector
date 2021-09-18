@@ -28,9 +28,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "520213A326ECB45D00E94C6E"
-               BuildableName = "watchOS-Tests.xctest"
-               BlueprintName = "watchOS-Tests"
+               BlueprintIdentifier = "520DC68B26F60FF400FCFFFD"
+               BuildableName = "watchOS-1-Tests copy.xctest"
+               BlueprintName = "watchOS-2-Tests"
                ReferencedContainer = "container:watchOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +46,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "520213A326ECB45D00E94C6E"
-               BuildableName = "watchOS-Tests.xctest"
-               BlueprintName = "watchOS-Tests"
+               BlueprintIdentifier = "520DC68B26F60FF400FCFFFD"
+               BuildableName = "watchOS-1-Tests copy.xctest"
+               BlueprintName = "watchOS-2-Tests"
                ReferencedContainer = "container:watchOS.xcodeproj">
             </BuildableReference>
          </TestableReference>

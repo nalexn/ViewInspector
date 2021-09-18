@@ -30,7 +30,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "520213A326ECB45D00E94C6E"
                BuildableName = "watchOS-Tests.xctest"
-               BlueprintName = "watchOS-Tests"
+               BlueprintName = "watchOS-1-Tests"
                ReferencedContainer = "container:watchOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -48,7 +48,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "520213A326ECB45D00E94C6E"
                BuildableName = "watchOS-Tests.xctest"
-               BlueprintName = "watchOS-Tests"
+               BlueprintName = "watchOS-1-Tests"
                ReferencedContainer = "container:watchOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
