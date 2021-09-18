@@ -81,15 +81,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "529300FE26EFC96600012E90"
-            BuildableName = "watchOS-App-2.app"
-            BlueprintName = "watchOS-App-2"
-            ReferencedContainer = "container:watchOS.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
