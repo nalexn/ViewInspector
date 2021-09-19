@@ -247,6 +247,7 @@ final class DeprecatedAlertTests: XCTestCase {
     }
 }
  
+#if !os(macOS) && !targetEnvironment(macCatalyst) // requires macOS SDK 12.0
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class AlertIOS15Tests: XCTestCase {
     
@@ -281,6 +282,7 @@ final class AlertIOS15Tests: XCTestCase {
                        "emptyView().alert().actions().button(1)")
     }
 }
+#endif
 
 extension Int: Identifiable {
     public var id: Int { self }

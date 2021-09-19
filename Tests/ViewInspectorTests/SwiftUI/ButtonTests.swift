@@ -72,6 +72,7 @@ final class ButtonTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
     
+    #if !os(macOS) && !targetEnvironment(macCatalyst) // requires macOS SDK 12.0
     func testButtonRole() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else { return }
         let sut1 = Button(role: .cancel, action: { }, label: { Text("") })
@@ -81,6 +82,7 @@ final class ButtonTests: XCTestCase {
         XCTAssertEqual(try sut2.inspect().button().role(), .destructive)
         XCTAssertNil(try sut3.inspect().button().role())
     }
+    #endif
 }
 
 // MARK: - View Modifiers
