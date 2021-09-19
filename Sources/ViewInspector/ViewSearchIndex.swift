@@ -265,7 +265,7 @@ internal extension ViewSearch {
         .init(name: ViewType.SafeAreaInset.typePrefix, builder: { parent, index in
             try parent.content.safeAreaInset(parent: parent, index: index)
         }),
-        .init(name: "PopoverPresentationModifier", builder: { parent, index in
+        .init(name: ViewType.Popover.standardModifierName, builder: { parent, index in
             try parent.content.popover(parent: parent, index: index)
         }),
         .init(name: "_MaskEffect", builder: { parent, index in

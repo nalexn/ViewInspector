@@ -347,7 +347,7 @@ private extension UnwrappedView {
             if name.hasPrefix("EnvironmentReaderView") {
                 return "navigationBarItems"
             }
-            if name.hasPrefix("PopoverPresentationModifier") {
+            if name.hasPrefix(ViewType.Popover.standardModifierName) {
                 return "popover"
             }
             if let inspectable = view as? Inspectable {

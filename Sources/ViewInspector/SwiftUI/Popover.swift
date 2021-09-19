@@ -9,6 +9,13 @@ public extension ViewType {
         public static func inspectionCall(typeName: String) -> String {
             return "popover(\(ViewType.indexPlaceholder))"
         }
+        internal static var standardModifierName: String {
+            if #available(iOS 14.2, macOS 11.0, *) {
+                return "PopoverPresentationModifier"
+            } else {
+                return "_AnchorWritingModifier<Optional<CGRect>, Key>"
+            }
+        }
     }
 }
 
@@ -36,7 +43,7 @@ extension ViewType.Popover: MultipleViewContent {
 
 // MARK: - Extraction
 
-@available(iOS 14.2, macOS 11.0, *)
+@available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 public extension InspectableView {
@@ -57,7 +64,7 @@ internal extension Content {
     
     func standardPopoverModifier(_ name: String = "Popover") throws -> Any {
         return try modifierAttribute(
-            modifierName: "PopoverPresentationModifier", path: "modifier",
+            modifierName: ViewType.Popover.standardModifierName, path: "modifier",
             type: Any.self, call: name.firstLetterLowercased)
     }
     
@@ -81,7 +88,7 @@ internal extension Content {
 
 // MARK: - Custom Attributes
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 14.2, macOS 11.0, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 public extension InspectableView where View == ViewType.Popover {
@@ -99,6 +106,12 @@ public extension InspectableView where View == ViewType.Popover {
         return try Inspector.attribute(
             label: "attachmentAnchor", value: modifier, type: PopoverAttachmentAnchor.self)
     }
+}
+
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+public extension InspectableView where View == ViewType.Popover {
     
     func dismiss() throws {
         let container = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
