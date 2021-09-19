@@ -139,14 +139,14 @@ private extension View {
                        onDismiss: (() -> Void)? = nil,
                        @ViewBuilder content: @escaping () -> Sheet
     ) -> some View where Sheet: View {
-        return self.modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, popupBuilder: content))
     }
     
     func sheet2<Item, Sheet>(item: Binding<Item?>,
                              onDismiss: (() -> Void)? = nil,
                              content: @escaping (Item) -> Sheet
     ) -> some View where Item: Identifiable, Sheet: View {
-        return self.modifier(InspectableSheetWithItem(item: item, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableSheetWithItem(item: item, onDismiss: onDismiss, popupBuilder: content))
     }
 }
 
@@ -156,12 +156,6 @@ private struct InspectableSheet<Sheet>: ViewModifier, PopupPresenter where Sheet
     let isPresented: Binding<Bool>
     let onDismiss: (() -> Void)?
     let popupBuilder: () -> Sheet
-    
-    init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> Sheet) {
-        self.isPresented = isPresented
-        self.onDismiss = onDismiss
-        self.popupBuilder = content
-    }
     
     func body(content: Self.Content) -> some View {
         content.sheet(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
@@ -175,12 +169,6 @@ where Item: Identifiable, Sheet: View {
     let item: Binding<Item?>
     let onDismiss: (() -> Void)?
     let popupBuilder: (Item) -> Sheet
-    
-    init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> Sheet) {
-        self.item = item
-        self.onDismiss = onDismiss
-        self.popupBuilder = content
-    }
     
     func body(content: Self.Content) -> some View {
         content.sheet(item: item, onDismiss: onDismiss, content: popupBuilder)

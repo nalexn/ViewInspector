@@ -217,7 +217,7 @@ private extension View {
             isPresented: isPresented,
             attachmentAnchor: attachmentAnchor,
             arrowEdge: arrowEdge,
-            content: content))
+            popupBuilder: content))
     }
     
     func popover2<Item, Popover>(item: Binding<Item?>,
@@ -229,7 +229,7 @@ private extension View {
             item: item,
             attachmentAnchor: attachmentAnchor,
             arrowEdge: arrowEdge,
-            content: content))
+            popupBuilder: content))
     }
 }
 
@@ -241,16 +241,6 @@ private struct InspectablePopover<Popover>: ViewModifier, PopupPresenter where P
     let arrowEdge: Edge
     let popupBuilder: () -> Popover
     let onDismiss: (() -> Void)? = nil
-    
-    init(isPresented: Binding<Bool>,
-         attachmentAnchor: PopoverAttachmentAnchor,
-         arrowEdge: Edge,
-         content: @escaping () -> Popover) {
-        self.isPresented = isPresented
-        self.attachmentAnchor = attachmentAnchor
-        self.arrowEdge = arrowEdge
-        self.popupBuilder = content
-    }
     
     func body(content: Self.Content) -> some View {
         content.popover(isPresented: isPresented, attachmentAnchor: attachmentAnchor,
@@ -267,16 +257,6 @@ where Item: Identifiable, Popover: View {
     let arrowEdge: Edge
     let popupBuilder: (Item) -> Popover
     let onDismiss: (() -> Void)? = nil
-    
-    init(item: Binding<Item?>,
-         attachmentAnchor: PopoverAttachmentAnchor,
-         arrowEdge: Edge,
-         content: @escaping (Item) -> Popover) {
-        self.item = item
-        self.attachmentAnchor = attachmentAnchor
-        self.arrowEdge = arrowEdge
-        self.popupBuilder = content
-    }
     
     func body(content: Self.Content) -> some View {
         content.popover(item: item, attachmentAnchor: attachmentAnchor,

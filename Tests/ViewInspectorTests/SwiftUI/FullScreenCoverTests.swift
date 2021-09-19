@@ -160,14 +160,15 @@ private extension View {
                                            @ViewBuilder content: @escaping () -> FullScreenCover
     ) -> some View where FullScreenCover: View {
         return self.modifier(InspectableFullScreenCover(
-            isPresented: isPresented, onDismiss: onDismiss, content: content))
+            isPresented: isPresented, onDismiss: onDismiss, popupBuilder: content))
     }
 
     func fullScreenCover2<Item, FullScreenCover>(item: Binding<Item?>,
                                                  onDismiss: (() -> Void)? = nil,
                                                  content: @escaping (Item) -> FullScreenCover
     ) -> some View where Item: Identifiable, FullScreenCover: View {
-        return self.modifier(InspectableFullScreenCoverWithItem(item: item, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableFullScreenCoverWithItem(
+            item: item, onDismiss: onDismiss, popupBuilder: content))
     }
 }
 
@@ -179,12 +180,6 @@ where FullScreenCover: View {
     let isPresented: Binding<Bool>
     let onDismiss: (() -> Void)?
     let popupBuilder: () -> FullScreenCover
-
-    init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> FullScreenCover) {
-        self.isPresented = isPresented
-        self.onDismiss = onDismiss
-        self.popupBuilder = content
-    }
 
     func body(content: Self.Content) -> some View {
         content.fullScreenCover(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
@@ -199,12 +194,6 @@ where Item: Identifiable, FullScreenCover: View {
     let item: Binding<Item?>
     let onDismiss: (() -> Void)?
     let popupBuilder: (Item) -> FullScreenCover
-
-    init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> FullScreenCover) {
-        self.item = item
-        self.onDismiss = onDismiss
-        self.popupBuilder = content
-    }
 
     func body(content: Self.Content) -> some View {
         content.fullScreenCover(item: item, onDismiss: onDismiss, content: popupBuilder)
