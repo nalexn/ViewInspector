@@ -18,7 +18,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 | Status | View | Inspectable Attributes |
 |:---:|---|---|
 |:white_check_mark:| ActionSheet | `title view`, `message view`, `button(_ index: Int)`, `dismiss()` |
-|:white_check_mark:| Alert | `title view`, `message view`, `primaryButton`, `secondaryButton`, `dismiss()` |
+|:white_check_mark:| Alert | `title view`, `message view`, `actions view`, `primaryButton`, `secondaryButton`, `dismiss()` |
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
 |:white_check_mark:| Button | `label view`, `tap()` |

@@ -213,25 +213,30 @@ internal extension Inspector {
     }
     
     static func guardType(value: Any, namespacedPrefixes: [String], inspectionCall: String) throws {
-        guard let firstPrefix = namespacedPrefixes.first
-        else { return }
-        let typeWithParams = typeName(type: type(of: value))
-        let withGenericParams = firstPrefix.contains("<")
-        let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: !withGenericParams)
-        if typePrefix == "SwiftUI.EnvironmentReaderView" {
-            if typeWithParams.contains("NavigationBarItemsKey") {
-                throw InspectionError.notSupported(
-                    """
-                    Please insert '.navigationBarItems()' before \(inspectionCall) \
-                    for unwrapping the underlying view hierarchy.
-                    """)
-            } else if typeWithParams.contains("_AnchorWritingModifier") {
-                throw InspectionError.notSupported(
-                    "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
+        
+        for prefix in namespacedPrefixes {
+            let withGenericParams = prefix.contains("<")
+            let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: !withGenericParams)
+            if typePrefix == "SwiftUI.EnvironmentReaderView" {
+                let typeWithParams = typeName(type: type(of: value))
+                if typeWithParams.contains("NavigationBarItemsKey") {
+                    throw InspectionError.notSupported(
+                        """
+                        Please insert '.navigationBarItems()' before \(inspectionCall) \
+                        for unwrapping the underlying view hierarchy.
+                        """)
+                } else if typeWithParams.contains("_AnchorWritingModifier") {
+                    throw InspectionError.notSupported(
+                        "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
+                }
+            }
+            if namespacedPrefixes.contains(typePrefix) {
+                return
             }
         }
-        guard namespacedPrefixes.contains(typePrefix) else {
-            throw InspectionError.typeMismatch(factual: typePrefix, expected: firstPrefix)
+        if let prefix = namespacedPrefixes.first {
+            let typePrefix = typeName(type: type(of: value), namespaced: true)
+            throw InspectionError.typeMismatch(factual: typePrefix, expected: prefix)
         }
     }
 }
