@@ -193,15 +193,19 @@ final class ActionSheetTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(text: "button_1_1").pathToRoot,
             "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet().button(1).labelView()")
         // 2
-        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot,
-            "Search did not find a match")
+        let noMatchMessage: String
+        if #available(iOS 13.2, tvOS 13.2, macOS 10.17, *) {
+            noMatchMessage = "Search did not find a match"
+        } else {
+            noMatchMessage = "Search did not find a match. Possible blockers: ActionSheet, ActionSheet"
+        }
+        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot, noMatchMessage)
         
         // 3
         XCTAssertEqual(try sut.inspect().find(text: "title_3").pathToRoot,
             "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet(1).title()")
         
-        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot,
-            "Search did not find a match")
+        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot, noMatchMessage)
         XCTAssertEqual(try sut.inspect().find(text: "button_3_0").pathToRoot,
             "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet(1).button(0).labelView()")
     }

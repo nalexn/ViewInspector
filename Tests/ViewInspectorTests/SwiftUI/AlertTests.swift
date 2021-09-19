@@ -234,14 +234,18 @@ final class DeprecatedAlertTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(text: "secondary_1").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert().secondaryButton().labelView()")
         // 2
-        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot,
-            "Search did not find a match")
+        let noMatchMessage: String
+        if #available(iOS 13.2, tvOS 13.2, macOS 10.17, *) {
+            noMatchMessage = "Search did not find a match"
+        } else {
+            noMatchMessage = "Search did not find a match. Possible blockers: Alert, Alert"
+        }
+        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot, noMatchMessage)
         
         // 3
         XCTAssertEqual(try sut.inspect().find(text: "title_3").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).title()")
-        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot,
-            "Search did not find a match")
+        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot, noMatchMessage)
         XCTAssertEqual(try sut.inspect().find(text: "primary_3").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).primaryButton().labelView()")
     }
