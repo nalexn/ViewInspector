@@ -7,7 +7,8 @@ internal extension ViewSearch {
     
     private static var index: [String: [ViewIdentity]] = {
         let identities: [ViewIdentity] = [
-            .init(ViewType.ActionSheet.self), .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
+            .init(ViewType.ActionSheet.self),
+            .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
             .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
             .init(ViewType.Button.self),
             .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
@@ -52,10 +53,15 @@ internal extension ViewSearch {
         ]
         var index = [String: [ViewIdentity]](minimumCapacity: 26) // alphabet
         identities.forEach { identity in
-            let letter = String(identity.viewType.typePrefix.prefix(1))
-            var array = index[letter] ?? []
-            array.append(identity)
-            index[letter] = array
+            let names = identity.viewType.namespacedPrefixes
+                .compactMap { $0.components(separatedBy: ".").last }
+                + [identity.viewType.typePrefix]
+            let letters = Set(names).map { String($0.prefix(1)) }
+            letters.forEach { letter in
+                var array = index[letter] ?? []
+                array.append(identity)
+                index[letter] = array
+            }
         }
         return index
     }()
@@ -158,7 +164,8 @@ internal extension ViewSearch {
                 let descendants = try supplementary(parent)
                 return .init(count: descendants.count) { index -> UnwrappedView in
                     var view = try descendants.element(at: index)
-                    if !(view is InspectableView<ViewType.ClassifiedView>) {
+                    if Inspector.isTupleView(view.content.view) ||
+                        !(view is InspectableView<ViewType.ClassifiedView>) {
                         view.isUnwrappedSupplementaryChild = true
                         return view
                     }

@@ -105,19 +105,20 @@ final class ConfirmationDialogTests: XCTestCase {
             EmptyView()
             Text("")
                 .confirmationDialog(Text("1"), isPresented: binding,
-                                    actions: { EmptyView() }, message: { Text("2") })
+                                    actions: { EmptyView() },
+                                    message: { EmptyView(); Text("2") })
                 .padding()
                 .confirmationDialog(Text("3"), isPresented: binding,
-                                    actions: { Text("4") })
+                                    actions: { EmptyView(); Text("4") })
         }
         XCTAssertEqual(try sut.inspect().find(text: "1").pathToRoot,
                        "group().text(1).confirmationDialog().title()")
         XCTAssertEqual(try sut.inspect().find(text: "2").pathToRoot,
-                       "group().text(1).confirmationDialog().message().text()")
+                       "group().text(1).confirmationDialog().message().text(1)")
         XCTAssertEqual(try sut.inspect().find(text: "3").pathToRoot,
                        "group().text(1).confirmationDialog(1).title()")
         XCTAssertEqual(try sut.inspect().find(text: "4").pathToRoot,
-                       "group().text(1).confirmationDialog(1).actions().text()")
+                       "group().text(1).confirmationDialog(1).actions().text(1)")
     }
 }
 #endif
