@@ -6,16 +6,17 @@ import SwiftUI
 @available(iOS 13.0, tvOS 13.0, *)
 final class EnvironmentReaderViewTests: XCTestCase {
     
-    func testUnaryViewAdaptor() throws {
-        let sut = EmptyView()
-            .navigationBarItems(trailing: Text("abc"))
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
     func skipForiOS15(file: StaticString = #file, line: UInt = #line) throws {
         if #available(iOS 15.0, tvOS 15.0, *) {
             throw XCTSkip("Not relevant for iOS 15", file: file, line: line)
         }
+    }
+    
+    func testUnaryViewAdaptor() throws {
+        guard #available(iOS 15.0, tvOS 15.0, *) else { return }
+        let sut = EmptyView()
+            .navigationBarItems(trailing: Text("abc"))
+        XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testIncorrectUnwrap() throws {
