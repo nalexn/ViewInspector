@@ -229,9 +229,6 @@ internal extension Inspector {
                         Please insert '.navigationBarItems()' before \(inspectionCall) \
                         for unwrapping the underlying view hierarchy.
                         """)
-                } else if typeWithParams.contains("_AnchorWritingModifier") {
-                    throw InspectionError.notSupported(
-                        "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
                 }
             }
             if namespacedPrefixes.contains(typePrefix) {
