@@ -17,6 +17,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | View | Inspectable Attributes |
 |:---:|---|---|
+|:white_check_mark:| ActionSheet | `title view`, `message view`, `button(_ index: Int)`, `dismiss()` |
+|:white_check_mark:| Alert | `title view`, `message view`, `primaryButton`, `secondaryButton`, `dismiss()` |
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
 |:white_check_mark:| Button | `label view`, `tap()` |
@@ -32,7 +34,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| UIViewRepresentable | `uiView: UIView` |
 |:white_check_mark:| UIViewControllerRepresentable | `viewController: UIViewController` |
 |:white_check_mark:| DatePicker | `label view`, `select(date: Date)` |
-|:white_check_mark:| DisclosureGroup | `label view`, `content view`, `isExpanded: Bool`, `expand()`, `collapse()` |
+|:white_check_mark:| DisclosureGroup | `contained view`, `label view`, `isExpanded: Bool`, `expand()`, `collapse()` |
 |:white_check_mark:| Divider | |
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
 |:white_check_mark:| EmptyView | |
@@ -40,6 +42,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Font (*) | `size: CGFloat`, `isFixedSize: Bool`, `name: String`, `weight: Font.Weight`, `design: Font.Design`, `style: Font.TextStyle` |
 |:white_check_mark:| ForEach | `contained view`, `callOnDelete`, `callOnMove`, `callOnInsert` |
 |:white_check_mark:| Form | `contained view` |
+|:white_check_mark:| FullScreenCover | `dismiss()` |
 |:white_check_mark:| GeometryReader | `contained view` |
 |:white_check_mark:| Group | `contained view` |
 |:white_check_mark:| GroupBox | `contained view`, `label view` |
@@ -70,7 +73,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| OutlineGroup | `leaf view`, `source data` |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view`, `select(value: Hashable)` |
-|:white_check_mark:| Popover | `content view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge`, `isPresented: Bool`, `dismiss()` |
+|:white_check_mark:| Popover | `contained view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge`, `dismiss()` |
 |:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
 |:white_check_mark:| ProgressView | `label view`, `currentValueLabel view`, `fractionCompleted: Double?`, `progress: Progress` |
 |:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
@@ -83,6 +86,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
 |:white_check_mark:| SecureField | `label view`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
 |:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
+|:white_check_mark:| Sheet | `dismiss()` |
 |:technologist:| SignInWithAppleButton | |
 |:white_check_mark:| Slider | `label view`, `callOnEditingChanged()`, `value: Double`, `setValue(_: Double)` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
@@ -125,18 +129,19 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `@UIApplicationDelegateAdaptor` |
 
 ## Gestures
- | Status | Modifier |
- |:---:|---|
- |:white_check_mark:|`AnyGesture`|
- |:white_check_mark:|`DragGesture`|
- |:white_check_mark:|`ExclusiveGesture`|
- |:white_check_mark:|`GestureStateGesture`|
- |:white_check_mark:|`LongPressGesture`|
- |:white_check_mark:|`MagnificationGesture`|
- |:white_check_mark:|`RotationGesture`|
- |:white_check_mark:|`SequenceGesture`|
- |:white_check_mark:|`SimultaneousGesture`|
- |:white_check_mark:|`TapGesture`|
+
+| Status | Modifier |
+|:---:|---|
+|:white_check_mark:| `AnyGesture` |
+|:white_check_mark:| `DragGesture` |
+|:white_check_mark:| `ExclusiveGesture` |
+|:white_check_mark:| `GestureStateGesture` |
+|:white_check_mark:| `LongPressGesture` |
+|:white_check_mark:| `MagnificationGesture` |
+|:white_check_mark:| `RotationGesture` |
+|:white_check_mark:| `SequenceGesture` |
+|:white_check_mark:| `SimultaneousGesture` |
+|:white_check_mark:| `TapGesture` |
 
 ## View Modifiers
 
