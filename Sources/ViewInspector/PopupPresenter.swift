@@ -169,7 +169,7 @@ internal extension Content {
             throw InspectionError.notSupported(
                 """
                 Please refer to the Guide for inspecting the \(name): \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
+                https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#\(name.lowercased())
                 """)
         }
         let popup: Any = try {

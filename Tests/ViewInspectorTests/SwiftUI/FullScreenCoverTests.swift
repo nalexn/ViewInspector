@@ -26,7 +26,7 @@ final class FullScreenCoverTests: XCTestCase {
         XCTAssertThrows(try sut.inspect().emptyView().fullScreenCover(),
             """
             Please refer to the Guide for inspecting the FullScreenCover: \
-            https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
+            https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#fullscreencover
             """)
     }
 

@@ -28,7 +28,7 @@ final class PopoverTests: XCTestCase {
         XCTAssertThrows(try sut.inspect().emptyView().popover(),
             """
             Please refer to the Guide for inspecting the Popover: \
-            https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
+            https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#popover
             """)
     }
     

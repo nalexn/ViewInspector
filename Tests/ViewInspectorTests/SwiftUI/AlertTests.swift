@@ -23,7 +23,7 @@ final class DeprecatedAlertTests: XCTestCase {
         XCTAssertThrows(try sut.inspect().emptyView().alert(),
             """
             Please refer to the Guide for inspecting the Alert: \
-            https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-actionsheet-and-fullscreencover
+            https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#alert
             """)
     }
     
