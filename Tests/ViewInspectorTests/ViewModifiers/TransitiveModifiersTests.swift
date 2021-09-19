@@ -26,7 +26,7 @@ final class TransitiveModifiersTests: XCTestCase {
     @available(watchOS, unavailable)
     func testFlipsRightToLeftInheritance() throws {
         let sut = try FlipsRightToLeftTestView().inspect()
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, tvOS 14.0, *) {
             XCTAssertFalse(try sut.find(text: "1").flipsForRightToLeftLayoutDirection())
         } else {
             // Prior to iOS 14 flipsForRightToLeftLayoutDirection is ignoring the Bool parameter

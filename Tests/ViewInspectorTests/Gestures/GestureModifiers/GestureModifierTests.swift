@@ -33,8 +33,8 @@ final class GestureModifierTests: XCTestCase {
             "EmptyView does not have 'gesture(DragGesture.self)' modifier")
     }
     
-    @available(tvOS 14.0, *)
     func testGestureInspectionFailureDueToTypeMismatch() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .gesture(LongPressGesture())
         XCTAssertThrows(
@@ -42,8 +42,8 @@ final class GestureModifierTests: XCTestCase {
             "Type mismatch: LongPressGesture is not DragGesture")
     }
     
-    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndex1() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .gesture(DragGesture())
             .gesture(LongPressGesture())
@@ -51,8 +51,8 @@ final class GestureModifierTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView().gesture(LongPressGesture.self, 1))
     }
     
-    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndex2() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .gesture(DragGesture())
             .highPriorityGesture(TapGesture())
@@ -61,8 +61,8 @@ final class GestureModifierTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView().gesture(LongPressGesture.self, 1))
     }
     
-    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndexFailureDueToNoModifier() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .gesture(DragGesture())
             .gesture(LongPressGesture())
@@ -71,8 +71,8 @@ final class GestureModifierTests: XCTestCase {
             "EmptyView does not have 'gesture(DragGesture.self)' modifier at index 2")
     }
     
-    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndexFailureDueToTypeMismatch() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .gesture(DragGesture())
             .gesture(LongPressGesture())
@@ -90,8 +90,8 @@ final class GestureModifierTests: XCTestCase {
         XCTAssertEqual(path, "emptyView().gesture(DragGesture.self)")
     }
     
-    @available(tvOS 14.0, *)
     func testGestureInspectionWithIndexPathToRoot() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .padding(100)
             .gesture(DragGesture())
