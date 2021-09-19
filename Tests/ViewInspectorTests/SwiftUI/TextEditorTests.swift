@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(macOS)
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
@@ -52,3 +53,4 @@ final class TextEditorTests: XCTestCase {
         XCTAssertEqual(try sut.input(), "123")
     }
 }
+#endif
