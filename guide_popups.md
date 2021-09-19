@@ -10,24 +10,29 @@ These five types of views have many in common, so is their inspection mechanism.
 
 This section discusses how you still can gain the full access to the internals of these views by adding a couple of code snippets to your source code while not making ViewInspector a dependency for the main target.
 
+*Note*: ViewInspector fully supports `confirmationDialog` inspection without any code tweaking.
+
 ## `Alert`
 
-Add the following snippet to your main target:
+If you're using `alert` functions added in iOS 15 (those not marked as deprecated) - you're good to go.
+
+Otherwise, you'll need to add the following snippet to your main target:
 
 ```swift
 extension View {
     func alert2(isPresented: Binding<Bool>, content: @escaping () -> Alert) -> some View {
-        return self.modifier(InspectableAlert(isPresented: isPresented, alertBuilder: content))
+        return self.modifier(InspectableAlert(isPresented: isPresented, popupBuilder: content))
     }
 }
 
 struct InspectableAlert: ViewModifier {
     
     let isPresented: Binding<Bool>
-    let alertBuilder: () -> Alert
+    let popupBuilder: () -> Alert
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.alert(isPresented: isPresented, content: alertBuilder)
+        content.alert(isPresented: isPresented, content: popupBuilder)
     }
 }
 ```
@@ -37,7 +42,7 @@ And tweak the code of your view to use `alert2` instead of `alert`. Feel free to
 Then, add this line in your test target scope:
 
 ```swift
-extension InspectableAlert: AlertProvider { }
+extension InspectableAlert: PopupPresenter { }
 ```
 
 After that you'll be able to inspect the `Alert` in the tests: read the `title`, `message`, and access the buttons:
@@ -65,17 +70,18 @@ Here is the corresponding snippet for the main target:
 ```swift
 extension View {
     func alert2<Item>(item: Binding<Item?>, content: @escaping (Item) -> Alert) -> some View where Item: Identifiable {
-        return self.modifier(InspectableAlertWithItem(item: item, alertBuilder: content))
+        return self.modifier(InspectableAlertWithItem(item: item, popupBuilder: content))
     }
 }
 
 struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier {
     
     let item: Binding<Item?>
-    let alertBuilder: (Item) -> Alert
+    let popupBuilder: (Item) -> Alert
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.alert(item: item, content: alertBuilder)
+        content.alert(item: item, content: popupBuilder)
     }
 }
 ```
@@ -83,7 +89,7 @@ struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier {
 And for the test scope:
 
 ```swift
-extension InspectableAlertWithItem: AlertItemProvider { }
+extension InspectableAlertWithItem: ItemPopupPresenter { }
 ```
 
 Feel free to add both sets to the project as needed.
@@ -92,22 +98,23 @@ Feel free to add both sets to the project as needed.
 
 Just like with `Alert`, there are two APIs for showing `ActionSheet` in SwiftUI - a simple one taking a `isPresented: Binding<Bool>` parameter, and a generic version taking `item: Binding<Item?>` parameter.
 
-Variant with `isPresented: Binding<Bool>` - main target snippet:
+#### Variant with `isPresented: Binding<Bool>` - main target snippet:
 
 ```swift
 extension View {
     func actionSheet2(isPresented: Binding<Bool>, content: @escaping () -> ActionSheet) -> some View {
-        return self.modifier(InspectableActionSheet(isPresented: isPresented, sheetBuilder: content))
+        return self.modifier(InspectableActionSheet(isPresented: isPresented, popupBuilder: content))
     }
 }
 
 struct InspectableActionSheet: ViewModifier {
     
     let isPresented: Binding<Bool>
-    let sheetBuilder: () -> ActionSheet
+    let popupBuilder: () -> ActionSheet
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.actionSheet(isPresented: isPresented, content: sheetBuilder)
+        content.actionSheet(isPresented: isPresented, content: popupBuilder)
     }
 }
 ```
@@ -115,25 +122,26 @@ struct InspectableActionSheet: ViewModifier {
 Test target:
 
 ```swift
-extension InspectableActionSheet: ActionSheetProvider { }
+extension InspectableActionSheet: PopupPresenter { }
 ```
 
-Variant with `item: Binding<Item?>` - main target snippet:
+#### Variant with `item: Binding<Item?>` - main target snippet:
 
 ```swift
 extension View {
     func actionSheet2<Item>(item: Binding<Item?>, content: @escaping (Item) -> ActionSheet) -> some View where Item: Identifiable {
-        return self.modifier(InspectableActionSheetWithItem(item: item, sheetBuilder: content))
+        return self.modifier(InspectableActionSheetWithItem(item: item, popupBuilder: content))
     }
 }
 
 struct InspectableActionSheetWithItem<Item: Identifiable>: ViewModifier {
     
     let item: Binding<Item?>
-    let sheetBuilder: (Item) -> ActionSheet
+    let popupBuilder: (Item) -> ActionSheet
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.actionSheet(item: item, content: sheetBuilder)
+        content.actionSheet(item: item, content: popupBuilder)
     }
 }
 ```
@@ -141,7 +149,7 @@ struct InspectableActionSheetWithItem<Item: Identifiable>: ViewModifier {
 Test target:
 
 ```swift
-extension InspectableActionSheetWithItem: ActionSheetItemProvider { }
+extension InspectableActionSheetWithItem: ItemPopupPresenter { }
 ```
 
 Make sure to use `actionSheet2` in your view's body (or a different name of your choice).
@@ -150,13 +158,13 @@ Make sure to use `actionSheet2` in your view's body (or a different name of your
 
 Similarly to the `Alert` and `ActionSheet`, there are two APIs for presenting the `Sheet` thus two sets of snippets to add to the project, depending on your needs.
 
-Variant with `isPresented: Binding<Bool>` - main target snippet:
+#### Variant with `isPresented: Binding<Bool>` - main target snippet:
 
 ```swift
 extension View {
     func sheet2<Sheet>(isPresented: Binding<Bool>, onDismiss: (() -> Void)? = nil, @ViewBuilder content: @escaping () -> Sheet
     ) -> some View where Sheet: View {
-        return self.modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, popupBuilder: content))
     }
 }
 
@@ -164,18 +172,10 @@ struct InspectableSheet<Sheet>: ViewModifier where Sheet: View {
     
     let isPresented: Binding<Bool>
     let onDismiss: (() -> Void)?
-    let content: () -> Sheet
-    let sheetBuilder: () -> Any
-    
-    init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> Sheet) {
-        self.isPresented = isPresented
-        self.onDismiss = onDismiss
-        self.content = content
-        self.sheetBuilder = { content() as Any }
-    }
+    let popupBuilder: () -> Sheet
     
     func body(content: Self.Content) -> some View {
-        content.sheet(isPresented: isPresented, content: self.content)
+        content.sheet(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 ```
@@ -183,16 +183,16 @@ struct InspectableSheet<Sheet>: ViewModifier where Sheet: View {
 Test target:
 
 ```swift
-extension InspectableSheet: SheetProvider { }
+extension InspectableSheet: PopupPresenter { }
 ```
 
-Variant with `item: Binding<Item?>` - main target snippet:
+#### Variant with `item: Binding<Item?>` - main target snippet:
 
 ```swift
 extension View {
     func sheet2<Item, Sheet>(item: Binding<Item?>, onDismiss: (() -> Void)? = nil, content: @escaping (Item) -> Sheet
     ) -> some View where Item: Identifiable, Sheet: View {
-        return self.modifier(InspectableSheetWithItem(item: item, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableSheetWithItem(item: item, onDismiss: onDismiss, popupBuilder: content))
     }
 }
 
@@ -200,18 +200,10 @@ struct InspectableSheetWithItem<Item, Sheet>: ViewModifier where Item: Identifia
     
     let item: Binding<Item?>
     let onDismiss: (() -> Void)?
-    let content: (Item) -> Sheet
-    let sheetBuilder: (Item) -> Any
-    
-    init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> Sheet) {
-        self.item = item
-        self.onDismiss = onDismiss
-        self.content = content
-        self.sheetBuilder = { content($0) as Any }
-    }
+    let popupBuilder: (Item) -> Sheet
     
     func body(content: Self.Content) -> some View {
-        content.sheet(item: item, onDismiss: onDismiss, content: self.content)
+        content.sheet(item: item, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 ```
@@ -219,7 +211,7 @@ struct InspectableSheetWithItem<Item, Sheet>: ViewModifier where Item: Identifia
 Test target:
 
 ```swift
-extension InspectableSheetWithItem: SheetItemProvider { }
+extension InspectableSheetWithItem: ItemPopupPresenter { }
 ```
 
 Don't forget that you'll need to use `sheet2` in place of `sheet` in your views.
@@ -228,13 +220,13 @@ Don't forget that you'll need to use `sheet2` in place of `sheet` in your views.
 
 Similarly to the `Alert` and `Sheet`, there are two APIs for presenting the `FullScreenCover` thus two sets of snippets to add to the project, depending on your needs.
 
-Variant with `isPresented: Binding<Bool>` - main target snippet:
+#### Variant with `isPresented: Binding<Bool>` - main target snippet:
 
 ```swift
 extension View {
     func fullScreenCover2<FullScreenCover>(isPresented: Binding<Bool>, onDismiss: (() -> Void)? = nil, @ViewBuilder content: @escaping () -> FullScreenCover
     ) -> some View where FullScreenCover: View {
-        return self.modifier(InspectableFullScreenCover(isPresented: isPresented, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableFullScreenCover(isPresented: isPresented, onDismiss: onDismiss, popupBuilder: content))
     }
 }
 
@@ -242,18 +234,10 @@ struct InspectableFullScreenCover<FullScreenCover>: ViewModifier where FullScree
     
     let isPresented: Binding<Bool>
     let onDismiss: (() -> Void)?
-    let content: () -> FullScreenCover
-    let fullScreenCoverBuilder: () -> Any
-    
-    init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> FullScreenCover) {
-        self.isPresented = isPresented
-        self.onDismiss = onDismiss
-        self.content = content
-        self.fullScreenCoverBuilder = { content() as Any }
-    }
-    
+    let popupBuilder: () -> FullScreenCover
+
     func body(content: Self.Content) -> some View {
-        content.fullScreenCover(isPresented: isPresented, content: self.content)
+        content.fullScreenCover(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 ```
@@ -261,16 +245,16 @@ struct InspectableFullScreenCover<FullScreenCover>: ViewModifier where FullScree
 Test target:
 
 ```swift
-extension InspectableFullScreenCover: FullScreenCoverProvider { }
+extension InspectableFullScreenCover: PopupPresenter { }
 ```
 
-Variant with `item: Binding<Item?>` - main target snippet:
+#### Variant with `item: Binding<Item?>` - main target snippet:
 
 ```swift
 extension View {
     func fullScreenCover2<Item, FullScreenCover>(item: Binding<Item?>, onDismiss: (() -> Void)? = nil, content: @escaping (Item) -> FullScreenCover
     ) -> some View where Item: Identifiable, FullScreenCover: View {
-        return self.modifier(InspectableFullScreenCoverWithItem(item: item, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableFullScreenCoverWithItem(item: item, onDismiss: onDismiss, popupBuilder: content))
     }
 }
 
@@ -278,18 +262,10 @@ struct InspectableFullScreenCoverWithItem<Item, FullScreenCover>: ViewModifier w
     
     let item: Binding<Item?>
     let onDismiss: (() -> Void)?
-    let content: (Item) -> FullScreenCover
-    let fullScreenCoverBuilder: (Item) -> Any
-    
-    init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> FullScreenCover) {
-        self.item = item
-        self.onDismiss = onDismiss
-        self.content = content
-        self.fullScreenCoverBuilder = { content($0) as Any }
-    }
-    
+    let popupBuilder: (Item) -> FullScreenCover
+
     func body(content: Self.Content) -> some View {
-        content.fullScreenCover(item: item, onDismiss: onDismiss, content: self.content)
+        content.fullScreenCover(item: item, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 ```
@@ -297,9 +273,87 @@ struct InspectableFullScreenCoverWithItem<Item, FullScreenCover>: ViewModifier w
 Test target:
 
 ```swift
-extension InspectableFullScreenCoverWithItem: FullScreenCoverItemProvider { }
+extension InspectableFullScreenCoverWithItem: ItemPopupPresenter { }
 ```
 
 Don't forget that you'll need to use `fullScreenCover2` in place of `fullScreenCover` in your views.
 
 ## `Popover`
+
+#### Variant with `isPresented: Binding<Bool>` - main target snippet:
+
+```swift
+extension View {
+    func popover2<Popover>(isPresented: Binding<Bool>,
+                           attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds),
+                           arrowEdge: Edge = .top,
+                           @ViewBuilder content: @escaping () -> Popover
+    ) -> some View where Popover: View {
+        return self.modifier(InspectablePopover(
+            isPresented: isPresented,
+            attachmentAnchor: attachmentAnchor,
+            arrowEdge: arrowEdge,
+            popupBuilder: content))
+    }
+}
+
+struct InspectablePopover<Popover>: ViewModifier where Popover: View {
+    
+    let isPresented: Binding<Bool>
+    let attachmentAnchor: PopoverAttachmentAnchor
+    let arrowEdge: Edge
+    let popupBuilder: () -> Popover
+    let onDismiss: (() -> Void)? = nil
+    
+    func body(content: Self.Content) -> some View {
+        content.popover(isPresented: isPresented, attachmentAnchor: attachmentAnchor,
+                        arrowEdge: arrowEdge, content: popupBuilder)
+    }
+}
+```
+
+Test target:
+
+```swift
+extension InspectablePopover: PopupPresenter { }
+```
+
+#### Variant with `item: Binding<Item?>` - main target snippet:
+
+```swift
+extension View {
+    func popover2<Item, Popover>(item: Binding<Item?>,
+                                 attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds),
+                                 arrowEdge: Edge = .top,
+                                 content: @escaping (Item) -> Popover
+    ) -> some View where Item: Identifiable, Popover: View {
+        return self.modifier(InspectablePopoverWithItem(
+            item: item,
+            attachmentAnchor: attachmentAnchor,
+            arrowEdge: arrowEdge,
+            popupBuilder: content))
+    }
+}
+
+struct InspectablePopoverWithItem<Item, Popover>: ViewModifier where Item: Identifiable, Popover: View {
+    
+    let item: Binding<Item?>
+    let attachmentAnchor: PopoverAttachmentAnchor
+    let arrowEdge: Edge
+    let popupBuilder: (Item) -> Popover
+    let onDismiss: (() -> Void)? = nil
+    
+    func body(content: Self.Content) -> some View {
+        content.popover(item: item, attachmentAnchor: attachmentAnchor,
+                        arrowEdge: arrowEdge, content: popupBuilder)
+    }
+}
+```
+
+Test target:
+
+```swift
+extension InspectablePopoverWithItem: ItemPopupPresenter { }
+```
+
+Don't forget that you'll need to use `popover2` in place of `popover` in your views.
