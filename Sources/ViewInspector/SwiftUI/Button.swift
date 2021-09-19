@@ -58,6 +58,12 @@ public extension InspectableView where View == ViewType.Button {
             .attribute(label: "action", value: content.view, type: Callback.self)
         callback()
     }
+    
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func role() throws -> ButtonRole? {
+        return try Inspector.attribute(
+            label: "role", value: content.view, type: ButtonRole?.self)
+    }
 }
 
 // MARK: - Global View Modifiers

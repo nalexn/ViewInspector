@@ -71,6 +71,16 @@ final class ButtonTests: XCTestCase {
             "Button is unresponsive: it is disabled")
         wait(for: [exp], timeout: 0.5)
     }
+    
+    func testButtonRole() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else { return }
+        let sut1 = Button(role: .cancel, action: { }, label: { Text("") })
+        let sut2 = Button(role: .destructive, action: { }, label: { Text("") })
+        let sut3 = Button(action: { }, label: { Text("") })
+        XCTAssertEqual(try sut1.inspect().button().role(), .cancel)
+        XCTAssertEqual(try sut2.inspect().button().role(), .destructive)
+        XCTAssertNil(try sut3.inspect().button().role())
+    }
 }
 
 // MARK: - View Modifiers
