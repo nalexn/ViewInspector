@@ -17,21 +17,24 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | View | Inspectable Attributes |
 |:---:|---|---|
+|:white_check_mark:| ActionSheet | `title view`, `message view`, `button(_ index: Int)`, `dismiss()` |
+|:white_check_mark:| Alert | `title view`, `message view`, `actions view`, `primaryButton`, `secondaryButton`, `dismiss()` |
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
-|:white_check_mark:| Button | `label view`, `tap()` |
+|:white_check_mark:| Button | `label view`, `role: ButtonRole?`, `tap()` |
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:technologist:| CameraView | |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
 |:white_check_mark:| ConditionalContent | `contained view` |
+|:white_check_mark:| ConfirmationDialog | `title view`, `message view`, `actions view`, `titleVisibility: Visibility`, `dismiss()` |
 |:white_check_mark:| Custom View | `actualView: CustomView`, `viewBuilder container` |
 |:white_check_mark:| Custom ViewModifier | |
 |:white_check_mark:| Custom ViewModifier.Content | |
 |:white_check_mark:| UIViewRepresentable | `uiView: UIView` |
 |:white_check_mark:| UIViewControllerRepresentable | `viewController: UIViewController` |
 |:white_check_mark:| DatePicker | `label view`, `select(date: Date)` |
-|:white_check_mark:| DisclosureGroup | `label view`, `content view`, `isExpanded: Bool`, `expand()`, `collapse()` |
+|:white_check_mark:| DisclosureGroup | `contained view`, `label view`, `isExpanded: Bool`, `expand()`, `collapse()` |
 |:white_check_mark:| Divider | |
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
 |:white_check_mark:| EmptyView | |
@@ -39,6 +42,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Font (*) | `size: CGFloat`, `isFixedSize: Bool`, `name: String`, `weight: Font.Weight`, `design: Font.Design`, `style: Font.TextStyle` |
 |:white_check_mark:| ForEach | `contained view`, `callOnDelete`, `callOnMove`, `callOnInsert` |
 |:white_check_mark:| Form | `contained view` |
+|:white_check_mark:| FullScreenCover | `dismiss()` |
 |:white_check_mark:| GeometryReader | `contained view` |
 |:white_check_mark:| Group | `contained view` |
 |:white_check_mark:| GroupBox | `contained view`, `label view` |
@@ -69,18 +73,20 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| OutlineGroup | `leaf view`, `source data` |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view`, `select(value: Hashable)` |
-|:white_check_mark:| Popover | `content view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge`, `isPresented: Bool`, `dismiss()` |
+|:white_check_mark:| Popover | `contained view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge`, `dismiss()` |
 |:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
 |:white_check_mark:| ProgressView | `label view`, `currentValueLabel view`, `fractionCompleted: Double?`, `progress: Progress` |
 |:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
 |:white_check_mark:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
+|:white_check_mark:| SafeAreaInset | `regions: SafeAreaRegions`, `spacing: CGFloat?`, `edge: Edge` |
 |:technologist:| SceneView | |
 |:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
 |:white_check_mark:| SecureField | `label view`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
 |:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
+|:white_check_mark:| Sheet | `dismiss()` |
 |:technologist:| SignInWithAppleButton | |
 |:white_check_mark:| Slider | `label view`, `callOnEditingChanged()`, `value: Double`, `setValue(_: Double)` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
@@ -93,6 +99,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
 |:white_check_mark:| Toggle | `label view`, `tap()`, `isOn: Bool` |
 |:white_check_mark:| ToggleStyleConfiguration.Label | |
+|:technologist:| ToolbarItem | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:white_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
@@ -122,18 +129,19 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `@UIApplicationDelegateAdaptor` |
 
 ## Gestures
- | Status | Modifier |
- |:---:|---|
- |:white_check_mark:|`AnyGesture`|
- |:white_check_mark:|`DragGesture`|
- |:white_check_mark:|`ExclusiveGesture`|
- |:white_check_mark:|`GestureStateGesture`|
- |:white_check_mark:|`LongPressGesture`|
- |:white_check_mark:|`MagnificationGesture`|
- |:white_check_mark:|`RotationGesture`|
- |:white_check_mark:|`SequenceGesture`|
- |:white_check_mark:|`SimultaneousGesture`|
- |:white_check_mark:|`TapGesture`|
+
+| Status | Modifier |
+|:---:|---|
+|:white_check_mark:| `AnyGesture` |
+|:white_check_mark:| `DragGesture` |
+|:white_check_mark:| `ExclusiveGesture` |
+|:white_check_mark:| `GestureStateGesture` |
+|:white_check_mark:| `LongPressGesture` |
+|:white_check_mark:| `MagnificationGesture` |
+|:white_check_mark:| `RotationGesture` |
+|:white_check_mark:| `SequenceGesture` |
+|:white_check_mark:| `SimultaneousGesture` |
+|:white_check_mark:| `TapGesture` |
 
 ## View Modifiers
 
@@ -348,35 +356,21 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func allowsHitTesting(Bool) -> some View` |
 |:white_check_mark:| `func contentShape<S>(S, eoFill: Bool) -> some View` |
 
-### Presenting Action Sheets
+### Presenting system popup views
 
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func actionSheet(isPresented: Binding<Bool>, content: () -> ActionSheet) -> some View` |
 |:white_check_mark:| `func actionSheet<T>(item: Binding<T?>, content: (T) -> ActionSheet) -> some View` |
-
-### Presenting Sheets
-
-| Status | Modifier |
-|:---:|---|
 |:white_check_mark:| `func sheet<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
 |:white_check_mark:| `func sheet<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
-|:technologist:| `func fullScreenCover<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
-|:technologist:| `func fullScreenCover<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
-
-### Presenting Alerts
-
-| Status | Modifier |
-|:---:|---|
+|: white_check_mark:| `func fullScreenCover<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
+|: white_check_mark:| `func fullScreenCover<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
 |:white_check_mark:| `func alert(isPresented: Binding<Bool>, content: () -> Alert) -> some View` |
 |:white_check_mark:| `func alert<Item>(item: Binding<Item?>, content: (Item) -> Alert) -> some View` |
-
-### Presenting Popovers
-
-| Status | Modifier |
-|:---:|---|
 |:white_check_mark:| `func popover<Content>(isPresented: Binding<Bool>, attachmentAnchor: PopoverAttachmentAnchor, arrowEdge: Edge, content: () -> Content) -> some View` |
 |:white_check_mark:| `func popover<Item, Content>(item: Binding<Item?>, attachmentAnchor: PopoverAttachmentAnchor, arrowEdge: Edge, content: (Item) -> Content) -> some View` |
+|:white_check_mark:| `func confirmationDialog<S, A, M>(_ title: S, isPresented: Binding<Bool>, titleVisibility: Visibility, @ViewBuilder actions: () -> A, @ViewBuilder message: () -> M) -> some View` |
 
 ### APIs from other Frameworks
 
@@ -557,9 +551,9 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:technologist:| `func toolbar<Content>(content: () -> Content) -> some View` |
-|:technologist:| `func toolbar<Content>(content: () -> Content) -> some View` |
-|:technologist:| `func toolbar<Content>(id: String, content: () -> Content) -> some View` |
+|: white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
+|: white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
+|: white_check_mark:| `func toolbar<Content>(id: String, content: () -> Content) -> some View` |
 
 ### Configuring Context Menu Views
 
@@ -589,28 +583,28 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:technologist:| `func accessibilityLabel<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityLabel(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityLabel(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityValue<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityValue(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityValue(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityHidden(Bool) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityIdentifier(String) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityLabel<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityLabel(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityLabel(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityValue<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityValue(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityValue(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityHidden(Bool) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityIdentifier(String) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 
 ### Customizing Accessibility Interactions of a View
 
 | Status | Modifier |
 |:---:|---|
-|:technologist:| `func accessibilityHint(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityHint(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityHint<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityActivationPoint(CGPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityActivationPoint(UnitPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityHint(LocalizedStringKey) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityHint(Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityHint<S>(S) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityActivationPoint(CGPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityActivationPoint(UnitPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityAction(AccessibilityActionKind, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:heavy_check_mark:| `func accessibilityAction(named: Text, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityAction<S>(named: S, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilityAction(named: LocalizedStringKey, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityAction(named: Text, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityAction<S>(named: S, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:white_check_mark:| `func accessibilityAction(named: LocalizedStringKey, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityAdjustableAction((AccessibilityAdjustmentDirection) -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityScrollAction((Edge) -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityIgnoresInvertColors(Bool) -> some View` |
@@ -626,7 +620,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `func accessibilityInputLabels([Text]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityAddTraits(AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityRemoveTraits(AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibilitySortPriority(Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |` |
+|:white_check_mark:| `func accessibilitySortPriority(Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |` |
 |:technologist:| `func accessibilityLinkedGroup<ID>(id: ID, in: Namespace.ID) -> some View` |
 
 ### Customizing the Help Text of a View

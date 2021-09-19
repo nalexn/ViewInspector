@@ -8,7 +8,6 @@ final class SheetTests: XCTestCase {
     func testSheet() throws {
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().sheet(isPresented: binding) { Text("") }
-        print("\(Inspector.print(sut) as AnyObject)")
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
@@ -24,7 +23,7 @@ final class SheetTests: XCTestCase {
         XCTAssertThrows(try sut.inspect().emptyView().sheet(),
             """
             Please refer to the Guide for inspecting the Sheet: \
-            https://github.com/nalexn/ViewInspector/blob/master/guide.md#sheet
+            https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#sheet
             """)
     }
     
@@ -64,26 +63,28 @@ final class SheetTests: XCTestCase {
         XCTAssertEqual(button.pathToRoot, "emptyView().sheet().button(1)")
     }
     
-    func testOnDismiss() throws {
+    func testDismiss() throws {
         let exp = XCTestExpectation(description: #function)
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().sheet2(isPresented: binding, onDismiss: {
             exp.fulfill()
         }, content: { Text("") })
         XCTAssertTrue(binding.wrappedValue)
-        try sut.inspect().sheet().callOnDismiss()
+        try sut.inspect().sheet().dismiss()
         XCTAssertFalse(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().sheet(), "View for Sheet is absent")
         wait(for: [exp], timeout: 0.1)
     }
     
-    func testContentWithItemInspection() throws {
+    func testDismissForItemVersion() throws {
         let binding = Binding<Int?>(wrappedValue: 6)
         let sut = EmptyView().sheet2(item: binding) { Text("\($0)") }
         let sheet = try sut.inspect().emptyView().sheet()
         XCTAssertEqual(try sheet.text().string(), "6")
         XCTAssertEqual(binding.wrappedValue, 6)
-        try sheet.callOnDismiss()
+        try sheet.dismiss()
         XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().sheet(), "View for Sheet is absent")
     }
     
     func testMultipleSheetsInspection() throws {
@@ -138,55 +139,39 @@ private extension View {
                        onDismiss: (() -> Void)? = nil,
                        @ViewBuilder content: @escaping () -> Sheet
     ) -> some View where Sheet: View {
-        return self.modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, popupBuilder: content))
     }
     
     func sheet2<Item, Sheet>(item: Binding<Item?>,
                              onDismiss: (() -> Void)? = nil,
                              content: @escaping (Item) -> Sheet
     ) -> some View where Item: Identifiable, Sheet: View {
-        return self.modifier(InspectableSheetWithItem(item: item, onDismiss: onDismiss, content: content))
+        return self.modifier(InspectableSheetWithItem(item: item, onDismiss: onDismiss, popupBuilder: content))
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableSheet<Sheet>: ViewModifier, SheetProvider where Sheet: View {
+private struct InspectableSheet<Sheet>: ViewModifier, PopupPresenter where Sheet: View {
     
     let isPresented: Binding<Bool>
     let onDismiss: (() -> Void)?
-    let content: () -> Sheet
-    let sheetBuilder: () -> Any
-    
-    init(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: @escaping () -> Sheet) {
-        self.isPresented = isPresented
-        self.onDismiss = onDismiss
-        self.content = content
-        self.sheetBuilder = { content() as Any }
-    }
+    let popupBuilder: () -> Sheet
     
     func body(content: Self.Content) -> some View {
-        content.sheet(isPresented: isPresented, content: self.content)
+        content.sheet(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableSheetWithItem<Item, Sheet>: ViewModifier, SheetItemProvider
+private struct InspectableSheetWithItem<Item, Sheet>: ViewModifier, ItemPopupPresenter
 where Item: Identifiable, Sheet: View {
     
     let item: Binding<Item?>
     let onDismiss: (() -> Void)?
-    let content: (Item) -> Sheet
-    let sheetBuilder: (Item) -> Any
-    
-    init(item: Binding<Item?>, onDismiss: (() -> Void)?, content: @escaping (Item) -> Sheet) {
-        self.item = item
-        self.onDismiss = onDismiss
-        self.content = content
-        self.sheetBuilder = { content($0) as Any }
-    }
+    let popupBuilder: (Item) -> Sheet
     
     func body(content: Self.Content) -> some View {
-        content.sheet(item: item, onDismiss: onDismiss, content: self.content)
+        content.sheet(item: item, onDismiss: onDismiss, content: popupBuilder)
     }
 }
 

@@ -6,10 +6,8 @@ import SwiftUI
 public extension ViewType {
     
     struct ActionSheet: KnownViewType {
-        public static var typePrefix: String = "ViewType.ActionSheet.Container"
-        public static var namespacedPrefixes: [String] {
-            return ["ViewInspector." + typePrefix]
-        }
+        public static var typePrefix: String = ViewType.PopupContainer<ActionSheet>.typePrefix
+        public static var namespacedPrefixes: [String] { [typePrefix] }
         public static func inspectionCall(typeName: String) -> String {
             return "actionSheet(\(ViewType.indexPlaceholder))"
         }
@@ -32,32 +30,21 @@ public extension InspectableView {
 internal extension Content {
     
     func actionSheet(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ActionSheet> {
-        guard let sheetBuilder = try? self.modifierAttribute(
-                modifierLookup: { isActionSheetBuilder(modifier: $0) }, path: "modifier",
-                type: ActionSheetBuilder.self, call: "", index: index ?? 0)
-        else {
-            _ = try self.modifier({
-                $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
-                || $0.modifierType.contains("AlertTransformModifier")
-            }, call: "actionSheet")
-            throw InspectionError.notSupported(
-                """
-                Please refer to the Guide for inspecting the ActionSheet: \
-                https://github.com/nalexn/ViewInspector/blob/master/guide.md#actionsheet
-                """)
-        }
-        let sheet = try sheetBuilder.buildSheet()
-        let container = ViewType.ActionSheet.Container(sheet: sheet, builder: sheetBuilder)
-        let medium = self.medium.resettingViewModifiers()
-        let content = Content(container, medium: medium)
-        let call = ViewType.inspectionCall(
-            base: ViewType.ActionSheet.inspectionCall(typeName: ""), index: index)
-        return try .init(content, parent: parent, call: call, index: index)
+        return try popup(parent: parent, index: index,
+                         modifierPredicate: isActionSheetBuilder(modifier:),
+                         standardPredicate: standardActionSheetModifier)
+    }
+    
+    func standardActionSheetModifier(_ name: String = "ActionSheet") throws -> Any {
+        return try self.modifier({
+            $0.modifierType == "IdentifiedPreferenceTransformModifier<Key>"
+            || $0.modifierType.contains("AlertTransformModifier")
+        }, call: name.firstLetterLowercased)
     }
     
     func actionSheetsForSearch() -> [ViewSearch.ModifierIdentity] {
         let count = medium.viewModifiers
-            .compactMap { isActionSheetBuilder(modifier: $0) }
+            .filter(isActionSheetBuilder(modifier:))
             .count
         return Array(0..<count).map { _ in
             .init(name: "", builder: { parent, index in
@@ -67,19 +54,9 @@ internal extension Content {
     }
     
     private func isActionSheetBuilder(modifier: Any) -> Bool {
-        return (try? Inspector.attribute(
-            label: "modifier", value: modifier, type: ActionSheetBuilder.self)) != nil
-    }
-}
-
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
-internal extension ViewType.ActionSheet {
-    struct Container: CustomViewIdentityMapping {
-        let sheet: SwiftUI.ActionSheet
-        let builder: ActionSheetBuilder
-        
-        var viewTypeForSearch: KnownViewType.Type { ViewType.ActionSheet.self }
+        let modifier = try? Inspector.attribute(
+            label: "modifier", value: modifier, type: BasePopupPresenter.self)
+        return modifier?.isActionSheetPresenter == true
     }
 }
 
@@ -106,6 +83,12 @@ public extension InspectableView where View == ViewType.ActionSheet {
         return try allViews.element(at: index + 2)
             .asInspectableView(ofType: ViewType.AlertButton.self)
     }
+    
+    func dismiss() throws {
+        let container = try Inspector.cast(
+            value: content.view, type: ViewType.PopupContainer<ViewType.ActionSheet>.self)
+        container.presenter.dismissPopup()
+    }
 }
 
 // MARK: - Non Standard Children
@@ -114,18 +97,18 @@ public extension InspectableView where View == ViewType.ActionSheet {
 extension ViewType.ActionSheet: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         let buttons = try Inspector.attribute(
-            path: "sheet|buttons", value: parent.content.view, type: [Any].self)
+            path: "popup|buttons", value: parent.content.view, type: [Any].self)
         return .init(count: 2 + buttons.count) { index in
             let medium = parent.content.medium.resettingViewModifiers()
             switch index {
             case 0:
-                let view = try Inspector.attribute(path: "sheet|title", value: parent.content.view)
+                let view = try Inspector.attribute(path: "popup|title", value: parent.content.view)
                 let content = try Inspector.unwrap(content: Content(view, medium: medium))
                 return try InspectableView<ViewType.Text>(
                     content, parent: parent, call: "title()")
             case 1:
                 let maybeView = try Inspector.attribute(
-                    path: "sheet|message", value: parent.content.view, type: Text?.self)
+                    path: "popup|message", value: parent.content.view, type: Text?.self)
                 guard let view = maybeView else {
                     throw InspectionError.viewNotFound(parent: "message")
                 }
@@ -143,58 +126,5 @@ extension ViewType.ActionSheet: SupplementaryChildren {
                     content, parent: parent, call: "button(\(index))")
             }
         }
-    }
-}
-
-// MARK: - ActionSheet inspection protocols
-
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
-public protocol ActionSheetBuilder: SystemPopupPresenter {
-    func buildSheet() throws -> ActionSheet
-}
-
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
-public protocol ActionSheetProvider: ActionSheetBuilder {
-    var isPresented: Binding<Bool> { get }
-    var sheetBuilder: () -> ActionSheet { get }
-}
-
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
-public protocol ActionSheetItemProvider: ActionSheetBuilder {
-    associatedtype Item: Identifiable
-    var item: Binding<Item?> { get }
-    var sheetBuilder: (Item) -> ActionSheet { get }
-}
-
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
-public extension ActionSheetProvider {
-    func buildSheet() throws -> ActionSheet {
-        guard isPresented.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "ActionSheet")
-        }
-        return sheetBuilder()
-    }
-    
-    func dismissPopup() {
-        isPresented.wrappedValue = false
-    }
-}
-
-@available(iOS 13.0, tvOS 13.0, *)
-@available(macOS, unavailable)
-public extension ActionSheetItemProvider {
-    func buildSheet() throws -> ActionSheet {
-        guard let value = item.wrappedValue else {
-            throw InspectionError.viewNotFound(parent: "ActionSheet")
-        }
-        return sheetBuilder(value)
-    }
-    
-    func dismissPopup() {
-        item.wrappedValue = nil
     }
 }

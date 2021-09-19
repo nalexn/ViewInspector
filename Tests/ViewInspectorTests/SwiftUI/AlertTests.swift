@@ -3,7 +3,7 @@ import SwiftUI
 @testable import ViewInspector
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-final class AlertTests: XCTestCase {
+final class DeprecatedAlertTests: XCTestCase {
     
     func testInspectionNotBlocked() throws {
         let binding = Binding(wrappedValue: true)
@@ -23,7 +23,7 @@ final class AlertTests: XCTestCase {
         XCTAssertThrows(try sut.inspect().emptyView().alert(),
             """
             Please refer to the Guide for inspecting the Alert: \
-            https://github.com/nalexn/ViewInspector/blob/master/guide.md#alert-sheet-and-actionsheet
+            https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#alert
             """)
     }
     
@@ -58,7 +58,7 @@ final class AlertTests: XCTestCase {
             Alert(title: Text("abc"), message: Text("123"), dismissButton: nil)
         }
         let message = try sut.inspect().emptyView().alert().message()
-        XCTAssertEqual(try message.string(), "123")
+        XCTAssertEqual(try message.text().string(), "123")
         XCTAssertEqual(message.pathToRoot, "emptyView().alert().message()")
     }
     
@@ -178,6 +178,27 @@ final class AlertTests: XCTestCase {
         XCTAssertNil(binding.wrappedValue)
     }
     
+    func testDismiss() throws {
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().alert2(isPresented: binding) {
+            Alert(title: Text("abc"))
+        }
+        XCTAssertTrue(binding.wrappedValue)
+        try sut.inspect().alert().dismiss()
+        XCTAssertFalse(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().alert(), "View for Alert is absent")
+    }
+    
+    func testDismissForItemVersion() throws {
+        let binding = Binding<Int?>(wrappedValue: 6)
+        let sut = EmptyView().alert2(item: binding) { value in
+            Alert(title: Text("\(value)"))
+        }
+        try sut.inspect().emptyView().alert().dismiss()
+        XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().alert(), "View for Alert is absent")
+    }
+    
     func testMultipleAlertsInspection() throws {
         let binding1 = Binding(wrappedValue: true)
         let binding2 = Binding(wrappedValue: true)
@@ -207,24 +228,65 @@ final class AlertTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(text: "title_1").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert().title()")
         XCTAssertEqual(try sut.inspect().find(text: "message_1").pathToRoot,
-            "view(AlertFindTestView.self).hStack().emptyView(0).alert().message()")
+            "view(AlertFindTestView.self).hStack().emptyView(0).alert().message().text()")
         XCTAssertEqual(try sut.inspect().find(text: "primary_1").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert().primaryButton().labelView()")
         XCTAssertEqual(try sut.inspect().find(text: "secondary_1").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert().secondaryButton().labelView()")
         // 2
-        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot,
-            "Search did not find a match")
+        let noMatchMessage: String
+        if #available(iOS 13.2, tvOS 13.2, macOS 10.17, *) {
+            noMatchMessage = "Search did not find a match"
+        } else {
+            noMatchMessage = "Search did not find a match. Possible blockers: Alert, Alert"
+        }
+        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot, noMatchMessage)
         
         // 3
         XCTAssertEqual(try sut.inspect().find(text: "title_3").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).title()")
-        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot,
-            "Search did not find a match")
+        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot, noMatchMessage)
         XCTAssertEqual(try sut.inspect().find(text: "primary_3").pathToRoot,
             "view(AlertFindTestView.self).hStack().emptyView(0).alert(1).primaryButton().labelView()")
     }
 }
+ 
+#if !os(macOS) && !targetEnvironment(macCatalyst) // requires macOS SDK 12.0
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+final class AlertIOS15Tests: XCTestCase {
+    
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    private func sutIOS15(binding: Binding<Bool>) -> some View {
+        let param: String? = "abc"
+        return EmptyView().alert("Title", isPresented: binding, presenting: param,
+                                    actions: { param in
+            Button(role: .destructive) { } label: { Text(param) }
+            Button("Second") { }
+        }, message: { param in
+            HStack { Text("Message: \(param)") }
+        })
+    }
+    
+    func testAlertInspectioniOS15() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else { return }
+        let binding = Binding(wrappedValue: true)
+        let sut = sutIOS15(binding: binding)
+        let alert = try sut.inspect().alert()
+        XCTAssertEqual(try alert.title().string(), "Title")
+        let message = try alert.message().hStack().text(0)
+        XCTAssertEqual(try message.string(), "Message: abc")
+        XCTAssertEqual(message.pathToRoot,
+                       "alert().message().hStack().text(0)")
+        let secondButtonLabel = try alert.actions().button(1).labelView().text()
+        XCTAssertEqual(try secondButtonLabel.string(), "Second")
+        XCTAssertEqual(secondButtonLabel.pathToRoot,
+                       "alert().actions().button(1).labelView().text()")
+        let searchLabel = try sut.inspect().find(button: "Second")
+        XCTAssertEqual(searchLabel.pathToRoot,
+                       "emptyView().alert().actions().button(1)")
+    }
+}
+#endif
 
 extension Int: Identifiable {
     public var id: Int { self }
@@ -238,35 +300,36 @@ extension String: Identifiable {
 private extension View {
     func alert2(isPresented: Binding<Bool>,
                 content: @escaping () -> Alert) -> some View {
-        return self.modifier(InspectableAlert(isPresented: isPresented, alertBuilder: content))
+        return self.modifier(InspectableAlert(isPresented: isPresented, popupBuilder: content))
     }
     
     func alert2<Item>(item: Binding<Item?>,
                       content: @escaping (Item) -> Alert
     ) -> some View where Item: Identifiable {
-        return self.modifier(InspectableAlertWithItem(item: item, alertBuilder: content))
+        return self.modifier(InspectableAlertWithItem(item: item, popupBuilder: content))
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableAlert: ViewModifier, AlertProvider {
+private struct InspectableAlert: ViewModifier, PopupPresenter {
     
     let isPresented: Binding<Bool>
-    let alertBuilder: () -> Alert
+    let popupBuilder: () -> Alert
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.alert(isPresented: isPresented, content: alertBuilder)
+        content.alert(isPresented: isPresented, content: popupBuilder)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier, AlertItemProvider {
-    
+private struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier, ItemPopupPresenter {
     let item: Binding<Item?>
-    let alertBuilder: (Item) -> Alert
+    let popupBuilder: (Item) -> Alert
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.alert(item: item, content: alertBuilder)
+        content.alert(item: item, content: popupBuilder)
     }
 }
 

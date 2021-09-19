@@ -14,12 +14,12 @@ public extension ViewType {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
 
-    func overlay() throws -> InspectableView<ViewType.Overlay> {
-        return try contentForModifierLookup.overlay(parent: self)
+    func overlay(_ index: Int? = nil) throws -> InspectableView<ViewType.Overlay> {
+        return try contentForModifierLookup.overlay(parent: self, index: index)
     }
     
-    func background() throws -> InspectableView<ViewType.Overlay> {
-        return try contentForModifierLookup.background(parent: self)
+    func background(_ index: Int? = nil) throws -> InspectableView<ViewType.Overlay> {
+        return try contentForModifierLookup.background(parent: self, index: index)
     }
 }
 
@@ -44,30 +44,32 @@ extension ViewType.Overlay: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func overlay(parent: UnwrappedView) throws -> InspectableView<ViewType.Overlay> {
+    func overlay(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Overlay> {
         let modifier = try self.modifier({ modifier -> Bool in
             return modifier.modifierType.contains("_OverlayModifier")
-        }, call: "overlay")
+        }, call: "overlay", index: index ?? 0)
         let rootView = try Inspector.attribute(path: "modifier|overlay", value: modifier)
         let alignment = try Inspector.attribute(path: "modifier|alignment", value: modifier, type: Alignment.self)
         let overlayParams = ViewType.Overlay.Params(alignment: alignment)
         let medium = self.medium.resettingViewModifiers()
             .appending(viewModifier: overlayParams)
         let content = try Inspector.unwrap(content: Content(rootView, medium: medium))
-        return try .init(content, parent: parent, call: "overlay()")
+        let call = ViewType.inspectionCall(base: "overlay(\(ViewType.indexPlaceholder))", index: index)
+        return try .init(content, parent: parent, call: call, index: index)
     }
     
-    func background(parent: UnwrappedView) throws -> InspectableView<ViewType.Overlay> {
+    func background(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Overlay> {
         let modifier = try self.modifier({ modifier -> Bool in
             return modifier.modifierType.contains("_BackgroundModifier")
-        }, call: "background")
+        }, call: "background", index: index ?? 0)
         let rootView = try Inspector.attribute(path: "modifier|background", value: modifier)
         let alignment = try Inspector.attribute(path: "modifier|alignment", value: modifier, type: Alignment.self)
         let overlayParams = ViewType.Overlay.Params(alignment: alignment)
         let medium = self.medium.resettingViewModifiers()
             .appending(viewModifier: overlayParams)
         let content = try Inspector.unwrap(content: Content(rootView, medium: medium))
-        return try .init(content, parent: parent, call: "background()")
+        let call = ViewType.inspectionCall(base: "background(\(ViewType.indexPlaceholder))", index: index)
+        return try .init(content, parent: parent, call: call, index: index)
     }
 }
 

@@ -7,10 +7,12 @@ internal extension ViewSearch {
     
     private static var index: [String: [ViewIdentity]] = {
         let identities: [ViewIdentity] = [
-            .init(ViewType.ActionSheet.self), .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
+            .init(ViewType.ActionSheet.self),
+            .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
             .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
             .init(ViewType.Button.self),
             .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
+            .init(ViewType.ConfirmationDialog.self),
             .init(ViewType.DatePicker.self), .init(ViewType.DisclosureGroup.self),
             .init(ViewType.Divider.self),
             .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
@@ -29,27 +31,37 @@ internal extension ViewSearch {
             .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
             .init(ViewType.OutlineGroup.self),
             .init(ViewType.PasteButton.self), .init(ViewType.Picker.self),
-            .init(ViewType.Popover.self), .init(ViewType.ProgressView.self),
+            .init(ViewType.Popover.self, genericTypeName: nil),
+            .init(ViewType.ProgressView.self),
             .init(ViewType.RadialGradient.self),
+            .init(ViewType.SafeAreaInset.self, genericTypeName: nil),
             .init(ViewType.ScrollView.self), .init(ViewType.ScrollViewReader.self),
             .init(ViewType.Section.self), .init(ViewType.SecureField.self),
-            .init(ViewType.Sheet.self, genericTypeName: nil),
+            .init(ViewType.Sheet.self, genericTypeName: "Sheet"),
             .init(ViewType.Slider.self), .init(ViewType.Spacer.self), .init(ViewType.Stepper.self),
             .init(ViewType.StyleConfiguration.Label.self), .init(ViewType.StyleConfiguration.Content.self),
             .init(ViewType.StyleConfiguration.Title.self), .init(ViewType.StyleConfiguration.Icon.self),
             .init(ViewType.StyleConfiguration.CurrentValueLabel.self),
             .init(ViewType.TabView.self), .init(ViewType.Text.self),
             .init(ViewType.TextEditor.self), .init(ViewType.TextField.self),
-            .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self), .init(ViewType.TupleView.self),
+            .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self),
+            .init(ViewType.TupleView.self), .init(ViewType.Toolbar.self),
+            .init(ViewType.Toolbar.Item.self, genericTypeName: nil),
+            .init(ViewType.Toolbar.ItemGroup.self, genericTypeName: nil),
             .init(ViewType.ViewModifierContent.self), .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
             .init(ViewType.ZStack.self)
         ]
         var index = [String: [ViewIdentity]](minimumCapacity: 26) // alphabet
         identities.forEach { identity in
-            let letter = String(identity.viewType.typePrefix.prefix(1))
-            var array = index[letter] ?? []
-            array.append(identity)
-            index[letter] = array
+            let names = identity.viewType.namespacedPrefixes
+                .compactMap { $0.components(separatedBy: ".").last }
+                + [identity.viewType.typePrefix]
+            let letters = Set(names).map { String($0.prefix(1)) }
+            letters.forEach { letter in
+                var array = index[letter] ?? []
+                array.append(identity)
+                index[letter] = array
+            }
         }
         return index
     }()
@@ -59,6 +71,9 @@ internal extension ViewSearch {
             let viewType = customMapping.viewTypeForSearch
             let letter = String(viewType.typePrefix.prefix(1))
             return index[letter]?.first(where: { $0.viewType == viewType })
+        }
+        if content.isShape {
+            return .init(ViewType.Shape.self)
         }
         let shortPrefix = Inspector.typeName(value: content.view, prefixOnly: true)
         let longPrefix = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
@@ -149,7 +164,8 @@ internal extension ViewSearch {
                 let descendants = try supplementary(parent)
                 return .init(count: descendants.count) { index -> UnwrappedView in
                     var view = try descendants.element(at: index)
-                    if !(view is InspectableView<ViewType.ClassifiedView>) {
+                    if Inspector.isTupleView(view.content.view) ||
+                        !(view is InspectableView<ViewType.ClassifiedView>) {
                         view.isUnwrappedSupplementaryChild = true
                         return view
                     }
@@ -235,25 +251,37 @@ internal extension ViewSearch {
     
     static private(set) var modifierIdentities: [ModifierIdentity] = [
         .init(name: "_OverlayModifier", builder: { parent, index in
-            try parent.content.overlay(parent: parent)
+            try parent.content.overlay(parent: parent, index: index)
         }),
         .init(name: "_BackgroundModifier", builder: { parent, index in
-            try parent.content.background(parent: parent)
+            try parent.content.background(parent: parent, index: index)
         }),
-        .init(name: "PopoverPresentationModifier", builder: { parent, index in
-            try parent.content.popover(parent: parent)
+        .init(name: ViewType.Toolbar.typePrefix, builder: { parent, index in
+            try parent.content.toolbar(parent: parent, index: index)
+        }),
+        .init(name: ViewType.ConfirmationDialog.typePrefix, builder: { parent, index in
+            try parent.content.confirmationDialog(parent: parent, index: index)
+        }),
+        .init(name: ViewType.SafeAreaInset.typePrefix, builder: { parent, index in
+            try parent.content.safeAreaInset(parent: parent, index: index)
+        }),
+        .init(name: ViewType.Popover.standardModifierName, builder: { parent, index in
+            try parent.content.popover(parent: parent, index: index)
         }),
         .init(name: "_MaskEffect", builder: { parent, index in
-            try parent.content.mask(parent: parent)
+            try parent.content.mask(parent: parent, index: index)
         }),
         .init(name: "_TraitWritingModifier<TabItemTraitKey>", builder: { parent, index in
-            try parent.content.tabItem(parent: parent)
+            try parent.content.tabItem(parent: parent, index: index)
+        }),
+        .init(name: "PlatformItemTraitWriter<LabelPlatformItemListFlags", builder: { parent, index in
+            try parent.content.tabItem(parent: parent, index: index)
         }),
         .init(name: "_TraitWritingModifier<ListRowBackgroundTraitKey>", builder: { parent, index in
-            try parent.content.listRowBackground(parent: parent)
+            try parent.content.listRowBackground(parent: parent, index: index)
         }),
         .init(name: "_TouchBarModifier", builder: { parent, index in
-            try parent.content.touchBar(parent: parent)
+            try parent.content.touchBar(parent: parent, index: index)
         }),
     ]
     
@@ -289,8 +317,10 @@ internal extension Content {
             })
         let sheets = sheetModifierDescendants(parent: parent)
         let customModifiers = customViewModifiers()
-        return .init(count: identities.count, { index -> UnwrappedView in
-            try identities[index].builder(parent, nil)
+        let modifiersCount = modifierNames.count
+        return .init(count: identities.count * modifiersCount, { index -> UnwrappedView in
+            try identities[index / modifiersCount]
+                .builder(parent, (index % modifiersCount).nilIfZero)
         }) + sheets + .init(count: customModifiers.count, { index -> UnwrappedView in
             let modifier = customModifiers[index]
             let name = Inspector.typeName(value: modifier)
@@ -310,18 +340,32 @@ internal extension Content {
     
     private func sheetModifierDescendants(parent: UnwrappedView) -> LazyGroup<UnwrappedView> {
         let sheetModifiers = sheetsForSearch()
+        let alertModifiers = alertsForSearch()
         #if os(macOS)
         let actionSheetModifiers: [ViewSearch.ModifierIdentity] = []
         #else
         let actionSheetModifiers = actionSheetsForSearch()
         #endif
-        let alertModifiers = alertsForSearch()
-        return .init(count: sheetModifiers.count, { index -> UnwrappedView in
-            try sheetModifiers[index].builder(parent, index)
-        }) + .init(count: actionSheetModifiers.count, { index -> UnwrappedView in
-            try actionSheetModifiers[index].builder(parent, index)
-        }) + .init(count: alertModifiers.count, { index -> UnwrappedView in
-            try alertModifiers[index].builder(parent, index)
-        })
+        #if os(iOS) || os(macOS)
+        let popoverModifiers = popoversForSearch()
+        #else
+        let popoverModifiers: [ViewSearch.ModifierIdentity] = []
+        #endif
+        return
+            .init(count: sheetModifiers.count, { index -> UnwrappedView in
+                try sheetModifiers[index].builder(parent, index)
+            }) + .init(count: actionSheetModifiers.count, { index -> UnwrappedView in
+                try actionSheetModifiers[index].builder(parent, index)
+            }) + .init(count: alertModifiers.count, { index -> UnwrappedView in
+                try alertModifiers[index].builder(parent, index)
+            }) + .init(count: popoverModifiers.count, { index -> UnwrappedView in
+                try popoverModifiers[index].builder(parent, index)
+            })
+    }
+}
+
+private extension Int {
+    var nilIfZero: Int? {
+        return self == 0 ? nil : self
     }
 }

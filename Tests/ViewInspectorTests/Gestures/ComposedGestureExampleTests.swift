@@ -5,6 +5,7 @@ import Combine
 
 @available(iOS 13.0, macOS 11, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class ComposedGestureExampleTests: XCTestCase {
     
     func testComposedGestureFirst() throws {
@@ -105,6 +106,7 @@ final class ComposedGestureExampleTests: XCTestCase {
 
 @available(iOS 13.0, macOS 11, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 struct TestGestureView10: View & Inspectable {
     @State var scale: CGFloat = 1.0
     @State var angle = Angle(degrees: 0)
@@ -137,6 +139,7 @@ struct TestGestureView10: View & Inspectable {
 
 @available(iOS 13.0, macOS 11, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 struct TestGestureView11: View & Inspectable {
     @State var scale: CGFloat = 1.0
     @State var angle = Angle(degrees: 0)
@@ -168,6 +171,7 @@ struct TestGestureView11: View & Inspectable {
 
 @available(iOS 13.0, macOS 11, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 struct TestGestureView12: View & Inspectable {
     
     internal let inspection = Inspection<Self>()

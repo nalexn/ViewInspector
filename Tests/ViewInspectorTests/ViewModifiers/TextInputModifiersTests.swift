@@ -7,12 +7,14 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TextInputModifiersTests: XCTestCase {
     
-    #if !os(macOS)
+    #if os(iOS) || os(tvOS) || os(watchOS)
     func testTextContentType() throws {
         let sut = EmptyView().textContentType(.emailAddress)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
+    #endif
     
+    #if (os(iOS) || os(tvOS)) && !targetEnvironment(macCatalyst)
     func testTextContentTypeInspection() throws {
         let sut = AnyView(EmptyView()).textContentType(.emailAddress)
         XCTAssertEqual(try sut.inspect().anyView().textContentType(), .emailAddress)
@@ -20,13 +22,20 @@ final class TextInputModifiersTests: XCTestCase {
     }
     #endif
     
-    #if os(iOS) || os(tvOS)
+    #if (os(iOS) || os(tvOS)) && !targetEnvironment(macCatalyst)
     func testKeyboardType() throws {
         let sut = EmptyView().keyboardType(.namePhonePad)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testKeyboardTypeInspection() throws {
+        if #available(iOS 15.0, tvOS 15.0, watchOS 8.0, *) {
+            throw XCTSkip(
+                """
+                Implementation should be similar to 'autocapitalization', but new \
+                'KeyboardType' is a private type in SwiftUI
+                """)
+        }
         let sut = AnyView(EmptyView()).keyboardType(.namePhonePad)
         XCTAssertEqual(try sut.inspect().anyView().keyboardType(), .namePhonePad)
         XCTAssertEqual(try sut.inspect().anyView().emptyView().keyboardType(), .namePhonePad)
@@ -136,6 +145,7 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertTrue(try sut.inspect().anyView().emptyView().allowsTightening())
     }
     
+    #if !os(watchOS)
     func testDisableAutocorrection() throws {
         let sut = EmptyView().disableAutocorrection(false)
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -146,6 +156,7 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().anyView().disableAutocorrection(), false)
         XCTAssertEqual(try sut.inspect().anyView().emptyView().disableAutocorrection(), false)
     }
+    #endif
     
     func testFlipsForRightToLeftLayoutDirection() throws {
         let sut = EmptyView().flipsForRightToLeftLayoutDirection(true)

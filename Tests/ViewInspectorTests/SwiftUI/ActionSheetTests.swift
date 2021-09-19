@@ -24,7 +24,7 @@ final class ActionSheetTests: XCTestCase {
         XCTAssertThrows(try sut.inspect().emptyView().actionSheet(),
             """
             Please refer to the Guide for inspecting the ActionSheet: \
-            https://github.com/nalexn/ViewInspector/blob/master/guide.md#actionsheet
+            https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#actionsheet
             """)
     }
     
@@ -134,6 +134,27 @@ final class ActionSheetTests: XCTestCase {
         XCTAssertNil(binding.wrappedValue)
     }
     
+    func testDismiss() throws {
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().actionSheet2(isPresented: binding) {
+            ActionSheet(title: Text("abc"))
+        }
+        XCTAssertTrue(binding.wrappedValue)
+        try sut.inspect().actionSheet().dismiss()
+        XCTAssertFalse(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().actionSheet(), "View for ActionSheet is absent")
+    }
+    
+    func testDismissForItemVersion() throws {
+        let binding = Binding<Int?>(wrappedValue: 6)
+        let sut = EmptyView().actionSheet2(item: binding) { value in
+            ActionSheet(title: Text("\(value)"))
+        }
+        try sut.inspect().emptyView().actionSheet().dismiss()
+        XCTAssertNil(binding.wrappedValue)
+        XCTAssertThrows(try sut.inspect().actionSheet(), "View for ActionSheet is absent")
+    }
+    
     func testMultipleSheetsInspection() throws {
         let binding1 = Binding(wrappedValue: true)
         let binding2 = Binding(wrappedValue: true)
@@ -172,15 +193,19 @@ final class ActionSheetTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(text: "button_1_1").pathToRoot,
             "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet().button(1).labelView()")
         // 2
-        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot,
-            "Search did not find a match")
+        let noMatchMessage: String
+        if #available(iOS 13.2, tvOS 13.2, macOS 10.17, *) {
+            noMatchMessage = "Search did not find a match"
+        } else {
+            noMatchMessage = "Search did not find a match. Possible blockers: ActionSheet, ActionSheet"
+        }
+        XCTAssertThrows(try sut.inspect().find(text: "title_2").pathToRoot, noMatchMessage)
         
         // 3
         XCTAssertEqual(try sut.inspect().find(text: "title_3").pathToRoot,
             "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet(1).title()")
         
-        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot,
-            "Search did not find a match")
+        XCTAssertThrows(try sut.inspect().find(text: "message_3").pathToRoot, noMatchMessage)
         XCTAssertEqual(try sut.inspect().find(text: "button_3_0").pathToRoot,
             "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet(1).button(0).labelView()")
     }
@@ -190,35 +215,36 @@ final class ActionSheetTests: XCTestCase {
 private extension View {
     func actionSheet2(isPresented: Binding<Bool>,
                       content: @escaping () -> ActionSheet) -> some View {
-        return self.modifier(InspectableActionSheet(isPresented: isPresented, sheetBuilder: content))
+        return self.modifier(InspectableActionSheet(isPresented: isPresented, popupBuilder: content))
     }
     
     func actionSheet2<Item>(item: Binding<Item?>,
                             content: @escaping (Item) -> ActionSheet
     ) -> some View where Item: Identifiable {
-        return self.modifier(InspectableActionSheetWithItem(item: item, sheetBuilder: content))
+        return self.modifier(InspectableActionSheetWithItem(item: item, popupBuilder: content))
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableActionSheet: ViewModifier, ActionSheetProvider {
-    
+private struct InspectableActionSheet: ViewModifier, PopupPresenter {
     let isPresented: Binding<Bool>
-    let sheetBuilder: () -> ActionSheet
+    let popupBuilder: () -> ActionSheet
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.actionSheet(isPresented: isPresented, content: sheetBuilder)
+        content.actionSheet(isPresented: isPresented, content: popupBuilder)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct InspectableActionSheetWithItem<Item: Identifiable>: ViewModifier, ActionSheetItemProvider {
+private struct InspectableActionSheetWithItem<Item: Identifiable>: ViewModifier, ItemPopupPresenter {
     
     let item: Binding<Item?>
-    let sheetBuilder: (Item) -> ActionSheet
+    let popupBuilder: (Item) -> ActionSheet
+    let onDismiss: (() -> Void)? = nil
     
     func body(content: Self.Content) -> some View {
-        content.actionSheet(item: item, content: sheetBuilder)
+        content.actionSheet(item: item, content: popupBuilder)
     }
 }
 

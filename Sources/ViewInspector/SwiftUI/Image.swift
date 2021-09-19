@@ -79,7 +79,7 @@ public extension SwiftUI.Image {
             .attribute(label: "name", value: rawImage(), type: String.self)
     }
     
-    #if os(iOS) || os(tvOS)
+    #if !os(macOS)
     func uiImage() throws -> UIImage {
         return try Inspector.cast(value: try rawImage(), type: UIImage.self)
     }

@@ -2,25 +2,27 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(macOS)
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class ColorPickerTests: XCTestCase {
     
     func testInspect() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding<CGColor>(wrappedValue: .test)
         XCTAssertNoThrow(try ColorPicker("Test", selection: binding).inspect())
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding<CGColor>(wrappedValue: .test)
         let view = AnyView(ColorPicker("Test", selection: binding))
         XCTAssertNoThrow(try view.inspect().anyView().colorPicker())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding<CGColor>(wrappedValue: .test)
         let view = HStack {
             Text("")
@@ -31,7 +33,7 @@ final class ColorPickerTests: XCTestCase {
     }
     
     func testSearch() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding<CGColor>(wrappedValue: .test)
         let view = Group { ColorPicker(selection: binding, label: {
             HStack { Text("abc") }
@@ -43,7 +45,7 @@ final class ColorPickerTests: XCTestCase {
     }
     
     func testLabelInspection() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding<Color>(wrappedValue: .red)
         let sut = ColorPicker(selection: binding, label: {
             HStack { Text("abc") }
@@ -53,7 +55,7 @@ final class ColorPickerTests: XCTestCase {
     }
     
     func testColorSelection() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         
         let cgColor = CGColor(red: 0.5, green: 0.2, blue: 0.7, alpha: 0.1)
         let binding1 = Binding<CGColor>(wrappedValue: cgColor)
@@ -70,7 +72,7 @@ final class ColorPickerTests: XCTestCase {
     }
     
     func testColorSelectionWhenDisabled() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         
         let cgColor = CGColor(red: 0.5, green: 0.2, blue: 0.7, alpha: 0.1)
         let binding1 = Binding<CGColor>(wrappedValue: cgColor)
@@ -89,7 +91,7 @@ final class ColorPickerTests: XCTestCase {
     }
     
     func testRGBA() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         #if os(macOS)
         XCTAssertNotEqual(NSColor.red.rgba(), Color.red.rgba())
         #else
@@ -139,7 +141,9 @@ private extension UIColor {
 @available(tvOS, unavailable)
 private extension Color {
     @available(tvOS 14.0, *)
+    @available(watchOS 7.0, *)
     func rgba() -> ViewType.ColorPicker.RGBA {
         return .init(color: self)
     }
 }
+#endif

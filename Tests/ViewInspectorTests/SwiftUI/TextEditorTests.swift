@@ -2,19 +2,21 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(macOS)
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 final class TextEditorTests: XCTestCase {
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: "")
         let view = AnyView(TextEditor(text: binding))
         XCTAssertNoThrow(try view.inspect().anyView().textEditor())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: "")
         let view = HStack {
             Text("Test")
@@ -24,7 +26,7 @@ final class TextEditorTests: XCTestCase {
     }
     
     func testSearch() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: "")
         let view = AnyView(TextEditor(text: binding))
         XCTAssertEqual(try view.inspect().find(ViewType.TextEditor.self).pathToRoot,
@@ -32,7 +34,7 @@ final class TextEditorTests: XCTestCase {
     }
     
     func testInput() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: "123")
         let view = TextEditor(text: binding)
         let sut = try view.inspect().textEditor()
@@ -42,7 +44,7 @@ final class TextEditorTests: XCTestCase {
     }
     
     func testSetInputWhenDisabled() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: "123")
         let view = TextEditor(text: binding).disabled(true)
         let sut = try view.inspect().textEditor()
@@ -51,3 +53,4 @@ final class TextEditorTests: XCTestCase {
         XCTAssertEqual(try sut.input(), "123")
     }
 }
+#endif

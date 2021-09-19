@@ -40,7 +40,7 @@ public extension InspectableView where View == ViewType.Color {
     func rgba() throws -> (red: Float, green: Float, blue: Float, alpha: Float) {
         let colorProvider = try Inspector.attribute(path: "provider|base", value: content.view)
         let providerName = Inspector.typeName(value: colorProvider)
-        if providerName == "_Resolved" {
+        if ["_Resolved", "Resolved"].contains(providerName) {
             let red = try Inspector.attribute(label: "linearRed", value: colorProvider, type: Float.self)
             let green = try Inspector.attribute(label: "linearGreen", value: colorProvider, type: Float.self)
             let blue = try Inspector.attribute(label: "linearBlue", value: colorProvider, type: Float.self)

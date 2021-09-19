@@ -12,13 +12,13 @@ class MapTests: XCTestCase {
         latitudinalMeters: 987, longitudinalMeters: 6)
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let sut = AnyView(Map(coordinateRegion: .constant(MKCoordinateRegion())))
         XCTAssertNoThrow(try sut.inspect().anyView().map())
     }
 
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let view = HStack {
             Map(coordinateRegion: .constant(MKCoordinateRegion()))
             Map(coordinateRegion: .constant(MKCoordinateRegion()))
@@ -28,19 +28,19 @@ class MapTests: XCTestCase {
     }
 
     func testSearch() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let view = AnyView(Map(coordinateRegion: .constant(MKCoordinateRegion())))
         XCTAssertEqual(try view.inspect().find(ViewType.Map.self).pathToRoot, "anyView().map()")
     }
 
     func testExtractingCoordinateRegionValue() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let sut = Map(coordinateRegion: .constant(testRegion))
         XCTAssertEqual(try sut.inspect().map().coordinateRegion(), testRegion)
     }
     
     func testSettingCoordinateRegionValue() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: MKCoordinateRegion())
         let sut = Map(coordinateRegion: binding)
         XCTAssertEqual(try sut.inspect().map().coordinateRegion(), MKCoordinateRegion())
@@ -50,7 +50,7 @@ class MapTests: XCTestCase {
     }
     
     func testErrorOnSettingCoordinateRegionWhenNonResponsive() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: MKCoordinateRegion())
         let sut = Map(coordinateRegion: binding).hidden()
         XCTAssertEqual(try sut.inspect().map().coordinateRegion(), MKCoordinateRegion())
@@ -60,7 +60,7 @@ class MapTests: XCTestCase {
     }
     
     func testExtractingMapRectValue() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let rect = MKMapRect(x: 3, y: 5, width: 1, height: 8)
         let sut = Map(mapRect: .constant(rect),
                       interactionModes: .all,
@@ -70,7 +70,7 @@ class MapTests: XCTestCase {
     }
     
     func testSettingMapRectValue() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: MKMapRect())
         let sut = Map(mapRect: binding,
                       interactionModes: .all,
@@ -84,7 +84,7 @@ class MapTests: XCTestCase {
     }
     
     func testErrorOnSettingMapRectWhenNonResponsive() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: MKMapRect())
         let sut = Map(mapRect: binding,
                       interactionModes: .all,
@@ -99,7 +99,7 @@ class MapTests: XCTestCase {
     }
 
     func testExtractingInteractionModes() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let region = MKCoordinateRegion()
         let sut = Map(coordinateRegion: .constant(region),
                       interactionModes: .pan,
@@ -110,7 +110,7 @@ class MapTests: XCTestCase {
     }
 
     func testExtractingShowsUserLocation() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let region = MKCoordinateRegion()
         let sut = Map(coordinateRegion: .constant(region),
                       interactionModes: .all,
@@ -121,7 +121,7 @@ class MapTests: XCTestCase {
     }
 
     func testExtractingUserTrackingMode() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let region = MKCoordinateRegion()
         let sut = Map(coordinateRegion: .constant(region),
                       interactionModes: .all,
@@ -132,7 +132,7 @@ class MapTests: XCTestCase {
     }
     
     func testSettingUserTrackingMode() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
         let binding = Binding(wrappedValue: MapUserTrackingMode.follow)
         let sut = Map(coordinateRegion: .constant(MKCoordinateRegion()),
                       interactionModes: .all,

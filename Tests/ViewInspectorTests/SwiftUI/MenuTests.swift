@@ -2,7 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(tvOS)
+#if os(iOS) || os(macOS)
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 final class MenuTests: XCTestCase {

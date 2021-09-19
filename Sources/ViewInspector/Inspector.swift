@@ -1,10 +1,10 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal struct Inspector { }
+public struct Inspector { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+internal extension Inspector {
     
     static func attribute(label: String, value: Any) throws -> Any {
         if label == "super", let superclass = Mirror(reflecting: value).superclassMirror {
@@ -52,14 +52,25 @@ extension Inspector {
                          prefixOnly: Bool = false) -> String {
         let typeName = namespaced ? String(reflecting: type) : String(describing: type)
         guard prefixOnly else { return typeName }
-        return typeName.components(separatedBy: "<").first!
+        let name = typeName.components(separatedBy: "<").first!
+        guard namespaced else { return name }
+        let string = NSMutableString(string: name)
+        let range = NSRange(location: 0, length: string.length)
+        namespaceSanitizeRegex.replaceMatches(in: string, options: [], range: range, withTemplate: "SwiftUI")
+        return String(string)
     }
+    
+    private static var namespaceSanitizeRegex: NSRegularExpression = {
+        guard let regex = try? NSRegularExpression(pattern: "SwiftUI.\\(unknown context at .*\\)", options: [])
+        else { fatalError() }
+        return regex
+    }()
 }
 
 // MARK: - Attributes lookup
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+public extension Inspector {
     
     /**
         Use this function to lookup the struct content:
@@ -67,8 +78,8 @@ extension Inspector {
         (lldb) po Inspector.print(view) as AnyObject
         ```
      */
-    public static func print(_ value: Any) -> String {
-        let tree = attributesTree(value: value, medium: .empty)
+    static func print(_ value: Any) -> String {
+        let tree = attributesTree(value: value, medium: .empty, visited: [])
         return typeName(value: value) + print(tree, level: 1)
     }
     
@@ -96,22 +107,35 @@ extension Inspector {
         return needsNewLine ? "\n" : ""
     }
     
-    private static func attributesTree(value: Any, medium: Content.Medium) -> Any {
+    private static func attributesTree(value: Any, medium: Content.Medium, visited: [AnyObject]) -> Any {
+        var visited = visited
+        if type(of: value) is AnyClass {
+            let ref = value as AnyObject
+            guard !visited.contains(where: { $0 === ref })
+            else { return " = { cyclic reference }" }
+            visited.append(ref)
+        }
         if let array = value as? [Any] {
-            return array.map { attributesTree(value: $0, medium: medium) }
+            return array.map { attributesTree(value: $0, medium: medium, visited: visited) }
         }
         let medium = (try? unwrap(content: Content(value, medium: medium)).medium) ?? medium
-        let mirror = Mirror(reflecting: value)
+        var mirror = Mirror(reflecting: value)
+        var children = Array(mirror.children)
+        while let superclass = mirror.superclassMirror {
+            mirror = superclass
+            children.append(contentsOf: superclass.children)
+        }
         var dict: [String: Any] = [:]
-        mirror.children.enumerated().forEach { child in
+        children.enumerated().forEach { child in
             let childName = child.element.label ?? "[\(child.offset)]"
             let childType = typeName(value: child.element.value)
-            dict[childName + ": " + childType] = attributesTree(value: child.element.value, medium: medium)
+            dict[childName + ": " + childType] = attributesTree(
+                value: child.element.value, medium: medium, visited: visited)
         }
         if let inspectable = value as? Inspectable,
            let content = try? inspectable.extractContent(environmentObjects: medium.environmentObjects) {
             let childType = typeName(value: content)
-            dict["body: " + childType] = attributesTree(value: content, medium: medium)
+            dict["body: " + childType] = attributesTree(value: content, medium: medium, visited: visited)
         }
         if dict.count == 0 {
             return " = " + String(describing: value)
@@ -145,7 +169,7 @@ fileprivate extension Array {
 // MARK: - View Inspection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Inspector {
+internal extension Inspector {
     
     static func viewsInContainer(view: Any, medium: Content.Medium) throws -> LazyGroup<Content> {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view, medium: medium.resettingViewModifiers()))
@@ -163,6 +187,7 @@ extension Inspector {
         return try unwrap(content: Content(view, medium: medium))
     }
     
+    // swiftlint:disable cyclomatic_complexity
     static func unwrap(content: Content) throws -> Content {
         switch Inspector.typeName(value: content.view, prefixOnly: true) {
         case "Tree":
@@ -177,6 +202,8 @@ extension Inspector {
             return try ViewType.ViewModifier<ViewType.Stub>.child(content)
         case "SubscriptionView":
             return try ViewType.SubscriptionView.child(content)
+        case "_UnaryViewAdaptor":
+            return try ViewType.UnaryViewAdaptor.child(content)
         case "_ConditionalContent":
             return try ViewType.ConditionalContent.child(content)
         case "EnvironmentReaderView":
@@ -187,26 +214,30 @@ extension Inspector {
             return content
         }
     }
+    // swiftlint:enable cyclomatic_complexity
     
     static func guardType(value: Any, namespacedPrefixes: [String], inspectionCall: String) throws {
-        guard let firstPrefix = namespacedPrefixes.first
-        else { return }
-        let typeWithParams = typeName(type: type(of: value))
-        let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: true)
-        if typePrefix == "SwiftUI.EnvironmentReaderView" {
-            if typeWithParams.contains("NavigationBarItemsKey") {
-                throw InspectionError.notSupported(
-                    """
-                    Please insert '.navigationBarItems()' before \(inspectionCall) \
-                    for unwrapping the underlying view hierarchy.
-                    """)
-            } else if typeWithParams.contains("_AnchorWritingModifier") {
-                throw InspectionError.notSupported(
-                    "Unwrapping the view under popover is not supported on iOS 14.0 and 14.1")
+        
+        for prefix in namespacedPrefixes {
+            let withGenericParams = prefix.contains("<")
+            let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: !withGenericParams)
+            if typePrefix == "SwiftUI.EnvironmentReaderView" {
+                let typeWithParams = typeName(type: type(of: value))
+                if typeWithParams.contains("NavigationBarItemsKey") {
+                    throw InspectionError.notSupported(
+                        """
+                        Please insert '.navigationBarItems()' before \(inspectionCall) \
+                        for unwrapping the underlying view hierarchy.
+                        """)
+                }
+            }
+            if namespacedPrefixes.contains(typePrefix) {
+                return
             }
         }
-        guard namespacedPrefixes.contains(typePrefix) else {
-            throw InspectionError.typeMismatch(factual: typePrefix, expected: firstPrefix)
+        if let prefix = namespacedPrefixes.first {
+            let typePrefix = typeName(type: type(of: value), namespaced: true)
+            throw InspectionError.typeMismatch(factual: typePrefix, expected: prefix)
         }
     }
 }

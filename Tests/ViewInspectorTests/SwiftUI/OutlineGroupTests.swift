@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(macOS)
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 final class OutlineGroupTests: XCTestCase {
@@ -28,6 +29,7 @@ final class OutlineGroupTests: XCTestCase {
         )
     ]
     
+    @available(watchOS, unavailable)
     func testExtractionFromSingleViewContainer() throws {
         guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view = AnyView(OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { _ in
@@ -36,6 +38,7 @@ final class OutlineGroupTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().anyView().outlineGroup())
     }
     
+    @available(watchOS, unavailable)
     func testExtractionFromMultipleViewContainer() throws {
         guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view = HStack {
@@ -48,6 +51,7 @@ final class OutlineGroupTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().outlineGroup(1))
     }
     
+    @available(watchOS, unavailable)
     func testSourceDataInspection() throws {
         guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view1 = OutlineGroup(values, id: \.testValue, children: \.testChildren) { _ in
@@ -64,6 +68,7 @@ final class OutlineGroupTests: XCTestCase {
                         "Type mismatch: TestTree<String> is not Array<TestTree<String>>")
     }
     
+    @available(watchOS, unavailable)
     func testLeafInspection() throws {
         guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
         let view = OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { element in
@@ -76,3 +81,4 @@ final class OutlineGroupTests: XCTestCase {
         XCTAssertEqual(sut, "l2")
     }
 }
+#endif

@@ -94,7 +94,7 @@ extension TouchBarItemPresence: BinaryEquatable { }
 final class TouchBarTests: XCTestCase {
     func testNotSupported() throws {
         let view = try EmptyView().inspect()
-        XCTAssertThrows(try view.content.touchBar(parent: view),
+        XCTAssertThrows(try view.content.touchBar(parent: view, index: 0),
                         "Not supported on this platform")
     }
 }

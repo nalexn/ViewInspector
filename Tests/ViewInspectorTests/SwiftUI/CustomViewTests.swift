@@ -4,7 +4,7 @@ import SwiftUI
 
 @testable import ViewInspector
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 final class CustomViewTests: XCTestCase {
     
     func testLocalStateChanges() throws {
@@ -66,6 +66,7 @@ final class CustomViewTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
+    @available(watchOS, deprecated: 7.0)
     func testExtractionOfTestViewRepresentable() throws {
         let view = AnyView(TestViewRepresentable())
         let sut = try view.inspect().anyView().view(TestViewRepresentable.self)
@@ -73,22 +74,42 @@ final class CustomViewTests: XCTestCase {
         #if os(macOS)
         XCTAssertThrows(try sut.hStack(),
         "Please use `.actualView().nsView()` for inspecting the contents of NSViewRepresentable")
+        // Needs view hosting:
+        XCTAssertThrows(try sut.actualView().nsView(),
+                        "View for TestViewRepresentable is absent")
+        #elseif os(watchOS)
+        XCTAssertThrows(try sut.hStack(),
+        "Please use `.actualView().interfaceObject()` for inspecting the contents of WKInterfaceObjectRepresentable")
+        // Needs view hosting:
+        XCTAssertThrows(try sut.actualView().interfaceObject(),
+                        "View for TestViewRepresentable is absent")
         #else
         XCTAssertThrows(try sut.hStack(),
         "Please use `.actualView().uiView()` for inspecting the contents of UIViewRepresentable")
+        // Needs view hosting:
+        XCTAssertThrows(try sut.actualView().uiView(),
+                        "View for TestViewRepresentable is absent")
         #endif
     }
     
     func testExtractionOfViewControllerRepresentable() throws {
+        #if !os(watchOS)
         let view = AnyView(TestViewControllerRepresentable())
         let sut = try view.inspect().anyView().view(TestViewControllerRepresentable.self)
         XCTAssertNoThrow(try sut.actualView())
         #if os(macOS)
         XCTAssertThrows(try sut.hStack(),
         "Please use `.actualView().viewController()` for inspecting the contents of NSViewControllerRepresentable")
+        // Needs view hosting:
+        XCTAssertThrows(try sut.actualView().viewController(),
+                        "View for TestViewControllerRepresentable is absent")
         #else
         XCTAssertThrows(try sut.hStack(),
         "Please use `.actualView().viewController()` for inspecting the contents of UIViewControllerRepresentable")
+        // Needs view hosting:
+        XCTAssertThrows(try sut.actualView().viewController(),
+                        "View for TestViewControllerRepresentable is absent")
+        #endif
         #endif
     }
     
@@ -255,7 +276,7 @@ private struct TestViewControllerRepresentable: NSViewControllerRepresentable, I
     func updateNSViewController(_ uiViewController: NSViewControllerType, context: Context) {
     }
 }
-#else
+#elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestViewRepresentable: UIViewRepresentable, Inspectable {
     
@@ -281,6 +302,20 @@ private struct TestViewControllerRepresentable: UIViewControllerRepresentable, I
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
 }
+#elseif os(watchOS)
+
+@available(watchOS, deprecated: 7.0)
+private struct TestViewRepresentable: WKInterfaceObjectRepresentable, Inspectable {
+    
+    typealias Context = WKInterfaceObjectRepresentableContext<TestViewRepresentable>
+    func makeWKInterfaceObject(context: Context) -> some WKInterfaceObject {
+        return WKInterfaceMap()
+    }
+
+    func updateWKInterfaceObject(_ wkInterfaceObject: WKInterfaceObjectType, context: Context) {
+    }
+}
+
 #endif
 
 // MARK: - Misc

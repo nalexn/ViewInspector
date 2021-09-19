@@ -71,7 +71,7 @@ private struct Test {
             Text("empty")
         }
     }
-    @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
     struct ConflictingViewTypeNamesStyle: ButtonStyle {
         public func makeBody(configuration: Configuration) -> some View {
             Group {
@@ -225,7 +225,7 @@ final class ViewSearchTests: XCTestCase {
     }
     
     func testConflictingViewTypeNames() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let style = Test.ConflictingViewTypeNamesStyle()
         let sut = try style.inspect(isPressed: true)
         XCTAssertEqual(try sut.find(text: "empty").pathToRoot,
@@ -234,5 +234,21 @@ final class ViewSearchTests: XCTestCase {
                        "group().label(1)")
         XCTAssertEqual(try sut.find(ViewType.StyleConfiguration.Label.self).pathToRoot,
                        "group().styleConfigurationLabel(2)")
+    }
+    
+    func testShapesSearching() throws {
+        let sut = Group {
+            Circle().inset(by: 5)
+            Rectangle()
+            Ellipse().offset(x: 2, y: 3)
+        }
+        XCTAssertThrows(try sut.inspect().find(text: "none"),
+                        "Search did not find a match")
+        let testRect = CGRect(x: 0, y: 0, width: 10, height: 100)
+        let refPath = Ellipse().offset(x: 2, y: 3).path(in: testRect)
+        let ellipse = try sut.inspect().find(where: {
+            try $0.shape().path(in: testRect) == refPath
+        })
+        XCTAssertEqual(ellipse.pathToRoot, "group().shape(2)")
     }
 }

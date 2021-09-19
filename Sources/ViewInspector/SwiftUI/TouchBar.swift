@@ -45,7 +45,7 @@ public extension InspectableView where View == ViewType.TouchBar {
 public extension InspectableView {
     
     func touchBar() throws -> InspectableView<ViewType.TouchBar> {
-        return try contentForModifierLookup.touchBar(parent: self)
+        return try contentForModifierLookup.touchBar(parent: self, index: 0)
     }
     
     func touchBarItemPrincipal() throws -> Bool {
@@ -70,19 +70,21 @@ public extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
-    func touchBar(parent: UnwrappedView) throws -> InspectableView<ViewType.TouchBar> {
+    func touchBar(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.TouchBar> {
         let rootView = try modifierAttribute(
             modifierName: "_TouchBarModifier", path: "modifier|touchBar",
-            type: Any.self, call: "touchBar")
+            type: Any.self, call: "touchBar", index: index ?? 0)
         let content = try Inspector.unwrap(content: Content(rootView))
-        return try .init(content, parent: parent, call: "touchBar()")
+        let call = ViewType.inspectionCall(
+            base: ViewType.TouchBar.inspectionCall(typeName: ""), index: nil)
+        return try .init(content, parent: parent, call: call)
     }
 }
 #else
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
-    func touchBar(parent: UnwrappedView) throws -> InspectableView<ViewType.TouchBar> {
+    func touchBar(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.TouchBar> {
         throw InspectionError.notSupported("Not supported on this platform")
     }
 }

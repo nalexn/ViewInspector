@@ -4,32 +4,85 @@ import SwiftUI
 public extension ViewType {
     
     struct Popover: KnownViewType {
-        public static var typePrefix: String = ""
-        public static var isTransitive: Bool { true }
+        public static var typePrefix: String = ViewType.PopupContainer<Popover>.typePrefix
+        public static var namespacedPrefixes: [String] { [typePrefix] }
+        public static func inspectionCall(typeName: String) -> String {
+            return "popover(\(ViewType.indexPlaceholder))"
+        }
+        internal static var standardModifierName: String {
+            if #available(iOS 14.2, macOS 11.0, *) {
+                return "PopoverPresentationModifier"
+            } else {
+                return "_AnchorWritingModifier<Optional<CGRect>, Key>"
+            }
+        }
+    }
+}
+
+// MARK: - Content Extraction
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.Popover: SingleViewContent {
+    
+    public static func child(_ content: Content) throws -> Content {
+        let view = try Inspector.attribute(label: "popup", value: content.view)
+        let medium = content.medium.resettingViewModifiers()
+        return try Inspector.unwrap(view: view, medium: medium)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.Popover: MultipleViewContent {
+    
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
+        let view = try Inspector.attribute(label: "popup", value: content.view)
+        let medium = content.medium.resettingViewModifiers()
+        return try Inspector.viewsInContainer(view: view, medium: medium)
     }
 }
 
 // MARK: - Extraction
 
-@available(iOS 14.2, macOS 11.0, *)
+@available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 public extension InspectableView {
     
-    func popover() throws -> InspectableView<ViewType.Popover> {
-        return try contentForModifierLookup.popover(parent: self)
+    func popover(_ index: Int? = nil) throws -> InspectableView<ViewType.Popover> {
+        return try contentForModifierLookup.popover(parent: self, index: index)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     
-    func popover(parent: UnwrappedView) throws -> InspectableView<ViewType.Popover> {
-        let modifier = try modifierAttribute(
-            modifierName: "PopoverPresentationModifier", path: "modifier",
-            type: Any.self, call: "popover")
-        let medium = self.medium.resettingViewModifiers()
-        return try .init(try Inspector.unwrap(content: Content(modifier, medium: medium)),
-                         parent: parent, call: "popover()")
+    func popover(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Popover> {
+        return try popup(parent: parent, index: index,
+                         modifierPredicate: isPopoverBuilder(modifier:),
+                         standardPredicate: standardPopoverModifier)
+    }
+    
+    func standardPopoverModifier(_ name: String = "Popover") throws -> Any {
+        return try modifierAttribute(
+            modifierName: ViewType.Popover.standardModifierName, path: "modifier",
+            type: Any.self, call: name.firstLetterLowercased)
+    }
+    
+    func popoversForSearch() -> [ViewSearch.ModifierIdentity] {
+        let count = medium.viewModifiers
+            .filter(isPopoverBuilder(modifier:))
+            .count
+        return Array(0..<count).map { _ in
+            .init(name: "", builder: { parent, index in
+                try parent.content.popover(parent: parent, index: index)
+            })
+        }
+    }
+    
+    private func isPopoverBuilder(modifier: Any) -> Bool {
+        let modifier = try? Inspector.attribute(
+            label: "modifier", value: modifier, type: BasePopupPresenter.self)
+        return modifier?.isPopoverPresenter == true
     }
 }
 
@@ -37,55 +90,56 @@ internal extension Content {
 
 @available(iOS 14.2, macOS 11.0, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 public extension InspectableView where View == ViewType.Popover {
     
+    func arrowEdge() throws -> Edge {
+        let popover = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
+        let modifier = try popover.presenter.content().standardPopoverModifier()
+        return try Inspector.attribute(
+            label: "arrowEdge", value: modifier, type: Edge.self)
+    }
+    
+    func attachmentAnchor() throws -> PopoverAttachmentAnchor {
+        let popover = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
+        let modifier = try popover.presenter.content().standardPopoverModifier()
+        return try Inspector.attribute(
+            label: "attachmentAnchor", value: modifier, type: PopoverAttachmentAnchor.self)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+public extension InspectableView where View == ViewType.Popover {
+    
+    func dismiss() throws {
+        let container = try Inspector.cast(value: content.view, type: ViewType.PopupContainer<ViewType.Popover>.self)
+        container.presenter.dismissPopup()
+    }
+}
+
+// MARK: - Deprecated:
+
+@available(iOS 13.0, macOS 10.15, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+public extension InspectableView where View == ViewType.Popover {
+    
+    @available(*, deprecated, message: "Simply remove `contentView()` from the inspection chain")
     func contentView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try contentView(EmptyView.self)
     }
     
+    @available(*, deprecated, message: "Simply remove `contentView()` from the inspection chain")
     func contentView<T>(_ viewType: T.Type) throws -> InspectableView<ViewType.ClassifiedView> {
-        
-        typealias Closure = () -> T
-        let closure = try Inspector.attribute(label: "popoverContent", value: content.view)
-        let closureDesc = Inspector.typeName(value: closure)
-        
-        let expectedViewType = closureDesc.components(separatedBy: "() -> ").last ?? ""
-        guard Inspector.typeName(type: viewType) == expectedViewType else {
-            throw InspectionError.notSupported(
-                "Please substitute '\(expectedViewType).self' as the parameter for 'contentView()' inspection call")
-        }
-        guard let typedClosure = withUnsafeBytes(of: closure, {
-            $0.bindMemory(to: Closure.self).first
-        }) else { throw InspectionError.typeMismatch(closure, Closure.self) }
-        let view = typedClosure()
-        let medium = content.medium.resettingViewModifiers()
-        return try .init(try Inspector.unwrap(content: Content(view, medium: medium)), parent: self)
+        let content = try ViewType.Popover.child(self.content)
+        return try .init(content, parent: self, index: nil)
     }
     
-    func arrowEdge() throws -> Edge {
-        return try Inspector.attribute(label: "arrowEdge", value: content.view, type: Edge.self)
-    }
-    
-    func attachmentAnchor() throws -> PopoverAttachmentAnchor {
-        return try Inspector.attribute(label: "attachmentAnchor", value: content.view,
-                                       type: PopoverAttachmentAnchor.self)
-    }
-    
+    @available(*, deprecated, message: "Use `popover` inspection call - it throws if Popover is not presented")
     func isPresented() throws -> Bool {
-        return try isPresentedBinding().wrappedValue
-    }
-    
-    func dismiss() throws {
-        typealias OnDismiss = () -> Void
-        let onDismiss = try Inspector.attribute(
-            label: "onDismiss", value: content.view, type: OnDismiss.self)
-        onDismiss()
-        try isPresentedBinding().wrappedValue = false
-    }
-    
-    private func isPresentedBinding() throws -> Binding<Bool> {
-        return try Inspector.attribute(
-            label: "_isPresented", value: content.view, type: Binding<Bool>.self)
+        return true
     }
 }
 

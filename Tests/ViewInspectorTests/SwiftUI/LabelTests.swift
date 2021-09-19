@@ -6,18 +6,18 @@ import SwiftUI
 final class LabelTests: XCTestCase {
     
     func testInspect() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         XCTAssertNoThrow(try Label("title", image: "image").inspect())
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = AnyView(Label("title", image: "image"))
         XCTAssertNoThrow(try view.inspect().anyView().label())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = HStack {
             Text("")
             Label("title", image: "image")
@@ -27,7 +27,7 @@ final class LabelTests: XCTestCase {
     }
     
     func testSearch() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = HStack { Label("tx", image: "img") }
         XCTAssertEqual(try view.inspect().find(ViewType.Label.self).pathToRoot,
                        "hStack().label(0)")
@@ -38,7 +38,7 @@ final class LabelTests: XCTestCase {
     }
     
     func testTitleInspection() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = Label(title: {
             HStack { Text("abc") }
         }, icon: {
@@ -49,7 +49,7 @@ final class LabelTests: XCTestCase {
     }
     
     func testIconInspection() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = Label(title: {
             HStack { Text("abc") }
         }, icon: {
@@ -66,19 +66,19 @@ final class LabelTests: XCTestCase {
 final class GlobalModifiersForLabel: XCTestCase {
     
     func testLabelStyle() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let sut = EmptyView().labelStyle(IconOnlyLabelStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testLabelStyleInspection() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let sut = EmptyView().labelStyle(IconOnlyLabelStyle())
         XCTAssertTrue(try sut.inspect().labelStyle() is IconOnlyLabelStyle)
     }
     
     func testCustomLabelStyleInspection() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let sut = TestLabelStyle()
         let title = try sut.inspect().vStack().styleConfigurationTitle(0)
         let icon = try sut.inspect().vStack().styleConfigurationIcon(1)
@@ -95,7 +95,7 @@ final class GlobalModifiersForLabel: XCTestCase {
     }
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 struct TestLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         VStack {

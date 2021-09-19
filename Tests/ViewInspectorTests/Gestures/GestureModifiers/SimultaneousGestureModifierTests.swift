@@ -36,8 +36,8 @@ final class SimultaneousGestureModifierTests: XCTestCase {
             "EmptyView does not have 'simultaneousGesture(DragGesture.self)' modifier")
     }
     
-    @available(tvOS 14.0, *)
     func testSimultaneousGestureInspectionFailureDueToTypeMismatch() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .simultaneousGesture(LongPressGesture())
         XCTAssertThrows(
@@ -45,8 +45,8 @@ final class SimultaneousGestureModifierTests: XCTestCase {
             "Type mismatch: LongPressGesture is not DragGesture")
     }
     
-    @available(tvOS 14.0, *)
     func testSimultaneousGestureInspectionWithIndex1() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .simultaneousGesture(DragGesture())
             .simultaneousGesture(LongPressGesture())
@@ -54,8 +54,8 @@ final class SimultaneousGestureModifierTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView().simultaneousGesture(LongPressGesture.self, 1))
     }
     
-    @available(tvOS 14.0, *)
     func testSimultaneousGestureInspectionWithIndex2() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .simultaneousGesture(DragGesture())
             .gesture(TapGesture())
@@ -64,8 +64,8 @@ final class SimultaneousGestureModifierTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().emptyView().simultaneousGesture(LongPressGesture.self, 1))
     }
     
-    @available(tvOS 14.0, *)
     func testSimultaneousGestureInspectionWithIndexFailureDueToNoModifier() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .simultaneousGesture(DragGesture())
             .simultaneousGesture(LongPressGesture())
@@ -74,8 +74,8 @@ final class SimultaneousGestureModifierTests: XCTestCase {
             "EmptyView does not have 'simultaneousGesture(DragGesture.self)' modifier at index 2")
     }
     
-    @available(tvOS 14.0, *)
     func testSimultaneousGestureInspectionWithIndexFailureDueToTypeMismatch() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .simultaneousGesture(DragGesture())
             .simultaneousGesture(LongPressGesture())
@@ -92,8 +92,8 @@ final class SimultaneousGestureModifierTests: XCTestCase {
         XCTAssertEqual(path, "emptyView().simultaneousGesture(DragGesture.self)")
     }
     
-    @available(tvOS 14.0, *)
     func testSimultaneousGestureInspectionWithIndexPathToRoot() throws {
+        guard #available(tvOS 14.0, *) else { return }
         let sut = EmptyView()
             .padding(100)
             .simultaneousGesture(DragGesture())

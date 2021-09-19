@@ -23,9 +23,10 @@ final class TransitiveModifiersTests: XCTestCase {
     }
     
     @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
     func testFlipsRightToLeftInheritance() throws {
         let sut = try FlipsRightToLeftTestView().inspect()
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, tvOS 14.0, *) {
             XCTAssertFalse(try sut.find(text: "1").flipsForRightToLeftLayoutDirection())
         } else {
             // Prior to iOS 14 flipsForRightToLeftLayoutDirection is ignoring the Bool parameter
@@ -65,6 +66,7 @@ final class TransitiveModifiersTests: XCTestCase {
     }
     
     @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
     func testLabelsHiddenInheritance() throws {
         let sut = try TestLabelsHiddenView().inspect()
         let text1 = try sut.find(text: "1")
@@ -111,6 +113,7 @@ private struct TestDisabledView: View, Inspectable {
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 private struct FlipsRightToLeftTestView: View, Inspectable {
     var body: some View {
         VStack {
@@ -146,11 +149,11 @@ private struct AllowsHitTestingTestView: View, Inspectable {
     
     var body: some View {
         VStack {
-            Button("1", action: { print("1") })
+            Button("1", action: { })
             VStack {
-                Button("2", action: { print("2") })
+                Button("2", action: { })
                 VStack {
-                    Button("3", action: { print("3") })
+                    Button("3", action: { })
                         .allowsHitTesting(true)
                 }.allowsHitTesting(false)
             }.allowsHitTesting(true)
@@ -160,6 +163,7 @@ private struct AllowsHitTestingTestView: View, Inspectable {
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
+@available(watchOS, unavailable)
 private struct TestLabelsHiddenView: View, Inspectable {
     var body: some View {
         VStack {

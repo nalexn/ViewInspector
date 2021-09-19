@@ -51,7 +51,7 @@ func XCTAssertThrows<T>(_ expression: @autoclosure () throws -> T, _ message: St
                         file: StaticString = #file, line: UInt = #line) {
     do {
         _ = try expression()
-        XCTFail("Expression did not throw any error")
+        XCTFail("Expression did not throw any error", file: file, line: line)
     } catch let error {
         XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
     }

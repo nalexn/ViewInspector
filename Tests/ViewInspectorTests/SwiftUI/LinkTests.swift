@@ -8,13 +8,13 @@ final class LinkTests: XCTestCase {
     let url = URL(fileURLWithPath: "test")
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = AnyView(Link("abc", destination: url))
         XCTAssertNoThrow(try view.inspect().anyView().link())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = HStack {
             Text("")
             Link("abc", destination: url)
@@ -24,7 +24,7 @@ final class LinkTests: XCTestCase {
     }
     
     func testSearch() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = AnyView(Link(destination: url, label: {
             HStack { Text("xyz") }
         }))
@@ -34,13 +34,13 @@ final class LinkTests: XCTestCase {
     }
     
     func testURLInspection() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = Link("abc", destination: url)
         XCTAssertEqual(try view.inspect().link().url(), url)
     }
     
     func testLabelInspection() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
         let view = Link(destination: url, label: {
             HStack { Text("xyz") }
         })

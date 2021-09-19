@@ -83,7 +83,7 @@ final class ForEachTests: XCTestCase {
 
     func testRangeBased() throws {
         let range = 0..<5
-        let view = ForEach(range) { Text(verbatim: "\($0)") }
+        let view = ForEach(0..<5) { Text(verbatim: "\($0)") }
 
         let sut = try view.inspect().forEach()
         XCTAssertEqual(sut.count, 5)
@@ -134,7 +134,7 @@ final class ForEachTests: XCTestCase {
     
     #if os(macOS)
     func testOnInsert() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { return }
         let exp = XCTestExpectation(description: #function)
         let sut = ForEach([0, 1, 3], id: \.self) { id in Text("\(id)") }
