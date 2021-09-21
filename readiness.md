@@ -37,6 +37,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| DisclosureGroup | `contained view`, `label view`, `isExpanded: Bool`, `expand()`, `collapse()` |
 |:white_check_mark:| Divider | |
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
+|:white_check_mark:| EllipticalGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadiusFraction: CGFloat`, `endRadiusFraction: CGFloat` |
 |:white_check_mark:| EmptyView | |
 |:white_check_mark:| EquatableView | `contained view` |
 |:white_check_mark:| Font (*) | `size: CGFloat`, `isFixedSize: Bool`, `name: String`, `weight: Font.Weight`, `design: Font.Design`, `style: Font.TextStyle` |
