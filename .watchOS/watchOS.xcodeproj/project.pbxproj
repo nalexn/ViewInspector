@@ -257,6 +257,8 @@
 		520DC70C26F60FF400FCFFFD /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 520DC68E26F60FF400FCFFFD /* ViewInspector */; };
 		520DC70E26F60FF400FCFFFD /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 520DC5AA26F60FBA00FCFFFD /* Test.strings */; };
 		520DC71526F6115D00FCFFFD /* watchOSApp+Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CA301526ECD64400BFD568 /* watchOSApp+Testable.swift */; };
+		5220F52326FA7AF2006ECD9F /* EllipticalGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220F52226FA7AF2006ECD9F /* EllipticalGradientTests.swift */; };
+		5220F52426FA7AF2006ECD9F /* EllipticalGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220F52226FA7AF2006ECD9F /* EllipticalGradientTests.swift */; };
 		5293010626EFC96600012E90 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5293010426EFC96600012E90 /* Interface.storyboard */; };
 		5293010E26EFC96700012E90 /* watchOS-Ext-2.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5293010D26EFC96700012E90 /* watchOS-Ext-2.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5293012726EFCBD300012E90 /* watchOSApp-2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5293011426EFC96700012E90 /* watchOSApp-2.swift */; };
@@ -458,6 +460,7 @@
 		520DC60D26F60FBA00FCFFFD /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
 		520DC60E26F60FBA00FCFFFD /* TransformingModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformingModifiersTests.swift; sourceTree = "<group>"; };
 		520DC71226F60FF400FCFFFD /* watchOS-2-Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "watchOS-2-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5220F52226FA7AF2006ECD9F /* EllipticalGradientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipticalGradientTests.swift; sourceTree = "<group>"; };
 		529300FF26EFC96600012E90 /* watchOS-App-2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "watchOS-App-2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5293010526EFC96600012E90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		5293010D26EFC96700012E90 /* watchOS-Ext-2.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS-Ext-2.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -582,6 +585,7 @@
 		520DC5B026F60FBA00FCFFFD /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				5220F52226FA7AF2006ECD9F /* EllipticalGradientTests.swift */,
 				520DC5B126F60FBA00FCFFFD /* ZStackTests.swift */,
 				520DC5B226F60FBA00FCFFFD /* OptionalViewTests.swift */,
 				520DC5B326F60FBA00FCFFFD /* MenuButtonTests.swift */,
@@ -973,6 +977,7 @@
 				520DC62C26F60FBB00FCFFFD /* InspectableViewTests.swift in Sources */,
 				520DC61E26F60FBA00FCFFFD /* ExclusiveGestureTests.swift in Sources */,
 				520DC63026F60FBB00FCFFFD /* MenuButtonTests.swift in Sources */,
+				5220F52326FA7AF2006ECD9F /* EllipticalGradientTests.swift in Sources */,
 				520DC64426F60FBB00FCFFFD /* EnvironmentObjectInjectionTests.swift in Sources */,
 				520DC67A26F60FBB00FCFFFD /* LazyVStackTests.swift in Sources */,
 				520DC65E26F60FBB00FCFFFD /* MapAnnotationTests.swift in Sources */,
@@ -1103,6 +1108,7 @@
 				520DC69126F60FF400FCFFFD /* InspectableViewTests.swift in Sources */,
 				520DC69226F60FF400FCFFFD /* ExclusiveGestureTests.swift in Sources */,
 				520DC69326F60FF400FCFFFD /* MenuButtonTests.swift in Sources */,
+				5220F52426FA7AF2006ECD9F /* EllipticalGradientTests.swift in Sources */,
 				520DC69426F60FF400FCFFFD /* EnvironmentObjectInjectionTests.swift in Sources */,
 				520DC69526F60FF400FCFFFD /* LazyVStackTests.swift in Sources */,
 				520DC69626F60FF400FCFFFD /* MapAnnotationTests.swift in Sources */,

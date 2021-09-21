@@ -6,7 +6,7 @@ import SwiftUI
 internal extension ViewSearch {
     
     private static var index: [String: [ViewIdentity]] = {
-        var identities: [ViewIdentity] = [
+        let identities: [ViewIdentity] = [
             .init(ViewType.ActionSheet.self),
             .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
             .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
@@ -16,6 +16,7 @@ internal extension ViewSearch {
             .init(ViewType.DatePicker.self), .init(ViewType.DisclosureGroup.self),
             .init(ViewType.Divider.self),
             .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
+            .init(ViewType.EllipticalGradient.self),
             .init(ViewType.ForEach.self), .init(ViewType.Form.self),
             .init(ViewType.GeometryReader.self),
             .init(ViewType.Group.self), .init(ViewType.GroupBox.self),
@@ -51,9 +52,6 @@ internal extension ViewSearch {
             .init(ViewType.ViewModifierContent.self), .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
             .init(ViewType.ZStack.self)
         ]
-        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, *) {
-            identities.append(.init(ViewType.EllipticalGradient.self))
-        }
 
         var index = [String: [ViewIdentity]](minimumCapacity: 26) // alphabet
         identities.forEach { identity in
