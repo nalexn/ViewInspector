@@ -79,6 +79,8 @@
 		CDA84516262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */; };
 		CDA8451C262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */; };
 		D766E67026E17F01004AAA80 /* FullScreenCoverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */; };
+		DD421B5F26FA6648008EFE05 /* EllipticalGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD421B5E26FA6648008EFE05 /* EllipticalGradientTests.swift */; };
+		DDCA44AD26FA64F500138898 /* EllipticalGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA44AC26FA64F500138898 /* EllipticalGradient.swift */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
 		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
 		F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D423D3C74B008F31BD /* InspectionEmissary.swift */; };
@@ -330,6 +332,8 @@
 		CDA84515262CC1F800C56C98 /* CommonComposedGestureUpdatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureUpdatingTests.swift; sourceTree = "<group>"; };
 		CDA8451B262CC34D00C56C98 /* CommonComposedGestureChangedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonComposedGestureChangedTests.swift; sourceTree = "<group>"; };
 		D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCoverTests.swift; sourceTree = "<group>"; };
+		DD421B5E26FA6648008EFE05 /* EllipticalGradientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipticalGradientTests.swift; sourceTree = "<group>"; };
+		DDCA44AC26FA64F500138898 /* EllipticalGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipticalGradient.swift; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
 		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
 		F60385D423D3C74B008F31BD /* InspectionEmissary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissary.swift; sourceTree = "<group>"; };
@@ -621,6 +625,7 @@
 				F682A015254776F2005F1B70 /* DisclosureGroup.swift */,
 				F60EEBC72382EED0007DB53A /* Divider.swift */,
 				F6DFD87B2382FB510028E84D /* EditButton.swift */,
+				DDCA44AC26FA64F500138898 /* EllipticalGradient.swift */,
 				F64057EE238DBA800029D9BA /* EmptyView.swift */,
 				F6F08E6C23A2A9D4001F04DF /* EnvironmentReaderView.swift */,
 				F6D933A62385E9E000358E0E /* EquatableView.swift */,
@@ -732,6 +737,7 @@
 				F682A00B254772C3005F1B70 /* DisclosureGroupTests.swift */,
 				F60EEBEC2382F004007DB53A /* DividerTests.swift */,
 				F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */,
+				DD421B5E26FA6648008EFE05 /* EllipticalGradientTests.swift */,
 				F6D933A82385E9F700358E0E /* EquatableViewTests.swift */,
 				F64057F0238DBB120029D9BA /* EmptyViewTests.swift */,
 				F6F08E6E23A2AA64001F04DF /* EnvironmentReaderViewTests.swift */,
@@ -1094,6 +1100,7 @@
 				F6D9339F2385B46A00358E0E /* NavigationLink.swift in Sources */,
 				F6ECF6D423A68BA4000FC591 /* PositioningModifiers.swift in Sources */,
 				F6DB5A01253510350056FC83 /* TextInputModifiers.swift in Sources */,
+				DDCA44AD26FA64F500138898 /* EllipticalGradient.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
 				F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
@@ -1124,6 +1131,7 @@
 				F60EEBFD2382F004007DB53A /* ImageTests.swift in Sources */,
 				F60EEBFE2382F004007DB53A /* FormTests.swift in Sources */,
 				F6DFD87E2382FBE80028E84D /* EditButtonTests.swift in Sources */,
+				DD421B5F26FA6648008EFE05 /* EllipticalGradientTests.swift in Sources */,
 				F60385D723D3CDED008F31BD /* InspectionEmissaryTests.swift in Sources */,
 				CDA844F2262B86D900C56C98 /* GestureExampleTests.swift in Sources */,
 				F6D933C92385FC1A00358E0E /* StepperTests.swift in Sources */,
