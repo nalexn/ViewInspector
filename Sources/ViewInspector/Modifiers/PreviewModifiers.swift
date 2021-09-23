@@ -33,6 +33,13 @@ public extension InspectableView {
         let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
         return try environment(keyPath, call: "accentColor")
     }
+
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func tint() throws -> Color? {
+        let reference = EmptyView().tint(nil)
+        let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
+        return try environment(keyPath, call: "tint")
+    }
     
     func colorScheme() throws -> ColorScheme {
         let reference = EmptyView().colorScheme(.light)
