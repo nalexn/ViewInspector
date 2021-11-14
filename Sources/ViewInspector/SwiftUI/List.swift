@@ -54,6 +54,17 @@ public extension InspectableView {
         return try contentForModifierLookup.listRowBackground(parent: self, index: index)
     }
 
+    func listItemTint() throws -> (color: Color, isFixed: Bool) {
+        let color = try modifierAttribute(
+            modifierName: "_TraitWritingModifier<ListItemTintTraitKey>",
+            path: "modifier|value|some|effect|color", type: Color.self, call: "listItemTint")
+        let isFixed = try modifierAttribute(
+            modifierName: "_TraitWritingModifier<ListItemTintTraitKey>",
+            path: "modifier|value|some|isFixed", type: Bool.self, call: "listItemTint")
+
+        return (color, isFixed)
+    }
+
     func listStyle() throws -> Any {
         let modifier = try self.modifier({ modifier -> Bool in
             return modifier.modifierType.hasPrefix("ListStyleWriter")
