@@ -438,6 +438,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:---:|---|
 |:white_check_mark:| `func foregroundColor(Color?) -> some View` |
 |:white_check_mark:| `func accentColor(Color?) -> some View` |
+|:white_check_mark:| `func tint(Color?) -> some View` |
+|:white_check_mark:| `func listItemTint(Color?) -> some View` |
 
 ### Adopting View Color Schemes
 
