@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectableView: Sequence where View: MultipleViewContent {
@@ -7,17 +8,19 @@ extension InspectableView: Sequence where View: MultipleViewContent {
     
     public struct Iterator: IteratorProtocol {
         
-        private var groupIterator: LazyGroup<Content>.Iterator
+        private var index: Int = -1
+        private let group: LazyGroup<Content>
         private let view: UnwrappedView
         
         init(_ group: LazyGroup<Content>, view: UnwrappedView) {
-            groupIterator = group.makeIterator()
+            self.group = group
             self.view = view
         }
         
         mutating public func next() -> Element? {
-            guard let content = groupIterator.next()
-                else { return nil }
+            index += 1
+            guard index < group.count else { return nil }
+            let content = (try? group.element(at: index)) ?? .absentView
             return try? .init(content, parent: view)
         }
     }
@@ -45,11 +48,39 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
     public var count: Int { underestimatedCount }
     
     public subscript(index: Index) -> Iterator.Element {
-        // swiftlint:disable force_try
-        let viewes = try! View.children(content)
-        return try! .init(try! viewes.element(at: index), parent: self, call: "[\(index)]")
-        // swiftlint:enable force_try
+        do {
+            do {
+                let viewes = try View.children(content)
+                return try .init(try viewes.element(at: index), parent: self, call: "[\(index)]")
+            } catch InspectionError.viewNotFound {
+                return try Element(.absentView, parent: self, index: index)
+            } catch { throw error }
+        } catch {
+            fatalError(error.localizedDescription)
+        }
     }
 
     public func index(after index: Index) -> Index { index + 1 }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension Content {
+    
+    static var absentView: Content {
+        return Content(AbsentView())
+    }
+    
+    var isAbsent: Bool { view is AbsentView }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal struct AbsentView: View {
+    var body: Never { fatalError() }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension InspectableView {
+    public var isAbsent: Bool {
+        return content.isAbsent
+    }
 }
