@@ -69,6 +69,8 @@ final class InspectableViewTestsAccessTests: XCTestCase {
         XCTAssertFalse(sut[1].isAbsent)
         XCTAssertFalse(sut[2].isAbsent)
         XCTAssertTrue(sut[3].isAbsent)
+        XCTAssertTrue(sut[2].isResponsive())
+        XCTAssertFalse(sut[3].isResponsive())
     }
 }
 

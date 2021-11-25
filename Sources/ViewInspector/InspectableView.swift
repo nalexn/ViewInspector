@@ -355,6 +355,9 @@ public extension InspectableView {
             throw InspectionError.unresponsiveControl(
                 name: name, reason: blocker.pathToRoot.ifEmpty(use: "it") + " has allowsHitTesting set to false")
         }
+        if isAbsent {
+            throw InspectionError.unresponsiveControl(name: name, reason: "the conditional view has been hidden")
+        }
     }
     
     private func farthestParent(where condition: (InspectableView<ViewType.ClassifiedView>) -> Bool) -> UnwrappedView? {
