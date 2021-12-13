@@ -49,6 +49,12 @@ final class CustomViewTests: XCTestCase {
         let view = EnvironmentStateTestView().environmentObject(viewModel)
         XCTAssertNoThrow(try view.inspect().view(EnvironmentStateTestView.self))
     }
+
+    func testEnvironmentObjectActualView() throws {
+       let viewModel = ExternalState()
+       let view = EnvironmentStateTestView().environmentObject(viewModel)
+       _ = try view.inspect().view(EnvironmentStateTestView.self).actualView().viewModel
+    }
     
     func testResetsModifiers() throws {
         let view = SimpleTestView().padding()
