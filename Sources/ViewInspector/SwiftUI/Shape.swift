@@ -107,7 +107,7 @@ private extension InspectableView {
     }
     
     func lookupShape(_ view: Any, typeName: String, label: String) throws -> Any {
-        let name = Inspector.typeName(value: view, prefixOnly: true)
+        let name = Inspector.typeName(value: view, replacingGenerics: "")
         if name.hasPrefix(typeName) {
             return view
         }

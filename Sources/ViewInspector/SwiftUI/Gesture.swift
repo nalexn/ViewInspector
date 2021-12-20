@@ -11,7 +11,7 @@ public extension ViewType {
     struct Gesture<T>: KnownViewType, GestureViewType
     where T: SwiftUI.Gesture & Inspectable {
         public static var typePrefix: String {
-            return Inspector.typeName(type: T.self, prefixOnly: true)
+            return Inspector.typeName(type: T.self, replacingGenerics: "")
         }
         
         public static var namespacedPrefixes: [String] {
@@ -25,7 +25,7 @@ public extension ViewType {
                 "SwiftUI._ModifiersGesture",
                 "SwiftUI.GestureStateGesture"
             ]
-            prefixes.append(Inspector.typeName(type: T.self, namespaced: true, prefixOnly: true))
+            prefixes.append(Inspector.typeName(type: T.self, namespaced: true, replacingGenerics: ""))
             return prefixes
         }
         

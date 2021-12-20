@@ -43,28 +43,48 @@ internal extension Inspector {
     
     static func typeName(value: Any,
                          namespaced: Bool = false,
-                         prefixOnly: Bool = false) -> String {
-        return typeName(type: type(of: value), namespaced: namespaced, prefixOnly: prefixOnly)
+                         replacingGenerics: String? = nil) -> String {
+        return typeName(type: type(of: value), namespaced: namespaced,
+                        replacingGenerics: replacingGenerics)
     }
     
     static func typeName(type: Any.Type,
                          namespaced: Bool = false,
-                         prefixOnly: Bool = false) -> String {
-        let typeName = namespaced ? String(reflecting: type) : String(describing: type)
-        guard prefixOnly else { return typeName }
-        let name = typeName.components(separatedBy: "<").first!
-        guard namespaced else { return name }
-        let string = NSMutableString(string: name)
-        let range = NSRange(location: 0, length: string.length)
-        namespaceSanitizeRegex.replaceMatches(in: string, options: [], range: range, withTemplate: "SwiftUI")
-        return String(string)
+                         replacingGenerics: String? = nil) -> String {
+        let typeName = namespaced ? String(reflecting: type).sanitizingNamespace() : String(describing: type)
+        return replacingGenerics.flatMap {
+            typeName.replacingGenericParameters($0)
+        } ?? typeName
+    }
+}
+
+private extension String {
+    func sanitizingNamespace() -> String {
+        var str = self
+        if let range = str.range(of: ".(unknown context at ") {
+            let end = str.index(range.upperBound, offsetBy: .init(11))
+            str.replaceSubrange(range.lowerBound..<end, with: "")
+        }
+        return str
     }
     
-    private static var namespaceSanitizeRegex: NSRegularExpression = {
-        guard let regex = try? NSRegularExpression(pattern: "SwiftUI.\\(unknown context at .*\\)", options: [])
-        else { fatalError() }
-        return regex
-    }()
+    func replacingGenericParameters(_ replacement: String) -> String {
+        guard let start = self.firstIndex(of: "<")
+        else { return self }
+        var balance = 1
+        var current = self.index(after: start)
+        while balance > 0 && current < endIndex {
+            let char = self[current]
+            if char == "<" { balance += 1 }
+            if char == ">" { balance -= 1 }
+            current = self.index(after: current)
+        }
+        if balance == 0 {
+            return String(self[..<start]) + replacement +
+                String(self[current...]).replacingGenericParameters(replacement)
+        }
+        return self
+    }
 }
 
 // MARK: - Attributes lookup
@@ -180,7 +200,7 @@ internal extension Inspector {
     }
     
     static func isTupleView(_ view: Any) -> Bool {
-        return Inspector.typeName(value: view, prefixOnly: true) == ViewType.TupleView.typePrefix
+        return Inspector.typeName(value: view, replacingGenerics: "") == ViewType.TupleView.typePrefix
     }
     
     static func unwrap(view: Any, medium: Content.Medium) throws -> Content {
@@ -189,7 +209,7 @@ internal extension Inspector {
     
     // swiftlint:disable cyclomatic_complexity
     static func unwrap(content: Content) throws -> Content {
-        switch Inspector.typeName(value: content.view, prefixOnly: true) {
+        switch Inspector.typeName(value: content.view, replacingGenerics: "") {
         case "Tree":
             return try ViewType.TreeView.child(content)
         case "IDView":
@@ -218,22 +238,22 @@ internal extension Inspector {
     
     static func guardType(value: Any, namespacedPrefixes: [String], inspectionCall: String) throws {
         
-        for prefix in namespacedPrefixes {
-            let withGenericParams = prefix.contains("<")
-            let typePrefix = typeName(type: type(of: value), namespaced: true, prefixOnly: !withGenericParams)
-            if typePrefix == "SwiftUI.EnvironmentReaderView" {
-                let typeWithParams = typeName(type: type(of: value))
-                if typeWithParams.contains("NavigationBarItemsKey") {
-                    throw InspectionError.notSupported(
-                        """
-                        Please insert '.navigationBarItems()' before \(inspectionCall) \
-                        for unwrapping the underlying view hierarchy.
-                        """)
-                }
+        var typePrefix = typeName(type: type(of: value), namespaced: true, replacingGenerics: "")
+        if typePrefix == ViewType.popupContainerTypePrefix {
+            typePrefix = typeName(type: type(of: value), namespaced: true)
+        }
+        if typePrefix == "SwiftUI.EnvironmentReaderView" {
+            let typeWithParams = typeName(type: type(of: value))
+            if typeWithParams.contains("NavigationBarItemsKey") {
+                throw InspectionError.notSupported(
+                    """
+                    Please insert '.navigationBarItems()' before \(inspectionCall) \
+                    for unwrapping the underlying view hierarchy.
+                    """)
             }
-            if namespacedPrefixes.contains(typePrefix) {
-                return
-            }
+        }
+        if namespacedPrefixes.contains(typePrefix) {
+            return
         }
         if let prefix = namespacedPrefixes.first {
             let typePrefix = typeName(type: type(of: value), namespaced: true)

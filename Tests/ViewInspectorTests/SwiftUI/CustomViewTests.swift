@@ -192,6 +192,22 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(sut2, "hStack().view(SimpleTestView.self, 0)")
     }
     
+    func testViewsWithSameNamePrefix() throws {
+        let sut = try AnyView(NameMatchViewList()).inspect()
+        XCTAssertEqual(try sut.find(NameMatchViewList.self).pathToRoot,
+                       "anyView().view(NameMatchViewList.self)")
+        XCTAssertEqual(try sut.find(NameMatchView.self).pathToRoot,
+                       "anyView().view(NameMatchViewList.self).forEach().view(NameMatchView.self, 0)")
+    }
+    
+    func testViewContainerWithGenericParameter() throws {
+        let sut = try AnyView(GenericContainer<String>()).inspect()
+        XCTAssertEqual(try sut.find(GenericContainer<String>.self).pathToRoot,
+                       "anyView().view(GenericContainer<EmptyView>.self)")
+        XCTAssertEqual(try sut.find(GenericContainer<String>.TestView.self).pathToRoot,
+            "anyView().view(GenericContainer<EmptyView>.self).view(TestView.self)")
+    }
+    
     func testTestViews() {
         XCTAssertNoThrow(NonInspectableTestView().body)
         XCTAssertNoThrow(SimpleTestView().body)
@@ -351,5 +367,35 @@ extension ViewType {
     struct Test<T>: KnownViewType, CustomViewType where T: Inspectable {
         public static var typePrefix: String { "String" }
         static var namespacedPrefixes: [String] { ["Swift.String"] }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct NameMatchView: View, Inspectable {
+    var body: some View {
+        Text("")
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct NameMatchViewList: View, Inspectable {
+    var body: some View {
+        ForEach(0..<5) { _ in NameMatchView() }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct GenericContainer<T>: View, Inspectable {
+    var body: some View {
+        TestView()
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension GenericContainer {
+    struct TestView: View, Inspectable {
+        var body: some View {
+            Text("")
+        }
     }
 }

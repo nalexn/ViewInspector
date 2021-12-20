@@ -36,10 +36,10 @@ public struct InspectableView<View> where View: KnownViewType {
                                     inspectionCall: inspectionCall)
         } catch {
             if let err = error as? InspectionError, case .typeMismatch = err {
-                let factual = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
-                    .sanitizeNamespace()
+                let factual = Inspector.typeName(value: content.view, namespaced: true)
+                    .removingSwiftUINamespace()
                 let expected = View.namespacedPrefixes
-                    .map { $0.sanitizeNamespace() }
+                    .map { $0.removingSwiftUINamespace() }
                     .joined(separator: " or ")
                 throw InspectionError.inspection(path: pathToRoot, factual: factual, expected: expected)
             }
@@ -49,13 +49,9 @@ public struct InspectableView<View> where View: KnownViewType {
 }
 
 private extension String {
-    func sanitizeNamespace() -> String {
-        var str = self
-        if let range = str.range(of: ".(unknown context at ") {
-            let end = str.index(range.upperBound, offsetBy: .init(11))
-            str.replaceSubrange(range.lowerBound..<end, with: "")
-        }
-        return str.replacingOccurrences(of: "SwiftUI.", with: "")
+    func removingSwiftUINamespace() -> String {
+        guard hasPrefix("SwiftUI.") else { return self }
+        return String(suffix(count - 8))
     }
 }
 
@@ -309,7 +305,7 @@ extension ModifierNameProvider {
 extension ModifiedContent: ModifierNameProvider {
     
     func modifierType(prefixOnly: Bool) -> String {
-        return Inspector.typeName(type: Modifier.self, prefixOnly: prefixOnly)
+        return Inspector.typeName(type: Modifier.self, replacingGenerics: prefixOnly ? "" : nil)
     }
     
     var customModifier: Inspectable? {
@@ -339,7 +335,7 @@ public extension InspectableView {
     }
     
     internal func guardIsResponsive() throws {
-        let name = Inspector.typeName(value: content.view, prefixOnly: true)
+        let name = Inspector.typeName(value: content.view, replacingGenerics: "")
         if isDisabled() {
             let blocker = farthestParent(where: { $0.isDisabled() }) ?? self
             throw InspectionError.unresponsiveControl(
