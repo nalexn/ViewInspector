@@ -265,8 +265,12 @@ internal extension Inspector {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension InspectionError {
     static func typeMismatch<V, T>(_ value: V, _ expectedType: T.Type) -> InspectionError {
-        return .typeMismatch(
-            factual: Inspector.typeName(value: value),
-            expected: Inspector.typeName(type: expectedType))
+        var factual = Inspector.typeName(value: value)
+        var expected = Inspector.typeName(type: expectedType)
+        if factual == expected {
+            factual = Inspector.typeName(value: value, namespaced: true)
+            expected = Inspector.typeName(type: expectedType, namespaced: true)
+        }
+        return .typeMismatch(factual: factual, expected: expected)
     }
 }

@@ -208,6 +208,16 @@ final class CustomViewTests: XCTestCase {
             "anyView().view(GenericContainer<EmptyView>.self).view(TestView.self)")
     }
     
+    func testViewContainerGenericParameterMismatch() throws {
+        let sut = try AnyView(GenericContainer<String>()).inspect()
+        let view = try sut.find(GenericContainer<Int>.TestView.self)
+        XCTAssertThrows(try view.actualView(),
+            """
+            Type mismatch: ViewInspectorTests.GenericContainer<Swift.String>.TestView \
+            is not ViewInspectorTests.GenericContainer<Swift.Int>.TestView
+            """)
+    }
+    
     func testTestViews() {
         XCTAssertNoThrow(NonInspectableTestView().body)
         XCTAssertNoThrow(SimpleTestView().body)
