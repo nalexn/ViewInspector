@@ -253,10 +253,10 @@ private extension Content {
 internal extension ViewSearch {
     
     static private(set) var modifierIdentities: [ModifierIdentity] = [
-        .init(name: "_OverlayModifier", builder: { parent, index in
+        .init(name: ViewType.Overlay.overlayModifierName, builder: { parent, index in
             try parent.content.overlay(parent: parent, api: .overlay, index: index)
         }),
-        .init(name: "_BackgroundModifier", builder: { parent, index in
+        .init(name: ViewType.Overlay.backgroundModifierName, builder: { parent, index in
             try parent.content.background(parent: parent, api: .background, index: index)
         }),
         .init(name: ViewType.Toolbar.typePrefix, builder: { parent, index in

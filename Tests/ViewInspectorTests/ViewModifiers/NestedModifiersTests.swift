@@ -10,7 +10,7 @@ final class NestedModifiersTests: XCTestCase {
             .border(Color.red, width: 2)
             .border(Color.blue, width: 3)
         let sut = try view.inspect().emptyView().border(Color.self)
-        XCTAssertEqual(sut.content, .red)
+        XCTAssertEqual(sut.shapeStyle, .red)
         XCTAssertEqual(sut.width, 2)
     }
 }

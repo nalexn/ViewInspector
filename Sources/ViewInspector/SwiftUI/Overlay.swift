@@ -6,6 +6,9 @@ public extension ViewType {
     struct Overlay: KnownViewType {
         public static var typePrefix: String = ""
         public static var isTransitive: Bool { true }
+        
+        internal static var overlayModifierName: String { "_OverlayModifier" }
+        internal static var backgroundModifierName: String { "_BackgroundModifier" }
     }
 }
 
@@ -45,6 +48,7 @@ extension ViewType.Overlay: MultipleViewContent {
 internal extension Content {
     
     enum OverlayAPI: String {
+        case border
         case overlay
         case overlayPreferenceValue
     }
@@ -52,7 +56,7 @@ internal extension Content {
     func overlay(parent: UnwrappedView, api: OverlayAPI, index: Int?
     ) throws -> InspectableView<ViewType.Overlay> {
         let modifier = try self.modifier({ modifier -> Bool in
-            return modifier.modifierType.contains("_OverlayModifier")
+            return modifier.modifierType.contains(ViewType.Overlay.overlayModifierName)
         }, call: api.rawValue, index: index ?? 0)
         let rootView = try Inspector.attribute(path: "modifier|overlay", value: modifier)
         let alignment = try Inspector.attribute(path: "modifier|alignment", value: modifier, type: Alignment.self)
@@ -73,7 +77,7 @@ internal extension Content {
     func background(parent: UnwrappedView, api: BackgroundAPI, index: Int?
     ) throws -> InspectableView<ViewType.Overlay> {
         let modifier = try self.modifier({ modifier -> Bool in
-            return modifier.modifierType.contains("_BackgroundModifier")
+            return modifier.modifierType.contains(ViewType.Overlay.backgroundModifierName)
         }, call: api.rawValue, index: index ?? 0)
         let rootView = try Inspector.attribute(path: "modifier|background", value: modifier)
         let alignment = try Inspector.attribute(path: "modifier|alignment", value: modifier, type: Alignment.self)
