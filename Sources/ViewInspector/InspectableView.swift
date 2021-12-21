@@ -91,6 +91,11 @@ internal extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
+    /**
+      A function for accessing the parent view for introspection
+      - Returns: immediate predecessor of the current view in the hierarchy
+      - Throws: if the current view is the root
+     */
     func parent() throws -> InspectableView<ViewType.ParentView> {
         guard let parent = self.parentView else {
             throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
@@ -104,9 +109,21 @@ public extension InspectableView {
         return try .init(parent.content, parent: parent.parentView, call: parent.inspectionCall)
     }
     
+    /**
+      A property for obtaining the inspection call's chain from the root view to the current view
+      - Returns: A `String` representation of the inspection calls' chain
+     */
     var pathToRoot: String {
         let prefix = parentView.flatMap { $0.pathToRoot } ?? ""
         return prefix.isEmpty ? inspectionCall : prefix + "." + inspectionCall
+    }
+    
+    /**
+      A function for erasing the type of the current view
+      - Returns: The current view represented as a `ClassifiedView`
+     */
+    func classified() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try asInspectableView()
     }
 }
 
