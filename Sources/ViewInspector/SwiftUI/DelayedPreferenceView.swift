@@ -5,12 +5,12 @@ public extension InspectableView {
 
     func overlayPreferenceValue(_ index: Int? = nil) throws -> InspectableView<ViewType.Overlay> {
         return try contentForModifierLookup
-            .overlay(parent: self, call: "overlayPreferenceValue", index: index)
+            .overlay(parent: self, api: .overlayPreferenceValue, index: index)
     }
     
     func backgroundPreferenceValue(_ index: Int? = nil) throws -> InspectableView<ViewType.Overlay> {
         return try contentForModifierLookup
-            .background(parent: self, call: "backgroundPreferenceValue", index: index)
+            .background(parent: self, api: .backgroundPreferenceValue, index: index)
     }
 }
 
