@@ -284,6 +284,23 @@ extension InspectionError: CustomStringConvertible, LocalizedError {
     }
 }
 
+// MARK: - ViewProvider
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol SingleViewProvider {
+    func view() throws -> Any
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol MultipleViewProvider {
+    func views() throws -> LazyGroup<Any>
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol ElementViewProvider {
+    func view(_ element: Any) throws -> Any
+}
+
 // MARK: - BinaryEquatable
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

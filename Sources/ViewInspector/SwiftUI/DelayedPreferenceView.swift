@@ -26,7 +26,7 @@ internal extension ViewType {
 extension ViewType.DelayedPreferenceView: SingleViewContent {
     
     static func child(_ content: Content) throws -> Content {
-        let provider = try Inspector.cast(value: content.view, type: DelayedPreferenceContentProvider.self)
+        let provider = try Inspector.cast(value: content.view, type: SingleViewProvider.self)
         let view = try provider.view()
         return try Inspector.unwrap(content: Content(view, medium: content.medium))
     }
@@ -39,7 +39,7 @@ extension ViewType.PreferenceReadingView: SingleViewContent {
     
     static func child(_ content: Content) throws -> Content {
         let provider = try Inspector.cast(
-            value: content.view, type: PreferenceReadingViewContentProvider.self)
+            value: content.view, type: SingleViewProvider.self)
         let view = try provider.view()
         let medium = content.medium.resettingViewModifiers()
         return try Inspector.unwrap(content: Content(view, medium: medium))
@@ -47,12 +47,7 @@ extension ViewType.PreferenceReadingView: SingleViewContent {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private protocol DelayedPreferenceContentProvider {
-    func view() throws -> Any
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension _DelayedPreferenceView: DelayedPreferenceContentProvider {
+extension _DelayedPreferenceView: SingleViewProvider {
     func view() throws -> Any {
         typealias Builder = (_PreferenceValue<Key>) -> Content
         let readingViewBuilder = try Inspector.attribute(label: "transform", value: self, type: Builder.self)
@@ -76,12 +71,7 @@ private extension _PreferenceValue {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private protocol PreferenceReadingViewContentProvider {
-    func view() throws -> Any
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension _PreferenceReadingView: PreferenceReadingViewContentProvider {
+extension _PreferenceReadingView: SingleViewProvider {
     func view() throws -> Any {
         typealias Builder = (Key.Value) -> Content
         let builder = try Inspector.attribute(label: "transform", value: self, type: Builder.self)
