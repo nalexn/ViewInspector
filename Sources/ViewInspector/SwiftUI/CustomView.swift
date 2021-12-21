@@ -14,13 +14,13 @@ public extension ViewType {
         public static var typePrefix: String {
             guard T.self != ViewType.Stub.self
             else { return "" }
-            return Inspector.typeName(type: T.self, replacingGenerics: customViewGenericsPlaceholder)
+            return Inspector.typeName(type: T.self, generics: .customViewPlaceholder)
         }
         
         public static var namespacedPrefixes: [String] {
             guard T.self != ViewType.Stub.self
             else { return [] }
-            return [Inspector.typeName(type: T.self, namespaced: true, replacingGenerics: "")]
+            return [Inspector.typeName(type: T.self, namespaced: true, generics: .remove)]
         }
         
         public static func inspectionCall(typeName: String) -> String {
@@ -74,7 +74,7 @@ public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
         let child = try View.child(content)
-        let prefix = Inspector.typeName(type: type, namespaced: true, replacingGenerics: "")
+        let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
         let call = ViewType.inspectionCall(base: base, index: nil)
         try Inspector.guardType(value: child.view, namespacedPrefixes: [prefix], inspectionCall: call)
@@ -89,7 +89,7 @@ public extension InspectableView where View: MultipleViewContent {
     
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
         let content = try child(at: index)
-        let prefix = Inspector.typeName(type: type, namespaced: true, replacingGenerics: "")
+        let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
         let call = ViewType.inspectionCall(base: base, index: index)
         try Inspector.guardType(value: content.view, namespacedPrefixes: [prefix], inspectionCall: call)

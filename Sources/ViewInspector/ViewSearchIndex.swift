@@ -77,8 +77,8 @@ internal extension ViewSearch {
         if content.isShape {
             return .init(ViewType.Shape.self)
         }
-        let shortName = Inspector.typeName(value: content.view, replacingGenerics: "")
-        let fullName = Inspector.typeName(value: content.view, namespaced: true, replacingGenerics: "")
+        let shortName = Inspector.typeName(value: content.view, generics: .remove)
+        let fullName = Inspector.typeName(value: content.view, namespaced: true, generics: .remove)
         if shortName.count > 0,
            let identity = index[String(shortName.prefix(1))]?
             .first(where: { $0.viewType.namespacedPrefixes.contains(fullName) }) {
@@ -87,7 +87,7 @@ internal extension ViewSearch {
         if (try? content.extractCustomView()) != nil,
            let inspectable = content.view as? Inspectable {
             let name = Inspector.typeName(
-                value: content.view, replacingGenerics: ViewType.customViewGenericsPlaceholder)
+                value: content.view, generics: .customViewPlaceholder)
             switch inspectable.entity {
             case .view:
                 return .init(ViewType.View<ViewType.Stub>.self, genericTypeName: name)

@@ -24,7 +24,7 @@ public extension ViewType.StyleConfiguration {
                 #endif
             }
             return types
-                .map { Inspector.typeName(type: $0, namespaced: true, replacingGenerics: "") }
+                .map { Inspector.typeName(type: $0, namespaced: true, generics: .remove) }
         }
         
         public static func inspectionCall(typeName: String) -> String {
@@ -44,7 +44,7 @@ public extension ViewType.StyleConfiguration {
                 #endif
             }
             return types
-                .map { Inspector.typeName(type: $0, namespaced: true, replacingGenerics: "") }
+                .map { Inspector.typeName(type: $0, namespaced: true, generics: .remove) }
         }
         
         public static func inspectionCall(typeName: String) -> String {
@@ -61,7 +61,7 @@ public extension ViewType.StyleConfiguration {
                 types.append(LabelStyleConfiguration.Title.self)
             }
             return types
-                .map { Inspector.typeName(type: $0, namespaced: true, replacingGenerics: "") }
+                .map { Inspector.typeName(type: $0, namespaced: true, generics: .remove) }
         }
         
         public static func inspectionCall(typeName: String) -> String {
@@ -78,7 +78,7 @@ public extension ViewType.StyleConfiguration {
                 types.append(LabelStyleConfiguration.Icon.self)
             }
             return types
-                .map { Inspector.typeName(type: $0, namespaced: true, replacingGenerics: "") }
+                .map { Inspector.typeName(type: $0, namespaced: true, generics: .remove) }
         }
         
         public static func inspectionCall(typeName: String) -> String {
@@ -95,7 +95,7 @@ public extension ViewType.StyleConfiguration {
                 types.append(ProgressViewStyleConfiguration.CurrentValueLabel.self)
             }
             return types
-                .map { Inspector.typeName(type: $0, namespaced: true, replacingGenerics: "") }
+                .map { Inspector.typeName(type: $0, namespaced: true, generics: .remove) }
         }
         
         public static func inspectionCall(typeName: String) -> String {

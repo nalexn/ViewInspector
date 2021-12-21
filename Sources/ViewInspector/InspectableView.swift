@@ -305,7 +305,7 @@ extension ModifierNameProvider {
 extension ModifiedContent: ModifierNameProvider {
     
     func modifierType(prefixOnly: Bool) -> String {
-        return Inspector.typeName(type: Modifier.self, replacingGenerics: prefixOnly ? "" : nil)
+        return Inspector.typeName(type: Modifier.self, generics: prefixOnly ? .remove : .keep)
     }
     
     var customModifier: Inspectable? {
@@ -335,7 +335,7 @@ public extension InspectableView {
     }
     
     internal func guardIsResponsive() throws {
-        let name = Inspector.typeName(value: content.view, replacingGenerics: "")
+        let name = Inspector.typeName(value: content.view, generics: .remove)
         if isDisabled() {
             let blocker = farthestParent(where: { $0.isDisabled() }) ?? self
             throw InspectionError.unresponsiveControl(

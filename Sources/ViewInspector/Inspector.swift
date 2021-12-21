@@ -41,20 +41,32 @@ internal extension Inspector {
         return casted
     }
     
+    enum GenericParameters {
+        case keep
+        case remove
+        case customViewPlaceholder
+    }
+    
     static func typeName(value: Any,
                          namespaced: Bool = false,
-                         replacingGenerics: String? = nil) -> String {
+                         generics: GenericParameters = .keep) -> String {
         return typeName(type: type(of: value), namespaced: namespaced,
-                        replacingGenerics: replacingGenerics)
+                        generics: generics)
     }
     
     static func typeName(type: Any.Type,
                          namespaced: Bool = false,
-                         replacingGenerics: String? = nil) -> String {
+                         generics: GenericParameters = .keep) -> String {
         let typeName = namespaced ? String(reflecting: type).sanitizingNamespace() : String(describing: type)
-        return replacingGenerics.flatMap {
-            typeName.replacingGenericParameters($0)
-        } ?? typeName
+        switch generics {
+        case .keep:
+            return typeName
+        case .remove:
+            return typeName.replacingGenericParameters("")
+        case .customViewPlaceholder:
+            let parameters = ViewType.customViewGenericsPlaceholder
+            return typeName.replacingGenericParameters(parameters)
+        }
     }
 }
 
@@ -200,7 +212,7 @@ internal extension Inspector {
     }
     
     static func isTupleView(_ view: Any) -> Bool {
-        return Inspector.typeName(value: view, replacingGenerics: "") == ViewType.TupleView.typePrefix
+        return Inspector.typeName(value: view, generics: .remove) == ViewType.TupleView.typePrefix
     }
     
     static func unwrap(view: Any, medium: Content.Medium) throws -> Content {
@@ -209,7 +221,7 @@ internal extension Inspector {
     
     // swiftlint:disable cyclomatic_complexity
     static func unwrap(content: Content) throws -> Content {
-        switch Inspector.typeName(value: content.view, replacingGenerics: "") {
+        switch Inspector.typeName(value: content.view, generics: .remove) {
         case "Tree":
             return try ViewType.TreeView.child(content)
         case "IDView":
@@ -238,7 +250,7 @@ internal extension Inspector {
     
     static func guardType(value: Any, namespacedPrefixes: [String], inspectionCall: String) throws {
         
-        var typePrefix = typeName(type: type(of: value), namespaced: true, replacingGenerics: "")
+        var typePrefix = typeName(type: type(of: value), namespaced: true, generics: .remove)
         if typePrefix == ViewType.popupContainerTypePrefix {
             typePrefix = typeName(type: type(of: value), namespaced: true)
         }
