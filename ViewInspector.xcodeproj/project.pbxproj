@@ -89,7 +89,7 @@
 		F609EFBD23A40B8800B9256A /* DelayedPreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */; };
 		F609EFBF23A424D800B9256A /* EnvironmentModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFBE23A424D800B9256A /* EnvironmentModifiersTests.swift */; };
 		F609EFC123A432AA00B9256A /* IDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFC023A432AA00B9256A /* IDView.swift */; };
-		F609EFC323A4342400B9256A /* DelayedPreferenceViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFC223A4342400B9256A /* DelayedPreferenceViewTests.swift */; };
+		F609EFC323A4342400B9256A /* PreferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFC223A4342400B9256A /* PreferenceTests.swift */; };
 		F609EFC523A4350700B9256A /* IDViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F609EFC423A4350700B9256A /* IDViewTests.swift */; };
 		F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBBA2382EED0007DB53A /* Inspector.swift */; };
 		F60EEBCE2382EED0007DB53A /* BaseTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60EEBBB2382EED0007DB53A /* BaseTypes.swift */; };
@@ -342,7 +342,7 @@
 		F609EFBC23A40B8800B9256A /* DelayedPreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedPreferenceView.swift; sourceTree = "<group>"; };
 		F609EFBE23A424D800B9256A /* EnvironmentModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiersTests.swift; sourceTree = "<group>"; };
 		F609EFC023A432AA00B9256A /* IDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDView.swift; sourceTree = "<group>"; };
-		F609EFC223A4342400B9256A /* DelayedPreferenceViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedPreferenceViewTests.swift; sourceTree = "<group>"; };
+		F609EFC223A4342400B9256A /* PreferenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceTests.swift; sourceTree = "<group>"; };
 		F609EFC423A4350700B9256A /* IDViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDViewTests.swift; sourceTree = "<group>"; };
 		F60EEBBA2382EED0007DB53A /* Inspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		F60EEBBB2382EED0007DB53A /* BaseTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTypes.swift; sourceTree = "<group>"; };
@@ -733,7 +733,6 @@
 				F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */,
 				F69C91CB2383189200515A91 /* CustomViewModifierTests.swift */,
 				F60EEBF32382F004007DB53A /* DatePickerTests.swift */,
-				F609EFC223A4342400B9256A /* DelayedPreferenceViewTests.swift */,
 				F682A00B254772C3005F1B70 /* DisclosureGroupTests.swift */,
 				F60EEBEC2382F004007DB53A /* DividerTests.swift */,
 				F6DFD87D2382FBE80028E84D /* EditButtonTests.swift */,
@@ -772,6 +771,7 @@
 				F6684BF323AA55C100DECCB3 /* PasteButtonTests.swift */,
 				F6D933B82385EDDF00358E0E /* PickerTests.swift */,
 				F6BD82092565AD5D00A772D4 /* PopoverTests.swift */,
+				F609EFC223A4342400B9256A /* PreferenceTests.swift */,
 				F6C15A98254D9F24000240F1 /* ProgressViewTests.swift */,
 				F6684BFF23AA864F00DECCB3 /* RadialGradientTests.swift */,
 				52B71AA526EB5BED00B719D4 /* SafeAreaInsetTests.swift */,
@@ -1198,7 +1198,7 @@
 				F6C15A3F254B4835000240F1 /* LinkTests.swift in Sources */,
 				F6ECF6D823A69CB5000FC591 /* VisualEffectModifiersTests.swift in Sources */,
 				F6DB5A0B253510CC0056FC83 /* TextInputModifiersTests.swift in Sources */,
-				F609EFC323A4342400B9256A /* DelayedPreferenceViewTests.swift in Sources */,
+				F609EFC323A4342400B9256A /* PreferenceTests.swift in Sources */,
 				F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */,
 				F6D933AD2385EB0100358E0E /* GroupBoxTests.swift in Sources */,
 				F6ECF6D223A680DA000FC591 /* TransformingModifiersTests.swift in Sources */,

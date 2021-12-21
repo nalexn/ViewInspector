@@ -242,6 +242,8 @@ internal extension Inspector {
             return try ViewType.EnvironmentReaderView.child(content)
         case "_DelayedPreferenceView":
             return try ViewType.DelayedPreferenceView.child(content)
+        case "_PreferenceReadingView":
+            return try ViewType.PreferenceReadingView.child(content)
         default:
             return content
         }
