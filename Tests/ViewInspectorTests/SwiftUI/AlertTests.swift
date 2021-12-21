@@ -295,7 +295,7 @@ extension String: Identifiable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private extension View {
+extension View {
     func alert2(isPresented: Binding<Bool>,
                 content: @escaping () -> Alert) -> some View {
         return self.modifier(InspectableAlert(isPresented: isPresented, popupBuilder: content))
