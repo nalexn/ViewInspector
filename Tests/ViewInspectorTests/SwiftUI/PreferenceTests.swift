@@ -65,4 +65,26 @@ final class PreferenceTests: XCTestCase {
             value = nextValue()
         }
     }
+    
+    func testDifferentOverlayUseCases() throws {
+        let sut = try ManyOverlaysView().inspect().emptyView()
+        let prefValue = try sut.overlayPreferenceValue().text().string()
+        XCTAssertEqual(prefValue, Key.defaultValue)
+        let border = try sut.border(Color.self)
+        XCTAssertEqual(border.shapeStyle, .red)
+        XCTAssertNoThrow(try sut.overlay(1).spacer())
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct ManyOverlaysView: View, Inspectable {
+    var body: some View {
+        EmptyView()
+            .overlay(AnyView(EmptyView()))
+            .overlayPreferenceValue(PreferenceTests.Key.self) { value in
+                Text(value)
+            }
+            .border(Color.red)
+            .overlay(Spacer())
+    }
 }
