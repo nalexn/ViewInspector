@@ -2,7 +2,6 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS) && !targetEnvironment(macCatalyst) // requires macOS SDK 12.0
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class SafeAreaInsetTests: XCTestCase {
     
@@ -76,4 +75,3 @@ final class SafeAreaInsetTests: XCTestCase {
                        "group().text(1).safeAreaInset(1).text()")
     }
 }
-#endif
