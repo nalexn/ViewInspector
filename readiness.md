@@ -4,6 +4,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) for helping me prioritize the work on a specific APIs.
 
+#### Please open a PR if any `View` or `Modifier` is not listed!
+
 ### Denotations
 
 | Status | Meaning |
@@ -142,6 +144,17 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `@StateObject` |
 |:technologist:| `@UIApplicationDelegateAdaptor` |
 
+## Special UI entities
+
+| Status | Modifier |
+|:---:|---|
+|:technologist:| Widget |
+|:technologist:| Scene |
+|:technologist:| DocumentGroup |
+|:technologist:| Settings |
+|:technologist:| WKNotificationScene |
+|:technologist:| WindowGroup |
+
 ## Gestures
 
 | Status | Modifier |
@@ -179,6 +192,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func offset(x: CGFloat, y: CGFloat) -> some View` |
 |:white_check_mark:| `func edgesIgnoringSafeArea(Edge.Set) -> some View` |
 |:white_check_mark:| `func coordinateSpace<T>(name: T) -> some View` |
+|:technologist:| `func ignoresSafeArea(SafeAreaRegions, edges: Edge.Set) -> some View` |
+|:technologist:| `func safeAreaInset(edge: VerticalEdge, alignment: HorizontalAlignment, spacing: CGFloat?, content: () -> V) -> some View` |
 
 ### Aligning Views
 
@@ -194,15 +209,19 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func padding(CGFloat) -> some View` |
 |:white_check_mark:| `func padding(EdgeInsets) -> some View` |
 |:white_check_mark:| `func padding(Edge.Set, CGFloat?) -> some View` |
-|:technologist:| `func ignoresSafeArea(SafeAreaRegions, edges: Edge.Set) -> some View` |
+|:technologist:| `func scenePadding(_ edges: Edge.Set) -> some View` |
 
 ### Layering Views
 
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func overlay<Overlay>(Overlay, alignment: Alignment) -> some View` |
+|:technologist:| `func overlay<S>(_ style: S, ignoresSafeAreaEdges edges: Edge.Set) -> some View` |
 |:white_check_mark:| `func background<Background>(Background, alignment: Alignment) -> some View` |
+|:technologist:| `func background<S>(_ style: S, ignoresSafeAreaEdges: Edge.Set) -> some View` |
 |:white_check_mark:| `func zIndex(Double) -> some View` |
+|:technologist:| `func badge(...) -> some View` |
+|:white_check_mark:| `func border<S>(S, width: CGFloat) -> some View` |
 
 ### Masking and Clipping Views
 
@@ -212,6 +231,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func clipShape<S>(S, style: FillStyle) -> some View` |
 |:white_check_mark:| `func cornerRadius(CGFloat, antialiased: Bool) -> some View` |
 |:white_check_mark:| `func mask<Mask>(Mask) -> some View` |
+|:technologist:| `func mask(alignment: Alignment = .center, mask: () -> Mask) -> some View` |
+|:technologist:| `func containerShape<T>(_ shape: T) -> some View` |
 
 ### Scaling Views
 
@@ -234,6 +255,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func rotation3DEffect(Angle, axis: (x: CGFloat, y: CGFloat, z: CGFloat), anchor: UnitPoint, anchorZ: CGFloat, perspective: CGFloat) -> some View` |
 |:white_check_mark:| `func projectionEffect(ProjectionTransform) -> some View` |
 |:white_check_mark:| `func transformEffect(CGAffineTransform) -> some View` |
+|:technologist:| `func dynamicTypeSize<T>(...) -> some View` |
 
 ### Applying Graphical Effects to a View
 
@@ -265,7 +287,10 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:---:|---|
 |:heavy_check_mark:| `func animation(Animation?) -> some View` |
 |:heavy_check_mark:| `func animation<V>(Animation?, value: V) -> some View` |
+|:technologist:| `func animation(_ animation: Animation?) -> some ViewModifier` |
 |:white_check_mark:| `func transition(AnyTransition) -> some View` |
+|:white_check_mark:| `func transaction((inout Transaction) -> Void) -> some View` |
+|:technologist:| `func transaction((inout Transaction) -> Void) -> some ViewModifier` |
 |:technologist:| `func matchedGeometryEffect<ID>(id: ID, in: Namespace.ID, properties: MatchedGeometryProperties, anchor: UnitPoint, isSource: Bool) -> some View` |
 
 ### Text modifiers
@@ -292,7 +317,6 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func gesture<T>(T, including: GestureMask) -> some View` |
 |:white_check_mark:| `func highPriorityGesture<T>(T, including: GestureMask) -> some View` |
 |:white_check_mark:| `func simultaneousGesture<T>(T, including: GestureMask) -> some View` |
-|:white_check_mark:| `func transaction((inout Transaction) -> Void) -> some View` |
 
 ### Handling Application Life Cycle Events
 
@@ -331,6 +355,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:---:|---|
 |:heavy_check_mark:| `func onReceive<P>(P, perform: (P.Output) -> Void) -> some View` |
 |:white_check_mark:| `func onChange<V>(of: V, perform: (V) -> Void) -> some View` |
+|:technologist:| `func task(...) -> some View` |
 
 ### Handling Keyboard Shortcuts
 
@@ -343,12 +368,16 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
+|:technologist:| `func hoverEffect(HoverEffect) -> some View` |
 |:heavy_check_mark:| `func onHover(perform: (Bool) -> Void) -> some View` |
-|:white_check_mark:| `func focusable(Bool, onFocusChange: (Bool) -> Void) -> some View` |
 |:technologist:| `func focusedValue<Value>(WritableKeyPath<FocusedValues, Value?>, Value) -> some View` |
 |:technologist:| `func prefersDefaultFocus(Bool, in: Namespace.ID) -> some View` |
 |:technologist:| `func focusScope(Namespace.ID) -> some View` |
-|:technologist:| `func hoverEffect(HoverEffect) -> some View` |
+|:technologist:| `func focusSection() -> some View` |
+|:white_check_mark:| `func focusable(Bool, onFocusChange: (Bool) -> Void) -> some View` |
+|:technologist:| `func focusable(_ isFocusable: Bool) -> some View` |
+|:technologist:| `func focused(...) -> some View` |
+|:technologist:| `func focusedSceneValue<T>(_ keyPath: WritableKeyPath<FocusedValues, T?>, _ value: T) -> some View` |
 
 ### Supporting Drag and Drop in Views
 
@@ -369,6 +398,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:---:|---|
 |:white_check_mark:| `func allowsHitTesting(Bool) -> some View` |
 |:white_check_mark:| `func contentShape<S>(S, eoFill: Bool) -> some View` |
+|:technologist:| `func contentShape<S>(_ kind: ContentShapeKinds, _ shape: S, eoFill: Bool) -> some View` |
 
 ### Presenting system popup views
 
@@ -378,22 +408,26 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func actionSheet<T>(item: Binding<T?>, content: (T) -> ActionSheet) -> some View` |
 |:white_check_mark:| `func sheet<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
 |:white_check_mark:| `func sheet<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
-|: white_check_mark:| `func fullScreenCover<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
-|: white_check_mark:| `func fullScreenCover<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
+|:white_check_mark:| `func fullScreenCover<Content>(isPresented: Binding<Bool>, onDismiss: (() -> Void)?, content: () -> Content) -> some View` |
+|:white_check_mark:| `func fullScreenCover<Item, Content>(item: Binding<Item?>, onDismiss: (() -> Void)?, content: (Item) -> Content) -> some View` |
 |:white_check_mark:| `func alert(isPresented: Binding<Bool>, content: () -> Alert) -> some View` |
 |:white_check_mark:| `func alert<Item>(item: Binding<Item?>, content: (Item) -> Alert) -> some View` |
 |:white_check_mark:| `func popover<Content>(isPresented: Binding<Bool>, attachmentAnchor: PopoverAttachmentAnchor, arrowEdge: Edge, content: () -> Content) -> some View` |
 |:white_check_mark:| `func popover<Item, Content>(item: Binding<Item?>, attachmentAnchor: PopoverAttachmentAnchor, arrowEdge: Edge, content: (Item) -> Content) -> some View` |
 |:white_check_mark:| `func confirmationDialog<S, A, M>(_ title: S, isPresented: Binding<Bool>, titleVisibility: Visibility, @ViewBuilder actions: () -> A, @ViewBuilder message: () -> M) -> some View` |
+|:technologist:| `func interactiveDismissDisabled(_ isDisabled: Bool) -> some View` |
 
 ### APIs from other Frameworks
 
 | Status | Modifier |
 |:---:|---|
 |:technologist:| `func appStoreOverlay(isPresented: Binding<Bool>, configuration: @escaping () -> SKOverlay.Configuration) -> some View` |
+|:technologist:| `func manageSubscriptionsSheet(isPresented: Binding<Bool>) -> some View` |
+|:technologist:| `func refundRequestSheet(for transactionID: UInt64, isPresented: Binding<Bool>, onDismiss: ...) -> some View` |
 |:technologist:| `func quickLookPreview<Items>(_ selection: Binding<Items.Element?>, in items: Items) -> some View` |
 |:technologist:| `func quickLookPreview(_ item: Binding<URL?>) -> some View` |
 |:technologist:| `func signInWithAppleButtonStyle(_ style: SignInWithAppleButton.Style) -> some View` |
+|:technologist:| `func musicSubscriptionOffer(isPresented: Binding<Bool>, options: ..., onLoadCompletion: ...) -> some View` |
 
 ### Presenting File Management Interfaces
 
@@ -407,6 +441,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `func fileImporter(isPresented: Binding<Bool>, allowedContentTypes: [UTType], onCompletion: (Result<URL, Error>) -> Void) -> some View` |
 |:technologist:| `func fileMover(isPresented: Binding<Bool>, file: URL?, onCompletion: (Result<URL, Error>) -> Void) -> some View` |
 |:technologist:| `func fileMover<C>(isPresented: Binding<Bool>, files: C, onCompletion: (Result<[URL], Error>) -> Void) -> some View` |
+|:technologist:| `func exportsItemProviders(_ contentTypes: [UTType], onExport: @escaping () -> [NSItemProvider]) -> some View` |
+|:technologist:| `func importsItemProviders(_ contentTypes: [UTType], onImport: @escaping ([NSItemProvider]) -> Bool) -> some View` |
 
 ### Choosing the Default Storage
 
@@ -439,25 +475,17 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:heavy_check_mark:| `func environmentObject<B>(B) -> some View` |
 |:heavy_check_mark:| `func transformEnvironment<V>(WritableKeyPath<EnvironmentValues, V>, transform: (inout V) -> Void) -> some View` |
 
-### Setting the Border of a View
-
-| Status | Modifier |
-|:---:|---|
-|:white_check_mark:| `func border<S>(S, width: CGFloat) -> some View` |
-
 ### Setting View Colors
 
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func foregroundColor(Color?) -> some View` |
+|:technologist:| `func foregroundStyle(...) -> some View` |
 |:white_check_mark:| `func accentColor(Color?) -> some View` |
 |:white_check_mark:| `func tint(Color?) -> some View` |
 |:white_check_mark:| `func listItemTint(Color?) -> some View` |
-
-### Adopting View Color Schemes
-
-| Status | Modifier |
-|:---:|---|
+|:technologist:| `func symbolRenderingMode(_ mode: SymbolRenderingMode?) -> some View` |
+|:technologist:| `func symbolVariant(_ variant: SymbolVariants) -> some View` |
 |:white_check_mark:| `func colorScheme(ColorScheme) -> some View` |
 |:white_check_mark:| `func preferredColorScheme(ColorScheme?) -> some View` |
 
@@ -474,12 +502,17 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func truncationMode(Text.TruncationMode) -> some View` |
 |:white_check_mark:| `func allowsTightening(Bool) -> some View` |
 |:white_check_mark:| `func textContentType(UITextContentType?) -> some View` |
-|:technologist:| `func textContentType(NSTextContentType?) -> some View` |
-|:technologist:| `func textContentType(WKTextContentType?) -> some View` |
+|:technologist:| `func textContentType(UITextContentType?) -> some View` |
 |:technologist:| `func textCase(Text.Case?) -> some View` |
 |:white_check_mark:| `func flipsForRightToLeftLayoutDirection(Bool) -> some View` |
 |:white_check_mark:| `func autocapitalization(UITextAutocapitalizationType) -> some View` |
 |:white_check_mark:| `func disableAutocorrection(Bool?) -> some View` |
+|:technologist:| `func monospacedDigit() -> some View` |
+|:technologist:| `func textInputAutocapitalization(_ autocapitalization: TextInputAutocapitalization?) -> some View` |
+|:technologist:| `func onSubmit(of triggers: SubmitTriggers, _ action: @escaping (() -> Void)) -> some View` |
+|:technologist:| `func submitLabel(_ submitLabel: SubmitLabel) -> some View` |
+|:technologist:| `func submitScope(_ isBlocking: Bool) -> some View` |
+|:technologist:| `func textSelection<S>(_ selectability: S) -> some View` |
 
 ### Redacting Content
 
@@ -487,6 +520,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:---:|---|
 |:technologist:| `func redacted(reason: RedactionReasons) -> some View` |
 |:technologist:| `func unredacted() -> some View` |
+|:technologist:| `func privacySensitive(_ sensitive: Bool) -> some View` |
 
 ### Configuring Control Attributes
 
@@ -516,6 +550,10 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func tabViewStyle<S>(S) -> some View` |
 |:white_check_mark:| `func textFieldStyle<S>(S) -> some View` |
 |:white_check_mark:| `func toggleStyle<S>(S) -> some View` |
+|:technologist:| `func controlGroupStyle<S>(S) -> some View` |
+|:technologist:| `func gaugeStyle<S>(S) -> some View` |
+|:technologist:| `func signInWithAppleButtonStyle(S) -> some View` |
+|:technologist:| `func buttonBorderShape(_ shape: ButtonBorderShape) -> some View` |
 
 ### Configuring a List View
 
@@ -527,6 +565,15 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:technologist:| `func listItemTint(ListItemTint?) -> some View` |
 |:technologist:| `func listItemTint(Color?) -> some View` |
 |:white_check_mark:| `func tag<V>(V) -> some View` |
+|:technologist:| `func swipeActions<T>(edge: HorizontalEdge, allowsFullSwipe: Bool, content: () -> T) -> some View` |
+|:technologist:| `func listRowSeparator(_ visibility: Visibility, edges: VerticalEdge.Set) -> some View` |
+|:technologist:| `func listRowSeparatorTint(_ color: Color?, edges: VerticalEdge.Set) -> some View` |
+|:technologist:| `func listSectionSeparator(_ visibility: Visibility, edges: VerticalEdge.Set) -> some View` |
+|:technologist:| `func listSectionSeparatorTint(_ color: Color?, edges: VerticalEdge.Set) -> some View` |
+|:technologist:| `func headerProminence(_ prominence: Prominence) -> some View` |
+|:technologist:| `func refreshable(action: @Sendable () async -> Void) -> some View` |
+|:technologist:| `func searchable(text: Binding<String>, placement: SearchFieldPlacement, prompt: LocalizedStringKey) -> some View` |
+|:technologist:| `func searchCompletion(_ completion: String) -> some View` |
 
 ### Configuring the Navigation Title
 
@@ -567,9 +614,9 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|: white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
-|: white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
-|: white_check_mark:| `func toolbar<Content>(id: String, content: () -> Content) -> some View` |
+|:white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
+|:white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
+|:white_check_mark:| `func toolbar<Content>(id: String, content: () -> Content) -> some View` |
 
 ### Configuring Context Menu Views
 
@@ -577,6 +624,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:---:|---|
 |:heavy_check_mark:| `func contextMenu<MenuItems>(ContextMenu<MenuItems>?) -> some View` |
 |:heavy_check_mark:| `func contextMenu<MenuItems>(menuItems: () -> MenuItems) -> some View` |
+|:technologist:| `func menuIndicator(_ visibility: Visibility) -> some View` |
 
 ### Configuring Touch Bar Views
 
@@ -618,26 +666,54 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func accessibilityActivationPoint(CGPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityActivationPoint(UnitPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityAction(AccessibilityActionKind, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:technologist:| `func accessibilityAction<Label>(action: () -> Void, label: () -> Label) -> some View` |
 |:white_check_mark:| `func accessibilityAction(named: Text, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityAction<S>(named: S, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityAction(named: LocalizedStringKey, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:technologist:| `func accessibilityAction<S>(named name: S, () -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityAdjustableAction((AccessibilityAdjustmentDirection) -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:white_check_mark:| `func accessibilityScrollAction((Edge) -> Void) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityIgnoresInvertColors(Bool) -> some View` |
 |:technologist:| `func accessibilityLabeledPair<ID>(role: AccessibilityLabeledPairRole, id: ID, in: Namespace.ID) -> some View` |
+|:technologist:| `func accessibilityChartDescriptor<R>(_ representable: R) -> some View` |
+|:technologist:| `func accessibilityHeading(_ level: AccessibilityHeadingLevel) -> ModifiedContent<Content, Modifier>` |
+|:technologist:| `func accessibilityTextContentType(_ textContentType: AccessibilityTextContentType) -> ModifiedContent<Content, Modifier>` |
+|:technologist:| `func accessibilityTextContentType(_ textContentType: AccessibilityTextContentType) -> ModifiedContent<Content, Modifier>` |
+|:technologist:| `func accessibilityCustomContent(...) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:technologist:| `func accessibilityRepresentation<V>(representation: () -> V) -> some View` |
+|:technologist:| `func accessibilityRespondsToUserInteraction(_ respondsToUserInteraction: Bool) -> ModifiedContent<Content, Modifier>` |
+|:technologist:| `func accessibilityFocused<Value>(_ binding: AccessibilityFocusState<Value>.Binding, equals value: Value) -> some View` |
+|:technologist:| `func accessibilityFocused(_ condition: AccessibilityFocusState<Bool>.Binding) -> some View` |
+|:technologist:| `func accessibilityRotor(...) -> some View` |
+|:technologist:| `func speechAdjustedPitch(_ value: Double) -> some View` |
+|:technologist:| `func speechAlwaysIncludesPunctuation(_ value: Bool) -> some View` |
+|:technologist:| `func speechAnnouncementsQueued(_ value: Bool) -> some View` |
+|:technologist:| `func speechSpellsOutCharacters(_ value: Bool) -> some View` |
+
+### watchOS View Modifiers
+
+| Status | Modifier |
+|:---:|---|
+|:technologist:| `func complicationForeground() -> some View` |
+|:technologist:| `func defaultWheelPickerItemHeight(_ height: CGFloat) -> some View` |
+|:technologist:| `func pageCommand<V>(value: Binding<V>, in bounds: ClosedRange<V>, step: V) -> some View` |
+|:technologist:| `func digitalCrownRotation<V>(_ binding: Binding<V>) -> some View` |
 
 ### Customizing Accessibility Navigation of a View
 
 | Status | Modifier |
 |:---:|---|
 |:heavy_check_mark:| `func accessibilityElement(children: AccessibilityChildBehavior) -> some View` |
+|:technologist:| `func accessibilityChildren<V>(children: () -> V) -> some View` |
 |:technologist:| `func accessibilityInputLabels([LocalizedStringKey]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityInputLabels<S>([S]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityInputLabels([Text]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityAddTraits(AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityRemoveTraits(AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibilitySortPriority(Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |` |
+|:white_check_mark:| `func accessibilitySortPriority(Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` | |
 |:technologist:| `func accessibilityLinkedGroup<ID>(id: ID, in: Namespace.ID) -> some View` |
+|:technologist:| `func accessibilityShowsLargeContentViewer() -> some View` |
+|:technologist:| `func accessibilityShowsLargeContentViewer<V>(_ largeContentView: () -> V) -> some View` |
 
 ### Customizing the Help Text of a View
 
@@ -672,6 +748,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func previewDisplayName(String?) -> some View` |
 |:white_check_mark:| `func previewLayout(PreviewLayout) -> some View` |
 |:technologist:| `func previewContext<C>(C) -> some View` |
+|:technologist:| `func previewInterfaceOrientation(_ value: InterfaceOrientation) -> some View` |
 
 ### Inspecting Views
 
@@ -685,3 +762,13 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func modifier<T>(T) -> ModifiedContent<Self, T>` |
+|:technologist:| `func concat<T>(_ modifier: T) -> ModifiedContent<Self, T>` |
+
+### WidgetConfiguration
+
+| Status | Modifier |
+|:---:|---|
+|:technologist:| `func configurationDisplayName(...) -> some WidgetConfiguration` |
+|:technologist:| `func description(...) -> some WidgetConfiguration` |
+|:technologist:| `func onBackgroundURLSessionEvents(...) -> some WidgetConfiguration` |
+|:technologist:| `func supportedFamilies(_ families: [WidgetFamily]) -> some WidgetConfiguration` |
