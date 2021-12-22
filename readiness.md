@@ -20,11 +20,15 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Alert | `title view`, `message view`, `actions view`, `primaryButton`, `secondaryButton`, `dismiss()` |
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
+|:technologist:| ArtworkImage | |
+|:technologist:| AsyncImage | |
 |:white_check_mark:| Button | `label view`, `role: ButtonRole?`, `tap()` |
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:technologist:| CameraView | |
+|:technologist:| Canvas | |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
+|:technologist:| ControlGroup | |
 |:white_check_mark:| ConditionalContent | `contained view` |
 |:white_check_mark:| ConfirmationDialog | `title view`, `message view`, `actions view`, `titleVisibility: Visibility`, `dismiss()` |
 |:white_check_mark:| Custom View | `actualView: CustomView`, `viewBuilder container` |
@@ -42,6 +46,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Font (*) | `size: CGFloat`, `isFixedSize: Bool`, `name: String`, `weight: Font.Weight`, `design: Font.Design`, `style: Font.TextStyle` |
 |:white_check_mark:| ForEach | `contained view`, `callOnDelete`, `callOnMove`, `callOnInsert` |
 |:white_check_mark:| Form | `contained view` |
+|:technologist:| Gauge | |
 |:white_check_mark:| FullScreenCover | `dismiss()` |
 |:white_check_mark:| GeometryReader | `contained view` |
 |:white_check_mark:| Group | `contained view` |
@@ -60,6 +65,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:white_check_mark:| Link | `label view`, `url: URL` |
 |:white_check_mark:| List | `contained view` |
+|:technologist:| LocationButton | |
 |:white_check_mark:| Map | `(set)coordinateRegion: MKCoordinateRegion`, `(set)userTrackingMode: MapUserTrackingMode`, `(set)mapRect: MKMapRect`, `interactionModes: MapInteractionModes`, `showsUserLocation: Bool` |
 |:white_check_mark:| MapAnnotation | `coordinate: CLLocationCoordinate2D`, `viewType: MapAnnotation.Type`, (*)`anchorPoint: CGPoint`, (*)`tintColor: Color?`, (*)`contained view` |
 |:white_check_mark:| Menu | `contained view`, `label view` |
@@ -69,8 +75,10 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| ModifiedContent | `contained view` |
 |:white_check_mark:| NavigationLink | `contained view`, `label view`, `isActive: Bool`, `activate()`, `deactivate()` |
 |:white_check_mark:| NavigationView | `contained view` |
-|:white_check_mark:| OptionalContent | `contained view` |
+|:technologist:| NowPlayingView | |
+|:white_check_mark:| Optional | `contained view` |
 |:white_check_mark:| OutlineGroup | `leaf view`, `source data` |
+|:technologist:| OutlineSubgroupChildren | |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view`, `select(value: Hashable)` |
 |:white_check_mark:| Popover | `contained view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge`, `dismiss()` |
@@ -94,9 +102,11 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:heavy_check_mark:| SubscriptionView | |
 |:white_check_mark:| TabView | `contained view` |
+|:technologist:| Table | |
 |:white_check_mark:| Text | `string(locale: Locale) -> String`, `attributes: TextAttributes`, `images: [Image]` |
 |:white_check_mark:| TextEditor | `input: String`, `setInput(_: String)` |
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
+|:technologist:| TimelineView | |
 |:white_check_mark:| Toggle | `label view`, `tap()`, `isOn: Bool` |
 |:white_check_mark:| ToggleStyleConfiguration.Label | |
 |:technologist:| ToolbarItem | |
@@ -104,6 +114,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
 |:white_check_mark:| VStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
+|:technologist:| VideoPlayer | |
 |:white_check_mark:| ZStack | `contained view` |
 
 (*) The following attributes are available directly for the `Font` and `Image` SwiftUI types, as opposed to the attributes available for wrapper views extracted from the hierarchy. In case you obtained an image view from the hierarchy using `image()` call, you'd need to additionally call `actualImage: Image` to get the genuine `Image` structure.
@@ -112,11 +123,13 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
+|:technologist:| `@AccessibilityFocusState` |
 |:technologist:| `@AppStorage` |
 |:white_check_mark:| `@Binding` |
 |:white_check_mark:| `@Environment` |
 |:white_check_mark:| `@EnvironmentObject` |
 |:technologist:| `@FetchRequest` |
+|:technologist:| `@FocusState` |
 |:technologist:| `@FocusedBinding` |
 |:technologist:| `@FocusedValue` |
 |:white_check_mark:| `@GestureState` |
@@ -124,6 +137,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `@ObservedObject` |
 |:technologist:| `@ScaledMetric` |
 |:technologist:| `@SceneStorage` |
+|:technologist:| `@SectionedFetchRequest` |
 |:white_check_mark:| `@State` |
 |:technologist:| `@StateObject` |
 |:technologist:| `@UIApplicationDelegateAdaptor` |
