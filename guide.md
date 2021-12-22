@@ -218,20 +218,6 @@ extension InspectableView {
 let text = try sut.find(textWithFont: .headline)
 ```
 
-#### Limitations
-
-There are a few scenarious when `find` function is unable to automatically traverse the whole view.
-
-One of such cases is a custom view that does not conform to `Inspectable`. Adding a corresponding extension in the test scope solves this problem.
-
-In addition to that, there are a few SwiftUI modifiers which currently block the search:
-
-* `navigationBarItems`
-* `overlayPreferenceValue`
-* `backgroundPreferenceValue`
-
-While the first two can be unwrapped manually, the last two are notorious for blocking the inspection completely. The workaround is under investigation.
-
 ## Inspectable attributes
 
 **ViewInspector** provides access to various parameters held inside Views.

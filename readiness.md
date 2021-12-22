@@ -10,7 +10,6 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:---:|---|
 |:white_check_mark:| Full inspection support with access to the underlying values or callbacks |
 |:heavy_check_mark:| Not inspectable itself but does not block inspection of the underlying hierarchy |
-|:x:| Blocks inspection of the underlying hierarchy |
 |:technologist:| Pending development (accepting PRs!) |
 
 ## View Types
@@ -415,8 +414,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 | Status | Modifier |
 |:---:|---|
 |:heavy_check_mark:| `func onPreferenceChange<K>(K.Type, perform: (K.Value) -> Void) -> some View` |
-|:x:| `func backgroundPreferenceValue<Key, T>(Key.Type, (Key.Value) -> T) -> some View` |
-|:x:| `func overlayPreferenceValue<Key, T>(Key.Type, (Key.Value) -> T) -> some View` |
+|:white_check_mark:| `func backgroundPreferenceValue<Key, T>(Key.Type, (Key.Value) -> T) -> some View` |
+|:white_check_mark:| `func overlayPreferenceValue<Key, T>(Key.Type, (Key.Value) -> T) -> some View` |
 
 ### Setting the Environment Values of a View
 
