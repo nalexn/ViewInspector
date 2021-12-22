@@ -2,17 +2,15 @@
 
 This document reflects the current status of the [ViewInspector](https://github.com/nalexn/ViewInspector) framework: which `Views` and `Modifiers` are available for inspection.
 
-Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) for helping me prioritize the work on a specific APIs.
-
-#### Please open a PR if any `View` or `Modifier` is not listed!
+**Please open a PR if any `View` or `Modifier` is not listed!**
 
 ### Denotations
 
 | Status | Meaning |
 |:---:|---|
 |:white_check_mark:| Full inspection support with access to the underlying values or callbacks |
-|:heavy_check_mark:| Not inspectable itself but does not block inspection of the underlying hierarchy |
-|:technologist:| Pending development (accepting PRs!) |
+|:heavy_check_mark:| Limited support for deprecated APIs |
+|:technologist:| Pending development |
 
 ## View Types
 
@@ -102,7 +100,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
 |:technologist:| SpriteView | |
 |:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
-|:heavy_check_mark:| SubscriptionView | |
+|:white_check_mark:| SubscriptionView | |
 |:white_check_mark:| TabView | `contained view` |
 |:technologist:| Table | |
 |:white_check_mark:| Text | `string(locale: Locale) -> String`, `attributes: TextAttributes`, `images: [Image]` |
@@ -199,8 +197,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func alignmentGuide(HorizontalAlignment, computeValue: (ViewDimensions) -> CGFloat) -> some View` |
-|:heavy_check_mark:| `func alignmentGuide(VerticalAlignment, computeValue: (ViewDimensions) -> CGFloat) -> some View` |
+|:technologist:| `func alignmentGuide(HorizontalAlignment, computeValue: (ViewDimensions) -> CGFloat) -> some View` |
+|:technologist:| `func alignmentGuide(VerticalAlignment, computeValue: (ViewDimensions) -> CGFloat) -> some View` |
 
 ### Adjusting the Padding of a View
 
@@ -278,15 +276,15 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func blendMode(BlendMode) -> some View` |
-|:heavy_check_mark:| `func compositingGroup() -> some View` |
-|:heavy_check_mark:| `func drawingGroup(opaque: Bool, colorMode: ColorRenderingMode) -> some View` |
+|:technologist:| `func compositingGroup() -> some View` |
+|:technologist:| `func drawingGroup(opaque: Bool, colorMode: ColorRenderingMode) -> some View` |
 
 ### Adding Animations to a View
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func animation(Animation?) -> some View` |
-|:heavy_check_mark:| `func animation<V>(Animation?, value: V) -> some View` |
+|:technologist:| `func animation(Animation?) -> some View` |
+|:technologist:| `func animation<V>(Animation?, value: V) -> some View` |
 |:technologist:| `func animation(_ animation: Animation?) -> some ViewModifier` |
 |:white_check_mark:| `func transition(AnyTransition) -> some View` |
 |:white_check_mark:| `func transaction((inout Transaction) -> Void) -> some View` |
@@ -344,16 +342,16 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:white_check_mark:| `func onDeleteCommand(perform: (() -> Void)?) -> some View` |
 |:white_check_mark:| `func onMoveCommand(perform: ((MoveCommandDirection) -> Void)?) -> some View` |
 |:white_check_mark:| `func onExitCommand(perform: (() -> Void)?) -> some View` |
-|:heavy_check_mark:| `func onPlayPauseCommand(perform: (() -> Void)?) -> some View` |
-|:white_check_mark:| `func onCommand(Selector, perform: (() -> Void)?) -> some View` |
-|:heavy_check_mark:| `func deleteDisabled(Bool) -> some View` |
-|:heavy_check_mark:| `func moveDisabled(Bool) -> some View` |
+|:technologist:| `func onPlayPauseCommand(perform: (() -> Void)?) -> some View` |
+|:technologist:| `func onCommand(Selector, perform: (() -> Void)?) -> some View` |
+|:technologist:| `func deleteDisabled(Bool) -> some View` |
+|:technologist:| `func moveDisabled(Bool) -> some View` |
 
 ### Handling Publisher Events
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func onReceive<P>(P, perform: (P.Output) -> Void) -> some View` |
+|:white_check_mark:| `func onReceive<P>(P, perform: (P.Output) -> Void) -> some View` |
 |:white_check_mark:| `func onChange<V>(of: V, perform: (V) -> Void) -> some View` |
 |:technologist:| `func task(...) -> some View` |
 
@@ -369,7 +367,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 | Status | Modifier |
 |:---:|---|
 |:technologist:| `func hoverEffect(HoverEffect) -> some View` |
-|:heavy_check_mark:| `func onHover(perform: (Bool) -> Void) -> some View` |
+|:technologist:| `func onHover(perform: (Bool) -> Void) -> some View` |
 |:technologist:| `func focusedValue<Value>(WritableKeyPath<FocusedValues, Value?>, Value) -> some View` |
 |:technologist:| `func prefersDefaultFocus(Bool, in: Namespace.ID) -> some View` |
 |:technologist:| `func focusScope(Namespace.ID) -> some View` |
@@ -383,14 +381,14 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func onDrag(() -> NSItemProvider) -> some View` |
+|:technologist:| `func onDrag(() -> NSItemProvider) -> some View` |
 |:technologist:| `func onDrop(of: [UTType], delegate: DropDelegate) -> some View` |
 |:technologist:| `func onDrop(of: [UTType], isTargeted: Binding<Bool>?, perform: ([NSItemProvider]) -> Bool) -> some View` |
 |:technologist:| `func onDrop(of: [UTType], isTargeted: Binding<Bool>?, perform: ([NSItemProvider], CGPoint) -> Bool) -> some View` |
 |:heavy_check_mark:| `func onDrop(of: [String], delegate: DropDelegate) -> some View` |
 |:heavy_check_mark:| `func onDrop(of: [String], isTargeted: Binding<Bool>?, perform: ([NSItemProvider], CGPoint) -> Bool) -> some View` |
 |:heavy_check_mark:| `func onDrop(of: [String], isTargeted: Binding<Bool>?, perform: ([NSItemProvider]) -> Bool) -> some View` |
-|:heavy_check_mark:| `func itemProvider(Optional<() -> NSItemProvider?>) -> some View` |
+|:technologist:| `func itemProvider(Optional<() -> NSItemProvider?>) -> some View` |
 
 ### Configuring a View for Hit Testing
 
@@ -454,16 +452,16 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func preference<K>(key: K.Type, value: K.Value) -> some View` |
-|:heavy_check_mark:| `func transformPreference<K>(K.Type, (inout K.Value) -> Void) -> some View` |
-|:heavy_check_mark:| `func anchorPreference<A, K>(key: K.Type, value: Anchor<A>.Source, transform: (Anchor<A>) -> K.Value) -> some View` |
-|:heavy_check_mark:| `func transformAnchorPreference<A, K>(key: K.Type, value: Anchor<A>.Source, transform: (inout K.Value, Anchor<A>) -> Void) -> some View` |
+|:technologist:| `func preference<K>(key: K.Type, value: K.Value) -> some View` |
+|:technologist:| `func transformPreference<K>(K.Type, (inout K.Value) -> Void) -> some View` |
+|:technologist:| `func anchorPreference<A, K>(key: K.Type, value: Anchor<A>.Source, transform: (Anchor<A>) -> K.Value) -> some View` |
+|:technologist:| `func transformAnchorPreference<A, K>(key: K.Type, value: Anchor<A>.Source, transform: (inout K.Value, Anchor<A>) -> Void) -> some View` |
 
 ### Responding to View Preferences
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func onPreferenceChange<K>(K.Type, perform: (K.Value) -> Void) -> some View` |
+|:technologist:| `func onPreferenceChange<K>(K.Type, perform: (K.Value) -> Void) -> some View` |
 |:white_check_mark:| `func backgroundPreferenceValue<Key, T>(Key.Type, (Key.Value) -> T) -> some View` |
 |:white_check_mark:| `func overlayPreferenceValue<Key, T>(Key.Type, (Key.Value) -> T) -> some View` |
 
@@ -471,9 +469,9 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func environment<V>(WritableKeyPath<EnvironmentValues, V>, V) -> some View` |
-|:heavy_check_mark:| `func environmentObject<B>(B) -> some View` |
-|:heavy_check_mark:| `func transformEnvironment<V>(WritableKeyPath<EnvironmentValues, V>, transform: (inout V) -> Void) -> some View` |
+|:white_check_mark:| `func environmentObject<B>(B) -> some View` |
+|:technologist:| `func environment<V>(WritableKeyPath<EnvironmentValues, V>, V) -> some View` |
+|:technologist:| `func transformEnvironment<V>(WritableKeyPath<EnvironmentValues, V>, transform: (inout V) -> Void) -> some View` |
 
 ### Setting View Colors
 
@@ -597,8 +595,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 |:heavy_check_mark:| `func navigationBarTitle<S>(S) -> some View` |
 |:heavy_check_mark:| `func navigationBarTitle(LocalizedStringKey, displayMode: NavigationBarItem.TitleDisplayMode) -> some View` |
 |:technologist:| `func navigationBarTitleDisplayMode(NavigationBarItem.TitleDisplayMode) -> some View` |
-|:heavy_check_mark:| `func navigationBarHidden(Bool) -> some View` |
-|:heavy_check_mark:| `func statusBar(hidden: Bool) -> some View` |
+|:technologist:| `func navigationBarHidden(Bool) -> some View` |
+|:technologist:| `func statusBar(hidden: Bool) -> some View` |
 
 ### Configuring Navigation and Tab Bar Item Views
 
@@ -622,8 +620,8 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func contextMenu<MenuItems>(ContextMenu<MenuItems>?) -> some View` |
-|:heavy_check_mark:| `func contextMenu<MenuItems>(menuItems: () -> MenuItems) -> some View` |
+|:technologist:| `func contextMenu<MenuItems>(ContextMenu<MenuItems>?) -> some View` |
+|:technologist:| `func contextMenu<MenuItems>(menuItems: () -> MenuItems) -> some View` |
 |:technologist:| `func menuIndicator(_ visibility: Visibility) -> some View` |
 
 ### Configuring Touch Bar Views
@@ -703,7 +701,7 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func accessibilityElement(children: AccessibilityChildBehavior) -> some View` |
+|:technologist:| `func accessibilityElement(children: AccessibilityChildBehavior) -> some View` |
 |:technologist:| `func accessibilityChildren<V>(children: () -> V) -> some View` |
 |:technologist:| `func accessibilityInputLabels([LocalizedStringKey]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:technologist:| `func accessibilityInputLabels<S>([S]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
@@ -727,18 +725,18 @@ Visit [this discussion](https://github.com/nalexn/ViewInspector/discussions/60) 
 
 | Status | Modifier |
 |:---:|---|
-|:white_check_mark:| `func accessibility(label: Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibility(value: Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibility(hidden: Bool) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibility(identifier: String) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibility(selectionIdentifier: AnyHashable) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibility(hint: Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibility(activationPoint: UnitPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibility(activationPoint: CGPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:technologist:| `func accessibility(inputLabels: [Text]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(label: Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(value: Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(hidden: Bool) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(identifier: String) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(selectionIdentifier: AnyHashable) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(hint: Text) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(activationPoint: UnitPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(activationPoint: CGPoint) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(inputLabels: [Text]) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:heavy_check_mark:| `func accessibility(addTraits: AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 |:heavy_check_mark:| `func accessibility(removeTraits: AccessibilityTraits) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
-|:white_check_mark:| `func accessibility(sortPriority: Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
+|:heavy_check_mark:| `func accessibility(sortPriority: Double) -> ModifiedContent<Self, AccessibilityAttachmentModifier>` |
 
 ### Configuring View Previews
 
