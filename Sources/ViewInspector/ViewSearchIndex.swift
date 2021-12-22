@@ -252,13 +252,12 @@ private extension Content {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewSearch {
     
-    static private(set) var modifierIdentities: [ModifierIdentity] = [
-        .init(name: ViewType.Overlay.overlayModifierName, builder: { parent, index in
-            try parent.content.overlay(parent: parent, api: .overlay, index: index)
-        }),
-        .init(name: ViewType.Overlay.backgroundModifierName, builder: { parent, index in
-            try parent.content.background(parent: parent, api: .background, index: index)
-        }),
+    static private(set) var modifierIdentities: [ModifierIdentity] = [ViewType.Overlay.API.overlay, .background]
+        .map({ api in
+            ModifierIdentity.init(name: api.modifierName, builder: { parent, index in
+                try parent.content.overlay(parent: parent, api: api, index: index)
+            })
+        }) + [
         .init(name: ViewType.Toolbar.typePrefix, builder: { parent, index in
             try parent.content.toolbar(parent: parent, index: index)
         }),
