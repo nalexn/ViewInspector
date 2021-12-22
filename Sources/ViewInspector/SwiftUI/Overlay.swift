@@ -58,10 +58,11 @@ internal extension Content {
         let modifiers = modifiersMatching {
             $0.modifierType.contains(ViewType.Overlay.overlayModifierName)
         }
+        let hasMultipleOverlays = modifiers.count > 1
         guard let (modifier, rootView) = modifiers.lazy.compactMap({ modifier -> (Any, Any)? in
             do {
                 let rootView = try Inspector.attribute(path: "modifier|overlay", value: modifier)
-                try api.verifySignature(of: rootView, parent: view, index: index)
+                try api.verifySignature(content: rootView, hasMultipleOverlays: hasMultipleOverlays)
                 return (modifier, rootView)
             } catch { return nil }
         }).dropFirst(index ?? 0).first else {
@@ -104,7 +105,7 @@ internal extension Content {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content.OverlayAPI {
     
-    func verifySignature(of content: Any, parent: Any, index: Int?) throws {
+    func verifySignature(content: Any, hasMultipleOverlays: Bool) throws {
         let reportFailure: () throws -> Void = {
             throw InspectionError.notSupported("Different view signature")
         }
@@ -116,8 +117,8 @@ internal extension Content.OverlayAPI {
             }
         case .overlay:
             let otherCases = [Content.OverlayAPI.border, .overlayPreferenceValue]
-            if otherCases.contains(where: {
-                (try? $0.verifySignature(of: content, parent: parent, index: index)) != nil
+            if hasMultipleOverlays, otherCases.contains(where: {
+                (try? $0.verifySignature(content: content, hasMultipleOverlays: hasMultipleOverlays)) != nil
             }) {
                 try reportFailure()
             }
