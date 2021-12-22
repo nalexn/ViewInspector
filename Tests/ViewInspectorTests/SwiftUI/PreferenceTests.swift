@@ -74,6 +74,13 @@ final class PreferenceTests: XCTestCase {
         XCTAssertEqual(border.shapeStyle, .red)
         XCTAssertNoThrow(try sut.overlay(1).spacer())
     }
+    
+    func testDifferentBackgroundOverlayUseCases() throws {
+        let sut = try ManyBackgroundOverlaysView().inspect().emptyView()
+        let prefValue = try sut.backgroundPreferenceValue().text().string()
+        XCTAssertEqual(prefValue, Key.defaultValue)
+        XCTAssertNoThrow(try sut.background(1).spacer())
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -86,5 +93,17 @@ private struct ManyOverlaysView: View, Inspectable {
             }
             .border(Color.red)
             .overlay(Spacer())
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct ManyBackgroundOverlaysView: View, Inspectable {
+    var body: some View {
+        EmptyView()
+            .background(AnyView(EmptyView()))
+            .backgroundPreferenceValue(PreferenceTests.Key.self) { value in
+                Text(value)
+            }
+            .background(Spacer())
     }
 }
