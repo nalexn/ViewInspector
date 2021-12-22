@@ -76,10 +76,23 @@ final class PreferenceTests: XCTestCase {
     }
     
     func testDifferentBackgroundOverlayUseCases() throws {
-        let sut = try ManyBackgroundOverlaysView().inspect().emptyView()
+        let sut = try ManyBGOverlaysView().inspect().emptyView()
         let prefValue = try sut.backgroundPreferenceValue().text().string()
         XCTAssertEqual(prefValue, Key.defaultValue)
         XCTAssertNoThrow(try sut.background(1).spacer())
+    }
+    
+    func testOverlaySearch() throws {
+        let sut1 = try ManyOverlaysView().inspect()
+        XCTAssertEqual(try sut1.find(text: "Test").pathToRoot,
+            "view(ManyOverlaysView.self).emptyView().overlay().anyView().text()")
+        XCTAssertEqual(try sut1.find(text: Key.defaultValue).pathToRoot,
+            "view(ManyOverlaysView.self).emptyView().overlayPreferenceValue().text()")
+        let sut2 = try ManyBGOverlaysView().inspect()
+        XCTAssertEqual(try sut2.find(text: "Test").pathToRoot,
+            "view(ManyBGOverlaysView.self).emptyView().background().anyView().text()")
+        XCTAssertEqual(try sut2.find(text: Key.defaultValue).pathToRoot,
+            "view(ManyBGOverlaysView.self).emptyView().backgroundPreferenceValue().text()")
     }
 }
 
@@ -87,7 +100,7 @@ final class PreferenceTests: XCTestCase {
 private struct ManyOverlaysView: View, Inspectable {
     var body: some View {
         EmptyView()
-            .overlay(AnyView(EmptyView()))
+            .overlay(AnyView(Text("Test")))
             .overlayPreferenceValue(PreferenceTests.Key.self) { value in
                 Text(value)
             }
@@ -97,10 +110,10 @@ private struct ManyOverlaysView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ManyBackgroundOverlaysView: View, Inspectable {
+private struct ManyBGOverlaysView: View, Inspectable {
     var body: some View {
         EmptyView()
-            .background(AnyView(EmptyView()))
+            .background(AnyView(Text("Test")))
             .backgroundPreferenceValue(PreferenceTests.Key.self) { value in
                 Text(value)
             }

@@ -250,14 +250,26 @@ private extension Content {
 // MARK: - ModifierIdentity
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewType.Overlay.API {
+    
+    static var viewSearchModifierIdentities: [ViewSearch.ModifierIdentity] {
+        let apiToSearch: [ViewType.Overlay.API] = [
+            .overlayPreferenceValue, .backgroundPreferenceValue,
+            .overlay, .background
+        ]
+        return apiToSearch
+            .map { api in
+                .init(name: api.modifierName, builder: { parent, index in
+                    try parent.content.overlay(parent: parent, api: api, index: index)
+                })
+            }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewSearch {
     
-    static private(set) var modifierIdentities: [ModifierIdentity] = [ViewType.Overlay.API.overlay, .background]
-        .map({ api in
-            ModifierIdentity.init(name: api.modifierName, builder: { parent, index in
-                try parent.content.overlay(parent: parent, api: api, index: index)
-            })
-        }) + [
+    static private(set) var modifierIdentities: [ModifierIdentity] = ViewType.Overlay.API.viewSearchModifierIdentities + [
         .init(name: ViewType.Toolbar.typePrefix, builder: { parent, index in
             try parent.content.toolbar(parent: parent, index: index)
         }),
