@@ -22,14 +22,10 @@ extension ViewType.EnvironmentReaderView: SingleViewContent {
 @available(watchOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
-    @available(iOS, deprecated: 100000.0, message: "Please use `toolbar()` for inspecting `navigationBarItems`")
-    @available(tvOS, deprecated: 100000.0, message: "Please use `toolbar()` for inspecting `navigationBarItems`")
     func navigationBarItems() throws -> InspectableView<ViewType.ClassifiedView> {
         return try navigationBarItems(AnyView.self)
     }
     
-    @available(iOS, deprecated: 100000.0, message: "Please use `toolbar()` for inspecting `navigationBarItems`")
-    @available(tvOS, deprecated: 100000.0, message: "Please use `toolbar()` for inspecting `navigationBarItems`")
     func navigationBarItems<V>(_ viewType: V.Type) throws ->
         InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
         return try navigationBarItems(viewType: viewType, content: try child())
