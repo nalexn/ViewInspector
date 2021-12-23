@@ -174,6 +174,9 @@ extension RotatedShape: InspectableShape { }
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ScaledShape: InspectableShape { }
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+extension ContainerRelativeShape: InspectableShape { }
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension _SizedShape: InspectableShape { }
 
