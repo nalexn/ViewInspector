@@ -2,9 +2,45 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+final class NavigationBarModifiersTests: XCTestCase {
+    
+    func testNavigationViewStyle() throws {
+        let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testNavigationStyleInspection() throws {
+        let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
+        XCTAssertTrue(try sut.inspect().navigationViewStyle() is DefaultNavigationViewStyle)
+    }
+    
+    #if !os(macOS)
+    func testNavigationBarHidden() throws {
+        let sut1 = try EmptyView().navigationBarHidden(false).inspect()
+        let sut2 = try EmptyView().navigationBarHidden(true).inspect()
+        let sut3 = try EmptyView().padding().inspect()
+        XCTAssertFalse(try sut1.navigationBarHidden())
+        XCTAssertTrue(try sut2.navigationBarHidden())
+        XCTAssertThrows(try sut3.navigationBarHidden(),
+            "EmptyView does not have 'navigationBarHidden' modifier")
+    }
+    
+    func testNavigationBarBackButtonHidden() throws {
+        let sut1 = try EmptyView().navigationBarBackButtonHidden(false).inspect()
+        let sut2 = try EmptyView().navigationBarBackButtonHidden(true).inspect()
+        let sut3 = try EmptyView().padding().inspect()
+        XCTAssertFalse(try sut1.navigationBarBackButtonHidden())
+        XCTAssertTrue(try sut2.navigationBarBackButtonHidden())
+        XCTAssertThrows(try sut3.navigationBarBackButtonHidden(),
+            "EmptyView does not have 'navigationBarBackButtonHidden' modifier")
+    }
+    #endif
+}
+
 #if os(iOS) || os(tvOS)
 @available(iOS 13.0, tvOS 13.0, *)
-final class EnvironmentReaderViewTests: XCTestCase {
+final class NavigationBarItemsTests: XCTestCase {
     
     func skipForiOS15(file: StaticString = #file, line: UInt = #line) throws {
         if #available(iOS 15.0, tvOS 15.0, *) {
@@ -61,8 +97,7 @@ final class EnvironmentReaderViewTests: XCTestCase {
                 .navigationBarItems(trailing: Text(""))
         })
         XCTAssertThrows(try view.inspect().find(text: "abc"),
-                        "Search did not find a match. Possible blockers: navigationBarItems")
-        XCTAssertNoThrow(try view.inspect().find(where: { (try? $0.navigationBarItems(Text.self)) != nil }))
+                        "Search did not find a match")
     }
     
     func testRetainsModifiers() throws {

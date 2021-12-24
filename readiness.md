@@ -9,7 +9,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Meaning |
 |:---:|---|
 |:white_check_mark:| Full inspection support with access to the underlying values or callbacks |
-|:heavy_check_mark:| Limited support for deprecated APIs |
 |:technologist:| Pending development |
 
 ## View Types
@@ -503,13 +502,13 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | Modifier |
 |:---:|---|
-|:heavy_check_mark:| `func navigationBarItems(...) -> some View` |
-|:heavy_check_mark:| `func navigationBarTitle(...) -> some View` |
+|:white_check_mark:| `func navigationBarItems(...) -> some View` |
+|:technologist:| `func navigationBarTitle(...) -> some View` |
 |:technologist:| `func navigationTitle(...) -> some View` |
 |:technologist:| `func navigationSubtitle(...) -> some View` |
 |:technologist:| `func navigationBarTitleDisplayMode(NavigationBarItem.TitleDisplayMode) -> some View` |
-|:technologist:| `func navigationBarHidden(Bool) -> some View` |
-|:technologist:| `func navigationBarBackButtonHidden(Bool) -> some View` |
+|:white_check_mark:| `func navigationBarHidden(Bool) -> some View` |
+|:white_check_mark:| `func navigationBarBackButtonHidden(Bool) -> some View` |
 |:white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
 |:white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
 |:white_check_mark:| `func toolbar<Content>(id: String, content: () -> Content) -> some View` |

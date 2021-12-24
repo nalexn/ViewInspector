@@ -1,6 +1,30 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView {
+    
+    @available(iOS 13.0, tvOS 13.0, *)
+    @available(macOS, unavailable)
+    func navigationBarHidden() throws -> Bool {
+        let value = try modifierAttribute(
+            modifierName: "_PreferenceWritingModifier<NavigationBarHiddenKey>",
+            path: "modifier|value", type: Any.self, call: "navigationBarHidden")
+        if let bool = value as? Bool?, let value = bool {
+            return value
+        }
+        return try Inspector.cast(value: value, type: Bool.self)
+    }
+    
+    @available(iOS 13.0, tvOS 13.0, *)
+    @available(macOS, unavailable)
+    func navigationBarBackButtonHidden() throws -> Bool {
+        return try modifierAttribute(
+            modifierName: "_PreferenceWritingModifier<NavigationBarBackButtonHiddenKey>",
+            path: "modifier|value", type: Bool.self, call: "navigationBarBackButtonHidden")
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType {
     struct EnvironmentReaderView { }
 }
@@ -93,3 +117,4 @@ private struct FakeNavigationBarItemsKey: PreferenceKey {
     static var defaultValue: String = ""
     static func reduce(value: inout String, nextValue: () -> String) { }
 }
+
