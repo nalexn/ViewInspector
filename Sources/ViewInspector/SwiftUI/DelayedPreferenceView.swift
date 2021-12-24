@@ -58,15 +58,22 @@ extension _DelayedPreferenceView: SingleViewProvider {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension _PreferenceValue {
+    struct Allocator4 {
+        let data: Int32 = 0
+    }
     struct Allocator8 {
         let data: Int64 = 0
     }
     
     init() {
-        guard MemoryLayout<Self>.size == 8 else {
+        switch MemoryLayout<Self>.size {
+        case 4:
+            self = unsafeBitCast(Allocator4(), to: _PreferenceValue<Key>.self)
+        case 8:
+            self = unsafeBitCast(Allocator8(), to: _PreferenceValue<Key>.self)
+        default:
             fatalError(MemoryLayout<Self>.actualSize())
         }
-        self = unsafeBitCast(Allocator8(), to: _PreferenceValue<Key>.self)
     }
 }
 
