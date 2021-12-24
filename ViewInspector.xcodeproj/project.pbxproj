@@ -34,6 +34,8 @@
 		52209044277607C8001A899A /* AsyncImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52209043277607C8001A899A /* AsyncImageTests.swift */; };
 		52209046277623A5001A899A /* CanvasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52209045277623A5001A899A /* CanvasTests.swift */; };
 		522090482776283B001A899A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522090472776283B001A899A /* Canvas.swift */; };
+		5220904C27763ABA001A899A /* ControlGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220904B27763ABA001A899A /* ControlGroup.swift */; };
+		5220904E27763ACF001A899A /* ControlGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220904D27763ACF001A899A /* ControlGroupTests.swift */; };
 		5223540026D62CB2008DA52F /* ToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522353FF26D62CB2008DA52F /* ToolbarTests.swift */; };
 		5223540226D63B7A008DA52F /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223540126D63B79008DA52F /* Toolbar.swift */; };
 		5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */; };
@@ -293,6 +295,8 @@
 		52209043277607C8001A899A /* AsyncImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageTests.swift; sourceTree = "<group>"; };
 		52209045277623A5001A899A /* CanvasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasTests.swift; sourceTree = "<group>"; };
 		522090472776283B001A899A /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
+		5220904B27763ABA001A899A /* ControlGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlGroup.swift; sourceTree = "<group>"; };
+		5220904D27763ACF001A899A /* ControlGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlGroupTests.swift; sourceTree = "<group>"; };
 		522353FF26D62CB2008DA52F /* ToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
 		5223540126D63B79008DA52F /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewAdaptor.swift; sourceTree = "<group>"; };
@@ -628,6 +632,7 @@
 				F6FB7F5725476431006658EF /* ColorPicker.swift */,
 				F64057EC238DB1530029D9BA /* ConditionalContent.swift */,
 				52E24E9826E9378A00711987 /* ConfirmationDialog.swift */,
+				5220904B27763ABA001A899A /* ControlGroup.swift */,
 				F60EEBBE2382EED0007DB53A /* CustomView.swift */,
 				520F8C12266D0E600026BC57 /* CustomViewModifier.swift */,
 				F60EEBBF2382EED0007DB53A /* DatePicker.swift */,
@@ -740,6 +745,7 @@
 				F6FB7F6125476480006658EF /* ColorPickerTests.swift */,
 				F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */,
 				52E24E9A26E93A4700711987 /* ConfirmationDialogTests.swift */,
+				5220904D27763ACF001A899A /* ControlGroupTests.swift */,
 				F60EEBEF2382F004007DB53A /* CustomViewTests.swift */,
 				F6B7D0092494E12F00ABB5E0 /* CustomViewBuilderTests.swift */,
 				F69C91CB2383189200515A91 /* CustomViewModifierTests.swift */,
@@ -1034,6 +1040,7 @@
 				52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
+				5220904C27763ABA001A899A /* ControlGroup.swift in Sources */,
 				F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */,
 				F6C15AB7254DB173000240F1 /* ScrollViewReader.swift in Sources */,
 				F6D58B9323C4A0F3000CEE3B /* ViewHosting.swift in Sources */,
@@ -1253,6 +1260,7 @@
 				F6A35A4A25B35F710068B8B2 /* LazyGroupTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
 				CDA84452262B6A7A00C56C98 /* GestureActionTests.swift in Sources */,
+				5220904E27763ACF001A899A /* ControlGroupTests.swift in Sources */,
 				5223540026D62CB2008DA52F /* ToolbarTests.swift in Sources */,
 				52F356AC2676940A00695E43 /* MapAnnotationTests.swift in Sources */,
 				F6C15A6B254B669F000240F1 /* MenuTests.swift in Sources */,

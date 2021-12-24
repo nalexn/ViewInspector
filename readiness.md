@@ -27,7 +27,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Canvas | `symbols view`, `colorMode: ColorRenderingMode`, `opaque: Bool`, `rendersAsynchronously: Bool` |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
-|:technologist:| ControlGroup | |
+|:white_check_mark:| ControlGroup | |
 |:white_check_mark:| ConditionalContent | `contained view` |
 |:white_check_mark:| ConfirmationDialog | `title view`, `message view`, `actions view`, `titleVisibility: Visibility`, `dismiss()` |
 |:white_check_mark:| Custom View | `actualView: CustomView`, `viewBuilder container` |

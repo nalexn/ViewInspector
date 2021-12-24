@@ -14,6 +14,7 @@ internal extension ViewSearch {
             .init(ViewType.Button.self), .init(ViewType.Canvas.self),
             .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
             .init(ViewType.ConfirmationDialog.self),
+            .init(ViewType.ControlGroup.self, genericTypeName: nil),
             .init(ViewType.DatePicker.self), .init(ViewType.DisclosureGroup.self),
             .init(ViewType.Divider.self),
             .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
