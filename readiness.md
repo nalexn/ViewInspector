@@ -20,7 +20,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
 |:white_check_mark:| AnyView | `contained view` |
 |:technologist:| ArtworkImage | |
-|:technologist:| AsyncImage | |
+|:white_check_mark:| AsyncImage | `contentView(AsyncImagePhase)`, `url: URL`, `scale: CGFloat`, `transaction: Transaction` |
 |:white_check_mark:| Button | `label view`, `role: ButtonRole?`, `tap()` |
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:technologist:| CameraView | |

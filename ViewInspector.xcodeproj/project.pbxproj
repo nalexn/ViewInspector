@@ -30,6 +30,8 @@
 		5214803A25F803DC002D974D /* CustomStyleModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */; };
 		5220903E27748CAD001A899A /* NavigationBarModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220903D27748CAD001A899A /* NavigationBarModifiers.swift */; };
 		5220904027748D32001A899A /* NavigationBarModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220903F27748D32001A899A /* NavigationBarModifiersTests.swift */; };
+		52209042277607AC001A899A /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52209041277607AC001A899A /* AsyncImage.swift */; };
+		52209044277607C8001A899A /* AsyncImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52209043277607C8001A899A /* AsyncImageTests.swift */; };
 		5223540026D62CB2008DA52F /* ToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522353FF26D62CB2008DA52F /* ToolbarTests.swift */; };
 		5223540226D63B7A008DA52F /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223540126D63B79008DA52F /* Toolbar.swift */; };
 		5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */; };
@@ -285,6 +287,8 @@
 		5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiersTests.swift; sourceTree = "<group>"; };
 		5220903D27748CAD001A899A /* NavigationBarModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifiers.swift; sourceTree = "<group>"; };
 		5220903F27748D32001A899A /* NavigationBarModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifiersTests.swift; sourceTree = "<group>"; };
+		52209041277607AC001A899A /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
+		52209043277607C8001A899A /* AsyncImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageTests.swift; sourceTree = "<group>"; };
 		522353FF26D62CB2008DA52F /* ToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
 		5223540126D63B79008DA52F /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewAdaptor.swift; sourceTree = "<group>"; };
@@ -612,6 +616,7 @@
 				52507625264FC0F400ADE4E7 /* Alert.swift */,
 				F6684BF523AA587700DECCB3 /* AngularGradient.swift */,
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
+				52209041277607AC001A899A /* AsyncImage.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
 				F6ECF6D523A695FB000FC591 /* ClassifiedView.swift */,
 				F64C4E2B250CD60800A69FF9 /* Color.swift */,
@@ -723,6 +728,7 @@
 				525076272650000600ADE4E7 /* AlertTests.swift */,
 				F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */,
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
+				52209043277607C8001A899A /* AsyncImageTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
 				F64C4E2F250CD71400A69FF9 /* ColorTests.swift */,
 				F6FB7F6125476480006658EF /* ColorPickerTests.swift */,
@@ -1053,6 +1059,7 @@
 				F6C15A2B254A0EEC000240F1 /* LazyVStack.swift in Sources */,
 				F6C15A21254A0C67000240F1 /* LazyHStack.swift in Sources */,
 				F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */,
+				52209042277607AC001A899A /* AsyncImage.swift in Sources */,
 				F6684BFA23AA809300DECCB3 /* LinearGradient.swift in Sources */,
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
 				F609EFC123A432AA00B9256A /* IDView.swift in Sources */,
@@ -1208,6 +1215,7 @@
 				F6F08E6B23A2A849001F04DF /* ConditionalContentTests.swift in Sources */,
 				F653BDED25569D2E001FA688 /* TupleViewTests.swift in Sources */,
 				CDA8444D262B6A7100C56C98 /* HitTestingTests.swift in Sources */,
+				52209044277607C8001A899A /* AsyncImageTests.swift in Sources */,
 				F60EEC022382F004007DB53A /* CustomViewTests.swift in Sources */,
 				CDA844AC262B771F00C56C98 /* DragGestureTests.swift in Sources */,
 				CDA844CE262B817800C56C98 /* ExclusiveGestureTests.swift in Sources */,
