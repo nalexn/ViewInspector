@@ -22,6 +22,16 @@ public extension InspectableView {
             modifierName: "_PreferenceWritingModifier<NavigationBarBackButtonHiddenKey>",
             path: "modifier|value", type: Bool.self, call: "navigationBarBackButtonHidden")
     }
+    
+    @available(iOS 13.0, *)
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
+    func statusBarHidden() throws -> Bool {
+        return try modifierAttribute(
+            modifierName: "TransactionalPreferenceModifier<Bool, StatusBarKey>",
+            path: "modifier|value", type: Bool.self, call: "statusBar(hidden:)")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -117,4 +127,3 @@ private struct FakeNavigationBarItemsKey: PreferenceKey {
     static var defaultValue: String = ""
     static func reduce(value: inout String, nextValue: () -> String) { }
 }
-

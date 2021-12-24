@@ -175,3 +175,19 @@ private struct TestView: View, Inspectable {
     }
 }
 #endif
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+final class StatusBarConfigurationTests: XCTestCase {
+    
+    #if os(iOS)
+    func testStatusBarHidden() throws {
+        let sut1 = try EmptyView().statusBar(hidden: false).inspect()
+        let sut2 = try EmptyView().statusBar(hidden: true).inspect()
+        let sut3 = try EmptyView().padding().inspect()
+        XCTAssertFalse(try sut1.statusBarHidden())
+        XCTAssertTrue(try sut2.statusBarHidden())
+        XCTAssertThrows(try sut3.statusBarHidden(),
+            "EmptyView does not have 'statusBar(hidden:)' modifier")
+    }
+    #endif
+}

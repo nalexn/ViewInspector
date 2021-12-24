@@ -513,7 +513,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func toolbar<Content>(content: () -> Content) -> some View` |
 |:white_check_mark:| `func toolbar<Content>(id: String, content: () -> Content) -> some View` |
 |:white_check_mark:| `func tabItem<V>(() -> V) -> some View` |
-|:technologist:| `func statusBar(hidden: Bool) -> some View` |
+|:white_check_mark:| `func statusBar(hidden: Bool) -> some View` |
 
 ### Configuring Touch Bar Views
 
