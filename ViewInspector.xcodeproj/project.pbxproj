@@ -36,6 +36,8 @@
 		522090482776283B001A899A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522090472776283B001A899A /* Canvas.swift */; };
 		5220904C27763ABA001A899A /* ControlGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220904B27763ABA001A899A /* ControlGroup.swift */; };
 		5220904E27763ACF001A899A /* ControlGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220904D27763ACF001A899A /* ControlGroupTests.swift */; };
+		5220905027763E1D001A899A /* LocationButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220904F27763E1D001A899A /* LocationButtonTests.swift */; };
+		522090522776401C001A899A /* LocationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522090512776401C001A899A /* LocationButton.swift */; };
 		5223540026D62CB2008DA52F /* ToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522353FF26D62CB2008DA52F /* ToolbarTests.swift */; };
 		5223540226D63B7A008DA52F /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223540126D63B79008DA52F /* Toolbar.swift */; };
 		5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */; };
@@ -297,6 +299,8 @@
 		522090472776283B001A899A /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		5220904B27763ABA001A899A /* ControlGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlGroup.swift; sourceTree = "<group>"; };
 		5220904D27763ACF001A899A /* ControlGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlGroupTests.swift; sourceTree = "<group>"; };
+		5220904F27763E1D001A899A /* LocationButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationButtonTests.swift; sourceTree = "<group>"; };
+		522090512776401C001A899A /* LocationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationButton.swift; sourceTree = "<group>"; };
 		522353FF26D62CB2008DA52F /* ToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
 		5223540126D63B79008DA52F /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewAdaptor.swift; sourceTree = "<group>"; };
@@ -661,6 +665,7 @@
 				F6684BF923AA809300DECCB3 /* LinearGradient.swift */,
 				F6C15A48254B4A3A000240F1 /* Link.swift */,
 				F6DFD88323830E9F0028E84D /* List.swift */,
+				522090512776401C001A899A /* LocationButton.swift */,
 				CA924CDD265DE97800976FEB /* Map.swift */,
 				52F356A9267692D100695E43 /* MapAnnotation.swift */,
 				F6C15A70254B68C0000240F1 /* Menu.swift */,
@@ -775,6 +780,7 @@
 				F6684BFB23AA842000DECCB3 /* LinearGradientTests.swift */,
 				F6C15A3E254B4835000240F1 /* LinkTests.swift */,
 				F6DFD88523830EB80028E84D /* ListTests.swift */,
+				5220904F27763E1D001A899A /* LocationButtonTests.swift */,
 				CA924CDB265DE87000976FEB /* MapTests.swift */,
 				52F356AB2676940A00695E43 /* MapAnnotationTests.swift */,
 				F6C15A6A254B669F000240F1 /* MenuTests.swift */,
@@ -1132,6 +1138,7 @@
 				F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */,
 				F6D933CB2385FF8F00358E0E /* Slider.swift in Sources */,
 				F6A35A5425B366E90068B8B2 /* InspectableView+RandomAccessCollection.swift in Sources */,
+				522090522776401C001A899A /* LocationButton.swift in Sources */,
 				F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1208,6 +1215,7 @@
 				F6BD820A2565AD5D00A772D4 /* PopoverTests.swift in Sources */,
 				5250764D265185A800ADE4E7 /* ActionSheetTests.swift in Sources */,
 				F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */,
+				5220905027763E1D001A899A /* LocationButtonTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6C15A17254A0BB5000240F1 /* LazyHStackTests.swift in Sources */,
 				CDA8449B262B723D00C56C98 /* SimultaneousGestureModifierTests.swift in Sources */,

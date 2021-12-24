@@ -29,6 +29,7 @@ internal extension ViewSearch {
             .init(ViewType.LazyVGrid.self), .init(ViewType.LazyVStack.self),
             .init(ViewType.LinearGradient.self),
             .init(ViewType.Link.self), .init(ViewType.List.self),
+            .init(ViewType.LocationButton.self),
             .init(ViewType.Map.self),
             .init(ViewType.Menu.self), .init(ViewType.MenuButton.self),
             .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
