@@ -24,7 +24,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Button | `label view`, `role: ButtonRole?`, `tap()` |
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:technologist:| CameraView | |
-|:technologist:| Canvas | |
+|:white_check_mark:| Canvas | `symbols view`, `colorMode: ColorRenderingMode`, `opaque: Bool`, `rendersAsynchronously: Bool` |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
 |:technologist:| ControlGroup | |

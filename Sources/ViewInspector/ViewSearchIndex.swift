@@ -11,7 +11,7 @@ internal extension ViewSearch {
             .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
             .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
             .init(ViewType.AsyncImage.self),
-            .init(ViewType.Button.self),
+            .init(ViewType.Button.self), .init(ViewType.Canvas.self),
             .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
             .init(ViewType.ConfirmationDialog.self),
             .init(ViewType.DatePicker.self), .init(ViewType.DisclosureGroup.self),

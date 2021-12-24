@@ -32,6 +32,8 @@
 		5220904027748D32001A899A /* NavigationBarModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220903F27748D32001A899A /* NavigationBarModifiersTests.swift */; };
 		52209042277607AC001A899A /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52209041277607AC001A899A /* AsyncImage.swift */; };
 		52209044277607C8001A899A /* AsyncImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52209043277607C8001A899A /* AsyncImageTests.swift */; };
+		52209046277623A5001A899A /* CanvasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52209045277623A5001A899A /* CanvasTests.swift */; };
+		522090482776283B001A899A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522090472776283B001A899A /* Canvas.swift */; };
 		5223540026D62CB2008DA52F /* ToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522353FF26D62CB2008DA52F /* ToolbarTests.swift */; };
 		5223540226D63B7A008DA52F /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223540126D63B79008DA52F /* Toolbar.swift */; };
 		5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */; };
@@ -289,6 +291,8 @@
 		5220903F27748D32001A899A /* NavigationBarModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifiersTests.swift; sourceTree = "<group>"; };
 		52209041277607AC001A899A /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		52209043277607C8001A899A /* AsyncImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageTests.swift; sourceTree = "<group>"; };
+		52209045277623A5001A899A /* CanvasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasTests.swift; sourceTree = "<group>"; };
+		522090472776283B001A899A /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		522353FF26D62CB2008DA52F /* ToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
 		5223540126D63B79008DA52F /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewAdaptor.swift; sourceTree = "<group>"; };
@@ -618,6 +622,7 @@
 				F60EEBC32382EED0007DB53A /* AnyView.swift */,
 				52209041277607AC001A899A /* AsyncImage.swift */,
 				F60EEBCB2382EED0007DB53A /* Button.swift */,
+				522090472776283B001A899A /* Canvas.swift */,
 				F6ECF6D523A695FB000FC591 /* ClassifiedView.swift */,
 				F64C4E2B250CD60800A69FF9 /* Color.swift */,
 				F6FB7F5725476431006658EF /* ColorPicker.swift */,
@@ -730,6 +735,7 @@
 				F60EEBF52382F004007DB53A /* AnyViewTests.swift */,
 				52209043277607C8001A899A /* AsyncImageTests.swift */,
 				F60EEBEE2382F004007DB53A /* ButtonTests.swift */,
+				52209045277623A5001A899A /* CanvasTests.swift */,
 				F64C4E2F250CD71400A69FF9 /* ColorTests.swift */,
 				F6FB7F6125476480006658EF /* ColorPickerTests.swift */,
 				F6F08E6723A2A67D001F04DF /* ConditionalContentTests.swift */,
@@ -1070,6 +1076,7 @@
 				F620C7FB2537B090006D856D /* ConfigurationModifiers.swift in Sources */,
 				F6684BFE23AA863400DECCB3 /* RadialGradient.swift in Sources */,
 				520E916226E69E540090BD1F /* PopupPresenter.swift in Sources */,
+				522090482776283B001A899A /* Canvas.swift in Sources */,
 				F60EEBD42382EED0007DB53A /* ScrollView.swift in Sources */,
 				F64C4E2C250CD60800A69FF9 /* Color.swift in Sources */,
 				520E915C26E64F210090BD1F /* EnvironmentInjection.swift in Sources */,
@@ -1211,6 +1218,7 @@
 				F6ECF6D223A680DA000FC591 /* TransformingModifiersTests.swift in Sources */,
 				CDA84502262B885600C56C98 /* CommonComposedGestureTests.swift in Sources */,
 				CDA8445F262B6ABB00C56C98 /* GestureModifierTests.swift in Sources */,
+				52209046277623A5001A899A /* CanvasTests.swift in Sources */,
 				CDA8450C262CBF5700C56C98 /* CommonComposedGestureEndedTests.swift in Sources */,
 				F6F08E6B23A2A849001F04DF /* ConditionalContentTests.swift in Sources */,
 				F653BDED25569D2E001FA688 /* TupleViewTests.swift in Sources */,
