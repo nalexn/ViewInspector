@@ -41,22 +41,36 @@ final class SignInWithAppleButtonTests: XCTestCase {
         let sut = SignInWithAppleButton(onRequest: { request in
             // Does not work yet: reference to object is corrupted inside closure
             // Any request to the object causes a crash:
-            // request.requestedScopes = [.email, .fullName]
+            request.requestedScopes = [.email, .fullName]
             exp.fulfill()
         }, onCompletion: { _ in })
         let request = try sut.inspect().signInWithAppleButton().callOnRequest()
-//        XCTAssertEqual(request.requestedScopes, [.email, .fullName])
+        XCTAssertEqual(request.requestedScopes, [.email, .fullName])
         XCTAssertEqual(request.requestedScopes, nil)
         wait(for: [exp], timeout: 0.1)
     }
     
     func testCallOnCompletion() throws {
         let exp = XCTestExpectation(description: #function)
-        let sut = SignInWithAppleButton(onRequest: { _ in }, onCompletion: { _ in
+        let sut = SignInWithAppleButton(onRequest: { _ in }, onCompletion: { res in
+            switch res {
+            case .success(let auth):
+                if let cred = auth.credential as? ASAuthorizationAppleIDCredential {
+                    print(">>>> \(cred.user)")
+                }
+            case .failure:
+                break
+            }
             exp.fulfill()
         })
+        let dd = VIASAuthorization.appleID()
+        let cred = ASAuthorizationAppleIDCredential(user: "lesha")
+        dd.setCredential(cred)
         try sut.inspect().signInWithAppleButton()
-            .callOnCompletion(.failure(InspectionError.notSupported("")))
+            .callOnCompletion(.success(dd))
+//        ASAuthorization
+        // authorization.credential as? ASAuthorizationAppleIDCredential
+        // else if let passwordCredential = authorization.credential as? ASPasswordCredential
         wait(for: [exp], timeout: 0.1)
     }
 }

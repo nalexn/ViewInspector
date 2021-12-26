@@ -57,7 +57,8 @@ public extension InspectableView where View == ViewType.SignInWithAppleButton {
         let closure = try Inspector.attribute(
             path: "configuration|onRequest", value: content.view, type: Closure.self)
         let request = ASAuthorizationAppleIDProvider().createRequest()
-        closure(request)
+        VIASAuthorization.pass(request, block: closure)
+//        closure(request)
         return request
     }
     
