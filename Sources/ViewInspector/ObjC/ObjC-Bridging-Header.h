@@ -1,4 +1,4 @@
 #ifndef ObjC_Bridging_Header_h
 #define ObjC_Bridging_Header_h
-#import "ASHelper.h"
+#import "AuthenticationServices.h"
 #endif

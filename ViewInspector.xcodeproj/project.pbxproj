@@ -43,7 +43,7 @@
 		5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */; };
 		523CD4542777568C00D4FD3A /* SignInWithAppleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4532777568C00D4FD3A /* SignInWithAppleButton.swift */; };
 		523CD456277756A800D4FD3A /* SignInWithAppleButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD455277756A800D4FD3A /* SignInWithAppleButtonTests.swift */; };
-		523CD4772778923B00D4FD3A /* ASHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4762778923B00D4FD3A /* ASHelper.m */; };
+		523CD4772778923B00D4FD3A /* AuthenticationServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4762778923B00D4FD3A /* AuthenticationServices.m */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
@@ -309,8 +309,8 @@
 		5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewAdaptor.swift; sourceTree = "<group>"; };
 		523CD4532777568C00D4FD3A /* SignInWithAppleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleButton.swift; sourceTree = "<group>"; };
 		523CD455277756A800D4FD3A /* SignInWithAppleButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleButtonTests.swift; sourceTree = "<group>"; };
-		523CD4752778923B00D4FD3A /* ASHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASHelper.h; sourceTree = "<group>"; };
-		523CD4762778923B00D4FD3A /* ASHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASHelper.m; sourceTree = "<group>"; };
+		523CD4752778923B00D4FD3A /* AuthenticationServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthenticationServices.h; sourceTree = "<group>"; };
+		523CD4762778923B00D4FD3A /* AuthenticationServices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthenticationServices.m; sourceTree = "<group>"; };
 		523CD478277894E700D4FD3A /* ObjC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjC-Bridging-Header.h"; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
@@ -567,8 +567,8 @@
 			isa = PBXGroup;
 			children = (
 				523CD478277894E700D4FD3A /* ObjC-Bridging-Header.h */,
-				523CD4752778923B00D4FD3A /* ASHelper.h */,
-				523CD4762778923B00D4FD3A /* ASHelper.m */,
+				523CD4752778923B00D4FD3A /* AuthenticationServices.h */,
+				523CD4762778923B00D4FD3A /* AuthenticationServices.m */,
 			);
 			path = ObjC;
 			sourceTree = "<group>";
@@ -1105,7 +1105,7 @@
 				F6C15A2B254A0EEC000240F1 /* LazyVStack.swift in Sources */,
 				F6C15A21254A0C67000240F1 /* LazyHStack.swift in Sources */,
 				F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */,
-				523CD4772778923B00D4FD3A /* ASHelper.m in Sources */,
+				523CD4772778923B00D4FD3A /* AuthenticationServices.m in Sources */,
 				52209042277607AC001A899A /* AsyncImage.swift in Sources */,
 				F6684BFA23AA809300DECCB3 /* LinearGradient.swift in Sources */,
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,

@@ -40,6 +40,16 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Custom Attributes
 
 #if canImport(AuthenticationServices)
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+public extension ViewType.SignInWithAppleButton {
+    enum SignInOutcome {
+        case appleIDCredential(ASAuthorizationAppleIDCredential)
+        case passwordCredential(ASPasswordCredential)
+        case failure(Error)
+    }
+}
+
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension InspectableView where View == ViewType.SignInWithAppleButton {
     
@@ -48,17 +58,29 @@ public extension InspectableView where View == ViewType.SignInWithAppleButton {
         return SignInWithAppleButton.Label(type: type)
     }
     
-    @discardableResult
-    func callOnRequest() throws -> ASAuthorizationAppleIDRequest {
-        let closure = try buttonSurrogate().onRequest
-        let request = ASAuthorizationAppleIDProvider().createRequest()
-        closure(request)
-        return request
-    }
-    
-    func callOnCompletion(_ result: Result<ASAuthorization, Error>) throws {
-        let closure = try buttonSurrogate().onCompletion
-        closure(result)
+    func tap(_ outcome: ViewType.SignInWithAppleButton.SignInOutcome) throws {
+        let button = try buttonSurrogate()
+        DispatchQueue.main.async {
+            let request = ASAuthorizationAppleIDProvider().createRequest()
+            button.onRequest(request)
+            let auth = VIASAuthorization()
+            let result: Result<ASAuthorization, Error>
+            switch outcome {
+            case .appleIDCredential(let credential):
+                auth.setProvider(ASAuthorizationAppleIDProvider())
+                auth.setCredential(credential)
+                result = .success(auth)
+            case .passwordCredential(let credential):
+                auth.setProvider(ASAuthorizationPasswordProvider())
+                auth.setCredential(credential)
+                result = .success(auth)
+            case .failure(let error):
+                result = .failure(error)
+            }
+            DispatchQueue.main.async {
+                button.onCompletion(result)
+            }
+        }
     }
     
     private typealias ButtonSurrogate = SignInWithAppleButton.Surrogate
@@ -93,6 +115,21 @@ extension SignInWithAppleButton {
         let type: ASAuthorizationAppleIDButton.ButtonType
         let onRequest: (ASAuthorizationAppleIDRequest) -> Void
         let onCompletion: (Result<ASAuthorization, Error>) -> Void
+    }
+}
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+public extension ASAuthorizationAppleIDCredential {
+    convenience init(user: String, email: String?,
+                     fullName: PersonNameComponents?,
+                     state: String? = nil,
+                     authorizedScopes: [ASAuthorization.Scope] = [.fullName, .email],
+                     authorizationCode: Data? = nil,
+                     identityToken: Data? = nil) {
+        self.init(user: user, email: email, fullName: fullName,
+                  state: state, authorizedScopes: authorizedScopes,
+                  authorizationCode: authorizationCode,
+                  identityToken: identityToken, realUserStatus: .unknown)
     }
 }
 #endif

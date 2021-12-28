@@ -36,40 +36,25 @@ final class SignInWithAppleButtonTests: XCTestCase {
         XCTAssertEqual(try sut2.inspect().signInWithAppleButton().labelType(), .signUp)
     }
     
-    func testCallOnRequest() throws {
-        let exp = XCTestExpectation(description: #function)
+    func testTap() throws {
+        let onRequest = XCTestExpectation(description: "onRequest")
+        let onCompletion = XCTestExpectation(description: "onCompletion")
+        let credential = ASAuthorizationAppleIDCredential(user: "abc", email: "abc@mail.com", fullName: nil)
         let sut = SignInWithAppleButton(onRequest: { request in
-            // Does not work yet: reference to object is corrupted inside closure
-            // Any request to the object causes a crash:
             request.requestedScopes = [.email, .fullName]
-            exp.fulfill()
-        }, onCompletion: { _ in })
-        let request = try sut.inspect().signInWithAppleButton().callOnRequest()
-        XCTAssertEqual(request.requestedScopes, [.email, .fullName])
-        wait(for: [exp], timeout: 0.1)
-    }
-    
-    func testCallOnCompletion() throws {
-        let exp = XCTestExpectation(description: #function)
-        let sut = SignInWithAppleButton(onRequest: { _ in }, onCompletion: { res in
-            switch res {
-            case .success(let auth):
-                if let cred = auth.credential as? ASAuthorizationAppleIDCredential {
-                    print(">>>> \(cred.user)")
-                }
-            case .failure:
-                break
+            onRequest.fulfill()
+        }, onCompletion: { result in
+            guard case let .success(auth) = result,
+                  let value = auth.credential as? ASAuthorizationAppleIDCredential
+            else {
+                XCTFail(); return
             }
-            exp.fulfill()
+            XCTAssertEqual(value.user, credential.user)
+            XCTAssertEqual(value.email, credential.email)
+            XCTAssertNil(value.fullName)
+            onCompletion.fulfill()
         })
-        let dd = VIASAuthorization.appleID()
-        let cred = ASAuthorizationAppleIDCredential(user: "lesha")
-        dd.setCredential(cred)
-        try sut.inspect().signInWithAppleButton()
-            .callOnCompletion(.success(dd))
-//        ASAuthorization
-        // authorization.credential as? ASAuthorizationAppleIDCredential
-        // else if let passwordCredential = authorization.credential as? ASPasswordCredential
-        wait(for: [exp], timeout: 0.1)
+        try sut.inspect().signInWithAppleButton().tap(.appleIDCredential(credential))
+        wait(for: [onRequest, onCompletion], timeout: 0.1)
     }
 }
