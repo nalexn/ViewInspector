@@ -41,6 +41,9 @@
 		5223540026D62CB2008DA52F /* ToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522353FF26D62CB2008DA52F /* ToolbarTests.swift */; };
 		5223540226D63B7A008DA52F /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223540126D63B79008DA52F /* Toolbar.swift */; };
 		5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */; };
+		523CD4542777568C00D4FD3A /* SignInWithAppleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4532777568C00D4FD3A /* SignInWithAppleButton.swift */; };
+		523CD456277756A800D4FD3A /* SignInWithAppleButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD455277756A800D4FD3A /* SignInWithAppleButtonTests.swift */; };
+		523CD4772778923B00D4FD3A /* AuthenticationServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4762778923B00D4FD3A /* AuthenticationServices.m */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
@@ -304,6 +307,11 @@
 		522353FF26D62CB2008DA52F /* ToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
 		5223540126D63B79008DA52F /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewAdaptor.swift; sourceTree = "<group>"; };
+		523CD4532777568C00D4FD3A /* SignInWithAppleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleButton.swift; sourceTree = "<group>"; };
+		523CD455277756A800D4FD3A /* SignInWithAppleButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleButtonTests.swift; sourceTree = "<group>"; };
+		523CD4752778923B00D4FD3A /* AuthenticationServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthenticationServices.h; sourceTree = "<group>"; };
+		523CD4762778923B00D4FD3A /* AuthenticationServices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthenticationServices.m; sourceTree = "<group>"; };
+		523CD478277894E700D4FD3A /* ObjC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjC-Bridging-Header.h"; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
@@ -555,6 +563,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		523CD4742778921400D4FD3A /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				523CD478277894E700D4FD3A /* ObjC-Bridging-Header.h */,
+				523CD4752778923B00D4FD3A /* AuthenticationServices.h */,
+				523CD4762778923B00D4FD3A /* AuthenticationServices.m */,
+			);
+			path = ObjC;
+			sourceTree = "<group>";
+		};
 		CD2CA0B5262B67CC00E0F203 /* GestureModifiers */ = {
 			isa = PBXGroup;
 			children = (
@@ -604,6 +622,7 @@
 		F60EEBB92382EED0007DB53A /* ViewInspector */ = {
 			isa = PBXGroup;
 			children = (
+				523CD4742778921400D4FD3A /* ObjC */,
 				F60EEBBB2382EED0007DB53A /* BaseTypes.swift */,
 				F6A35A3F25B35E920068B8B2 /* LazyGroup.swift */,
 				F60EEBBA2382EED0007DB53A /* Inspector.swift */,
@@ -685,6 +704,7 @@
 				F6C15AB6254DB173000240F1 /* ScrollViewReader.swift */,
 				F60EEBC42382EED0007DB53A /* Section.swift */,
 				F6D933C22385FA8B00358E0E /* SecureField.swift */,
+				523CD4532777568C00D4FD3A /* SignInWithAppleButton.swift */,
 				F66EDB5623ED6EA200A01B9F /* Shape.swift */,
 				52A3B51926591F59001FE17E /* Sheet.swift */,
 				F6D933CA2385FF8F00358E0E /* Slider.swift */,
@@ -801,6 +821,7 @@
 				F6C15AAC254DB0AA000240F1 /* ScrollViewReaderTests.swift */,
 				F60EEBF22382F004007DB53A /* SectionTests.swift */,
 				F6D933C42385FB1D00358E0E /* SecureFieldTests.swift */,
+				523CD455277756A800D4FD3A /* SignInWithAppleButtonTests.swift */,
 				F66EDB5823ED72B800A01B9F /* ShapeTests.swift */,
 				52A3B51B26591F79001FE17E /* SheetTests.swift */,
 				F6D933CC2385FFA300358E0E /* SliderTests.swift */,
@@ -970,6 +991,11 @@
 			attributes = {
 				LastSwiftMigration = 9999;
 				LastUpgradeCheck = 1210;
+				TargetAttributes = {
+					"ViewInspector::ViewInspector" = {
+						LastSwiftMigration = 1320;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "ViewInspector" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1061,6 +1087,7 @@
 				5223540226D63B7A008DA52F /* Toolbar.swift in Sources */,
 				F60EEBD32382EED0007DB53A /* ZStack.swift in Sources */,
 				5214802B25F803B7002D974D /* CustomStyleModifiers.swift in Sources */,
+				523CD4542777568C00D4FD3A /* SignInWithAppleButton.swift in Sources */,
 				F6ECF6CE23A67C64000FC591 /* SizingModifiers.swift in Sources */,
 				F6684BF023AA504500DECCB3 /* MenuButton.swift in Sources */,
 				F6C15A85254D806C000240F1 /* OutlineGroup.swift in Sources */,
@@ -1078,6 +1105,7 @@
 				F6C15A2B254A0EEC000240F1 /* LazyVStack.swift in Sources */,
 				F6C15A21254A0C67000240F1 /* LazyHStack.swift in Sources */,
 				F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */,
+				523CD4772778923B00D4FD3A /* AuthenticationServices.m in Sources */,
 				52209042277607AC001A899A /* AsyncImage.swift in Sources */,
 				F6684BFA23AA809300DECCB3 /* LinearGradient.swift in Sources */,
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
@@ -1255,6 +1283,7 @@
 				F66EDB5D23EDC1D800A01B9F /* SpacerTests.swift in Sources */,
 				CA924CDC265DE87000976FEB /* MapTests.swift in Sources */,
 				F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */,
+				523CD456277756A800D4FD3A /* SignInWithAppleButtonTests.swift in Sources */,
 				F609EFC523A4350700B9256A /* IDViewTests.swift in Sources */,
 				F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */,
 				F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */,
@@ -1377,6 +1406,8 @@
 		OBJ_34 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
@@ -1395,6 +1426,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Sources/ViewInspector/ObjC/ObjC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = ViewInspector;
 			};
@@ -1403,6 +1436,8 @@
 		OBJ_35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
@@ -1421,6 +1456,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Sources/ViewInspector/ObjC/ObjC-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = ViewInspector;
 			};

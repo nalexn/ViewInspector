@@ -41,6 +41,7 @@ internal extension ViewSearch {
             .init(ViewType.SafeAreaInset.self, genericTypeName: nil),
             .init(ViewType.ScrollView.self), .init(ViewType.ScrollViewReader.self),
             .init(ViewType.Section.self), .init(ViewType.SecureField.self),
+            .init(ViewType.SignInWithAppleButton.self),
             .init(ViewType.Sheet.self, genericTypeName: "Sheet"),
             .init(ViewType.Slider.self), .init(ViewType.Spacer.self), .init(ViewType.Stepper.self),
             .init(ViewType.StyleConfiguration.Label.self), .init(ViewType.StyleConfiguration.Content.self),
