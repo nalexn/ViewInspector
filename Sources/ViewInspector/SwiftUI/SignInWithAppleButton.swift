@@ -44,34 +44,33 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.SignInWithAppleButton {
     
     func labelType() throws -> SignInWithAppleButton.Label {
-        let type = try Inspector.attribute(
-            path: "configuration|type", value: content.view,
-            type: ASAuthorizationAppleIDButton.ButtonType.self)
+        let type = try buttonSurrogate().type
         return SignInWithAppleButton.Label(type: type)
     }
     
     @discardableResult
-    internal // no official support, see the comment in the test
     func callOnRequest() throws -> ASAuthorizationAppleIDRequest {
-        typealias Closure = (ASAuthorizationAppleIDRequest) -> Void
-        let closure = try Inspector.attribute(
-            path: "configuration|onRequest", value: content.view, type: Closure.self)
+        let closure = try buttonSurrogate().onRequest
         let request = ASAuthorizationAppleIDProvider().createRequest()
-        VIASAuthorization.pass(request, block: closure)
-//        closure(request)
+        closure(request)
         return request
     }
     
     func callOnCompletion(_ result: Result<ASAuthorization, Error>) throws {
-        typealias Closure = (Result<ASAuthorization, Error>) -> Void
-        let closure = try Inspector.attribute(
-            path: "configuration|onCompletion", value: content.view, type: Closure.self)
+        let closure = try buttonSurrogate().onCompletion
         closure(result)
     }
+    
+    private typealias ButtonSurrogate = SignInWithAppleButton.Surrogate
+    private func buttonSurrogate() throws -> ButtonSurrogate {
+        let button = try Inspector.cast(value: content.view, type: SignInWithAppleButton.self)
+        return withUnsafeBytes(of: button) { bytes in
+            return bytes.baseAddress!
+                .assumingMemoryBound(to: ButtonSurrogate.self).pointee
+        }
+    }
 }
-#endif
 
-#if canImport(AuthenticationServices)
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension SignInWithAppleButton.Label: BinaryEquatable {
     init(type: ASAuthorizationAppleIDButton.ButtonType) {
@@ -85,6 +84,15 @@ extension SignInWithAppleButton.Label: BinaryEquatable {
         @unknown default:
             self = .signIn
         }
+    }
+}
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+extension SignInWithAppleButton {
+    struct Surrogate {
+        let type: ASAuthorizationAppleIDButton.ButtonType
+        let onRequest: (ASAuthorizationAppleIDRequest) -> Void
+        let onCompletion: (Result<ASAuthorization, Error>) -> Void
     }
 }
 #endif

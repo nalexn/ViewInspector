@@ -46,7 +46,6 @@ final class SignInWithAppleButtonTests: XCTestCase {
         }, onCompletion: { _ in })
         let request = try sut.inspect().signInWithAppleButton().callOnRequest()
         XCTAssertEqual(request.requestedScopes, [.email, .fullName])
-        XCTAssertEqual(request.requestedScopes, nil)
         wait(for: [exp], timeout: 0.1)
     }
     
