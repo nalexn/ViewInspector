@@ -49,6 +49,7 @@ internal extension ViewSearch {
             .init(ViewType.StyleConfiguration.CurrentValueLabel.self),
             .init(ViewType.TabView.self), .init(ViewType.Text.self),
             .init(ViewType.TextEditor.self), .init(ViewType.TextField.self),
+            .init(ViewType.TimelineView.self),
             .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self),
             .init(ViewType.TupleView.self), .init(ViewType.Toolbar.self),
             .init(ViewType.Toolbar.Item.self, genericTypeName: nil),

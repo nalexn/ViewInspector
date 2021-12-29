@@ -105,7 +105,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Text | `string(locale: Locale) -> String`, `attributes: TextAttributes`, `images: [Image]` |
 |:white_check_mark:| TextEditor | `input: String`, `setInput(_: String)` |
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
-|:technologist:| TimelineView | |
+|:white_check_mark:| TimelineView | `contentView(Context)` |
 |:white_check_mark:| Toggle | `label view`, `tap()`, `isOn: Bool` |
 |:white_check_mark:| ToggleStyleConfiguration.Label | |
 |:white_check_mark:| ToolbarItem | |

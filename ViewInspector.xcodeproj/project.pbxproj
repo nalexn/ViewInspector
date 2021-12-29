@@ -44,6 +44,8 @@
 		523CD4542777568C00D4FD3A /* SignInWithAppleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4532777568C00D4FD3A /* SignInWithAppleButton.swift */; };
 		523CD456277756A800D4FD3A /* SignInWithAppleButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD455277756A800D4FD3A /* SignInWithAppleButtonTests.swift */; };
 		523CD4772778923B00D4FD3A /* AuthenticationServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4762778923B00D4FD3A /* AuthenticationServices.m */; };
+		523CD47A277BC8A700D4FD3A /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD479277BC8A700D4FD3A /* TimelineView.swift */; };
+		523CD47C277BC91400D4FD3A /* TimelineViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
@@ -312,6 +314,8 @@
 		523CD4752778923B00D4FD3A /* AuthenticationServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthenticationServices.h; sourceTree = "<group>"; };
 		523CD4762778923B00D4FD3A /* AuthenticationServices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthenticationServices.m; sourceTree = "<group>"; };
 		523CD478277894E700D4FD3A /* ObjC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjC-Bridging-Header.h"; sourceTree = "<group>"; };
+		523CD479277BC8A700D4FD3A /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
+		523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewTests.swift; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
@@ -622,7 +626,6 @@
 		F60EEBB92382EED0007DB53A /* ViewInspector */ = {
 			isa = PBXGroup;
 			children = (
-				523CD4742778921400D4FD3A /* ObjC */,
 				F60EEBBB2382EED0007DB53A /* BaseTypes.swift */,
 				F6A35A3F25B35E920068B8B2 /* LazyGroup.swift */,
 				F60EEBBA2382EED0007DB53A /* Inspector.swift */,
@@ -636,6 +639,7 @@
 				520E916126E69E540090BD1F /* PopupPresenter.swift */,
 				F68108A423A5833D00B32145 /* Modifiers */,
 				F60EEBBD2382EED0007DB53A /* SwiftUI */,
+				523CD4742778921400D4FD3A /* ObjC */,
 			);
 			path = ViewInspector;
 			sourceTree = "<group>";
@@ -717,6 +721,7 @@
 				F6026A26256A7D1900CA31E5 /* TextAttributes.swift */,
 				F6C15AC6254EDA79000240F1 /* TextEditor.swift */,
 				F6D933BE2385F5CB00358E0E /* TextField.swift */,
+				523CD479277BC8A700D4FD3A /* TimelineView.swift */,
 				F6D933BA2385F42300358E0E /* Toggle.swift */,
 				5223540126D63B79008DA52F /* Toolbar.swift */,
 				F639DBC223A7DDA2003A6FED /* TouchBar.swift */,
@@ -833,6 +838,7 @@
 				F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */,
 				F6C15AC0254EDA15000240F1 /* TextEditorTests.swift */,
 				F6D933C02385F62500358E0E /* TextFieldTests.swift */,
+				523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */,
 				F6D933BC2385F45A00358E0E /* ToggleTests.swift */,
 				522353FF26D62CB2008DA52F /* ToolbarTests.swift */,
 				F639DBC423A7DFA6003A6FED /* TouchBarTests.swift */,
@@ -1072,6 +1078,7 @@
 				52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
+				523CD47A277BC8A700D4FD3A /* TimelineView.swift in Sources */,
 				5220904C27763ABA001A899A /* ControlGroup.swift in Sources */,
 				F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */,
 				F6C15AB7254DB173000240F1 /* ScrollViewReader.swift in Sources */,
@@ -1288,6 +1295,7 @@
 				F6684BF423AA55C100DECCB3 /* PasteButtonTests.swift in Sources */,
 				F64A2C6B23A3FEA800A4853A /* TreeViewTests.swift in Sources */,
 				52A3B51C26591F79001FE17E /* SheetTests.swift in Sources */,
+				523CD47C277BC91400D4FD3A /* TimelineViewTests.swift in Sources */,
 				52D37480262B1F0C00B1BFBA /* NestedModifiersTests.swift in Sources */,
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
 				F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */,
