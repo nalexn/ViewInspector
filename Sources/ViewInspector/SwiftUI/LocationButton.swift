@@ -48,7 +48,7 @@ public extension InspectableView where View: MultipleViewContent {
 @available(tvOS, unavailable)
 public extension InspectableView where View == ViewType.LocationButton {
     
-    #if canImport(CoreLocationUI)
+    #if canImport(CoreLocationUI) && !os(watchOS)
     func title() throws -> LocationButton.Title {
         let label = try Inspector.attribute(
             path: "configuration|title|some", value: content.view, type: CLLocationButtonLabel.self)
@@ -65,7 +65,7 @@ public extension InspectableView where View == ViewType.LocationButton {
     }
 }
 
-#if canImport(CoreLocationUI)
+#if canImport(CoreLocationUI) && !os(watchOS)
 @available(iOS 15.0, watchOS 8.0, *)
 @available(macOS, unavailable)
 @available(tvOS, unavailable)

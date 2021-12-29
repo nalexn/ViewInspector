@@ -32,11 +32,13 @@ final class LocationButtonTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(ViewType.LocationButton.self).pathToRoot, "anyView().locationButton()")
     }
     
+    #if !os(watchOS)
     func testTitle() throws {
         guard #available(iOS 15.0, watchOS 8.0, *) else { throw XCTSkip() }
         let sut = LocationButton(.shareMyCurrentLocation, action: { })
         XCTAssertEqual(try sut.inspect().locationButton().title(), .shareMyCurrentLocation)
     }
+    #endif
     
     func testTap() throws {
         guard #available(iOS 15.0, watchOS 8.0, *) else { throw XCTSkip() }

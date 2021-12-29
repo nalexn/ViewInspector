@@ -3,6 +3,7 @@ import SwiftUI
 import AVKit
 @testable import ViewInspector
 
+#if !os(watchOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class VideoPlayerTests: XCTestCase {
     
@@ -68,3 +69,4 @@ final class VideoPlayerTests: XCTestCase {
         XCTAssertNil(try sut2.inspect().videoPlayer().player())
     }
 }
+#endif

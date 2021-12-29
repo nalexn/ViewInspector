@@ -218,10 +218,13 @@ final class CustomViewTests: XCTestCase {
     func testViewContainerGenericParameterMismatch() throws {
         let sut = try AnyView(GenericContainer<String>()).inspect()
         let view = try sut.find(GenericContainer<Int>.TestView.self)
+        let namespace = String(reflecting: GenericContainer<Int>.self)
+            .components(separatedBy: ".").first!
+        let prefix = namespace + ".GenericContainer"
         XCTAssertThrows(try view.actualView(),
             """
-            Type mismatch: ViewInspectorTests.GenericContainer<Swift.String>.TestView \
-            is not ViewInspectorTests.GenericContainer<Swift.Int>.TestView
+            Type mismatch: \(prefix)<Swift.String>.TestView \
+            is not \(prefix)<Swift.Int>.TestView
             """)
     }
     

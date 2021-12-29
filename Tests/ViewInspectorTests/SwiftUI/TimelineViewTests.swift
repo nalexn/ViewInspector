@@ -5,6 +5,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TimelineViewTests: XCTestCase {
     
+    #if !os(watchOS)
     func testEnclosedView() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
         else { throw XCTSkip() }
@@ -26,6 +27,7 @@ final class TimelineViewTests: XCTestCase {
         let view = try sut.inspect().timelineView().contentView()
         XCTAssertEqual(view.content.medium.viewModifiers.count, 0)
     }
+    #endif
     
     func testExtractionFromSingleViewContainer() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
@@ -47,6 +49,7 @@ final class TimelineViewTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().hStack().timelineView(1))
     }
     
+    #if !os(watchOS)
     func testSearch() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
         else { throw XCTSkip() }
@@ -56,4 +59,5 @@ final class TimelineViewTests: XCTestCase {
         XCTAssertEqual(try sut.find(ViewType.EmptyView.self).pathToRoot,
             "anyView().timelineView().contentView().emptyView()")
     }
+    #endif
 }

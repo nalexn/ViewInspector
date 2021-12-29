@@ -63,7 +63,7 @@ extension ViewType.VideoPlayer: SupplementaryChildren {
 
 // MARK: - Custom Attributes
 
-#if canImport(AVKit)
+#if canImport(AVKit) && !os(watchOS)
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension InspectableView where View == ViewType.VideoPlayer {

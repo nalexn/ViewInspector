@@ -2,7 +2,7 @@
 
 import XCTest
 import SwiftUI
-import AuthenticationServices.ASAuthorizationAppleIDButton
+import AuthenticationServices
 @testable import ViewInspector
 
 @available(iOS 13.0, watchOS 6.0, *)
@@ -34,7 +34,7 @@ final class SignInWithAppleButtonTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(ViewType.SignInWithAppleButton.self).pathToRoot,
             "anyView().signInWithAppleButton()")
     }
-    
+    #if !os(watchOS)
     func testLabelType() throws {
         guard #available(iOS 15.0, watchOS 8.0, *) else { throw XCTSkip() }
         let sut1 = SignInWithAppleButton(.signIn, onRequest: { _ in }, onCompletion: { _ in })
@@ -76,5 +76,6 @@ final class SignInWithAppleButtonTests: XCTestCase {
         try sut.inspect().signInWithAppleButton().tap(.appleIDCredential(credential))
         wait(for: [onRequest, onCompletion], timeout: 0.1)
     }
+    #endif
 }
 #endif
