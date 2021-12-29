@@ -77,7 +77,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| NowPlayingView | |
 |:white_check_mark:| Optional | `contained view` |
 |:white_check_mark:| OutlineGroup | `leaf view`, `source data` |
-|:technologist:| OutlineSubgroupChildren | |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
 |:white_check_mark:| Picker | `contained view`, `label view`, `select(value: Hashable)` |
 |:white_check_mark:| Popover | `contained view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge`, `dismiss()` |
