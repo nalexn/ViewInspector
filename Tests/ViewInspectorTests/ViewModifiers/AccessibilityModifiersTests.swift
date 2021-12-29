@@ -123,8 +123,7 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(macOS, deprecated, introduced: 10.15)
     @available(watchOS, deprecated, introduced: 6)
     func testAccessibilitySelectionIdentifierInspection() throws {
-        guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *)
-        else { throw XCTSkip() }
+        guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { throw XCTSkip() }
         if #available(iOS 15, tvOS 15, *) {
             throw XCTSkip("Deprecated modifier with no replacement in iOS 15")
         }

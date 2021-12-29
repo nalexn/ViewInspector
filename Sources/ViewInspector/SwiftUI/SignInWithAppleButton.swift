@@ -41,7 +41,7 @@ public extension InspectableView where View: MultipleViewContent {
 
 #if canImport(AuthenticationServices)
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 15.0, watchOS 7.0, *)
 public extension ViewType.SignInWithAppleButton {
     enum SignInOutcome {
         case appleIDCredential(ASAuthorizationAppleIDCredential)
@@ -58,6 +58,7 @@ public extension InspectableView where View == ViewType.SignInWithAppleButton {
         return SignInWithAppleButton.Label(type: type)
     }
     
+    @available(tvOS 15.0, *)
     func tap(_ outcome: ViewType.SignInWithAppleButton.SignInOutcome) throws {
         let button = try buttonSurrogate()
         DispatchQueue.main.async {
