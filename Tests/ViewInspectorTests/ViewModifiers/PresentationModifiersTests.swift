@@ -46,13 +46,15 @@ final class ViewColorTests: XCTestCase {
     #endif
 
     func testTint() throws {
-        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else { return }
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().tint(.green)
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 
     func testTintInspection() throws {
-        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else { return }
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = Group { EmptyView() }.tint(.green)
         XCTAssertEqual(try sut.inspect().group().tint(), .green)
         XCTAssertEqual(try sut.inspect().group().emptyView(0).tint(), .green)

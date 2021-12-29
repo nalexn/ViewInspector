@@ -49,7 +49,7 @@ final class NavigationBarItemsTests: XCTestCase {
     }
     
     func testUnaryViewAdaptor() throws {
-        guard #available(iOS 15.0, tvOS 15.0, *) else { return }
+        guard #available(iOS 15.0, tvOS 15.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .navigationBarItems(trailing: Text("abc"))
         XCTAssertNoThrow(try sut.inspect().emptyView())

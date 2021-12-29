@@ -65,7 +65,8 @@ final class ImageTests: XCTestCase {
     }
     
     func testLabelImageText() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let view = Label("tx", image: "img")
         let text = try view.inspect().label().icon().image().labelView()
         XCTAssertEqual(try text.string(), "img")

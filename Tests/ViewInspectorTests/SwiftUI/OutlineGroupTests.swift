@@ -31,7 +31,7 @@ final class OutlineGroupTests: XCTestCase {
     
     @available(watchOS, unavailable)
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = AnyView(OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { _ in
             EmptyView()
         })
@@ -40,7 +40,7 @@ final class OutlineGroupTests: XCTestCase {
     
     @available(watchOS, unavailable)
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = HStack {
             EmptyView()
             OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { _ in
@@ -53,7 +53,7 @@ final class OutlineGroupTests: XCTestCase {
     
     @available(watchOS, unavailable)
     func testSourceDataInspection() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view1 = OutlineGroup(values, id: \.testValue, children: \.testChildren) { _ in
             EmptyView()
         }
@@ -70,7 +70,7 @@ final class OutlineGroupTests: XCTestCase {
     
     @available(watchOS, unavailable)
     func testLeafInspection() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = OutlineGroup(values[0], id: \.testValue, children: \.testChildren) { element in
             Text(element.testValue)
         }

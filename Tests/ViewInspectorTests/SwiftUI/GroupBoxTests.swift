@@ -8,7 +8,7 @@ import SwiftUI
 final class GroupBoxTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sampleView = Text("Test")
         let view = GroupBox { sampleView }
         let sut = try view.inspect().groupBox().text(0).content.view as? Text
@@ -16,7 +16,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testSingleEnclosedViewIndexOutOfBounds() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sampleView = Text("Test")
         let view = GroupBox { sampleView }
         XCTAssertThrows(
@@ -25,7 +25,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testMultipleEnclosedViews() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
         let sampleView3 = Text("XYZ")
@@ -39,7 +39,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
         let view = GroupBox { sampleView1; sampleView2 }
@@ -49,20 +49,20 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testResetsModifiers() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = GroupBox { Text("Test") }.padding()
         let sut = try view.inspect().groupBox().text(0)
         XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = AnyView(GroupBox { Text("Test") })
         XCTAssertNoThrow(try view.inspect().anyView().groupBox())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = GroupBox {
             GroupBox { Text("Test") }
             GroupBox { Text("Test") }
@@ -72,7 +72,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testSearch() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = AnyView(GroupBox { Text("Test") })
         XCTAssertEqual(try view.inspect().find(ViewType.GroupBox.self).pathToRoot,
                        "anyView().groupBox()")
@@ -81,7 +81,7 @@ final class GroupBoxTests: XCTestCase {
     }
     
     func testLabelInspection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = GroupBox(
             label: HStack { Text("abc") },
             content: { Text("test") })
@@ -91,13 +91,13 @@ final class GroupBoxTests: XCTestCase {
     
     #if os(iOS) || os(macOS)
     func testGroupBoxStyleInspection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sut = EmptyView().groupBoxStyle(DefaultGroupBoxStyle())
         XCTAssertTrue(try sut.inspect().groupBoxStyle() is DefaultGroupBoxStyle)
     }
     
     func testCustomGroupBoxStyleInspection() throws {
-        guard #available(iOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sut = TestGroupBoxStyle()
         XCTAssertEqual(try sut.inspect().vStack().styleConfigurationContent(0).blur().radius, 5)
         XCTAssertEqual(try sut.inspect().vStack().styleConfigurationLabel(1).brightness(), 3)

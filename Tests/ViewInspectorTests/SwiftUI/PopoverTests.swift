@@ -134,7 +134,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testArrowEdge() throws {
-        guard #available(iOS 14.2, macOS 11.0, *) else { return }
+        guard #available(iOS 14.2, macOS 11.0, *) else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView()
             .popover2(isPresented: binding, arrowEdge: .trailing) { Text("") }
@@ -143,7 +143,7 @@ final class PopoverTests: XCTestCase {
     }
     
     func testAttachmentAnchor() throws {
-        guard #available(iOS 14.2, macOS 11.0, *) else { return }
+        guard #available(iOS 14.2, macOS 11.0, *) else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let anchor = PopoverAttachmentAnchor.point(.bottom)
         let sut = EmptyView()

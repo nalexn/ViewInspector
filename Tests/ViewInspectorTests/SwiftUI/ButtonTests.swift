@@ -73,7 +73,8 @@ final class ButtonTests: XCTestCase {
     }
     
     func testButtonRole() throws {
-        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else { return }
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut1 = Button(role: .cancel, action: { }, label: { Text("") })
         let sut2 = Button(role: .destructive, action: { }, label: { Text("") })
         let sut3 = Button(action: { }, label: { Text("") })
@@ -132,7 +133,8 @@ final class ButtonStyleInspectionTests: XCTestCase {
     
     #if !os(tvOS)
     func testPrimitiveButtonStyleExtraction() throws {
-        guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) else { return }
+        guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *)
+        else { throw XCTSkip() }
         let style = TestPrimitiveButtonStyle()
         let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
         XCTAssertNoThrow(try button.anyView().styleConfigurationLabel().blur())

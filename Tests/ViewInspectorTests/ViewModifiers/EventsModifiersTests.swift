@@ -39,7 +39,7 @@ final class ViewEventsTests: XCTestCase {
 
     func testOnChange() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let val = ""
         let sut = EmptyView().onChange(of: val) { value in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -47,7 +47,7 @@ final class ViewEventsTests: XCTestCase {
 
     func testOnChangeInspection() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let val = "initial"
         let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().padding().onChange(of: val) { [val] value in
@@ -61,7 +61,7 @@ final class ViewEventsTests: XCTestCase {
 
     func testMultipleOnChangeModifiersSameTypeCallFirst() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         var val = "initial"
         let other = ""
         let exp = XCTestExpectation(description: #function)
@@ -79,7 +79,7 @@ final class ViewEventsTests: XCTestCase {
 
     func testMultipleOnChangeModifiersSameTypeCallByIndex() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         var val = "initial"
         let other = ""
         let exp = XCTestExpectation(description: #function)
@@ -99,7 +99,7 @@ final class ViewEventsTests: XCTestCase {
     
     func testMultipleOnChangeModifiersDifferentTypes() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let exp1 = XCTestExpectation(description: "onChange1")
         let exp2 = XCTestExpectation(description: "onChange2")
         [exp1, exp2].forEach {

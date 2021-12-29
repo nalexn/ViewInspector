@@ -112,7 +112,8 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(macOS, deprecated, introduced: 10.15)
     @available(watchOS, deprecated, introduced: 6)
     func testAccessibilitySelectionIdentifier() throws {
-        guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { return }
+        guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().accessibility(selectionIdentifier: "")
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
@@ -122,7 +123,8 @@ final class ViewAccessibilityTests: XCTestCase {
     @available(macOS, deprecated, introduced: 10.15)
     @available(watchOS, deprecated, introduced: 6)
     func testAccessibilitySelectionIdentifierInspection() throws {
-        guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *) else { return }
+        guard #available(iOS 13.2, macOS 10.17, tvOS 13.2, *)
+        else { throw XCTSkip() }
         if #available(iOS 15, tvOS 15, *) {
             throw XCTSkip("Deprecated modifier with no replacement in iOS 15")
         }
@@ -156,7 +158,7 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityActionInspection() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let exp = XCTestExpectation(description: "accessibilityAction")
         exp.expectedFulfillmentCount = 2
         let sut = EmptyView().accessibilityAction(.default) {

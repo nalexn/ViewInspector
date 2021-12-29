@@ -267,7 +267,8 @@ final class AlertIOS15Tests: XCTestCase {
     }
     
     func testAlertInspectioniOS15() throws {
-        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else { return }
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = sutIOS15(binding: binding)
         let alert = try sut.inspect().alert()

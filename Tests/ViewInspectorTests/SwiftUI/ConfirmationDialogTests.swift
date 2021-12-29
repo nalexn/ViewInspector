@@ -7,7 +7,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testInspectionNotBlocked() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().confirmationDialog(Text("title"), isPresented: binding, actions: { EmptyView() })
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -15,7 +15,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testInspectionErrorNoModifier() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().offset()
         XCTAssertThrows(try sut.inspect().emptyView().confirmationDialog(),
                         "EmptyView does not have 'confirmationDialog' modifier")
@@ -23,7 +23,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testInspectionErrorWhenNotPresented() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: false)
         let sut = EmptyView().confirmationDialog(Text("title"), isPresented: binding, actions: { EmptyView() })
         XCTAssertThrows(try sut.inspect().emptyView().confirmationDialog(),
@@ -32,7 +32,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testSimpleUnwrap() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().confirmationDialog(Text("title"), isPresented: binding, actions: { EmptyView() })
         XCTAssertEqual(try sut.inspect().emptyView().confirmationDialog().pathToRoot,
@@ -41,7 +41,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testTitleVisibility() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().confirmationDialog(
             Text("abc"), isPresented: binding,
@@ -52,7 +52,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testTitleInspection() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().confirmationDialog(Text("abc"), isPresented: binding, actions: { EmptyView() })
         let title = try sut.inspect().emptyView().confirmationDialog().title()
@@ -62,7 +62,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testMessageInspection() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().confirmationDialog(
             Text("title"), isPresented: binding, actions: { EmptyView() },
@@ -75,7 +75,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testActionsInspection() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().confirmationDialog(
             Text(""), isPresented: binding, presenting: "abc") { AnyView(Text($0)) }
@@ -87,7 +87,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testDismiss() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().confirmationDialog(
             Text("abc"), isPresented: binding, actions: { EmptyView() })
@@ -98,7 +98,7 @@ final class ConfirmationDialogTests: XCTestCase {
     
     func testSearch() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = Group {
             EmptyView()
