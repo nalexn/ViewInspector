@@ -47,7 +47,13 @@ final class SignInWithAppleButtonTests: XCTestCase {
         guard #available(iOS 15.0, watchOS 8.0, *) else { throw XCTSkip() }
         let onRequest = XCTestExpectation(description: "onRequest")
         let onCompletion = XCTestExpectation(description: "onCompletion")
-        let credential = ASAuthorizationAppleIDCredential(user: "abc", email: "abc@mail.com", fullName: nil)
+        let credential = ASAuthorizationAppleIDCredential(
+            user: "abc", email: "xyz@mail.com",
+            fullName: PersonNameComponents(givenName: "A", familyName: "B"),
+            state: "s", authorizedScopes: [.email],
+            authorizationCode: Data(count: 2),
+            identityToken: Data(count: 5),
+            realUserStatus: .likelyReal)
         let sut = SignInWithAppleButton(onRequest: { request in
             request.requestedScopes = [.email, .fullName]
             onRequest.fulfill()
@@ -59,7 +65,12 @@ final class SignInWithAppleButtonTests: XCTestCase {
             }
             XCTAssertEqual(value.user, credential.user)
             XCTAssertEqual(value.email, credential.email)
-            XCTAssertNil(value.fullName)
+            XCTAssertEqual(value.fullName, credential.fullName)
+            XCTAssertEqual(value.state, credential.state)
+            XCTAssertEqual(value.authorizedScopes, credential.authorizedScopes)
+            XCTAssertEqual(value.authorizationCode, credential.authorizationCode)
+            XCTAssertEqual(value.identityToken, credential.identityToken)
+            XCTAssertEqual(value.realUserStatus, credential.realUserStatus)
             onCompletion.fulfill()
         })
         try sut.inspect().signInWithAppleButton().tap(.appleIDCredential(credential))

@@ -64,16 +64,19 @@ public extension InspectableView where View == ViewType.SignInWithAppleButton {
         DispatchQueue.main.async {
             let request = ASAuthorizationAppleIDProvider().createRequest()
             button.onRequest(request)
-            let auth = VIASAuthorization()
             let result: Result<ASAuthorization, Error>
             switch outcome {
             case .appleIDCredential(let credential):
-                auth.setProvider(ASAuthorizationAppleIDProvider())
-                auth.setCredential(credential)
+                let surrogate = VIASAuthorization(
+                    provider: ASAuthorizationAppleIDProvider(),
+                    credential: credential)
+                let auth = unsafeBitCast(surrogate, to: ASAuthorization.self)
                 result = .success(auth)
             case .passwordCredential(let credential):
-                auth.setProvider(ASAuthorizationPasswordProvider())
-                auth.setCredential(credential)
+                let surrogate = VIASAuthorization(
+                    provider: ASAuthorizationPasswordProvider(),
+                    credential: credential)
+                let auth = unsafeBitCast(surrogate, to: ASAuthorization.self)
                 result = .success(auth)
             case .failure(let error):
                 result = .failure(error)
@@ -120,17 +123,47 @@ extension SignInWithAppleButton {
 }
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+private final class VIASAuthorization: NSObject {
+    @objc let provider: ASAuthorizationProvider
+    @objc let credential: ASAuthorizationCredential
+    
+    init(provider: ASAuthorizationProvider, credential: ASAuthorizationCredential) {
+        self.provider = provider
+        self.credential = credential
+    }
+}
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension ASAuthorizationAppleIDCredential {
     convenience init(user: String, email: String?,
                      fullName: PersonNameComponents?,
                      state: String? = nil,
                      authorizedScopes: [ASAuthorization.Scope] = [.fullName, .email],
-                     authorizationCode: Data? = nil,
-                     identityToken: Data? = nil) {
-        self.init(user: user, email: email, fullName: fullName,
-                  state: state, authorizedScopes: authorizedScopes,
-                  authorizationCode: authorizationCode,
-                  identityToken: identityToken, realUserStatus: .unknown)
+                     authorizationCode: Data? = nil, identityToken: Data? = nil,
+                     realUserStatus: ASUserDetectionStatus = .unknown) {
+        let data = Data(base64Encoded:
+        """
+        YnBsaXN0MDDUAQIDBAUGBxhYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF\
+        8QD05TS2V5ZWRBcmNoaXZlctgICQoLDA0ODxAREBAUEBYQVl9lbWFpbF8QEV9hdXRob3JpemVk\
+        U2NvcGVzWV9mdWxsTmFtZVZfc3RhdGVfEA9fcmVhbFVzZXJTdGF0dXNfEBJfYXV0aG9yaXphdG\
+        lvbkNvZGVVX3VzZXJeX2lkZW50aXR5VG9rZW6AAIACgACAABABgACAAYAApBkaGyBVJG51bGxQ\
+        0hwdHh9aTlMub2JqZWN0c1YkY2xhc3OggAPSISIjJFokY2xhc3NuYW1lWCRjbGFzc2VzV05TQX\
+        JyYXmiIyVYTlNPYmplY3QACAARABoAJAApADIANwBJAFoAYQB1AH8AhgCYAK0AswDCAMQAxgDI\
+        AMoAzADOANAA0gDXAN0A3gDjAO4A9QD2APgA/QEIAREBGQEcAAAAAAAAAgEAAAAAAAAAJgAAAA\
+        AAAAAAAAAAAAAAASU=
+        """)
+        // swiftlint:disable force_try
+        let decoder = try! NSKeyedUnarchiver(forReadingFrom: data!)
+        self.init(coder: decoder)!
+        // swiftlint:enable force_try
+        setValue(user, forKey: "user")
+        setValue(email, forKey: "email")
+        setValue(fullName, forKey: "fullName")
+        setValue(state, forKey: "state")
+        setValue(authorizedScopes, forKey: "authorizedScopes")
+        setValue(authorizationCode, forKey: "authorizationCode")
+        setValue(identityToken, forKey: "identityToken")
+        setValue(realUserStatus.rawValue, forKey: "realUserStatus")
     }
 }
 #endif

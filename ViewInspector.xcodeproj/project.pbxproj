@@ -43,7 +43,6 @@
 		5236C34326CDC2F4007432E1 /* UnaryViewAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */; };
 		523CD4542777568C00D4FD3A /* SignInWithAppleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4532777568C00D4FD3A /* SignInWithAppleButton.swift */; };
 		523CD456277756A800D4FD3A /* SignInWithAppleButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD455277756A800D4FD3A /* SignInWithAppleButtonTests.swift */; };
-		523CD4772778923B00D4FD3A /* AuthenticationServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4762778923B00D4FD3A /* AuthenticationServices.m */; };
 		523CD47A277BC8A700D4FD3A /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD479277BC8A700D4FD3A /* TimelineView.swift */; };
 		523CD47C277BC91400D4FD3A /* TimelineViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */; };
 		523CD47E277C882E00D4FD3A /* VideoPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47D277C882E00D4FD3A /* VideoPlayerTests.swift */; };
@@ -313,9 +312,6 @@
 		5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewAdaptor.swift; sourceTree = "<group>"; };
 		523CD4532777568C00D4FD3A /* SignInWithAppleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleButton.swift; sourceTree = "<group>"; };
 		523CD455277756A800D4FD3A /* SignInWithAppleButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleButtonTests.swift; sourceTree = "<group>"; };
-		523CD4752778923B00D4FD3A /* AuthenticationServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthenticationServices.h; sourceTree = "<group>"; };
-		523CD4762778923B00D4FD3A /* AuthenticationServices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthenticationServices.m; sourceTree = "<group>"; };
-		523CD478277894E700D4FD3A /* ObjC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjC-Bridging-Header.h"; sourceTree = "<group>"; };
 		523CD479277BC8A700D4FD3A /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewTests.swift; sourceTree = "<group>"; };
 		523CD47D277C882E00D4FD3A /* VideoPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTests.swift; sourceTree = "<group>"; };
@@ -571,16 +567,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		523CD4742778921400D4FD3A /* ObjC */ = {
-			isa = PBXGroup;
-			children = (
-				523CD478277894E700D4FD3A /* ObjC-Bridging-Header.h */,
-				523CD4752778923B00D4FD3A /* AuthenticationServices.h */,
-				523CD4762778923B00D4FD3A /* AuthenticationServices.m */,
-			);
-			path = ObjC;
-			sourceTree = "<group>";
-		};
 		CD2CA0B5262B67CC00E0F203 /* GestureModifiers */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,7 +629,6 @@
 				520E916126E69E540090BD1F /* PopupPresenter.swift */,
 				F68108A423A5833D00B32145 /* Modifiers */,
 				F60EEBBD2382EED0007DB53A /* SwiftUI */,
-				523CD4742778921400D4FD3A /* ObjC */,
 			);
 			path = ViewInspector;
 			sourceTree = "<group>";
@@ -1119,7 +1104,6 @@
 				F6C15A2B254A0EEC000240F1 /* LazyVStack.swift in Sources */,
 				F6C15A21254A0C67000240F1 /* LazyHStack.swift in Sources */,
 				F6684BF623AA587700DECCB3 /* AngularGradient.swift in Sources */,
-				523CD4772778923B00D4FD3A /* AuthenticationServices.m in Sources */,
 				52209042277607AC001A899A /* AsyncImage.swift in Sources */,
 				F6684BFA23AA809300DECCB3 /* LinearGradient.swift in Sources */,
 				F6D933B72385EDCB00358E0E /* Picker.swift in Sources */,
@@ -1442,7 +1426,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Sources/ViewInspector/ObjC/ObjC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = ViewInspector;
@@ -1472,7 +1455,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Sources/ViewInspector/ObjC/ObjC-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = ViewInspector;
 			};
