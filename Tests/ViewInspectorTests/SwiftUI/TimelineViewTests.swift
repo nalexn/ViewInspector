@@ -2,10 +2,12 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class TimelineViewTests: XCTestCase {
     
     func testEnclosedView() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = TimelineView(.everyMinute) { timeline in
             Text("\(timeline.date)")
         }
@@ -16,6 +18,8 @@ final class TimelineViewTests: XCTestCase {
     }
     
     func testResetsModifiers() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = TimelineView(.everyMinute) { _ in
             EmptyView()
         }.padding()
@@ -24,6 +28,8 @@ final class TimelineViewTests: XCTestCase {
     }
     
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let view = Button(action: { }, label: {
             TimelineView(.everyMinute) { _ in EmptyView() }
         })
@@ -31,6 +37,8 @@ final class TimelineViewTests: XCTestCase {
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let view = HStack {
             TimelineView(.everyMinute) { _ in EmptyView() }
             TimelineView(.everyMinute) { _ in EmptyView() }
@@ -40,6 +48,8 @@ final class TimelineViewTests: XCTestCase {
     }
     
     func testSearch() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = try AnyView(TimelineView(.everyMinute) { _ in
             EmptyView()
         }).inspect()

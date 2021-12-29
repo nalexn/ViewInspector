@@ -2,12 +2,14 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class AsyncImageTests: XCTestCase {
     
     private let testURL = URL(string: "https://sample.com/image.png")!
     
     func testEnclosedView() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = AsyncImage(url: testURL, content: { phase in
             switch phase {
             case .success(let image): AnyView(image)
@@ -26,6 +28,8 @@ final class AsyncImageTests: XCTestCase {
     }
     
     func testResetsModifiers() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = AsyncImage(url: testURL, content: { _ in
             EmptyView()
         }).padding()
@@ -34,11 +38,15 @@ final class AsyncImageTests: XCTestCase {
     }
     
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let view = Button(action: { }, label: { AsyncImage(url: testURL) })
         XCTAssertNoThrow(try view.inspect().button().labelView().asyncImage())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let view = HStack {
             AsyncImage(url: testURL)
             AsyncImage(url: testURL)
@@ -48,6 +56,8 @@ final class AsyncImageTests: XCTestCase {
     }
     
     func testSearch() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = try AnyView(AsyncImage(url: testURL, content: { phase in
             switch phase {
             case .success(let image): AnyView(image)
@@ -65,16 +75,22 @@ final class AsyncImageTests: XCTestCase {
     }
     
     func testURLExtraction() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = try AsyncImage(url: testURL).inspect().asyncImage()
         XCTAssertEqual(try sut.url(), testURL)
     }
     
     func testScale() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut = try AsyncImage(url: testURL, scale: 0.3).inspect().asyncImage()
         XCTAssertEqual(try sut.scale(), 0.3)
     }
     
     func testTransaction() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         var transaction = Transaction()
         transaction.disablesAnimations = true
         transaction.isContinuous = true

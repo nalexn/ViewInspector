@@ -3,12 +3,14 @@ import SwiftUI
 import AVKit
 @testable import ViewInspector
 
-@available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class VideoPlayerTests: XCTestCase {
     
     private let player = AVPlayer(url: URL(string: "https://sample.com/test.mp4")!)
     
     func testEnclosedView() throws {
+        guard #available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
         let sut = VideoPlayer(player: player, videoOverlay: {
             Text("Test")
         })
@@ -17,6 +19,8 @@ final class VideoPlayerTests: XCTestCase {
     }
     
     func testResetsModifiers() throws {
+        guard #available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
         let sut = VideoPlayer(player: player, videoOverlay: {
             EmptyView()
         }).padding()
@@ -25,6 +29,8 @@ final class VideoPlayerTests: XCTestCase {
     }
     
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
         let view = Button(action: { }, label: {
             VideoPlayer(player: player)
         })
@@ -32,6 +38,8 @@ final class VideoPlayerTests: XCTestCase {
     }
     
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
         let view = HStack {
             VideoPlayer(player: player)
             VideoPlayer(player: player)
@@ -41,6 +49,8 @@ final class VideoPlayerTests: XCTestCase {
     }
     
     func testSearch() throws {
+        guard #available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
         let sut = try AnyView(VideoPlayer(player: player, videoOverlay: {
             EmptyView()
         })).inspect()
@@ -49,6 +59,8 @@ final class VideoPlayerTests: XCTestCase {
     }
     
     func testPlayerExtraction() throws {
+        guard #available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
         let sut1 = VideoPlayer(player: player)
         let value = try sut1.inspect().videoPlayer().player()
         XCTAssertEqual(player, value)
