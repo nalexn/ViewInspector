@@ -1,7 +1,8 @@
 @import Foundation;
 
 #if __has_include(<AuthenticationServices/ASAuthorization.h>)
-@import AuthenticationServices;
+#import <AuthenticationServices/ASAuthorization.h>
+#import <AuthenticationServices/ASAuthorizationAppleIDCredential.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

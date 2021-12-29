@@ -1,6 +1,6 @@
 import SwiftUI
 #if canImport(AuthenticationServices)
-import AuthenticationServices
+import AuthenticationServices.ASAuthorizationAppleIDButton
 #endif
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

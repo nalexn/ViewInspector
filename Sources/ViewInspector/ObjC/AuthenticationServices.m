@@ -1,7 +1,6 @@
 #import "AuthenticationServices.h"
 
 #if __has_include(<AuthenticationServices/ASAuthorization.h>)
-@import AuthenticationServices;
 
 @implementation VIASAuthorization {
     id<ASAuthorizationProvider> _provider;

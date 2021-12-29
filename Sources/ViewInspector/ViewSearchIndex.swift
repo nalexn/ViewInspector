@@ -54,7 +54,9 @@ internal extension ViewSearch {
             .init(ViewType.TupleView.self), .init(ViewType.Toolbar.self),
             .init(ViewType.Toolbar.Item.self, genericTypeName: nil),
             .init(ViewType.Toolbar.ItemGroup.self, genericTypeName: nil),
-            .init(ViewType.ViewModifierContent.self), .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
+            .init(ViewType.VideoPlayer.self),
+            .init(ViewType.ViewModifierContent.self),
+            .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
             .init(ViewType.ZStack.self)
         ]
 

@@ -46,6 +46,8 @@
 		523CD4772778923B00D4FD3A /* AuthenticationServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 523CD4762778923B00D4FD3A /* AuthenticationServices.m */; };
 		523CD47A277BC8A700D4FD3A /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD479277BC8A700D4FD3A /* TimelineView.swift */; };
 		523CD47C277BC91400D4FD3A /* TimelineViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */; };
+		523CD47E277C882E00D4FD3A /* VideoPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47D277C882E00D4FD3A /* VideoPlayerTests.swift */; };
+		523CD480277C98FC00D4FD3A /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47F277C98FC00D4FD3A /* VideoPlayer.swift */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
@@ -316,6 +318,8 @@
 		523CD478277894E700D4FD3A /* ObjC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjC-Bridging-Header.h"; sourceTree = "<group>"; };
 		523CD479277BC8A700D4FD3A /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewTests.swift; sourceTree = "<group>"; };
+		523CD47D277C882E00D4FD3A /* VideoPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTests.swift; sourceTree = "<group>"; };
+		523CD47F277C98FC00D4FD3A /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
@@ -728,6 +732,7 @@
 				F64A2C6723A3FD3A00A4853A /* TreeView.swift */,
 				F653BDE2255698A6001FA688 /* TupleView.swift */,
 				5236C34226CDC2F4007432E1 /* UnaryViewAdaptor.swift */,
+				523CD47F277C98FC00D4FD3A /* VideoPlayer.swift */,
 				F6D933B22385ED1400358E0E /* VSplitView.swift */,
 				F60EEBC92382EED0007DB53A /* VStack.swift */,
 				F60EEBC12382EED0007DB53A /* ZStack.swift */,
@@ -844,6 +849,7 @@
 				F639DBC423A7DFA6003A6FED /* TouchBarTests.swift */,
 				F64A2C6923A3FE3100A4853A /* TreeViewTests.swift */,
 				F653BDEC25569D2E001FA688 /* TupleViewTests.swift */,
+				523CD47D277C882E00D4FD3A /* VideoPlayerTests.swift */,
 				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
@@ -1076,6 +1082,7 @@
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
 				F6FB7F5825476431006658EF /* ColorPicker.swift in Sources */,
 				52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */,
+				523CD480277C98FC00D4FD3A /* VideoPlayer.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
 				523CD47A277BC8A700D4FD3A /* TimelineView.swift in Sources */,
@@ -1251,6 +1258,7 @@
 				5250764D265185A800ADE4E7 /* ActionSheetTests.swift in Sources */,
 				F6B7D00A2494E12F00ABB5E0 /* CustomViewBuilderTests.swift in Sources */,
 				5220905027763E1D001A899A /* LocationButtonTests.swift in Sources */,
+				523CD47E277C882E00D4FD3A /* VideoPlayerTests.swift in Sources */,
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6C15A17254A0BB5000240F1 /* LazyHStackTests.swift in Sources */,
 				CDA8449B262B723D00C56C98 /* SimultaneousGestureModifierTests.swift in Sources */,

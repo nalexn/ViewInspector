@@ -112,7 +112,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| TupleView | |
 |:white_check_mark:| VSplitView | `contained view` |
 |:white_check_mark:| VStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
-|:technologist:| VideoPlayer | |
+|:white_check_mark:| VideoPlayer | `player: AVPlayer?`, `videoOverlay view` |
 |:white_check_mark:| ZStack | `contained view` |
 
 (*) The following attributes are available directly for the `Font` and `Image` SwiftUI types, as opposed to the attributes available for wrapper views extracted from the hierarchy. In case you obtained an image view from the hierarchy using `image()` call, you'd need to additionally call `actualImage: Image` to get the genuine `Image` structure.
