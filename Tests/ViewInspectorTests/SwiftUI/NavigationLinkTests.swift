@@ -68,7 +68,8 @@ final class NavigationLinkTests: XCTestCase {
     
     @available(watchOS 7.0, *)
     func testNavigationWithoutBindingAndState() throws {
-        guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) else { return }
+        guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *)
+        else { throw XCTSkip() }
         let view = NavigationView {
             NavigationLink(
                 destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }

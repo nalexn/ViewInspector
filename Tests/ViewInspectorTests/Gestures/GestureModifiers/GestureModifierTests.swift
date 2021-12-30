@@ -34,7 +34,7 @@ final class GestureModifierTests: XCTestCase {
     }
     
     func testGestureInspectionFailureDueToTypeMismatch() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .gesture(LongPressGesture())
         XCTAssertThrows(
@@ -43,7 +43,7 @@ final class GestureModifierTests: XCTestCase {
     }
     
     func testGestureInspectionWithIndex1() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .gesture(DragGesture())
             .gesture(LongPressGesture())
@@ -52,7 +52,7 @@ final class GestureModifierTests: XCTestCase {
     }
     
     func testGestureInspectionWithIndex2() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .gesture(DragGesture())
             .highPriorityGesture(TapGesture())
@@ -62,7 +62,7 @@ final class GestureModifierTests: XCTestCase {
     }
     
     func testGestureInspectionWithIndexFailureDueToNoModifier() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .gesture(DragGesture())
             .gesture(LongPressGesture())
@@ -72,7 +72,7 @@ final class GestureModifierTests: XCTestCase {
     }
     
     func testGestureInspectionWithIndexFailureDueToTypeMismatch() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .gesture(DragGesture())
             .gesture(LongPressGesture())
@@ -91,7 +91,7 @@ final class GestureModifierTests: XCTestCase {
     }
     
     func testGestureInspectionWithIndexPathToRoot() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .padding(100)
             .gesture(DragGesture())

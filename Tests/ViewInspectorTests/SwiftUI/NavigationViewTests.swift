@@ -53,38 +53,3 @@ final class NavigationViewTests: XCTestCase {
                        "anyView().navigationView().text(0)")
     }
 }
-
-// MARK: - View Modifiers
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
-final class GlobalModifiersForNavigationView: XCTestCase {
-    
-    func testNavigationViewStyle() throws {
-        let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testNavigationStyleInspection() throws {
-        let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
-        XCTAssertTrue(try sut.inspect().navigationViewStyle() is DefaultNavigationViewStyle)
-    }
-    
-    #if !os(macOS)
-    func testNavigationBarTitle() throws {
-        let sut = EmptyView().navigationBarTitle("")
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    
-    func testNavigationBarHidden() throws {
-        let sut = EmptyView().navigationBarHidden(false)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-    
-    #if !os(macOS)
-    func testNavigationBarBackButtonHidden() throws {
-        let sut = EmptyView().navigationBarBackButtonHidden(false)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-}

@@ -53,7 +53,7 @@ final class TransitiveModifiersTests: XCTestCase {
     }
     
     func testAllowsHitTestingInheritance() throws {
-        guard #available(macOS 11.0, *) else { return }
+        guard #available(macOS 11.0, *) else { throw XCTSkip() }
         let sut = try AllowsHitTestingTestView().inspect()
         XCTAssertTrue(try sut.find(button: "1").allowsHitTesting())
         XCTAssertTrue(try sut.find(button: "2").allowsHitTesting())

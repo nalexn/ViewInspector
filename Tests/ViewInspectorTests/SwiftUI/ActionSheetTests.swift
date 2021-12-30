@@ -209,6 +209,14 @@ final class ActionSheetTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().find(text: "button_3_0").pathToRoot,
             "view(ActionSheetFindTestView.self).hStack().emptyView(0).actionSheet(1).button(0).labelView()")
     }
+    
+    func testAlertVsActionSheetMessage() throws {
+        let sut = try PopupMixTestView().inspect().emptyView()
+        let alert = try sut.alert()
+        let sheet = try sut.actionSheet()
+        XCTAssertEqual(try alert.message().text().string(), "Alert Message")
+        XCTAssertEqual(try sheet.message().string(), "Sheet Message")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -277,6 +285,23 @@ private struct ActionSheetFindTestView: View, Inspectable {
                                 buttons: [.cancel(Text("button_3_0"), action: nil)])
                 }
         }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct PopupMixTestView: View, Inspectable {
+    
+    @Binding var isAlertPresented = true
+    @Binding var isActionSheetPresented = true
+    
+    var body: some View {
+        EmptyView()
+            .alert2(isPresented: $isAlertPresented) {
+                Alert(title: Text("Alert"), message: Text("Alert Message"), dismissButton: nil)
+            }
+            .actionSheet2(isPresented: $isActionSheetPresented) {
+                ActionSheet(title: Text("Sheet"), message: Text("Sheet Message"))
+            }
     }
 }
 #endif

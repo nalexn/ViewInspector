@@ -9,19 +9,19 @@ import SwiftUI
 final class DisclosureGroupTests: XCTestCase {
     
     func testInspect() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = DisclosureGroup(content: { EmptyView() }, label: { EmptyView() })
         XCTAssertNoThrow(try view.inspect())
     }
     
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = AnyView(DisclosureGroup(content: { EmptyView() }, label: { EmptyView() }))
         XCTAssertNoThrow(try view.inspect().anyView().disclosureGroup())
     }
     
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = HStack {
             Text("")
             DisclosureGroup(content: { EmptyView() }, label: { EmptyView() })
@@ -31,21 +31,21 @@ final class DisclosureGroupTests: XCTestCase {
     }
     
     func testLabelInspection() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sut = DisclosureGroup(content: { EmptyView() }, label: { Text("abc") })
         let string = try sut.inspect().disclosureGroup().labelView().text().string()
         XCTAssertEqual(string, "abc")
     }
     
     func testContentInspection() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sut = DisclosureGroup(content: { Text("abc") }, label: { EmptyView() })
         let string = try sut.inspect().disclosureGroup().text(0).string()
         XCTAssertEqual(string, "abc")
     }
     
     func testToupleContentInspection() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sut = DisclosureGroup(content: {
                                     EmptyView()
                                     Text("abc")
@@ -55,7 +55,7 @@ final class DisclosureGroupTests: XCTestCase {
     }
     
     func testSearch() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sut = DisclosureGroup(content: {
                                     EmptyView()
                                     Text("abc")
@@ -67,7 +67,7 @@ final class DisclosureGroupTests: XCTestCase {
     }
     
     func testExpansionError() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sut = DisclosureGroup("", content: { EmptyView() })
         XCTAssertFalse(try sut.inspect().disclosureGroup().isExpanded())
         // swiftlint:disable line_length
@@ -77,7 +77,7 @@ final class DisclosureGroupTests: XCTestCase {
     }
     
     func testExpansionWithStateActivation() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let view = TestViewState()
         XCTAssertFalse(view.state.expanded)
         XCTAssertFalse(try view.inspect().disclosureGroup().isExpanded())
@@ -88,7 +88,7 @@ final class DisclosureGroupTests: XCTestCase {
     }
     
     func testExpansionWithBindingActivation() throws {
-        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { return }
+        guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let expanded = Binding<Bool>(wrappedValue: false)
         let view = TestViewBinding(expanded: expanded)
         XCTAssertFalse(try view.inspect().disclosureGroup().isExpanded())

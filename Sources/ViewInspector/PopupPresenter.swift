@@ -147,9 +147,15 @@ internal extension ViewType {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewType {
+    static var popupContainerTypePrefix = "ViewInspector.ViewType.PopupContainer"
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType.PopupContainer {
     static var typePrefix: String {
-        "ViewInspector.ViewType.PopupContainer<ViewInspector.ViewType.\(Inspector.typeName(type: Popup.self))>"
+        return ViewType.popupContainerTypePrefix +
+            "<ViewInspector.ViewType.\(Inspector.typeName(type: Popup.self))>"
     }
 }
 

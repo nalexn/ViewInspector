@@ -101,6 +101,40 @@ final class GlobalModifiersForList: XCTestCase {
         let sut = EmptyView().listRowBackground(Text("test").padding())
         XCTAssertNoThrow(try sut.inspect().find(text: "test"))
     }
+
+    func testListItemTint() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().listItemTint(.red)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testFixedListItemTint() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().listItemTint(.fixed(.red))
+        let tint = try sut.inspect().listItemTint()
+        XCTAssertEqual(tint.color, .red)
+        XCTAssertTrue(tint.isFixed)
+    }
+
+    func testListItemTintColor() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().listItemTint(.red)
+        let tint = try sut.inspect().listItemTint()
+        XCTAssertEqual(tint.color, .red)
+        XCTAssertTrue(tint.isFixed)
+    }
+
+    func testPreferredListItemTint() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().listItemTint(.preferred(.red))
+        let tint = try sut.inspect().listItemTint()
+        XCTAssertEqual(tint.color, .red)
+        XCTAssertFalse(tint.isFixed)
+    }
     
     func testListStyle() throws {
         let sut = EmptyView().listStyle(DefaultListStyle())

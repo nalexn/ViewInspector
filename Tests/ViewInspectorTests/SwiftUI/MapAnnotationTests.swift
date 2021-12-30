@@ -11,7 +11,8 @@ class MapAnnotationTests: XCTestCase {
     private let testAnchor = CGPoint(x: 3, y: 4)
 
     func testMapAnnotationAttributes() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let sut = MapAnnotation(coordinate: testCoordinate, anchorPoint: testAnchor) {
             EmptyView()
             Text("abc")
@@ -24,21 +25,24 @@ class MapAnnotationTests: XCTestCase {
     }
     
     func testMapMarkerAttributes() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let sut = MapMarker(coordinate: testCoordinate, tint: .red)
         XCTAssertEqual(try sut.coordinate(), testCoordinate)
         XCTAssertEqual(try sut.tintColor(), .red)
     }
     
     func testMapPinAttributes() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let sut = MapPin(coordinate: testCoordinate, tint: .blue)
         XCTAssertEqual(try sut.coordinate(), testCoordinate)
         XCTAssertEqual(try sut.tintColor(), .blue)
     }
     
     func testExtractionFromMap() throws {
-        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let coord = CLLocationCoordinate2D(latitude: 1, longitude: 2)
         let region = Binding<MKCoordinateRegion>(wrappedValue: .init())
         let items = Array(0...5)

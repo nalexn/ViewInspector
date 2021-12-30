@@ -23,7 +23,7 @@ final class LongPressGestureTests: XCTestCase {
     }
     
     override func setUpWithError() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         longPressFinished = false
         _longPressValue = LongPressGesture.Value(finished: longPressFinished!)
         
@@ -40,14 +40,14 @@ final class LongPressGestureTests: XCTestCase {
     }
 
     func testCreateLongPressGestureValue() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         XCTAssertNotNil(longPressFinished)
         let value = try longPressValue()
         assertLongPressValue(value)
     }
     
     func testLongPressGestureMask() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().maskTest()
     }
     
@@ -62,17 +62,17 @@ final class LongPressGestureTests: XCTestCase {
     #endif
     
     func testLongPressGestureWithUpdatingModifier() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().propertiesWithUpdatingModifierTest()
     }
     
     func testLongPressGestureWithOnChangedModifier() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().propertiesWithOnChangedModifierTest()
     }
     
     func testLongPressGestureWithOnEndedModifier() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().propertiesWithOnEndedModifierTest()
     }
     
@@ -83,67 +83,67 @@ final class LongPressGestureTests: XCTestCase {
     #endif
     
     func testLongPressGestureFailure() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().propertiesFailureTest("LongPressGesture")
     }
 
     func testLongPressGestureCallUpdating() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callUpdatingTest()
     }
     
     func testLongPressGestureCallUpdatingNotFirst() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callUpdatingNotFirstTest()
     }
 
     func testLongPressGestureCallUpdatingMultiple() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callUpdatingMultipleTest()
     }
     
     func testLongPressGestureCallUpdatingFailure() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callUpdatingFailureTest()
     }
     
     func testLongPressGestureCallOnChanged() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callOnChangedTest()
     }
     
     func testLongPressGestureCallOnChangedNotFirst() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callOnChangedNotFirstTest()
     }
     
     func testLongPressGestureCallOnChangedMultiple() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callOnChangedMultipleTest()
     }
     
     func testLongPressGestureCallOnChangedFailure() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callOnChangedFailureTest()
     }
     
     func testLongPressGestureCallOnEnded() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callOnEndedTest()
     }
     
     func testLongPressGestureCallOnEndedNotFirst() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callOnEndedNotFirstTest()
     }
 
     func testLongPressGestureCallOnEndedMultiple() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callOnEndedMultipleTest()
     }
     
     func testLongPressGestureCallOnEndedFailure() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         try gestureTests().callOnEndedFailureTest()
     }
     

@@ -135,10 +135,21 @@ final class ViewGraphicalEffectsTests: XCTestCase {
     func testBorderInspection() throws {
         let gradient = LinearGradient(gradient: Gradient(colors: [.red]),
                                       startPoint: .bottom, endPoint: .top)
-        let sut = try EmptyView().border(gradient, width: 7)
+        let sut1 = try EmptyView().border(gradient, width: 7)
             .inspect().emptyView().border(LinearGradient.self)
-        XCTAssertEqual(sut.content, gradient)
-        XCTAssertEqual(sut.width, 7)
+        XCTAssertEqual(sut1.shapeStyle, gradient)
+        XCTAssertEqual(sut1.width, 7)
+        
+        let borderSimulator = Rectangle()
+            .strokeBorder(Color.red, lineWidth: 3, antialiased: true)
+        let sut2 = try EmptyView().overlay(borderSimulator).inspect()
+        let border = try sut2.border(Color.self)
+        XCTAssertEqual(border.width, 3)
+        XCTAssertNoThrow(try sut2.overlay().shape())
+        
+        let sut3 = EmptyView().padding()
+        XCTAssertThrows(try sut3.inspect().border(LinearGradient.self),
+            "EmptyView does not have 'border' modifier")
     }
     
     func testBlendMode() throws {

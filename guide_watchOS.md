@@ -1,6 +1,6 @@
 # View Hosting on watchOS
 
-Because of WatchKit API limitations **ViewInspector** currently cannot automatically host your views for asynchronous tests - you need to add [this swift file](https://github.com/nalexn/ViewInspector/blob/0.8.2/.watchOS/watchOS-Ext/watchOSApp%2BTestable.swift) to your **watchOS extension target**.
+Because of WatchKit API limitations **ViewInspector** currently cannot automatically host your views for asynchronous tests - you need to add [this swift file](https://github.com/nalexn/ViewInspector/blob/master/.watchOS/watchOS-Ext/watchOSApp%2BTestable.swift) to your **watchOS extension target**.
 
 Then, add the appropriate code snippet, depending on your setup:
 

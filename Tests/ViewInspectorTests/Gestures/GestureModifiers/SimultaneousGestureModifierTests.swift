@@ -37,7 +37,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
     }
     
     func testSimultaneousGestureInspectionFailureDueToTypeMismatch() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .simultaneousGesture(LongPressGesture())
         XCTAssertThrows(
@@ -46,7 +46,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
     }
     
     func testSimultaneousGestureInspectionWithIndex1() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .simultaneousGesture(DragGesture())
             .simultaneousGesture(LongPressGesture())
@@ -55,7 +55,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
     }
     
     func testSimultaneousGestureInspectionWithIndex2() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .simultaneousGesture(DragGesture())
             .gesture(TapGesture())
@@ -65,7 +65,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
     }
     
     func testSimultaneousGestureInspectionWithIndexFailureDueToNoModifier() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .simultaneousGesture(DragGesture())
             .simultaneousGesture(LongPressGesture())
@@ -75,7 +75,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
     }
     
     func testSimultaneousGestureInspectionWithIndexFailureDueToTypeMismatch() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .simultaneousGesture(DragGesture())
             .simultaneousGesture(LongPressGesture())
@@ -93,7 +93,7 @@ final class SimultaneousGestureModifierTests: XCTestCase {
     }
     
     func testSimultaneousGestureInspectionWithIndexPathToRoot() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .padding(100)
             .simultaneousGesture(DragGesture())

@@ -95,7 +95,8 @@ final class GlobalModifiersForTabView: XCTestCase {
     
     #if os(iOS) || os(tvOS)
     func testTabViewStyleInspection() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
         let style = PageTabViewStyle(indexDisplayMode: .never)
         let view = EmptyView().tabViewStyle(style)
         let sut = try XCTUnwrap(try view.inspect().tabViewStyle() as? PageTabViewStyle)
@@ -103,7 +104,8 @@ final class GlobalModifiersForTabView: XCTestCase {
     }
     
     func testPageTabViewStyleEquatable() throws {
-        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *) else { return }
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
         let styles = [PageTabViewStyle(indexDisplayMode: .always),
                       PageTabViewStyle(indexDisplayMode: .automatic),
                       PageTabViewStyle(indexDisplayMode: .never)]
@@ -114,7 +116,7 @@ final class GlobalModifiersForTabView: XCTestCase {
     }
     
     func testIndexViewStyleInspection() throws {
-        guard #available(iOS 14, tvOS 14, *) else { return }
+        guard #available(iOS 14, tvOS 14, *) else { throw XCTSkip() }
         let sut = EmptyView().indexViewStyle(PageIndexViewStyle())
         XCTAssertTrue(try sut.inspect().indexViewStyle() is PageIndexViewStyle)
     }

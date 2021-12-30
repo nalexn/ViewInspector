@@ -37,7 +37,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
     }
     
     func testHighPriorityGestureInspectionFailureDueToTypeMismatch() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .highPriorityGesture(LongPressGesture())
         XCTAssertThrows(
@@ -46,7 +46,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
     }
     
     func testHighPriorityGestureInspectionWithIndex1() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .highPriorityGesture(DragGesture())
             .highPriorityGesture(LongPressGesture())
@@ -55,7 +55,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
     }
     
     func testHighPriorityGestureInspectionWithIndex2() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .highPriorityGesture(DragGesture())
             .gesture(TapGesture())
@@ -65,7 +65,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
     }
     
     func testHighPriorityGestureInspectionWithIndexFailureDueToNoModifier() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .highPriorityGesture(DragGesture())
             .highPriorityGesture(LongPressGesture())
@@ -75,7 +75,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
     }
     
     func testHighPriorityGestureInspectionWithIndexFailureDueToTypeMismatch() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .highPriorityGesture(DragGesture())
             .highPriorityGesture(LongPressGesture())
@@ -93,7 +93,7 @@ final class HighPriorityGestureModifierTests: XCTestCase {
     }
     
     func testHighPriorityGestureInspectionWithIndexPathToRoot() throws {
-        guard #available(tvOS 14.0, *) else { return }
+        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .padding(100)
             .highPriorityGesture(DragGesture())

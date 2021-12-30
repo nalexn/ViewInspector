@@ -2,20 +2,19 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-#if !os(macOS) && !targetEnvironment(macCatalyst) // requires macOS SDK 12.0
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class SafeAreaInsetTests: XCTestCase {
     
     func testInspectionNotBlocked() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().safeAreaInset(edge: .bottom) { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testInspectionErrorNoModifier() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().offset()
         XCTAssertThrows(try sut.inspect().emptyView().safeAreaInset(),
                         "EmptyView does not have 'safeAreaInset' modifier")
@@ -23,7 +22,7 @@ final class SafeAreaInsetTests: XCTestCase {
     
     func testSimpleUnwrap() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().safeAreaInset(edge: .bottom) { Text("") }
         XCTAssertEqual(try sut.inspect().emptyView().safeAreaInset().pathToRoot,
                        "emptyView().safeAreaInset()")
@@ -31,7 +30,7 @@ final class SafeAreaInsetTests: XCTestCase {
     
     func testContentUnwrap() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().safeAreaInset(edge: .bottom) { Text("abc") }
         let text = try sut.inspect().safeAreaInset().text()
         XCTAssertEqual(try text.string(), "abc")
@@ -39,14 +38,14 @@ final class SafeAreaInsetTests: XCTestCase {
     
     func testEdge() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().safeAreaInset(edge: .bottom) { Text("") }
         XCTAssertEqual(try sut.inspect().safeAreaInset().edge(), .bottom)
     }
     
     func testSpacing() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut1 = EmptyView().safeAreaInset(edge: .bottom, spacing: 19) { Text("") }
         let sut2 = EmptyView().safeAreaInset(edge: .bottom) { Text("") }
         XCTAssertEqual(try sut1.inspect().safeAreaInset().spacing(), 19)
@@ -55,14 +54,14 @@ final class SafeAreaInsetTests: XCTestCase {
     
     func testRegions() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().safeAreaInset(edge: .bottom) { Text("") }
         XCTAssertEqual(try sut.inspect().safeAreaInset().regions(), .container)
     }
     
     func testSearch() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = Group {
             EmptyView()
             Text("")
@@ -76,4 +75,3 @@ final class SafeAreaInsetTests: XCTestCase {
                        "group().text(1).safeAreaInset(1).text()")
     }
 }
-#endif

@@ -29,7 +29,8 @@ final class EditButtonTests: XCTestCase {
     }
     
     func testEditMode() throws {
-        guard #available(iOS 13.1, macOS 10.15, tvOS 13.1, *) else { return }
+        guard #available(iOS 13.1, macOS 10.15, tvOS 13.1, *)
+        else { throw XCTSkip() }
         let view = EditButton()
         XCTAssertNoThrow(try view.inspect().editButton().editMode())
     }

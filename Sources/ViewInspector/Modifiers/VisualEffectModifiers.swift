@@ -82,15 +82,13 @@ public extension InspectableView {
         return (color, radius, offset)
     }
     
-    func border<S>(_ type: S.Type) throws -> (content: S, width: CGFloat) {
-        let content = try modifierAttribute(modifierName:
-            "_OverlayModifier<_ShapeView<_StrokedShape", path: "modifier|overlay|style",
-            type: Any.self, call: "border")
-        let castedContent = try Inspector.cast(value: content, type: S.self)
-        let width = try modifierAttribute(modifierName:
-            "_OverlayModifier<_ShapeView<_StrokedShape", path: "modifier|overlay|shape|style|lineWidth",
-            type: CGFloat.self, call: "border")
-        return (castedContent, width)
+    func border<S: ShapeStyle>(_ style: S.Type) throws -> (shapeStyle: S, width: CGFloat) {
+        let shape = try contentForModifierLookup
+            .overlay(parent: self, api: .border, index: nil)
+            .shape()
+        let shapeStyle = try shape.fillShapeStyle(style)
+        let width = try shape.strokeStyle().lineWidth
+        return (shapeStyle, width)
     }
     
     func blendMode() throws -> BlendMode {

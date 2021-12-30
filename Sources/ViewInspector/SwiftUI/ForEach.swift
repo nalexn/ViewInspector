@@ -15,7 +15,7 @@ public extension ViewType {
 extension ViewType.ForEach: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
-        let provider = try Inspector.cast(value: content.view, type: ForEachContentProvider.self)
+        let provider = try Inspector.cast(value: content.view, type: MultipleViewProvider.self)
         let children = try provider.views()
         return LazyGroup(count: children.count) { index in
             try Inspector.unwrap(view: try children.element(at: index),
@@ -85,12 +85,7 @@ public extension InspectableView where View == ViewType.ForEach {
 // MARK: - Private
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private protocol ForEachContentProvider {
-    func views() throws -> LazyGroup<Any>
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ForEach: ForEachContentProvider {
+extension ForEach: MultipleViewProvider {
     
     func views() throws -> LazyGroup<Any> {
         

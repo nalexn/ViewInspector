@@ -39,16 +39,3 @@ final class ViewControlAttributesTests: XCTestCase {
     }
     #endif
 }
-
-// MARK: - StatusBarConfigurationTests
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-final class StatusBarConfigurationTests: XCTestCase {
-    
-    #if os(iOS)
-    func testStatusBarHidden() throws {
-        let sut = EmptyView().statusBar(hidden: false)
-        XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-    #endif
-}

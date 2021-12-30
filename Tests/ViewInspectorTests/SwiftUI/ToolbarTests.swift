@@ -7,7 +7,7 @@ final class ToolbarTests: XCTestCase {
     
     func testToolbarItemPlacementEquatable() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         #if os(iOS)
         let values: [ToolbarItemPlacement] = [
             .automatic, .principal, .bottomBar, .navigation,
@@ -31,7 +31,7 @@ final class ToolbarTests: XCTestCase {
     
     func testDoesNotBlockInspection() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = Group {
             EmptyView().offset().toolbar { Text("") }.padding()
         }
@@ -40,7 +40,7 @@ final class ToolbarTests: XCTestCase {
     
     func testSimpleExtraction() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar { ToolbarItem { Text("abc") } }
         let text = try sut.inspect().toolbar().item().text().string()
@@ -49,7 +49,7 @@ final class ToolbarTests: XCTestCase {
     
     func testMultipleToolbarsExtraction() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar { ToolbarItem { Text("abc1") } }
             .padding()
@@ -62,7 +62,7 @@ final class ToolbarTests: XCTestCase {
     
     func testMultipleItemsExtraction() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar {
                 ToolbarItem { Text("1") }
@@ -79,7 +79,7 @@ final class ToolbarTests: XCTestCase {
     
     func testMultipleChildViewsExtraction() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar {
                 ToolbarItem { Text("1"); Text("2") }
@@ -97,7 +97,7 @@ final class ToolbarTests: XCTestCase {
     
     func testImplicitToolbarItemGroup() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().toolbar { Text("abc") }
         let text = try sut.inspect().toolbar().itemGroup().text().string()
         XCTAssertEqual(text, "abc")
@@ -105,7 +105,7 @@ final class ToolbarTests: XCTestCase {
     
     func testToolbarIdentifier() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar { Text("") }
             .toolbar(id: "abc") { ToolbarItem(id: "") { Text("") } }
@@ -115,7 +115,7 @@ final class ToolbarTests: XCTestCase {
     
     func testToolbarItemIdentifier() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().toolbar {
             ToolbarItem(id: "abc") { Text("") }
             ToolbarItem(id: "xyz") { EmptyView() }
@@ -128,7 +128,7 @@ final class ToolbarTests: XCTestCase {
     
     func testToolbarItemPlacement() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().toolbar {
             ToolbarItem(placement: .destructiveAction) { EmptyView() }
             ToolbarItem(placement: .primaryAction) { EmptyView() }
@@ -142,7 +142,7 @@ final class ToolbarTests: XCTestCase {
     
     func testToolbarItemGroupPlacement() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().toolbar {
             ToolbarItemGroup(placement: .destructiveAction) { EmptyView() }
             ToolbarItemGroup(placement: .primaryAction) { EmptyView() }
@@ -156,7 +156,7 @@ final class ToolbarTests: XCTestCase {
     
     func testToolbarItemShowsByDefault() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = EmptyView().toolbar {
             ToolbarItem(id: "", showsByDefault: false) { EmptyView() }
             ToolbarItem { EmptyView() }
@@ -168,7 +168,7 @@ final class ToolbarTests: XCTestCase {
     
     func testSearchAndPathToRoot() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        else { return }
+        else { throw XCTSkip() }
         let sut = Group {
             EmptyView()
                 .toolbar {

@@ -72,9 +72,9 @@ final class ButtonTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
     
-    #if !os(macOS) && !targetEnvironment(macCatalyst) // requires macOS SDK 12.0
     func testButtonRole() throws {
-        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else { return }
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
         let sut1 = Button(role: .cancel, action: { }, label: { Text("") })
         let sut2 = Button(role: .destructive, action: { }, label: { Text("") })
         let sut3 = Button(action: { }, label: { Text("") })
@@ -82,7 +82,6 @@ final class ButtonTests: XCTestCase {
         XCTAssertEqual(try sut2.inspect().button().role(), .destructive)
         XCTAssertNil(try sut3.inspect().button().role())
     }
-    #endif
 }
 
 // MARK: - View Modifiers
@@ -134,7 +133,8 @@ final class ButtonStyleInspectionTests: XCTestCase {
     
     #if !os(tvOS)
     func testPrimitiveButtonStyleExtraction() throws {
-        guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) else { return }
+        guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *)
+        else { throw XCTSkip() }
         let style = TestPrimitiveButtonStyle()
         let button = try style.inspect().group().view(TestPrimitiveButtonStyle.TestButton.self, 0)
         XCTAssertNoThrow(try button.anyView().styleConfigurationLabel().blur())

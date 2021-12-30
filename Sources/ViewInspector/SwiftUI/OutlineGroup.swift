@@ -39,14 +39,11 @@ public extension InspectableView where View == ViewType.OutlineGroup {
     func sourceData<T>(_ type: T.Type) throws -> T {
         let root = try (try? Inspector.attribute(path: "base|forest", value: content.view)) ??
             (try Inspector.attribute(path: "base|tree", value: content.view))
-        guard let data = root as? T else {
-            throw InspectionError.typeMismatch(root, T.self)
-        }
-        return data
+        return try Inspector.cast(value: root, type: T.self)
     }
     
     func leaf(_ dataElement: Any) throws -> InspectableView<ViewType.ClassifiedView> {
-        let provider = try Inspector.cast(value: content.view, type: LeafContentProvider.self)
+        let provider = try Inspector.cast(value: content.view, type: ElementViewProvider.self)
         let medium = content.medium.resettingViewModifiers()
         return try .init(Content(try provider.view(dataElement), medium: medium), parent: self)
     }
@@ -54,19 +51,13 @@ public extension InspectableView where View == ViewType.OutlineGroup {
 
 // MARK: - Private
 
-private protocol LeafContentProvider {
-    func view(_ element: Any) throws -> Any
-}
-
 #if os(iOS) || os(macOS)
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-extension OutlineGroup: LeafContentProvider {
+extension OutlineGroup: ElementViewProvider {
     func view(_ element: Any) throws -> Any {
-        guard let data = element as? Data.Element else {
-            throw InspectionError.typeMismatch(element, Data.Element.self)
-        }
+        let data = try Inspector.cast(value: element, type: Data.Element.self)
         typealias Builder = (Data.Element) -> Leaf
         let builder = try Inspector
             .attribute(label: "leafContent", value: self, type: Builder.self)

@@ -6,21 +6,24 @@ import SwiftUI
 final class FullScreenCoverTests: XCTestCase {
 
     func testFullScreenCover() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().fullScreenCover(isPresented: binding) { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 
     func testInspectionErrorNoModifier() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().offset()
         XCTAssertThrows(try sut.inspect().emptyView().fullScreenCover(),
                         "EmptyView does not have 'fullScreenCover' modifier")
     }
 
     func testInspectionErrorCustomModifierRequired() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().fullScreenCover(isPresented: binding) { Text("") }
         XCTAssertThrows(try sut.inspect().emptyView().fullScreenCover(),
@@ -31,7 +34,8 @@ final class FullScreenCoverTests: XCTestCase {
     }
 
     func testInspectionErrorFullScreenCoverNotPresented() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: false)
         let sut = EmptyView().fullScreenCover2(isPresented: binding) { Text("") }
         XCTAssertThrows(try sut.inspect().emptyView().fullScreenCover(),
@@ -39,7 +43,8 @@ final class FullScreenCoverTests: XCTestCase {
     }
 
     func testInspectionErrorFullScreenCoverWithItemNotPresented() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding = Binding<Int?>(wrappedValue: nil)
         let sut = EmptyView().fullScreenCover2(item: binding) { Text("\($0)") }
         XCTAssertThrows(try sut.inspect().emptyView().fullScreenCover(),
@@ -47,7 +52,8 @@ final class FullScreenCoverTests: XCTestCase {
     }
 
     func testContentInspection() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().fullScreenCover2(isPresented: binding) {
             Text("abc")
@@ -58,7 +64,8 @@ final class FullScreenCoverTests: XCTestCase {
     }
 
     func testContentInteraction() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().fullScreenCover2(isPresented: binding) {
             Text("abc")
@@ -71,7 +78,8 @@ final class FullScreenCoverTests: XCTestCase {
     }
 
     func testDismiss() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let exp = XCTestExpectation(description: #function)
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().fullScreenCover2(isPresented: binding, onDismiss: {
@@ -85,7 +93,8 @@ final class FullScreenCoverTests: XCTestCase {
     }
 
     func testDismissForItemVersion() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding = Binding<Int?>(wrappedValue: 6)
         let sut = EmptyView().fullScreenCover2(item: binding) { Text("\($0)") }
         let fullScreenCover = try sut.inspect().fullScreenCover()
@@ -97,7 +106,8 @@ final class FullScreenCoverTests: XCTestCase {
     }
 
     func testMultipleFullScreenCoversInspection() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding1 = Binding(wrappedValue: true)
         let binding2 = Binding(wrappedValue: true)
         let binding3 = Binding(wrappedValue: true)
@@ -121,7 +131,8 @@ final class FullScreenCoverTests: XCTestCase {
     }
 
     func testFindAndPathToRoots() throws {
-        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *) else { return }
+        guard #available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let binding = Binding(wrappedValue: true)
         let sut = FullScreenCoverFindTestView(
             fullScreenCover1: binding, fullScreenCover2: binding, fullScreenCover3: binding)

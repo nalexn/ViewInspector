@@ -1,6 +1,40 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView {
+    
+    @available(iOS 13.0, tvOS 13.0, *)
+    @available(macOS, unavailable)
+    func navigationBarHidden() throws -> Bool {
+        let value = try modifierAttribute(
+            modifierName: "_PreferenceWritingModifier<NavigationBarHiddenKey>",
+            path: "modifier|value", type: Any.self, call: "navigationBarHidden")
+        if let bool = value as? Bool?, let value = bool {
+            return value
+        }
+        return try Inspector.cast(value: value, type: Bool.self)
+    }
+    
+    @available(iOS 13.0, tvOS 13.0, *)
+    @available(macOS, unavailable)
+    func navigationBarBackButtonHidden() throws -> Bool {
+        return try modifierAttribute(
+            modifierName: "_PreferenceWritingModifier<NavigationBarBackButtonHiddenKey>",
+            path: "modifier|value", type: Bool.self, call: "navigationBarBackButtonHidden")
+    }
+    
+    @available(iOS 13.0, *)
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
+    func statusBarHidden() throws -> Bool {
+        return try modifierAttribute(
+            modifierName: "TransactionalPreferenceModifier<Bool, StatusBarKey>",
+            path: "modifier|value", type: Bool.self, call: "statusBar(hidden:)")
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType {
     struct EnvironmentReaderView { }
 }
@@ -22,14 +56,10 @@ extension ViewType.EnvironmentReaderView: SingleViewContent {
 @available(watchOS, unavailable)
 public extension InspectableView where View: SingleViewContent {
     
-    @available(iOS, deprecated: 100000.0, message: "Please use `toolbar()` for inspecting `navigationBarItems`")
-    @available(tvOS, deprecated: 100000.0, message: "Please use `toolbar()` for inspecting `navigationBarItems`")
     func navigationBarItems() throws -> InspectableView<ViewType.ClassifiedView> {
         return try navigationBarItems(AnyView.self)
     }
     
-    @available(iOS, deprecated: 100000.0, message: "Please use `toolbar()` for inspecting `navigationBarItems`")
-    @available(tvOS, deprecated: 100000.0, message: "Please use `toolbar()` for inspecting `navigationBarItems`")
     func navigationBarItems<V>(_ viewType: V.Type) throws ->
         InspectableView<ViewType.ClassifiedView> where V: SwiftUI.View {
         return try navigationBarItems(viewType: viewType, content: try child())

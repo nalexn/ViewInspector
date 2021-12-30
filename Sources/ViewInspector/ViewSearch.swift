@@ -343,7 +343,7 @@ private extension UnwrappedView {
     
     func blockersDescription(_ views: [Any]) -> [String] {
         return views.map { view -> String in
-            let name = Inspector.typeName(value: view, prefixOnly: false)
+            let name = Inspector.typeName(value: view)
             if name.hasPrefix("EnvironmentReaderView") {
                 return "navigationBarItems"
             }

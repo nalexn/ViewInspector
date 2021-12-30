@@ -97,12 +97,10 @@ public extension InspectableView where View == ViewType.ConfirmationDialog {
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
-    #if !os(macOS) && !targetEnvironment(macCatalyst) // requires macOS SDK 12.0
     func titleVisibility() throws -> Visibility {
         return try Inspector.attribute(
             label: "titleVisibility", value: content.view, type: Visibility.self)
     }
-    #endif
     
     func dismiss() throws {
         try isPresentedBinding().wrappedValue = false

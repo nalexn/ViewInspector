@@ -44,7 +44,7 @@ final class InspectorTests: XCTestCase {
         XCTAssertEqual(name1, "Struct3<Int>")
         let name2 = Inspector.typeName(value: testValue)
         XCTAssertEqual(name2, "Struct1")
-        let name3 = Inspector.typeName(value: Struct3<Int>(), prefixOnly: true)
+        let name3 = Inspector.typeName(value: Struct3<Int>(), generics: .remove)
         XCTAssertEqual(name3, "Struct3")
     }
     

@@ -36,10 +36,10 @@ public struct InspectableView<View> where View: KnownViewType {
                                     inspectionCall: inspectionCall)
         } catch {
             if let err = error as? InspectionError, case .typeMismatch = err {
-                let factual = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
-                    .sanitizeNamespace()
+                let factual = Inspector.typeName(value: content.view, namespaced: true)
+                    .removingSwiftUINamespace()
                 let expected = View.namespacedPrefixes
-                    .map { $0.sanitizeNamespace() }
+                    .map { $0.removingSwiftUINamespace() }
                     .joined(separator: " or ")
                 throw InspectionError.inspection(path: pathToRoot, factual: factual, expected: expected)
             }
@@ -49,13 +49,9 @@ public struct InspectableView<View> where View: KnownViewType {
 }
 
 private extension String {
-    func sanitizeNamespace() -> String {
-        var str = self
-        if let range = str.range(of: ".(unknown context at ") {
-            let end = str.index(range.upperBound, offsetBy: .init(11))
-            str.replaceSubrange(range.lowerBound..<end, with: "")
-        }
-        return str.replacingOccurrences(of: "SwiftUI.", with: "")
+    func removingSwiftUINamespace() -> String {
+        guard hasPrefix("SwiftUI.") else { return self }
+        return String(suffix(count - 8))
     }
 }
 
@@ -95,6 +91,11 @@ internal extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
+    /**
+      A function for accessing the parent view for introspection
+      - Returns: immediate predecessor of the current view in the hierarchy
+      - Throws: if the current view is the root
+     */
     func parent() throws -> InspectableView<ViewType.ParentView> {
         guard let parent = self.parentView else {
             throw InspectionError.parentViewNotFound(view: Inspector.typeName(value: content.view))
@@ -108,9 +109,21 @@ public extension InspectableView {
         return try .init(parent.content, parent: parent.parentView, call: parent.inspectionCall)
     }
     
+    /**
+      A property for obtaining the inspection call's chain from the root view to the current view
+      - Returns: A `String` representation of the inspection calls' chain
+     */
     var pathToRoot: String {
         let prefix = parentView.flatMap { $0.pathToRoot } ?? ""
         return prefix.isEmpty ? inspectionCall : prefix + "." + inspectionCall
+    }
+    
+    /**
+      A function for erasing the type of the current view
+      - Returns: The current view represented as a `ClassifiedView`
+     */
+    func classified() throws -> InspectableView<ViewType.ClassifiedView> {
+        return try asInspectableView()
     }
 }
 
@@ -309,7 +322,7 @@ extension ModifierNameProvider {
 extension ModifiedContent: ModifierNameProvider {
     
     func modifierType(prefixOnly: Bool) -> String {
-        return Inspector.typeName(type: Modifier.self, prefixOnly: prefixOnly)
+        return Inspector.typeName(type: Modifier.self, generics: prefixOnly ? .remove : .keep)
     }
     
     var customModifier: Inspectable? {
@@ -339,7 +352,7 @@ public extension InspectableView {
     }
     
     internal func guardIsResponsive() throws {
-        let name = Inspector.typeName(value: content.view, prefixOnly: true)
+        let name = Inspector.typeName(value: content.view, generics: .remove)
         if isDisabled() {
             let blocker = farthestParent(where: { $0.isDisabled() }) ?? self
             throw InspectionError.unresponsiveControl(
@@ -354,6 +367,9 @@ public extension InspectableView {
             let blocker = farthestParent(where: { !$0.allowsHitTesting() }) ?? self
             throw InspectionError.unresponsiveControl(
                 name: name, reason: blocker.pathToRoot.ifEmpty(use: "it") + " has allowsHitTesting set to false")
+        }
+        if isAbsent {
+            throw InspectionError.unresponsiveControl(name: name, reason: "the conditional view has been hidden")
         }
     }
     

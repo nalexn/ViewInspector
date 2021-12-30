@@ -10,12 +10,15 @@ internal extension ViewSearch {
             .init(ViewType.ActionSheet.self),
             .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
             .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
-            .init(ViewType.Button.self),
+            .init(ViewType.AsyncImage.self),
+            .init(ViewType.Button.self), .init(ViewType.Canvas.self),
             .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
             .init(ViewType.ConfirmationDialog.self),
+            .init(ViewType.ControlGroup.self, genericTypeName: nil),
             .init(ViewType.DatePicker.self), .init(ViewType.DisclosureGroup.self),
             .init(ViewType.Divider.self),
             .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
+            .init(ViewType.EllipticalGradient.self),
             .init(ViewType.ForEach.self), .init(ViewType.Form.self),
             .init(ViewType.GeometryReader.self),
             .init(ViewType.Group.self), .init(ViewType.GroupBox.self),
@@ -26,6 +29,7 @@ internal extension ViewSearch {
             .init(ViewType.LazyVGrid.self), .init(ViewType.LazyVStack.self),
             .init(ViewType.LinearGradient.self),
             .init(ViewType.Link.self), .init(ViewType.List.self),
+            .init(ViewType.LocationButton.self),
             .init(ViewType.Map.self),
             .init(ViewType.Menu.self), .init(ViewType.MenuButton.self),
             .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
@@ -37,6 +41,7 @@ internal extension ViewSearch {
             .init(ViewType.SafeAreaInset.self, genericTypeName: nil),
             .init(ViewType.ScrollView.self), .init(ViewType.ScrollViewReader.self),
             .init(ViewType.Section.self), .init(ViewType.SecureField.self),
+            .init(ViewType.SignInWithAppleButton.self),
             .init(ViewType.Sheet.self, genericTypeName: "Sheet"),
             .init(ViewType.Slider.self), .init(ViewType.Spacer.self), .init(ViewType.Stepper.self),
             .init(ViewType.StyleConfiguration.Label.self), .init(ViewType.StyleConfiguration.Content.self),
@@ -44,13 +49,17 @@ internal extension ViewSearch {
             .init(ViewType.StyleConfiguration.CurrentValueLabel.self),
             .init(ViewType.TabView.self), .init(ViewType.Text.self),
             .init(ViewType.TextEditor.self), .init(ViewType.TextField.self),
+            .init(ViewType.TimelineView.self),
             .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self),
             .init(ViewType.TupleView.self), .init(ViewType.Toolbar.self),
             .init(ViewType.Toolbar.Item.self, genericTypeName: nil),
             .init(ViewType.Toolbar.ItemGroup.self, genericTypeName: nil),
-            .init(ViewType.ViewModifierContent.self), .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
+            .init(ViewType.VideoPlayer.self),
+            .init(ViewType.ViewModifierContent.self),
+            .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
             .init(ViewType.ZStack.self)
         ]
+
         var index = [String: [ViewIdentity]](minimumCapacity: 26) // alphabet
         identities.forEach { identity in
             let names = identity.viewType.namespacedPrefixes
@@ -75,16 +84,17 @@ internal extension ViewSearch {
         if content.isShape {
             return .init(ViewType.Shape.self)
         }
-        let shortPrefix = Inspector.typeName(value: content.view, prefixOnly: true)
-        let longPrefix = Inspector.typeName(value: content.view, namespaced: true, prefixOnly: true)
-        if shortPrefix.count > 0,
-           let identity = index[String(shortPrefix.prefix(1))]?
-            .first(where: { $0.viewType.namespacedPrefixes.contains(longPrefix) }) {
+        let shortName = Inspector.typeName(value: content.view, generics: .remove)
+        let fullName = Inspector.typeName(value: content.view, namespaced: true, generics: .remove)
+        if shortName.count > 0,
+           let identity = index[String(shortName.prefix(1))]?
+            .first(where: { $0.viewType.namespacedPrefixes.contains(fullName) }) {
             return identity
         }
         if (try? content.extractCustomView()) != nil,
            let inspectable = content.view as? Inspectable {
-            let name = Inspector.typeName(value: content.view, prefixOnly: true)
+            let name = Inspector.typeName(
+                value: content.view, generics: .customViewPlaceholder)
             switch inspectable.entity {
             case .view:
                 return .init(ViewType.View<ViewType.Stub>.self, genericTypeName: name)
@@ -247,15 +257,27 @@ private extension Content {
 // MARK: - ModifierIdentity
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewType.Overlay.API {
+    
+    static var viewSearchModifierIdentities: [ViewSearch.ModifierIdentity] {
+        let apiToSearch: [ViewType.Overlay.API] = [
+            .overlayPreferenceValue, .backgroundPreferenceValue,
+            .overlay, .background
+        ]
+        return apiToSearch
+            .map { api in
+                .init(name: api.modifierName, builder: { parent, index in
+                    try parent.content.overlay(parent: parent, api: api, index: index)
+                })
+            }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewSearch {
     
-    static private(set) var modifierIdentities: [ModifierIdentity] = [
-        .init(name: "_OverlayModifier", builder: { parent, index in
-            try parent.content.overlay(parent: parent, index: index)
-        }),
-        .init(name: "_BackgroundModifier", builder: { parent, index in
-            try parent.content.background(parent: parent, index: index)
-        }),
+    static private(set) var modifierIdentities: [ModifierIdentity] = ViewType.Overlay.API.viewSearchModifierIdentities
+    + [
         .init(name: ViewType.Toolbar.typePrefix, builder: { parent, index in
             try parent.content.toolbar(parent: parent, index: index)
         }),
