@@ -484,8 +484,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func listRowInsets(EdgeInsets?) -> some View` |
 |:white_check_mark:| `func listRowBackground<V>(V?) -> some View` |
 |:technologist:| `func listRowPlatterColor(Color?) -> some View` |
-|:technologist:| `func listItemTint(ListItemTint?) -> some View` |
-|:technologist:| `func listItemTint(Color?) -> some View` |
 |:white_check_mark:| `func tag<V>(V) -> some View` |
 |:technologist:| `func swipeActions<T>(edge: HorizontalEdge, allowsFullSwipe: Bool, content: () -> T) -> some View` |
 |:technologist:| `func listRowSeparator(_ visibility: Visibility, edges: VerticalEdge.Set) -> some View` |
