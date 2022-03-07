@@ -48,14 +48,15 @@ final class ViewEventsTests: XCTestCase {
     func testOnChangeInspection() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { throw XCTSkip() }
-        let val = "initial"
+        let val = Optional(Inspector.TestValue(value: "initial"))
         let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().padding().onChange(of: val) { [val] value in
-            XCTAssertEqual(val, "initial")
-            XCTAssertEqual(value, "expected")
+            XCTAssertEqual(val, Inspector.TestValue(value: "initial"))
+            XCTAssertEqual(value, Inspector.TestValue(value: "expected"))
             exp.fulfill()
         }.padding()
-        try sut.inspect().emptyView().callOnChange(newValue: "expected")
+        try sut.inspect().emptyView()
+            .callOnChange(newValue: Inspector.TestValue(value: "expected"))
         wait(for: [exp], timeout: 0.1)
     }
 
@@ -125,5 +126,12 @@ final class ViewPublisherEventsTests: XCTestCase {
         let publisher = Just<Void>(())
         let sut = EmptyView().onReceive(publisher) { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension Inspector {
+    struct TestValue: Equatable {
+        let value: String
     }
 }
