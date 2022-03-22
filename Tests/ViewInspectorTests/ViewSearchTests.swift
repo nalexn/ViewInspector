@@ -253,3 +253,18 @@ final class ViewSearchTests: XCTestCase {
         XCTAssertEqual(ellipse.pathToRoot, "group().shape(2)")
     }
 }
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+extension ViewSearchTests {
+    func testFindViewWithAccessibilityLabel() throws {
+        let testString = #function
+        let absenceString = "\(testString) should not be found"
+        let testView = Test.MainView().accessibilityLabel(Text(testString))
+        
+        XCTAssertNoThrow(try testView.inspect().find(viewWithAccessibilityLabel: testString))
+        XCTAssertThrows(
+            try testView.inspect().find(viewWithAccessibilityLabel: absenceString),
+            "Search did not find a match"
+        )
+    }
+    
