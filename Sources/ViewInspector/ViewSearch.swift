@@ -150,6 +150,20 @@ public extension InspectableView {
     }
     
     /**
+     Searches for a view with given `accessibilityIdentifier`
+     
+     - Parameter viewWithAccessibilityIdentifier: The `accessibilityIdentifier` to look up for
+     - Throws: An error if the view cannot be found
+     - Returns: A found view
+     */
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+    func find(
+        viewWithAccessibilityIdentifier accessibilityIdentifier: String
+    ) throws -> InspectableView<ViewType.ClassifiedView> {
+        return try find { try $0.accessibilityIdentifier() == accessibilityIdentifier }
+    }
+    
+    /**
      Searches for a view of a specific type that matches a given condition
 
       - Parameter inspectable: Your custom `Inspectable` view type. For example: `ContentView.self`

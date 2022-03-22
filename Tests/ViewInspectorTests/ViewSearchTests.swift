@@ -268,3 +268,15 @@ extension ViewSearchTests {
         )
     }
     
+    func testFindViewWithAccessibilityIdentifier() throws {
+        let testString = #function
+        let absenceString = "\(testString) should not be found"
+        let testView = Test.MainView().accessibilityIdentifier(testString)
+        
+        XCTAssertNoThrow(try testView.inspect().find(viewWithAccessibilityIdentifier: testString))
+        XCTAssertThrows(
+            try testView.inspect().find(viewWithAccessibilityIdentifier: absenceString),
+            "Search did not find a match"
+        )
+    }
+}
