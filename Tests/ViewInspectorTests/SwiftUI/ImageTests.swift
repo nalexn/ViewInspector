@@ -72,6 +72,20 @@ final class ImageTests: XCTestCase {
         XCTAssertEqual(try text.string(), "img")
     }
     
+    func testLabelSystemImageText() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
+        let view = Label("tx", systemImage: "img")
+        let text = try view.inspect().label().icon().image().labelView()
+        XCTAssertEqual(try text.string(), "img")
+    }
+    
+    func testImageSystemName() throws {
+        let sut = Image(systemName: "img")
+        let text = try sut.inspect().image().labelView()
+        XCTAssertEqual(try text.string(), "img")
+    }
+    
     func testSearch() throws {
         let cgImage = testImage.cgImage!
         let view = AnyView(Image(cgImage, scale: 2.0, orientation: .down, label: Text("abc")).resizable())

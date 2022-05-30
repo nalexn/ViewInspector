@@ -60,8 +60,12 @@ public extension InspectableView where View == ViewType.Image {
     }
     
     func labelView() throws -> InspectableView<ViewType.Text> {
-        return try View.supplementaryChildren(self).element(at: 0)
-            .asInspectableView(ofType: ViewType.Text.self)
+        let label = try View.supplementaryChildren(self).element(at: 0)
+        if Inspector.typeName(value: label.content.view) == "ImageLabel" {
+            let content = Content(Text(try actualImage().name()), medium: label.content.medium)
+            return try .init(content, parent: label.parentView)
+        }
+        return try label.asInspectableView(ofType: ViewType.Text.self)
     }
 }
 
