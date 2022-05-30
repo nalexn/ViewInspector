@@ -262,7 +262,7 @@ internal extension ViewType.Overlay.API {
     static var viewSearchModifierIdentities: [ViewSearch.ModifierIdentity] {
         let apiToSearch: [ViewType.Overlay.API] = [
             .overlayPreferenceValue, .backgroundPreferenceValue,
-            .overlay, .background
+            .overlay, .overlayStyle, .background, .backgroundStyle
         ]
         return apiToSearch
             .map { api in

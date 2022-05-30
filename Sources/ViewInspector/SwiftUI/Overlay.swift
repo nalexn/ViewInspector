@@ -15,11 +15,13 @@ public extension ViewType {
 public extension InspectableView {
 
     func overlay(_ index: Int? = nil) throws -> InspectableView<ViewType.Overlay> {
-        return try contentForModifierLookup.overlay(parent: self, api: .overlay, index: index)
+        return try contentForModifierLookup
+            .overlay(parent: self, api: [.overlay, .overlayStyle], index: index)
     }
     
     func background(_ index: Int? = nil) throws -> InspectableView<ViewType.Overlay> {
-        return try contentForModifierLookup.overlay(parent: self, api: .background, index: index)
+        return try contentForModifierLookup
+            .overlay(parent: self, api: [.background, .backgroundStyle], index: index)
     }
 }
 
@@ -46,27 +48,43 @@ internal extension Content {
     
     func overlay(parent: UnwrappedView, api: ViewType.Overlay.API, index: Int?
     ) throws -> InspectableView<ViewType.Overlay> {
-        let modifiers = modifiersMatching {
-            $0.modifierType.contains(api.modifierName)
+        return try overlay(parent: parent, api: [api], index: index)
+    }
+    
+    func overlay(parent: UnwrappedView, api: [ViewType.Overlay.API], index: Int?
+    ) throws -> InspectableView<ViewType.Overlay> {
+        let modifiers = modifiersMatching { modifier in
+            api.contains(where: {
+                modifier.modifierType.contains($0.modifierName)
+            })
         }
         let hasMultipleOverlays = modifiers.count > 1
+        let apiName = api.first!.rawValue
         guard let (modifier, rootView) = modifiers.lazy.compactMap({ modifier -> (Any, Any)? in
-            do {
-                let rootView = try Inspector.attribute(path: api.rootViewPath, value: modifier)
-                try api.verifySignature(content: rootView, hasMultipleOverlays: hasMultipleOverlays)
-                return (modifier, rootView)
-            } catch { return nil }
+            for anApi in api {
+                do {
+                    let rootView = try Inspector.attribute(path: anApi.rootViewPath, value: modifier)
+                    try anApi.verifySignature(content: rootView, hasMultipleOverlays: hasMultipleOverlays)
+                    return (modifier, rootView)
+                } catch { continue }
+            }
+            return nil
         }).dropFirst(index ?? 0).first else {
             let parentName = Inspector.typeName(value: view)
             throw InspectionError.modifierNotFound(
-                parent: parentName, modifier: api.rawValue, index: index ?? 0)
+                parent: parentName, modifier: apiName, index: index ?? 0)
         }
-        let alignment = try Inspector.attribute(path: "modifier|alignment", value: modifier, type: Alignment.self)
-        let overlayParams = ViewType.Overlay.Params(alignment: alignment)
+        let alignment = (try? Inspector
+            .attribute(path: "modifier|alignment", value: modifier,
+                       type: Alignment.self)) ?? .center
+        let edges = (try? Inspector
+            .attribute(path: "modifier|ignoresSafeAreaEdges", value: modifier,
+                       type: Edge.Set.self)) ?? .all
+        let overlayParams = ViewType.Overlay.Params(alignment: alignment, ignoresSafeAreaEdges: edges)
         let medium = self.medium.resettingViewModifiers()
             .appending(viewModifier: overlayParams)
         let content = try Inspector.unwrap(content: Content(rootView, medium: medium))
-        let base = api.rawValue + "(\(ViewType.indexPlaceholder))"
+        let base = apiName + "(\(ViewType.indexPlaceholder))"
         let call = ViewType.inspectionCall(base: base, index: index)
         return try .init(content, parent: parent, call: call, index: index)
     }
@@ -79,8 +97,10 @@ internal extension ViewType.Overlay {
     enum API: String {
         case border
         case overlay
+        case overlayStyle
         case overlayPreferenceValue
         case background
+        case backgroundStyle
         case backgroundPreferenceValue
     }
 }
@@ -92,8 +112,12 @@ internal extension ViewType.Overlay.API {
         switch self {
         case .border, .overlay, .overlayPreferenceValue:
             return "_OverlayModifier"
+        case .overlayStyle:
+            return "_OverlayStyleModifier"
         case .background, .backgroundPreferenceValue:
             return "_BackgroundModifier"
+        case .backgroundStyle:
+            return "_BackgroundStyleModifier"
         }
     }
     
@@ -103,6 +127,8 @@ internal extension ViewType.Overlay.API {
             return "modifier|overlay"
         case .background, .backgroundPreferenceValue:
             return "modifier|background"
+        case .overlayStyle, .backgroundStyle:
+            return "modifier|style"
         }
     }
     
@@ -111,6 +137,8 @@ internal extension ViewType.Overlay.API {
             throw InspectionError.notSupported("Different view signature")
         }
         switch self {
+        case .overlayStyle, .backgroundStyle:
+            break
         case .border:
             let stroke = try? InspectableView<ViewType.Shape>(Content(content), parent: nil, index: nil).strokeStyle()
             if stroke == nil {
@@ -148,11 +176,20 @@ public extension InspectableView where View == ViewType.Overlay {
         }
         return params.alignment
     }
+    
+    func ignoresSafeAreaEdges() throws -> Edge.Set {
+        guard let params = content.medium.viewModifiers
+            .compactMap({ $0 as? ViewType.Overlay.Params }).first else {
+            throw InspectionError.attributeNotFound(label: "ignoresSafeAreaEdges", type: "Background")
+        }
+        return params.ignoresSafeAreaEdges
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension ViewType.Overlay {
     struct Params {
         let alignment: Alignment
+        let ignoresSafeAreaEdges: Edge.Set
     }
 }

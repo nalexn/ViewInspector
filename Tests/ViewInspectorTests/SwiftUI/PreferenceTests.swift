@@ -75,6 +75,18 @@ final class PreferenceTests: XCTestCase {
         XCTAssertNoThrow(try sut.overlay(1).spacer())
     }
     
+    func testDifferentOverlayUseCasesIOS15() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = try ManyOverlaysViewIOS15().inspect().emptyView()
+        let prefValue = try sut.overlayPreferenceValue().text().string()
+        XCTAssertEqual(prefValue, Key.defaultValue)
+        let border = try sut.border(Color.self)
+        XCTAssertEqual(border.shapeStyle, .red)
+        XCTAssertNoThrow(try sut.overlay(0).spacer())
+        XCTAssertEqual(try sut.overlay(1).color().value(), Color.green)
+    }
+    
     func testDifferentBackgroundOverlayUseCases() throws {
         let sut = try ManyBGOverlaysView().inspect().emptyView()
         let prefValue = try sut.backgroundPreferenceValue().text().string()
@@ -106,6 +118,19 @@ private struct ManyOverlaysView: View, Inspectable {
             }
             .border(Color.red)
             .overlay(Spacer())
+    }
+}
+
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+private struct ManyOverlaysViewIOS15: View, Inspectable {
+    var body: some View {
+        EmptyView()
+            .overlay(Spacer())
+            .overlayPreferenceValue(PreferenceTests.Key.self) { value in
+                Text(value)
+            }
+            .overlay(Color.green, ignoresSafeAreaEdges: [.top])
+            .border(Color.red)
     }
 }
 

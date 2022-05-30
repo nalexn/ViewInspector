@@ -146,6 +146,32 @@ final class ViewLayeringTests: XCTestCase {
         XCTAssertEqual(try background.alignment(), .bottom)
     }
     
+    func testOverlayAndBackgroundStyle() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = Spacer()
+            .overlay(Color.red, alignment: .leading)
+            .background(Color.green, alignment: .top)
+            .overlay(Color.blue, ignoresSafeAreaEdges: [.trailing])
+            .background(Color.yellow, ignoresSafeAreaEdges: [.bottom])
+        let fg1 = try sut.inspect().spacer().overlay(0)
+        let fg2 = try sut.inspect().spacer().overlay(1)
+        XCTAssertEqual(try fg1.color().value(), Color.red)
+        XCTAssertEqual(try fg1.alignment(), .leading)
+        XCTAssertEqual(try fg1.ignoresSafeAreaEdges(), .all)
+        XCTAssertEqual(try fg2.color().value(), Color.blue)
+        XCTAssertEqual(try fg2.alignment(), .center)
+        XCTAssertEqual(try fg2.ignoresSafeAreaEdges(), [.trailing])
+        let bg1 = try sut.inspect().spacer().background(0)
+        let bg2 = try sut.inspect().spacer().background(1)
+        XCTAssertEqual(try bg1.color().value(), Color.green)
+        XCTAssertEqual(try bg1.alignment(), .top)
+        XCTAssertEqual(try bg1.ignoresSafeAreaEdges(), .all)
+        XCTAssertEqual(try bg2.color().value(), Color.yellow)
+        XCTAssertEqual(try bg2.alignment(), .center)
+        XCTAssertEqual(try bg2.ignoresSafeAreaEdges(), [.bottom])
+    }
+    
     func testBackgroundInspection() throws {
         let text = "Abc"
         let sut = try EmptyView().background(Text(text), alignment: .center)
