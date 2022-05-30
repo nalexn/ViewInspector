@@ -14,10 +14,23 @@ public extension InspectableView {
     }
     
     func keyboardType() throws -> UIKeyboardType {
-        let reference = EmptyView().keyboardType(.default)
-        let keyPath = try Inspector.environmentKeyPath(Int.self, reference)
-        let value = try environment(keyPath, call: "keyboardType")
-        return UIKeyboardType(rawValue: value)!
+        guard #available(iOS 15.0, tvOS 15.0, watchOS 8.0, *) else {
+            let reference = EmptyView().keyboardType(.default)
+            let keyPath = try Inspector.environmentKeyPath(Int.self, reference)
+            let value = try environment(keyPath, call: "keyboardType")
+            return UIKeyboardType(rawValue: value)!
+        }
+        guard let modifier = content.medium.environmentModifiers.last(where: { modifier in
+            guard let keyPath = try? modifier.keyPath()
+            else { return false }
+            let keyPathType = Inspector.typeName(value: keyPath)
+            return keyPathType == "WritableKeyPath<EnvironmentValues, KeyboardType>"
+        }) else {
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: content.view), modifier: "keyboardType", index: 0)
+        }
+        return try Inspector.attribute(
+            label: "type", value: try modifier.value(), type: UIKeyboardType.self)
     }
     
     func autocapitalization() throws -> UITextAutocapitalizationType {
