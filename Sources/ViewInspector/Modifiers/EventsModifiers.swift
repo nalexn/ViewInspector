@@ -35,3 +35,16 @@ public extension InspectableView {
         callback(value)
     }
 }
+
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
+public extension InspectableView {
+
+    func callOnSubmit() throws {
+        let callback = try modifierAttribute(
+            modifierName: "OnSubmitModifier",
+            path: "modifier|action",
+            type: (() -> Void).self,
+            call: "onSubmit")
+        callback()
+    }
+}

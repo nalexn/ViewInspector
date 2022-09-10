@@ -115,6 +115,23 @@ final class ViewEventsTests: XCTestCase {
         try sut.inspect().emptyView().callOnChange(newValue: 5)
         wait(for: [exp1, exp2], timeout: 0.1)
     }
+    
+    func testOnSubmit() throws {
+        guard #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().onSubmit { }
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testOnSubmitInspection() throws {
+        guard #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
+        else { throw XCTSkip() }
+        let exp = XCTestExpectation(description: #function)
+        let binding = Binding(wrappedValue: "")
+        let sut = TextField("Title", text: binding).onSubmit { exp.fulfill() }
+        try sut.inspect().callOnSubmit()
+        wait(for: [exp], timeout: 0.1)
+    }
 }
 
 // MARK: - ViewPublisherEventsTests
