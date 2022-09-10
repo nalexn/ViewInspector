@@ -16,12 +16,12 @@ public extension InspectableView {
     }
     
     struct Rotation3D {
-        let angle: Angle
-        let axis: Axis
-        let anchor: UnitPoint
-        let anchorZ: CGFloat
-        let perspective: CGFloat
-        typealias Axis = (x: CGFloat, y: CGFloat, z: CGFloat)
+        public let angle: Angle
+        public let axis: Axis
+        public let anchor: UnitPoint
+        public let anchorZ: CGFloat
+        public let perspective: CGFloat
+        public typealias Axis = (x: CGFloat, y: CGFloat, z: CGFloat)
     }
     
     func rotation3D() throws -> Rotation3D {
