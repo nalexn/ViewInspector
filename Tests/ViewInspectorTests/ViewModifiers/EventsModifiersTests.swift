@@ -115,6 +115,32 @@ final class ViewEventsTests: XCTestCase {
         try sut.inspect().emptyView().callOnChange(newValue: 5)
         wait(for: [exp1, exp2], timeout: 0.1)
     }
+    
+    func testOnSubmit() throws {
+        guard #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().onSubmit { }
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testOnSubmitInspection() throws {
+        guard #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
+        else { throw XCTSkip() }
+        let expSearch = XCFlagExpectation(description: "search")
+        let expText = XCFlagExpectation(description: "text")
+        let sut = EmptyView()
+            .onSubmit(of: .search, {
+                XCTAssertTrue(expText.isFulfilled)
+                expSearch.fulfill()
+            })
+            .onSubmit(of: .text, {
+                XCTAssertFalse(expSearch.isFulfilled)
+                expText.fulfill()
+            })
+        try sut.inspect().callOnSubmit(of: .text)
+        try sut.inspect().callOnSubmit(of: .search)
+        wait(for: [expSearch, expText], timeout: 0.1)
+    }
 }
 
 // MARK: - ViewPublisherEventsTests
@@ -133,5 +159,15 @@ final class ViewPublisherEventsTests: XCTestCase {
 private extension Inspector {
     struct TestValue: Equatable {
         let value: String
+    }
+}
+
+private final class XCFlagExpectation: XCTestExpectation {
+    
+    var isFulfilled: Bool = false
+    
+    override func fulfill() {
+        isFulfilled = true
+        super.fulfill()
     }
 }
