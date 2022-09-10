@@ -255,28 +255,40 @@ final class ViewSearchTests: XCTestCase {
 }
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-extension ViewSearchTests {
-    func testFindViewWithAccessibilityLabel() throws {
-        let testString = #function
-        let absenceString = "\(testString) should not be found"
-        let testView = Test.MainView().accessibilityLabel(Text(testString))
-        
-        XCTAssertNoThrow(try testView.inspect().find(viewWithAccessibilityLabel: testString))
-        XCTAssertThrows(
-            try testView.inspect().find(viewWithAccessibilityLabel: absenceString),
-            "Search did not find a match"
-        )
-    }
-    
-    func testFindViewWithAccessibilityIdentifier() throws {
-        let testString = #function
-        let absenceString = "\(testString) should not be found"
-        let testView = Test.MainView().accessibilityIdentifier(testString)
-        
-        XCTAssertNoThrow(try testView.inspect().find(viewWithAccessibilityIdentifier: testString))
-        XCTAssertThrows(
-            try testView.inspect().find(viewWithAccessibilityIdentifier: absenceString),
-            "Search did not find a match"
-        )
+private extension Test {
+    struct AccessibleView: View, Inspectable {
+        var body: some View {
+            Button(action: { }, label: {
+                HStack {
+                    Text("text1").accessibilityLabel(Text("text1_access"))
+                }
+            }).mask(Group {
+                Text("text2").accessibilityIdentifier("text2_access")
+            })
+        }
     }
 }
+
+ @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+ extension ViewSearchTests {
+
+     func testFindViewWithAccessibilityLabel() throws {
+        let sut = Test.AccessibleView()
+        XCTAssertEqual(try sut.inspect().find(viewWithAccessibilityLabel: "text1_access").pathToRoot,
+                       "view(AccessibleView.self).button().labelView().hStack().text(0)")
+         XCTAssertThrows(
+            try sut.inspect().find(viewWithAccessibilityLabel: "abc"),
+             "Search did not find a match"
+         )
+     }
+     
+     func testFindViewWithAccessibilityIdentifier() throws {
+        let sut = Test.AccessibleView()
+        XCTAssertEqual(try sut.inspect().find(viewWithAccessibilityIdentifier: "text2_access").pathToRoot,
+                       "view(AccessibleView.self).button().mask().group().text(0)")
+         XCTAssertThrows(
+            try sut.inspect().find(viewWithAccessibilityIdentifier: "abc"),
+             "Search did not find a match"
+         )
+     }
+ }
