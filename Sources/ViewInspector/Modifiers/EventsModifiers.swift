@@ -1,3 +1,5 @@
+import SwiftUI
+
 // MARK: - ViewEvents
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -39,9 +41,15 @@ public extension InspectableView {
 @available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 public extension InspectableView {
 
-    func callOnSubmit() throws {
+    func callOnSubmit(of triggers: SubmitTriggers = .text) throws {
         let callback = try modifierAttribute(
-            modifierName: "OnSubmitModifier",
+            modifierLookup: { modifier -> Bool in
+                guard modifier.modifierType.contains("OnSubmitModifier"),
+                      let modifierTriggers = try? Inspector
+                    .attribute(path: "modifier|allowed", value: modifier, type: SubmitTriggers.self)
+                else { return false }
+                return modifierTriggers.contains(triggers)
+            },
             path: "modifier|action",
             type: (() -> Void).self,
             call: "onSubmit")
