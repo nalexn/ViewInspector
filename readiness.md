@@ -67,7 +67,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| LocationButton | `title: LocationButton.Title`, `tap()` |
 |:white_check_mark:| Map | `(set)coordinateRegion: MKCoordinateRegion`, `(set)userTrackingMode: MapUserTrackingMode`, `(set)mapRect: MKMapRect`, `interactionModes: MapInteractionModes`, `showsUserLocation: Bool` |
 |:white_check_mark:| MapAnnotation | `coordinate: CLLocationCoordinate2D`, `viewType: MapAnnotation.Type`, (*)`anchorPoint: CGPoint`, (*)`tintColor: Color?`, (*)`contained view` |
-|:white_check_mark:| Menu | `contained view`, `label view` |
+|:white_check_mark:| Menu | `contained view`, `label view`, `primaryAction` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
 |:white_check_mark:| MenuStyleConfiguration.Content | |
 |:white_check_mark:| MenuStyleConfiguration.Label | |

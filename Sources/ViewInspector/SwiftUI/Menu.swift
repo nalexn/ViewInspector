@@ -58,6 +58,21 @@ public extension InspectableView where View == ViewType.Menu {
     }
 }
 
+@available(iOS 15.0, macOS 12.0, *)
+@available(tvOS, unavailable)
+public extension InspectableView where View == ViewType.Menu {
+    
+    func callPrimaryAction() throws {
+        typealias Callback = () -> Void
+        let callback = try Inspector.attribute(
+            label: "primaryAction", value: content.view, type: Callback?.self)
+        guard let callback = callback else {
+            throw InspectionError.attributeNotFound(label: "primaryAction", type: "Menu")
+        }
+        callback()
+    }
+}
+
 // MARK: - Global View Modifiers
 
 @available(iOS 14.0, macOS 11.0, *)

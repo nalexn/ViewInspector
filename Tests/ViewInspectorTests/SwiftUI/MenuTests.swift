@@ -66,6 +66,24 @@ final class MenuTests: XCTestCase {
         XCTAssertTrue(try sut.inspect().menuStyle() is DefaultMenuStyle)
     }
     
+    func testPrimaryAction() throws {
+        guard #available(iOS 15, macOS 12.0, *) else { throw XCTSkip() }
+        let exp = XCTestExpectation(description: #function)
+        let sut = Menu(content: { EmptyView() }, label: { EmptyView() },
+                       primaryAction: {
+            exp.fulfill()
+        })
+        try sut.inspect().menu().callPrimaryAction()
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testAbsentPrimaryActionCall() throws {
+        guard #available(iOS 15, macOS 12.0, *) else { throw XCTSkip() }
+        let sut = Menu(content: { EmptyView() }, label: { EmptyView() })
+        XCTAssertThrows(try sut.inspect().menu().callPrimaryAction(),
+                        "Menu does not have 'primaryAction' attribute")
+    }
+    
     func testCustomMenuStyleInspection() throws {
         guard #available(iOS 14, tvOS 14, macOS 11.0, *) else { throw XCTSkip() }
         let sut = TestMenuStyle()
