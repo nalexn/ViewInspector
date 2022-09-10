@@ -109,8 +109,10 @@ Here are a few examples of the `find` functions made available:
 .find(button: "xyz") // returns Button which label contains Text("xyz")
 .find(viewWithId: 7) // returns a view with modifier .id(7)
 .find(viewWithTag: "Home") // returns a view with modifier .tag("Home")
-.find(CustomView.self) // returns CustomView
 .find(ViewType.HStack.self) // returns the first found HStack
+.find(CustomView.self) // returns CustomView
+.find(viewWithAccessibilityLabel: "Play button") // returns the first view with accessibilityLabel "Play button"
+.find(viewWithAccessibilityIdentifier: "play_button") // returns the first view with accessibilityIdentifier "play_button"
 ```
 
 #### `where` condition
