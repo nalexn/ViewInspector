@@ -8,7 +8,11 @@ public extension InspectableView {
     func accessibilityLabel() throws -> InspectableView<ViewType.Text> {
         let text: Text
         let call = "accessibilityLabel"
-        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            text = try v3AccessibilityElement(
+                path: "some|text", type: Text.self,
+                call: call, { $0.accessibilityLabel("") })
+        } else if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
             text = try v3AccessibilityElement(
                 type: Text.self, call: call, { $0.accessibilityLabel("") })
         } else {
@@ -67,7 +71,11 @@ public extension InspectableView {
     
     func accessibilityIdentifier() throws -> String {
         let call = "accessibilityIdentifier"
-        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            return try v3AccessibilityElement(
+                path: "some|rawValue", type: String.self,
+                call: call, { $0.accessibilityIdentifier("") })
+        } else if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
             return try v3AccessibilityElement(
                 type: String.self, call: call, { $0.accessibilityIdentifier("") })
         } else {
@@ -96,7 +104,11 @@ public extension InspectableView {
     }
     
     func accessibilityActivationPoint() throws -> UnitPoint {
-        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            return try v3AccessibilityElement(
+                path: "some|activate|some|unitPoint", type: UnitPoint.self,
+                call: "accessibilityIdentifier", { $0.accessibilityActivationPoint(.center) })
+        } else if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
             return try v3AccessibilityElement(
                 path: "some|unitPoint", type: UnitPoint.self,
                 call: "accessibilityIdentifier", { $0.accessibilityActivationPoint(.center) })
@@ -201,15 +213,20 @@ private struct AccessibilityProperty {
         self.value = try Inspector.attribute(path: "super|value", value: property)
     }
     
+    init(key: UInt64, value: Any) throws {
+        self.keyPointerValue = key
+        self.value = try Inspector.attribute(path: "typedValue", value: value)
+    }
+    
     static var noisePointerValues: Set<UInt64> = {
         let view1 = EmptyView().accessibility(label: Text(""))
         let view2 = EmptyView().accessibility(hint: Text(""))
         do {
             let props1 = try view1.inspect()
-                .v3AccessibilityProperties(call: "")
+                .v3v4AccessibilityProperties(call: "")
                 .map { $0.keyPointerValue }
             let props2 = try view2.inspect()
-                .v3AccessibilityProperties(call: "")
+                .v3v4AccessibilityProperties(call: "")
                 .map { $0.keyPointerValue }
             return Set(props1).intersection(Set(props2))
         } catch { return .init() }
@@ -223,10 +240,10 @@ private extension InspectableView {
     ) throws -> T where V: SwiftUI.View {
         let noiseValues = AccessibilityProperty.noisePointerValues
         guard let referenceValue = try reference(EmptyView()).inspect()
-                .v3AccessibilityProperties(call: call)
+                .v3v4AccessibilityProperties(call: call)
                 .map({ $0.keyPointerValue })
                 .first(where: { !noiseValues.contains($0) }),
-              let property = try v3AccessibilityProperties(call: call)
+              let property = try v3v4AccessibilityProperties(call: call)
                 .first(where: { $0.keyPointerValue == referenceValue })
         else {
             throw InspectionError
@@ -267,7 +284,7 @@ private extension InspectableView {
         let noiseValues = AccessibilityProperty.noisePointerValues
         guard let referenceValue = try EmptyView().accessibilityAction(.default, { })
                 .inspect()
-                .v3AccessibilityProperties(call: call)
+                .v3v4AccessibilityProperties(call: call)
                 .map({ $0.keyPointerValue })
                 .first(where: { !noiseValues.contains($0) })
         else {
@@ -275,19 +292,45 @@ private extension InspectableView {
                 .modifierNotFound(parent: Inspector.typeName(value: content.view),
                                   modifier: call, index: 0)
         }
-        return try v3AccessibilityProperties(call: call)
+        return try v3v4AccessibilityProperties(call: call)
           .filter({ $0.keyPointerValue == referenceValue })
           .compactMap { $0.value as? [Any] }
           .flatMap { $0 }
           .map { try Inspector.attribute(path: "base|base", value: $0) }
     }
     
-    func v3AccessibilityProperties(call: String) throws -> [AccessibilityProperty] {
-        return try modifierAttribute(
-            modifierName: "AccessibilityAttachmentModifier",
-            path: "modifier|storage|propertiesComponent",
-            type: [Any].self, call: call)
-            .map { try AccessibilityProperty(property: $0) }
+    func v3v4AccessibilityProperties(call: String) throws -> [AccessibilityProperty] {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            return try modifierAttribute(
+                modifierName: "AccessibilityAttachmentModifier",
+                path: "modifier|storage|value|properties|storage",
+                type: AccessibilityKeyValues.self, call: call)
+                .accessibilityKeyValues()
+                .map { try AccessibilityProperty(key: $0.key, value: $0.value) }
+        } else {
+            return try modifierAttribute(
+                modifierName: "AccessibilityAttachmentModifier",
+                path: "modifier|storage|propertiesComponent",
+                type: [Any].self, call: call)
+                .map { try AccessibilityProperty(property: $0) }
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+protocol AccessibilityKeyValues {
+    func accessibilityKeyValues() throws -> [(key: UInt64, value: Any)]
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension Dictionary: AccessibilityKeyValues {
+    func accessibilityKeyValues() throws -> [(key: UInt64, value: Any)] {
+        return try self.keys.compactMap { key -> (key: UInt64, value: Any)? in
+            guard let value = self[key] else { return nil }
+            let keyPointerValue = try Inspector.attribute(
+                path: "rawValue|pointerValue", value: key, type: UInt64.self)
+            return (key: keyPointerValue, value: value as Any)
+        }
     }
 }
 
