@@ -58,6 +58,11 @@ extension ViewType.ProgressView: SupplementaryChildren {
 public extension InspectableView where View == ViewType.ProgressView {
     
     func fractionCompleted() throws -> Double? {
+        do {
+            return try Inspector
+                .attribute(path: "base|custom|value|absolute|fractionCompleted",
+                           value: content.view, type: Double?.self)
+        } catch { }
         return try Inspector
             .attribute(path: "base|custom|fractionCompleted", value: content.view, type: Double?.self)
     }
@@ -117,8 +122,10 @@ internal extension ProgressViewStyleConfiguration {
         let data: Int16 = 0
     }
     private struct Allocator36 {
+        let head: (UInt64?, UInt32) = (nil, 0)
+        let alwaysIndeterminate: Bool = false
         let fractionCompleted: Double?
-        let data: (Int64, Int64, Int32) = (0, 0, 0)
+        let tail: (Bool, Bool, Bool) = (false, false, false)
     }
     init(fractionCompleted: Double?) {
         switch MemoryLayout<Self>.size {
