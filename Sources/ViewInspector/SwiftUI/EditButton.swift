@@ -36,7 +36,12 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.EditButton {
     
     func editMode() throws -> Binding<EditMode>? {
-        let editMode = try Inspector.attribute(label: "editMode", value: content.view)
+        let editMode: Any
+        if let mode = try? Inspector.attribute(label: "_editMode", value: content.view) {
+            editMode = mode
+        } else {
+            editMode = try Inspector.attribute(label: "editMode", value: content.view)
+        }
         typealias Env = Environment<Binding<EditMode>?>
         return (editMode as? Env)?.wrappedValue
     }
