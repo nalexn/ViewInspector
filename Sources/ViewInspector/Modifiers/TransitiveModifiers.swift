@@ -14,6 +14,7 @@ extension ModifiedContent: PossiblyTransitiveModifier {
             "_FlipForRTLEffect",
             "_AllowsHitTestingModifier",
             "_PreferenceWritingModifier<PreferredColorSchemeKey>",
+            "LabelsHiddenModifier",
         ].contains(name) || [
             "_LabeledViewStyleModifier<HiddenLabel",
         ].contains(where: { name.hasPrefix($0) }) {
