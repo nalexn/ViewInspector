@@ -87,7 +87,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
 |:white_check_mark:| SafeAreaInset | `regions: SafeAreaRegions`, `spacing: CGFloat?`, `edge: Edge` |
 |:technologist:| SceneView | |
-|:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
+|:white_check_mark:| ScrollView | `contained view`, `axes: Axis.Set`, `showsIndicators: Bool` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
 |:white_check_mark:| SecureField | `label view`, `callOnCommit()`, `input: String`, `setInput(_: String)` |

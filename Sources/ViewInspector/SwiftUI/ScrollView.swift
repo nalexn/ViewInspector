@@ -45,6 +45,21 @@ public extension InspectableView where View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View == ViewType.ScrollView {
     
+    func axes() throws -> Axis.Set {
+        return try Inspector.attribute(
+            path: "configuration|axes", value: content.view, type: Axis.Set.self)
+    }
+    
+    func showsIndicators() throws -> Bool {
+        if let value = try? Inspector.attribute(
+            path: "configuration|indicators|initial", value: content.view, type: Bool.self) {
+            return value
+        }
+        return try Inspector.attribute(
+            path: "configuration|showsIndicators", value: content.view, type: Bool.self)
+    }
+    
+    @available(*, deprecated, message: "ScrollView no longer provides this value")
     func contentInsets() throws -> EdgeInsets {
         return try Inspector.attribute(path: "configuration|contentInsets",
                                        value: content.view, type: EdgeInsets.self)
