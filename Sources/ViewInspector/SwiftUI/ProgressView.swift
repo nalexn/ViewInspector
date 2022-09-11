@@ -112,11 +112,22 @@ public extension ProgressViewStyle {
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 internal extension ProgressViewStyleConfiguration {
-    private struct Allocator {
+    private struct Allocator12 {
         let fractionCompleted: Double?
         let data: Int16 = 0
     }
+    private struct Allocator36 {
+        let fractionCompleted: Double?
+        let data: (Int64, Int64, Int32) = (0, 0, 0)
+    }
     init(fractionCompleted: Double?) {
-        self = unsafeBitCast(Allocator(fractionCompleted: fractionCompleted), to: Self.self)
+        switch MemoryLayout<Self>.size {
+        case 12:
+            self = unsafeBitCast(Allocator12(fractionCompleted: fractionCompleted), to: Self.self)
+        case 36:
+            self = unsafeBitCast(Allocator36(fractionCompleted: fractionCompleted), to: Self.self)
+        default:
+            fatalError(MemoryLayout<Self>.actualSize())
+        }
     }
 }

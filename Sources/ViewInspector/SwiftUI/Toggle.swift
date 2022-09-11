@@ -98,13 +98,29 @@ public extension ToggleStyle {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ToggleStyleConfiguration {
-    private struct Allocator {
-        let binding: Binding<Bool>
+    private struct Allocator17 {
+        let isOn: Binding<Bool>
         init(isOn: Bool) {
-            self.binding = .init(wrappedValue: isOn)
+            self.isOn = .init(wrappedValue: isOn)
+        }
+    }
+    private struct Allocator42 {
+        let isOn: Binding<Bool>
+        let isMixed = Binding<Bool>(wrappedValue: false)
+        let flag: Bool = false
+        
+        init(isOn: Bool) {
+            self.isOn = .init(wrappedValue: isOn)
         }
     }
     init(isOn: Bool) {
-        self = unsafeBitCast(Allocator(isOn: isOn), to: Self.self)
+        switch MemoryLayout<Self>.size {
+        case 17:
+            self = unsafeBitCast(Allocator17(isOn: isOn), to: Self.self)
+        case 42:
+            self = unsafeBitCast(Allocator42(isOn: isOn), to: Self.self)
+        default:
+            fatalError(MemoryLayout<Self>.actualSize())
+        }
     }
 }
