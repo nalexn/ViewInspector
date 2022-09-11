@@ -6,6 +6,16 @@ public extension InspectableView {
     @available(iOS 13.0, tvOS 13.0, *)
     @available(macOS, unavailable)
     func navigationBarHidden() throws -> Bool {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            let value = try modifierAttribute(modifierLookup: { modifier -> Bool in
+                guard modifier.modifierType.contains("ToolbarAppearanceModifier"),
+                      let bars = try? Inspector.attribute(
+                        path: "modifier|bars", value: modifier, type: [ToolbarPlacement].self)
+                else { return false }
+                return bars.contains(.navigationBar)
+            }, path: "modifier|visibility|some", type: Any.self, call: "navigationBarHidden")
+            return String(describing: value) != "visible"
+        }
         let value = try modifierAttribute(
             modifierName: "_PreferenceWritingModifier<NavigationBarHiddenKey>",
             path: "modifier|value", type: Any.self, call: "navigationBarHidden")
@@ -33,6 +43,9 @@ public extension InspectableView {
             path: "modifier|value", type: Bool.self, call: "statusBar(hidden:)")
     }
 }
+
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+extension ToolbarPlacement: BinaryEquatable { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType {
