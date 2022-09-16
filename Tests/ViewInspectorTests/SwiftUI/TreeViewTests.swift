@@ -21,7 +21,7 @@ final class TreeViewTests: XCTestCase {
             .padding().padding()
         let sut = try view.inspect().text()
         let count: Int
-        if #available(iOS 15.3, macOS 12.3, *) {
+        if #available(iOS 15.3, tvOS 15.3, macOS 12.3, *) {
             count = 4
         } else {
             count = 3
