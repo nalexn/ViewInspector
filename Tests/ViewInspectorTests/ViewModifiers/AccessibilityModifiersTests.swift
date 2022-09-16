@@ -149,6 +149,10 @@ final class ViewAccessibilityTests: XCTestCase {
             XCTAssertEqual(sut2, point)
         }
     }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+final class ViewAccessibilityActionTests: XCTestCase {
     
     func testAccessibilityAction() throws {
         let sut = EmptyView().accessibilityAction(.default) { }

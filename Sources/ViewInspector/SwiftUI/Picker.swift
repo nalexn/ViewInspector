@@ -66,7 +66,7 @@ public extension InspectableView where View == ViewType.Picker {
             if typeName.hasPrefix("Array") {
                 endIndex = typeName.index(before: endIndex)
             }
-            let expected = typeName.substring(to: endIndex)
+            let expected = typeName[..<endIndex]
                 .replacingOccurrences(of: "Array<Binding<", with: "")
                 .replacingOccurrences(of: "Binding<", with: "")
             let factual = Inspector.typeName(type: SelectionValue.self)
