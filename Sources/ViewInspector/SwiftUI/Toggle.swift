@@ -61,6 +61,15 @@ public extension InspectableView where View == ViewType.Toggle {
     }
     
     private func isOnBinding() throws -> Binding<Bool> {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            throw InspectionError.notSupported(
+                """
+                Toggle's tap() and isOn() are currently unavailable for \
+                inspection on iOS 16. Situation may change with a minor \
+                OS version update. In the meanwhile, please add XCTSkip \
+                for iOS 16 and use an earlier OS version for testing.
+                """)
+        }
         if let binding = try? Inspector
             .attribute(label: "__isOn", value: content.view, type: Binding<Bool>.self) {
             return binding

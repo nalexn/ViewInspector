@@ -158,6 +158,9 @@ final class ViewAccessibilityTests: XCTestCase {
     func testAccessibilityActionInspection() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { throw XCTSkip() }
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            throw XCTSkip()
+        }
         let exp = XCTestExpectation(description: "accessibilityAction")
         exp.expectedFulfillmentCount = 2
         let sut = EmptyView().accessibilityAction(.default) {
@@ -181,6 +184,9 @@ final class ViewAccessibilityTests: XCTestCase {
     }
     
     func testAccessibilityActionInspectionMultipleCallbacks() throws {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            throw XCTSkip()
+        }
         let exp1 = XCTestExpectation(description: "accessibilityAction1")
         let exp2 = XCTestExpectation(description: "accessibilityAction2")
         exp1.assertForOverFulfill = true
@@ -205,6 +211,9 @@ final class ViewAccessibilityTests: XCTestCase {
     }
     
     func testAccessibilityAdjustableActionInspection() throws {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            throw XCTSkip()
+        }
         let exp = XCTestExpectation(description: "accessibilityAdjustableAction")
         let sut = EmptyView().accessibilityAdjustableAction { direction in
             XCTAssertEqual(direction, .decrement)
@@ -220,6 +229,9 @@ final class ViewAccessibilityTests: XCTestCase {
     }
     
     func testAccessibilityScrollActionInspection() throws {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            throw XCTSkip()
+        }
         let exp = XCTestExpectation(description: "accessibilityScrollAction")
         let sut = EmptyView().accessibilityScrollAction { edge in
             XCTAssertEqual(edge, .leading)

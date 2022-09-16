@@ -277,6 +277,15 @@ private extension InspectableView {
                 .modifierNotFound(parent: Inspector.typeName(value: content.view),
                                   modifier: call, index: 0)
         }
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            throw InspectionError.notSupported(
+                """
+                Accessibility actions are currently unavailable for \
+                inspection on iOS 16. Situation may change with a minor \
+                OS version update. In the meanwhile, please add XCTSkip \
+                for iOS 16 and use an earlier OS version for testing.
+                """)
+        }
         return try Inspector.attribute(label: "handler", value: action, type: T.self)
     }
     
