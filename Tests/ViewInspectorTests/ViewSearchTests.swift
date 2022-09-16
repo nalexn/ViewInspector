@@ -269,26 +269,30 @@ private extension Test {
     }
 }
 
- @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
- extension ViewSearchTests {
-
-     func testFindViewWithAccessibilityLabel() throws {
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewSearchTests {
+    
+    func testFindViewWithAccessibilityLabel() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let sut = Test.AccessibleView()
         XCTAssertEqual(try sut.inspect().find(viewWithAccessibilityLabel: "text1_access").pathToRoot,
                        "view(AccessibleView.self).button().labelView().hStack().text(0)")
-         XCTAssertThrows(
+        XCTAssertThrows(
             try sut.inspect().find(viewWithAccessibilityLabel: "abc"),
-             "Search did not find a match"
-         )
-     }
+            "Search did not find a match"
+        )
+    }
      
-     func testFindViewWithAccessibilityIdentifier() throws {
+    func testFindViewWithAccessibilityIdentifier() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let sut = Test.AccessibleView()
         XCTAssertEqual(try sut.inspect().find(viewWithAccessibilityIdentifier: "text2_access").pathToRoot,
                        "view(AccessibleView.self).button().mask().group().text(0)")
-         XCTAssertThrows(
+        XCTAssertThrows(
             try sut.inspect().find(viewWithAccessibilityIdentifier: "abc"),
-             "Search did not find a match"
-         )
-     }
- }
+            "Search did not find a match"
+        )
+    }
+}
