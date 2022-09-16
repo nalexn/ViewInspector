@@ -81,6 +81,8 @@ final class ImageTests: XCTestCase {
     }
     
     func testImageSystemName() throws {
+        guard #available(iOS 14, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { throw XCTSkip() }
         let sut = Image(systemName: "img")
         let text = try sut.inspect().image().labelView()
         XCTAssertEqual(try text.string(), "img")
