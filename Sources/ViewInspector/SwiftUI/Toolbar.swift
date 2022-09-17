@@ -11,6 +11,13 @@ public extension ViewType {
                 return "_ToolbarItemGroupModifier"
             }
         }()
+        public static var namespacedPrefixes: [String] {
+            #if os(tvOS)
+            return ["SwiftUI." + typePrefix, "SwiftUI1c)." + typePrefix]
+            #else
+            return ["SwiftUI." + typePrefix]
+            #endif
+        }
         public static func inspectionCall(typeName: String) -> String {
             return "toolbar(\(ViewType.indexPlaceholder))"
         }

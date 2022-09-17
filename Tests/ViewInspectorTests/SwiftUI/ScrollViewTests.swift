@@ -40,11 +40,30 @@ final class ScrollViewTests: XCTestCase {
                        "anyView().scrollView().text()")
     }
     
+    @available(*, deprecated)
     func testContentInsets() throws {
-        guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *)
-        else { throw XCTSkip() }
+        guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *) else {
+            throw XCTSkip()
+        }
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            throw XCTSkip()
+        }
         let sut = ScrollView { Text("") }
         let contentInsets = try sut.inspect().scrollView().contentInsets()
         XCTAssertEqual(contentInsets, EdgeInsets())
+    }
+    
+    func testAxes() throws {
+        let sut1 = ScrollView(.horizontal) { EmptyView() }
+        let sut2 = ScrollView([.horizontal, .vertical]) { EmptyView() }
+        XCTAssertEqual(try sut1.inspect().scrollView().axes(), .horizontal)
+        XCTAssertEqual(try sut2.inspect().scrollView().axes(), [.horizontal, .vertical])
+    }
+    
+    func testShowsIndicators() throws {
+        let sut1 = ScrollView(showsIndicators: true) { EmptyView() }
+        let sut2 = ScrollView(showsIndicators: false) { EmptyView() }
+        XCTAssertTrue(try sut1.inspect().scrollView().showsIndicators())
+        XCTAssertFalse(try sut2.inspect().scrollView().showsIndicators())
     }
 }

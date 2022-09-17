@@ -20,7 +20,13 @@ final class TreeViewTests: XCTestCase {
             .contextMenu(ContextMenu(menuItems: { Text("Menu") }))
             .padding().padding()
         let sut = try view.inspect().text()
-        XCTAssertEqual(sut.content.medium.viewModifiers.count, 3)
+        let count: Int
+        if #available(iOS 15.3, tvOS 15.3, macOS 12.3, *) {
+            count = 4
+        } else {
+            count = 3
+        }
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, count)
     }
 }
 

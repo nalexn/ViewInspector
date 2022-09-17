@@ -59,6 +59,11 @@ private extension ScrollViewProxy {
     }
     
     init() {
-        self = unsafeBitCast(Allocator8(), to: ScrollViewProxy.self)
+        switch MemoryLayout<Self>.size {
+        case 8:
+            self = unsafeBitCast(Allocator8(), to: ScrollViewProxy.self)
+        default:
+            fatalError(MemoryLayout<Self>.actualSize())
+        }
     }
 }

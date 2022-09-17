@@ -5,8 +5,7 @@ import Combine
 
 // MARK: - Tap Gesture Tests
 
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
 final class TapGestureTests: XCTestCase {
     
     var tapValue: TapGesture.Value?

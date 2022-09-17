@@ -74,8 +74,7 @@ extension SequenceGesture: Inspectable {}
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension SimultaneousGesture: Inspectable {}
 
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
 extension TapGesture: Inspectable {}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

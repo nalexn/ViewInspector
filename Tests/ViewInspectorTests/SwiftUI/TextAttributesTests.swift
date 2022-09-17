@@ -44,7 +44,7 @@ final class TextAttributesTests: XCTestCase {
         let system2 = Font.system(.largeTitle)
         let view2 = Text("Test").kerning(2).font(system2)
         let sut2 = try view2.inspect().text().attributes()
-        XCTAssertEqual(try sut2.font(), .largeTitle)
+        XCTAssertEqual(try sut2.font(), .system(.largeTitle))
         let custom = Font.custom("Avenir-Roman", size: 15)
         let view3 = Text("Test").font(custom)
         let sut3 = try view3.inspect().text().attributes()

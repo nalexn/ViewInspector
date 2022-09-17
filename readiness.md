@@ -67,7 +67,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| LocationButton | `title: LocationButton.Title`, `tap()` |
 |:white_check_mark:| Map | `(set)coordinateRegion: MKCoordinateRegion`, `(set)userTrackingMode: MapUserTrackingMode`, `(set)mapRect: MKMapRect`, `interactionModes: MapInteractionModes`, `showsUserLocation: Bool` |
 |:white_check_mark:| MapAnnotation | `coordinate: CLLocationCoordinate2D`, `viewType: MapAnnotation.Type`, (*)`anchorPoint: CGPoint`, (*)`tintColor: Color?`, (*)`contained view` |
-|:white_check_mark:| Menu | `contained view`, `label view` |
+|:white_check_mark:| Menu | `contained view`, `label view`, `primaryAction` |
 |:white_check_mark:| MenuButton | `contained view`, `label view` |
 |:white_check_mark:| MenuStyleConfiguration.Content | |
 |:white_check_mark:| MenuStyleConfiguration.Label | |
@@ -87,7 +87,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
 |:white_check_mark:| SafeAreaInset | `regions: SafeAreaRegions`, `spacing: CGFloat?`, `edge: Edge` |
 |:technologist:| SceneView | |
-|:white_check_mark:| ScrollView | `contained view`, `contentInsets: EdgeInsets` |
+|:white_check_mark:| ScrollView | `contained view`, `axes: Axis.Set`, `showsIndicators: Bool` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
 |:white_check_mark:| SecureField | `label view`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
@@ -484,8 +484,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func listRowInsets(EdgeInsets?) -> some View` |
 |:white_check_mark:| `func listRowBackground<V>(V?) -> some View` |
 |:technologist:| `func listRowPlatterColor(Color?) -> some View` |
-|:technologist:| `func listItemTint(ListItemTint?) -> some View` |
-|:technologist:| `func listItemTint(Color?) -> some View` |
 |:white_check_mark:| `func tag<V>(V) -> some View` |
 |:technologist:| `func swipeActions<T>(edge: HorizontalEdge, allowsFullSwipe: Bool, content: () -> T) -> some View` |
 |:technologist:| `func listRowSeparator(_ visibility: Visibility, edges: VerticalEdge.Set) -> some View` |

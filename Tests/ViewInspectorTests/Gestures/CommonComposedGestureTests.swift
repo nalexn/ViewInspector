@@ -61,6 +61,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: (MagnificationGesture, RotationGesture) -> T) throws {
+        guard #available(tvOS 16.0, *) else { throw XCTSkip() }
         let sut = EmptyView().gesture(factory(magnificationGesture, rotationGesture))
         let gesture = try sut.inspect().emptyView().gesture(type)
         switch order {

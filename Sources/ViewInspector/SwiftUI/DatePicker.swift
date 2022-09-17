@@ -48,7 +48,12 @@ public extension InspectableView where View == ViewType.DatePicker {
     
     func select(date: Date) throws {
         try guardIsResponsive()
-        let binding = try Inspector.attribute(path: "selection", value: content.view, type: Binding<Date>.self)
+        let binding: Binding<Date>
+        if let value = try? Inspector.attribute(path: "_selection", value: content.view, type: Binding<Date>.self) {
+            binding = value
+        } else {
+            binding = try Inspector.attribute(path: "selection", value: content.view, type: Binding<Date>.self)
+        }
         binding.wrappedValue = date
     }
 }

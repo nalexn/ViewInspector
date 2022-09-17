@@ -61,6 +61,15 @@ public extension InspectableView where View == ViewType.Toggle {
     }
     
     private func isOnBinding() throws -> Binding<Bool> {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            throw InspectionError.notSupported(
+                """
+                Toggle's tap() and isOn() are currently unavailable for \
+                inspection on iOS 16. Situation may change with a minor \
+                OS version update. In the meanwhile, please add XCTSkip \
+                for iOS 16 and use an earlier OS version for testing.
+                """)
+        }
         if let binding = try? Inspector
             .attribute(label: "__isOn", value: content.view, type: Binding<Bool>.self) {
             return binding
@@ -98,13 +107,29 @@ public extension ToggleStyle {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ToggleStyleConfiguration {
-    private struct Allocator {
-        let binding: Binding<Bool>
+    private struct Allocator17 {
+        let isOn: Binding<Bool>
         init(isOn: Bool) {
-            self.binding = .init(wrappedValue: isOn)
+            self.isOn = .init(wrappedValue: isOn)
+        }
+    }
+    private struct Allocator42 {
+        let isOn: Binding<Bool>
+        let isMixed = Binding<Bool>(wrappedValue: false)
+        let flag: Bool = false
+        
+        init(isOn: Bool) {
+            self.isOn = .init(wrappedValue: isOn)
         }
     }
     init(isOn: Bool) {
-        self = unsafeBitCast(Allocator(isOn: isOn), to: Self.self)
+        switch MemoryLayout<Self>.size {
+        case 17:
+            self = unsafeBitCast(Allocator17(isOn: isOn), to: Self.self)
+        case 42:
+            self = unsafeBitCast(Allocator42(isOn: isOn), to: Self.self)
+        default:
+            fatalError(MemoryLayout<Self>.actualSize())
+        }
     }
 }
