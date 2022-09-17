@@ -1,7 +1,6 @@
 import SwiftUI
 
-#if os(macOS)
-// Remove if running on macOS 13.0
+#if os(macOS) && !MAC_OS_VERSION_13_0
 struct ToolbarPlacement {
     static var navigationBar: ToolbarPlacement { .init() }
 }
