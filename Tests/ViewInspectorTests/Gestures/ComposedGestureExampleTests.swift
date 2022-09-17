@@ -75,7 +75,7 @@ final class ComposedGestureExampleTests: XCTestCase {
     }
     
     func testNotAComposedGestureError() throws {
-        guard #available(iOS 14.0, *) else { throw XCTSkip() }
+        guard #available(iOS 14.0, tvOS 16.0, *) else { throw XCTSkip() }
         let sut = TestGestureView1()
         let rectangle = try sut.inspect().shape(0)
         let tapGesture = try rectangle.gesture(TapGesture.self)

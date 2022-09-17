@@ -8,28 +8,28 @@ import Combine
 final class GestureExampleTests: XCTestCase {
 
     func testGestureModifier() throws {
-        guard #available(iOS 14.0, *) else { throw XCTSkip() }
+        guard #available(iOS 14.0, tvOS 16.0, *) else { throw XCTSkip() }
         let sut = TestGestureView1()
         let rectangle = try sut.inspect().shape(0)
         XCTAssertNoThrow(try rectangle.gesture(TapGesture.self))
     }
 
     func testHighPriorityGestureModifier() throws {
-        guard #available(iOS 14.0, *) else { throw XCTSkip() }
+        guard #available(iOS 14.0, tvOS 16.0, *) else { throw XCTSkip() }
         let sut = TestGestureView2()
         let rectangle = try sut.inspect().shape(0)
         XCTAssertNoThrow(try rectangle.highPriorityGesture(TapGesture.self))
     }
 
     func testSimultaneousGestureModifier() throws {
-        guard #available(iOS 14.0, *) else { throw XCTSkip() }
+        guard #available(iOS 14.0, tvOS 16.0, *) else { throw XCTSkip() }
         let sut = TestGestureView3()
         let rectangle = try sut.inspect().shape(0)
         XCTAssertNoThrow(try rectangle.simultaneousGesture(TapGesture.self))
     }
 
     func testGestureMask() throws {
-        guard #available(iOS 14.0, *) else { throw XCTSkip() }
+        guard #available(iOS 14.0, tvOS 16.0, *) else { throw XCTSkip() }
         let sut = TestGestureView9()
         let gesture = try sut.inspect().shape(0).gesture(TapGesture.self)
         XCTAssertEqual(try gesture.gestureMask(), .gesture)
@@ -118,8 +118,7 @@ final class GestureExampleTests: XCTestCase {
     #endif
 }
 
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
 struct TestGestureView1: View & Inspectable {
     @State var tapped = false
         
@@ -134,8 +133,7 @@ struct TestGestureView1: View & Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
 struct TestGestureView2: View & Inspectable {
     @State var tapped = false
         
@@ -150,8 +148,7 @@ struct TestGestureView2: View & Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
 struct TestGestureView3: View & Inspectable {
     @State var tapped = false
         
@@ -292,8 +289,7 @@ struct TestGestureView8: View & Inspectable {
 }
 #endif
 
-@available(iOS 14.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 14.0, macOS 10.15, tvOS 16.0, *)
 struct TestGestureView9: View & Inspectable {
     @State var tapped = false
         

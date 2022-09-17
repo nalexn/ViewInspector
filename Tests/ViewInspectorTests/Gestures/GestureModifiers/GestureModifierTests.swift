@@ -52,7 +52,7 @@ final class GestureModifierTests: XCTestCase {
     }
     
     func testGestureInspectionWithIndex2() throws {
-        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
+        guard #available(tvOS 16.0, *) else { throw XCTSkip() }
         let sut = EmptyView()
             .gesture(DragGesture())
             .highPriorityGesture(TapGesture())
