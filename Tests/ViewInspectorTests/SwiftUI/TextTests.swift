@@ -204,6 +204,34 @@ final class TextTests: XCTestCase {
         let sut3 = Text("abc")
         XCTAssertEqual(try sut3.inspect().text().images(), [])
     }
+
+    func testAttributedStringTextStorage() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let aString = try AttributedString(markdown: "**Bold** Test [Link](https://example.com)")
+        let sut = Text(aString)
+        XCTAssertThrows(try sut.inspect().text().string(),
+                        "string() found AttributedString instead of String")
+    }
+
+    // MARK: - attributedString()
+
+    func testAttributedStringValue() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let aString = try AttributedString(markdown: "**Bold** Test [Link](https://example.com)")
+        let sut = Text(aString)
+        let value = try sut.inspect().text().attributedString()
+        XCTAssertEqual(value, aString)
+    }
+
+    func testAttributedStringFoundString() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = Text("Test")
+        XCTAssertThrows(try sut.inspect().text().attributedString(),
+                        "attributedString() found String instead of AttributedString")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
