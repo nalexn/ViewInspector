@@ -10,19 +10,39 @@ public struct InspectableView<View> where View: KnownViewType {
     internal let inspectionIndex: Int?
     internal var isUnwrappedSupplementaryChild: Bool = false
     
-    internal init(_ content: Content, parent: UnwrappedView?,
-                  call: String = #function, index: Int? = nil) throws {
+    internal init(
+        _ content: Content,
+        parent: UnwrappedView?,
+        call: String = #function,
+        index: Int? = nil,
+        usesContentFromClosure: Bool = false) throws
+    {
         let parentView: UnwrappedView? = (parent is InspectableView<ViewType.ParentView>)
-            ? parent?.parentView : parent
+            ? parent?.parentView
+            : parent
         let inspectionCall = index
             .flatMap({ call.replacingOccurrences(of: "_:", with: "\($0)") }) ?? call
-        try self.init(content: content, parent: parentView, call: inspectionCall, index: index)
+        try self.init(
+            content: content,
+            parent: parentView,
+            call: inspectionCall,
+            index: index,
+            usesContentFromClosure: usesContentFromClosure)
     }
     
-    private init(content: Content, parent: UnwrappedView?, call: String, index: Int?) throws {
-        if !View.typePrefix.isEmpty,
-           Inspector.isTupleView(content.view),
-           View.self != ViewType.TupleView.self {
+    private init(
+        content: Content,
+        parent: UnwrappedView?,
+        call: String,
+        index: Int? = nil,
+        usesContentFromClosure: Bool = false) throws
+    {
+        if
+            !usesContentFromClosure,
+            !View.typePrefix.isEmpty,
+            Inspector.isTupleView(content.view),
+            View.self != ViewType.TupleView.self
+        {
             throw InspectionError.notSupported(
                 "Unable to extract \(View.typePrefix): please specify its index inside parent view")
         }
@@ -30,6 +50,11 @@ public struct InspectableView<View> where View: KnownViewType {
         self.parentView = parent
         self.inspectionCall = call
         self.inspectionIndex = index
+        
+        if usesContentFromClosure {
+            return
+        }
+        
         do {
             try Inspector.guardType(value: content.view,
                                     namespacedPrefixes: View.namespacedPrefixes,
