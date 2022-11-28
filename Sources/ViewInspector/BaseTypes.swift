@@ -4,22 +4,11 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol Inspectable {
-    var entity: Content.InspectableEntity { get }
     func extractContent(environmentObjects: [AnyObject]) throws -> Any
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Content {
-    enum InspectableEntity {
-        case view
-        case viewModifier
-        case gesture
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: View {
-    var entity: Content.InspectableEntity { .view }
     
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
@@ -36,8 +25,6 @@ public extension Inspectable where Self: View {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Inspectable where Self: ViewModifier {
-    
-    var entity: ViewInspector.Content.InspectableEntity { .viewModifier }
     
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
