@@ -218,10 +218,10 @@ final class ViewSearchTests: XCTestCase {
         let view = AnyView(Test.NonInspectableView().id(5))
         XCTAssertNoThrow(try view.inspect().find(viewWithId: 5))
         let err = "Search did not find a match. Possible blockers: NonInspectableView"
-        XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self,
-                                                traversal: .breadthFirst), err)
-        XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self,
-                                                traversal: .depthFirst), err)
+        XCTAssertNoThrow(try view.inspect().find(ViewType.EmptyView.self,
+                                                traversal: .breadthFirst))
+        XCTAssertNoThrow(try view.inspect().find(ViewType.EmptyView.self,
+                                                traversal: .depthFirst))
     }
     
     func testConflictingViewTypeNames() throws {
