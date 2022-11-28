@@ -378,13 +378,11 @@ private extension UnwrappedView {
             if name.hasPrefix(ViewType.Popover.standardModifierName) {
                 return "popover"
             }
-            if let inspectable = view as? InspectableProtocol {
-                let missingObjects = inspectable.missingEnvironmentObjects
-                if missingObjects.count > 0 {
-                    return InspectionError
-                        .missingEnvironmentObjects(view: name, objects: missingObjects)
-                        .localizedDescription
-                }
+            let missingObjects = EnvironmentInjection.missingEnvironmentObjects(for: view)
+            if missingObjects.count > 0 {
+                return InspectionError
+                    .missingEnvironmentObjects(view: name, objects: missingObjects)
+                    .localizedDescription
             }
             return name
         }
