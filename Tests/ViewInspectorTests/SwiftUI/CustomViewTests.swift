@@ -245,14 +245,14 @@ private struct NonInspectableTestView: View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct SimpleTestView: View, Inspectable {
+private struct SimpleTestView: View, InspectableProtocol {
     var body: some View {
         EmptyView()
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct LocalStateTestView: View, Inspectable {
+private struct LocalStateTestView: View, InspectableProtocol {
     
     @State private(set) var flag: Bool
     let inspection = Inspection<Self>()
@@ -266,7 +266,7 @@ private struct LocalStateTestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ObservedStateTestView: View, Inspectable {
+private struct ObservedStateTestView: View, InspectableProtocol {
     
     @ObservedObject var viewModel: ExternalState
     
@@ -276,7 +276,7 @@ private struct ObservedStateTestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct EnvironmentStateTestView: View, Inspectable {
+private struct EnvironmentStateTestView: View, InspectableProtocol {
     
     @EnvironmentObject var viewModel: ExternalState
     let inspection = Inspection<Self>()
@@ -288,7 +288,7 @@ private struct EnvironmentStateTestView: View, Inspectable {
 }
 
 #if os(macOS)
-private struct TestViewRepresentable: NSViewRepresentable, Inspectable {
+private struct TestViewRepresentable: NSViewRepresentable, InspectableProtocol {
     
     func makeNSView(context: NSViewRepresentableContext<Self>) -> NSView {
         let view = NSView()
@@ -301,7 +301,7 @@ private struct TestViewRepresentable: NSViewRepresentable, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestViewControllerRepresentable: NSViewControllerRepresentable, Inspectable {
+private struct TestViewControllerRepresentable: NSViewControllerRepresentable, InspectableProtocol {
     
     func makeNSViewController(context: Context) -> NSViewController {
         let vc = NSViewController()
@@ -314,7 +314,7 @@ private struct TestViewControllerRepresentable: NSViewControllerRepresentable, I
 }
 #elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestViewRepresentable: UIViewRepresentable, Inspectable {
+private struct TestViewRepresentable: UIViewRepresentable, InspectableProtocol {
     
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
@@ -327,7 +327,7 @@ private struct TestViewRepresentable: UIViewRepresentable, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestViewControllerRepresentable: UIViewControllerRepresentable, Inspectable {
+private struct TestViewControllerRepresentable: UIViewControllerRepresentable, InspectableProtocol {
     
     func makeUIViewController(context: Context) -> UIViewController {
         let vc = UIViewController()
@@ -341,7 +341,7 @@ private struct TestViewControllerRepresentable: UIViewControllerRepresentable, I
 #elseif os(watchOS)
 
 @available(watchOS, deprecated: 7.0)
-private struct TestViewRepresentable: WKInterfaceObjectRepresentable, Inspectable {
+private struct TestViewRepresentable: WKInterfaceObjectRepresentable, InspectableProtocol {
     
     typealias Context = WKInterfaceObjectRepresentableContext<TestViewRepresentable>
     func makeWKInterfaceObject(context: Context) -> some WKInterfaceObject {
@@ -384,28 +384,28 @@ extension EnvironmentValues {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType {
-    struct Test<T>: KnownViewType, CustomViewType where T: Inspectable {
+    struct Test<T>: KnownViewType, CustomViewType where T: InspectableProtocol {
         public static var typePrefix: String { "String" }
         static var namespacedPrefixes: [String] { ["Swift.String"] }
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct NameMatchView: View, Inspectable {
+private struct NameMatchView: View, InspectableProtocol {
     var body: some View {
         Text("")
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct NameMatchViewList: View, Inspectable {
+private struct NameMatchViewList: View, InspectableProtocol {
     var body: some View {
         ForEach(0..<5) { _ in NameMatchView() }
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct GenericContainer<T>: View, Inspectable {
+private struct GenericContainer<T>: View, InspectableProtocol {
     var body: some View {
         TestView()
     }
@@ -413,7 +413,7 @@ private struct GenericContainer<T>: View, Inspectable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension GenericContainer {
-    struct TestView: View, Inspectable {
+    struct TestView: View, InspectableProtocol {
         var body: some View {
             Text("")
         }

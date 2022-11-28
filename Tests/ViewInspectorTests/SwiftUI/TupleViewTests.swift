@@ -49,7 +49,7 @@ final class TupleViewTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct SimpleTupleView: View, Inspectable {
+private struct SimpleTupleView: View, InspectableProtocol {
     var body: some View {
         EmptyView()
         Text("abc")
@@ -57,7 +57,7 @@ private struct SimpleTupleView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TupleInsideTupleView: View, Inspectable {
+private struct TupleInsideTupleView: View, InspectableProtocol {
     
     let flag: Bool
     var body: some View {

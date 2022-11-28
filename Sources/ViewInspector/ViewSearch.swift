@@ -176,7 +176,7 @@ public extension InspectableView {
     func find<V>(_ inspectable: V.Type,
                  relation: ViewSearch.Relation = .child,
                  where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
-    ) throws -> InspectableView<ViewType.View<V>> where V: Inspectable {
+    ) throws -> InspectableView<ViewType.View<V>> where V: InspectableProtocol {
         return try find(ViewType.View<V>.self, relation: relation, where: condition)
     }
     
@@ -279,7 +279,7 @@ public extension InspectableView {
      */
     func findAll<V>(_ inspectable: V.Type,
                     where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
-    ) -> [InspectableView<ViewType.View<V>>] where V: Inspectable {
+    ) -> [InspectableView<ViewType.View<V>>] where V: InspectableProtocol {
         return findAll(ViewType.View<V>.self, where: condition)
     }
     
@@ -378,7 +378,7 @@ private extension UnwrappedView {
             if name.hasPrefix(ViewType.Popover.standardModifierName) {
                 return "popover"
             }
-            if let inspectable = view as? Inspectable {
+            if let inspectable = view as? InspectableProtocol {
                 let missingObjects = inspectable.missingEnvironmentObjects
                 if missingObjects.count > 0 {
                     return InspectionError

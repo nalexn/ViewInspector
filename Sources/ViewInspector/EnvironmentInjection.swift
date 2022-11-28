@@ -3,7 +3,7 @@ import SwiftUI
 // MARK: - EnvironmentObject injection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension Inspectable {
+internal extension InspectableProtocol {
     var missingEnvironmentObjects: [String] {
         let prefix = "SwiftUI.EnvironmentObject<"
         let mirror = Mirror(reflecting: self)

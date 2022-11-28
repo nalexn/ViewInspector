@@ -57,7 +57,7 @@ final class OptionalViewTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct OptionalView: View, Inspectable {
+private struct OptionalView: View, InspectableProtocol {
     
     let flag: Bool
     var body: some View {
@@ -68,7 +68,7 @@ private struct OptionalView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct MixedOptionalView: View, Inspectable {
+private struct MixedOptionalView: View, InspectableProtocol {
     
     let flag: Bool
     var body: some View {

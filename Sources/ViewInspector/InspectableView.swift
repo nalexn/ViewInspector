@@ -174,7 +174,7 @@ public extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension View where Self: Inspectable {
+public extension View where Self: InspectableProtocol {
     
     func inspect(function: String = #function) throws -> InspectableView<ViewType.View<Self>> {
         let call = "view(\(ViewType.View<Self>.typePrefix).self)"
@@ -196,7 +196,7 @@ public extension View where Self: Inspectable {
 // MARK: - Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension ViewModifier where Self: Inspectable {
+public extension ViewModifier where Self: InspectableProtocol {
     func inspect(function: String = #function) throws -> InspectableView<ViewType.ViewModifier<Self>> {
         let medium = ViewHosting.medium(function: function)
         let content = try Inspector.unwrap(view: self, medium: medium)
@@ -310,7 +310,7 @@ internal extension Content {
 internal protocol ModifierNameProvider {
     var modifierType: String { get }
     func modifierType(prefixOnly: Bool) -> String
-    var customModifier: Inspectable? { get }
+    var customModifier: InspectableProtocol? { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -325,8 +325,8 @@ extension ModifiedContent: ModifierNameProvider {
         return Inspector.typeName(type: Modifier.self, generics: prefixOnly ? .remove : .keep)
     }
     
-    var customModifier: Inspectable? {
-        return try? Inspector.attribute(label: "modifier", value: self, type: Inspectable.self)
+    var customModifier: InspectableProtocol? {
+        return try? Inspector.attribute(label: "modifier", value: self, type: InspectableProtocol.self)
     }
 }
 

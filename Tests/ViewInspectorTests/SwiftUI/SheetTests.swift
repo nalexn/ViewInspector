@@ -176,7 +176,7 @@ where Item: Identifiable, Sheet: View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct SheetFindTestView: View, Inspectable {
+private struct SheetFindTestView: View, InspectableProtocol {
     
     @Binding var isSheet1Presented = false
     @Binding var isSheet2Presented = false

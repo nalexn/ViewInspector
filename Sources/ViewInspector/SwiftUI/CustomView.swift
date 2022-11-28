@@ -2,7 +2,7 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol CustomViewType {
-    associatedtype T: Inspectable
+    associatedtype T: InspectableProtocol
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -10,7 +10,7 @@ public extension ViewType {
     
     internal static let customViewGenericsPlaceholder = "<EmptyView>"
     
-    struct View<T>: KnownViewType, CustomViewType where T: Inspectable {
+    struct View<T>: KnownViewType, CustomViewType where T: InspectableProtocol {
         public static var typePrefix: String {
             guard T.self != ViewType.Stub.self
             else { return "" }
@@ -50,18 +50,18 @@ extension ViewType.View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     var isCustomView: Bool {
-        return view is Inspectable
+        return view is InspectableProtocol
     }
     
     func extractCustomView() throws -> Content {
-        let inspectable = try Inspector.cast(value: view, type: Inspectable.self)
+        let inspectable = try Inspector.cast(value: view, type: InspectableProtocol.self)
         let view = try inspectable.extractContent(environmentObjects: medium.environmentObjects)
         let medium = self.medium.resettingViewModifiers()
         return try Inspector.unwrap(view: view, medium: medium)
     }
     
     func extractCustomViewGroup() throws -> LazyGroup<Content> {
-        let inspectable = try Inspector.cast(value: view, type: Inspectable.self)
+        let inspectable = try Inspector.cast(value: view, type: InspectableProtocol.self)
         let view = try inspectable.extractContent(environmentObjects: medium.environmentObjects)
         return try Inspector.viewsInContainer(view: view, medium: medium)
     }
@@ -72,7 +72,7 @@ internal extension Content {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
-    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
+    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: InspectableProtocol {
         let child = try View.child(content)
         let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
@@ -87,7 +87,7 @@ public extension InspectableView where View: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
-    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
+    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: InspectableProtocol {
         let content = try child(at: index)
         let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
@@ -113,21 +113,21 @@ public extension InspectableView where View: CustomViewType {
 
 #if os(macOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension NSViewRepresentable where Self: Inspectable {
+public extension NSViewRepresentable where Self: InspectableProtocol {
     func nsView() throws -> NSViewType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension NSViewControllerRepresentable where Self: Inspectable {
+public extension NSViewControllerRepresentable where Self: InspectableProtocol {
     func viewController() throws -> NSViewControllerType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: NSViewRepresentable {
+public extension InspectableProtocol where Self: NSViewRepresentable {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             "Please use `.actualView().nsView()` for inspecting the contents of NSViewRepresentable")
@@ -135,7 +135,7 @@ public extension Inspectable where Self: NSViewRepresentable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: NSViewControllerRepresentable {
+public extension InspectableProtocol where Self: NSViewControllerRepresentable {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             "Please use `.actualView().viewController()` for inspecting the contents of NSViewControllerRepresentable")
@@ -143,21 +143,21 @@ public extension Inspectable where Self: NSViewControllerRepresentable {
 }
 #elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension UIViewRepresentable where Self: Inspectable {
+public extension UIViewRepresentable where Self: InspectableProtocol {
     func uiView() throws -> UIViewType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension UIViewControllerRepresentable where Self: Inspectable {
+public extension UIViewControllerRepresentable where Self: InspectableProtocol {
     func viewController() throws -> UIViewControllerType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: UIViewRepresentable {
+public extension InspectableProtocol where Self: UIViewRepresentable {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             "Please use `.actualView().uiView()` for inspecting the contents of UIViewRepresentable")
@@ -165,7 +165,7 @@ public extension Inspectable where Self: UIViewRepresentable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: UIViewControllerRepresentable {
+public extension InspectableProtocol where Self: UIViewControllerRepresentable {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             "Please use `.actualView().viewController()` for inspecting the contents of UIViewControllerRepresentable")
@@ -174,14 +174,14 @@ public extension Inspectable where Self: UIViewControllerRepresentable {
 #elseif os(watchOS)
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
-public extension WKInterfaceObjectRepresentable where Self: Inspectable {
+public extension WKInterfaceObjectRepresentable where Self: InspectableProtocol {
     func interfaceObject() throws -> WKInterfaceObjectType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
-public extension Inspectable where Self: WKInterfaceObjectRepresentable {
+public extension InspectableProtocol where Self: WKInterfaceObjectRepresentable {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         throw InspectionError.notSupported(
             """

@@ -160,7 +160,7 @@ private struct NonInspectableModifier: ViewModifier {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestModifier: ViewModifier, Inspectable {
+private struct TestModifier: ViewModifier, InspectableProtocol {
     var tag: Int = 0
     func body(content: Self.Content) -> some View {
         content.onAppear(perform: { })
@@ -168,7 +168,7 @@ private struct TestModifier: ViewModifier, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestModifier2: ViewModifier, Inspectable {
+private struct TestModifier2: ViewModifier, InspectableProtocol {
     
     @Binding var value: Bool
     var didAppear: ((Self) -> Void)?
@@ -184,7 +184,7 @@ private struct TestModifier2: ViewModifier, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestModifier3: ViewModifier, Inspectable {
+private struct TestModifier3: ViewModifier, InspectableProtocol {
     
     @EnvironmentObject var viewModel: ExternalState
     
@@ -202,7 +202,7 @@ private class ExternalState: ObservableObject {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestModifier4: ViewModifier, Inspectable {
+private struct TestModifier4: ViewModifier, InspectableProtocol {
     
     let injection: ExternalState
     
@@ -226,7 +226,7 @@ private struct TestModifier4: ViewModifier, Inspectable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension TestModifier4 {
-    struct ViewWithEnvObject: View, Inspectable {
+    struct ViewWithEnvObject: View, InspectableProtocol {
         
         @EnvironmentObject var envObj: ExternalState
         

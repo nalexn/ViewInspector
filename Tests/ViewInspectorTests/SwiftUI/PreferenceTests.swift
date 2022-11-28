@@ -109,7 +109,7 @@ final class PreferenceTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ManyOverlaysView: View, Inspectable {
+private struct ManyOverlaysView: View, InspectableProtocol {
     var body: some View {
         EmptyView()
             .overlay(AnyView(Text("Test")))
@@ -122,7 +122,7 @@ private struct ManyOverlaysView: View, Inspectable {
 }
 
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-private struct ManyOverlaysViewIOS15: View, Inspectable {
+private struct ManyOverlaysViewIOS15: View, InspectableProtocol {
     var body: some View {
         EmptyView()
             .overlay(Spacer())
@@ -135,7 +135,7 @@ private struct ManyOverlaysViewIOS15: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ManyBGOverlaysView: View, Inspectable {
+private struct ManyBGOverlaysView: View, InspectableProtocol {
     var body: some View {
         EmptyView()
             .background(AnyView(Text("Test")))

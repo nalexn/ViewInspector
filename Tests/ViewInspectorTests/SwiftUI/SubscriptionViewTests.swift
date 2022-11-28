@@ -25,7 +25,7 @@ final class SubscriptionViewTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct SubscriptionTestView: View, Inspectable {
+private struct SubscriptionTestView: View, InspectableProtocol {
     
     let publisher: AnyPublisher<Void, Never>
     

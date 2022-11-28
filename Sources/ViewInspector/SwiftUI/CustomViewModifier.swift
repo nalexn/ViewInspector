@@ -3,7 +3,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
-    struct ViewModifier<T>: KnownViewType, CustomViewType where T: Inspectable {
+    struct ViewModifier<T>: KnownViewType, CustomViewType where T: InspectableProtocol {
         
         public static var typePrefix: String { "" }
         
@@ -21,7 +21,7 @@ public extension ViewType {
 public extension InspectableView {
     
     func modifier<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.ViewModifier<T>>
-    where T: ViewModifier, T: Inspectable {
+    where T: ViewModifier, T: InspectableProtocol {
         let name = Inspector.typeName(type: type)
         guard let view = content.medium.viewModifiers.reversed().compactMap({ modifier in
             try? Inspector.attribute(label: "modifier", value: modifier, type: type)
@@ -108,9 +108,9 @@ internal extension Content {
         return try Inspector.unwrap(view: view, medium: medium)
     }
 
-    func customViewModifiers() -> [Inspectable] {
+    func customViewModifiers() -> [InspectableProtocol] {
         return medium.viewModifiers.reversed().compactMap({ modifier in
-            try? Inspector.attribute(label: "modifier", value: modifier, type: Inspectable.self)
+            try? Inspector.attribute(label: "modifier", value: modifier, type: InspectableProtocol.self)
         })
     }
 }

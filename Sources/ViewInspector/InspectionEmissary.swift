@@ -13,7 +13,7 @@ public protocol InspectionEmissary: AnyObject {
 // MARK: - InspectionEmissary for View
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissary where V: View & Inspectable {
+public extension InspectionEmissary where V: View & InspectableProtocol {
     
     typealias ViewInspection = (InspectableView<ViewType.View<V>>) throws -> Void
     
@@ -41,7 +41,7 @@ public extension InspectionEmissary where V: View & Inspectable {
 // MARK: - InspectionEmissary for ViewModifier
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissary where V: ViewModifier & Inspectable {
+public extension InspectionEmissary where V: ViewModifier & InspectableProtocol {
     
     typealias ViewModifierInspection = (InspectableView<ViewType.ViewModifier<V>>) throws -> Void
     
@@ -122,7 +122,7 @@ private extension InspectionEmissary {
 // MARK: - on keyPath inspection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension View where Self: Inspectable {
+public extension View where Self: InspectableProtocol {
     @discardableResult
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
@@ -135,7 +135,7 @@ public extension View where Self: Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension ViewModifier where Self: Inspectable {
+public extension ViewModifier where Self: InspectableProtocol {
     @discardableResult
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
@@ -148,7 +148,7 @@ public extension ViewModifier where Self: Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private extension Inspectable {
+private extension InspectableProtocol {
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      function: String, file: StaticString, line: UInt,
                      inspect: @escaping ((Self) -> Void)

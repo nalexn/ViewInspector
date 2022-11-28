@@ -245,7 +245,7 @@ private class RootViewController: NSViewController {
 internal extension ViewHosting {
     #if os(macOS)
     static func lookup<V>(_ view: V.Type) throws -> V.NSViewType
-        where V: Inspectable & NSViewRepresentable {
+        where V: InspectableProtocol & NSViewRepresentable {
             let name = Inspector.typeName(type: view)
             let viewHost = rootViewController.view.descendant(nameTraits: ["ViewHost", name])
             guard let view = viewHost?.subviews.compactMap({ $0 as? V.NSViewType }).first else {
@@ -255,7 +255,7 @@ internal extension ViewHosting {
     }
     
     static func lookup<V>(_ viewController: V.Type) throws -> V.NSViewControllerType
-        where V: Inspectable & NSViewControllerRepresentable {
+        where V: InspectableProtocol & NSViewControllerRepresentable {
             let name = Inspector.typeName(type: viewController)
             let hostVC = rootViewController.descendant(nameTraits: ["NSHostingController", name])
             if let vc = hostVC?.descendants.compactMap({ $0 as? V.NSViewControllerType }).first {
@@ -269,7 +269,7 @@ internal extension ViewHosting {
     }
     #elseif os(iOS) || os(tvOS)
     static func lookup<V>(_ view: V.Type) throws -> V.UIViewType
-        where V: Inspectable & UIViewRepresentable {
+        where V: InspectableProtocol & UIViewRepresentable {
             let name = Inspector.typeName(type: view)
             let viewHost = window.descendant(nameTraits: ["ViewHost", name])
             guard let view = viewHost?.subviews.compactMap({ $0 as? V.UIViewType }).first else {
@@ -279,7 +279,7 @@ internal extension ViewHosting {
     }
     
     static func lookup<V>(_ viewController: V.Type) throws -> V.UIViewControllerType
-        where V: Inspectable & UIViewControllerRepresentable {
+        where V: InspectableProtocol & UIViewControllerRepresentable {
             let name = Inspector.typeName(type: viewController)
             let hostVC = window.rootViewController?.descendant(nameTraits: ["UIHostingController", name])
             guard let vc = hostVC?.descendants.compactMap({ $0 as? V.UIViewControllerType })
@@ -288,7 +288,7 @@ internal extension ViewHosting {
     }
     #elseif os(watchOS)
     static func lookup<V>(_ view: V.Type) throws -> V.WKInterfaceObjectType
-        where V: Inspectable & WKInterfaceObjectRepresentable {
+        where V: InspectableProtocol & WKInterfaceObjectRepresentable {
             let name = Inspector.typeName(type: view)
             guard let rootVC = WKExtension.shared().rootInterfaceController,
                   let viewCache = try? Inspector.attribute(path: """

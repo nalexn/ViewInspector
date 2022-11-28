@@ -3,12 +3,12 @@ import SwiftUI
 // MARK: - Protocols
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol Inspectable {
+public protocol InspectableProtocol {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: View {
+public extension InspectableProtocol where Self: View {
     
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
@@ -24,7 +24,7 @@ public extension Inspectable where Self: View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: ViewModifier {
+public extension InspectableProtocol where Self: ViewModifier {
     
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self

@@ -333,7 +333,7 @@ private struct InspectableAlertWithItem<Item: Identifiable>: ViewModifier, ItemP
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct AlertFindTestView: View, Inspectable {
+private struct AlertFindTestView: View, InspectableProtocol {
     
     @Binding var isAlert1Presented = false
     @Binding var isAlert2Presented = false

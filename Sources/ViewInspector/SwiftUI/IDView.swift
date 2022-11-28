@@ -23,7 +23,7 @@ extension ViewType.IDView: SingleViewContent {
 private struct IDViewModifier: ModifierNameProvider {
     static var modifierName: String { "IDView" }
     func modifierType(prefixOnly: Bool) -> String { IDViewModifier.modifierName }
-    var customModifier: Inspectable? { nil }
+    var customModifier: InspectableProtocol? { nil }
     let view: Any
 }
 
