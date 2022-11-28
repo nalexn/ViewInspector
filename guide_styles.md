@@ -212,7 +212,7 @@ func testCustomProgressViewStyle() throws {
 ## **Custom Styles**
 
 A custom style is a type that implements standard interaction behavior and/or a custom 
-appearance for all views that apply the custom style in a view hiearchy.
+appearance for all views that apply the custom style in a view hierarchy.
 
 A custom style starts with a protocol that concrete styles must conform to. Such a protocol
 has the following requirements:
