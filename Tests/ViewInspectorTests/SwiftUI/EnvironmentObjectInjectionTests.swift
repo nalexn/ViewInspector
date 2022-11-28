@@ -32,8 +32,8 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         let obj1 = TestEnvObject1()
         let obj2 = TestEnvObject2()
         var sut = EnvironmentObjectInnerView()
-        sut.inject(environmentObject: obj1)
-        sut.inject(environmentObject: obj2)
+        sut = EnvironmentInjection.inject(environmentObject: obj1, into: sut)
+        sut = EnvironmentInjection.inject(environmentObject: obj2, into: sut)
         XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "env_true")
     }
     
@@ -87,7 +87,7 @@ class EnvironmentObjectInjectionTests: XCTestCase {
             Search did not find a match. Possible blockers: EnvironmentObjectInnerView is \
             missing EnvironmentObjects: [\"obj2: TestEnvObject2\", \"obj1: TestEnvObject1\"]
             """)
-        sut.inject(environmentObject: TestEnvObject1())
+        sut = EnvironmentInjection.inject(environmentObject: TestEnvObject1(), into: sut)
         XCTAssertThrows(try sut.inspect().find(ViewType.Text.self),
             """
             Search did not find a match. Possible blockers: EnvironmentObjectInnerView is \

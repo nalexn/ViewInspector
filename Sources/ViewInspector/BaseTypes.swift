@@ -12,8 +12,8 @@ public extension Inspectable where Self: View {
     
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
-        environmentObjects.forEach { copy.inject(environmentObject: $0) }
-        let missingObjects = copy.missingEnvironmentObjects
+        environmentObjects.forEach { copy = EnvironmentInjection.inject(environmentObject: $0, into: copy) }
+        let missingObjects = EnvironmentInjection.missingEnvironmentObjects(for: copy)
         if missingObjects.count > 0 {
             let view = Inspector.typeName(value: self)
             throw InspectionError
@@ -28,8 +28,8 @@ public extension Inspectable where Self: ViewModifier {
     
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
-        environmentObjects.forEach { copy.inject(environmentObject: $0) }
-        let missingObjects = copy.missingEnvironmentObjects
+        environmentObjects.forEach { copy = EnvironmentInjection.inject(environmentObject: $0, into: copy) }
+        let missingObjects = EnvironmentInjection.missingEnvironmentObjects(for: copy)
         if missingObjects.count > 0 {
             let view = Inspector.typeName(value: self)
             throw InspectionError

@@ -379,7 +379,7 @@ private extension UnwrappedView {
                 return "popover"
             }
             if let inspectable = view as? Inspectable {
-                let missingObjects = inspectable.missingEnvironmentObjects
+                let missingObjects = EnvironmentInjection.missingEnvironmentObjects(for: view)
                 if missingObjects.count > 0 {
                     return InspectionError
                         .missingEnvironmentObjects(view: name, objects: missingObjects)

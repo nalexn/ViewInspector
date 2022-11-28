@@ -105,7 +105,7 @@ public extension InspectableView where View: CustomViewType {
     func actualView() throws -> View.T {
         var view = try Inspector.cast(value: content.view, type: View.T.self)
         content.medium.environmentObjects.forEach {
-            view.inject(environmentObject: $0)
+            view = EnvironmentInjection.inject(environmentObject: $0, into: view)
         }
         return view
     }
