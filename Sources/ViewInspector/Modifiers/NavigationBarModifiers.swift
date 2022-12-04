@@ -1,6 +1,6 @@
 import SwiftUI
 
-#if os(macOS) && !MAC_OS_VERSION_13_0
+#if (os(macOS) || targetEnvironment(macCatalyst)) && !MAC_OS_VERSION_13_0
 struct ToolbarPlacement {
     static var navigationBar: ToolbarPlacement { .init() }
 }
