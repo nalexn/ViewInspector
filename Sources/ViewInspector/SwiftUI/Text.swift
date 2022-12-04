@@ -66,6 +66,11 @@ public extension InspectableView where View == ViewType.Text {
         return try ViewType.Text.extractImages(from: self)
     }
 
+    /**
+     Returns `AttributedString` only for `Text` views constructed this way.
+     If you used explicit style modifiers, for example, `Text("Hi").bold()`,
+     consider using `attributes()` instead.
+     */
     @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     func attributedString() throws -> AttributedString {
         return try ViewType.Text.extractAttributedString(from: self)
@@ -98,7 +103,10 @@ private extension ViewType.Text {
         case "FormatterTextStorage":
             return try extractString(formatterTextStorage: textStorage)
         case "AttributedStringTextStorage":
-            throw InspectionError.inspection(path: "string()", factual: "AttributedString", expected: "String")
+            guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) else {
+                throw InspectionError.notSupported("AttributedString is not supported in this OS version")
+            }
+            return String(try view.attributedString().characters)
         default:
             throw InspectionError.notSupported("Unknown text storage: \(storageType)")
         }
@@ -267,7 +275,7 @@ private extension ViewType.Text {
         case "AttributedStringTextStorage":
             return try Inspector.attribute(label: "str", value: textStorage, type: AttributedString.self)
         default:
-            throw InspectionError.inspection(path: "attributedString()", factual: "String", expected: "AttributedString")
+            throw InspectionError.notSupported("Please use attributes() for accessing the text styles on this view")
         }
     }
 }

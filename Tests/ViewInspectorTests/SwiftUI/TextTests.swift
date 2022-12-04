@@ -209,9 +209,8 @@ final class TextTests: XCTestCase {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
         else { throw XCTSkip() }
         let aString = try AttributedString(markdown: "**Bold** Test [Link](https://example.com)")
-        let sut = Text(aString)
-        XCTAssertThrows(try sut.inspect().text().string(),
-                        "string() found AttributedString instead of String")
+        let sut = Text("head ") + Text(aString) + Text(" tail")
+        XCTAssertEqual(try sut.inspect().text().string(), "head Bold Test Link tail")
     }
 
     // MARK: - attributedString()
@@ -230,7 +229,7 @@ final class TextTests: XCTestCase {
         else { throw XCTSkip() }
         let sut = Text("Test")
         XCTAssertThrows(try sut.inspect().text().attributedString(),
-                        "attributedString() found String instead of AttributedString")
+                        "Please use attributes() for accessing the text styles on this view")
     }
 }
 
