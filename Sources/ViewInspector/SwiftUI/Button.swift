@@ -73,7 +73,10 @@ public extension InspectableView {
 
     func buttonStyle() throws -> Any {
         let modifier = try self.modifier({ modifier -> Bool in
-            return modifier.modifierType.hasPrefix("ButtonStyleModifier")
+            return [
+                "ButtonStyleContainerModifier",
+                "ButtonStyleModifier",
+            ].contains(where: { modifier.modifierType.hasPrefix($0) })
         }, call: "buttonStyle")
         if let style = try? Inspector.attribute(path: "modifier|style|style", value: modifier) {
             return style

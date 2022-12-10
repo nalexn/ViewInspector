@@ -19,10 +19,12 @@ public extension InspectableView {
     
     #if os(macOS)
     func horizontalRadioGroupLayout() throws -> Bool {
-        _ = try modifierAttribute(
-            modifierName: "RadioGroupLayoutModifier<_HStackLayout>",
-            path: "modifier|style",
-            type: Any.self, call: "horizontalRadioGroupLayout")
+        _ = try modifier({ modifier -> Bool in
+            return [
+                "RadioGroupStyleModifier<LayoutRadioGroupStyle<_HStackLayout>>",
+                "RadioGroupLayoutModifier<_HStackLayout>",
+            ].contains(where: { modifier.modifierType == $0 })
+        }, call: "horizontalRadioGroupLayout")
         return true
     }
     
