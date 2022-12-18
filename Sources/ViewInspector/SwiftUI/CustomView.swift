@@ -2,7 +2,7 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol CustomViewType {
-    associatedtype T: Inspectable
+    associatedtype T
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -10,7 +10,7 @@ public extension ViewType {
     
     internal static let customViewGenericsPlaceholder = "<EmptyView>"
     
-    struct View<T>: KnownViewType, CustomViewType where T: Inspectable {
+    struct View<T>: KnownViewType, CustomViewType {
         public static var typePrefix: String {
             guard T.self != ViewType.Stub.self
             else { return "" }
@@ -72,7 +72,7 @@ internal extension Content {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
-    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
+    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> {
         let child = try View.child(content)
         let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
@@ -87,7 +87,7 @@ public extension InspectableView where View: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
-    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: Inspectable {
+    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> {
         let content = try child(at: index)
         let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
