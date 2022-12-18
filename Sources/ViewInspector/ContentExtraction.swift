@@ -1,6 +1,8 @@
 // Created by Michael Bachand on 12/18/22.
 // Copyright © 2022 Airbnb Inc. All rights reserved.
 
+import SwiftUI
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableProtocol where Self: View {
 
