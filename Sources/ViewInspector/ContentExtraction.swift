@@ -4,7 +4,7 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectableProtocol where Self: View {
+public extension View {
 
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
@@ -20,7 +20,7 @@ public extension InspectableProtocol where Self: View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectableProtocol where Self: ViewModifier {
+public extension ViewModifier {
 
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         var copy = self
@@ -36,6 +36,6 @@ public extension InspectableProtocol where Self: ViewModifier {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Gesture where Self: InspectableProtocol {
+public extension Gesture {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any { () }
 }
