@@ -384,7 +384,7 @@ extension EnvironmentValues {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType {
-    struct Test<T>: KnownViewType, CustomViewType where T: InspectableProtocol {
+    struct Test<T>: KnownViewType, CustomViewType {
         public static var typePrefix: String { "String" }
         static var namespacedPrefixes: [String] { ["Swift.String"] }
     }
