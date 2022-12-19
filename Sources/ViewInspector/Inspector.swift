@@ -165,7 +165,8 @@ public extension Inspector {
                 value: child.element.value, medium: medium, visited: visited)
         }
         if let inspectable = value as? InspectableProtocol,
-           let content = try? inspectable.extractContent(environmentObjects: medium.environmentObjects) {
+           let contentExtractor = try? ContentExtractor(source: inspectable),
+           let content = try? contentExtractor.extractContent(environmentObjects: medium.environmentObjects) {
             let childType = typeName(value: content)
             dict["body: " + childType] = attributesTree(value: content, medium: medium, visited: visited)
         }
