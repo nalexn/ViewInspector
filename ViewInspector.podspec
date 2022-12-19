@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.15'
   s.tvos.deployment_target = '13.0'
   #s.watchos.deployment_target = '7.0'
-  s.swift_version = '5.0'
+  s.swift_version = '5.7'
   s.framework = 'XCTest'
   s.source = { :git => "https://github.com/nalexn/ViewInspector.git", :tag => "#{s.version}" }
 
