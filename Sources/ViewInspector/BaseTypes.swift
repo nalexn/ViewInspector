@@ -4,7 +4,8 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol Inspectable {
-    func extractContent(environmentObjects: [AnyObject]) throws -> Any
+    // Intentionally empty. We don't need a conformance to this protocol to enable extracting
+    // content from an `Any`.
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
