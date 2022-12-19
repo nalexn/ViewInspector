@@ -8,7 +8,7 @@ import Combine
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-final class CommonComposedGestureTests<U: Gesture & Inspectable> {
+final class CommonComposedGestureTests<U: Gesture> {
 
     let type: U.Type
 
@@ -25,7 +25,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         self.type = type
     }
 
-    func gestureTest<T: Gesture & Inspectable>(
+    func gestureTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: (MagnificationGesture, RotationGesture) -> T) throws {
@@ -41,7 +41,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         }
     }
 
-    func gesturePathTest<T: Gesture & Inspectable>(
+    func gesturePathTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: (MagnificationGesture, RotationGesture) -> T) throws {
@@ -57,7 +57,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         }
     }
     
-    func gestureFailureTest<T: Gesture & Inspectable>(
+    func gestureFailureTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: (MagnificationGesture, RotationGesture) -> T) throws {
@@ -83,7 +83,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         (_ModifiersGesture<MagnificationGesture>,
          _ModifiersGesture<RotationGesture>) -> T
 
-    func modifiersTest<T: Gesture & Inspectable>(
+    func modifiersTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureModifiers<T>) throws {
@@ -105,7 +105,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         (_ModifiersGesture<_EndedGesture<MagnificationGesture>>,
          _ModifiersGesture<_EndedGesture<RotationGesture>>) -> T
 
-    func modifiersNotFirstTest<T: Gesture & Inspectable>(
+    func modifiersNotFirstTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureModifiersNotFirst<T>) throws {
@@ -131,7 +131,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         (_ModifiersGesture<_ModifiersGesture<MagnificationGesture>>,
          _ModifiersGesture<_ModifiersGesture<RotationGesture>>) -> T
 
-    func modifiersMultipleTest<T: Gesture & Inspectable>(
+    func modifiersMultipleTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureModifiersMultiple<T>) throws {
@@ -153,7 +153,7 @@ final class CommonComposedGestureTests<U: Gesture & Inspectable> {
         }
     }
 
-    func modifiersFailureTest<T: Gesture & Inspectable>(
+    func modifiersFailureTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: (MagnificationGesture, RotationGesture) -> T) throws {
