@@ -8,7 +8,7 @@ import Combine
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-final class CommonComposedGestureUpdatingTests<U: Gesture & InspectableProtocol> {
+final class CommonComposedGestureUpdatingTests<U: Gesture> {
 
     @GestureState var gestureState = CGSize.zero
     
@@ -33,7 +33,7 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & InspectableProtocol>
         (GestureStateGesture<MagnificationGesture, CGSize>,
          GestureStateGesture<RotationGesture, CGSize>) -> T
 
-    func callUpdatingTest<T: Gesture & InspectableProtocol>(
+    func callUpdatingTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureUpdating<T>) throws {
@@ -65,7 +65,7 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & InspectableProtocol>
         (GestureStateGesture<_EndedGesture<MagnificationGesture>, CGSize>,
          GestureStateGesture<_EndedGesture<RotationGesture>, CGSize>) -> T
 
-    func callUpdatingNotFirstTest<T: Gesture & InspectableProtocol>(
+    func callUpdatingNotFirstTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureUpdatingNotFirst<T>) throws {
@@ -99,7 +99,7 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & InspectableProtocol>
         (GestureStateGesture<GestureStateGesture<MagnificationGesture, CGSize>, CGSize>,
          GestureStateGesture<GestureStateGesture<RotationGesture, CGSize>, CGSize>) -> T
 
-    func callUpdatingMultipleTest<T: Gesture & InspectableProtocol>(
+    func callUpdatingMultipleTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureUpdatingMultiple<T>) throws {
@@ -136,7 +136,7 @@ final class CommonComposedGestureUpdatingTests<U: Gesture & InspectableProtocol>
         testCase.wait(for: [exp1, exp2], timeout: 0.1)
     }
 
-    func callUpdatingFailureTest<T: Gesture & InspectableProtocol>(
+    func callUpdatingFailureTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: (MagnificationGesture, RotationGesture) -> T) throws {

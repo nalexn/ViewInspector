@@ -2,14 +2,14 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol GestureViewType {
-    associatedtype T: SwiftUI.Gesture & InspectableProtocol
+    associatedtype T: SwiftUI.Gesture
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Gesture<T>: KnownViewType, GestureViewType
-    where T: SwiftUI.Gesture & InspectableProtocol {
+    where T: SwiftUI.Gesture {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self, generics: .remove)
         }
@@ -80,21 +80,21 @@ extension TapGesture: InspectableProtocol {}
 public extension InspectableView {
     
     func gesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
-        where T: Gesture & InspectableProtocol {
+        where T: Gesture {
         return try gestureModifier(
             modifierName: "AddGestureModifier", path: "modifier",
             type: type, call: "gesture", index: index)
     }
     
     func highPriorityGesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
-        where T: Gesture & InspectableProtocol {
+        where T: Gesture {
         return try gestureModifier(
             modifierName: "HighPriorityGestureModifier", path: "modifier",
             type: type, call: "highPriorityGesture", index: index)
     }
     
     func simultaneousGesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
-        where T: Gesture & InspectableProtocol {
+        where T: Gesture {
         return try gestureModifier(
             modifierName: "SimultaneousGestureModifier", path: "modifier",
             type: type, call: "simultaneousGesture", index: index)
@@ -169,7 +169,7 @@ public extension InspectableView {
     @available(iOS, unavailable)
     @available(tvOS, unavailable)
     func gestureModifiers<T>() throws -> EventModifiers
-    where T: Gesture & InspectableProtocol, View == ViewType.Gesture<T> {
+    where T: Gesture, View == ViewType.Gesture<T> {
         let typeName = Inspector.typeName(type: T.self)
         let valueName = Inspector.typeName(value: content.view)
         let (_, modifiers) = gestureInfo(typeName, valueName)
@@ -199,7 +199,7 @@ internal extension InspectableView {
         type: T.Type,
         call: String,
         index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
-        where T: Gesture, T: InspectableProtocol {
+        where T: Gesture {
         let typeName = Inspector.typeName(type: type)
         let modifierCall = ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: nil)
         

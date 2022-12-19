@@ -8,7 +8,7 @@ import Combine
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-final class CommonComposedGestureEndedTests<U: Gesture & InspectableProtocol> {
+final class CommonComposedGestureEndedTests<U: Gesture> {
 
     let testCase: XCTestCase
     let type: U.Type
@@ -31,7 +31,7 @@ final class CommonComposedGestureEndedTests<U: Gesture & InspectableProtocol> {
         (_EndedGesture<MagnificationGesture>,
          _EndedGesture<RotationGesture>) -> T
 
-    func callEndedTest<T: Gesture & InspectableProtocol>(
+    func callEndedTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureEnded<T>) throws {
@@ -63,7 +63,7 @@ final class CommonComposedGestureEndedTests<U: Gesture & InspectableProtocol> {
         (_EndedGesture<_ChangedGesture<MagnificationGesture>>,
          _EndedGesture<_ChangedGesture<RotationGesture>>) -> T
 
-    func callEndedNotFirstTest<T: Gesture & InspectableProtocol>(
+    func callEndedNotFirstTest<T: Gesture> (
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureEndedNotFirst<T>) throws {
@@ -97,7 +97,7 @@ final class CommonComposedGestureEndedTests<U: Gesture & InspectableProtocol> {
         (_EndedGesture<_EndedGesture<MagnificationGesture>>,
          _EndedGesture<_EndedGesture<RotationGesture>>) -> T
 
-    func callEndedMultipleTest<T: Gesture & InspectableProtocol>(
+    func callEndedMultipleTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureEndedMultiple<T>) throws {
@@ -134,7 +134,7 @@ final class CommonComposedGestureEndedTests<U: Gesture & InspectableProtocol> {
         testCase.wait(for: [exp1, exp2], timeout: 0.1)
     }
 
-    func callEndedFailureTest<T: Gesture & InspectableProtocol>(
+    func callEndedFailureTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: (MagnificationGesture, RotationGesture) -> T) throws {
