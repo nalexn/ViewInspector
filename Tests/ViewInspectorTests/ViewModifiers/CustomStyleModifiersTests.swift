@@ -135,6 +135,7 @@ extension DefaultHelloWorldStyle {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let configuration = HelloWorldStyleConfiguration()
         return try makeBody(configuration: configuration).inspect()
+            .asInspectableView()
     }
 }
 
@@ -143,6 +144,7 @@ extension RedOutlineHelloWorldStyle {
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let configuration = HelloWorldStyleConfiguration()
         return try makeBody(configuration: configuration).inspect()
+            .asInspectableView()
     }
 }
 

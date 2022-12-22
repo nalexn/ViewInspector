@@ -20,6 +20,12 @@ internal extension ViewType {
     struct PreferenceReadingView { }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension SwiftUI._DelayedPreferenceView: SwiftUICitizen { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension SwiftUI._PreferenceReadingView: SwiftUICitizen { }
+
 // MARK: - DelayedPreferenceView
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

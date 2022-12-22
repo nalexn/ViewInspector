@@ -187,7 +187,7 @@ extension _StrokedShape: InspectableShape, SwiftUICitizen { }
 extension _TrimmedShape: InspectableShape, SwiftUICitizen { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension _ShapeView: InspectableShape {
+extension _ShapeView: InspectableShape, SwiftUICitizen {
     public func path(in rect: CGRect) -> Path {
         return shape.path(in: rect)
     }

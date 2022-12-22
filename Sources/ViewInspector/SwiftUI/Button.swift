@@ -104,6 +104,7 @@ public extension PrimitiveButtonStyle {
     func inspect(onTrigger: @escaping () -> Void = { }) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = PrimitiveButtonStyleConfiguration(onTrigger: onTrigger)
         return try makeBody(configuration: config).inspect()
+            .asInspectableView()
     }
 }
 
