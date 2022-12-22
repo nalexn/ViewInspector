@@ -43,18 +43,30 @@ internal struct ContentExtractor {
         #if os(macOS)
         case is any NSViewRepresentable:
             throw InspectionError.notSupported(
-                "Please use `.actualView().nsView()` for inspecting the contents of NSViewRepresentable")
+                """
+                Please use `.actualView().nsView()` for inspecting \
+                the contents of NSViewRepresentable
+                """)
         case is any NSViewControllerRepresentable:
             throw InspectionError.notSupported(
-                "Please use `.actualView().viewController()` for inspecting the contents of NSViewControllerRepresentable")
+                """
+                Please use `.actualView().viewController()` for inspecting \
+                the contents of NSViewControllerRepresentable
+                """)
         #endif
         #if os(iOS) || os(tvOS)
         case is any UIViewRepresentable:
             throw InspectionError.notSupported(
-                "Please use `.actualView().uiView()` for inspecting the contents of UIViewRepresentable")
+                """
+                Please use `.actualView().uiView()` for inspecting \
+                the contents of UIViewRepresentable
+                """)
         case is any UIViewControllerRepresentable:
             throw InspectionError.notSupported(
-                "Please use `.actualView().viewController()` for inspecting the contents of UIViewControllerRepresentable")
+                """
+                Please use `.actualView().viewController()` for inspecting \
+                the contents of UIViewControllerRepresentable
+                """)
         #endif
         #if os(watchOS)
         case is any WKInterfaceObjectRepresentable:
