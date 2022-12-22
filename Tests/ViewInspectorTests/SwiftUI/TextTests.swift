@@ -204,6 +204,33 @@ final class TextTests: XCTestCase {
         let sut3 = Text("abc")
         XCTAssertEqual(try sut3.inspect().text().images(), [])
     }
+
+    func testAttributedStringTextStorage() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let aString = try AttributedString(markdown: "**Bold** Test [Link](https://example.com)")
+        let sut = Text("head ") + Text(aString) + Text(" tail")
+        XCTAssertEqual(try sut.inspect().text().string(), "head Bold Test Link tail")
+    }
+
+    // MARK: - attributedString()
+
+    func testAttributedStringValue() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let aString = try AttributedString(markdown: "**Bold** Test [Link](https://example.com)")
+        let sut = Text(aString)
+        let value = try sut.inspect().text().attributedString()
+        XCTAssertEqual(value, aString)
+    }
+
+    func testAttributedStringFoundString() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = Text("Test")
+        XCTAssertThrows(try sut.inspect().text().attributedString(),
+                        "Please use attributes() for accessing the text styles on this view")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

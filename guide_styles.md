@@ -212,7 +212,7 @@ func testCustomProgressViewStyle() throws {
 ## **Custom Styles**
 
 A custom style is a type that implements standard interaction behavior and/or a custom 
-appearance for all views that apply the custom style in a view hiearchy.
+appearance for all views that apply the custom style in a view hierarchy.
 
 A custom style starts with a protocol that concrete styles must conform to. Such a protocol
 has the following requirements:
@@ -295,7 +295,7 @@ struct AnyHelloWorldStyle: HelloWorldStyle {
 
 To emulate SwiftUI's approach to styles, it is necessary to wrap setting the environment value.
 This not only encapsulates the type-erasure of the style, but it retains the type of the style as
-part of the view's hiearchy. The following view modifier illustrates how to accomplish this:
+part of the view's hierarchy. The following view modifier illustrates how to accomplish this:
 
 ```Swift
 struct HelloWorldStyleModifier<S: HelloWorldStyle>: ViewModifier {
@@ -319,7 +319,7 @@ extension View {
 ```
 
 The following example illustrates how to define a concrete style and apply it to a view 
-hiearchy:
+hierarchy:
 
 ```Swift
 struct Content: View {
@@ -341,7 +341,7 @@ struct RedOutlineHelloWorldStyle: HelloWorldStyle {
 
 **ViewInspector** provides support for custom styles.
 
-A test can verify the style applied to a view hiearchy. For example:
+A test can verify the style applied to a view hierarchy. For example:
 
 ```Swift
 let sut = EmptyView().helloWorldStyle(RedOutlineHelloWorldStyle())
