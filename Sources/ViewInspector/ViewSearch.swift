@@ -176,7 +176,7 @@ public extension InspectableView {
     func find<V>(_ inspectable: V.Type,
                  relation: ViewSearch.Relation = .child,
                  where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
-    ) throws -> InspectableView<ViewType.View<V>> where V: Inspectable {
+    ) throws -> InspectableView<ViewType.View<V>> where V: SwiftUI.View {
         return try find(ViewType.View<V>.self, relation: relation, where: condition)
     }
     
@@ -279,7 +279,7 @@ public extension InspectableView {
      */
     func findAll<V>(_ inspectable: V.Type,
                     where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
-    ) -> [InspectableView<ViewType.View<V>>] where V: Inspectable {
+    ) -> [InspectableView<ViewType.View<V>>] where V: SwiftUI.View {
         return findAll(ViewType.View<V>.self, where: condition)
     }
     

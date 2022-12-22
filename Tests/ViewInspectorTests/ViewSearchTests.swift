@@ -61,11 +61,6 @@ private struct Test {
             AnyView(content.overlay(Text(text)))
         }
     }
-    struct NonInspectableView: View {
-        var body: some View {
-            SwiftUI.EmptyView()
-        }
-    }
     struct EmptyView: View, Inspectable {
         var body: some View {
             Text("empty")
@@ -212,16 +207,6 @@ final class ViewSearchTests: XCTestCase {
         let texts = try testView.inspect().findAll(ViewType.Text.self)
         let values = try texts.map { try $0.string() }
         XCTAssertEqual(values, ["2", "3"])
-    }
-    
-    func testFindMatchingBlockerView() {
-        let view = AnyView(Test.NonInspectableView().id(5))
-        XCTAssertNoThrow(try view.inspect().find(viewWithId: 5))
-        let err = "Search did not find a match. Possible blockers: NonInspectableView"
-        XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self,
-                                                traversal: .breadthFirst), err)
-        XCTAssertThrows(try view.inspect().find(ViewType.EmptyView.self,
-                                                traversal: .depthFirst), err)
     }
     
     func testConflictingViewTypeNames() throws {

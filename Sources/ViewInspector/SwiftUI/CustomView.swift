@@ -54,16 +54,14 @@ internal extension Content {
     }
     
     func extractCustomView() throws -> Content {
-        let inspectable = try Inspector.cast(value: view, type: Inspectable.self)
-        let contentExtractor = try ContentExtractor(source: inspectable)
+        let contentExtractor = try ContentExtractor(source: view)
         let view = try contentExtractor.extractContent(environmentObjects: medium.environmentObjects)
         let medium = self.medium.resettingViewModifiers()
         return try Inspector.unwrap(view: view, medium: medium)
     }
     
     func extractCustomViewGroup() throws -> LazyGroup<Content> {
-        let inspectable = try Inspector.cast(value: view, type: Inspectable.self)
-        let contentExtractor = try ContentExtractor(source: inspectable)
+        let contentExtractor = try ContentExtractor(source: view)
         let view = try contentExtractor.extractContent(environmentObjects: medium.environmentObjects)
         return try Inspector.viewsInContainer(view: view, medium: medium)
     }
@@ -74,7 +72,7 @@ internal extension Content {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: SingleViewContent {
     
-    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> {
+    func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: SwiftUI.View {
         let child = try View.child(content)
         let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
@@ -89,7 +87,7 @@ public extension InspectableView where View: SingleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
-    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> {
+    func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: SwiftUI.View {
         let content = try child(at: index)
         let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
