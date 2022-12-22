@@ -157,3 +157,46 @@ public extension InspectableView where View: MultipleViewContent {
         return try .init(try child(at: index), parent: self, index: index)
     }
 }
+
+// MARK: - SwiftUICitizens
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension PrimitiveButtonStyleConfiguration.Label: SwiftUICitizen { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ButtonStyleConfiguration.Label: SwiftUICitizen { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ToggleStyleConfiguration.Label: SwiftUICitizen { }
+
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+extension GroupBoxStyleConfiguration.Label: SwiftUICitizen { }
+
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+extension GroupBoxStyleConfiguration.Content: SwiftUICitizen { }
+
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+extension MenuStyleConfiguration.Label: SwiftUICitizen { }
+
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+extension MenuStyleConfiguration.Content: SwiftUICitizen { }
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+extension LabelStyleConfiguration.Title: SwiftUICitizen { }
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+extension LabelStyleConfiguration.Icon: SwiftUICitizen { }
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+extension ProgressViewStyleConfiguration.Label: SwiftUICitizen { }
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+extension ProgressViewStyleConfiguration.CurrentValueLabel: SwiftUICitizen { }

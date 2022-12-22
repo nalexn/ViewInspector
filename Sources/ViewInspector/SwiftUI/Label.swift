@@ -1,5 +1,8 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+extension Label: SwiftUICitizen { }
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     

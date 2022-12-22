@@ -11,6 +11,11 @@ public extension ViewType {
 
 #if os(macOS)
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
+extension PasteButton: SwiftUICitizen { }
+
 // MARK: - Extraction from SingleViewContent parent
 
 @available(macOS 10.15, *)

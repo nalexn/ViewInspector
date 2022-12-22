@@ -1,5 +1,9 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, *)
+@available(tvOS, unavailable)
+extension TextEditor: SwiftUICitizen { }
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     

@@ -3,6 +3,9 @@ import SwiftUI
 // MARK: - Alert
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension Alert: SwiftUICitizen { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Alert: KnownViewType {

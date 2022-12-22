@@ -1,6 +1,8 @@
 import SwiftUI
 
-// MARK: - ActionSheet
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
+extension ActionSheet: SwiftUICitizen { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {

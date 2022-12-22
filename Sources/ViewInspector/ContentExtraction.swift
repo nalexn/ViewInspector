@@ -28,6 +28,9 @@ internal struct ContentExtractor {
     private static func contentSource(from source: Any) -> ContentSource? {
         switch source {
         case let view as any View:
+            if view is SwiftUICitizen {
+                return nil
+            }
             return .view(view)
         case let viewModifier as any ViewModifier:
             return .viewModifier(viewModifier)

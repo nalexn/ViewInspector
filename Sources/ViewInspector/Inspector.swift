@@ -164,8 +164,7 @@ public extension Inspector {
             dict[childName + ": " + childType] = attributesTree(
                 value: child.element.value, medium: medium, visited: visited)
         }
-        if let inspectable = value as? Inspectable,
-           let contentExtractor = try? ContentExtractor(source: inspectable),
+        if let contentExtractor = try? ContentExtractor(source: value),
            let content = try? contentExtractor.extractContent(environmentObjects: medium.environmentObjects) {
             let childType = typeName(value: content)
             dict["body: " + childType] = attributesTree(value: content, medium: medium, visited: visited)

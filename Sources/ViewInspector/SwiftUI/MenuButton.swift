@@ -10,6 +10,11 @@ public extension ViewType {
 
 #if os(macOS)
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
+extension MenuButton: SwiftUICitizen { }
+
 // MARK: - Content Extraction
 
 @available(macOS 10.15, *)

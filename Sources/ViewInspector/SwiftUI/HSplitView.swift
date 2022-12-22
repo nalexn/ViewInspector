@@ -1,5 +1,10 @@
 import SwiftUI
 
+@available(macOS 10.15, *)
+@available(iOS, unavailable)
+@available(tvOS, unavailable)
+extension HSplitView: SwiftUICitizen { }
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     

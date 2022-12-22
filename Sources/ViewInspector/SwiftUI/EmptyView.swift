@@ -1,6 +1,9 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension EmptyView: SwiftUICitizen { }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct EmptyView: KnownViewType {
