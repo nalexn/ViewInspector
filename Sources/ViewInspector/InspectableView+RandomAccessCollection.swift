@@ -50,8 +50,7 @@ extension InspectableView: Collection, BidirectionalCollection, RandomAccessColl
     public subscript(index: Index) -> Iterator.Element {
         do {
             do {
-                let viewes = try View.children(content)
-                return try .init(try viewes.element(at: index), parent: self, call: "[\(index)]")
+                return try .init(try child(at: index), parent: self, call: "[\(index)]")
             } catch InspectionError.viewNotFound {
                 return try Element(.absentView, parent: self, index: index)
             } catch { throw error }

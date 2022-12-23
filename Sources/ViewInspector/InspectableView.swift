@@ -32,7 +32,7 @@ public struct InspectableView<View> where View: KnownViewType {
                                     inspectionCall: call)
         } catch {
             if let err = error as? InspectionError, case .typeMismatch = err {
-                if let child = implicitlyUnwrappedCustomViewChild(
+                if let child = try? implicitCustomViewChild(
                     parent: parent, call: call, index: index) {
                     return child
                 }
@@ -57,15 +57,31 @@ public struct InspectableView<View> where View: KnownViewType {
         self.inspectionIndex = index
     }
     
-    private static func implicitlyUnwrappedCustomViewChild(parent: UnwrappedView?, call: String, index: Int?) -> Self? {
-        guard let parent = parent as? InspectableView<ViewType.ClassifiedView>,
+    private static func implicitCustomViewChild(parent: UnwrappedView?, call: String, index: Int?) throws -> Self? {
+        guard let (content, parent) = try parent?.implicitCustomViewChild(index: index ?? 0, call: call)
+        else { return nil }
+        return try build(content: content, parent: parent, call: call, index: index)
+    }
+    
+    fileprivate func withCustomViewInspectionCall() -> Self {
+        let customViewType = Inspector.typeName(value: content.view, namespaced: false)
+        let call = "view(\(customViewType).self)"
+        return .init(content: content, parent: parentView, call: call, index: inspectionIndex)
+    }
+}
+
+extension UnwrappedView {
+    func implicitCustomViewChild(index: Int, call: String) throws
+    -> (content: Content, parent: InspectableView<ViewType.View<ViewType.Stub>>)? {
+        guard let parent = self as? InspectableView<ViewType.ClassifiedView>,
               !(parent.content.view is SwiftUICitizen),
               !(parent.content.view is AbsentView),
               let customViewParent = try? parent
-                .asInspectableView(ofType: ViewType.View<ViewType.Stub>.self),
-              let child = try? customViewParent.child(at: index ?? 0)
+                .asInspectableView(ofType: ViewType.View<ViewType.Stub>.self)
         else { return nil }
-        return try? build(content: child, parent: customViewParent, call: call, index: index)
+        let child = try customViewParent.child(at: index)
+        let updatedParent = customViewParent.withCustomViewInspectionCall()
+        return (child, updatedParent)
     }
 }
 
@@ -161,6 +177,10 @@ internal extension InspectableView where View: MultipleViewContent {
     func child(at index: Int, isTupleExtraction: Bool = false) throws -> Content {
         let viewes = try View.children(content)
         guard index >= 0 && index < viewes.count else {
+            if let unwrapped = try Self.implicitCustomViewChild(
+                parent: self, call: inspectionCall, index: index) {
+                return unwrapped.content
+            }
             throw InspectionError.viewIndexOutOfBounds(index: index, count: viewes.count)
         }
         let child = try viewes.element(at: index)
@@ -184,22 +204,13 @@ public extension View {
         let content = try Inspector.unwrap(view: self, medium: medium)
         return try .init(content, parent: nil, call: "")
     }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension View where Self: Inspectable {
-    
-    func inspect(function: String = #function) throws -> InspectableView<ViewType.View<Self>> {
-        let call = "view(\(ViewType.View<Self>.typePrefix).self)"
-        let medium = ViewHosting.medium(function: function)
-        let content = Content(self, medium: medium)
-        return try .init(content, parent: nil, call: call)
-    }
     
     func inspect(function: String = #function, file: StaticString = #file, line: UInt = #line,
                  inspection: (InspectableView<ViewType.View<Self>>) throws -> Void) {
         do {
-            try inspection(try inspect(function: function))
+            let view = try inspect(function: function)
+                .asInspectableView(ofType: ViewType.View<Self>.self)
+            try inspection(view)
         } catch {
             XCTFail("\(error.localizedDescription)", file: file, line: line)
         }

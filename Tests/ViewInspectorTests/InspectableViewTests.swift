@@ -55,6 +55,7 @@ final class InspectableViewTestsAccessTests: XCTestCase {
     
     func testCollectionWithAbsentViews() throws {
         let sut = try ViewWithAbsentChildren(present: false).inspect()
+            .view(ViewWithAbsentChildren.self)
         var counter = 0
         // `forEach` is using iterator
         sut.forEach { _ in counter += 1 }

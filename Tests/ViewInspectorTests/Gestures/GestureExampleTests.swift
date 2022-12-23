@@ -10,7 +10,7 @@ final class GestureExampleTests: XCTestCase {
     func testGestureModifier() throws {
         guard #available(iOS 14.0, tvOS 16.0, *) else { throw XCTSkip() }
         let sut = TestGestureView1()
-        let rectangle = try sut.inspect().shape(0)
+        let rectangle = try sut.inspect().shape()
         XCTAssertNoThrow(try rectangle.gesture(TapGesture.self))
     }
 

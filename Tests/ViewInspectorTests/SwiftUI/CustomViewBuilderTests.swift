@@ -71,7 +71,7 @@ final class CustomViewBuilderTests: XCTestCase {
     
     func testActualView() throws {
         let sut = TestViewBuilderView { Text("Test") }
-        XCTAssertNoThrow(try sut.inspect().actualView().content)
+        XCTAssertNoThrow(try sut.inspect().view(TestViewBuilderView<Text>.self).actualView().content)
     }
     
     func testViewBody() {

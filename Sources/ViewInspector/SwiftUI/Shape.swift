@@ -8,6 +8,10 @@ public extension ViewType {
         public static func inspectionCall(typeName: String) -> String {
             return "shape(\(ViewType.indexPlaceholder))"
         }
+        
+        fileprivate static func inspectionCall(index: Int) -> String {
+            return ViewType.inspectionCall(base: inspectionCall(typeName: ""), index: index)
+        }
     }
 }
 
@@ -18,6 +22,12 @@ public extension InspectableView where View: SingleViewContent {
     
     func shape() throws -> InspectableView<ViewType.Shape> {
         let content = try child()
+        let call = ViewType.Shape.inspectionCall(index: 0)
+        if !content.isShape,
+           let child = try? implicitCustomViewChild(index: 0, call: call)?.content,
+           child.isShape {
+            return try .init(child, parent: self)
+        }
         try content.throwIfNotShape()
         return try .init(content, parent: self)
     }
@@ -30,6 +40,12 @@ public extension InspectableView where View: MultipleViewContent {
     
     func shape(_ index: Int) throws -> InspectableView<ViewType.Shape> {
         let content = try child(at: index)
+        let call = ViewType.Shape.inspectionCall(index: index)
+        if !content.isShape,
+           let child = try? implicitCustomViewChild(index: index, call: call)?.content,
+           child.isShape {
+            return try .init(child, parent: self)
+        }
         try content.throwIfNotShape()
         return try .init(content, parent: self, index: index)
     }
