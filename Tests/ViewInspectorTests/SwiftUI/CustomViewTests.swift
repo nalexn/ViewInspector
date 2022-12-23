@@ -230,14 +230,14 @@ final class CustomViewTests: XCTestCase {
 // MARK: - Test Views
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct SimpleTestView: View, Inspectable {
+private struct SimpleTestView: View {
     var body: some View {
         EmptyView()
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct LocalStateTestView: View, Inspectable {
+private struct LocalStateTestView: View {
     
     @State private(set) var flag: Bool
     let inspection = Inspection<Self>()
@@ -251,7 +251,7 @@ private struct LocalStateTestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ObservedStateTestView: View, Inspectable {
+private struct ObservedStateTestView: View {
     
     @ObservedObject var viewModel: ExternalState
     
@@ -261,7 +261,7 @@ private struct ObservedStateTestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct EnvironmentStateTestView: View, Inspectable {
+private struct EnvironmentStateTestView: View {
     
     @EnvironmentObject var viewModel: ExternalState
     let inspection = Inspection<Self>()

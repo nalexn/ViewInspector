@@ -13,7 +13,7 @@ public protocol InspectionEmissary: AnyObject {
 // MARK: - InspectionEmissary for View
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissary where V: View & Inspectable {
+public extension InspectionEmissary where V: View {
     
     typealias ViewInspection = (InspectableView<ViewType.View<V>>) throws -> Void
     
@@ -23,7 +23,9 @@ public extension InspectionEmissary where V: View & Inspectable {
                  _ inspection: @escaping ViewInspection
     ) -> XCTestExpectation {
         return inspect(after: delay, function: function, file: file, line: line) { view in
-            return try inspection(try view.inspect(function: function))
+            let unwrapped = try view.inspect(function: function)
+                .asInspectableView(ofType: ViewType.View<V>.self)
+            return try inspection(unwrapped)
         }
     }
     
@@ -33,7 +35,9 @@ public extension InspectionEmissary where V: View & Inspectable {
                     _ inspection: @escaping ViewInspection
     ) -> XCTestExpectation where P: Publisher, P.Failure == Never {
         return inspect(onReceive: publisher, function: function, file: file, line: line) { view in
-            return try inspection(try view.inspect(function: function))
+            let unwrapped = try view.inspect(function: function)
+                .asInspectableView(ofType: ViewType.View<V>.self)
+            return try inspection(unwrapped)
         }
     }
 }
