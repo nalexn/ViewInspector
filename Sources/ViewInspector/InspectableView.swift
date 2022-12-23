@@ -16,35 +16,56 @@ public struct InspectableView<View> where View: KnownViewType {
             ? parent?.parentView : parent
         let inspectionCall = index
             .flatMap({ call.replacingOccurrences(of: "_:", with: "\($0)") }) ?? call
-        try self.init(content: content, parent: parentView, call: inspectionCall, index: index)
+        self = try Self.build(content: content, parent: parentView, call: inspectionCall, index: index)
     }
     
-    private init(content: Content, parent: UnwrappedView?, call: String, index: Int?) throws {
+    private static func build(content: Content, parent: UnwrappedView?, call: String, index: Int?) throws -> Self {
         if !View.typePrefix.isEmpty,
            Inspector.isTupleView(content.view),
            View.self != ViewType.TupleView.self {
             throw InspectionError.notSupported(
                 "Unable to extract \(View.typePrefix): please specify its index inside parent view")
         }
-        self.content = content
-        self.parentView = parent
-        self.inspectionCall = call
-        self.inspectionIndex = index
         do {
             try Inspector.guardType(value: content.view,
                                     namespacedPrefixes: View.namespacedPrefixes,
-                                    inspectionCall: inspectionCall)
+                                    inspectionCall: call)
         } catch {
             if let err = error as? InspectionError, case .typeMismatch = err {
+                if let child = implicitlyUnwrappedCustomViewChild(
+                    parent: parent, call: call, index: index) {
+                    return child
+                }
                 let factual = Inspector.typeName(value: content.view, namespaced: true)
                     .removingSwiftUINamespace()
                 let expected = View.namespacedPrefixes
                     .map { $0.removingSwiftUINamespace() }
                     .joined(separator: " or ")
+                let pathToRoot = Self.init(content: content, parent: parent, call: call, index: index)
+                    .pathToRoot
                 throw InspectionError.inspection(path: pathToRoot, factual: factual, expected: expected)
             }
             throw error
         }
+        return Self.init(content: content, parent: parent, call: call, index: index)
+    }
+    
+    private init(content: Content, parent: UnwrappedView?, call: String, index: Int?) {
+        self.content = content
+        self.parentView = parent
+        self.inspectionCall = call
+        self.inspectionIndex = index
+    }
+    
+    private static func implicitlyUnwrappedCustomViewChild(parent: UnwrappedView?, call: String, index: Int?) -> Self? {
+        guard let parent = parent as? InspectableView<ViewType.ClassifiedView>,
+              !(parent.content.view is SwiftUICitizen),
+              !(parent.content.view is AbsentView),
+              let customViewParent = try? parent
+                .asInspectableView(ofType: ViewType.View<ViewType.Stub>.self),
+              let child = try? customViewParent.child(at: index ?? 0)
+        else { return nil }
+        return try? build(content: child, parent: customViewParent, call: call, index: index)
     }
 }
 
