@@ -156,26 +156,17 @@ internal extension InspectableView where View: MultipleViewContent {
 // MARK: - Inspection of a Custom View
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension View where Self: SwiftUICitizen {
+public extension View {
     
     func inspect(function: String = #function) throws -> InspectableView<ViewType.ClassifiedView> {
         let medium = ViewHosting.medium(function: function)
         let content = try Inspector.unwrap(view: self, medium: medium)
         return try .init(content, parent: nil, call: "")
     }
-    
-    func inspect(function: String = #function, file: StaticString = #file, line: UInt = #line,
-                 inspection: (InspectableView<ViewType.ClassifiedView>) throws -> Void) {
-        do {
-            try inspection(try inspect(function: function))
-        } catch {
-            XCTFail("\(error.localizedDescription)", file: file, line: line)
-        }
-    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension View {
+public extension View where Self: Inspectable {
     
     func inspect(function: String = #function) throws -> InspectableView<ViewType.View<Self>> {
         let call = "view(\(ViewType.View<Self>.typePrefix).self)"

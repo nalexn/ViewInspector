@@ -8,9 +8,6 @@ final class InspectableViewTests: XCTestCase {
     func testBasicInspectionFunctions() throws {
         let view = Text("abc")
         XCTAssertEqual(try view.inspect().text().string(), "abc")
-        view.inspect { view in
-            XCTAssertEqual(try view.text().string(), "abc")
-        }
     }
     
     func testIsResponsive() throws {
