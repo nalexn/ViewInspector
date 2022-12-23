@@ -62,7 +62,8 @@ public extension InspectableView where View == ViewType.TimelineView {
     
     func contentView(_ context: ViewType.TimelineView.Context = .init()
     ) throws -> InspectableView<ViewType.ClassifiedView> {
-        return try ViewType.TimelineView.view(for: context, parent: self)
+        let contextCopy = context
+        return try ViewType.TimelineView.view(for: contextCopy, parent: self)
     }
 }
 
