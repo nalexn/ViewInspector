@@ -145,6 +145,3 @@ extension RedOutlineHelloWorldStyle {
         return try makeBody(configuration: configuration).inspect()
     }
 }
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension RedOutlineHelloWorldStyle.StyleBody: Inspectable {}

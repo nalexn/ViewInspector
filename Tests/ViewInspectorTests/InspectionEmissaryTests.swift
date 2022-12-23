@@ -127,7 +127,7 @@ final class Inspection<V>: InspectionEmissary {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestView: View, Inspectable {
+private struct TestView: View {
     
     @State private(set) var flag: Bool
     let publisher = PassthroughSubject<Bool, Never>()
