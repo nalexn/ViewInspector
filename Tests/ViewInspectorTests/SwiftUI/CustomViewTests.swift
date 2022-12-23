@@ -273,7 +273,7 @@ private struct EnvironmentStateTestView: View {
 }
 
 #if os(macOS)
-private struct TestViewRepresentable: NSViewRepresentable, Inspectable {
+private struct TestViewRepresentable: NSViewRepresentable {
     
     func makeNSView(context: NSViewRepresentableContext<Self>) -> NSView {
         let view = NSView()
@@ -286,7 +286,7 @@ private struct TestViewRepresentable: NSViewRepresentable, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestViewControllerRepresentable: NSViewControllerRepresentable, Inspectable {
+private struct TestViewControllerRepresentable: NSViewControllerRepresentable {
     
     func makeNSViewController(context: Context) -> NSViewController {
         let vc = NSViewController()
@@ -299,7 +299,7 @@ private struct TestViewControllerRepresentable: NSViewControllerRepresentable, I
 }
 #elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestViewRepresentable: UIViewRepresentable, Inspectable {
+private struct TestViewRepresentable: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
@@ -312,7 +312,7 @@ private struct TestViewRepresentable: UIViewRepresentable, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestViewControllerRepresentable: UIViewControllerRepresentable, Inspectable {
+private struct TestViewControllerRepresentable: UIViewControllerRepresentable {
     
     func makeUIViewController(context: Context) -> UIViewController {
         let vc = UIViewController()
@@ -326,7 +326,7 @@ private struct TestViewControllerRepresentable: UIViewControllerRepresentable, I
 #elseif os(watchOS)
 
 @available(watchOS, deprecated: 7.0)
-private struct TestViewRepresentable: WKInterfaceObjectRepresentable, Inspectable {
+private struct TestViewRepresentable: WKInterfaceObjectRepresentable {
     
     typealias Context = WKInterfaceObjectRepresentableContext<TestViewRepresentable>
     func makeWKInterfaceObject(context: Context) -> some WKInterfaceObject {

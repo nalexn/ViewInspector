@@ -113,14 +113,14 @@ public extension InspectableView where View: CustomViewType {
 
 #if os(macOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension NSViewRepresentable where Self: Inspectable {
+public extension NSViewRepresentable {
     func nsView() throws -> NSViewType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension NSViewControllerRepresentable where Self: Inspectable {
+public extension NSViewControllerRepresentable {
     func viewController() throws -> NSViewControllerType {
         return try ViewHosting.lookup(Self.self)
     }
@@ -128,14 +128,14 @@ public extension NSViewControllerRepresentable where Self: Inspectable {
 
 #elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension UIViewRepresentable where Self: Inspectable {
+public extension UIViewRepresentable {
     func uiView() throws -> UIViewType {
         return try ViewHosting.lookup(Self.self)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension UIViewControllerRepresentable where Self: Inspectable {
+public extension UIViewControllerRepresentable {
     func viewController() throws -> UIViewControllerType {
         return try ViewHosting.lookup(Self.self)
     }
@@ -143,7 +143,7 @@ public extension UIViewControllerRepresentable where Self: Inspectable {
 #elseif os(watchOS)
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
-public extension WKInterfaceObjectRepresentable where Self: Inspectable {
+public extension WKInterfaceObjectRepresentable {
     func interfaceObject() throws -> WKInterfaceObjectType {
         return try ViewHosting.lookup(Self.self)
     }
