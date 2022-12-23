@@ -70,6 +70,7 @@ public struct InspectableView<View> where View: KnownViewType {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension UnwrappedView {
     func implicitCustomViewChild(index: Int, call: String) throws
     -> (content: Content, parent: InspectableView<ViewType.View<ViewType.Stub>>)? {

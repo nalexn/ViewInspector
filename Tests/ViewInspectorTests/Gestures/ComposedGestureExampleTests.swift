@@ -107,7 +107,7 @@ final class ComposedGestureExampleTests: XCTestCase {
 @available(iOS 13.0, macOS 11, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-struct TestGestureView10: View & Inspectable {
+struct TestGestureView10: View {
     @State var scale: CGFloat = 1.0
     @State var angle = Angle(degrees: 0)
     
@@ -140,7 +140,7 @@ struct TestGestureView10: View & Inspectable {
 @available(iOS 13.0, macOS 11, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-struct TestGestureView11: View & Inspectable {
+struct TestGestureView11: View {
     @State var scale: CGFloat = 1.0
     @State var angle = Angle(degrees: 0)
     
@@ -172,7 +172,7 @@ struct TestGestureView11: View & Inspectable {
 @available(iOS 13.0, macOS 11, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-struct TestGestureView12: View & Inspectable {
+struct TestGestureView12: View {
     
     internal let inspection = Inspection<Self>()
     internal let publisher = PassthroughSubject<Void, Never>()

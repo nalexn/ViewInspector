@@ -40,38 +40,6 @@ public extension ViewType {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension AnyGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-extension DragGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ExclusiveGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
-extension LongPressGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-extension MagnificationGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-extension RotationGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension SequenceGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension SimultaneousGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
-extension TapGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func gesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
