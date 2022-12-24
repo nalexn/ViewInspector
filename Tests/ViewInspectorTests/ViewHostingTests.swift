@@ -194,7 +194,7 @@ private class NSViewWithTag: NSView {
     static let onTag: Int = 43
 }
 
-private struct NSTestView: NSViewRepresentable, Inspectable {
+private struct NSTestView: NSViewRepresentable {
     
     typealias UpdateContext = NSViewRepresentableContext<Self>
     
@@ -265,7 +265,7 @@ extension UITestView {
     
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 @available(watchOS, deprecated: 7.0)
-private struct WKTestView: WKInterfaceObjectRepresentable, Inspectable {
+private struct WKTestView: WKInterfaceObjectRepresentable {
     
     var didUpdate: () -> Void
     
@@ -296,7 +296,7 @@ extension WKTestView {
 #endif
 
 #if os(macOS)
-private struct NSTestVC: NSViewControllerRepresentable, Inspectable {
+private struct NSTestVC: NSViewControllerRepresentable {
     
     class TestVC: NSViewController {
         override func loadView() {
