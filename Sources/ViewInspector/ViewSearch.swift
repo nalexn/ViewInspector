@@ -378,7 +378,7 @@ private extension UnwrappedView {
             if name.hasPrefix(ViewType.Popover.standardModifierName) {
                 return "popover"
             }
-            if let inspectable = view as? Inspectable {
+            if !Inspector.isSystemType(value: view) {
                 let missingObjects = EnvironmentInjection.missingEnvironmentObjects(for: view)
                 if missingObjects.count > 0 {
                     return InspectionError

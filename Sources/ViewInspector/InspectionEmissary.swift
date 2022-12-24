@@ -140,7 +140,7 @@ public extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension ViewModifier where Self: Inspectable {
+public extension ViewModifier {
     @discardableResult
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
