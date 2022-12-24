@@ -335,7 +335,7 @@ internal extension Content {
 internal protocol ModifierNameProvider {
     var modifierType: String { get }
     func modifierType(prefixOnly: Bool) -> String
-    var customModifier: Inspectable? { get }
+    var customModifier: Any? { get }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -350,8 +350,11 @@ extension ModifiedContent: ModifierNameProvider {
         return Inspector.typeName(type: Modifier.self, generics: prefixOnly ? .remove : .keep)
     }
     
-    var customModifier: Inspectable? {
-        return try? Inspector.attribute(label: "modifier", value: self, type: Inspectable.self)
+    var customModifier: Any? {
+        guard let modifier = try? Inspector.attribute(label: "modifier", value: self),
+              !Inspector.isSystemType(value: modifier)
+        else { return nil }
+        return modifier
     }
 }
 

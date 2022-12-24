@@ -108,10 +108,10 @@ internal extension Content {
         return try Inspector.unwrap(view: view, medium: medium)
     }
 
-    func customViewModifiers() -> [Inspectable] {
-        return medium.viewModifiers.reversed().compactMap({ modifier in
-            try? Inspector.attribute(label: "modifier", value: modifier, type: Inspectable.self)
-        })
+    func customViewModifiers() -> [Any] {
+        return medium.viewModifiers.reversed()
+            .compactMap { try? Inspector.attribute(label: "modifier", value: $0) }
+            .filter { !Inspector.isSystemType(value: $0) }
     }
 }
 

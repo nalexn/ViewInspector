@@ -34,12 +34,6 @@ final class ModifiedContentTests: XCTestCase {
         XCTAssertEqual(try view.inspect().hStack().text(1).content.medium.viewModifiers.count, 2)
     }
     
-    func testNonInspectableModifier() throws {
-        let sut = EmptyView().modifier(NonInspectableModifier())
-        XCTAssertThrows(try sut.inspect().find(ViewType.ViewModifierContent.self),
-                        "Search did not find a match")
-    }
-    
     func testNoModifiersError() throws {
         let sut = EmptyView().padding()
         XCTAssertThrows(try sut.inspect().emptyView().modifier(TestModifier.self),
@@ -149,13 +143,6 @@ final class ModifiedContentTests: XCTestCase {
         XCTAssertThrows(try view2.offset(), "ViewWithEnvObject does not have 'offset' modifier")
         XCTAssertFalse(view2.isHidden())
         XCTAssertEqual(try view2.text().string(), "other")
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct NonInspectableModifier: ViewModifier {
-    func body(content: Self.Content) -> some View {
-        content
     }
 }
 

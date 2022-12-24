@@ -50,7 +50,7 @@ extension ViewType.View: MultipleViewContent {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     var isCustomView: Bool {
-        return view is Inspectable
+        return !Inspector.isSystemType(value: view)
     }
     
     func extractCustomView() throws -> Content {
