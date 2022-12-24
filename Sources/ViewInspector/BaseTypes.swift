@@ -3,54 +3,8 @@ import SwiftUI
 // MARK: - Protocols
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol Inspectable {
-    var entity: Content.InspectableEntity { get }
-    func extractContent(environmentObjects: [AnyObject]) throws -> Any
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Content {
-    enum InspectableEntity {
-        case view
-        case viewModifier
-        case gesture
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: View {
-    var entity: Content.InspectableEntity { .view }
-    
-    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
-        var copy = self
-        environmentObjects.forEach { copy.inject(environmentObject: $0) }
-        let missingObjects = copy.missingEnvironmentObjects
-        if missingObjects.count > 0 {
-            let view = Inspector.typeName(value: self)
-            throw InspectionError
-                .missingEnvironmentObjects(view: view, objects: missingObjects)
-        }
-        return copy.body
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: ViewModifier {
-    
-    var entity: ViewInspector.Content.InspectableEntity { .viewModifier }
-    
-    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
-        var copy = self
-        environmentObjects.forEach { copy.inject(environmentObject: $0) }
-        let missingObjects = copy.missingEnvironmentObjects
-        if missingObjects.count > 0 {
-            let view = Inspector.typeName(value: self)
-            throw InspectionError
-                .missingEnvironmentObjects(view: view, objects: missingObjects)
-        }
-        return copy.body()
-    }
-}
+@available(*, deprecated, message: "Conformance to Inspectable is no longer required")
+public protocol Inspectable { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol SingleViewContent {

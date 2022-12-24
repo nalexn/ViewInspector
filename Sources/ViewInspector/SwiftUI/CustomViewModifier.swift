@@ -2,8 +2,8 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
-    
-    struct ViewModifier<T>: KnownViewType, CustomViewType where T: Inspectable {
+
+    struct ViewModifier<T>: KnownViewType, CustomViewType {
         
         public static var typePrefix: String { "" }
         
@@ -19,9 +19,9 @@ public extension ViewType {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
-    
+
     func modifier<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.ViewModifier<T>>
-    where T: ViewModifier, T: Inspectable {
+    where T: ViewModifier {
         let name = Inspector.typeName(type: type)
         guard let view = content.medium.viewModifiers.reversed().compactMap({ modifier in
             try? Inspector.attribute(label: "modifier", value: modifier, type: type)
@@ -108,10 +108,10 @@ internal extension Content {
         return try Inspector.unwrap(view: view, medium: medium)
     }
 
-    func customViewModifiers() -> [Inspectable] {
-        return medium.viewModifiers.reversed().compactMap({ modifier in
-            try? Inspector.attribute(label: "modifier", value: modifier, type: Inspectable.self)
-        })
+    func customViewModifiers() -> [Any] {
+        return medium.viewModifiers.reversed()
+            .compactMap { try? Inspector.attribute(label: "modifier", value: $0) }
+            .filter { !Inspector.isSystemType(value: $0) }
     }
 }
 

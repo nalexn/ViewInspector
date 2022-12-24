@@ -45,7 +45,7 @@ final class GlobalModifiersForEquatableView: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestView: View, Equatable, Inspectable {
+private struct TestView: View, Equatable {
     
     var body: some View { EmptyView() }
     static func == (lhs: Self, rhs: Self) -> Bool { true }

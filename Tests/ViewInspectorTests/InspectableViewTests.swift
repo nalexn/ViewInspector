@@ -8,9 +8,6 @@ final class InspectableViewTests: XCTestCase {
     func testBasicInspectionFunctions() throws {
         let view = Text("abc")
         XCTAssertEqual(try view.inspect().text().string(), "abc")
-        view.inspect { view in
-            XCTAssertEqual(try view.text().string(), "abc")
-        }
     }
     
     func testIsResponsive() throws {
@@ -58,6 +55,7 @@ final class InspectableViewTestsAccessTests: XCTestCase {
     
     func testCollectionWithAbsentViews() throws {
         let sut = try ViewWithAbsentChildren(present: false).inspect()
+            .view(ViewWithAbsentChildren.self)
         var counter = 0
         // `forEach` is using iterator
         sut.forEach { _ in counter += 1 }
@@ -75,7 +73,7 @@ final class InspectableViewTestsAccessTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ViewWithAbsentChildren: View, Inspectable {
+private struct ViewWithAbsentChildren: View {
     let present: Bool
     
     @ViewBuilder

@@ -237,7 +237,7 @@ final class InspectableViewModifiersTests: XCTestCase {
         XCTAssertEqual(sut2.pathToRoot, "emptyView()")
         let view2 = TestPrintView()
         let sut3 = try view2.inspect()
-        XCTAssertEqual(sut3.pathToRoot, "view(TestPrintView.self)")
+        XCTAssertEqual(sut3.pathToRoot, "")
         let sut4 = try view2.inspect().text()
         XCTAssertEqual(sut4.pathToRoot, "view(TestPrintView.self).text()")
         let sut5 = try view2.inspect().text(0)
@@ -292,7 +292,7 @@ private struct Struct1 {
 private struct Struct3<T> { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestPrintView: View, Inspectable {
+private struct TestPrintView: View {
     
     let str = ["abc", "def"]
     

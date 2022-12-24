@@ -71,7 +71,7 @@ final class CustomViewBuilderTests: XCTestCase {
     
     func testActualView() throws {
         let sut = TestViewBuilderView { Text("Test") }
-        XCTAssertNoThrow(try sut.inspect().actualView().content)
+        XCTAssertNoThrow(try sut.inspect().view(TestViewBuilderView<Text>.self).actualView().content)
     }
     
     func testViewBody() {
@@ -105,6 +105,3 @@ private struct TestViewBuilderView<Content: View>: View {
             .padding()
     }
 }
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension TestViewBuilderView: Inspectable { }

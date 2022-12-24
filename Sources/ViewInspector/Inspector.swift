@@ -54,6 +54,14 @@ internal extension Inspector {
                         generics: generics)
     }
     
+    static func isSystemType(value: Any) -> Bool {
+        let name = typeName(value: value, namespaced: true)
+        return [
+            "SwiftUI", "CoreLocationUI", "MapKit",
+            "AuthenticationServices", "AVKit",
+        ].contains(where: { name.hasPrefix($0 + ".") })
+    }
+    
     static func typeName(type: Any.Type,
                          namespaced: Bool = false,
                          generics: GenericParameters = .keep) -> String {
@@ -164,8 +172,8 @@ public extension Inspector {
             dict[childName + ": " + childType] = attributesTree(
                 value: child.element.value, medium: medium, visited: visited)
         }
-        if let inspectable = value as? Inspectable,
-           let content = try? inspectable.extractContent(environmentObjects: medium.environmentObjects) {
+        if let contentExtractor = try? ContentExtractor(source: value),
+           let content = try? contentExtractor.extractContent(environmentObjects: medium.environmentObjects) {
             let childType = typeName(value: content)
             dict["body: " + childType] = attributesTree(value: content, medium: medium, visited: visited)
         }

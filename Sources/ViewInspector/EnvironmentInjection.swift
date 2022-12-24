@@ -3,10 +3,11 @@ import SwiftUI
 // MARK: - EnvironmentObject injection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension Inspectable {
-    var missingEnvironmentObjects: [String] {
+
+internal enum EnvironmentInjection {
+    static func missingEnvironmentObjects(for entity: Any) -> [String] {
         let prefix = "SwiftUI.EnvironmentObject<"
-        let mirror = Mirror(reflecting: self)
+        let mirror = Mirror(reflecting: entity)
         return mirror.children.compactMap {
             let fullName = Inspector.typeName(value: $0.value, namespaced: true)
             guard fullName.hasPrefix(prefix),
@@ -18,24 +19,24 @@ internal extension Inspectable {
             return "\(ivarName[1..<ivarName.count]): \(objName)"
         }
     }
-    mutating func inject(environmentObject: AnyObject) {
+    static func inject<T>(environmentObject: AnyObject, into entity: T) -> T {
         let type = "SwiftUI.EnvironmentObject<\(Inspector.typeName(value: environmentObject, namespaced: true))>"
-        let mirror = Mirror(reflecting: self)
+        let mirror = Mirror(reflecting: entity)
         guard let label = mirror.children
                 .first(where: {
                     Inspector.typeName(value: $0.value, namespaced: true) == type
                 })?.label
-        else { return }
+        else { return entity }
         let envObjSize = EnvObject.structSize
-        let viewSize = MemoryLayout<Self>.size
-        var offset = MemoryLayout<Self>.stride - envObjSize
-        let step = MemoryLayout<Self>.alignment
+        let viewSize = MemoryLayout<T>.size
+        var offset = MemoryLayout<T>.stride - envObjSize
+        let step = MemoryLayout<T>.alignment
         while offset + envObjSize > viewSize {
             offset -= step
         }
-        withUnsafeBytes(of: EnvObject.Forgery(object: nil)) { reference in
+        return withUnsafeBytes(of: EnvObject.Forgery(object: nil)) { reference in
             while offset >= 0 {
-                var copy = self
+                var copy = entity
                 withUnsafeMutableBytes(of: &copy) { bytes in
                     guard bytes[offset..<offset + envObjSize].elementsEqual(reference)
                     else { return }
@@ -50,11 +51,11 @@ internal extension Inspectable {
                         let pointerToValue = rawPointer.assumingMemoryBound(to: EnvObject.Forgery.self)
                         pointerToValue.pointee = .init(object: environmentObject)
                     }
-                    self = copy
-                    return
+                    return copy
                 }
                 offset -= step
             }
+            return entity
         }
     }
 }

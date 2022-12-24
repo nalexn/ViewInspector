@@ -24,7 +24,6 @@ final class PopoverTests: XCTestCase {
     func testInspectionErrorCustomModifierRequired() throws {
         let binding = Binding(wrappedValue: true)
         let sut = EmptyView().popover(isPresented: binding) { Text("") }
-        print("\(Inspector.print(sut) as AnyObject)")
         XCTAssertThrows(try sut.inspect().emptyView().popover(),
             """
             Please refer to the Guide for inspecting the Popover: \
@@ -253,7 +252,7 @@ where Item: Identifiable, Popover: View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct PopoverFindTestView: View, Inspectable {
+private struct PopoverFindTestView: View {
     
     @Binding var isPopover1Presented = false
     @Binding var isPopover2Presented = false

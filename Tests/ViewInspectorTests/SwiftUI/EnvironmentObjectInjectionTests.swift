@@ -32,8 +32,8 @@ class EnvironmentObjectInjectionTests: XCTestCase {
         let obj1 = TestEnvObject1()
         let obj2 = TestEnvObject2()
         var sut = EnvironmentObjectInnerView()
-        sut.inject(environmentObject: obj1)
-        sut.inject(environmentObject: obj2)
+        sut = EnvironmentInjection.inject(environmentObject: obj1, into: sut)
+        sut = EnvironmentInjection.inject(environmentObject: obj2, into: sut)
         XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "env_true")
     }
     
@@ -87,7 +87,7 @@ class EnvironmentObjectInjectionTests: XCTestCase {
             Search did not find a match. Possible blockers: EnvironmentObjectInnerView is \
             missing EnvironmentObjects: [\"obj2: TestEnvObject2\", \"obj1: TestEnvObject1\"]
             """)
-        sut.inject(environmentObject: TestEnvObject1())
+        sut = EnvironmentInjection.inject(environmentObject: TestEnvObject1(), into: sut)
         XCTAssertThrows(try sut.inspect().find(ViewType.Text.self),
             """
             Search did not find a match. Possible blockers: EnvironmentObjectInnerView is \
@@ -109,7 +109,7 @@ private class TestEnvObject2: ObservableObject {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct EnvironmentObjectInnerView: View, Inspectable {
+private struct EnvironmentObjectInnerView: View {
     
     private var iVar1: Int8 = 0
     private var iVar2: Int16 = 0
@@ -128,7 +128,7 @@ private struct EnvironmentObjectInnerView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct EnvironmentObjectOuterView: View, Inspectable {
+private struct EnvironmentObjectOuterView: View {
     
     private var iVar1: Bool = false
     @EnvironmentObject var obj1: TestEnvObject1
@@ -146,7 +146,7 @@ private struct EnvironmentObjectOuterView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct EnvironmentObjectViewModifier: ViewModifier, Inspectable {
+private struct EnvironmentObjectViewModifier: ViewModifier {
     private var iVar1: Bool = false
     @EnvironmentObject var obj2: TestEnvObject2
     @EnvironmentObject var obj1: TestEnvObject1

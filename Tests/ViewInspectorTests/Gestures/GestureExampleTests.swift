@@ -10,7 +10,7 @@ final class GestureExampleTests: XCTestCase {
     func testGestureModifier() throws {
         guard #available(iOS 14.0, tvOS 16.0, *) else { throw XCTSkip() }
         let sut = TestGestureView1()
-        let rectangle = try sut.inspect().shape(0)
+        let rectangle = try sut.inspect().shape()
         XCTAssertNoThrow(try rectangle.gesture(TapGesture.self))
     }
 
@@ -119,7 +119,7 @@ final class GestureExampleTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
-struct TestGestureView1: View & Inspectable {
+struct TestGestureView1: View {
     @State var tapped = false
         
     var body: some View {
@@ -134,7 +134,7 @@ struct TestGestureView1: View & Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
-struct TestGestureView2: View & Inspectable {
+struct TestGestureView2: View {
     @State var tapped = false
         
     var body: some View {
@@ -149,7 +149,7 @@ struct TestGestureView2: View & Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
-struct TestGestureView3: View & Inspectable {
+struct TestGestureView3: View {
     @State var tapped = false
         
     var body: some View {
@@ -165,7 +165,7 @@ struct TestGestureView3: View & Inspectable {
 
 @available(iOS 13.0, macOS 10.15, *)
 @available(tvOS, unavailable)
-struct TestGestureView4: View & Inspectable {
+struct TestGestureView4: View {
     @State var isDragging = false
     
     var body: some View {
@@ -181,7 +181,7 @@ struct TestGestureView4: View & Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
-struct TestGestureView5: View & Inspectable {
+struct TestGestureView5: View {
     @GestureState var isDetectingLongPress = false
 
     internal let inspection = Inspection<Self>()
@@ -203,7 +203,7 @@ struct TestGestureView5: View & Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
-struct TestGestureView6: View & Inspectable {
+struct TestGestureView6: View {
     @GestureState var isDetectingLongPress = false
     @State var totalNumberOfTaps = 0
 
@@ -237,7 +237,7 @@ struct TestGestureView6: View & Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
-struct TestGestureView7: View & Inspectable {
+struct TestGestureView7: View {
     @GestureState var isDetectingLongPress = false
     @State var totalNumberOfTaps = 0
     @State var doneCounting = false
@@ -272,7 +272,7 @@ struct TestGestureView7: View & Inspectable {
 
 #if os(macOS)
 @available(macOS 10.15, *)
-struct TestGestureView8: View & Inspectable {
+struct TestGestureView8: View {
     @State var tapped = false
         
     var body: some View {
@@ -290,7 +290,7 @@ struct TestGestureView8: View & Inspectable {
 #endif
 
 @available(iOS 14.0, macOS 10.15, tvOS 16.0, *)
-struct TestGestureView9: View & Inspectable {
+struct TestGestureView9: View {
     @State var tapped = false
         
     var body: some View {
