@@ -1,9 +1,6 @@
 import SwiftUI
 #if canImport(AuthenticationServices)
 import AuthenticationServices
-
-@available(iOS 14.0, macOS 11.0, tvOS 15.0, watchOS 7.0, *)
-extension SignInWithAppleButton: SwiftUICitizen { }
 #endif
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

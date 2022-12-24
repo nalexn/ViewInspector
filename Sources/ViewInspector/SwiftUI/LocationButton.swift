@@ -1,11 +1,6 @@
 import SwiftUI
 #if canImport(CoreLocationUI)
 import CoreLocationUI.CLLocationButton
-
-@available(iOS 15.0, watchOS 8.0, *)
-@available(macOS, unavailable)
-@available(tvOS, unavailable)
-extension LocationButton: SwiftUICitizen { }
 #endif
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

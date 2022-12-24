@@ -1,9 +1,6 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Text: SwiftUICitizen { }
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Locale {
     /**
      A global value used as a default parameter for `Text` string inspection

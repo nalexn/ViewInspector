@@ -54,6 +54,14 @@ internal extension Inspector {
                         generics: generics)
     }
     
+    static func isSystemType(value: Any) -> Bool {
+        let name = typeName(value: value, namespaced: true)
+        return [
+            "SwiftUI", "CoreLocationUI", "MapKit",
+            "AuthenticationServices", "AVKit",
+        ].contains(where: { name.hasPrefix($0 + ".") })
+    }
+    
     static func typeName(type: Any.Type,
                          namespaced: Bool = false,
                          generics: GenericParameters = .keep) -> String {

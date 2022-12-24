@@ -28,9 +28,7 @@ internal struct ContentExtractor {
     private static func contentSource(from source: Any) -> ContentSource? {
         switch source {
         case let view as any View:
-            let name = Inspector.typeName(value: view, namespaced: true)
-            if view is SwiftUICitizen || ViewType.privateSwiftUICitizenTypes
-                .contains(where: { name.hasPrefix($0) }) {
+            if Inspector.isSystemType(value: view) {
                 return nil
             }
             return .view(view)
@@ -138,11 +136,4 @@ public extension ViewModifier {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension Gesture {
     func extractContent(environmentObjects: [AnyObject]) throws -> Any { () }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private extension ViewType {
-    static let privateSwiftUICitizenTypes: [String] = [
-        "Tree", "IDView", "EnvironmentReaderView",
-    ].map { "SwiftUI." + $0 }
 }

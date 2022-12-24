@@ -75,7 +75,7 @@ extension UnwrappedView {
     func implicitCustomViewChild(index: Int, call: String) throws
     -> (content: Content, parent: InspectableView<ViewType.View<ViewType.Stub>>)? {
         guard let parent = self as? InspectableView<ViewType.ClassifiedView>,
-              !(parent.content.view is SwiftUICitizen),
+              !Inspector.isSystemType(value: parent.content.view),
               !(parent.content.view is AbsentView),
               let customViewParent = try? parent
                 .asInspectableView(ofType: ViewType.View<ViewType.Stub>.self)

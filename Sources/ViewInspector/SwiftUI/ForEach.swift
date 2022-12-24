@@ -2,9 +2,6 @@ import SwiftUI
 import UniformTypeIdentifiers.UTType
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ForEach: SwiftUICitizen { }
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct ForEach: KnownViewType {

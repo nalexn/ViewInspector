@@ -161,49 +161,49 @@ public protocol InspectableShape {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Rectangle: InspectableShape, SwiftUICitizen { }
+extension Rectangle: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Circle: InspectableShape, SwiftUICitizen { }
+extension Circle: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Ellipse: InspectableShape, SwiftUICitizen { }
+extension Ellipse: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Capsule: InspectableShape, SwiftUICitizen { }
+extension Capsule: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Path: InspectableShape, SwiftUICitizen { }
+extension Path: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension RoundedRectangle: InspectableShape, SwiftUICitizen { }
+extension RoundedRectangle: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension TransformedShape: InspectableShape, SwiftUICitizen { }
+extension TransformedShape: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension OffsetShape: InspectableShape, SwiftUICitizen { }
+extension OffsetShape: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension RotatedShape: InspectableShape, SwiftUICitizen { }
+extension RotatedShape: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ScaledShape: InspectableShape, SwiftUICitizen { }
+extension ScaledShape: InspectableShape { }
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-extension ContainerRelativeShape: InspectableShape, SwiftUICitizen { }
+extension ContainerRelativeShape: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension _SizedShape: InspectableShape, SwiftUICitizen { }
+extension _SizedShape: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension _StrokedShape: InspectableShape, SwiftUICitizen { }
+extension _StrokedShape: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension _TrimmedShape: InspectableShape, SwiftUICitizen { }
+extension _TrimmedShape: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension _ShapeView: InspectableShape, SwiftUICitizen {
+extension _ShapeView: InspectableShape {
     public func path(in rect: CGRect) -> Path {
         return shape.path(in: rect)
     }
