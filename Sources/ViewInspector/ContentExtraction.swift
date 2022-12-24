@@ -4,13 +4,8 @@ import SwiftUI
 internal struct ContentExtractor {
 
     internal init(source: Any) throws {
-        guard let contentSource = Self.contentSource(from: source) else {
-            throw SourceNotContentExtractable()
-        }
-        self.contentSource = contentSource
+        self.contentSource = try Self.contentSource(from: source)
     }
-
-    internal struct SourceNotContentExtractable: Error { }
 
     internal func extractContent(environmentObjects: [AnyObject]) throws -> Any {
         try validateSource()
@@ -25,11 +20,16 @@ internal struct ContentExtractor {
         }
     }
 
-    private static func contentSource(from source: Any) -> ContentSource? {
+    private static func contentSource(from source: Any) throws -> ContentSource {
         switch source {
         case let view as any View:
-            if Inspector.isSystemType(value: view) {
-                return nil
+            guard !Inspector.isSystemType(value: view) else {
+                let name = Inspector.typeName(value: view)
+                throw InspectionError.notSupported(
+                    """
+                    Please replace .view(\(name).self) inspection call with \
+                    .\(name.firstLetterLowercased)() or .find(ViewType.\(name).self)
+                    """)
             }
             return .view(view)
         case let viewModifier as any ViewModifier:
@@ -37,7 +37,8 @@ internal struct ContentExtractor {
         case let gesture as any Gesture:
             return .gesture(gesture)
         default:
-            return nil
+            let name = Inspector.typeName(value: source)
+            throw InspectionError.notSupported("Not a content type: \(name)")
         }
     }
 

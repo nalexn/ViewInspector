@@ -63,6 +63,28 @@ final class CustomViewTests: XCTestCase {
         XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
+    func testImplicitChildUnwrapping() throws {
+        let sut = SimpleTestView()
+        let implicit = try sut.inspect()
+            .emptyView().pathToRoot
+        let explicit = try sut.inspect()
+            .view(SimpleTestView.self)
+            .emptyView().pathToRoot
+        XCTAssertEqual(implicit, "view(SimpleTestView.self).emptyView()")
+        XCTAssertEqual(explicit, "view(SimpleTestView.self).emptyView()")
+    }
+    
+    func testCustomViewAPIMisuseError() throws {
+        let sut = try SimpleTestView().inspect().view(SimpleTestView.self)
+        XCTAssertNoThrow(try sut.emptyView())
+        XCTAssertNoThrow(try sut.find(ViewType.EmptyView.self))
+        XCTAssertThrows(try sut.view(EmptyView.self).text(),
+            """
+            Please replace .view(EmptyView.self) inspection call \
+            with .emptyView() or .find(ViewType.EmptyView.self)
+            """)
+    }
+    
     func testEnvViewResetsModifiers() throws {
         let sut = EnvironmentStateTestView()
         let exp = sut.inspection.inspect { view in
