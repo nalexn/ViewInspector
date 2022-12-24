@@ -45,7 +45,7 @@ public extension InspectionEmissary where V: View {
 // MARK: - InspectionEmissary for ViewModifier
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension InspectionEmissary where V: ViewModifier & Inspectable {
+public extension InspectionEmissary where V: ViewModifier {
     
     typealias ViewModifierInspection = (InspectableView<ViewType.ViewModifier<V>>) throws -> Void
     

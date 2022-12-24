@@ -73,7 +73,7 @@ final class InspectableViewTestsAccessTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ViewWithAbsentChildren: View, Inspectable {
+private struct ViewWithAbsentChildren: View {
     let present: Bool
     
     @ViewBuilder

@@ -212,7 +212,7 @@ private struct NSTestView: NSViewRepresentable, Inspectable {
 }
 
 extension NSTestView {
-    struct WrapperView: View, Inspectable {
+    struct WrapperView: View {
         
         @State var flag: Bool
         var didAppear: ((Self) -> Void)?
@@ -227,7 +227,7 @@ extension NSTestView {
 #elseif os(iOS) || os(tvOS)
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct UITestView: UIViewRepresentable, Inspectable {
+private struct UITestView: UIViewRepresentable {
     
     typealias UpdateContext = UIViewRepresentableContext<Self>
     
@@ -249,7 +249,7 @@ private struct UITestView: UIViewRepresentable, Inspectable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension UITestView {
-    struct WrapperView: View, Inspectable {
+    struct WrapperView: View {
         
         @State var flag: Bool
         var didAppear: ((Self) -> Void)?
@@ -282,7 +282,7 @@ private struct WKTestView: WKInterfaceObjectRepresentable, Inspectable {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 @available(watchOS, deprecated: 7.0)
 extension WKTestView {
-    struct WrapperView: View, Inspectable {
+    struct WrapperView: View {
         
         var didAppear: ((Self) -> Void)?
         var didUpdate: () -> Void
@@ -325,7 +325,7 @@ private struct NSTestVC: NSViewControllerRepresentable, Inspectable {
 }
 #elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct UITestVC: UIViewControllerRepresentable, Inspectable {
+private struct UITestVC: UIViewControllerRepresentable {
     
     class TestVC: UIViewController { }
     

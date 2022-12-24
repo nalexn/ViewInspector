@@ -252,7 +252,7 @@ where Item: Identifiable, Popover: View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct PopoverFindTestView: View, Inspectable {
+private struct PopoverFindTestView: View {
     
     @Binding var isPopover1Presented = false
     @Binding var isPopover2Presented = false

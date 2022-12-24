@@ -3,10 +3,7 @@ import SwiftUI
 // MARK: - Protocols
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol Inspectable {
-    // Intentionally empty. We don't need a conformance to this protocol to enable extracting
-    // content from an `Any`.
-}
+public protocol Inspectable { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol SingleViewContent {

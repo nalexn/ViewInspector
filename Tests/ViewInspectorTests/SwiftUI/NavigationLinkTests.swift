@@ -176,7 +176,7 @@ final class NavigationLinkTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestView: View, Inspectable {
+private struct TestView: View {
     let parameter: String
     
     var body: some View {
@@ -185,7 +185,7 @@ private struct TestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
-private struct TestViewState: View, Inspectable {
+private struct TestViewState: View {
     @ObservedObject var state = NavigationState()
     
     var tag1: String { "tag1" }
@@ -202,7 +202,7 @@ private struct TestViewState: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
-private struct TestViewBinding: View, Inspectable {
+private struct TestViewBinding: View {
 
     @Binding var selection: String?
     

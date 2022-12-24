@@ -150,7 +150,7 @@ private class ExternalState: ObservableObject {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestViewModifier: ViewModifier, Inspectable {
+private struct TestViewModifier: ViewModifier {
     
     @Binding var flag: Bool
     @EnvironmentObject var envState: ExternalState

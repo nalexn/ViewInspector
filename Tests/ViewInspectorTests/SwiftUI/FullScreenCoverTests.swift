@@ -213,7 +213,7 @@ where Item: Identifiable, FullScreenCover: View {
 
 @available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 @available(macOS, unavailable)
-private struct FullScreenCoverFindTestView: View, Inspectable {
+private struct FullScreenCoverFindTestView: View {
 
     @Binding var isFullScreenCover1Presented = false
     @Binding var isFullScreenCover2Presented = false

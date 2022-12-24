@@ -6,7 +6,7 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct Test {
-    struct InnerView: View, Inspectable {
+    struct InnerView: View {
         var body: some View {
             Button(action: { }, label: {
                 HStack { Text("Btn") }
@@ -15,7 +15,7 @@ private struct Test {
             })
         }
     }
-    struct MainView: View, Inspectable {
+    struct MainView: View {
         var body: some View {
             AnyView(Group {
                 SwiftUI.EmptyView()
@@ -39,7 +39,7 @@ private struct Test {
             })
         }
     }
-    struct ConditionalView: View, Inspectable {
+    struct ConditionalView: View {
         let falseCondition = false
         let trueCondition = true
         
@@ -55,13 +55,13 @@ private struct Test {
             }
         }
     }
-    struct Modifier: ViewModifier, Inspectable {
+    struct Modifier: ViewModifier {
         let text: String
         func body(content: Modifier.Content) -> some View {
             AnyView(content.overlay(Text(text)))
         }
     }
-    struct EmptyView: View, Inspectable {
+    struct EmptyView: View {
         var body: some View {
             Text("empty")
         }
@@ -241,7 +241,7 @@ final class ViewSearchTests: XCTestCase {
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 private extension Test {
-    struct AccessibleView: View, Inspectable {
+    struct AccessibleView: View {
         var body: some View {
             Button(action: { }, label: {
                 HStack {

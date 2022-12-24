@@ -158,7 +158,7 @@ final class NavigationBarItemsTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestView: View, Inspectable {
+private struct TestView: View {
     
     let inspection = Inspection<Self>()
         
