@@ -24,12 +24,8 @@ internal struct ContentExtractor {
         switch source {
         case let view as any View:
             guard !Inspector.isSystemType(value: view) else {
-                let name = Inspector.typeName(value: view)
-                throw InspectionError.notSupported(
-                    """
-                    Please replace .view(\(name).self) inspection call with \
-                    .\(name.firstLetterLowercased)() or .find(ViewType.\(name).self)
-                    """)
+                let name = Inspector.typeName(value: source)
+                throw InspectionError.notSupported("Not a custom view type: \(name)")
             }
             return .view(view)
         case let viewModifier as any ViewModifier:

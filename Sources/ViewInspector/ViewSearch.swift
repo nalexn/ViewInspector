@@ -166,34 +166,44 @@ public extension InspectableView {
     /**
      Searches for a view of a specific type that matches a given condition
 
-      - Parameter inspectable: Your custom `Inspectable` view type. For example: `ContentView.self`
+      - Parameter customViewType: Your custom view type. For example: `ContentView.self`
       - Parameter relation: The direction of the search. Defaults to `.child`
       - Parameter where: The condition closure for detecting a matching view.
      Thrown errors are interpreted as "this view does not match"
       - Throws: An error if the view cannot be found
       - Returns: A found view
      */
-    func find<V>(_ inspectable: V.Type,
+    func find<V>(_ customViewType: V.Type,
                  relation: ViewSearch.Relation = .child,
                  where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
     ) throws -> InspectableView<ViewType.View<V>> where V: SwiftUI.View {
+        guard !Inspector.isSystemType(type: customViewType) else {
+            let name = Inspector.typeName(type: customViewType)
+            throw InspectionError.notSupported(
+                "Please use .find(ViewType.\(name).self) instead of .find(\(name).self) inspection call.")
+        }
         return try find(ViewType.View<V>.self, relation: relation, where: condition)
     }
     
     /**
      Searches for a view of a specific type, which enclosed hierarchy contains a `Text` with the provided string
 
-      - Parameter inspectable: Your custom `Inspectable` view type. For example: `ContentView.self`
+      - Parameter customViewType: Your custom view type. For example: `ContentView.self`
       - Parameter containing: The string to look up for
       - Parameter locale: The locale for the text extraction.
      Defaults to `testsDefault` (i.e. `Locale(identifier: "en")`)
       - Throws: An error if the view cannot be found
       - Returns: A found view
      */
-    func find<V>(_ inspectable: V.Type,
+    func find<V>(_ customViewType: V.Type,
                  containing string: String,
                  locale: Locale = .testsDefault
-    ) throws -> InspectableView<ViewType.View<V>> {
+    ) throws -> InspectableView<ViewType.View<V>> where V: SwiftUI.View {
+        guard !Inspector.isSystemType(type: customViewType) else {
+            let name = Inspector.typeName(type: customViewType)
+            throw InspectionError.notSupported(
+                "Please use .find(ViewType.\(name).self) instead of .find(\(name).self) inspection call.")
+        }
         return try find(ViewType.View<V>.self, containing: string, locale: locale)
     }
     
@@ -210,7 +220,7 @@ public extension InspectableView {
     func find<T>(_ viewType: T.Type,
                  containing string: String,
                  locale: Locale = .testsDefault
-    ) throws -> InspectableView<T> {
+    ) throws -> InspectableView<T> where T: KnownViewType {
         return try find(ViewType.Text.self, where: { text in
             try text.string(locale: locale) == string
             && (try? text.find(T.self, relation: .parent)) != nil
@@ -272,12 +282,12 @@ public extension InspectableView {
      The hierarchy is traversed in depth-first order, meaning that you'll get views
      ordered top-to-bottom as they appear in the code, regardless of their nesting depth.
 
-      - Parameter inspectable: Your custom `Inspectable` view type. For example: `ContentView.self`
+      - Parameter customViewType: Your custom view type. For example: `ContentView.self`
       - Parameter where: The condition closure for detecting a matching view.
      Thrown errors are interpreted as "this view does not match"
       - Returns: An array of all matching views or an empty array if none are found.
      */
-    func findAll<V>(_ inspectable: V.Type,
+    func findAll<V>(_ customViewType: V.Type,
                     where condition: (InspectableView<ViewType.View<V>>) throws -> Bool = { _ in true }
     ) -> [InspectableView<ViewType.View<V>>] where V: SwiftUI.View {
         return findAll(ViewType.View<V>.self, where: condition)

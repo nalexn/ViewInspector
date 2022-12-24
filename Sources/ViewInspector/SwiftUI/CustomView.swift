@@ -73,6 +73,14 @@ internal extension Content {
 public extension InspectableView where View: SingleViewContent {
     
     func view<T>(_ type: T.Type) throws -> InspectableView<ViewType.View<T>> where T: SwiftUI.View {
+        guard !Inspector.isSystemType(type: type) else {
+            let name = Inspector.typeName(type: type)
+            throw InspectionError.notSupported(
+                """
+                Please replace .view(\(name).self) inspection call with \
+                .\(name.firstLetterLowercased)() or .find(ViewType.\(name).self)
+                """)
+        }
         let child = try View.child(content)
         let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))
@@ -88,6 +96,14 @@ public extension InspectableView where View: SingleViewContent {
 public extension InspectableView where View: MultipleViewContent {
     
     func view<T>(_ type: T.Type, _ index: Int) throws -> InspectableView<ViewType.View<T>> where T: SwiftUI.View {
+        guard !Inspector.isSystemType(type: type) else {
+            let name = Inspector.typeName(type: type)
+            throw InspectionError.notSupported(
+                """
+                Please replace .view(\(name).self, \(index)) inspection \
+                call with .\(name.firstLetterLowercased)(\(index))
+                """)
+        }
         let content = try child(at: index)
         let prefix = Inspector.typeName(type: type, namespaced: true, generics: .remove)
         let base = ViewType.View<T>.inspectionCall(typeName: Inspector.typeName(type: type))

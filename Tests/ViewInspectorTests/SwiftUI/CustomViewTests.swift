@@ -77,11 +77,27 @@ final class CustomViewTests: XCTestCase {
     func testCustomViewAPIMisuseError() throws {
         let sut = try SimpleTestView().inspect().view(SimpleTestView.self)
         XCTAssertNoThrow(try sut.emptyView())
+        XCTAssertNoThrow(try sut.emptyView(0))
         XCTAssertNoThrow(try sut.find(ViewType.EmptyView.self))
-        XCTAssertThrows(try sut.view(EmptyView.self).text(),
+        XCTAssertThrows(try sut.find(EmptyView.self),
+            """
+            Please use .find(ViewType.EmptyView.self) instead \
+            of .find(EmptyView.self) inspection call.
+            """)
+        XCTAssertThrows(try sut.find(EmptyView.self, containing: "abc"),
+            """
+            Please use .find(ViewType.EmptyView.self) instead \
+            of .find(EmptyView.self) inspection call.
+            """)
+        XCTAssertThrows(try sut.view(EmptyView.self),
             """
             Please replace .view(EmptyView.self) inspection call \
             with .emptyView() or .find(ViewType.EmptyView.self)
+            """)
+        XCTAssertThrows(try sut.view(EmptyView.self, 0),
+            """
+            Please replace .view(EmptyView.self, 0) inspection \
+            call with .emptyView(0)
             """)
     }
     

@@ -56,6 +56,15 @@ internal extension Inspector {
     
     static func isSystemType(value: Any) -> Bool {
         let name = typeName(value: value, namespaced: true)
+        return isSystemType(name: name)
+    }
+    
+    static func isSystemType(type: Any.Type) -> Bool {
+        let name = typeName(type: type, namespaced: true)
+        return isSystemType(name: name)
+    }
+    
+    private static func isSystemType(name: String) -> Bool {
         return [
             "SwiftUI", "CoreLocationUI", "MapKit",
             "AuthenticationServices", "AVKit",
