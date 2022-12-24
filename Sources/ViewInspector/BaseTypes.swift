@@ -3,6 +3,7 @@ import SwiftUI
 // MARK: - Protocols
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(*, deprecated, message: "Conformance to Inspectable is no longer required")
 public protocol Inspectable { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
