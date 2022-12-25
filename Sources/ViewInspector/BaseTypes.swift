@@ -67,6 +67,12 @@ internal extension String {
     var firstLetterLowercased: String {
         prefix(1).lowercased() + dropFirst()
     }
+    
+    func hasPrefix(regex: String) -> Bool {
+        guard let ex = try? NSRegularExpression(pattern: regex) else { return false }
+        let range = NSRange(location: 0, length: utf16.count)
+        return ex.firstMatch(in: self, range: range)?.range.lowerBound == 0
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
