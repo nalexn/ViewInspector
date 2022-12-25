@@ -73,6 +73,11 @@ internal extension String {
         let range = NSRange(location: 0, length: utf16.count)
         return ex.firstMatch(in: self, range: range)?.range.lowerBound == 0
     }
+    
+    func removingSwiftUINamespace() -> String {
+        guard hasPrefix("SwiftUI.") else { return self }
+        return String(suffix(count - 8))
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)

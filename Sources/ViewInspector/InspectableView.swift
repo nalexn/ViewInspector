@@ -86,13 +86,6 @@ extension UnwrappedView {
     }
 }
 
-private extension String {
-    func removingSwiftUINamespace() -> String {
-        guard hasPrefix("SwiftUI.") else { return self }
-        return String(suffix(count - 8))
-    }
-}
-
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal protocol UnwrappedView {
     var content: Content { get }

@@ -67,8 +67,8 @@ internal extension Inspector {
     private static func isSystemType(name: String) -> Bool {
         return [
             "SwiftUI[a-zA-Z0-9]{0,2}\\)?",
-            "CoreLocationUI", "MapKit",
-            "AuthenticationServices", "AVKit",
+            "_CoreLocationUI_SwiftUI", "_MapKit_SwiftUI",
+            "_AuthenticationServices_SwiftUI", "_AVKit_SwiftUI",
         ].contains(where: { name.hasPrefix(regex: $0 + "\\.") })
     }
     
