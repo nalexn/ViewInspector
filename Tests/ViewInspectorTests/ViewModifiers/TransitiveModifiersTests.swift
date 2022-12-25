@@ -2,7 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 9.0, *)
 final class TransitiveModifiersTests: XCTestCase {
     
     func testHiddenTransitivity() throws {
@@ -23,7 +23,6 @@ final class TransitiveModifiersTests: XCTestCase {
     }
     
     @available(tvOS, unavailable)
-    @available(watchOS, unavailable)
     func testFlipsRightToLeftInheritance() throws {
         let sut = try FlipsRightToLeftTestView().inspect()
         if #available(iOS 14.0, tvOS 14.0, *) {
@@ -111,9 +110,8 @@ private struct TestDisabledView: View {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 13.0, macOS 10.15, watchOS 9.0, *)
 @available(tvOS, unavailable)
-@available(watchOS, unavailable)
 private struct FlipsRightToLeftTestView: View {
     var body: some View {
         VStack {
@@ -161,9 +159,8 @@ private struct AllowsHitTestingTestView: View {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 13.0, macOS 10.15, watchOS 9.0, *)
 @available(tvOS, unavailable)
-@available(watchOS, unavailable)
 private struct TestLabelsHiddenView: View {
     var body: some View {
         VStack {
