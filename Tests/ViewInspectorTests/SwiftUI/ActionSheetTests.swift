@@ -257,7 +257,7 @@ private struct InspectableActionSheetWithItem<Item: Identifiable>: ViewModifier,
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ActionSheetFindTestView: View, Inspectable {
+private struct ActionSheetFindTestView: View {
     
     @Binding var isSheet1Presented = false
     @Binding var isSheet2Presented = false
@@ -289,7 +289,7 @@ private struct ActionSheetFindTestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct PopupMixTestView: View, Inspectable {
+private struct PopupMixTestView: View {
     
     @Binding var isAlertPresented = true
     @Binding var isActionSheetPresented = true

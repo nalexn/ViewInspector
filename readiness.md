@@ -101,7 +101,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| SubscriptionView | |
 |:white_check_mark:| TabView | `contained view` |
 |:technologist:| Table | |
-|:white_check_mark:| Text | `string(locale: Locale) -> String`, `attributes: TextAttributes`, `images: [Image]` |
+|:white_check_mark:| Text | `string(locale: Locale) -> String`, `attributes: TextAttributes`, `attributedString: AttributedString`, `images: [Image]` |
 |:white_check_mark:| TextEditor | `input: String`, `setInput(_: String)` |
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
 |:white_check_mark:| TimelineView | `contentView(Context)` |

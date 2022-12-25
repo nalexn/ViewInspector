@@ -204,6 +204,3 @@ private struct TestPrimitiveButtonStyle: PrimitiveButtonStyle {
         #endif
     }
 }
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension TestPrimitiveButtonStyle.TestButton: Inspectable { }

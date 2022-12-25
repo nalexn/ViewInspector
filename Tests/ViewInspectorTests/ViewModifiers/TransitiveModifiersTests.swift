@@ -2,7 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 9.0, *)
 final class TransitiveModifiersTests: XCTestCase {
     
     func testHiddenTransitivity() throws {
@@ -23,7 +23,6 @@ final class TransitiveModifiersTests: XCTestCase {
     }
     
     @available(tvOS, unavailable)
-    @available(watchOS, unavailable)
     func testFlipsRightToLeftInheritance() throws {
         let sut = try FlipsRightToLeftTestView().inspect()
         if #available(iOS 14.0, tvOS 14.0, *) {
@@ -79,7 +78,7 @@ final class TransitiveModifiersTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct HittenTestView: View, Inspectable {
+private struct HittenTestView: View {
     var body: some View {
         VStack {
             Button("abc", action: { })
@@ -91,7 +90,7 @@ private struct HittenTestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct TestDisabledView: View, Inspectable {
+private struct TestDisabledView: View {
     var body: some View {
         VStack {
             Button(action: { }, label: {
@@ -111,10 +110,9 @@ private struct TestDisabledView: View, Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 13.0, macOS 10.15, watchOS 9.0, *)
 @available(tvOS, unavailable)
-@available(watchOS, unavailable)
-private struct FlipsRightToLeftTestView: View, Inspectable {
+private struct FlipsRightToLeftTestView: View {
     var body: some View {
         VStack {
             Stepper("1", onIncrement: nil, onDecrement: nil)
@@ -127,7 +125,7 @@ private struct FlipsRightToLeftTestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 11.0, tvOS 13.0, *)
-private struct ColorSchemeTestView: View, Inspectable {
+private struct ColorSchemeTestView: View {
     var body: some View {
         VStack {
             Text("1")
@@ -145,7 +143,7 @@ private struct ColorSchemeTestView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 11.0, tvOS 13.0, *)
-private struct AllowsHitTestingTestView: View, Inspectable {
+private struct AllowsHitTestingTestView: View {
     
     var body: some View {
         VStack {
@@ -161,10 +159,9 @@ private struct AllowsHitTestingTestView: View, Inspectable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 13.0, macOS 10.15, watchOS 9.0, *)
 @available(tvOS, unavailable)
-@available(watchOS, unavailable)
-private struct TestLabelsHiddenView: View, Inspectable {
+private struct TestLabelsHiddenView: View {
     var body: some View {
         VStack {
             Stepper(onIncrement: nil, onDecrement: nil, label: {

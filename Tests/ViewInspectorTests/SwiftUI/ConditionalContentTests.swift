@@ -31,7 +31,7 @@ final class ConditionalContentTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ConditionalView: View, Inspectable {
+private struct ConditionalView: View {
     
     @ObservedObject var viewModel = ViewModel()
     var body: some View {
@@ -47,7 +47,7 @@ private struct ConditionalView: View, Inspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct ConditionalViewWithModifier: View, Inspectable {
+private struct ConditionalViewWithModifier: View {
     
     let value: Bool
     

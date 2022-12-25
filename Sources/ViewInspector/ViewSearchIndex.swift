@@ -88,22 +88,24 @@ internal extension ViewSearch {
         let fullName = Inspector.typeName(value: content.view, namespaced: true, generics: .remove)
         if shortName.count > 0,
            let identity = index[String(shortName.prefix(1))]?
-            .first(where: { $0.viewType.namespacedPrefixes.contains(fullName) }) {
+            .first(where: {
+                $0.viewType.namespacedPrefixes.containsPrefixRegex(matching: fullName)
+            }) {
             return identity
         }
-        if (try? content.extractCustomView()) != nil,
-           let inspectable = content.view as? Inspectable {
+        if (try? content.extractCustomView()) != nil {
             let name = Inspector.typeName(
                 value: content.view, generics: .customViewPlaceholder)
-            switch inspectable.entity {
-            case .view:
+            switch content.view {
+            case _ as any View:
                 return .init(ViewType.View<ViewType.Stub>.self, genericTypeName: name)
-            case .viewModifier:
+            case _ as any ViewModifier:
                 return .init(ViewType.ViewModifier<ViewType.Stub>.self, genericTypeName: name)
-            case .gesture:
+            case _ as any Gesture:
+                break
+            default:
                 break
             }
-            
         }
         return nil
     }
@@ -125,10 +127,7 @@ internal extension ViewSearch {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType {
-    struct Stub: Inspectable {
-        var entity: Content.InspectableEntity
-        func extractContent(environmentObjects: [AnyObject]) throws -> Any { () }
-    }
+    struct Stub { }
 }
 
 // MARK: - ViewIdentity

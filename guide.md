@@ -27,13 +27,11 @@ import XCTest
 import ViewInspector // 1.
 @testable import MyApp
 
-extension ContentView: Inspectable { } // 2.
-
 final class ContentViewTests: XCTestCase {
 
-    func testStringValue() throws { // 3.
+    func testStringValue() throws { // 2.
         let sut = ContentView()
-        let value = try sut.inspect().text().string() // 4.
+        let value = try sut.inspect().text().string() // 3.
         XCTAssertEqual(value, "Hello, world!")
     }
 }
@@ -41,9 +39,8 @@ final class ContentViewTests: XCTestCase {
 So, you need to do the following:
 
 1. Add `import ViewInspector`
-2. Extend your view to conform to `Inspectable` in the test target scope.
-3. Annotate the test function with `throws` keyword to not mess with the bulky `do { } catch { }`. Test fails automatically upon exception.
-4. Start the inspection with `.inspect()` function
+2. Annotate the test function with `throws` keyword to not mess with the bulky `do { } catch { }`. Test fails automatically upon exception.
+3. Start the inspection with `.inspect()` function
 
 After the `.inspect()` call you need to repeat the structure of the `body` by chaining corresponding functions named after the SwiftUI views.
 
@@ -173,7 +170,7 @@ let cell = try title.find(TableViewCell.self, relation: .parent)
 let cell = try sut.find(TableViewCell.self, containing: "Cell's title")
 ```
 
-This function accepts either `Inspectable` custom view or types like `ViewType.HStack`, searches for a specific `Text` first and then locates the parent view of a given type.
+This function accepts either a custom view type or types like `ViewType.HStack`, searches for a specific `Text` first and then locates the parent view of a given type.
 
 #### Generic `find` function
 
@@ -493,12 +490,6 @@ struct MyViewModifier: ViewModifier {
 }
 ```
 
-Just like with the custom views, in order to inspect a custom `ViewModifier` extend it to conform to `Inspectable` protocol in the tests scope.
-
-```swift
-extension MyViewModifier: Inspectable { }
-```
-
 The following test shows how you can extract the `modifier` and its `content` placeholder view using `modifier(_ type: T.Type)` and `viewModifierContent()` inspection calls respectively:
 
 ```swift
@@ -545,7 +536,7 @@ func testViewModifier() {
 Approach #2:
 
 ```swift
-struct MyViewModifier: ViewModifier, Inspectable {
+struct MyViewModifier: ViewModifier {
     
     let inspection = Inspection<Self>() // 1.
         

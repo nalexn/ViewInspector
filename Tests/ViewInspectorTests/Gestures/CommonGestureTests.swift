@@ -6,7 +6,7 @@ import Combine
 // MARK: - Common Gesture Tests
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-final class CommonGestureTests<T: Gesture & Inspectable> {
+final class CommonGestureTests<T: Gesture> {
     
     @GestureState var gestureState = CGSize.zero
     

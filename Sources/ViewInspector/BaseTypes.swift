@@ -3,54 +3,8 @@ import SwiftUI
 // MARK: - Protocols
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol Inspectable {
-    var entity: Content.InspectableEntity { get }
-    func extractContent(environmentObjects: [AnyObject]) throws -> Any
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Content {
-    enum InspectableEntity {
-        case view
-        case viewModifier
-        case gesture
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: View {
-    var entity: Content.InspectableEntity { .view }
-    
-    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
-        var copy = self
-        environmentObjects.forEach { copy.inject(environmentObject: $0) }
-        let missingObjects = copy.missingEnvironmentObjects
-        if missingObjects.count > 0 {
-            let view = Inspector.typeName(value: self)
-            throw InspectionError
-                .missingEnvironmentObjects(view: view, objects: missingObjects)
-        }
-        return copy.body
-    }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Inspectable where Self: ViewModifier {
-    
-    var entity: ViewInspector.Content.InspectableEntity { .viewModifier }
-    
-    func extractContent(environmentObjects: [AnyObject]) throws -> Any {
-        var copy = self
-        environmentObjects.forEach { copy.inject(environmentObject: $0) }
-        let missingObjects = copy.missingEnvironmentObjects
-        if missingObjects.count > 0 {
-            let view = Inspector.typeName(value: self)
-            throw InspectionError
-                .missingEnvironmentObjects(view: view, objects: missingObjects)
-        }
-        return copy.body()
-    }
-}
+@available(*, deprecated, message: "Conformance to Inspectable is no longer required")
+public protocol Inspectable { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol SingleViewContent {
@@ -100,7 +54,7 @@ public protocol KnownViewType {
 public extension KnownViewType {
     static var namespacedPrefixes: [String] {
         guard !typePrefix.isEmpty else { return [] }
-        return ["SwiftUI." + typePrefix]
+        return [.swiftUINamespaceRegex + typePrefix]
     }
     static var isTransitive: Bool { false }
     static func inspectionCall(typeName: String) -> String {
@@ -112,6 +66,35 @@ public extension KnownViewType {
 internal extension String {
     var firstLetterLowercased: String {
         prefix(1).lowercased() + dropFirst()
+    }
+    
+    static var swiftUINamespaceRegex: String { "SwiftUI(|[a-zA-Z0-9]{0,2}\\))\\." }
+    
+    func removingSwiftUINamespace() -> String {
+        return removing(prefix: .swiftUINamespaceRegex)
+            .removing(prefix: "SwiftUI.")
+    }
+    
+    func removing(prefix: String) -> String {
+        guard hasPrefix(prefix) else { return self }
+        return String(suffix(count - prefix.count))
+    }
+    
+    fileprivate func hasPrefix(regex: String, wholeMatch: Bool) -> Bool {
+        let range = NSRange(location: 0, length: utf16.count)
+        guard let ex = try? NSRegularExpression(pattern: regex),
+              let match = ex.firstMatch(in: self, range: range)
+        else { return false }
+        if wholeMatch {
+            return match.range == range
+        }
+        return match.range.lowerBound == 0
+    }
+}
+
+internal extension Array where Element == String {
+    func containsPrefixRegex(matching name: String, wholeMatch: Bool = true) -> Bool {
+        return contains(where: { name.hasPrefix(regex: $0, wholeMatch: wholeMatch) })
     }
 }
 

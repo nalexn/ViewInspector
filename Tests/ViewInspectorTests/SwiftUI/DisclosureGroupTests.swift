@@ -102,7 +102,7 @@ final class DisclosureGroupTests: XCTestCase {
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-private struct TestViewState: View, Inspectable {
+private struct TestViewState: View {
     @ObservedObject var state = ExpansionState()
     
     var body: some View {
@@ -120,7 +120,7 @@ private struct TestViewState: View, Inspectable {
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-private struct TestViewBinding: View, Inspectable {
+private struct TestViewBinding: View {
 
     @Binding var expanded: Bool = false
     

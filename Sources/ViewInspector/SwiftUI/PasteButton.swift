@@ -48,8 +48,9 @@ public extension InspectableView where View == ViewType.PasteButton {
     
     @available(macOS 11.0, *)
     func supportedContentTypes() throws -> [UTType] {
+        let container = (try? Inspector.attribute(label: "pasteHelper", value: content.view)) ?? content.view
         return try Inspector
-            .attribute(label: "supportedContentTypes", value: content.view, type: [UTType].self)
+            .attribute(label: "supportedContentTypes", value: container, type: [UTType].self)
     }
 }
 #endif

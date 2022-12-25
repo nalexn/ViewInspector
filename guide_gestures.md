@@ -22,7 +22,7 @@ A test can inspect a gesture attached to a view using the `gesture(_:including:)
 modifier. For example, consider the following view:
 
 ```Swift
-struct TestGestureView1: View & Inspectable {
+struct TestGestureView1: View {
     @State var tapped = false
         
     var body: some View {
@@ -51,7 +51,7 @@ A test can inspect a gesture attached to a view using the `highPriorityGesture(_
 view modifier. For example, consider the following view:
 
 ```Swift
-struct TestGestureView2: View & Inspectable {
+struct TestGestureView2: View {
     @State var tapped = false
         
     var body: some View {
@@ -80,7 +80,7 @@ A test can inspect a gesture attached using the `simultaneousGesture(_:including
 view modifier. For example, consider the following view:
 
 ```Swift
-struct TestGestureView3: View & Inspectable {
+struct TestGestureView3: View {
     @State var tapped = false
         
     var body: some View {
@@ -111,7 +111,7 @@ A test can inspect the mask used when a gesture was attached to a view hierarchy
 consider the following view:
 
 ```Swift
-struct TestGestureView9: View & Inspectable {
+struct TestGestureView9: View {
     @State var tapped = false
         
     var body: some View {
@@ -176,7 +176,7 @@ A test can invoke the updating callbacks added to a gesture. For example, consid
 view:
 
 ```Swift
-struct TestGestureView5: View & Inspectable {
+struct TestGestureView5: View {
     @GestureState var isDetectingLongPress = false
 
     internal let inspection = Inspection<Self>()
@@ -245,7 +245,7 @@ A test can invoke the changed callbacks added to a gesture. For example, conside
 view:
 
 ```Swift
-struct TestGestureView6: View & Inspectable {
+struct TestGestureView6: View {
     @GestureState var isDetectingLongPress = false
     @State var totalNumberOfTaps = 0
 
@@ -318,7 +318,7 @@ A test can invoke the ended callbacks added to a gesture. For example, consider 
 view:
 
 ```Swift
-struct TestGestureView7: View & Inspectable {
+struct TestGestureView7: View {
     @GestureState var isDetectingLongPress = false
     @State var totalNumberOfTaps = 0
     @State var doneCounting = false
@@ -393,7 +393,7 @@ consider the following view:
 
 ```Swift
 #if os(macOS)
-struct TestGestureView8: View & Inspectable {
+struct TestGestureView8: View {
     @State var tapped = false
         
     var body: some View {
@@ -450,7 +450,7 @@ view:
 
 ```Swift
 @available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
-struct TestGestureView10: View & Inspectable {
+struct TestGestureView10: View {
     @State var scale: CGFloat = 1.0
     @State var angle = Angle(degrees: 0)
     
@@ -543,7 +543,7 @@ into the view, the example is useful for demonstration purposes:
 
 ```Swift
 @available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
-struct TestGestureView12: View & Inspectable {
+struct TestGestureView12: View {
     
     internal let inspection = Inspection<Self>()
     internal let publisher = PassthroughSubject<Void, Never>()

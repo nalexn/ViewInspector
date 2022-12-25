@@ -2,29 +2,29 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol GestureViewType {
-    associatedtype T: SwiftUI.Gesture & Inspectable
+    associatedtype T: SwiftUI.Gesture
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
     
     struct Gesture<T>: KnownViewType, GestureViewType
-    where T: SwiftUI.Gesture & Inspectable {
+    where T: SwiftUI.Gesture {
         public static var typePrefix: String {
             return Inspector.typeName(type: T.self, generics: .remove)
         }
         
         public static var namespacedPrefixes: [String] {
             var prefixes = [
-                "SwiftUI.AddGestureModifier",
-                "SwiftUI.HighPriorityGestureModifier",
-                "SwiftUI.SimultaneousGestureModifier",
-                "SwiftUI._ChangedGesture",
-                "SwiftUI._EndedGesture",
-                "SwiftUI._MapGesture",
-                "SwiftUI._ModifiersGesture",
-                "SwiftUI.GestureStateGesture"
-            ]
+                "AddGestureModifier",
+                "HighPriorityGestureModifier",
+                "SimultaneousGestureModifier",
+                "_ChangedGesture",
+                "_EndedGesture",
+                "_MapGesture",
+                "_ModifiersGesture",
+                "GestureStateGesture"
+            ].map { String.swiftUINamespaceRegex + $0 }
             prefixes.append(Inspector.typeName(type: T.self, namespaced: true, generics: .remove))
             return prefixes
         }
@@ -40,62 +40,24 @@ public extension ViewType {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension Gesture where Self: Inspectable {
-    var entity: Content.InspectableEntity { .gesture }
-    func extractContent(environmentObjects: [AnyObject]) throws -> Any { () }
-}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension AnyGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-extension DragGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ExclusiveGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 14.0, *)
-extension LongPressGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-extension MagnificationGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-extension RotationGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension SequenceGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension SimultaneousGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
-extension TapGesture: Inspectable {}
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectableView {
     
     func gesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
-        where T: Gesture & Inspectable {
+        where T: Gesture {
         return try gestureModifier(
             modifierName: "AddGestureModifier", path: "modifier",
             type: type, call: "gesture", index: index)
     }
     
     func highPriorityGesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
-        where T: Gesture & Inspectable {
+        where T: Gesture {
         return try gestureModifier(
             modifierName: "HighPriorityGestureModifier", path: "modifier",
             type: type, call: "highPriorityGesture", index: index)
     }
     
     func simultaneousGesture<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
-        where T: Gesture & Inspectable {
+        where T: Gesture {
         return try gestureModifier(
             modifierName: "SimultaneousGestureModifier", path: "modifier",
             type: type, call: "simultaneousGesture", index: index)
@@ -170,7 +132,7 @@ public extension InspectableView {
     @available(iOS, unavailable)
     @available(tvOS, unavailable)
     func gestureModifiers<T>() throws -> EventModifiers
-    where T: Gesture & Inspectable, View == ViewType.Gesture<T> {
+    where T: Gesture, View == ViewType.Gesture<T> {
         let typeName = Inspector.typeName(type: T.self)
         let valueName = Inspector.typeName(value: content.view)
         let (_, modifiers) = gestureInfo(typeName, valueName)
@@ -200,7 +162,7 @@ internal extension InspectableView {
         type: T.Type,
         call: String,
         index: Int? = nil) throws -> InspectableView<ViewType.Gesture<T>>
-        where T: Gesture, T: Inspectable {
+        where T: Gesture {
         let typeName = Inspector.typeName(type: type)
         let modifierCall = ViewType.Gesture<T>.inspectionCall(call: call, typeName: typeName, index: nil)
         
