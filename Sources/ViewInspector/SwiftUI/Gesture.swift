@@ -16,15 +16,15 @@ public extension ViewType {
         
         public static var namespacedPrefixes: [String] {
             var prefixes = [
-                "SwiftUI.AddGestureModifier",
-                "SwiftUI.HighPriorityGestureModifier",
-                "SwiftUI.SimultaneousGestureModifier",
-                "SwiftUI._ChangedGesture",
-                "SwiftUI._EndedGesture",
-                "SwiftUI._MapGesture",
-                "SwiftUI._ModifiersGesture",
-                "SwiftUI.GestureStateGesture"
-            ]
+                "AddGestureModifier",
+                "HighPriorityGestureModifier",
+                "SimultaneousGestureModifier",
+                "_ChangedGesture",
+                "_EndedGesture",
+                "_MapGesture",
+                "_ModifiersGesture",
+                "GestureStateGesture"
+            ].map { String.swiftUINamespaceRegex + $0 }
             prefixes.append(Inspector.typeName(type: T.self, namespaced: true, generics: .remove))
             return prefixes
         }

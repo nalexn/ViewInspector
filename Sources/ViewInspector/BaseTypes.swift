@@ -54,7 +54,7 @@ public protocol KnownViewType {
 public extension KnownViewType {
     static var namespacedPrefixes: [String] {
         guard !typePrefix.isEmpty else { return [] }
-        return ["SwiftUI." + typePrefix]
+        return [.swiftUINamespaceRegex + typePrefix]
     }
     static var isTransitive: Bool { false }
     static func inspectionCall(typeName: String) -> String {
@@ -68,15 +68,33 @@ internal extension String {
         prefix(1).lowercased() + dropFirst()
     }
     
-    func hasPrefix(regex: String) -> Bool {
-        guard let ex = try? NSRegularExpression(pattern: regex) else { return false }
-        let range = NSRange(location: 0, length: utf16.count)
-        return ex.firstMatch(in: self, range: range)?.range.lowerBound == 0
-    }
+    static var swiftUINamespaceRegex: String { "SwiftUI(|[a-zA-Z0-9]{0,2}\\))\\." }
     
     func removingSwiftUINamespace() -> String {
-        guard hasPrefix("SwiftUI.") else { return self }
-        return String(suffix(count - 8))
+        return removing(prefix: .swiftUINamespaceRegex)
+            .removing(prefix: "SwiftUI.")
+    }
+    
+    func removing(prefix: String) -> String {
+        guard hasPrefix(prefix) else { return self }
+        return String(suffix(count - prefix.count))
+    }
+    
+    fileprivate func hasPrefix(regex: String, wholeMatch: Bool) -> Bool {
+        let range = NSRange(location: 0, length: utf16.count)
+        guard let ex = try? NSRegularExpression(pattern: regex),
+              let match = ex.firstMatch(in: self, range: range)
+        else { return false }
+        if wholeMatch {
+            return match.range == range
+        }
+        return match.range.lowerBound == 0
+    }
+}
+
+internal extension Array where Element == String {
+    func containsPrefixRegex(matching name: String, wholeMatch: Bool = true) -> Bool {
+        return contains(where: { name.hasPrefix(regex: $0, wholeMatch: wholeMatch) })
     }
 }
 

@@ -9,7 +9,7 @@ public extension ViewType {
         public static var typePrefix: String = ViewType.PopupContainer<Alert>.typePrefix
         static var typePrefixIOS15: String = "AlertModifier"
         public static var namespacedPrefixes: [String] {
-            [typePrefix, "SwiftUI." + typePrefixIOS15]
+            [typePrefix, .swiftUINamespaceRegex + typePrefixIOS15]
         }
         public static func inspectionCall(typeName: String) -> String {
             return "alert(\(ViewType.indexPlaceholder))"

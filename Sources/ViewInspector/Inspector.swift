@@ -66,10 +66,10 @@ internal extension Inspector {
     
     private static func isSystemType(name: String) -> Bool {
         return [
-            "SwiftUI[a-zA-Z0-9]{0,2}\\)?",
-            "_CoreLocationUI_SwiftUI", "_MapKit_SwiftUI",
-            "_AuthenticationServices_SwiftUI", "_AVKit_SwiftUI",
-        ].contains(where: { name.hasPrefix(regex: $0 + "\\.") })
+            String.swiftUINamespaceRegex,
+            "_CoreLocationUI_SwiftUI\\.", "_MapKit_SwiftUI\\.",
+            "_AuthenticationServices_SwiftUI\\.", "_AVKit_SwiftUI\\.",
+        ].containsPrefixRegex(matching: name, wholeMatch: false)
     }
     
     static func typeName(type: Any.Type,
@@ -284,10 +284,11 @@ internal extension Inspector {
                     """)
             }
         }
-        if namespacedPrefixes.contains(typePrefix) {
+        if namespacedPrefixes.containsPrefixRegex(matching: typePrefix) {
             return
         }
-        if let prefix = namespacedPrefixes.first {
+        if var prefix = namespacedPrefixes.first {
+            prefix = prefix.replacingOccurrences(of: String.swiftUINamespaceRegex, with: "SwiftUI.")
             let typePrefix = typeName(type: type(of: value), namespaced: true)
             throw InspectionError.typeMismatch(factual: typePrefix, expected: prefix)
         }
