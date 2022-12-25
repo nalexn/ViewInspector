@@ -2,11 +2,11 @@
 Pod::Spec.new do |s|
 
   s.name = "ViewInspector"
-  s.version = "0.9.2"
+  s.version = "0.9.3"
   s.summary = "ViewInspector is a library for unit testing SwiftUI views."
   s.homepage = "https://github.com/nalexn/ViewInspector"
   s.license = { :type => "MIT", :file => "LICENSE" }
-  s.author = { "Alexey Naumov" => "dont@spam.me" }
+  s.author = { "Alexey Naumov" => "a.naumov91@gmail.com" }
 
   s.ios.deployment_target = '13.0'
   s.osx.deployment_target = '10.15'
