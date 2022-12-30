@@ -88,6 +88,24 @@ final class CustomViewBuilderTests: XCTestCase {
         XCTAssertEqual(path1, "hStack().view(TestViewBuilderView<EmptyView>.self, 0).text(0)")
         XCTAssertEqual(path2, "hStack().view(TestViewBuilderView<EmptyView>.self, 0).text(0)")
     }
+    
+    func testLocalViewBuilder() throws {
+        struct ViewWrapper<V: View>: View {
+            @ViewBuilder var view: () -> V
+            init(@ViewBuilder view: @escaping () -> V) {
+                self.view = view
+            }
+            var body: some View {
+                view()
+            }
+        }
+        let view = ViewWrapper { ViewWrapper { Text("test") } }
+        let sut = try view.inspect()
+        XCTAssertNoThrow(try sut.find(ViewWrapper<ViewWrapper<Text>>.self))
+        XCTAssertNoThrow(try sut.find(ViewWrapper<Text>.self))
+        XCTAssertEqual(try sut.find(ViewType.Text.self).pathToRoot,
+                       "view(ViewWrapper<EmptyView>.self).view(ViewWrapper<EmptyView>.self).text()")
+    }
 }
 
 // MARK: - Test Views

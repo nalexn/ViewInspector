@@ -91,7 +91,7 @@ internal extension Inspector {
 private extension String {
     func sanitizingNamespace() -> String {
         var str = self
-        if let range = str.range(of: ".(unknown context at ") {
+        while let range = str.range(of: ".(unknown context at ") {
             let end = str.index(range.upperBound, offsetBy: .init(11))
             str.replaceSubrange(range.lowerBound..<end, with: "")
         }
