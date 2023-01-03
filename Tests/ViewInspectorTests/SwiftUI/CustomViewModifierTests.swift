@@ -18,6 +18,16 @@ final class ModifiedContentTests: XCTestCase {
             .padding().padding()
         let sut = try view.inspect().text()
         XCTAssertEqual(sut.content.medium.viewModifiers.count, 5)
+        XCTAssertNoThrow(try sut.callOnAppear())
+    }
+    
+    func testEnvAccumulatesModifiers() throws {
+        let view = Text("Test")
+            .padding().modifier(TestEnvironmentalModifier())
+            .padding().padding()
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 5)
+        XCTAssertNoThrow(try sut.callOnAppear())
     }
     
     func testExtractionFromSingleViewContainer() throws {
@@ -220,5 +230,13 @@ private extension TestModifier4 {
         var body: some View {
             Text(envObj.value)
         }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestEnvironmentalModifier: EnvironmentalModifier {
+    
+    func resolve(in environment: EnvironmentValues) -> some ViewModifier {
+        return TestModifier()
     }
 }

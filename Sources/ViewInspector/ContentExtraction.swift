@@ -126,6 +126,10 @@ public extension ViewModifier {
             throw InspectionError
                 .missingEnvironmentObjects(view: view, objects: missingObjects)
         }
+        if let envModifier = copy as? (any EnvironmentalModifier) {
+            let resolved = envModifier.resolve(in: EnvironmentValues())
+            return try resolved.extractContent(environmentObjects: environmentObjects)
+        }
         return copy.body()
     }
 }
