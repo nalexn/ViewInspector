@@ -52,6 +52,15 @@ final class ModifiedContentTests: XCTestCase {
                         "EmptyView does not have 'TestModifier' modifier at index 1")
     }
     
+    func testEmptyModifierUnwrapping() throws {
+        let view = Text("Test")
+            .modifier(EmptyModifier.identity)
+            .padding()
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 2)
+        XCTAssertNoThrow(_ = try sut.modifier(EmptyModifier.self))
+    }
+    
     func testSingleModifierInspection() throws {
         let view = EmptyView().modifier(TestModifier())
         let sut = try view.inspect().emptyView().modifier(TestModifier.self)
