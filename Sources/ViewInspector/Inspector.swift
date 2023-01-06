@@ -41,7 +41,15 @@ internal extension Inspector {
         return casted
     }
     
-    static func unsafeMemoryRebind<V, T>(value: V, type: T.Type) -> T {
+    static func unsafeMemoryRebind<V, T>(value: V, type: T.Type) throws -> T {
+        guard MemoryLayout<V>.size == MemoryLayout<T>.size else {
+            throw InspectionError.notSupported(
+                """
+                Unable to rebind value of type \(Inspector.typeName(value: value, namespaced: true)) \
+                to \(Inspector.typeName(type: type, namespaced: true)). \
+                This is an internal library error, please open a ticket with these details.
+                """)
+        }
         return withUnsafeBytes(of: value) { bytes in
             return bytes.baseAddress!
                 .assumingMemoryBound(to: T.self).pointee

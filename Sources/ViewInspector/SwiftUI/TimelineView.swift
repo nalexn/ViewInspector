@@ -91,7 +91,7 @@ extension TimelineView: ElementViewProvider {
             label: "content", value: self, type: Builder.self)
         let param = try Inspector.cast(
             value: element, type: ViewType.TimelineView.Context.self)
-        let context = Inspector.unsafeMemoryRebind(value: param, type: Context.self)
+        let context = try Inspector.unsafeMemoryRebind(value: param, type: Context.self)
         return builder(context)
     }
 }

@@ -90,7 +90,7 @@ public extension InspectableView where View == ViewType.SignInWithAppleButton {
     private typealias ButtonSurrogate = SignInWithAppleButton.Surrogate
     private func buttonSurrogate() throws -> ButtonSurrogate {
         let button = try Inspector.cast(value: content.view, type: SignInWithAppleButton.self)
-        return Inspector.unsafeMemoryRebind(value: button, type: ButtonSurrogate.self)
+        return try Inspector.unsafeMemoryRebind(value: button, type: ButtonSurrogate.self)
     }
 }
 
