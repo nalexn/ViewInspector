@@ -72,8 +72,10 @@ public extension ViewType.TimelineView {
         public enum Cadence {
             case live, seconds, minutes
         }
-        let date: Date
-        let cadence: Cadence
+        public let date: Date
+        public let cadence: Cadence
+        private let filler: (Int64, Int64) = (0, 0)
+        
         public init(date: Date = Date(), cadence: Cadence = .live) {
             self.date = date
             self.cadence = cadence
@@ -89,10 +91,17 @@ extension TimelineView: ElementViewProvider {
             label: "content", value: self, type: Builder.self)
         let param = try Inspector.cast(
             value: element, type: ViewType.TimelineView.Context.self)
-        let context = withUnsafeBytes(of: param) { bytes in
-            return bytes.baseAddress!
-                .assumingMemoryBound(to: Context.self).pointee
-        }
+        let context = param.unsafeMemoryRebind(to: Context.self)
         return builder(context)
+    }
+}
+
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+internal extension ViewType.TimelineView.Context {
+    func unsafeMemoryRebind<T>(to type: T.Type) -> T {
+        return withUnsafeBytes(of: self) { bytes in
+            return bytes.baseAddress!
+                .assumingMemoryBound(to: T.self).pointee
+        }
     }
 }
