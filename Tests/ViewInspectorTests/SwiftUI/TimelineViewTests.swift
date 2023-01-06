@@ -19,7 +19,7 @@ final class TimelineViewTests: XCTestCase {
         XCTAssertEqual(SUTMemLayout.stride, REFMemLayout.stride)
         let date = Date()
         let value = SUT(date: date, cadence: .minutes)
-        let rebound = value.unsafeMemoryRebind(to: REF.self)
+        let rebound = Inspector.unsafeMemoryRebind(value: value, type: REF.self)
         XCTAssertEqual(rebound.date, date)
         XCTAssertEqual(rebound.cadence, .minutes)
     }

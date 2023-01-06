@@ -91,17 +91,7 @@ extension TimelineView: ElementViewProvider {
             label: "content", value: self, type: Builder.self)
         let param = try Inspector.cast(
             value: element, type: ViewType.TimelineView.Context.self)
-        let context = param.unsafeMemoryRebind(to: Context.self)
+        let context = Inspector.unsafeMemoryRebind(value: param, type: Context.self)
         return builder(context)
-    }
-}
-
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-internal extension ViewType.TimelineView.Context {
-    func unsafeMemoryRebind<T>(to type: T.Type) -> T {
-        return withUnsafeBytes(of: self) { bytes in
-            return bytes.baseAddress!
-                .assumingMemoryBound(to: T.self).pointee
-        }
     }
 }

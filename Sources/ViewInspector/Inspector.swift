@@ -41,6 +41,13 @@ internal extension Inspector {
         return casted
     }
     
+    static func unsafeMemoryRebind<V, T>(value: V, type: T.Type) -> T {
+        return withUnsafeBytes(of: value) { bytes in
+            return bytes.baseAddress!
+                .assumingMemoryBound(to: T.self).pointee
+        }
+    }
+    
     enum GenericParameters {
         case keep
         case remove
