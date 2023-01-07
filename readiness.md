@@ -73,6 +73,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| MenuStyleConfiguration.Label | |
 |:white_check_mark:| ModifiedContent | `contained view` |
 |:white_check_mark:| NavigationLink | `contained view`, `label view`, `isActive: Bool`, `activate()`, `deactivate()` |
+|:white_check_mark:| NavigationSplitView | `contained view`, `sidebar view`, `detail view` |
 |:white_check_mark:| NavigationStack | `contained view` |
 |:white_check_mark:| NavigationView | `contained view` |
 |:technologist:| NowPlayingView | |

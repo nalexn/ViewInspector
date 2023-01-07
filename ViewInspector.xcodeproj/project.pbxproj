@@ -58,6 +58,8 @@
 		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		529633862969672A00EC6C81 /* NavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529633852969672A00EC6C81 /* NavigationStack.swift */; };
 		52963388296967ED00EC6C81 /* NavigationStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52963387296967ED00EC6C81 /* NavigationStackTests.swift */; };
+		5296338A29697C7D00EC6C81 /* NavigationSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5296338929697C7D00EC6C81 /* NavigationSplitView.swift */; };
+		5296338C29697EB400EC6C81 /* NavigationSplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5296338B29697EB400EC6C81 /* NavigationSplitViewTests.swift */; };
 		5298500125FF5B7A00C717AB /* Test.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6FEBEF4256AE732006C28F5 /* Test.strings */; };
 		52A3B51A26591F59001FE17E /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A3B51926591F59001FE17E /* Sheet.swift */; };
 		52A3B51C26591F79001FE17E /* SheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A3B51B26591F79001FE17E /* SheetTests.swift */; };
@@ -329,6 +331,8 @@
 		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		529633852969672A00EC6C81 /* NavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStack.swift; sourceTree = "<group>"; };
 		52963387296967ED00EC6C81 /* NavigationStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackTests.swift; sourceTree = "<group>"; };
+		5296338929697C7D00EC6C81 /* NavigationSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSplitView.swift; sourceTree = "<group>"; };
+		5296338B29697EB400EC6C81 /* NavigationSplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSplitViewTests.swift; sourceTree = "<group>"; };
 		52A3B51926591F59001FE17E /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		52A3B51B26591F79001FE17E /* SheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetTests.swift; sourceTree = "<group>"; };
 		52A4A7632621F4AE0063E00B /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
@@ -690,6 +694,7 @@
 				F6C15A70254B68C0000240F1 /* Menu.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
+				5296338929697C7D00EC6C81 /* NavigationSplitView.swift */,
 				529633852969672A00EC6C81 /* NavigationStack.swift */,
 				F6DFD87F238303AF0028E84D /* NavigationView.swift */,
 				79069A6A238E8490000F6B58 /* OptionalContent.swift */,
@@ -809,6 +814,7 @@
 				F6C15A6A254B669F000240F1 /* MenuTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
 				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
+				5296338B29697EB400EC6C81 /* NavigationSplitViewTests.swift */,
 				52963387296967ED00EC6C81 /* NavigationStackTests.swift */,
 				F6DFD881238303C60028E84D /* NavigationViewTests.swift */,
 				F6E4B4052386F511003E1534 /* OpaqueViewTests.swift */,
@@ -1155,6 +1161,7 @@
 				F6D9339B2385AD9100358E0E /* GeometryReader.swift in Sources */,
 				F6D933C72385FC0100358E0E /* Stepper.swift in Sources */,
 				F6D933A32385DBFD00358E0E /* TabView.swift in Sources */,
+				5296338A29697C7D00EC6C81 /* NavigationSplitView.swift in Sources */,
 				F6D933A72385E9E000358E0E /* EquatableView.swift in Sources */,
 				52F356AA267692D100695E43 /* MapAnnotation.swift in Sources */,
 				F68108A623A5835E00B32145 /* EventsModifiers.swift in Sources */,
@@ -1265,6 +1272,7 @@
 				F682A00C254772C3005F1B70 /* DisclosureGroupTests.swift in Sources */,
 				CDA844BC262B7EA800C56C98 /* MagnificationGestureTests.swift in Sources */,
 				F6C15A3F254B4835000240F1 /* LinkTests.swift in Sources */,
+				5296338C29697EB400EC6C81 /* NavigationSplitViewTests.swift in Sources */,
 				F6ECF6D823A69CB5000FC591 /* VisualEffectModifiersTests.swift in Sources */,
 				F6DB5A0B253510CC0056FC83 /* TextInputModifiersTests.swift in Sources */,
 				F609EFC323A4342400B9256A /* PreferenceTests.swift in Sources */,

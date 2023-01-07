@@ -33,7 +33,7 @@ internal extension ViewSearch {
             .init(ViewType.Map.self),
             .init(ViewType.Menu.self), .init(ViewType.MenuButton.self),
             .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
-            .init(ViewType.NavigationStack.self),
+            .init(ViewType.NavigationSplitView.self), .init(ViewType.NavigationStack.self),
             .init(ViewType.OutlineGroup.self),
             .init(ViewType.PasteButton.self), .init(ViewType.Picker.self),
             .init(ViewType.Popover.self, genericTypeName: nil),
