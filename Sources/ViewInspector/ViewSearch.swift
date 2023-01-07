@@ -220,7 +220,7 @@ public extension InspectableView {
     func find<T>(_ viewType: T.Type,
                  containing string: String,
                  locale: Locale = .testsDefault
-    ) throws -> InspectableView<T> where T: KnownViewType {
+    ) throws -> InspectableView<T> where T: BaseViewType {
         return try find(ViewType.Text.self, where: { text in
             try text.string(locale: locale) == string
             && (try? text.find(T.self, relation: .parent)) != nil
@@ -244,7 +244,7 @@ public extension InspectableView {
                  traversal: ViewSearch.Traversal = .breadthFirst,
                  skipFound: Int = 0,
                  where condition: (InspectableView<T>) throws -> Bool = { _ in true }
-    ) throws -> InspectableView<T> where T: KnownViewType {
+    ) throws -> InspectableView<T> where T: BaseViewType {
         let view = try find(relation: relation, traversal: traversal, skipFound: skipFound, where: { view -> Bool in
             let typedView = try view.asInspectableView(ofType: T.self)
             return try condition(typedView)
@@ -305,7 +305,7 @@ public extension InspectableView {
      */
     func findAll<T>(_ viewType: T.Type,
                     where condition: (InspectableView<T>) throws -> Bool = { _ in true }
-    ) -> [InspectableView<T>] where T: KnownViewType {
+    ) -> [InspectableView<T>] where T: BaseViewType {
         return findAll(where: { view in
             guard let typedView = try? view.asInspectableView(ofType: T.self)
             else { return false }

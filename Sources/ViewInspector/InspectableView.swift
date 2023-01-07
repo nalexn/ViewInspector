@@ -2,7 +2,7 @@ import SwiftUI
 import XCTest
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public struct InspectableView<View> where View: KnownViewType {
+public struct InspectableView<View> where View: BaseViewType {
     
     internal let content: Content
     internal let parentView: UnwrappedView?
@@ -108,14 +108,14 @@ internal extension UnwrappedView {
         return try .init(content, parent: parentView, call: inspectionCall, index: inspectionIndex)
     }
     
-    func asInspectableView<T>(ofType type: T.Type) throws -> InspectableView<T> where T: KnownViewType {
+    func asInspectableView<T>(ofType type: T.Type) throws -> InspectableView<T> where T: BaseViewType {
         return try .init(content, parent: parentView, call: inspectionCall, index: inspectionIndex)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension InspectableView {
-    func asInspectableView<T>(ofType type: T.Type) throws -> InspectableView<T> where T: KnownViewType {
+    func asInspectableView<T>(ofType type: T.Type) throws -> InspectableView<T> where T: BaseViewType {
         return try .init(content, parent: parentView, call: inspectionCall, index: inspectionIndex)
     }
 }
