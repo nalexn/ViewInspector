@@ -12,7 +12,7 @@ final class NavigationSplitViewTests: XCTestCase {
                                        content: { Text("2") },
                                        detail: { Text("3") })
         let sut = try view.inspect().navigationSplitView()
-        let content = try sut.text(0).string()
+        let content = try sut.text().string()
         let sidebar = try sut.sidebarView().text().string()
         let detail = try sut.detailView().text().string()
         XCTAssertEqual(sidebar, "1")
@@ -27,7 +27,7 @@ final class NavigationSplitViewTests: XCTestCase {
                                        content: { Text("2"); Text("22") },
                                        detail: { Text("3"); Text("33") })
         let sut = try view.inspect().navigationSplitView()
-        let content1 = try sut.text(0).string()
+        let content1 = try sut.text().string()
         let content2 = try sut.text(1).string()
         let sidebar1 = try sut.sidebarView().text(0).string()
         let sidebar2 = try sut.sidebarView().text(1).string()
@@ -48,7 +48,7 @@ final class NavigationSplitViewTests: XCTestCase {
             sidebar: { Text("1") }, content: { Text("2") }, detail: { Text("3") })
             .padding()
         let sut = try view.inspect().navigationSplitView()
-        let content = try sut.text(0)
+        let content = try sut.text()
         let sidebar = try sut.sidebarView().text()
         let detail = try sut.detailView().text()
         XCTAssertEqual(content.content.medium.viewModifiers.count, 0)

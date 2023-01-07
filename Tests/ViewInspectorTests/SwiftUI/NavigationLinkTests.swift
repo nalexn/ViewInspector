@@ -6,10 +6,12 @@ import SwiftUI
 final class NavigationLinkTests: XCTestCase {
     
     func testEnclosedView() throws {
-        let view = NavigationLink(
-            destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
-        let nextView = try view.inspect().navigationLink().view(TestView.self).actualView()
-        XCTAssertEqual(nextView.parameter, "Screen 1")
+        let view = NavigationLink(destination: {
+            Text("1"); Text("2")
+        }, label: { Text("label") })
+        let sut = try view.inspect().navigationLink()
+        XCTAssertEqual(try sut.text(0).string(), "1")
+        XCTAssertEqual(try sut.text(1).string(), "2")
     }
     
     func testLabelView() throws {

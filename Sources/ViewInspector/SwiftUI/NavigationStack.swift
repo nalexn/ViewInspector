@@ -11,6 +11,14 @@ public extension ViewType {
 // MARK: - Content Extraction
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.NavigationStack: SingleViewContent {
+    
+    public static func child(_ content: Content) throws -> Content {
+        return try children(content).element(at: 0)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.NavigationStack: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {

@@ -10,7 +10,7 @@ final class NavigationStackTests: XCTestCase {
         else { throw XCTSkip() }
         let sampleView = Text("Test")
         let view = NavigationStack { sampleView }
-        let sut = try view.inspect().navigationStack().text(0).content.view as? Text
+        let sut = try view.inspect().navigationStack().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     
@@ -21,7 +21,7 @@ final class NavigationStackTests: XCTestCase {
         let sampleView2 = Text("Abc")
         let sampleView3 = Text("XYZ")
         let view = NavigationStack { sampleView1; sampleView2; sampleView3 }
-        let view1 = try view.inspect().navigationStack().text(0).content.view as? Text
+        let view1 = try view.inspect().navigationStack().text().content.view as? Text
         let view2 = try view.inspect().navigationStack().text(1).content.view as? Text
         let view3 = try view.inspect().navigationStack().text(2).content.view as? Text
         XCTAssertEqual(view1, sampleView1)
@@ -33,7 +33,7 @@ final class NavigationStackTests: XCTestCase {
         guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let view = NavigationStack { Text("Test") }.padding()
-        let sut = try view.inspect().navigationStack().text(0)
+        let sut = try view.inspect().navigationStack().text()
         XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
@@ -62,6 +62,6 @@ final class NavigationStackTests: XCTestCase {
         XCTAssertEqual(try view.inspect().find(ViewType.NavigationStack.self).pathToRoot,
                        "anyView().navigationStack()")
         XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
-                       "anyView().navigationStack().text(0)")
+                       "anyView().navigationStack().text()")
     }
 }

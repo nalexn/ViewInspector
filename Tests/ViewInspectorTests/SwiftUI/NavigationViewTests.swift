@@ -8,7 +8,7 @@ final class NavigationViewTests: XCTestCase {
     func testSingleEnclosedView() throws {
         let sampleView = Text("Test")
         let view = NavigationView { sampleView }
-        let sut = try view.inspect().navigationView().text(0).content.view as? Text
+        let sut = try view.inspect().navigationView().text().content.view as? Text
         XCTAssertEqual(sut, sampleView)
     }
     
@@ -17,7 +17,7 @@ final class NavigationViewTests: XCTestCase {
         let sampleView2 = Text("Abc")
         let sampleView3 = Text("XYZ")
         let view = NavigationView { sampleView1; sampleView2; sampleView3 }
-        let view1 = try view.inspect().navigationView().text(0).content.view as? Text
+        let view1 = try view.inspect().navigationView().text().content.view as? Text
         let view2 = try view.inspect().navigationView().text(1).content.view as? Text
         let view3 = try view.inspect().navigationView().text(2).content.view as? Text
         XCTAssertEqual(view1, sampleView1)
@@ -27,7 +27,7 @@ final class NavigationViewTests: XCTestCase {
     
     func testResetsModifiers() throws {
         let view = NavigationView { Text("Test") }.padding()
-        let sut = try view.inspect().navigationView().text(0)
+        let sut = try view.inspect().navigationView().text()
         XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
     }
     
@@ -50,6 +50,6 @@ final class NavigationViewTests: XCTestCase {
         XCTAssertEqual(try view.inspect().find(ViewType.NavigationView.self).pathToRoot,
                        "anyView().navigationView()")
         XCTAssertEqual(try view.inspect().find(text: "abc").pathToRoot,
-                       "anyView().navigationView().text(0)")
+                       "anyView().navigationView().text()")
     }
 }
