@@ -16,10 +16,10 @@ final class NavigationViewTests: XCTestCase {
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
         let sampleView3 = Text("XYZ")
-        let view = Group { sampleView1; sampleView2; sampleView3 }
-        let view1 = try view.inspect().group().text(0).content.view as? Text
-        let view2 = try view.inspect().group().text(1).content.view as? Text
-        let view3 = try view.inspect().group().text(2).content.view as? Text
+        let view = NavigationView { sampleView1; sampleView2; sampleView3 }
+        let view1 = try view.inspect().navigationView().text(0).content.view as? Text
+        let view2 = try view.inspect().navigationView().text(1).content.view as? Text
+        let view3 = try view.inspect().navigationView().text(2).content.view as? Text
         XCTAssertEqual(view1, sampleView1)
         XCTAssertEqual(view2, sampleView2)
         XCTAssertEqual(view3, sampleView3)
