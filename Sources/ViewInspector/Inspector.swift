@@ -81,7 +81,7 @@ internal extension Inspector {
     
     private static func isSystemType(name: String) -> Bool {
         return [
-            String.swiftUINamespaceRegex,
+            String.swiftUINamespaceRegex, "Swift\\.",
             "_CoreLocationUI_SwiftUI\\.", "_MapKit_SwiftUI\\.",
             "_AuthenticationServices_SwiftUI\\.", "_AVKit_SwiftUI\\.",
         ].containsPrefixRegex(matching: name, wholeMatch: false)
