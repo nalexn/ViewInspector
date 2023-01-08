@@ -59,8 +59,7 @@ public extension InspectableView where View == ViewType.TimelineView {
     
     func contentView(_ context: ViewType.TimelineView.Context = .init()
     ) throws -> InspectableView<ViewType.ClassifiedView> {
-        let contextCopy = context
-        return try ViewType.TimelineView.view(for: contextCopy, parent: self)
+        return try ViewType.TimelineView.view(for: context, parent: self)
     }
 }
 
@@ -74,11 +73,22 @@ public extension ViewType.TimelineView {
         }
         public let date: Date
         public let cadence: Cadence
-        private let filler: (Int64, Int64) = (0, 0)
         
         public init(date: Date = Date(), cadence: Cadence = .live) {
             self.date = date
             self.cadence = cadence
+        }
+        
+        fileprivate var context32: Context32 { Context32(context: self) }
+    }
+    fileprivate struct Context32 {
+        private let date: Date
+        private let cadence: Context.Cadence
+        private let filler: (Int64, Int64) = (0, 0)
+        
+        init(context: Context) {
+            self.date = context.date
+            self.cadence = context.cadence
         }
     }
 }
@@ -91,7 +101,18 @@ extension TimelineView: ElementViewProvider {
             label: "content", value: self, type: Builder.self)
         let param = try Inspector.cast(
             value: element, type: ViewType.TimelineView.Context.self)
-        let context = try Inspector.unsafeMemoryRebind(value: param, type: Context.self)
+        let context = try Self.adapt(context: param)
         return builder(context)
+    }
+    
+    static func adapt(context: ViewType.TimelineView.Context) throws -> Context {
+        switch MemoryLayout<Context>.size {
+        case 9:
+            return try Inspector.unsafeMemoryRebind(value: context, type: Context.self)
+        case 32:
+            return try Inspector.unsafeMemoryRebind(value: context.context32, type: Context.self)
+        default:
+            fatalError(MemoryLayout<Context>.actualSize())
+        }
     }
 }

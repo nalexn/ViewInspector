@@ -11,15 +11,11 @@ final class TimelineViewTests: XCTestCase {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
         else { throw XCTSkip() }
         typealias SUT = ViewType.TimelineView.Context
-        typealias REF = TimelineView<EveryMinuteTimelineSchedule, EmptyView>.Context
-        typealias SUTMemLayout = MemoryLayout<SUT>
-        typealias REFMemLayout = MemoryLayout<REF>
-        XCTAssertEqual(SUTMemLayout.size, REFMemLayout.size)
-        XCTAssertEqual(SUTMemLayout.alignment, REFMemLayout.alignment)
-        XCTAssertEqual(SUTMemLayout.stride, REFMemLayout.stride)
+        typealias SpecificTimelineView = TimelineView<EveryMinuteTimelineSchedule, EmptyView>
         let date = Date()
         let value = SUT(date: date, cadence: .minutes)
-        let rebound = try Inspector.unsafeMemoryRebind(value: value, type: REF.self)
+        let adapted = try SpecificTimelineView.adapt(context: value)
+        let rebound = try Inspector.unsafeMemoryRebind(value: adapted, type: SpecificTimelineView.Context.self)
         XCTAssertEqual(rebound.date, date)
         XCTAssertEqual(rebound.cadence, .minutes)
     }
