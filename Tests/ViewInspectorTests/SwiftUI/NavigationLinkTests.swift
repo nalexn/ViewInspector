@@ -188,6 +188,21 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertTrue(try sut0.isActive())
         XCTAssertFalse(try sut1.isActive())
     }
+    
+    @available(watchOS 7.0, *)
+    func testRecursiveNavigationLinks() throws {
+        let sut = try TestRecursiveLinksView().inspect()
+        XCTAssertThrows(try sut.find(ViewType.Text.self, traversal: .breadthFirst, where: { _ in false }),
+                        "Search did not find a match")
+        XCTAssertThrows(try sut.find(ViewType.Text.self, traversal: .depthFirst, where: { _ in false }),
+                        "Search did not find a match")
+        XCTAssertEqual(
+            try sut.find(text: "B to A").pathToRoot,
+            """
+            view(TestRecursiveLinksView.self).navigationView().view(ViewAtoB.self)\
+            .navigationLink().view(ViewBtoA.self).navigationLink().labelView().text()
+            """)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -238,5 +253,25 @@ private struct TestViewBinding: View {
 extension TestViewState {
     class NavigationState: ObservableObject {
         @Published var selection: String?
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+private struct TestRecursiveLinksView: View {
+    
+    struct ViewAtoB: View {
+        var body: some View {
+            NavigationLink(destination: ViewBtoA()) { Text("A to B") }
+        }
+    }
+    
+    struct ViewBtoA: View {
+        var body: some View {
+            NavigationLink(destination: ViewAtoB()) { Text("B to A") }
+        }
+    }
+    
+    var body: some View {
+        NavigationView { ViewAtoB() }
     }
 }

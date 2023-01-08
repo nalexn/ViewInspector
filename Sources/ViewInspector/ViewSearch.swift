@@ -408,7 +408,9 @@ private extension UnwrappedView {
         while !queue.isEmpty {
             let (isSingle, children) = queue.remove(at: 0)
             for offset in 0..<children.count {
-                guard let view = try? children.element(at: offset) else { continue }
+                guard let view = try? children.element(at: offset),
+                      view.recursionAbsenceCheck()
+                else { continue }
                 let viewIndex = view.inspectionIndex ?? 0
                 let index = isSingle && viewIndex == 0 ? nil : viewIndex
                 guard let (identity, instance) = ViewSearch
@@ -460,7 +462,7 @@ private extension UnwrappedView {
            stopOnFoundMatch(self) {
             shouldContinue = false
         }
-        guard shouldContinue else { return }
+        guard shouldContinue, recursionAbsenceCheck() else { return }
         
         let index = isSingle ? nil : offset
         
@@ -483,6 +485,17 @@ private extension UnwrappedView {
                 identificationFailure: identificationFailure)
             guard shouldContinue else { return }
         }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension UnwrappedView {
+    func recursionAbsenceCheck() -> Bool {
+        guard content.isCustomView else { return true }
+        let typeRef = type(of: content.view)
+        return (try? findParent(condition: { parent in
+            return typeRef == type(of: parent.content.view) && parent.parentView != nil
+        }, skipFound: 0)) == nil
     }
 }
 
