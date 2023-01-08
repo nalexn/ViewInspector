@@ -76,11 +76,13 @@ final class NavigationLinkTests: XCTestCase {
             NavigationLink(
                 destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
         }
-        let isActive = try view.inspect().navigationView().navigationLink(0).isActive()
-        XCTAssertFalse(isActive)
-        XCTAssertThrows(
-            try view.inspect().navigationView().navigationLink(0).activate(),
-            "Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
+        let sut = try view.inspect().navigationView().navigationLink(0)
+        let errorMessage = """
+            Please use `NavigationLink(destination:, tag:, selection:)` \
+            if you need to access the state value for reading or writing.
+            """
+        XCTAssertThrows(try sut.isActive(), errorMessage)
+        XCTAssertThrows(try sut.activate(), errorMessage)
     }
     
     @available(watchOS 7.0, *)
