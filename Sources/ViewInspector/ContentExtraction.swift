@@ -8,8 +8,7 @@ internal struct ContentExtractor {
     }
 
     internal func extractContent(environmentObjects: [AnyObject]) throws -> Any {
-        try validateSource()
-
+        try validateSourceBeforeExtraction()
         switch contentSource {
         case .view(let view):
             return try view.extractContent(environmentObjects: environmentObjects)
@@ -38,7 +37,7 @@ internal struct ContentExtractor {
         }
     }
 
-    private func validateSource() throws {
+    private func validateSourceBeforeExtraction() throws {
         switch contentSource.source {
         #if os(macOS)
         case is any NSViewRepresentable:

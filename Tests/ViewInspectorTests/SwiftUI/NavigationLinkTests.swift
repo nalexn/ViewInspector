@@ -49,7 +49,7 @@ final class NavigationLinkTests: XCTestCase {
     }
     
     @available(watchOS 7.0, *)
-    func testSearch() throws {
+    func testSearchNoBindings() throws {
         let view = AnyView(NavigationView {
             NavigationLink(
                 destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
@@ -66,6 +66,24 @@ final class NavigationLinkTests: XCTestCase {
                        "anyView().navigationView().navigationLink(0).view(TestView.self).text()")
         XCTAssertEqual(try view.inspect().find(text: "GoTo 2").pathToRoot,
                        "anyView().navigationView().navigationLink(1).labelView().text()")
+    }
+    
+    @available(watchOS 7.0, *)
+    func testSearchWithBindings() throws {
+        let selection = Binding<String?>(wrappedValue: nil)
+        let sut = try TestViewBinding(selection: selection).inspect()
+        let notFoundError = "Search did not find a match"
+        XCTAssertThrows(try sut.find(text: "Screen 1"), notFoundError)
+        XCTAssertThrows(try sut.find(text: "Screen 2"), notFoundError)
+        try sut.navigationView().navigationLink(0).activate()
+        XCTAssertNoThrow(try sut.find(text: "Screen 1"))
+        XCTAssertThrows(try sut.find(text: "Screen 2"), notFoundError)
+        try sut.navigationView().navigationLink(1).activate()
+        XCTAssertThrows(try sut.find(text: "Screen 1"), notFoundError)
+        XCTAssertNoThrow(try sut.find(text: "Screen 2"))
+        XCTAssertThrows(try sut.navigationView().navigationLink(0).view(TestView.self),
+                        "View for NavigationLink's destination is absent")
+        XCTAssertNoThrow(try sut.navigationView().navigationLink(1).view(TestView.self))
     }
     
     @available(watchOS 7.0, *)

@@ -22,6 +22,9 @@ extension ViewType.NavigationLink: SingleViewContent {
 extension ViewType.NavigationLink: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
+        if let isActive = try? content.isActive(), !isActive {
+            throw InspectionError.viewNotFound(parent: "NavigationLink's destination")
+        }
         let view = try Inspector.attribute(label: "destination", value: content.view)
         return try Inspector.viewsInContainer(view: view, medium: content.medium)
     }
