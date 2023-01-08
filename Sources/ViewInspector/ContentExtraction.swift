@@ -28,6 +28,9 @@ internal struct ContentExtractor {
             }
             return .view(view)
         case let viewModifier as any ViewModifier:
+            guard viewModifier.hasBody else {
+                throw InspectionError.notSupported("ViewModifier without the body")
+            }
             return .viewModifier(viewModifier)
         case let gesture as any Gesture:
             return .gesture(gesture)
@@ -95,6 +98,13 @@ internal struct ContentExtractor {
     }
 
     private let contentSource: ContentSource
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension ViewModifier {
+    var hasBody: Bool {
+        return Body.self != Never.self
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
