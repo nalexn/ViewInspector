@@ -103,6 +103,9 @@ internal struct ContentExtractor {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension ViewModifier {
     var hasBody: Bool {
+        if self is (any EnvironmentalModifier) {
+            return true
+        }
         return Body.self != Never.self
     }
 }
