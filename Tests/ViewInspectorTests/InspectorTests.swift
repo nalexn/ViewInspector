@@ -39,6 +39,15 @@ final class InspectorTests: XCTestCase {
             "Type mismatch: String is not Int")
     }
     
+    func testUnsafeMemoryBindError() throws {
+        XCTAssertThrows(
+            try Inspector.unsafeMemoryRebind(value: Int(8), type: Bool.self),
+            """
+            Unable to rebind value of type Swift.Int to Swift.Bool. This is \
+            an internal library error, please open a ticket with these details.
+            """)
+    }
+    
     func testTypeNameValue() {
         let name1 = Inspector.typeName(value: Struct3<Int>())
         XCTAssertEqual(name1, "Struct3<Int>")

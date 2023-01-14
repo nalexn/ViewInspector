@@ -41,6 +41,21 @@ internal extension Inspector {
         return casted
     }
     
+    static func unsafeMemoryRebind<V, T>(value: V, type: T.Type) throws -> T {
+        guard MemoryLayout<V>.size == MemoryLayout<T>.size else {
+            throw InspectionError.notSupported(
+                """
+                Unable to rebind value of type \(Inspector.typeName(value: value, namespaced: true)) \
+                to \(Inspector.typeName(type: type, namespaced: true)). \
+                This is an internal library error, please open a ticket with these details.
+                """)
+        }
+        return withUnsafeBytes(of: value) { bytes in
+            return bytes.baseAddress!
+                .assumingMemoryBound(to: T.self).pointee
+        }
+    }
+    
     enum GenericParameters {
         case keep
         case remove
@@ -66,7 +81,7 @@ internal extension Inspector {
     
     private static func isSystemType(name: String) -> Bool {
         return [
-            String.swiftUINamespaceRegex,
+            String.swiftUINamespaceRegex, "Swift\\.",
             "_CoreLocationUI_SwiftUI\\.", "_MapKit_SwiftUI\\.",
             "_AuthenticationServices_SwiftUI\\.", "_AVKit_SwiftUI\\.",
         ].containsPrefixRegex(matching: name, wholeMatch: false)
@@ -91,7 +106,7 @@ internal extension Inspector {
 private extension String {
     func sanitizingNamespace() -> String {
         var str = self
-        if let range = str.range(of: ".(unknown context at ") {
+        while let range = str.range(of: ".(unknown context at ") {
             let end = str.index(range.upperBound, offsetBy: .init(11))
             str.replaceSubrange(range.lowerBound..<end, with: "")
         }

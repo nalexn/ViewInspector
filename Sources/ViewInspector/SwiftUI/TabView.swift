@@ -15,7 +15,17 @@ extension ViewType.TabView: MultipleViewContent {
     
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let view = try Inspector.attribute(label: "content", value: content.view)
-        return try Inspector.viewsInContainer(view: view, medium: content.medium)
+        let children = try Inspector.viewsInContainer(view: view, medium: content.medium)
+        guard let selectedValue = content.tabViewSelectionValue() else {
+            return children
+        }
+        return .init(count: children.count) { index in
+            let child = try children.element(at: index)
+            if let viewTag = try? InspectableView<ViewType.ClassifiedView>(child, parent: nil).tag(), viewTag != selectedValue {
+                throw InspectionError.viewNotFound(parent: "tab with tag \(viewTag)")
+            }
+            return child
+        }
     }
 }
 
@@ -98,6 +108,11 @@ internal extension Content {
             return view
         }
     }
+    
+    fileprivate func tabViewSelectionValue() -> AnyHashable? {
+        let valueProvider = try? Inspector.cast(value: view, type: SelectionValueProvider.self)
+        return valueProvider?.selectionValue()
+    }
 }
 
 @available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
@@ -122,5 +137,18 @@ extension PageTabViewStyle.IndexDisplayMode: Equatable {
         let lhsBacking = try? Inspector.attribute(label: "backing", value: lhs)
         let rhsBacking = try? Inspector.attribute(label: "backing", value: rhs)
         return String(describing: lhsBacking) == String(describing: rhsBacking)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol SelectionValueProvider {
+    func selectionValue() -> AnyHashable?
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension TabView: SelectionValueProvider {
+    func selectionValue() -> AnyHashable? {
+        let binding = try? Inspector.attribute(label: "selection", value: self, type: Binding<SelectionValue>?.self)
+        return binding?.wrappedValue
     }
 }

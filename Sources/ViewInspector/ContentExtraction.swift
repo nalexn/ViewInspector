@@ -8,8 +8,7 @@ internal struct ContentExtractor {
     }
 
     internal func extractContent(environmentObjects: [AnyObject]) throws -> Any {
-        try validateSource()
-
+        try validateSourceBeforeExtraction()
         switch contentSource {
         case .view(let view):
             return try view.extractContent(environmentObjects: environmentObjects)
@@ -29,6 +28,9 @@ internal struct ContentExtractor {
             }
             return .view(view)
         case let viewModifier as any ViewModifier:
+            guard viewModifier.hasBody else {
+                throw InspectionError.notSupported("ViewModifier without the body")
+            }
             return .viewModifier(viewModifier)
         case let gesture as any Gesture:
             return .gesture(gesture)
@@ -38,7 +40,7 @@ internal struct ContentExtractor {
         }
     }
 
-    private func validateSource() throws {
+    private func validateSourceBeforeExtraction() throws {
         switch contentSource.source {
         #if os(macOS)
         case is any NSViewRepresentable:
@@ -99,6 +101,16 @@ internal struct ContentExtractor {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension ViewModifier {
+    var hasBody: Bool {
+        if self is (any EnvironmentalModifier) {
+            return true
+        }
+        return Body.self != Never.self
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension View {
     
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
@@ -125,6 +137,10 @@ public extension ViewModifier {
             let view = Inspector.typeName(value: self)
             throw InspectionError
                 .missingEnvironmentObjects(view: view, objects: missingObjects)
+        }
+        if let envModifier = copy as? (any EnvironmentalModifier) {
+            let resolved = envModifier.resolve(in: EnvironmentValues())
+            return try resolved.extractContent(environmentObjects: environmentObjects)
         }
         return copy.body()
     }

@@ -14,9 +14,19 @@ public extension ViewType {
 extension ViewType.NavigationLink: SingleViewContent {
     
     public static func child(_ content: Content) throws -> Content {
+        return try children(content).element(at: 0)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ViewType.NavigationLink: MultipleViewContent {
+    
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
+        if let isActive = try? content.isActive(), !isActive {
+            throw InspectionError.viewNotFound(parent: "NavigationLink's destination")
+        }
         let view = try Inspector.attribute(label: "destination", value: content.view)
-        let medium = content.medium.resettingViewModifiers()
-        return try Inspector.unwrap(view: view, medium: medium)
+        return try Inspector.viewsInContainer(view: view, medium: content.medium)
     }
 }
 
@@ -56,48 +66,52 @@ public extension InspectableView where View == ViewType.NavigationLink {
     }
     
     func isActive() throws -> Bool {
-        guard let external = try isActiveBinding() else {
-            return try isActiveState().wrappedValue
-        }
-        return external.wrappedValue
+        return try content.isActive()
     }
     
-    func activate() throws { try set(isActive: true) }
+    func activate() throws {
+        try content.set(isActive: true)
+    }
     
-    func deactivate() throws { try set(isActive: false) }
-    
-    private func set(isActive: Bool) throws {
-        if let external = try isActiveBinding() {
-            external.wrappedValue = isActive
-        } else {
-            // @State mutation from outside is ignored by SwiftUI
-            // try isActiveState().wrappedValue = isActive
-            // swiftlint:disable line_length
-            throw InspectionError.notSupported("Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
-            // swiftlint:enable line_length
-        }
+    func deactivate() throws {
+        try content.set(isActive: false)
     }
 }
 
 // MARK: - Private
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private extension InspectableView where View == ViewType.NavigationLink {
-    func isActiveState() throws -> State<Bool> {
-        if #available(iOS 14, tvOS 14, macOS 10.16, *) {
-            return try Inspector
-                .attribute(path: "_isActive|state", value: content.view, type: State<Bool>.self)
+private extension Content {
+    
+    func isActive() throws -> Bool {
+        if let binding = try? isActiveBinding() {
+            return binding.wrappedValue
         }
-        return try Inspector
-            .attribute(label: "__internalIsActive", value: content.view, type: State<Bool>.self)
+        return try isActiveState().wrappedValue
     }
     
-    func isActiveBinding() throws -> Binding<Bool>? {
-        if #available(iOS 14, tvOS 14, macOS 10.16, *) {
-            return try? Inspector
-                .attribute(path: "_isActive|binding", value: content.view, type: Binding<Bool>.self)
+    func set(isActive: Bool) throws {
+        if let binding = try? isActiveBinding() {
+            binding.wrappedValue = isActive
+            return
         }
-        return try? Inspector
-            .attribute(label: "_externalIsActive", value: content.view, type: Binding<Bool>.self)
+        try isActiveState().wrappedValue = isActive
+    }
+    
+    private func isActiveState() throws -> State<Bool> {
+        throw InspectionError.notSupported(
+            """
+            Please use `NavigationLink(destination:, tag:, selection:)` \
+            if you need to access the state value for reading or writing.
+            """)
+    }
+    
+    private func isActiveBinding() throws -> Binding<Bool> {
+        if #available(iOS 14, tvOS 14, macOS 10.16, *) {
+            return try Inspector
+                .attribute(path: "_isActive|binding", value: view, type: Binding<Bool>.self)
+        }
+        return try Inspector
+            .attribute(label: "_externalIsActive", value: view, type: Binding<Bool>.self)
     }
 }

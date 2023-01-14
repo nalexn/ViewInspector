@@ -6,6 +6,20 @@ import SwiftUI
 final class TimelineViewTests: XCTestCase {
     
     #if !os(watchOS)
+    
+    func testTimelineViewContext() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        typealias SUT = ViewType.TimelineView.Context
+        typealias SpecificTimelineView = TimelineView<EveryMinuteTimelineSchedule, EmptyView>
+        let date = Date()
+        let value = SUT(date: date, cadence: .minutes)
+        let adapted = try SpecificTimelineView.adapt(context: value)
+        let rebound = try Inspector.unsafeMemoryRebind(value: adapted, type: SpecificTimelineView.Context.self)
+        XCTAssertEqual(rebound.date, date)
+        XCTAssertEqual(rebound.cadence, .minutes)
+    }
+    
     func testEnclosedView() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
         else { throw XCTSkip() }

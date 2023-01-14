@@ -11,6 +11,7 @@ public extension ViewType {
         public static func inspectionCall(typeName: String) -> String {
             return "\(typeName.firstLetterLowercased)(\(ViewType.indexPlaceholder))"
         }
+        public static var genericViewTypeForViewSearch: String? { "Sheet" }
     }
     typealias FullScreenCover = Sheet
 }

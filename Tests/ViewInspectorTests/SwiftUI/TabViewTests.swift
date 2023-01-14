@@ -53,6 +53,47 @@ final class TabViewTests: XCTestCase {
         XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
                        "anyView().tabView().text(0).tabItem().text()")
     }
+    
+    func testTabSelection() throws {
+        let sut = TestTabSelectionView()
+        let viewNotFound = "Search did not find a match"
+        let exp = sut.inspection.inspect { view in
+            XCTAssertEqual(try view.actualView().selectedTab, 1)
+            XCTAssertNoThrow(try view.find(text: "tab_1"))
+            XCTAssertThrows(try view.tabView(1).text(2),
+                            "View for tab with tag 3 is absent")
+            XCTAssertThrows(try view.find(text: "tab_2"), viewNotFound)
+            XCTAssertThrows(try view.find(text: "tab_3"), viewNotFound)
+            try view.find(button: "select_tab_3").tap()
+            XCTAssertEqual(try view.actualView().selectedTab, 3)
+        }
+
+        let exp2 = sut.inspection.inspect(after: 0.1) { view in
+            XCTAssertEqual(try view.actualView().selectedTab, 3)
+            XCTAssertThrows(try view.find(text: "tab_1"), viewNotFound)
+            XCTAssertThrows(try view.find(text: "tab_2"), viewNotFound)
+            XCTAssertNoThrow(try view.find(text: "tab_3"))
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp, exp2], timeout: 2)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestTabSelectionView: View {
+    
+    @State var selectedTab = 1
+    let inspection = Inspection<Self>()
+
+    public var body: some View {
+        Button("select_tab_3", action: { selectedTab = 3 })
+        TabView(selection: $selectedTab) {
+            Text("tab_1").tag(1)
+            Text("tab_2").tag(2)
+            Text("tab_3").tag(3)
+        }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+    }
 }
 
 // MARK: - View Modifiers

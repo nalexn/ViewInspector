@@ -43,7 +43,7 @@ extension SupplementaryChildrenLabelView {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public protocol KnownViewType {
+public protocol BaseViewType {
     static var typePrefix: String { get }
     static var namespacedPrefixes: [String] { get }
     static var isTransitive: Bool { get }
@@ -51,7 +51,7 @@ public protocol KnownViewType {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension KnownViewType {
+public extension BaseViewType {
     static var namespacedPrefixes: [String] {
         guard !typePrefix.isEmpty else { return [] }
         return [.swiftUINamespaceRegex + typePrefix]

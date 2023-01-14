@@ -220,7 +220,7 @@ public extension InspectableView {
     func find<T>(_ viewType: T.Type,
                  containing string: String,
                  locale: Locale = .testsDefault
-    ) throws -> InspectableView<T> where T: KnownViewType {
+    ) throws -> InspectableView<T> where T: BaseViewType {
         return try find(ViewType.Text.self, where: { text in
             try text.string(locale: locale) == string
             && (try? text.find(T.self, relation: .parent)) != nil
@@ -244,7 +244,7 @@ public extension InspectableView {
                  traversal: ViewSearch.Traversal = .breadthFirst,
                  skipFound: Int = 0,
                  where condition: (InspectableView<T>) throws -> Bool = { _ in true }
-    ) throws -> InspectableView<T> where T: KnownViewType {
+    ) throws -> InspectableView<T> where T: BaseViewType {
         let view = try find(relation: relation, traversal: traversal, skipFound: skipFound, where: { view -> Bool in
             let typedView = try view.asInspectableView(ofType: T.self)
             return try condition(typedView)
@@ -305,7 +305,7 @@ public extension InspectableView {
      */
     func findAll<T>(_ viewType: T.Type,
                     where condition: (InspectableView<T>) throws -> Bool = { _ in true }
-    ) -> [InspectableView<T>] where T: KnownViewType {
+    ) -> [InspectableView<T>] where T: BaseViewType {
         return findAll(where: { view in
             guard let typedView = try? view.asInspectableView(ofType: T.self)
             else { return false }
@@ -408,7 +408,9 @@ private extension UnwrappedView {
         while !queue.isEmpty {
             let (isSingle, children) = queue.remove(at: 0)
             for offset in 0..<children.count {
-                guard let view = try? children.element(at: offset) else { continue }
+                guard let view = try? children.element(at: offset),
+                      view.recursionAbsenceCheck()
+                else { continue }
                 let viewIndex = view.inspectionIndex ?? 0
                 let index = isSingle && viewIndex == 0 ? nil : viewIndex
                 guard let (identity, instance) = ViewSearch
@@ -460,7 +462,7 @@ private extension UnwrappedView {
            stopOnFoundMatch(self) {
             shouldContinue = false
         }
-        guard shouldContinue else { return }
+        guard shouldContinue, recursionAbsenceCheck() else { return }
         
         let index = isSingle ? nil : offset
         
@@ -483,6 +485,17 @@ private extension UnwrappedView {
                 identificationFailure: identificationFailure)
             guard shouldContinue else { return }
         }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension UnwrappedView {
+    func recursionAbsenceCheck() -> Bool {
+        guard content.isCustomView else { return true }
+        let typeRef = type(of: content.view)
+        return (try? findParent(condition: { parent in
+            return typeRef == type(of: parent.content.view) && parent.parentView != nil
+        }, skipFound: 0)) == nil
     }
 }
 

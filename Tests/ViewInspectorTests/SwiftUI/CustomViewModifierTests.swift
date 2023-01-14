@@ -18,6 +18,16 @@ final class ModifiedContentTests: XCTestCase {
             .padding().padding()
         let sut = try view.inspect().text()
         XCTAssertEqual(sut.content.medium.viewModifiers.count, 5)
+        XCTAssertNoThrow(try sut.callOnAppear())
+    }
+    
+    func testEnvAccumulatesModifiers() throws {
+        let view = Text("Test")
+            .padding().modifier(TestEnvironmentalModifier())
+            .padding().padding()
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 5)
+        XCTAssertNoThrow(try sut.callOnAppear())
     }
     
     func testExtractionFromSingleViewContainer() throws {
@@ -40,6 +50,15 @@ final class ModifiedContentTests: XCTestCase {
                         "EmptyView does not have 'TestModifier' modifier")
         XCTAssertThrows(try sut.inspect().emptyView().modifier(TestModifier.self, 1),
                         "EmptyView does not have 'TestModifier' modifier at index 1")
+    }
+    
+    func testEmptyModifierUnwrapping() throws {
+        let view = Text("Test")
+            .modifier(EmptyModifier.identity)
+            .padding()
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 2)
+        XCTAssertNoThrow(_ = try sut.modifier(EmptyModifier.self))
     }
     
     func testSingleModifierInspection() throws {
@@ -220,5 +239,13 @@ private extension TestModifier4 {
         var body: some View {
             Text(envObj.value)
         }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct TestEnvironmentalModifier: EnvironmentalModifier {
+    
+    func resolve(in environment: EnvironmentValues) -> some ViewModifier {
+        return TestModifier()
     }
 }

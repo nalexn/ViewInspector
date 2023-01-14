@@ -6,60 +6,89 @@ import SwiftUI
 internal extension ViewSearch {
     
     private static var index: [String: [ViewIdentity]] = {
-        let identities: [ViewIdentity] = [
-            .init(ViewType.ActionSheet.self),
-            .init(ViewType.Alert.self), .init(ViewType.AlertButton.self),
-            .init(ViewType.AngularGradient.self), .init(ViewType.AnyView.self),
-            .init(ViewType.AsyncImage.self),
-            .init(ViewType.Button.self), .init(ViewType.Canvas.self),
-            .init(ViewType.Color.self), .init(ViewType.ColorPicker.self),
-            .init(ViewType.ConfirmationDialog.self),
-            .init(ViewType.ControlGroup.self, genericTypeName: nil),
-            .init(ViewType.DatePicker.self), .init(ViewType.DisclosureGroup.self),
-            .init(ViewType.Divider.self),
-            .init(ViewType.EditButton.self), .init(ViewType.EmptyView.self),
-            .init(ViewType.EllipticalGradient.self),
-            .init(ViewType.ForEach.self), .init(ViewType.Form.self),
-            .init(ViewType.GeometryReader.self),
-            .init(ViewType.Group.self), .init(ViewType.GroupBox.self),
-            .init(ViewType.HSplitView.self), .init(ViewType.HStack.self),
-            .init(ViewType.Image.self),
-            .init(ViewType.Label.self),
-            .init(ViewType.LazyHGrid.self), .init(ViewType.LazyHStack.self),
-            .init(ViewType.LazyVGrid.self), .init(ViewType.LazyVStack.self),
-            .init(ViewType.LinearGradient.self),
-            .init(ViewType.Link.self), .init(ViewType.List.self),
-            .init(ViewType.LocationButton.self),
-            .init(ViewType.Map.self),
-            .init(ViewType.Menu.self), .init(ViewType.MenuButton.self),
-            .init(ViewType.NavigationLink.self), .init(ViewType.NavigationView.self),
-            .init(ViewType.OutlineGroup.self),
-            .init(ViewType.PasteButton.self), .init(ViewType.Picker.self),
-            .init(ViewType.Popover.self, genericTypeName: nil),
-            .init(ViewType.ProgressView.self),
-            .init(ViewType.RadialGradient.self),
-            .init(ViewType.SafeAreaInset.self, genericTypeName: nil),
-            .init(ViewType.ScrollView.self), .init(ViewType.ScrollViewReader.self),
-            .init(ViewType.Section.self), .init(ViewType.SecureField.self),
-            .init(ViewType.SignInWithAppleButton.self),
-            .init(ViewType.Sheet.self, genericTypeName: "Sheet"),
-            .init(ViewType.Slider.self), .init(ViewType.Spacer.self), .init(ViewType.Stepper.self),
-            .init(ViewType.StyleConfiguration.Label.self), .init(ViewType.StyleConfiguration.Content.self),
-            .init(ViewType.StyleConfiguration.Title.self), .init(ViewType.StyleConfiguration.Icon.self),
-            .init(ViewType.StyleConfiguration.CurrentValueLabel.self),
-            .init(ViewType.TabView.self), .init(ViewType.Text.self),
-            .init(ViewType.TextEditor.self), .init(ViewType.TextField.self),
-            .init(ViewType.TimelineView.self),
-            .init(ViewType.Toggle.self), .init(ViewType.TouchBar.self),
-            .init(ViewType.TupleView.self), .init(ViewType.Toolbar.self),
-            .init(ViewType.Toolbar.Item.self, genericTypeName: nil),
-            .init(ViewType.Toolbar.ItemGroup.self, genericTypeName: nil),
-            .init(ViewType.VideoPlayer.self),
-            .init(ViewType.ViewModifierContent.self),
-            .init(ViewType.VSplitView.self), .init(ViewType.VStack.self),
-            .init(ViewType.ZStack.self)
+        let knownViewTypes: [KnownViewType.Type] = [
+            ViewType.ActionSheet.self,
+            ViewType.ActionSheet.self,
+            ViewType.Alert.self,
+            ViewType.AlertButton.self,
+            ViewType.AngularGradient.self,
+            ViewType.AnyView.self,
+            ViewType.AsyncImage.self,
+            ViewType.Button.self,
+            ViewType.Canvas.self,
+            ViewType.Color.self,
+            ViewType.ColorPicker.self,
+            ViewType.ConfirmationDialog.self,
+            ViewType.ControlGroup.self,
+            ViewType.DatePicker.self,
+            ViewType.DisclosureGroup.self,
+            ViewType.Divider.self,
+            ViewType.EditButton.self,
+            ViewType.EmptyView.self,
+            ViewType.EllipticalGradient.self,
+            ViewType.ForEach.self,
+            ViewType.Form.self,
+            ViewType.GeometryReader.self,
+            ViewType.Group.self,
+            ViewType.GroupBox.self,
+            ViewType.HSplitView.self,
+            ViewType.HStack.self,
+            ViewType.Image.self,
+            ViewType.Label.self,
+            ViewType.LazyHGrid.self,
+            ViewType.LazyHStack.self,
+            ViewType.LazyVGrid.self,
+            ViewType.LazyVStack.self,
+            ViewType.LinearGradient.self,
+            ViewType.Link.self,
+            ViewType.List.self,
+            ViewType.LocationButton.self,
+            ViewType.Map.self,
+            ViewType.Menu.self,
+            ViewType.MenuButton.self,
+            ViewType.NavigationLink.self,
+            ViewType.NavigationView.self,
+            ViewType.NavigationSplitView.self,
+            ViewType.NavigationStack.self,
+            ViewType.OutlineGroup.self,
+            ViewType.PasteButton.self,
+            ViewType.Picker.self,
+            ViewType.Popover.self,
+            ViewType.ProgressView.self,
+            ViewType.RadialGradient.self,
+            ViewType.SafeAreaInset.self,
+            ViewType.ScrollView.self,
+            ViewType.ScrollViewReader.self,
+            ViewType.Section.self,
+            ViewType.SecureField.self,
+            ViewType.SignInWithAppleButton.self,
+            ViewType.Sheet.self,
+            ViewType.Slider.self,
+            ViewType.Spacer.self,
+            ViewType.Stepper.self,
+            ViewType.StyleConfiguration.Label.self,
+            ViewType.StyleConfiguration.Content.self,
+            ViewType.StyleConfiguration.Title.self,
+            ViewType.StyleConfiguration.Icon.self,
+            ViewType.StyleConfiguration.CurrentValueLabel.self,
+            ViewType.TabView.self,
+            ViewType.Text.self,
+            ViewType.TextEditor.self,
+            ViewType.TextField.self,
+            ViewType.TimelineView.self,
+            ViewType.Toggle.self,
+            ViewType.TouchBar.self,
+            ViewType.TupleView.self,
+            ViewType.Toolbar.self,
+            ViewType.Toolbar.Item.self,
+            ViewType.Toolbar.ItemGroup.self,
+            ViewType.VideoPlayer.self,
+            ViewType.ViewModifierContent.self,
+            ViewType.VSplitView.self,
+            ViewType.VStack.self,
+            ViewType.ZStack.self,
         ]
-
+        let identities = knownViewTypes.map { $0.viewSearchIdentity() }
         var index = [String: [ViewIdentity]](minimumCapacity: 26) // alphabet
         identities.forEach { identity in
             let names = identity.viewType.namespacedPrefixes
@@ -82,7 +111,7 @@ internal extension ViewSearch {
             return index[letter]?.first(where: { $0.viewType == viewType })
         }
         if content.isShape {
-            return .init(ViewType.Shape.self)
+            return ViewType.Shape.viewSearchIdentity()
         }
         let shortName = Inspector.typeName(value: content.view, generics: .remove)
         let fullName = Inspector.typeName(value: content.view, namespaced: true, generics: .remove)
@@ -98,9 +127,11 @@ internal extension ViewSearch {
                 value: content.view, generics: .customViewPlaceholder)
             switch content.view {
             case _ as any View:
-                return .init(ViewType.View<ViewType.Stub>.self, genericTypeName: name)
+                return ViewType.View<ViewType.Stub>
+                    .viewSearchIdentity(genericTypeName: name)
             case _ as any ViewModifier:
-                return .init(ViewType.ViewModifier<ViewType.Stub>.self, genericTypeName: name)
+                return ViewType.ViewModifier<ViewType.Stub>
+                    .viewSearchIdentity(genericTypeName: name)
             case _ as any Gesture:
                 break
             default:
@@ -155,10 +186,9 @@ internal extension ViewSearch {
             return { try self.children($0) + self.supplementary($0) + self.modifiers($0) }
         }
         
-        private init<T>(_ type: T.Type,
-                        genericTypeName: String?,
-                        children: @escaping ChildrenBuilder = { _ in .empty },
-                        supplementary: @escaping SupplementaryBuilder = { _ in .empty }
+        fileprivate init<T>(type: T.Type, genericTypeName: String?,
+                            children: @escaping ChildrenBuilder,
+                            supplementary: @escaping SupplementaryBuilder
         ) where T: KnownViewType {
             viewType = type
             let callWithIndex: (Int?) -> String = { index in
@@ -185,54 +215,77 @@ internal extension ViewSearch {
                 return parent.content.modifierDescendants(parent: parent)
             }
         }
-        
-        init<T>(_ type: T.Type) where T: KnownViewType, T: SingleViewContent {
-            self.init(type, genericTypeName: nil, children: { parent in
-                try T.child(parent.content).descendants(parent)
-            })
-        }
-        
-        init<T>(_ type: T.Type) where T: KnownViewType, T: SingleViewContent, T: SupplementaryChildren {
-            self.init(type, genericTypeName: nil, children: { parent in
-                try T.child(parent.content).descendants(parent)
-            }, supplementary: { parent in
-                try T.supplementaryChildren(parent)
-            })
-        }
-        
-        init<T>(_ type: T.Type) where T: KnownViewType, T: MultipleViewContent {
-            self.init(type, genericTypeName: nil, children: { parent in
-                try T.children(parent.content).descendants(parent, indexed: true)
-            })
-        }
-        
-        init<T>(_ type: T.Type)
-        where T: KnownViewType, T: MultipleViewContent, T: SupplementaryChildren {
-            self.init(type, genericTypeName: nil, children: { parent in
-                try T.children(parent.content).descendants(parent, indexed: true)
-            }, supplementary: { parent in
-                try T.supplementaryChildren(parent)
-            })
-        }
-        
-        init<T>(_ type: T.Type, genericTypeName: String? = nil)
-        where T: KnownViewType, T: SingleViewContent, T: MultipleViewContent {
-            self.init(type, genericTypeName: genericTypeName, children: { parent in
-                try T.children(parent.content).descendants(parent, indexed: true)
-            })
-        }
-        
-        init<T>(_ type: T.Type) where T: KnownViewType {
-            self.init(type, genericTypeName: nil, children: { _ in .empty })
-        }
-        
-        init<T>(_ type: T.Type) where T: KnownViewType, T: SupplementaryChildren {
-            self.init(type, genericTypeName: nil, supplementary: { parent in
-                try T.supplementaryChildren(parent)
-            })
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension KnownViewType {
+    static func viewSearchIdentity(genericTypeName: String? = nil) -> ViewSearch.ViewIdentity {
+        return ViewSearch.ViewIdentity(
+            type: self,
+            genericTypeName: genericTypeName ?? genericViewTypeForViewSearch,
+            children: childViewsBuilder(),
+            supplementary: supplementaryViewsBuilder())
+    }
+}
+
+// MARK: - KnownViewType and extensions
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol KnownViewType: BaseViewType {
+    static func childViewsBuilder() -> ViewSearch.ViewIdentity.ChildrenBuilder
+    static func supplementaryViewsBuilder() -> ViewSearch.ViewIdentity.SupplementaryBuilder
+    static var genericViewTypeForViewSearch: String? { get }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension KnownViewType {
+    static func childViewsBuilder() -> ViewSearch.ViewIdentity.ChildrenBuilder {
+        return { _ in .empty }
+    }
+    static func supplementaryViewsBuilder() -> ViewSearch.ViewIdentity.SupplementaryBuilder {
+        return { _ in .empty }
+    }
+    static var genericViewTypeForViewSearch: String? { nil }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension KnownViewType where Self: SingleViewContent {
+    static func childViewsBuilder() -> ViewSearch.ViewIdentity.ChildrenBuilder {
+        return { parent in
+            try child(parent.content).descendants(parent)
         }
     }
 }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension KnownViewType where Self: MultipleViewContent {
+    static func childViewsBuilder() -> ViewSearch.ViewIdentity.ChildrenBuilder {
+        return { parent in
+            try children(parent.content).descendants(parent, indexed: true)
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension KnownViewType where Self: SingleViewContent & MultipleViewContent {
+    static func childViewsBuilder() -> ViewSearch.ViewIdentity.ChildrenBuilder {
+        return { parent in
+            try children(parent.content).descendants(parent, indexed: true)
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension KnownViewType where Self: SupplementaryChildren {
+    static func supplementaryViewsBuilder() -> ViewSearch.ViewIdentity.SupplementaryBuilder {
+        return { parent in
+            try supplementaryChildren(parent)
+        }
+    }
+}
+
+// MARK: - Descendants
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension LazyGroup where T == Content {

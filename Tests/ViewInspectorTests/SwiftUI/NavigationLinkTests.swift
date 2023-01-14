@@ -6,10 +6,12 @@ import SwiftUI
 final class NavigationLinkTests: XCTestCase {
     
     func testEnclosedView() throws {
-        let view = NavigationLink(
-            destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
-        let nextView = try view.inspect().navigationLink().view(TestView.self).actualView()
-        XCTAssertEqual(nextView.parameter, "Screen 1")
+        let view = NavigationLink(destination: {
+            Text("1"); Text("2")
+        }, label: { Text("label") })
+        let sut = try view.inspect().navigationLink()
+        XCTAssertEqual(try sut.text(0).string(), "1")
+        XCTAssertEqual(try sut.text(1).string(), "2")
     }
     
     func testLabelView() throws {
@@ -47,7 +49,7 @@ final class NavigationLinkTests: XCTestCase {
     }
     
     @available(watchOS 7.0, *)
-    func testSearch() throws {
+    func testSearchNoBindings() throws {
         let view = AnyView(NavigationView {
             NavigationLink(
                 destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
@@ -67,34 +69,53 @@ final class NavigationLinkTests: XCTestCase {
     }
     
     @available(watchOS 7.0, *)
-    func testNavigationWithoutBindingAndState() throws {
+    func testSearchWithBindings() throws {
+        let selection = Binding<String?>(wrappedValue: nil)
+        let sut = try TestViewBinding(selection: selection).inspect()
+        let notFoundError = "Search did not find a match"
+        XCTAssertThrows(try sut.find(text: "Screen 1"), notFoundError)
+        XCTAssertThrows(try sut.find(text: "Screen 2"), notFoundError)
+        try sut.navigationView().navigationLink(0).activate()
+        XCTAssertNoThrow(try sut.find(text: "Screen 1"))
+        XCTAssertThrows(try sut.find(text: "Screen 2"), notFoundError)
+        try sut.navigationView().navigationLink(1).activate()
+        XCTAssertThrows(try sut.find(text: "Screen 1"), notFoundError)
+        XCTAssertNoThrow(try sut.find(text: "Screen 2"))
+        XCTAssertThrows(try sut.navigationView().navigationLink(0).view(TestView.self),
+                        "View for NavigationLink's destination is absent")
+        XCTAssertNoThrow(try sut.navigationView().navigationLink(1).view(TestView.self))
+    }
+    
+    @available(watchOS 7.0, *)
+    func testNavigationWithoutBindingParameter() throws {
         guard #available(iOS 13.1, macOS 10.16, tvOS 13.1, *)
         else { throw XCTSkip() }
         let view = NavigationView {
             NavigationLink(
                 destination: TestView(parameter: "Screen 1")) { Text("GoTo 1") }
         }
-        let isActive = try view.inspect().navigationView().navigationLink(0).isActive()
-        XCTAssertFalse(isActive)
-        XCTAssertThrows(
-            try view.inspect().navigationView().navigationLink(0).activate(),
-            "Enable programmatic navigation by using `NavigationLink(destination:, tag:, selection:)`")
+        let sut = try view.inspect().navigationView().navigationLink(0)
+        let errorMessage = """
+            Please use `NavigationLink(destination:, tag:, selection:)` \
+            if you need to access the state value for reading or writing.
+            """
+        XCTAssertThrows(try sut.isActive(), errorMessage)
+        XCTAssertThrows(try sut.activate(), errorMessage)
+        XCTAssertThrows(try sut.deactivate(), errorMessage)
     }
     
     @available(watchOS 7.0, *)
     func testNavigationWithStateActivation() throws {
         let view = TestViewState()
         XCTAssertNil(view.state.selection)
-        let isActive1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActive2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertFalse(isActive1)
-        XCTAssertFalse(isActive2)
-        try view.inspect().navigationView().navigationLink(0).activate()
+        let sut0 = try view.inspect().navigationView().navigationLink(0)
+        let sut1 = try view.inspect().navigationView().navigationLink(1)
+        XCTAssertFalse(try sut0.isActive())
+        XCTAssertFalse(try sut1.isActive())
+        try sut0.activate()
         XCTAssertEqual(view.state.selection, view.tag1)
-        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertTrue(isActiveAfter1)
-        XCTAssertFalse(isActiveAfter2)
+        XCTAssertTrue(try sut0.isActive())
+        XCTAssertFalse(try sut1.isActive())
     }
     
     @available(watchOS 7.0, *)
@@ -102,32 +123,28 @@ final class NavigationLinkTests: XCTestCase {
         let selection = Binding<String?>(wrappedValue: nil)
         let view = TestViewBinding(selection: selection)
         XCTAssertNil(view.$selection.wrappedValue)
-        let isActive1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActive2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertFalse(isActive1)
-        XCTAssertFalse(isActive2)
-        try view.inspect().navigationView().navigationLink(0).activate()
+        let sut0 = try view.inspect().navigationView().navigationLink(0)
+        let sut1 = try view.inspect().navigationView().navigationLink(1)
+        XCTAssertFalse(try sut0.isActive())
+        XCTAssertFalse(try sut1.isActive())
+        try sut0.activate()
         XCTAssertEqual(view.$selection.wrappedValue, view.tag1)
-        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertTrue(isActiveAfter1)
-        XCTAssertFalse(isActiveAfter2)
+        XCTAssertTrue(try sut0.isActive())
+        XCTAssertFalse(try sut1.isActive())
     }
     
     @available(watchOS 7.0, *)
     func testNavigationWithStateDeactivation() throws {
         let view = TestViewState()
         view.state.selection = view.tag2
-        let isActive1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActive2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertFalse(isActive1)
-        XCTAssertTrue(isActive2)
-        try view.inspect().navigationView().navigationLink(1).deactivate()
+        let sut0 = try view.inspect().navigationView().navigationLink(0)
+        let sut1 = try view.inspect().navigationView().navigationLink(1)
+        XCTAssertFalse(try sut0.isActive())
+        XCTAssertTrue(try sut1.isActive())
+        try sut1.deactivate()
         XCTAssertNil(view.state.selection)
-        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertFalse(isActiveAfter1)
-        XCTAssertFalse(isActiveAfter2)
+        XCTAssertFalse(try sut0.isActive())
+        XCTAssertFalse(try sut1.isActive())
     }
     
     @available(watchOS 7.0, *)
@@ -135,43 +152,56 @@ final class NavigationLinkTests: XCTestCase {
         let selection = Binding<String?>(wrappedValue: nil)
         let view = TestViewBinding(selection: selection)
         view.selection = view.tag2
-        let isActive1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActive2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertFalse(isActive1)
-        XCTAssertTrue(isActive2)
-        try view.inspect().navigationView().navigationLink(1).deactivate()
+        let sut0 = try view.inspect().navigationView().navigationLink(0)
+        let sut1 = try view.inspect().navigationView().navigationLink(1)
+        XCTAssertFalse(try sut0.isActive())
+        XCTAssertTrue(try sut1.isActive())
+        try sut1.deactivate()
         XCTAssertNil(view.selection)
-        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertFalse(isActiveAfter1)
-        XCTAssertFalse(isActiveAfter2)
+        XCTAssertFalse(try sut0.isActive())
+        XCTAssertFalse(try sut1.isActive())
     }
     
     @available(watchOS 7.0, *)
     func testNavigationWithStateReactivation() throws {
         let view = TestViewState()
-        try view.inspect().navigationView().navigationLink(1).activate()
+        let sut0 = try view.inspect().navigationView().navigationLink(0)
+        let sut1 = try view.inspect().navigationView().navigationLink(1)
+        try sut1.activate()
         XCTAssertEqual(view.state.selection, view.tag2)
-        try view.inspect().navigationView().navigationLink(0).activate()
+        try sut0.activate()
         XCTAssertEqual(view.state.selection, view.tag1)
-        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertTrue(isActiveAfter1)
-        XCTAssertFalse(isActiveAfter2)
+        XCTAssertTrue(try sut0.isActive())
+        XCTAssertFalse(try sut1.isActive())
     }
     
     @available(watchOS 7.0, *)
     func testNavigationWithBindingReactivation() throws {
         let selection = Binding<String?>(wrappedValue: nil)
         let view = TestViewBinding(selection: selection)
-        try view.inspect().navigationView().navigationLink(1).activate()
+        let sut0 = try view.inspect().navigationView().navigationLink(0)
+        let sut1 = try view.inspect().navigationView().navigationLink(1)
+        try sut1.activate()
         XCTAssertEqual(view.selection, view.tag2)
-        try view.inspect().navigationView().navigationLink(0).activate()
+        try sut0.activate()
         XCTAssertEqual(view.selection, view.tag1)
-        let isActiveAfter1 = try view.inspect().navigationView().navigationLink(0).isActive()
-        let isActiveAfter2 = try view.inspect().navigationView().navigationLink(1).isActive()
-        XCTAssertTrue(isActiveAfter1)
-        XCTAssertFalse(isActiveAfter2)
+        XCTAssertTrue(try sut0.isActive())
+        XCTAssertFalse(try sut1.isActive())
+    }
+    
+    @available(watchOS 7.0, *)
+    func testRecursiveNavigationLinks() throws {
+        let sut = try TestRecursiveLinksView().inspect()
+        XCTAssertThrows(try sut.find(ViewType.Text.self, traversal: .breadthFirst, where: { _ in false }),
+                        "Search did not find a match")
+        XCTAssertThrows(try sut.find(ViewType.Text.self, traversal: .depthFirst, where: { _ in false }),
+                        "Search did not find a match")
+        XCTAssertEqual(
+            try sut.find(text: "B to A").pathToRoot,
+            """
+            view(TestRecursiveLinksView.self).navigationView().view(ViewAtoB.self)\
+            .navigationLink().view(ViewBtoA.self).navigationLink().labelView().text()
+            """)
     }
 }
 
@@ -223,5 +253,25 @@ private struct TestViewBinding: View {
 extension TestViewState {
     class NavigationState: ObservableObject {
         @Published var selection: String?
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+private struct TestRecursiveLinksView: View {
+    
+    struct ViewAtoB: View {
+        var body: some View {
+            NavigationLink(destination: ViewBtoA()) { Text("A to B") }
+        }
+    }
+    
+    struct ViewBtoA: View {
+        var body: some View {
+            NavigationLink(destination: ViewAtoB()) { Text("B to A") }
+        }
+    }
+    
+    var body: some View {
+        NavigationView { ViewAtoB() }
     }
 }
