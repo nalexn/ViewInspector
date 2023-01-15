@@ -493,8 +493,10 @@ private extension UnwrappedView {
     func recursionAbsenceCheck() -> Bool {
         guard content.isCustomView else { return true }
         let typeRef = type(of: content.view)
+        var isDirectParent = true
         return (try? findParent(condition: { parent in
-            return typeRef == type(of: parent.content.view) && parent.parentView != nil
+            defer { isDirectParent = false }
+            return typeRef == type(of: parent.content.view) && !isDirectParent
         }, skipFound: 0)) == nil
     }
 }

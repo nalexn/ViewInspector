@@ -72,10 +72,14 @@ final class NavigationLinkTests: XCTestCase {
     func testSearchWithBindings() throws {
         let selection = Binding<String?>(wrappedValue: nil)
         let sut = try TestViewBinding(selection: selection).inspect()
+        XCTAssertNoThrow(try sut.find(text: "GoTo 1"))
+        XCTAssertNoThrow(try sut.find(text: "GoTo 2"))
         let notFoundError = "Search did not find a match"
         XCTAssertThrows(try sut.find(text: "Screen 1"), notFoundError)
         XCTAssertThrows(try sut.find(text: "Screen 2"), notFoundError)
         try sut.navigationView().navigationLink(0).activate()
+        XCTAssertNoThrow(try sut.find(text: "GoTo 1"))
+        XCTAssertNoThrow(try sut.find(text: "GoTo 2"))
         XCTAssertNoThrow(try sut.find(text: "Screen 1"))
         XCTAssertThrows(try sut.find(text: "Screen 2"), notFoundError)
         try sut.navigationView().navigationLink(1).activate()
@@ -196,12 +200,17 @@ final class NavigationLinkTests: XCTestCase {
                         "Search did not find a match")
         XCTAssertThrows(try sut.find(ViewType.Text.self, traversal: .depthFirst, where: { _ in false }),
                         "Search did not find a match")
-        XCTAssertEqual(
-            try sut.find(text: "B to A").pathToRoot,
-            """
-            view(TestRecursiveLinksView.self).navigationView().view(ViewAtoB.self)\
-            .navigationLink().view(ViewBtoA.self).navigationLink().labelView().text()
-            """)
+        XCTAssertNoThrow(try sut.find(text: "B to A"))
+    }
+    
+    func testRecursiveGenericReferenceView() throws {
+        let view = TestRecursiveGenericView
+            .init(view: TestRecursiveGenericView
+                .init(view: TestRecursiveGenericView
+                    .init(view: Text("test"))))
+        let container = "view(TestRecursiveGenericView<EmptyView>.self)."
+        XCTAssertEqual(try view.inspect().find(text: "test").pathToRoot,
+                       container + container + container + "text()")
     }
 }
 
@@ -259,19 +268,34 @@ extension TestViewState {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
 private struct TestRecursiveLinksView: View {
     
+    struct NavLabel: View {
+        let text: String
+        var body: some View {
+            Text(text)
+        }
+    }
+    
     struct ViewAtoB: View {
         var body: some View {
-            NavigationLink(destination: ViewBtoA()) { Text("A to B") }
+            NavigationLink(destination: ViewBtoA()) { NavLabel(text: "A to B") }
         }
     }
     
     struct ViewBtoA: View {
         var body: some View {
-            NavigationLink(destination: ViewAtoB()) { Text("B to A") }
+            NavigationLink(destination: ViewAtoB()) { NavLabel(text: "B to A") }
         }
     }
     
     var body: some View {
         NavigationView { ViewAtoB() }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+private struct TestRecursiveGenericView<T: View>: View {
+    let view: T
+    var body: some View {
+        view
     }
 }
