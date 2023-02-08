@@ -29,7 +29,7 @@ final class TreeViewTests: XCTestCase {
         XCTAssertEqual(sut.content.medium.viewModifiers.count, count)
     }
 
-  @available(iOS 16.0, *)
+  @available(watchOS, deprecated: 7.0)
   func testVariadicViewTree() throws {
     let button = try SampleVariadicViewScreen().inspect().find(button: "Execute")
     XCTAssertNotNil(button)
