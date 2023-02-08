@@ -34,8 +34,11 @@ final class TreeViewTests: XCTestCase {
         XCTAssertNotNil(button)
     }
 
-    @available(iOS 16.0, *)
     func testLayoutBasedViewTree() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) else {
+            throw XCTSkip("Layouts are not available in this version.")
+        }
+
         XCTAssertNoThrow(try LayoutScreen().inspect().find(text: "LayoutScreen text 2"))
     }
 }
@@ -92,7 +95,7 @@ private struct VariadicViewScreenOpacityRoot: _VariadicView_MultiViewRoot {
 
 // MARK: - LayoutScreen
 
-@available(iOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 private struct LayoutScreen: View {
     var body: some View {
         SimpleHStackLayout {
@@ -106,7 +109,7 @@ private struct LayoutScreen: View {
 // MARK: - SimpleHStackLayout
 
 /// Sample code copied from https://swiftui-lab.com/layout-protocol-part-1/#layout-cache
-@available(iOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 private struct SimpleHStackLayout: Layout {
     struct CacheData {
         var maxHeight: CGFloat
