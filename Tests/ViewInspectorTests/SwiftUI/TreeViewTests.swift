@@ -8,7 +8,7 @@ final class TreeViewTests: XCTestCase {
     
     @available(watchOS, deprecated: 7.0)
     func testEnclosedView() throws {
-        let sut = Text("Test").contextMenu(ContextMenu(menuItems: { Text("Menu") }))
+        let sut = Text("Test").contextMenu(menuItems: { Text("Menu") })
         let text = try sut.inspect().text().string()
         XCTAssertEqual(text, "Test")
     }
@@ -17,7 +17,7 @@ final class TreeViewTests: XCTestCase {
     func testRetainsModifiers() throws {
         let view = Text("Test")
             .padding()
-            .contextMenu(ContextMenu(menuItems: { Text("Menu") }))
+            .contextMenu(menuItems: { Text("Menu") })
             .padding().padding()
         let sut = try view.inspect().text()
         let count: Int
@@ -51,7 +51,7 @@ final class GlobalModifiersForTreeView: XCTestCase {
     
     @available(watchOS, deprecated: 7.0)
     func testContextMenu() throws {
-        let sut = EmptyView().contextMenu(ContextMenu(menuItems: { Text("") }))
+        let sut = EmptyView().contextMenu(menuItems: { Text("") })
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 }
