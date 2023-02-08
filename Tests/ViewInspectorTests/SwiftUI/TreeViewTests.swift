@@ -29,15 +29,15 @@ final class TreeViewTests: XCTestCase {
         XCTAssertEqual(sut.content.medium.viewModifiers.count, count)
     }
 
-  func testVariadicViewTree() throws {
-    let button = try VariadicViewScreen().inspect().find(button: "Change opacity")
-    XCTAssertNotNil(button)
-  }
+    func testVariadicViewTree() throws {
+        let button = try VariadicViewScreen().inspect().find(button: "Change opacity")
+        XCTAssertNotNil(button)
+    }
 
-  @available(iOS 16.0, *)
-  func testLayoutBasedViewTree() throws {
-    XCTAssertNoThrow(try LayoutScreen().inspect().find(text: "LayoutScreen text 2"))
-  }
+    @available(iOS 16.0, *)
+    func testLayoutBasedViewTree() throws {
+        XCTAssertNoThrow(try LayoutScreen().inspect().find(text: "LayoutScreen text 2"))
+    }
 }
 
 // MARK: - View Modifiers
@@ -57,50 +57,50 @@ final class GlobalModifiersForTreeView: XCTestCase {
 
 @available(iOS 13.0, macOS 10.15, *)
 private struct VariadicViewScreen: View {
-  @State var opacity: Double = 1.0
+    @State var opacity: Double = 1.0
 
-  var body: some View {
-    _VariadicView.Tree(VariadicViewScreenOpacityRoot(opacity: opacity),
-                       content: {
-      Text("Click the button to change the opacity.")
-      Button(action: {
-        if opacity < 1.0 {
-          opacity = 1.0
-        } else {
-          opacity = 0.5
-        }
-      }, label: {
-        Text("Change opacity")
-      })
-    })
-  }
+    var body: some View {
+        _VariadicView.Tree(VariadicViewScreenOpacityRoot(opacity: opacity),
+                           content: {
+            Text("Click the button to change the opacity.")
+            Button(action: {
+                if opacity < 1.0 {
+                    opacity = 1.0
+                } else {
+                    opacity = 0.5
+                }
+            }, label: {
+                Text("Change opacity")
+            })
+        })
+    }
 }
 
 // MARK: - VariadicViewScreenOpacityRoot
 
 @available(iOS 13.0, macOS 10.15, *)
 private struct VariadicViewScreenOpacityRoot: _VariadicView_MultiViewRoot {
-  let opacity: Double
+    let opacity: Double
 
-  func body(children: _VariadicView.Children) -> some View {
-    ForEach(children) { child in
-      child
-        .opacity(opacity)
+    func body(children: _VariadicView.Children) -> some View {
+        ForEach(children) { child in
+            child
+                .opacity(opacity)
+        }
     }
-  }
 }
 
 // MARK: - LayoutScreen
 
 @available(iOS 16.0, *)
 private struct LayoutScreen: View {
-  var body: some View {
-    SimpleHStackLayout {
-      Text("LayoutScreen text 1")
-      Text("LayoutScreen text 2")
-      Text("LayoutScreen text 3")
+    var body: some View {
+        SimpleHStackLayout {
+            Text("LayoutScreen text 1")
+            Text("LayoutScreen text 2")
+            Text("LayoutScreen text 3")
+        }
     }
-  }
 }
 
 // MARK: - SimpleHStackLayout
@@ -108,59 +108,59 @@ private struct LayoutScreen: View {
 /// Sample code copied from https://swiftui-lab.com/layout-protocol-part-1/#layout-cache
 @available(iOS 16.0, *)
 private struct SimpleHStackLayout: Layout {
-  struct CacheData {
-    var maxHeight: CGFloat
-    var spaces: [CGFloat]
-  }
-
-  var spacing: CGFloat?
-
-  func makeCache(subviews: Subviews) -> CacheData {
-    CacheData(
-      maxHeight: computeMaxHeight(subviews: subviews),
-      spaces: computeSpaces(subviews: subviews))
-  }
-
-  func updateCache(_ cache: inout CacheData, subviews: Subviews) {
-    cache.maxHeight = computeMaxHeight(subviews: subviews)
-    cache.spaces = computeSpaces(subviews: subviews)
-  }
-
-  func sizeThatFits(proposal _: ProposedViewSize, subviews: Subviews, cache: inout CacheData) -> CGSize {
-    let idealViewSizes = subviews.map { $0.sizeThatFits(.unspecified) }
-    let accumulatedWidths = idealViewSizes.reduce(0) { $0 + $1.width }
-    let accumulatedSpaces = cache.spaces.reduce(0) { $0 + $1 }
-
-    return CGSize(
-      width: accumulatedSpaces + accumulatedWidths,
-      height: cache.maxHeight)
-  }
-
-  func placeSubviews(in bounds: CGRect, proposal _: ProposedViewSize, subviews: Subviews, cache: inout CacheData) {
-    var pt = CGPoint(x: bounds.minX, y: bounds.minY)
-
-    for idx in subviews.indices {
-      subviews[idx].place(at: pt, anchor: .topLeading, proposal: .unspecified)
-
-      if idx < subviews.count - 1 {
-        pt.x += subviews[idx].sizeThatFits(.unspecified).width + cache.spaces[idx]
-      }
+    struct CacheData {
+        var maxHeight: CGFloat
+        var spaces: [CGFloat]
     }
-  }
 
-  func computeSpaces(subviews: LayoutSubviews) -> [CGFloat] {
-    if let spacing {
-      return [CGFloat](repeating: spacing, count: subviews.count - 1)
-    } else {
-      return subviews.indices.map { idx in
-        guard idx < subviews.count - 1 else { return CGFloat(0) }
+    var spacing: CGFloat?
 
-        return subviews[idx].spacing.distance(to: subviews[idx + 1].spacing, along: .horizontal)
-      }
+    func makeCache(subviews: Subviews) -> CacheData {
+        CacheData(
+            maxHeight: computeMaxHeight(subviews: subviews),
+            spaces: computeSpaces(subviews: subviews))
     }
-  }
 
-  func computeMaxHeight(subviews: LayoutSubviews) -> CGFloat {
-    subviews.map { $0.sizeThatFits(.unspecified) }.reduce(0) { max($0, $1.height) }
-  }
+    func updateCache(_ cache: inout CacheData, subviews: Subviews) {
+        cache.maxHeight = computeMaxHeight(subviews: subviews)
+        cache.spaces = computeSpaces(subviews: subviews)
+    }
+
+    func sizeThatFits(proposal _: ProposedViewSize, subviews: Subviews, cache: inout CacheData) -> CGSize {
+        let idealViewSizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let accumulatedWidths = idealViewSizes.reduce(0) { $0 + $1.width }
+        let accumulatedSpaces = cache.spaces.reduce(0) { $0 + $1 }
+
+        return CGSize(
+            width: accumulatedSpaces + accumulatedWidths,
+            height: cache.maxHeight)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal _: ProposedViewSize, subviews: Subviews, cache: inout CacheData) {
+        var pt = CGPoint(x: bounds.minX, y: bounds.minY)
+
+        for idx in subviews.indices {
+            subviews[idx].place(at: pt, anchor: .topLeading, proposal: .unspecified)
+
+            if idx < subviews.count - 1 {
+                pt.x += subviews[idx].sizeThatFits(.unspecified).width + cache.spaces[idx]
+            }
+        }
+    }
+
+    func computeSpaces(subviews: LayoutSubviews) -> [CGFloat] {
+        if let spacing {
+            return [CGFloat](repeating: spacing, count: subviews.count - 1)
+        } else {
+            return subviews.indices.map { idx in
+                guard idx < subviews.count - 1 else { return CGFloat(0) }
+
+                return subviews[idx].spacing.distance(to: subviews[idx + 1].spacing, along: .horizontal)
+            }
+        }
+    }
+
+    func computeMaxHeight(subviews: LayoutSubviews) -> CGFloat {
+        subviews.map { $0.sizeThatFits(.unspecified) }.reduce(0) { max($0, $1.height) }
+    }
 }
