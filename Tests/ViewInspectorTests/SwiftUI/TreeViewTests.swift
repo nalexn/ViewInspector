@@ -30,7 +30,7 @@ final class TreeViewTests: XCTestCase {
     }
 
   func testVariadicViewTree() throws {
-    let button = try VariadicViewScreen().inspect().find(button: "Execute")
+    let button = try VariadicViewScreen().inspect().find(button: "Change opacity")
     XCTAssertNotNil(button)
   }
 
@@ -62,7 +62,7 @@ private struct VariadicViewScreen: View {
   var body: some View {
     _VariadicView.Tree(VariadicViewScreenOpacityRoot(opacity: opacity),
                        content: {
-      Text("Click the button to execute the action.")
+      Text("Click the button to change the opacity.")
       Button(action: {
         if opacity < 1.0 {
           opacity = 1.0
@@ -70,7 +70,7 @@ private struct VariadicViewScreen: View {
           opacity = 0.5
         }
       }, label: {
-        Text("Execute")
+        Text("Change opacity")
       })
     })
   }
