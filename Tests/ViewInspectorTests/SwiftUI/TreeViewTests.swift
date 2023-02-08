@@ -29,15 +29,14 @@ final class TreeViewTests: XCTestCase {
         XCTAssertEqual(sut.content.medium.viewModifiers.count, count)
     }
 
-  @available(watchOS, deprecated: 7.0)
   func testVariadicViewTree() throws {
-    let button = try SampleVariadicViewScreen().inspect().find(button: "Execute")
+    let button = try VariadicViewScreen().inspect().find(button: "Execute")
     XCTAssertNotNil(button)
   }
 
   @available(iOS 16.0, *)
-  func testLayoutViewTree() throws {
-    XCTAssertNoThrow(try SampleLayoutScreen().inspect().find(text: "SampleLayoutScreen text 2"))
+  func testLayoutBasedViewTree() throws {
+    XCTAssertNoThrow(try LayoutScreen().inspect().find(text: "LayoutScreen text 2"))
   }
 }
 
@@ -54,14 +53,14 @@ final class GlobalModifiersForTreeView: XCTestCase {
     }
 }
 
-// MARK: - SampleVariadicViewScreen
+// MARK: - VariadicViewScreen
 
 @available(iOS 13.0, macOS 10.15, *)
-private struct SampleVariadicViewScreen: View {
+private struct VariadicViewScreen: View {
   @State var opacity: Double = 1.0
 
   var body: some View {
-    _VariadicView.Tree(SampleVariadicViewScreenOpacityRoot(opacity: opacity),
+    _VariadicView.Tree(VariadicViewScreenOpacityRoot(opacity: opacity),
                        content: {
       Text("Click the button to execute the action.")
       Button(action: {
@@ -77,10 +76,10 @@ private struct SampleVariadicViewScreen: View {
   }
 }
 
-// MARK: - SampleVariadicViewScreenRoot
+// MARK: - VariadicViewScreenOpacityRoot
 
 @available(iOS 13.0, macOS 10.15, *)
-private struct SampleVariadicViewScreenOpacityRoot: _VariadicView_MultiViewRoot {
+private struct VariadicViewScreenOpacityRoot: _VariadicView_MultiViewRoot {
   let opacity: Double
 
   func body(children: _VariadicView.Children) -> some View {
@@ -91,23 +90,23 @@ private struct SampleVariadicViewScreenOpacityRoot: _VariadicView_MultiViewRoot 
   }
 }
 
-// MARK: - SampleLayoutScreen
+// MARK: - LayoutScreen
 
 @available(iOS 16.0, *)
-private struct SampleLayoutScreen: View {
+private struct LayoutScreen: View {
   var body: some View {
     SimpleHStackLayout {
-      Text("SampleLayoutScreen text 1")
-      Text("SampleLayoutScreen text 2")
-      Text("SampleLayoutScreen text 3")
+      Text("LayoutScreen text 1")
+      Text("LayoutScreen text 2")
+      Text("LayoutScreen text 3")
     }
   }
 }
 
-// MARK: - SimpleHStack
+// MARK: - SimpleHStackLayout
 
+/// Sample code copied from https://swiftui-lab.com/layout-protocol-part-1/#layout-cache
 @available(iOS 16.0, *)
-// copied from https://swiftui-lab.com/layout-protocol-part-1/#layout-cache
 private struct SimpleHStackLayout: Layout {
   struct CacheData {
     var maxHeight: CGFloat
