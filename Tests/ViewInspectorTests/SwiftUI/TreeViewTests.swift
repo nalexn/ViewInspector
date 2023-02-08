@@ -70,9 +70,9 @@ private struct SampleVariadicViewScreen: View {
         } else {
           opacity = 0.5
         }
-      }) {
+      }, label: {
         Text("Execute")
-      }
+      })
     })
   }
 }
@@ -114,7 +114,7 @@ private struct SimpleHStackLayout: Layout {
     var spaces: [CGFloat]
   }
 
-  var spacing: CGFloat? = nil
+  var spacing: CGFloat?
 
   func makeCache(subviews: Subviews) -> CacheData {
     CacheData(
