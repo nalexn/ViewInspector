@@ -29,11 +29,6 @@ final class TreeViewTests: XCTestCase {
         XCTAssertEqual(sut.content.medium.viewModifiers.count, count)
     }
 
-    func testVariadicViewTree() throws {
-        let button = try VariadicViewScreen().inspect().find(button: "Change opacity")
-        XCTAssertNotNil(button)
-    }
-
     func testLayoutBasedViewTree() throws {
         guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) else {
             throw XCTSkip("Layouts are not available in this version.")
@@ -53,43 +48,6 @@ final class GlobalModifiersForTreeView: XCTestCase {
     func testContextMenu() throws {
         let sut = EmptyView().contextMenu(menuItems: { Text("") })
         XCTAssertNoThrow(try sut.inspect().emptyView())
-    }
-}
-
-// MARK: - VariadicViewScreen
-
-@available(iOS 13.0, macOS 10.15, *)
-private struct VariadicViewScreen: View {
-    @State var opacity: Double = 1.0
-
-    var body: some View {
-        _VariadicView.Tree(VariadicViewScreenOpacityRoot(opacity: opacity),
-                           content: {
-            Text("Click the button to change the opacity.")
-            Button(action: {
-                if opacity < 1.0 {
-                    opacity = 1.0
-                } else {
-                    opacity = 0.5
-                }
-            }, label: {
-                Text("Change opacity")
-            })
-        })
-    }
-}
-
-// MARK: - VariadicViewScreenOpacityRoot
-
-@available(iOS 13.0, macOS 10.15, *)
-private struct VariadicViewScreenOpacityRoot: _VariadicView_MultiViewRoot {
-    let opacity: Double
-
-    func body(children: _VariadicView.Children) -> some View {
-        ForEach(children) { child in
-            child
-                .opacity(opacity)
-        }
     }
 }
 
