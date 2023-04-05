@@ -336,9 +336,13 @@ extension Dictionary: AccessibilityKeyValues {
     func accessibilityKeyValues() throws -> [(key: UInt64, value: Any)] {
         return try self.keys.compactMap { key -> (key: UInt64, value: Any)? in
             guard let value = self[key] else { return nil }
-            let keyPointerValue = try Inspector.attribute(
-                path: "rawValue|pointerValue", value: key, type: UInt64.self)
-            return (key: keyPointerValue, value: value as Any)
+            if let key = key as? ObjectIdentifier {
+                return (key: UInt64(abs(key.hashValue)), value: value as Any)
+            } else {
+                let keyPointerValue = try Inspector.attribute(
+                    path: "rawValue|pointerValue", value: key, type: UInt64.self)
+                return (key: keyPointerValue, value: value as Any)
+            }
         }
     }
 }
