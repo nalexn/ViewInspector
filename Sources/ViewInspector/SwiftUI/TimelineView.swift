@@ -95,24 +95,32 @@ public extension ViewType.TimelineView {
 
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 extension TimelineView: ElementViewProvider {
+    
     func view(_ element: Any) throws -> Any {
-        typealias Builder = (Context) -> Content
-        let builder = try Inspector.attribute(
-            label: "content", value: self, type: Builder.self)
         let param = try Inspector.cast(
             value: element, type: ViewType.TimelineView.Context.self)
-        let context = try Self.adapt(context: param)
+        typealias ContextPeriodicNever = TimelineView<PeriodicTimelineSchedule, Never>.Context
+        typealias BuilderPeriodicNever = (ContextPeriodicNever) -> Content
+        typealias BuilderNative = (Context) -> Content
+        if let builder = try? Inspector.attribute(
+            label: "content", value: self, type: BuilderPeriodicNever.self) {
+            let context = try Self.adapt(context: param, to: ContextPeriodicNever.self)
+            return builder(context)
+        }
+        let builder = try Inspector.attribute(
+            label: "content", value: self, type: BuilderNative.self)
+        let context = try Self.adapt(context: param, to: Context.self)
         return builder(context)
     }
     
-    static func adapt(context: ViewType.TimelineView.Context) throws -> Context {
-        switch MemoryLayout<Context>.size {
+    static func adapt<C>(context: ViewType.TimelineView.Context, to type: C.Type) throws -> C {
+        switch MemoryLayout<C>.size {
         case 9:
-            return try Inspector.unsafeMemoryRebind(value: context, type: Context.self)
+            return try Inspector.unsafeMemoryRebind(value: context, type: C.self)
         case 32:
-            return try Inspector.unsafeMemoryRebind(value: context.context32, type: Context.self)
+            return try Inspector.unsafeMemoryRebind(value: context.context32, type: C.self)
         default:
-            fatalError(MemoryLayout<Context>.actualSize())
+            fatalError(MemoryLayout<C>.actualSize())
         }
     }
 }

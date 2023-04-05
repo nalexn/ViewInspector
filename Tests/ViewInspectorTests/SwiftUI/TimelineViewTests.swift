@@ -14,7 +14,7 @@ final class TimelineViewTests: XCTestCase {
         typealias SpecificTimelineView = TimelineView<EveryMinuteTimelineSchedule, EmptyView>
         let date = Date()
         let value = SUT(date: date, cadence: .minutes)
-        let adapted = try SpecificTimelineView.adapt(context: value)
+        let adapted = try SpecificTimelineView.adapt(context: value, to: SpecificTimelineView.Context.self)
         let rebound = try Inspector.unsafeMemoryRebind(value: adapted, type: SpecificTimelineView.Context.self)
         XCTAssertEqual(rebound.date, date)
         XCTAssertEqual(rebound.cadence, .minutes)
@@ -23,13 +23,23 @@ final class TimelineViewTests: XCTestCase {
     func testEnclosedView() throws {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
         else { throw XCTSkip() }
-        let sut = TimelineView(.everyMinute) { timeline in
+        let sut1 = TimelineView(.everyMinute) { timeline in
+            Text("\(timeline.date)")
+        }
+        let sut2 = TimelineView(.periodic(from: Date(), by: 4)) { timeline in
+            Text("\(timeline.date)")
+        }
+        let sut3 = TimelineView(.animation) { timeline in
             Text("\(timeline.date)")
         }
         let date = Date()
         let context = ViewType.TimelineView.Context(date: date, cadence: .live)
-        let text = try sut.inspect().timelineView().contentView(context).text()
-        XCTAssertEqual(try text.string(), "\(date)")
+        let text1 = try sut1.inspect().timelineView().contentView(context).text()
+        XCTAssertEqual(try text1.string(), "\(date)")
+        let text2 = try sut2.inspect().timelineView().contentView(context).text()
+        XCTAssertEqual(try text2.string(), "\(date)")
+        let text3 = try sut3.inspect().timelineView().contentView(context).text()
+        XCTAssertEqual(try text3.string(), "\(date)")
     }
     
     func testResetsModifiers() throws {
