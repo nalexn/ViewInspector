@@ -21,7 +21,8 @@ extension ViewType.TabView: MultipleViewContent {
         }
         return .init(count: children.count) { index in
             let child = try children.element(at: index)
-            if let viewTag = try? InspectableView<ViewType.ClassifiedView>(child, parent: nil).tag(), viewTag != selectedValue {
+            if let viewTag = try? InspectableView<ViewType.ClassifiedView>(child, parent: nil).tag(),
+                viewTag != selectedValue {
                 throw InspectionError.viewNotFound(parent: "tab with tag \(viewTag)")
             }
             return child

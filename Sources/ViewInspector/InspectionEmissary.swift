@@ -31,18 +31,6 @@ public extension InspectionEmissary where V: View {
     
     @discardableResult
     func inspect<P>(onReceive publisher: P,
-                    function: String = #function, file: StaticString = #file, line: UInt = #line,
-                    _ inspection: @escaping ViewInspection
-    ) -> XCTestExpectation where P: Publisher, P.Failure == Never {
-        return inspect(onReceive: publisher, function: function, file: file, line: line) { view in
-            let unwrapped = try view.inspect(function: function)
-                .asInspectableView(ofType: ViewType.View<V>.self)
-            return try inspection(unwrapped)
-        }
-    }
-    
-    @discardableResult
-    func inspect<P>(onReceive publisher: P,
                     after delay: TimeInterval = 0,
                     function: String = #function, file: StaticString = #file, line: UInt = #line,
                     _ inspection: @escaping ViewInspection
@@ -74,16 +62,6 @@ public extension InspectionEmissary where V: ViewModifier {
     
     @discardableResult
     func inspect<P>(onReceive publisher: P,
-                    function: String = #function, file: StaticString = #file, line: UInt = #line,
-                    _ inspection: @escaping ViewModifierInspection
-    ) -> XCTestExpectation where P: Publisher, P.Failure == Never {
-        return inspect(onReceive: publisher, function: function, file: file, line: line) { view in
-            return try inspection(try view.inspect(function: function))
-        }
-    }
-    
-    @discardableResult
-    func inspect<P>(onReceive publisher: P,
                     after delay: TimeInterval = 0,
                     function: String = #function, file: StaticString = #file, line: UInt = #line,
                     _ inspection: @escaping ViewModifierInspection
@@ -109,23 +87,6 @@ private extension InspectionEmissary {
         setup(inspection: inspection, expectation: exp, function: function, file: file, line: line)
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak notice] in
             notice?.send(line)
-        }
-        return exp
-    }
-    
-    func inspect<P>(onReceive publisher: P,
-                    function: String, file: StaticString, line: UInt,
-                    inspection: @escaping SubjectInspection
-    ) -> XCTestExpectation where P: Publisher, P.Failure == Never {
-        let exp = XCTestExpectation(description: "Inspection at line \(line)")
-        setup(inspection: inspection, expectation: exp, function: function, file: file, line: line)
-        var subscription: AnyCancellable?
-        _ = subscription
-        subscription = publisher.sink { [weak notice] _ in
-            subscription = nil
-            DispatchQueue.main.async {
-                notice?.send(line)
-            }
         }
         return exp
     }
