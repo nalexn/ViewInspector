@@ -231,6 +231,22 @@ final class TextTests: XCTestCase {
         XCTAssertThrows(try sut.inspect().text().attributedString(),
                         "Please use attributes() for accessing the text styles on this view")
     }
+
+    // MARK: - FormatStyle
+
+    func testFormatStyle() throws {
+        guard #available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = Text("Test \(1234, format: .number) and \(0.5678, format: .percent)")
+        XCTAssertEqual(try sut.inspect().text().string(), "Test 1,234 and 56.78%")
+    }
+
+    func testFormatStyleWithLocale() throws {
+        guard #available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = Text("Test \(1234, format: .number) and \(0.5678, format: .percent)")
+        XCTAssertEqual(try sut.inspect().text().string(locale: .init(identifier: "de_DE")), "Test 1.234 and 56,78\u{a0}%")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
