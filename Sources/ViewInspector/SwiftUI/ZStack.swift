@@ -37,3 +37,18 @@ public extension InspectableView where View: MultipleViewContent {
         return try .init(try child(at: index), parent: self, index: index)
     }
 }
+
+// MARK: - Custom Attributes
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public extension InspectableView where View == ViewType.ZStack {
+
+    func alignment() throws -> Alignment {
+        return try Inspector.attribute(
+            path: "alignment", value: zStackLayout(), type: Alignment.self)
+    }
+
+    private func zStackLayout() throws -> Any {
+        return try Inspector.attribute(path: "_tree|root", value: content.view)
+    }
+}

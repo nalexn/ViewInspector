@@ -69,4 +69,11 @@ final class ZStackTests: XCTestCase {
         XCTAssertNoThrow(try view.inspect().zStack().zStack(0))
         XCTAssertNoThrow(try view.inspect().zStack().zStack(1))
     }
+    
+    func testAlignmentInspection() throws {
+        let view = ZStack(alignment: .bottomTrailing) { Text("") }
+        let sut = try view.inspect().zStack().alignment()
+        XCTAssertEqual(sut.horizontal, .trailing)
+        XCTAssertEqual(sut.vertical, .bottom)
+    }
 }
