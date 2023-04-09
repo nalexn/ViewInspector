@@ -245,7 +245,8 @@ final class TextTests: XCTestCase {
         guard #available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
         else { throw XCTSkip() }
         let sut = Text("Test \(1234, format: .number) and \(0.5678, format: .percent)")
-        XCTAssertEqual(try sut.inspect().text().string(locale: .init(identifier: "de_DE")), "Test 1.234 and 56,78\u{a0}%")
+        XCTAssertEqual(try sut.inspect().text().string(locale: .init(identifier: "de_DE")),
+                       "Test 1.234 and 56,78\u{a0}%")
     }
 }
 

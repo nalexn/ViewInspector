@@ -189,10 +189,12 @@ private extension ViewType.Text {
             return try text.inspect().text().string(locale: locale)
         }
 
-        if #available(macOS 12.0, iOS 15.0, tvOS 15.0, *) {
+        if #available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *) {
             if
-                let formatStyle = try? Inspector.attribute(path: "storage|formatStyleValue|format", value: container, type: (any FormatStyle).self),
-                let input = try? Inspector.attribute(path: "storage|formatStyleValue|input", value: container),
+                let formatStyle = try? Inspector.attribute(
+                    path: "storage|formatStyleValue|format", value: container, type: (any FormatStyle).self),
+                let input = try? Inspector.attribute(
+                    path: "storage|formatStyleValue|input", value: container),
                 let string = formatStyle.string(for: input, locale: locale)
             {
                 return string
@@ -214,7 +216,7 @@ private extension ViewType.Text {
     }
 }
 
-@available(macOS 12.0, iOS 15.0, tvOS 15.0, *)
+@available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
 extension FormatStyle {
     fileprivate func string(for input: Any, locale: Locale) -> String? {
         guard let input = input as? FormatInput else { return nil }
