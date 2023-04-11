@@ -277,6 +277,8 @@ internal extension Inspector {
             return try ViewType.DelayedPreferenceView.child(content)
         case "_PreferenceReadingView":
             return try ViewType.PreferenceReadingView.child(content)
+        case "PopoverContent":
+            return try ViewType.PopoverContent.child(content)
         default:
             return content
         }
