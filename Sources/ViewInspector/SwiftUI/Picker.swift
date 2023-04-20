@@ -75,6 +75,27 @@ public extension InspectableView where View == ViewType.Picker {
         }
         casted.forEach { $0.wrappedValue = value }
     }
+    
+    func selectedValue<SelectionValue>() throws -> SelectionValue {
+        var bindings = try Inspector.attribute(path: "selection", value: content.view)
+        if let single = bindings as? Binding<SelectionValue> {
+            bindings = [single]
+        }
+        let typeName = Inspector.typeName(value: bindings)
+        guard let casted = bindings as? [Binding<SelectionValue>] else {
+            var endIndex = typeName.index(before: typeName.endIndex)
+            if typeName.hasPrefix("Array") {
+                endIndex = typeName.index(before: endIndex)
+            }
+            let expected = typeName[..<endIndex]
+                .replacingOccurrences(of: "Array<Binding<", with: "")
+                .replacingOccurrences(of: "Binding<", with: "")
+            let factual = Inspector.typeName(type: SelectionValue.self)
+            throw InspectionError
+                .notSupported("selectedValue() expected a value of type \(expected) but received \(factual)")
+        }
+        return casted.first!.wrappedValue
+    }
 }
 
 // MARK: - Global View Modifiers
