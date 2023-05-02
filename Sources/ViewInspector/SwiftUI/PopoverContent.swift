@@ -1,13 +1,13 @@
 import SwiftUI
 
-@available(macOS 10.15, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType {
     struct PopoverContent { }
 }
 
 // MARK: - Content Extraction
 
-@available(macOS 10.15, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.PopoverContent: SingleViewContent {
 
     static func child(_ content: Content) throws -> Content {
