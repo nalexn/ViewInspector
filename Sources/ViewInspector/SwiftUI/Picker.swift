@@ -56,6 +56,21 @@ public extension InspectableView where View == ViewType.Picker {
     
     func select<SelectionValue>(value: SelectionValue) throws where SelectionValue: Hashable {
         try guardIsResponsive()
+        let bindings = try valueBindings(SelectionValue.self)
+        bindings.forEach { $0.wrappedValue = value }
+    }
+    
+    func selectedValue<SelectionValue>(_ type: SelectionValue.Type) throws -> SelectionValue {
+        let bindings = try valueBindings(SelectionValue.self)
+        guard let value = bindings.first else {
+            throw InspectionError.attributeNotFound(
+                label: "binding", type: Inspector.typeName(type: SelectionValue.self))
+        }
+        return value.wrappedValue
+    }
+    
+    private func valueBindings<SelectionValue>(_ type: SelectionValue.Type, caller: StaticString = #function
+    ) throws -> [Binding<SelectionValue>] {
         var bindings = try Inspector.attribute(path: "selection", value: content.view)
         if let single = bindings as? Binding<SelectionValue> {
             bindings = [single]
@@ -71,9 +86,9 @@ public extension InspectableView where View == ViewType.Picker {
                 .replacingOccurrences(of: "Binding<", with: "")
             let factual = Inspector.typeName(type: SelectionValue.self)
             throw InspectionError
-            .notSupported("select(value:) expects a value of type \(expected) but received \(factual)")
+            .notSupported("\(caller) expected a value of type \(expected) but received \(factual)")
         }
-        casted.forEach { $0.wrappedValue = value }
+        return casted
     }
 }
 

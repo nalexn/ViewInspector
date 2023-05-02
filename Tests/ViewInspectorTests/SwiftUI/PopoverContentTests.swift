@@ -6,7 +6,7 @@ import XCTest
 
 #if os(macOS)
 
-fileprivate protocol AnyHostingView {
+private protocol AnyHostingView {
     var anyRootView: AnyView { get }
 }
 
@@ -14,11 +14,11 @@ extension NSHostingView: AnyHostingView {
     fileprivate var anyRootView: AnyView { AnyView(rootView) }
 }
 
-fileprivate class TestModel: ObservableObject {
+private class TestModel: ObservableObject {
     @Published var showPopover = false
 }
 
-fileprivate struct WindowRootView: View {
+private struct WindowRootView: View {
     @ObservedObject var model: TestModel
 
     var body: some View {
