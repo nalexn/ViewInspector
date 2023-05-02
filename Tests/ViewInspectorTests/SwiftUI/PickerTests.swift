@@ -95,6 +95,19 @@ final class PickerTests: XCTestCase {
         XCTAssertEqual(try view.inspect().find(text: "xyz").pathToRoot,
                        "anyView().picker().text(1)")
     }
+    
+    func testGetSelectedValue() throws {
+        let binding = Binding<String>(wrappedValue: "First Option")
+        let view = Picker(selection: binding, label: Text("Title")) {
+            Text("First Option").tag(0)
+            Text("Second Option").tag(1)
+        }
+        try view.inspect().picker().select(value: "Second Option")
+        
+        XCTAssertThrows(try view.inspect().picker().selectedValue() as Int,
+                        "selectedValue() expected a value of type String but received Int")
+        XCTAssertEqual("Second Option", try view.inspect().picker().selectedValue())
+    }
 }
 
 // MARK: - View Modifiers
