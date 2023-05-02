@@ -2,8 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, tvOS 14.0, macOS 10.15, *)
 final class TreeViewTests: XCTestCase {
     
     @available(watchOS, deprecated: 7.0)
@@ -40,8 +39,7 @@ final class TreeViewTests: XCTestCase {
 
 // MARK: - View Modifiers
 
-@available(iOS 13.0, macOS 10.15, *)
-@available(tvOS, unavailable)
+@available(iOS 13.0, tvOS 14.0, macOS 10.15, *)
 final class GlobalModifiersForTreeView: XCTestCase {
     
     @available(watchOS, deprecated: 7.0)

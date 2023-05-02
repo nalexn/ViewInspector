@@ -37,8 +37,7 @@ extension ViewType.ColorPicker: SupplementaryChildrenLabelView { }
 
 // MARK: - Custom Attributes
 
-@available(iOS 14.0, macOS 11.0, *)
-@available(tvOS, unavailable)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension InspectableView where View == ViewType.ColorPicker {
     
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
@@ -46,7 +45,7 @@ public extension InspectableView where View == ViewType.ColorPicker {
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
-    @available(tvOS 14.0, watchOS 7.0, *)
+    @available(watchOS 7.0, *)
     func select(color: Color) throws {
         try guardIsResponsive()
         #if os(macOS)
@@ -80,8 +79,7 @@ public extension InspectableView where View == ViewType.ColorPicker {
     #endif
 }
 
-@available(iOS 14.0, macOS 11.0, *)
-@available(tvOS, unavailable)
+@available(iOS 14.0, tvOS 14.0, macOS 11.0, *)
 public extension ViewType.ColorPicker {
     /**
      A container for comparing colors in tests. FYI: Color.red != UIColor.red
@@ -101,7 +99,7 @@ public extension ViewType.ColorPicker {
             #endif
         }
         
-        @available(tvOS 14.0, watchOS 7.0, *)
+        @available(watchOS 7.0, *)
         init(color: Color) {
             #if os(macOS)
             self.init(color: NSColor(color))
