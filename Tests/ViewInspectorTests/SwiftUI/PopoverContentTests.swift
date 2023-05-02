@@ -1,10 +1,10 @@
-import AppKit
 import Foundation
 import SwiftUI
 import ViewInspector
 import XCTest
 
 #if os(macOS)
+import AppKit
 
 private protocol AnyHostingView {
     var anyRootView: AnyView { get }
