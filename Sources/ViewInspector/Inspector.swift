@@ -116,19 +116,10 @@ private extension String {
     func replacingGenericParameters(_ replacement: String) -> String {
         guard let start = self.firstIndex(of: "<")
         else { return self }
-        var balance = 1
-        var current = self.index(after: start)
-        while balance > 0 && current < endIndex {
-            let char = self[current]
-            if char == "<" { balance += 1 }
-            if char == ">" { balance -= 1 }
-            current = self.index(after: current)
-        }
-        if balance == 0 {
-            return String(self[..<start]) + replacement +
-                String(self[current...]).replacingGenericParameters(replacement)
-        }
-        return self
+        guard let end = self.lastIndex(of: ">")
+        else { return self}
+
+        return String(self[..<start]) + replacement + String(self[index(after: end)...])
     }
 }
 
