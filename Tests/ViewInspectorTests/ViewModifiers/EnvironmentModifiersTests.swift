@@ -26,6 +26,15 @@ final class ViewEnvironmentTests: XCTestCase {
         XCTAssertThrows(try EmptyView().inspect().emptyView().environment(\.testHandlerClosure),
                         "EmptyView does not have 'environment((_ value: String) -> Bool)' modifier")
     }
+
+    func testBoxedClosureEnvironmentValue() {
+        let value: HandlerBox = HandlerBox(handle: { value in value == "hello world" })
+        let sut = EmptyView().environment(\.testHandlerBoxedClosure, value)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+        XCTAssertNoThrow(try sut.inspect().emptyView().environment(\.testHandlerBoxedClosure))
+        XCTAssertThrows(try EmptyView().inspect().emptyView().environment(\.testHandlerBoxedClosure),
+                        "EmptyView does not have 'environment(HandlerBox)' modifier")
+    }
     
     func testEnvironmentObject() throws {
         let sut = EmptyView().environmentObject(TestEnvObject())
@@ -63,5 +72,27 @@ extension EnvironmentValues {
   public var testHandlerClosure: (_ value: String) -> Bool {
     get { self[TestHandlerClosureKey.self] }
     set { self[TestHandlerClosureKey.self] = newValue }
+  }
+}
+
+public struct HandlerBox {
+
+  let handle: (_ value: String) -> Bool
+
+  public func callAsFunction(_ value: String) -> Bool {
+      handle(value)
+  }
+}
+
+private struct TestBoxedHandlerClosureKey: EnvironmentKey {
+    static var defaultValue: HandlerBox { .init(handle: { _ in false }) }
+}
+
+extension EnvironmentValues {
+
+  @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+  public var testHandlerBoxedClosure: HandlerBox {
+    get { self[TestBoxedHandlerClosureKey.self] }
+    set { self[TestBoxedHandlerClosureKey.self] = newValue }
   }
 }
