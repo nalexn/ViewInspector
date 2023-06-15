@@ -116,10 +116,39 @@ private extension String {
     func replacingGenericParameters(_ replacement: String) -> String {
         guard let start = self.firstIndex(of: "<")
         else { return self }
-        guard let end = self.lastIndex(of: ">")
-        else { return self}
+        var balance = 1
+        var current = self.index(after: start)
+        while balance > 0 && current < endIndex {
+            let char = self[current]
+            if char == "<" { balance += 1 }
+            if char == ">" {
+                guard let indexOfPreviousChar = index(
+                    current,
+                    offsetBy: -1,
+                    limitedBy: startIndex)
+                else
+                {
+                    // We don't expect to get here since it means that ">" was the first character
+                    // of the string. This should not be possible with a string representing a Swift
+                    // type. Since we don't have a well-formed string, we bail out.
+                    return self
+                }
 
-        return String(self[..<start]) + replacement + String(self[index(after: end)...])
+                let previousChar = self[indexOfPreviousChar]
+                if previousChar == "-" {
+                    // We've found the "->" arrow for a closure type. Ignore this ">".
+                }
+                else {
+                    balance -= 1
+                }
+            }
+            current = self.index(after: current)
+        }
+        if balance == 0 {
+            return String(self[..<start]) + replacement +
+                String(self[current...]).replacingGenericParameters(replacement)
+        }
+        return self
     }
 }
 

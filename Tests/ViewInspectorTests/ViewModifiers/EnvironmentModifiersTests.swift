@@ -57,9 +57,9 @@ private struct TestHandlerClosureKey: EnvironmentKey {
     static var defaultValue: (_ value: String) -> Bool { { _ in true } }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension EnvironmentValues {
 
-  @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
   fileprivate var testHandlerClosure: (_ value: String) -> Bool {
     get { self[TestHandlerClosureKey.self] }
     set { self[TestHandlerClosureKey.self] = newValue }
