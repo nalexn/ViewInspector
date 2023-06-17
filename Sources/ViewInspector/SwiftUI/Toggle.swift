@@ -122,12 +122,24 @@ internal extension ToggleStyleConfiguration {
             self.isOn = .init(wrappedValue: isOn)
         }
     }
+    private struct Allocator96 {
+        let isOn: Binding<Bool>
+        let buffer1: (Int64, Int64) = (0, 0)
+        let isMixed = Binding<Bool>(wrappedValue: false)
+        let buffer2: (Int64, Int64, Int64, Int64) = (0, 0, 0, 0)
+        
+        init(isOn: Bool) {
+            self.isOn = .init(wrappedValue: isOn)
+        }
+    }
     init(isOn: Bool) {
         switch MemoryLayout<Self>.size {
         case 17:
             self = unsafeBitCast(Allocator17(isOn: isOn), to: Self.self)
         case 42:
             self = unsafeBitCast(Allocator42(isOn: isOn), to: Self.self)
+        case 96:
+            self = unsafeBitCast(Allocator96(isOn: isOn), to: Self.self)
         default:
             fatalError(MemoryLayout<Self>.actualSize())
         }

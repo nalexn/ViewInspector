@@ -111,12 +111,17 @@ private extension MenuStyleConfiguration {
     struct Allocator16 {
         let data: (Int64, Int64) = (0, 0)
     }
+    struct Allocator32 {
+        let data: (Int64, Int64, Int64, Int64) = (0, 0, 0, 0)
+    }
     init() {
         switch MemoryLayout<Self>.size {
         case 0:
             self = unsafeBitCast(Allocator0(), to: Self.self)
         case 16:
             self = unsafeBitCast(Allocator16(), to: Self.self)
+        case 32:
+            self = unsafeBitCast(Allocator32(), to: Self.self)
         default:
             fatalError(MemoryLayout<Self>.actualSize())
         }
