@@ -123,24 +123,12 @@ private extension String {
             if char == "<" { balance += 1 }
             if char == ">" {
                 guard let indexOfPreviousChar = index(
-                    current,
-                    offsetBy: -1,
-                    limitedBy: startIndex)
-                else
-                {
-                    // We don't expect to get here since it means that ">" was the first character
-                    // of the string. This should not be possible with a string representing a Swift
-                    // type. Since we don't have a well-formed string, we bail out.
-                    return self
-                }
-
+                    current, offsetBy: -1, limitedBy: startIndex)
+                else { return self }
                 let previousChar = self[indexOfPreviousChar]
                 if previousChar == "-" {
                     // We've found the "->" arrow for a closure type. Ignore this ">".
-                }
-                else {
-                    balance -= 1
-                }
+                } else { balance -= 1 }
             }
             current = self.index(after: current)
         }
