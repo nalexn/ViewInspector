@@ -54,8 +54,14 @@ public extension InspectableView where View == ViewType.Button {
     func tap() throws {
         try guardIsResponsive()
         typealias Callback = () -> Void
-        let callback = try Inspector
-            .attribute(label: "action", value: content.view, type: Callback.self)
+        let callback: Callback = try {
+            if let callback = try? Inspector
+                .attribute(path: "action|closure", value: content.view, type: Callback.self) {
+                return callback
+            }
+            return try Inspector
+                .attribute(label: "action", value: content.view, type: Callback.self)
+        }()
         callback()
     }
     
@@ -74,6 +80,7 @@ public extension InspectableView {
     func buttonStyle() throws -> Any {
         let modifier = try self.modifier({ modifier -> Bool in
             return [
+                "PrimitiveButtonStyleContainerModifier",
                 "ButtonStyleContainerModifier",
                 "ButtonStyleModifier",
             ].contains(where: { modifier.modifierType.hasPrefix($0) })
@@ -159,11 +166,5 @@ public extension PrimitiveButtonStyleConfiguration {
         default:
             fatalError(MemoryLayout<Self>.actualSize())
         }
-    }
-}
-
-internal extension MemoryLayout {
-    static func actualSize() -> String {
-        fatalError("New size of \(String(describing: type(of: T.self))) is \(Self.size)")
     }
 }

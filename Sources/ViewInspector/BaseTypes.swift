@@ -299,3 +299,9 @@ extension BinaryEquatable {
         }
     }
 }
+
+internal extension MemoryLayout {
+    static func actualSize() -> String {
+        fatalError("New size of \(String(describing: type(of: T.self))) is \(Self.size)")
+    }
+}
