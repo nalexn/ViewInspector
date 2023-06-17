@@ -96,12 +96,22 @@ public extension InspectableView where View == ViewType.Map {
 private extension InspectableView where View == ViewType.Map {
     
     func coordinateRegionBinding() throws -> Binding<MKCoordinateRegion> {
+        if let value = try? Inspector.attribute(
+            path: "provider|regionBinding|coordinateRegion",
+            value: content.view, type: Binding<MKCoordinateRegion>.self) {
+            return value
+        }
         return try Inspector.attribute(path: "provider|region|region",
                                        value: content.view,
                                        type: Binding<MKCoordinateRegion>.self)
     }
     
     func mapRectBinding() throws -> Binding<MKMapRect> {
+        if let value = try? Inspector.attribute(
+            path: "provider|regionBinding|mapRect",
+            value: content.view, type: Binding<MKMapRect>.self) {
+            return value
+        }
         return try Inspector.attribute(path: "provider|region|rect",
                                        value: content.view,
                                        type: Binding<MKMapRect>.self)
