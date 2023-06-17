@@ -351,6 +351,9 @@ internal extension ViewSearch {
         .init(name: "PlatformItemTraitWriter<LabelPlatformItemListFlags", builder: { parent, index in
             try parent.content.tabItem(parent: parent, index: index)
         }),
+        .init(name: "PlatformItemTraitWriter<LabelPlatformItemsStrategy", builder: { parent, index in
+            try parent.content.tabItem(parent: parent, index: index)
+        }),
         .init(name: "_TraitWritingModifier<ListRowBackgroundTraitKey>", builder: { parent, index in
             try parent.content.listRowBackground(parent: parent, index: index)
         }),
