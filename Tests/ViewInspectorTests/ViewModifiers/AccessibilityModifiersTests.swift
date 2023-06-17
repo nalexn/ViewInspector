@@ -55,8 +55,9 @@ final class ViewAccessibilityTests: XCTestCase {
     
     func testAccessibilityHintInspection() throws {
         let string = "abc"
-        let sut1 = try EmptyView().accessibility(hint: Text(string))
-            .inspect().emptyView().accessibilityHint().string()
+        let view1 = EmptyView().accessibility(hint: Text(string))
+        let sut1 = try view1.inspect()
+            .emptyView().accessibilityHint().string()
         XCTAssertEqual(sut1, string)
         if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
             let sut2 = try EmptyView().accessibilityHint(Text(string))
@@ -274,11 +275,11 @@ final class ViewAccessibilityActionTests: XCTestCase {
     func testAccessibilityMultipleAttributes() throws {
         let label = "abc"
         let value = "xyz"
-        let sut = try EmptyView()
+        let view = EmptyView()
             .accessibility(label: Text(label))
             .accessibility(value: Text(value))
             .accessibility(addTraits: [.isImage])
-            .inspect().emptyView()
+        let sut = try view.inspect().emptyView()
 
         XCTAssertEqual(try sut.accessibilityLabel().string(), label)
         XCTAssertEqual(try sut.accessibilityValue().string(), value)

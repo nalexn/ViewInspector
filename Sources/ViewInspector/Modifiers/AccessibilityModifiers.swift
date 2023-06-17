@@ -9,9 +9,15 @@ public extension InspectableView {
         let text: Text
         let call = "accessibilityLabel"
         if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
-            text = try v3AccessibilityElement(
-                path: "some|text", type: Text.self,
-                call: call, { $0.accessibilityLabel("") })
+            if let firstText = try? v3AccessibilityElement(
+                path: "some|texts", type: [Text].self,
+                call: call, { $0.accessibilityLabel("") }).first {
+                text = firstText
+            } else {
+                text = try v3AccessibilityElement(
+                    path: "some|text", type: Text.self,
+                    call: call, { $0.accessibilityLabel("") })
+            }
         } else if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
             text = try v3AccessibilityElement(
                 type: Text.self, call: call, { $0.accessibilityLabel("") })
@@ -26,9 +32,15 @@ public extension InspectableView {
         let text: Text
         let call = "accessibilityValue"
         if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
-            text = try v3AccessibilityElement(
-                path: "some|description|some", type: Text.self,
-                call: call, { $0.accessibilityValue("") })
+            if let firstText = try? v3AccessibilityElement(
+                path: "some|description", type: [Text].self,
+                call: call, { $0.accessibilityValue("") }).first {
+                text = firstText
+            } else {
+                text = try v3AccessibilityElement(
+                    path: "some|description|some", type: Text.self,
+                    call: call, { $0.accessibilityValue("") })
+            }
         } else {
             text = try v2AccessibilityElement(
             "TypedValueKey", path: "value|some|description|some", type: Text.self, call: call)
@@ -41,8 +53,13 @@ public extension InspectableView {
         let text: Text
         let call = "accessibilityHint"
         if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
-            text = try v3AccessibilityElement(
-                type: Text.self, call: call, { $0.accessibilityHint("") })
+            if let firstText = try? v3AccessibilityElement(
+                type: [Text].self, call: call, { $0.accessibilityHint("") }).first {
+                text = firstText
+            } else {
+                text = try v3AccessibilityElement(
+                    type: Text.self, call: call, { $0.accessibilityHint("") })
+            }
         } else {
             text = try v2AccessibilityElement("HintKey", type: Text.self, call: call)
         }
