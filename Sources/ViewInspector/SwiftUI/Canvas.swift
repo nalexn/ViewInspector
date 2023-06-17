@@ -56,6 +56,11 @@ public extension InspectableView where View == ViewType.Canvas {
     }
     
     func colorMode() throws -> ColorRenderingMode {
+        if let value = try? Inspector.attribute(
+            path: "rasterizationOptions|colorMode",
+            value: content.view, type: ColorRenderingMode.self) {
+            return value
+        }
         return try Inspector.attribute(
             path: "rasterizationOptions|_colorMode|wrappedValue",
             value: content.view, type: ColorRenderingMode.self)
@@ -69,19 +74,37 @@ public extension InspectableView where View == ViewType.Canvas {
         return try optionFlags().contains(.rendersAsynchronously)
     }
     
-    private func optionFlags() throws -> ViewType.Canvas.RasterizationOptions {
+    private func optionFlags() throws -> ViewType.Canvas.RasterizationOptions32 {
+        if let flags = try? Inspector.attribute(
+            path: "rasterizationOptions|flags|rawValue",
+            value: content.view, type: UInt32.self) {
+            return ViewType.Canvas.RasterizationOptions32(rawValue: flags)
+        }
         let flags = try Inspector.attribute(
             path: "rasterizationOptions|_flags|wrappedValue|rawValue",
             value: content.view, type: UInt8.self)
-        return ViewType.Canvas.RasterizationOptions(rawValue: flags)
+        let legacyOptions = ViewType.Canvas.RasterizationOptions8(rawValue: flags)
+        var options: ViewType.Canvas.RasterizationOptions32 = []
+        if legacyOptions.contains(.opaque) {
+            options.insert(.opaque)
+        }
+        if legacyOptions.contains(.rendersAsynchronously) {
+            options.insert(.rendersAsynchronously)
+        }
+        return options
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-internal extension ViewType.Canvas {
-    struct RasterizationOptions: OptionSet {
+private extension ViewType.Canvas {
+    struct RasterizationOptions8: OptionSet {
         let rawValue: UInt8
-        static let opaque = RasterizationOptions(rawValue: 1 << 1)
-        static let rendersAsynchronously = RasterizationOptions(rawValue: 1 << 2)
+        static let opaque = RasterizationOptions8(rawValue: 1 << 1)
+        static let rendersAsynchronously = RasterizationOptions8(rawValue: 1 << 2)
+    }
+    struct RasterizationOptions32: OptionSet {
+        let rawValue: UInt32
+        static let opaque = RasterizationOptions32(rawValue: 1 << 1)
+        static let rendersAsynchronously = RasterizationOptions32(rawValue: 1 << 2)
     }
 }
