@@ -121,7 +121,15 @@ private extension String {
         while balance > 0 && current < endIndex {
             let char = self[current]
             if char == "<" { balance += 1 }
-            if char == ">" { balance -= 1 }
+            if char == ">" {
+                guard let indexOfPreviousChar = index(
+                    current, offsetBy: -1, limitedBy: startIndex)
+                else { return self }
+                let previousChar = self[indexOfPreviousChar]
+                if previousChar == "-" {
+                    // We've found the "->" arrow for a closure type. Ignore this ">".
+                } else { balance -= 1 }
+            }
             current = self.index(after: current)
         }
         if balance == 0 {

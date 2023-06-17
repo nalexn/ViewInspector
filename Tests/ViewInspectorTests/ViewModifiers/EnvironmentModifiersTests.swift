@@ -7,7 +7,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewEnvironmentTests: XCTestCase {
     
-    func testEnvironment() throws {
+    func testEnvironmentValue() throws {
         let key = TestEnvKey()
         let sut = EmptyView().environment(\.testKey, key)
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -16,6 +16,15 @@ final class ViewEnvironmentTests: XCTestCase {
                         "EmptyView does not have 'environment(TestEnvKey)' modifier")
         let sut2 = EmptyView().environment(\.colorScheme, .light)
         XCTAssertEqual(try sut2.inspect().emptyView().environment(\.colorScheme), .light)
+    }
+
+    func testClosureEnvironmentValue() {
+        let value: (_ value: String) -> Bool = { value in value == "hello world" }
+        let sut = EmptyView().environment(\.testHandlerClosure, value)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+        XCTAssertNoThrow(try sut.inspect().emptyView().environment(\.testHandlerClosure))
+        XCTAssertThrows(try EmptyView().inspect().emptyView().environment(\.testHandlerClosure),
+                        "EmptyView does not have 'environment((String) -> Bool)' modifier")
     }
     
     func testEnvironmentObject() throws {
@@ -42,4 +51,17 @@ private extension EnvironmentValues {
         get { self[TestEnvKey.self] }
         set { self[TestEnvKey.self] = newValue }
     }
+}
+
+private struct TestHandlerClosureKey: EnvironmentKey {
+    static var defaultValue: (_ value: String) -> Bool { { _ in true } }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension EnvironmentValues {
+
+  fileprivate var testHandlerClosure: (_ value: String) -> Bool {
+    get { self[TestHandlerClosureKey.self] }
+    set { self[TestHandlerClosureKey.self] = newValue }
+  }
 }

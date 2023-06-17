@@ -55,6 +55,10 @@ final class InspectorTests: XCTestCase {
         XCTAssertEqual(name2, "Struct1")
         let name3 = Inspector.typeName(value: Struct3<Int>(), generics: .remove)
         XCTAssertEqual(name3, "Struct3")
+        let name4 = Inspector.typeName(value: Struct3<(String) -> Void>(), generics: .remove)
+        XCTAssertEqual(name4, "Struct3")
+        let name5 = Inspector.typeName(value: (Struct3<Int>(), Struct3<String>()), generics: .remove)
+        XCTAssertEqual(name5, "(Struct3, Struct3)")
     }
     
     func testTypeNameType() {
@@ -62,6 +66,10 @@ final class InspectorTests: XCTestCase {
         XCTAssertEqual(name1, "Struct3<Int>")
         let name2 = Inspector.typeName(type: Struct1.self)
         XCTAssertEqual(name2, "Struct1")
+        let name3 = Inspector.typeName(
+            type: ModifiedContent<EmptyView, _EnvironmentKeyWritingModifier<(String) -> Void>>.self,
+            generics: .remove)
+        XCTAssertEqual(name3, "ModifiedContent")
     }
     
     func testPrintValue() {
