@@ -104,6 +104,7 @@
 		D766E67026E17F01004AAA80 /* FullScreenCoverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */; };
 		DD421B5F26FA6648008EFE05 /* EllipticalGradientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD421B5E26FA6648008EFE05 /* EllipticalGradientTests.swift */; };
 		DDCA44AD26FA64F500138898 /* EllipticalGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA44AC26FA64F500138898 /* EllipticalGradient.swift */; };
+		E30CF98C2A4C81F500E2F1CA /* ObjcTestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = E30CF98B2A4C81F500E2F1CA /* ObjcTestClass.m */; };
 		F6026A27256A7D1900CA31E5 /* TextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A26256A7D1900CA31E5 /* TextAttributes.swift */; };
 		F6026A31256A7E3D00CA31E5 /* TextAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */; };
 		F60385D523D3C74B008F31BD /* InspectionEmissary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60385D423D3C74B008F31BD /* InspectionEmissary.swift */; };
@@ -378,6 +379,8 @@
 		D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCoverTests.swift; sourceTree = "<group>"; };
 		DD421B5E26FA6648008EFE05 /* EllipticalGradientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipticalGradientTests.swift; sourceTree = "<group>"; };
 		DDCA44AC26FA64F500138898 /* EllipticalGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipticalGradient.swift; sourceTree = "<group>"; };
+		E30CF98B2A4C81F500E2F1CA /* ObjcTestClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcTestClass.m; sourceTree = "<group>"; };
+		E30CF98D2A4C820E00E2F1CA /* ObjcTestClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjcTestClass.h; sourceTree = "<group>"; };
 		F6026A26256A7D1900CA31E5 /* TextAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributes.swift; sourceTree = "<group>"; };
 		F6026A30256A7E3D00CA31E5 /* TextAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttributesTests.swift; sourceTree = "<group>"; };
 		F60385D423D3C74B008F31BD /* InspectionEmissary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionEmissary.swift; sourceTree = "<group>"; };
@@ -859,6 +862,8 @@
 				F6D933B42385ED2700358E0E /* VSplitViewTests.swift */,
 				F60EEBF02382F004007DB53A /* VStackTests.swift */,
 				F60EEBE72382F004007DB53A /* ZStackTests.swift */,
+				E30CF98D2A4C820E00E2F1CA /* ObjcTestClass.h */,
+				E30CF98B2A4C81F500E2F1CA /* ObjcTestClass.m */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -1280,6 +1285,7 @@
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,
 				F682A00C254772C3005F1B70 /* DisclosureGroupTests.swift in Sources */,
 				CDA844BC262B7EA800C56C98 /* MagnificationGestureTests.swift in Sources */,
+				E30CF98C2A4C81F500E2F1CA /* ObjcTestClass.m in Sources */,
 				F6C15A3F254B4835000240F1 /* LinkTests.swift in Sources */,
 				5296338C29697EB400EC6C81 /* NavigationSplitViewTests.swift in Sources */,
 				F6ECF6D823A69CB5000FC591 /* VisualEffectModifiersTests.swift in Sources */,
@@ -1619,6 +1625,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ViewInspectorTests;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = Tests/ViewInspectorTests/SwiftUI/ObjcTestClass.h;
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = ViewInspectorTests;
 			};
@@ -1647,6 +1654,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ViewInspectorTests;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = Tests/ViewInspectorTests/SwiftUI/ObjcTestClass.h;
 				SWIFT_VERSION = 5.0;
 				TARGET_NAME = ViewInspectorTests;
 			};
