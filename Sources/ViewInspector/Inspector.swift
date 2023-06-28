@@ -110,6 +110,10 @@ private extension String {
             let end = str.index(range.upperBound, offsetBy: .init(11))
             str.replaceSubrange(range.lowerBound..<end, with: "")
         }
+
+        // For Objective-C classes String(reflecting:) sometimes adds the namespace __C, drop it too
+        str = str.replacingOccurrences(of: "__C.", with: "")
+
         return str
     }
     
