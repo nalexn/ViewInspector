@@ -105,6 +105,9 @@ class EnvironmentObjectInjectionTests: XCTestCase {
 
         sut = EnvironmentInjection.inject(environmentObject: ObjcTestClass(), into: sut)
         XCTAssertNoThrow(try sut.inspect().find(ViewType.Text.self))
+
+        let sut2 = EnvironmentObjectObjcClass().environmentObject(ObjcTestClass())
+        XCTAssertNoThrow(try sut2.inspect().find(ViewType.Text.self))
     }
 }
 
@@ -176,10 +179,10 @@ private struct EnvironmentObjectViewModifier: ViewModifier {
 extension ObjcTestClass: ObservableObject {}
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-private struct EnvironmentObjectObjcClass: ViewModifier {
+private struct EnvironmentObjectObjcClass: View {
     @EnvironmentObject var obj: ObjcTestClass
 
-    func body(content: Self.Content) -> some View {
+    var body: some View {
         VStack {
             Text(obj.value ?? "null")
         }
