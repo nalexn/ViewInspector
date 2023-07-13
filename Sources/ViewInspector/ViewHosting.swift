@@ -376,13 +376,11 @@ private extension UIViewController {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension ViewHosting {
     private static var rootInterfaceController: WKInterfaceController? {
-        get {
-            if #available(watchOS 7.0, *) {
-                return (WKExtension.shared().delegate != nil)
-                        ? WKExtension.shared().rootInterfaceController : WKApplication.shared().rootInterfaceController
-            } else {
-                return WKExtension.shared().rootInterfaceController
-            }
+        if #available(watchOS 7.0, *) {
+            return (WKExtension.shared().delegate != nil)
+                    ? WKExtension.shared().rootInterfaceController : WKApplication.shared().rootInterfaceController
+        } else {
+            return WKExtension.shared().rootInterfaceController
         }
     }
     

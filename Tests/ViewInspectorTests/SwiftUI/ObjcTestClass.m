@@ -7,7 +7,5 @@
 
 #import "ObjcTestClass.h"
 
-
 @implementation ObjcTestClass
-
 @end

@@ -12,4 +12,3 @@
 @property(strong, nullable) NSString *value;
 
 @end
-
