@@ -94,6 +94,21 @@ class EnvironmentObjectInjectionTests: XCTestCase {
             missing EnvironmentObjects: [\"obj2: TestEnvObject2\"]
             """)
     }
+
+    func testObjcClassAsEnvironmentObject() throws {
+        var sut = EnvironmentObjectObjcClass()
+        XCTAssertThrows(try sut.inspect().find(ViewType.Text.self),
+            """
+            Search did not find a match. Possible blockers: EnvironmentObjectObjcClass is \
+            missing EnvironmentObjects: [\"obj: ObjcTestClass\"]
+            """)
+
+        sut = EnvironmentInjection.inject(environmentObject: ObjcTestClass(), into: sut)
+        XCTAssertNoThrow(try sut.inspect().find(ViewType.Text.self))
+
+        let sut2 = EnvironmentObjectObjcClass().environmentObject(ObjcTestClass())
+        XCTAssertNoThrow(try sut2.inspect().find(ViewType.Text.self))
+    }
 }
 
 // MARK: -
@@ -156,6 +171,20 @@ private struct EnvironmentObjectViewModifier: ViewModifier {
         VStack {
             Text(obj1.value1 + "+\(obj2.value2)")
             content
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension ObjcTestClass: ObservableObject {}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct EnvironmentObjectObjcClass: View {
+    @EnvironmentObject var obj: ObjcTestClass
+
+    var body: some View {
+        VStack {
+            Text(obj.value ?? "null")
         }
     }
 }
