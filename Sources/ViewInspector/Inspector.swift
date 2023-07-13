@@ -112,7 +112,7 @@ private extension String {
         }
 
         // For Objective-C classes String(reflecting:) sometimes adds the namespace __C, drop it too
-        str = str.replacingOccurrences(of: "__C.", with: "")
+        str = str.replacingOccurrences(of: "<__C.", with: "<")
 
         return str
     }
