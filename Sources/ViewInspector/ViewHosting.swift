@@ -75,21 +75,7 @@ public extension ViewHosting {
     #if os(watchOS)
     private static func watchOS(host view: AnyView?, viewId: ViewId) throws {
         typealias Subject = CurrentValueSubject<[(String, AnyView)], Never>
-        let ext = WKExtension.shared()
-        guard let subject: Subject = {
-            if let delegate = ext.delegate,
-               let subject = try? Inspector
-                 .attribute(path: "fallbackDelegate|some|extension|testViewSubject",
-                            value: delegate, type: Subject.self) {
-                return subject
-            }
-            if let rootIC = ext.rootInterfaceController,
-               let subject = try? Inspector
-                 .attribute(label: "testViewSubject", value: rootIC, type: Subject.self) {
-                return subject
-            }
-            return nil
-        }() else {
+        guard let subject: Subject = try subjectForWatchOS(type: Subject.self) else {
             throw InspectionError.notSupported(
                 """
                 View hosting for watchOS is not set up. Please follow this guide: \
@@ -290,7 +276,7 @@ internal extension ViewHosting {
     static func lookup<V>(_ view: V.Type) throws -> V.WKInterfaceObjectType
         where V: WKInterfaceObjectRepresentable {
             let name = Inspector.typeName(type: view)
-            guard let rootVC = WKExtension.shared().rootInterfaceController,
+            guard let rootVC = rootInterfaceController,
                   let viewCache = try? Inspector.attribute(path: """
                   super|$__lazy_storage_$_hostingController|some|\
                   host|renderer|renderer|some|viewCache|map
@@ -382,6 +368,48 @@ private extension UIViewController {
         let tabChildren = (self as? UITabBarController)?.viewControllers ?? []
         let presented = [presentedViewController].compactMap { $0 }
         return navChildren + tabChildren + presented + children
+    }
+}
+#endif
+
+#if os(watchOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public extension ViewHosting {
+    private static var rootInterfaceController: WKInterfaceController? {
+        get {
+            if #available(watchOS 7.0, *) {
+                return (WKExtension.shared().delegate != nil)
+                        ? WKExtension.shared().rootInterfaceController : WKApplication.shared().rootInterfaceController
+            } else {
+                return WKExtension.shared().rootInterfaceController
+            }
+        }
+    }
+    
+    private static func subjectForWatchOS<T>(type: T.Type) throws -> T? {
+        if let extensionDelegate = WKExtension.shared().delegate,
+           let subject = try? Inspector
+            .attribute(path: "fallbackDelegate|some|extension|testViewSubject",
+                       value: extensionDelegate, type: type) {
+            return subject
+        }
+        
+        if #available(watchOS 7.0, *) {
+            if let applicationDelegate = WKApplication.shared().delegate,
+               let subject = try? Inspector
+                .attribute(path: "fallbackDelegate|some|application|testViewSubject",
+                           value: applicationDelegate, type: type) {
+                return subject
+            }
+        }
+        
+        if let rootIC = rootInterfaceController,
+           let subject = try? Inspector
+            .attribute(label: "testViewSubject", value: rootIC, type: type) {
+            return subject
+        }
+        
+        return nil
     }
 }
 #endif
