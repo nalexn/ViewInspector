@@ -163,6 +163,27 @@ final class ModifiedContentTests: XCTestCase {
         XCTAssertFalse(view2.isHidden())
         XCTAssertEqual(try view2.text().string(), "other")
     }
+
+    func testEnvironmentModifierWithNSObject() throws {
+        let view = Text("str").environment(\.font, .headline)
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.medium.environmentModifiers.count, 1)
+        XCTAssertEqual(sut.content.medium.environmentObjects.count, 0)
+    }
+
+    func testEnvironmentModifierWithNonNSObject() throws {
+        let view = Text("str").environment(\.accessibilityEnabled, true)
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.medium.environmentModifiers.count, 1)
+        XCTAssertEqual(sut.content.medium.environmentObjects.count, 0)
+    }
+
+    func testEnvironmentObjectWithNSObject() throws {
+        let view = Text("str").environmentObject(ObjcTestClass())
+        let sut = try view.inspect().text()
+        XCTAssertEqual(sut.content.medium.environmentModifiers.count, 0)
+        XCTAssertEqual(sut.content.medium.environmentObjects.count, 1)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
