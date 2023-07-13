@@ -126,6 +126,17 @@ final class InspectorTests: XCTestCase {
         XCTAssertEqual(Inspector.print(obj2), str2)
     }
     
+    func testPrintTypeReference() {
+        let sut = ViewWithTypeReference()
+        XCTAssertEqual(Inspector.print(sut), """
+            ViewWithTypeReference
+              body: EmptyView = EmptyView()
+              ref: Any.Type
+            
+            """)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
     func testTupleView() throws {
         let view = HStack { Text(""); Text("") }
         let content = try Inspector.attribute(path: "_tree|content", value: view)
@@ -315,6 +326,16 @@ private struct TestPrintView: View {
     
     var body: some View {
         Text(str[0])
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct ViewWithTypeReference: View {
+    
+    let ref = ViewWithTypeReference.self
+    
+    var body: some View {
+        EmptyView()
     }
 }
 
