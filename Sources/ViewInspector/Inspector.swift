@@ -298,6 +298,12 @@ internal extension Inspector {
             return try ViewType.PreferenceReadingView.child(content)
         case "PopoverContent":
             return try ViewType.PopoverContent.child(content)
+        case "ViewThatFits":
+            if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
+                return try ViewType.ViewThatFits.child(content)
+            } else {
+                return content
+            }
         default:
             return content
         }
