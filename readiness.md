@@ -112,6 +112,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ToolbarItem | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:white_check_mark:| TupleView | |
+|:white_check_mark:| ViewThatFits | |
 |:white_check_mark:| VSplitView | `contained view` |
 |:white_check_mark:| VStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
 |:white_check_mark:| VideoPlayer | `player: AVPlayer?`, `videoOverlay view` |
