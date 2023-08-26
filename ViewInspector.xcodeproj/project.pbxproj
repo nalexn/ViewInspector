@@ -50,6 +50,8 @@
 		523CD480277C98FC00D4FD3A /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47F277C98FC00D4FD3A /* VideoPlayer.swift */; };
 		523E97352A9A6A68002E8EB5 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E97342A9A6A68002E8EB5 /* Grid.swift */; };
 		523E97372A9A6AEF002E8EB5 /* GridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E97362A9A6AEF002E8EB5 /* GridTests.swift */; };
+		523E97392A9A8C20002E8EB5 /* LabeledContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E97382A9A8C20002E8EB5 /* LabeledContentTests.swift */; };
+		523E973B2A9A8DAD002E8EB5 /* LabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E973A2A9A8DAD002E8EB5 /* LabeledContent.swift */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
@@ -331,6 +333,8 @@
 		523CD47F277C98FC00D4FD3A /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		523E97342A9A6A68002E8EB5 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		523E97362A9A6AEF002E8EB5 /* GridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridTests.swift; sourceTree = "<group>"; };
+		523E97382A9A8C20002E8EB5 /* LabeledContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledContentTests.swift; sourceTree = "<group>"; };
+		523E973A2A9A8DAD002E8EB5 /* LabeledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledContent.swift; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
@@ -697,6 +701,7 @@
 				F609EFC023A432AA00B9256A /* IDView.swift */,
 				F60EEBC02382EED0007DB53A /* Image.swift */,
 				F6119FD52549EECC0000C54A /* Label.swift */,
+				523E973A2A9A8DAD002E8EB5 /* LabeledContent.swift */,
 				F6119FF3254A00FC0000C54A /* LazyHGrid.swift */,
 				F6C15A20254A0C67000240F1 /* LazyHStack.swift */,
 				F6C15A0C254A05A4000240F1 /* LazyVGrid.swift */,
@@ -820,6 +825,7 @@
 				F609EFC423A4350700B9256A /* IDViewTests.swift */,
 				F60EEBEA2382F004007DB53A /* ImageTests.swift */,
 				F6119FDB2549EF170000C54A /* LabelTests.swift */,
+				523E97382A9A8C20002E8EB5 /* LabeledContentTests.swift */,
 				F6119FE92549F5960000C54A /* LazyHGridTests.swift */,
 				F6C15A16254A0BB5000240F1 /* LazyHStackTests.swift */,
 				F6C15A06254A0592000240F1 /* LazyVGridTests.swift */,
@@ -1102,6 +1108,7 @@
 				F6119FD62549EECC0000C54A /* Label.swift in Sources */,
 				F6DFD88423830E9F0028E84D /* List.swift in Sources */,
 				CDA84478262B6C3E00C56C98 /* Gesture.swift in Sources */,
+				523E973B2A9A8DAD002E8EB5 /* LabeledContent.swift in Sources */,
 				F6DFD880238303AF0028E84D /* NavigationView.swift in Sources */,
 				F6ECF6D623A695FB000FC591 /* ClassifiedView.swift in Sources */,
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
@@ -1260,6 +1267,7 @@
 				CDA844E6262B84ED00C56C98 /* SequenceGestureChildrenTests.swift in Sources */,
 				F6D933A92385E9F700358E0E /* EquatableViewTests.swift in Sources */,
 				F60EEBFB2382F004007DB53A /* TextTests.swift in Sources */,
+				523E97392A9A8C20002E8EB5 /* LabeledContentTests.swift in Sources */,
 				F6C15A99254D9F26000240F1 /* ProgressViewTests.swift in Sources */,
 				F6D933C52385FB1D00358E0E /* SecureFieldTests.swift in Sources */,
 				F609EFBF23A424D800B9256A /* EnvironmentModifiersTests.swift in Sources */,

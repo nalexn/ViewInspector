@@ -180,6 +180,7 @@ private extension UnwrappedView {
         if parent.inspectionCall == "labelView()",
            grandParent is InspectableView<ViewType.ColorPicker>
         || grandParent is InspectableView<ViewType.DatePicker>
+        || grandParent is InspectableView<ViewType.LabeledContent>
         || grandParent is InspectableView<ViewType.Picker>
         || grandParent is InspectableView<ViewType.ProgressView>
         || grandParent is InspectableView<ViewType.Slider>

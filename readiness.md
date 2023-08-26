@@ -62,7 +62,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Image | `label view`, `actualImage: Image` |
 |:white_check_mark:| Image (*) | `rootImage: Image`, `name: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat` |
 |:white_check_mark:| Label | `title view`, `icon view` |
-|:technologist:| LabeledContent | |
+|:white_check_mark:| LabeledContent | `contained view`, `label view` |
 |:white_check_mark:| LabelStyleConfiguration.Icon | |
 |:white_check_mark:| LabelStyleConfiguration.Title | |
 |:white_check_mark:| LazyHGrid | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `rows: [GridItem]` |

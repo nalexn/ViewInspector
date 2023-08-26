@@ -37,6 +37,7 @@ internal extension ViewSearch {
             ViewType.HStack.self,
             ViewType.Image.self,
             ViewType.Label.self,
+            ViewType.LabeledContent.self,
             ViewType.LazyHGrid.self,
             ViewType.LazyHStack.self,
             ViewType.LazyVGrid.self,
