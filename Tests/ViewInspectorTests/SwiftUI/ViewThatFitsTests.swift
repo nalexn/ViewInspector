@@ -1,20 +1,87 @@
 import XCTest
 import SwiftUI
+@testable import ViewInspector
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ViewThatFitsTests: XCTestCase {
     
-    func testAllEnclosedChildTextViews() throws {
+    func testSingleEnclosedView() throws {
         guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
         else { throw XCTSkip() }
-        let sut = TestViewThatFits()
-        let shortString = TestViewThatFits.shortString
-        let longString = TestViewThatFits.longString
-        let longText = try sut.inspect().find(text: longString)
-        let shortText = try sut.inspect().find(text: shortString)
+        let view = ViewThatFits { Text("Test") }
+        let sut = try view.inspect().viewThatFits().text(0).string()
+        XCTAssertEqual(sut, "Test")
+    }
 
-        XCTAssertEqual(try longText.string(), longString)
-        XCTAssertEqual(try shortText.string(), shortString)
+    func testResetsModifiers() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        else { throw XCTSkip() }
+        let view = ViewThatFits { Text("Test") }.padding()
+        let sut = try view.inspect().viewThatFits().text(0)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
+    }
+
+    func testSingleEnclosedViewIndexOutOfBounds() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        else { throw XCTSkip() }
+        let view = ViewThatFits { Text("Test") }
+        XCTAssertThrows(
+            try view.inspect().viewThatFits().text(1),
+            "Enclosed view index '1' is out of bounds: '0 ..< 1'")
+    }
+
+    func testMultipleEnclosedViews() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        else { throw XCTSkip() }
+        let sampleView1 = Text("Test")
+        let sampleView2 = Text("Abc")
+        let sampleView3 = Text("XYZ")
+        let view = ViewThatFits { sampleView1; sampleView2; sampleView3 }
+        let view1 = try view.inspect().viewThatFits().text(0).content.view as? Text
+        let view2 = try view.inspect().viewThatFits().text(1).content.view as? Text
+        let view3 = try view.inspect().viewThatFits().text(2).content.view as? Text
+        XCTAssertEqual(view1, sampleView1)
+        XCTAssertEqual(view2, sampleView2)
+        XCTAssertEqual(view3, sampleView3)
+    }
+
+    func testMultipleEnclosedViewsIndexOutOfBounds() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        else { throw XCTSkip() }
+        let sampleView1 = Text("Test")
+        let sampleView2 = Text("Abc")
+        let view = ViewThatFits { sampleView1; sampleView2 }
+        XCTAssertThrows(
+            try view.inspect().viewThatFits().text(2),
+            "Enclosed view index '2' is out of bounds: '0 ..< 2'")
+    }
+
+    func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        else { throw XCTSkip() }
+        let view = AnyView(ViewThatFits { Text("Test") })
+        XCTAssertNoThrow(try view.inspect().anyView().viewThatFits())
+    }
+
+    func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        else { throw XCTSkip() }
+        let view = VStack {
+            ViewThatFits { Text("Test1") }
+            ViewThatFits { Text("Test2") }
+        }
+        XCTAssertNoThrow(try view.inspect().vStack().viewThatFits(0))
+        XCTAssertNoThrow(try view.inspect().vStack().viewThatFits(1))
+    }
+
+    func testSearch() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        else { throw XCTSkip() }
+        let view = AnyView(TestViewThatFits())
+        XCTAssertEqual(try view.inspect().find(text: TestViewThatFits.longString).pathToRoot,
+            "anyView().view(TestViewThatFits.self).viewThatFits().text(0)")
+        XCTAssertEqual(try view.inspect().find(text: TestViewThatFits.shortString).pathToRoot,
+            "anyView().view(TestViewThatFits.self).viewThatFits().anyView(1).text()")
     }
 }
 
@@ -34,7 +101,7 @@ private struct TestViewThatFits: View {
     var body: some View {
         ViewThatFits {
             Text(Self.longString)
-            Text(Self.shortString)
+            AnyView(Text(Self.shortString))
         }
     }
 }

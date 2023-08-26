@@ -1,24 +1,39 @@
 import SwiftUI
 
-@available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
-    struct ViewThatFits {}
+    
+    struct ViewThatFits: KnownViewType {
+        public static let typePrefix: String = "ViewThatFits"
+    }
 }
 
+// MARK: - Content Extraction
+
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
-extension ViewType.ViewThatFits: SingleViewContent {
+extension ViewType.ViewThatFits: MultipleViewContent {
 
-    public static func child(_ content: Content) throws -> Content {
-        let view: Any = try {
-            guard let rootContent = try? Inspector.attribute(path: "_tree|content", value: content.view) else {
-                // A ViewThatFits View renders only one of its child Views based on the available horizontal space.
-                // This inspection returns all children that can potentially be picked by `ViewThatFits`.
-                // https://developer.apple.com/documentation/swiftui/viewthatfits
-                return try Inspector.attribute(path: "content", value: content.view)
-            }
+    public static func children(_ content: Content) throws -> LazyGroup<Content> {
+        return try ViewType.HStack.children(content)
+    }
+}
 
-            return rootContent
-        }()
-        return try Inspector.unwrap(view: view, medium: content.medium)
+// MARK: - Extraction from SingleViewContent parent
+
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+public extension InspectableView where View: SingleViewContent {
+    
+    func viewThatFits() throws -> InspectableView<ViewType.ViewThatFits> {
+        return try .init(try child(), parent: self)
+    }
+}
+
+// MARK: - Extraction from MultipleViewContent parent
+
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+public extension InspectableView where View: MultipleViewContent {
+    
+    func viewThatFits(_ index: Int) throws -> InspectableView<ViewType.ViewThatFits> {
+        return try .init(try child(at: index), parent: self, index: index)
     }
 }
