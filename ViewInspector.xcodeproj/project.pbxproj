@@ -48,6 +48,8 @@
 		523CD47C277BC91400D4FD3A /* TimelineViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */; };
 		523CD47E277C882E00D4FD3A /* VideoPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47D277C882E00D4FD3A /* VideoPlayerTests.swift */; };
 		523CD480277C98FC00D4FD3A /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523CD47F277C98FC00D4FD3A /* VideoPlayer.swift */; };
+		523E97352A9A6A68002E8EB5 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E97342A9A6A68002E8EB5 /* Grid.swift */; };
+		523E97372A9A6AEF002E8EB5 /* GridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E97362A9A6AEF002E8EB5 /* GridTests.swift */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
@@ -327,6 +329,8 @@
 		523CD47B277BC91400D4FD3A /* TimelineViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewTests.swift; sourceTree = "<group>"; };
 		523CD47D277C882E00D4FD3A /* VideoPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTests.swift; sourceTree = "<group>"; };
 		523CD47F277C98FC00D4FD3A /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
+		523E97342A9A6A68002E8EB5 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		523E97362A9A6AEF002E8EB5 /* GridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridTests.swift; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
@@ -685,6 +689,7 @@
 				F60EEBC52382EED0007DB53A /* Form.swift */,
 				F6D9339A2385AD9100358E0E /* GeometryReader.swift */,
 				CDA84477262B6C3E00C56C98 /* Gesture.swift */,
+				523E97342A9A6A68002E8EB5 /* Grid.swift */,
 				F60EEBC62382EED0007DB53A /* Group.swift */,
 				F6D933AA2385EAD400358E0E /* GroupBox.swift */,
 				F6D933AE2385EBD900358E0E /* HSplitView.swift */,
@@ -807,6 +812,7 @@
 				F60EEBEB2382F004007DB53A /* FormTests.swift */,
 				D766E66F26E17F01004AAA80 /* FullScreenCoverTests.swift */,
 				F6D9339C2385ADA500358E0E /* GeometryReaderTests.swift */,
+				523E97362A9A6AEF002E8EB5 /* GridTests.swift */,
 				F60EEBF12382F004007DB53A /* GroupTests.swift */,
 				F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */,
 				F6D933B02385EC5F00358E0E /* HSplitViewTests.swift */,
@@ -1105,6 +1111,7 @@
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,
 				523CD47A277BC8A700D4FD3A /* TimelineView.swift in Sources */,
+				523E97352A9A6A68002E8EB5 /* Grid.swift in Sources */,
 				5220904C27763ABA001A899A /* ControlGroup.swift in Sources */,
 				F639DBBD23A6B318003A6FED /* PreviewModifiers.swift in Sources */,
 				F6C15AB7254DB173000240F1 /* ScrollViewReader.swift in Sources */,
@@ -1340,6 +1347,7 @@
 				CDA844E0262B84DC00C56C98 /* ExclusiveGestureChildrenTests.swift in Sources */,
 				F6A35A4A25B35F710068B8B2 /* LazyGroupTests.swift in Sources */,
 				F60EEBFC2382F004007DB53A /* HStackTests.swift in Sources */,
+				523E97372A9A6AEF002E8EB5 /* GridTests.swift in Sources */,
 				CDA84452262B6A7A00C56C98 /* GestureActionTests.swift in Sources */,
 				5220904E27763ACF001A899A /* ControlGroupTests.swift in Sources */,
 				5223540026D62CB2008DA52F /* ToolbarTests.swift in Sources */,

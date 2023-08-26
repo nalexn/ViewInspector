@@ -29,6 +29,8 @@ internal extension ViewSearch {
             ViewType.ForEach.self,
             ViewType.Form.self,
             ViewType.GeometryReader.self,
+            ViewType.Grid.self,
+            ViewType.GridRow.self,
             ViewType.Group.self,
             ViewType.GroupBox.self,
             ViewType.HSplitView.self,

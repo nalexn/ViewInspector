@@ -48,6 +48,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| Gauge | |
 |:white_check_mark:| FullScreenCover | `dismiss()` |
 |:white_check_mark:| GeometryReader | `contained view` |
+|:white_check_mark:| Grid | `alignment: Alignment`, `horizontalSpacing: CGFloat?`, `verticalSpacing: CGFloat?` |
+|:white_check_mark:| GridRow | `alignment: VerticalAlignment?` |
 |:white_check_mark:| Group | `contained view` |
 |:white_check_mark:| GroupBox | `contained view`, `label view` |
 |:white_check_mark:| HSplitView | `contained view` |
