@@ -84,6 +84,7 @@ internal extension ViewSearch {
             ViewType.Toolbar.ItemGroup.self,
             ViewType.VideoPlayer.self,
             ViewType.ViewModifierContent.self,
+            ViewType.ViewThatFits.self,
             ViewType.VSplitView.self,
             ViewType.VStack.self,
             ViewType.ZStack.self,
