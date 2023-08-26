@@ -15,6 +15,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 
 | Status | View | Inspectable Attributes |
 |:---:|---|---|
+|:technologist:| AccessoryWidgetBackground | |
+|:technologist:| AddPassToWalletButton | |
 |:white_check_mark:| ActionSheet | `title view`, `message view`, `button(_ index: Int)`, `dismiss()` |
 |:white_check_mark:| Alert | `title view`, `message view`, `actions view`, `primaryButton`, `secondaryButton`, `dismiss()` |
 |:white_check_mark:| AngularGradient | `gradient: Gradient`, `center: UnitPoint`, `startAngle: Angle`, `endAngle: Angle` |
@@ -25,6 +27,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:technologist:| CameraView | |
 |:white_check_mark:| Canvas | `symbols view`, `colorMode: ColorRenderingMode`, `opaque: Bool`, `rendersAsynchronously: Bool` |
+|:technologist:| Chart | |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
 |:white_check_mark:| ControlGroup | |
@@ -36,12 +39,14 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| UIViewRepresentable | `uiView: UIView` |
 |:white_check_mark:| UIViewControllerRepresentable | `viewController: UIViewController` |
 |:white_check_mark:| DatePicker | `label view`, `select(date: Date)` |
+|:technologist:| DevicePicker | |
 |:white_check_mark:| DisclosureGroup | `contained view`, `label view`, `isExpanded: Bool`, `expand()`, `collapse()` |
 |:white_check_mark:| Divider | |
 |:white_check_mark:| EditButton | `editMode: Binding<EditMode>?` |
 |:white_check_mark:| EllipticalGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadiusFraction: CGFloat`, `endRadiusFraction: CGFloat` |
 |:white_check_mark:| EmptyView | |
 |:white_check_mark:| EquatableView | `contained view` |
+|:technologist:| FamilyActivityPicker | |
 |:white_check_mark:| Font (*) | `size: CGFloat`, `isFixedSize: Bool`, `name: String`, `weight: Font.Weight`, `design: Font.Design`, `style: Font.TextStyle` |
 |:white_check_mark:| ForEach | `contained view`, `callOnDelete`, `callOnMove`, `callOnInsert` |
 |:white_check_mark:| Form | `contained view` |
@@ -57,6 +62,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Image | `label view`, `actualImage: Image` |
 |:white_check_mark:| Image (*) | `rootImage: Image`, `name: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat` |
 |:white_check_mark:| Label | `title view`, `icon view` |
+|:technologist:| LabeledContent | |
 |:white_check_mark:| LabelStyleConfiguration.Icon | |
 |:white_check_mark:| LabelStyleConfiguration.Title | |
 |:white_check_mark:| LazyHGrid | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?`, `pinnedViews: PinnedScrollableViews`, `rows: [GridItem]` |
@@ -66,6 +72,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| LinearGradient | `gradient: Gradient`, `startPoint: UnitPoint`, `endPoint: UnitPoint` |
 |:white_check_mark:| Link | `label view`, `url: URL` |
 |:white_check_mark:| List | `contained view` |
+|:technologist:| LocalAuthenticationView | |
 |:white_check_mark:| LocationButton | `title: LocationButton.Title`, `tap()` |
 |:white_check_mark:| Map | `(set)coordinateRegion: MKCoordinateRegion`, `(set)userTrackingMode: MapUserTrackingMode`, `(set)mapRect: MKMapRect`, `interactionModes: MapInteractionModes`, `showsUserLocation: Bool` |
 |:white_check_mark:| MapAnnotation | `coordinate: CLLocationCoordinate2D`, `viewType: MapAnnotation.Type`, (*)`anchorPoint: CGPoint`, (*)`tintColor: Color?`, (*)`contained view` |
@@ -82,6 +89,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Optional | `contained view` |
 |:white_check_mark:| OutlineGroup | `leaf view`, `source data` |
 |:white_check_mark:| PasteButton | `supportedTypes: [String]`|
+|:technologist:| PayWithApplePayButton | |
+|:technologist:| PhotosPicker | |
 |:white_check_mark:| Picker | `contained view`, `label view`, `select(value: Hashable)`, `selectedValue()` |
 |:white_check_mark:| Popover | `contained view`, `attachmentAnchor: PopoverAttachmentAnchor`, `arrowEdge: Edge`, `dismiss()` |
 |:white_check_mark:| PrimitiveButtonStyleConfiguration.Label | |
@@ -89,35 +98,42 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ProgressViewStyleConfiguration.CurrentValueLabel | |
 |:white_check_mark:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
+|:technologist:| RenameButton | |
 |:white_check_mark:| SafeAreaInset | `regions: SafeAreaRegions`, `spacing: CGFloat?`, `edge: Edge` |
 |:technologist:| SceneView | |
 |:white_check_mark:| ScrollView | `contained view`, `axes: Axis.Set`, `showsIndicators: Bool` |
 |:white_check_mark:| ScrollViewReader | `contained view` |
 |:white_check_mark:| Section | `contained view`, `header view`, `footer view` |
 |:white_check_mark:| SecureField | `label view`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
+|:technologist:| ShareLink | |
+|:technologist:| ShortcutsLink | |
 |:white_check_mark:| Shape | `func path(in rect: CGRect) -> Path`, `inset: CGFloat`, `offset: CGSize`, `scale: (x: CGFloat, y: CGFloat, anchor: UnitPoint)`, `rotation: (angle: Angle, anchor: UnitPoint)`, `transform: CGAffineTransform`, `size: CGSize`, `strokeStyle: StrokeStyle`, `trim: (from: CGFloat, to: CGFloat)`, `fillShapeStyle() -> ShapeStyle`, `fillStyle: FillStyle` |
 |:white_check_mark:| Sheet | `dismiss()` |
 |:white_check_mark:| SignInWithAppleButton | `labelType: SignInWithAppleButton.Label`, `tap(_: SignInOutcome)` |
+|:technologist:| SiriTipView | |
 |:white_check_mark:| Slider | `label view`, `callOnEditingChanged()`, `value: Double`, `setValue(_: Double)` |
 |:white_check_mark:| Spacer | `minLength: CGFloat?` |
 |:technologist:| SpriteView | |
 |:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:white_check_mark:| SubscriptionView | |
+|:technologist:| Table | |
 |:white_check_mark:| TabView | `contained view` |
 |:technologist:| Table | |
 |:white_check_mark:| Text | `string(locale: Locale) -> String`, `attributes: TextAttributes`, `attributedString: AttributedString`, `images: [Image]` |
 |:white_check_mark:| TextEditor | `input: String`, `setInput(_: String)` |
 |:white_check_mark:| TextField | `label view`, `callOnEditingChanged()`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
+|:technologist:| TextFieldLink | |
 |:white_check_mark:| TimelineView | `contentView(Context)` |
 |:white_check_mark:| Toggle | `label view`, `tap()`, `isOn: Bool` |
 |:white_check_mark:| ToggleStyleConfiguration.Label | |
 |:white_check_mark:| ToolbarItem | |
 |:white_check_mark:| TouchBar | `contained view`, `touchBarID: String` |
 |:white_check_mark:| TupleView | |
+|:technologist:| VerifyIdentityWithWalletButton | |
+|:white_check_mark:| VideoPlayer | `player: AVPlayer?`, `videoOverlay view` |
 |:white_check_mark:| ViewThatFits | |
 |:white_check_mark:| VSplitView | `contained view` |
 |:white_check_mark:| VStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
-|:white_check_mark:| VideoPlayer | `player: AVPlayer?`, `videoOverlay view` |
 |:white_check_mark:| ZStack | `contained view`, `alignment: Alignment` |
 
 (*) The following attributes are available directly for the `Font` and `Image` SwiftUI types, as opposed to the attributes available for wrapper views extracted from the hierarchy. In case you obtained an image view from the hierarchy using `image()` call, you'd need to additionally call `actualImage: Image` to get the genuine `Image` structure.
@@ -132,11 +148,14 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `@Environment` |
 |:white_check_mark:| `@EnvironmentObject` |
 |:technologist:| `@FetchRequest` |
-|:technologist:| `@FocusState` |
 |:technologist:| `@FocusedBinding` |
+|:technologist:| `@FocusedObject` |
+|:technologist:| `@FocusedValue` |
+|:technologist:| `@FocusState` |
 |:technologist:| `@FocusedValue` |
 |:white_check_mark:| `@GestureState` |
 |:technologist:| `@Namespace` |
+|:technologist:| `@NSApplicationDelegateAdaptor` |
 |:white_check_mark:| `@ObservedObject` |
 |:technologist:| `@ScaledMetric` |
 |:technologist:| `@SceneStorage` |
@@ -144,6 +163,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `@State` |
 |:technologist:| `@StateObject` |
 |:technologist:| `@UIApplicationDelegateAdaptor` |
+|:technologist:| `@WKApplicationDelegateAdaptor` |
+|:technologist:| `@WKExtensionDelegateAdaptor` |
 
 ## Gestures
 
@@ -158,6 +179,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `RotationGesture` |
 |:white_check_mark:| `SequenceGesture` |
 |:white_check_mark:| `SimultaneousGesture` |
+|:white_check_mark:| `SpatialTapGesture` |
 |:white_check_mark:| `TapGesture` |
 
 ## View Modifiers
