@@ -1,14 +1,14 @@
 import SwiftUI
 
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
-internal extension ViewType {
+public extension ViewType {
     struct ViewThatFits {}
 }
 
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
 extension ViewType.ViewThatFits: SingleViewContent {
 
-    static func child(_ content: Content) throws -> Content {
+    public static func child(_ content: Content) throws -> Content {
         let view: Any = try {
             guard let rootContent = try? Inspector.attribute(path: "_tree|content", value: content.view) else {
                 // A ViewThatFits View renders only one of its child Views based on the available horizontal space.
