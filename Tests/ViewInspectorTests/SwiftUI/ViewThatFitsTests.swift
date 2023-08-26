@@ -6,7 +6,7 @@ import SwiftUI
 final class ViewThatFitsTests: XCTestCase {
     
     func testSingleEnclosedView() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let view = ViewThatFits { Text("Test") }
         let sut = try view.inspect().viewThatFits().text(0).string()
@@ -14,7 +14,7 @@ final class ViewThatFitsTests: XCTestCase {
     }
 
     func testResetsModifiers() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let view = ViewThatFits { Text("Test") }.padding()
         let sut = try view.inspect().viewThatFits().text(0)
@@ -22,7 +22,7 @@ final class ViewThatFitsTests: XCTestCase {
     }
 
     func testSingleEnclosedViewIndexOutOfBounds() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let view = ViewThatFits { Text("Test") }
         XCTAssertThrows(
@@ -31,7 +31,7 @@ final class ViewThatFitsTests: XCTestCase {
     }
 
     func testMultipleEnclosedViews() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
@@ -46,7 +46,7 @@ final class ViewThatFitsTests: XCTestCase {
     }
 
     func testMultipleEnclosedViewsIndexOutOfBounds() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let sampleView1 = Text("Test")
         let sampleView2 = Text("Abc")
@@ -57,14 +57,14 @@ final class ViewThatFitsTests: XCTestCase {
     }
 
     func testExtractionFromSingleViewContainer() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let view = AnyView(ViewThatFits { Text("Test") })
         XCTAssertNoThrow(try view.inspect().anyView().viewThatFits())
     }
 
     func testExtractionFromMultipleViewContainer() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let view = VStack {
             ViewThatFits { Text("Test1") }
@@ -75,7 +75,7 @@ final class ViewThatFitsTests: XCTestCase {
     }
 
     func testSearch() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let view = AnyView(TestViewThatFits())
         XCTAssertEqual(try view.inspect().find(text: TestViewThatFits.longString).pathToRoot,
@@ -87,7 +87,7 @@ final class ViewThatFitsTests: XCTestCase {
 
 // MARK: - TestViewThatFits
 
-@available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 private struct TestViewThatFits: View {
     
     static var longString: String {

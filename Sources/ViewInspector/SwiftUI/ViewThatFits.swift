@@ -10,7 +10,7 @@ public extension ViewType {
 
 // MARK: - Content Extraction
 
-@available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 extension ViewType.ViewThatFits: MultipleViewContent {
 
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
@@ -20,7 +20,7 @@ extension ViewType.ViewThatFits: MultipleViewContent {
 
 // MARK: - Extraction from SingleViewContent parent
 
-@available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 public extension InspectableView where View: SingleViewContent {
     
     func viewThatFits() throws -> InspectableView<ViewType.ViewThatFits> {
@@ -30,7 +30,7 @@ public extension InspectableView where View: SingleViewContent {
 
 // MARK: - Extraction from MultipleViewContent parent
 
-@available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 public extension InspectableView where View: MultipleViewContent {
     
     func viewThatFits(_ index: Int) throws -> InspectableView<ViewType.ViewThatFits> {
