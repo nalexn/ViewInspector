@@ -203,6 +203,7 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertNoThrow(try sut.find(text: "B to A"))
     }
     
+    @available(watchOS 7.0, *)
     func testRecursiveGenericReferenceView() throws {
         let view = TestRecursiveGenericView
             .init(view: TestRecursiveGenericView

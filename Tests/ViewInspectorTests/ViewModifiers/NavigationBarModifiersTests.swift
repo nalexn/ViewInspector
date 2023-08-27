@@ -6,11 +6,13 @@ import SwiftUI
 final class NavigationBarModifiersTests: XCTestCase {
     
     func testNavigationViewStyle() throws {
+        guard #available(watchOS 7.0, *) else { throw XCTSkip() }
         let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
     
     func testNavigationStyleInspection() throws {
+        guard #available(watchOS 7.0, *) else { throw XCTSkip() }
         let sut = EmptyView().navigationViewStyle(DefaultNavigationViewStyle())
         XCTAssertTrue(try sut.inspect().navigationViewStyle() is DefaultNavigationViewStyle)
     }
