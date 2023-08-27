@@ -66,6 +66,7 @@ internal extension ViewSearch {
             ViewType.Section.self,
             ViewType.SecureField.self,
             ViewType.SignInWithAppleButton.self,
+            ViewType.ShareLink.self,
             ViewType.Sheet.self,
             ViewType.Slider.self,
             ViewType.Spacer.self,
