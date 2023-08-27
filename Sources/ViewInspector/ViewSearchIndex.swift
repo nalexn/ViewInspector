@@ -49,6 +49,7 @@ internal extension ViewSearch {
             ViewType.Map.self,
             ViewType.Menu.self,
             ViewType.MenuButton.self,
+            ViewType.MultiDatePicker.self,
             ViewType.NavigationLink.self,
             ViewType.NavigationView.self,
             ViewType.NavigationSplitView.self,

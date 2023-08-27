@@ -52,6 +52,8 @@
 		523E97372A9A6AEF002E8EB5 /* GridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E97362A9A6AEF002E8EB5 /* GridTests.swift */; };
 		523E97392A9A8C20002E8EB5 /* LabeledContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E97382A9A8C20002E8EB5 /* LabeledContentTests.swift */; };
 		523E973B2A9A8DAD002E8EB5 /* LabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E973A2A9A8DAD002E8EB5 /* LabeledContent.swift */; };
+		523E973D2A9B25FD002E8EB5 /* MultiDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E973C2A9B25FD002E8EB5 /* MultiDatePicker.swift */; };
+		523E973F2A9B2616002E8EB5 /* MultiDatePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523E973E2A9B2616002E8EB5 /* MultiDatePickerTests.swift */; };
 		52507626264FC0F400ADE4E7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507625264FC0F400ADE4E7 /* Alert.swift */; };
 		525076282650000600ADE4E7 /* AlertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525076272650000600ADE4E7 /* AlertTests.swift */; };
 		52507647265155C000ADE4E7 /* TransitiveModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */; };
@@ -335,6 +337,8 @@
 		523E97362A9A6AEF002E8EB5 /* GridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridTests.swift; sourceTree = "<group>"; };
 		523E97382A9A8C20002E8EB5 /* LabeledContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledContentTests.swift; sourceTree = "<group>"; };
 		523E973A2A9A8DAD002E8EB5 /* LabeledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledContent.swift; sourceTree = "<group>"; };
+		523E973C2A9B25FD002E8EB5 /* MultiDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiDatePicker.swift; sourceTree = "<group>"; };
+		523E973E2A9B2616002E8EB5 /* MultiDatePickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiDatePickerTests.swift; sourceTree = "<group>"; };
 		52507625264FC0F400ADE4E7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		525076272650000600ADE4E7 /* AlertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTests.swift; sourceTree = "<group>"; };
 		52507646265155C000ADE4E7 /* TransitiveModifiersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitiveModifiersTests.swift; sourceTree = "<group>"; };
@@ -714,6 +718,7 @@
 				52F356A9267692D100695E43 /* MapAnnotation.swift */,
 				F6C15A70254B68C0000240F1 /* Menu.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
+				523E973C2A9B25FD002E8EB5 /* MultiDatePicker.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
 				5296338929697C7D00EC6C81 /* NavigationSplitView.swift */,
 				529633852969672A00EC6C81 /* NavigationStack.swift */,
@@ -838,6 +843,7 @@
 				52F356AB2676940A00695E43 /* MapAnnotationTests.swift */,
 				F6C15A6A254B669F000240F1 /* MenuTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
+				523E973E2A9B2616002E8EB5 /* MultiDatePickerTests.swift */,
 				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
 				5296338B29697EB400EC6C81 /* NavigationSplitViewTests.swift */,
 				52963387296967ED00EC6C81 /* NavigationStackTests.swift */,
@@ -1211,6 +1217,7 @@
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
 				F6C15AA3254DA270000240F1 /* ProgressView.swift in Sources */,
 				F6ECF6CA23A66FE2000FC591 /* AnimationModifiers.swift in Sources */,
+				523E973D2A9B25FD002E8EB5 /* MultiDatePicker.swift in Sources */,
 				F66EDB5B23EDC19000A01B9F /* Spacer.swift in Sources */,
 				F639DBBF23A6CF03003A6FED /* AccessibilityModifiers.swift in Sources */,
 				F6D933AB2385EAD400358E0E /* GroupBox.swift in Sources */,
@@ -1242,6 +1249,7 @@
 				F60385D723D3CDED008F31BD /* InspectionEmissaryTests.swift in Sources */,
 				5220904027748D32001A899A /* NavigationBarModifiersTests.swift in Sources */,
 				CDA844F2262B86D900C56C98 /* GestureExampleTests.swift in Sources */,
+				523E973F2A9B2616002E8EB5 /* MultiDatePickerTests.swift in Sources */,
 				F6D933C92385FC1A00358E0E /* StepperTests.swift in Sources */,
 				F60EEC012382F004007DB53A /* ButtonTests.swift in Sources */,
 				52963388296967ED00EC6C81 /* NavigationStackTests.swift in Sources */,
