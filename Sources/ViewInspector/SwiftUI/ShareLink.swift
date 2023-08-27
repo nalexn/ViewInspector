@@ -42,7 +42,7 @@ extension ViewType.ShareLink: SupplementaryChildren {
             switch index {
             case 0:
                 var view = try Inspector.attribute(label: "label", value: parent.content.view)
-                if view is DefaultShareLinkLabel {
+                if Inspector.typeName(value: view) == "DefaultShareLinkLabel" {
                     view = try Inspector.attribute(label: "text", value: view)
                 }
                 let content = try Inspector.unwrap(content: Content(view, medium: medium))
