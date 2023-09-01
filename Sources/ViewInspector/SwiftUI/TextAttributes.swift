@@ -257,7 +257,9 @@ public extension ViewType.Text {
             chunks.map { $0.string }.joined()
         }
         
-        private func commonTrait<V>(name: String, _ trait: (Any) throws -> V?) throws -> V where V: Equatable {
+        private func commonTrait<V>(
+            name: String, fullRange: Bool = true, _ trait: (Any) throws -> V?
+        ) throws -> V where V: Equatable {
             guard chunks.count > 0 else {
                 throw InspectionError.textAttribute("Invalid text range")
             }
@@ -272,11 +274,13 @@ public extension ViewType.Text {
             guard let trait = traits.first else {
                 throw InspectionError.modifierNotFound(parent: "Text", modifier: name, index: 0)
             }
-            guard traits.count == chunks.count else {
-                throw InspectionError.textAttribute("Modifier '\(name)' is applied only to a subrange")
-            }
-            guard traits.allSatisfy({ $0 == trait }) else {
-                throw InspectionError.textAttribute("Modifier '\(name)' has different values in subranges")
+            if fullRange {
+                guard traits.count == chunks.count else {
+                    throw InspectionError.textAttribute("Modifier '\(name)' is applied only to a subrange")
+                }
+                guard traits.allSatisfy({ $0 == trait }) else {
+                    throw InspectionError.textAttribute("Modifier '\(name)' has different values in subranges")
+                }
             }
             return trait
         }
@@ -339,6 +343,21 @@ public extension Font {
                 .attribute(path: "provider|base|textStyle", value: self, type: Font.TextStyle.self))
         } catch {
             throw InspectionError.attributeNotFound(label: "style", type: "Font")
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewType.Text.Attributes {
+    
+    func accessibilityLabel() throws -> Text {
+        return try commonTrait(name: "accessibilityLabel", fullRange: false) { modifier in
+            guard let child = try? Inspector.attribute(label: "anyTextModifier", value: modifier),
+                  Inspector.typeName(value: child) == "AccessibilityTextModifier",
+                  let label = try? Inspector.attribute(
+                    path: "anyTextModifier|value|label|some", value: modifier, type: Text.self)
+            else { return nil }
+            return label
         }
     }
 }

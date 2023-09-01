@@ -6,6 +6,13 @@ import SwiftUI
 public extension InspectableView {
     
     func accessibilityLabel() throws -> InspectableView<ViewType.Text> {
+        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *),
+           let text = content.view as? Text,
+           let label = try? InspectableView<ViewType.Text>(Content(text), parent: nil)
+            .attributes().accessibilityLabel() {
+            let medium = content.medium.resettingViewModifiers()
+            return try .init(try Inspector.unwrap(content: Content(label, medium: medium)), parent: self)
+        }
         let text: Text
         let call = "accessibilityLabel"
         if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {

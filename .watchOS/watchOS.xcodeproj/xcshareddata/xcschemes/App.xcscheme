@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1300"
-   version = "1.3">
+   LastUpgradeVersion = "1430"
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -9,28 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "529300FE26EFC96600012E90"
-               BuildableName = "watchOS-App-2.app"
-               BlueprintName = "watchOS-App-2"
-               ReferencedContainer = "container:watchOS.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "520DC68B26F60FF400FCFFFD"
-               BuildableName = "watchOS-2-Tests.xctest"
-               BlueprintName = "watchOS-2-Tests"
+               BlueprintIdentifier = "52C351822AA20EA900FC0A1E"
+               BuildableName = "watchOS.app"
+               BlueprintName = "watchOS"
                ReferencedContainer = "container:watchOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -40,15 +26,17 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "NO"
+            parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "520DC68B26F60FF400FCFFFD"
-               BuildableName = "watchOS-2-Tests.xctest"
-               BlueprintName = "watchOS-2-Tests"
+               BlueprintIdentifier = "52C3519A2AA20EAB00FC0A1E"
+               BuildableName = "AppTests.xctest"
+               BlueprintName = "AppTests"
                ReferencedContainer = "container:watchOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -68,9 +56,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "529300FE26EFC96600012E90"
-            BuildableName = "watchOS-App-2.app"
-            BlueprintName = "watchOS-App-2"
+            BlueprintIdentifier = "52C351882AA20EA900FC0A1E"
+            BuildableName = "App.app"
+            BlueprintName = "App"
             ReferencedContainer = "container:watchOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -84,9 +72,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "529300FE26EFC96600012E90"
-            BuildableName = "watchOS-App-2.app"
-            BlueprintName = "watchOS-App-2"
+            BlueprintIdentifier = "52C351822AA20EA900FC0A1E"
+            BuildableName = "watchOS.app"
+            BlueprintName = "watchOS"
             ReferencedContainer = "container:watchOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
