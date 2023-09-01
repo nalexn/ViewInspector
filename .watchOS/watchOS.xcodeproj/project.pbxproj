@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		52474D122AA20FC1005CD905 /* watchOS_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52474D112AA20FC1005CD905 /* watchOS_Watch_AppTests.swift */; };
+		52474D142AA2115E005CD905 /* watchOSApp+Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52474D132AA2115E005CD905 /* watchOSApp+Testable.swift */; };
 		52C3518A2AA20EA900FC0A1E /* App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 52C351892AA20EA900FC0A1E /* App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52C3518F2AA20EA900FC0A1E /* watchOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C3518E2AA20EA900FC0A1E /* watchOSApp.swift */; };
 		52C351932AA20EAB00FC0A1E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C351922AA20EAB00FC0A1E /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		52474D112AA20FC1005CD905 /* watchOS_Watch_AppTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = watchOS_Watch_AppTests.swift; sourceTree = "<group>"; };
+		52474D132AA2115E005CD905 /* watchOSApp+Testable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "watchOSApp+Testable.swift"; sourceTree = "<group>"; };
 		52C351832AA20EA900FC0A1E /* watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C351892AA20EA900FC0A1E /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C3518E2AA20EA900FC0A1E /* watchOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOSApp.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				52C3518E2AA20EA900FC0A1E /* watchOSApp.swift */,
+				52474D132AA2115E005CD905 /* watchOSApp+Testable.swift */,
 				52C351922AA20EAB00FC0A1E /* Assets.xcassets */,
 				52C351942AA20EAB00FC0A1E /* Preview Content */,
 			);
@@ -248,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52C3518F2AA20EA900FC0A1E /* watchOSApp.swift in Sources */,
+				52474D142AA2115E005CD905 /* watchOSApp+Testable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
