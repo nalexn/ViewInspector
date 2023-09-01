@@ -14,6 +14,19 @@ public extension InspectableView {
     }
     
     func callOnLongPressGesture() throws {
+        if let longPress = try? modifier({ modifier -> Bool in
+            guard let longPress = try? Inspector
+                .attribute(path: "modifier|gesture|content", value: modifier),
+                  Inspector.typeName(value: longPress) == "LongPressGesture"
+            else { return false }
+            return true
+        }, call: "onLongPressGesture"),
+           let callback = try? Inspector.attribute(
+               path: "modifier|gesture|modifier|callbacks|pressed|some",
+               value: longPress, type: ((CGPoint?) -> Void).self) {
+            callback(nil)
+            return
+        }
         let callback = try modifierAttribute(
             modifierName: "LongPressGesture",
             path: "modifier|gesture|modifier|callbacks|pressed",
