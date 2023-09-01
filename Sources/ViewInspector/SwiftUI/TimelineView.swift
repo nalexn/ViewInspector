@@ -78,8 +78,18 @@ public extension ViewType.TimelineView {
             self.date = date
             self.cadence = cadence
         }
-        
+        fileprivate var context24: Context24 { Context24(context: self) }
         fileprivate var context32: Context32 { Context32(context: self) }
+    }
+    fileprivate struct Context24 {
+        private let date: Date
+        private let cadence: Context.Cadence
+        private let filler: (Int32, Int32, Int32) = (0, 0, 0)
+        
+        init(context: Context) {
+            self.date = context.date
+            self.cadence = context.cadence
+        }
     }
     fileprivate struct Context32 {
         private let date: Date
@@ -117,6 +127,8 @@ extension TimelineView: ElementViewProvider {
         switch MemoryLayout<C>.size {
         case 9:
             return try Inspector.unsafeMemoryRebind(value: context, type: C.self)
+        case 24:
+            return try Inspector.unsafeMemoryRebind(value: context.context24, type: C.self)
         case 32:
             return try Inspector.unsafeMemoryRebind(value: context.context32, type: C.self)
         default:
