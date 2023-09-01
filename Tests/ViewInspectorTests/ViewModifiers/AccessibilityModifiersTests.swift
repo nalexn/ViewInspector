@@ -28,6 +28,17 @@ final class ViewAccessibilityTests: XCTestCase {
         }
     }
     
+    func testAccessibilityLabelTextModifierInspection() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let view1 = Text("1").accessibilityLabel("2")
+        let sut1 = try view1.inspect().text().accessibilityLabel().string()
+        XCTAssertEqual(sut1, "2")
+        let view2 = Text("3").accessibilityLabel(Text("4")) + Text("5")
+        let sut2 = try view2.inspect().text().accessibilityLabel().string()
+        XCTAssertEqual(sut2, "4")
+    }
+    
     func testAccessibilityValue() throws {
         let sut = EmptyView().accessibility(value: Text(""))
         XCTAssertNoThrow(try sut.inspect().emptyView())
