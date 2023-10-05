@@ -110,10 +110,15 @@ internal extension Inspector {
 private extension String {
     func sanitizingNamespace() -> String {
         var str = self
-        while let range = str.range(of: ".(unknown context at ") {
-            let end = str.index(range.upperBound, offsetBy: .init(11))
-            str.replaceSubrange(range.lowerBound..<end, with: "")
-        }
+
+        let pattern = "\\.\\(unknown context at ..........\\)"
+        let regex = try! NSRegularExpression(pattern: pattern)
+        let range = NSRange(location: 0, length: str.utf16.count)
+        str = regex.stringByReplacingMatches(
+          in: str,
+          options: [],
+          range: range,
+          withTemplate: "")
 
         // For Objective-C classes String(reflecting:) sometimes adds the namespace __C, drop it too
         str = str.replacingOccurrences(of: "<__C.", with: "<")
