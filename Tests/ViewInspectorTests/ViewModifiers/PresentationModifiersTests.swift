@@ -10,6 +10,7 @@ final class ViewColorTests: XCTestCase {
     func testForegroundColor() throws {
         let sut = EmptyView().foregroundColor(.purple)
         XCTAssertNoThrow(try sut.inspect().emptyView())
+        XCTAssertEqual(try sut.inspect().foregroundColor(), .purple)
     }
     
     func testForegroundColorInspection() throws {
@@ -83,6 +84,22 @@ final class ViewColorTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().emptyView().preferredColorScheme(), .dark)
     }
     #endif
+    
+    func testForegroundStyle() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().foregroundStyle(ForegroundStyle())
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+        XCTAssertNoThrow(try sut.inspect().emptyView().foregroundStyleShapeStyle(ForegroundStyle.self))
+    }
+
+    func testForegroundStyleColor() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().foregroundStyle(.purple)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+        XCTAssertEqual(try sut.inspect().emptyView().foregroundStyleShapeStyle(Color.self), .purple)
+    }
 }
 
 // MARK: - ViewPreviewTests

@@ -416,7 +416,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func foregroundColor(Color?) -> some View` |
-|:technologist:| `func foregroundStyle(...) -> some View` |
+|:white_check_mark:| `func foregroundStyle(...) -> some View` |
 |:white_check_mark:| `func accentColor(Color?) -> some View` |
 |:white_check_mark:| `func tint(Color?) -> some View` |
 |:white_check_mark:| `func listItemTint(Color?) -> some View` |
