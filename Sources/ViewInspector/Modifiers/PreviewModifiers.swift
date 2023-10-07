@@ -64,7 +64,7 @@ public extension InspectableView {
             path: "modifier|value", type: Optional<ColorScheme>.self, call: "preferredColorScheme")
     }
 
-    @available(macOS 12.0, *)
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     func foregroundStyleShapeStyle<S>(_ style: S.Type) throws -> S where S: ShapeStyle {
         let typeName = Inspector.typeName(type: S.self)
         return try modifierAttribute(
