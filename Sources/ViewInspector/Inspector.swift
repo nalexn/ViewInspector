@@ -112,7 +112,9 @@ private extension String {
         var str = self
 
         let pattern = "\\.\\(unknown context at ..........\\)"
+        // swiftlint:disable force_try
         let regex = try! NSRegularExpression(pattern: pattern)
+        // swiftlint:enable force_try
         let range = NSRange(location: 0, length: str.utf16.count)
         str = regex.stringByReplacingMatches(
           in: str,
