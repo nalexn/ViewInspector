@@ -30,6 +30,20 @@ public extension InspectableView {
     }
 }
 
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+public extension InspectableView {
+
+    func ignoresSafeArea() throws -> (regions: SafeAreaRegions, edges: Edge.Set) {
+        let regions = try modifierAttribute(
+            modifierName: "_SafeAreaRegionsIgnoringLayout", path: "modifier|regions",
+            type: SafeAreaRegions.self, call: "ignoresSafeArea(_:edges:)")
+        let edges = try modifierAttribute(
+            modifierName: "_SafeAreaRegionsIgnoringLayout", path: "modifier|edges",
+            type: Edge.Set.self, call: "ignoresSafeArea(_:edges:)")
+        return (regions, edges)
+    }
+}
+
 // MARK: - ViewLayering
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
