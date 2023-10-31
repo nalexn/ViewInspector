@@ -48,4 +48,12 @@ final class NavigationDestinationTests: XCTestCase {
         XCTAssertEqual(destination.pathToRoot,
                        "emptyView().navigationDestination().emptyView()")
     }
+
+    func testDestinationSearch() throws {
+        guard #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+        else { throw XCTSkip() }
+        let binding = Binding(wrappedValue: true)
+        let sut = Color.blue.navigationDestination(isPresented: binding, destination: { Text("abc") })
+        XCTAssertNoThrow(try sut.inspect().find(text: "abc"))
+    }
 }
