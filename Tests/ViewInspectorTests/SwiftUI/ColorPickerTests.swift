@@ -73,8 +73,8 @@ final class ColorPickerTests: XCTestCase {
         let binding2 = Binding<Color>(wrappedValue: .red)
         let sut2 = ColorPicker(selection: binding2) { Text("") }
         XCTAssertEqual(binding2.wrappedValue.rgba(), Color.red.rgba())
-        try sut2.inspect().colorPicker().select(color: Color.yellow)
-        XCTAssertEqual(binding2.wrappedValue.rgba(), Color.yellow.rgba())
+        try sut2.inspect().colorPicker().select(color: Color.black)
+        XCTAssertEqual(binding2.wrappedValue.rgba(), Color.black.rgba())
     }
     
     func testColorSelectionWhenDisabled() throws {
