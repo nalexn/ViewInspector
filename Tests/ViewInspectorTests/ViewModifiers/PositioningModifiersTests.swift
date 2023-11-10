@@ -76,6 +76,29 @@ final class ViewPositioningTests: XCTestCase {
             .inspect().emptyView().coordinateSpaceName()
         XCTAssertEqual(sut, name)
     }
+
+    func testIgnoresSafeArea() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().ignoresSafeArea()
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testIgnoresSafeAreaInspection() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
+        let sut = try EmptyView().ignoresSafeArea(.container, edges: .bottom).inspect().emptyView().ignoresSafeArea()
+        XCTAssertEqual(sut.regions, .container)
+        XCTAssertEqual(sut.edges, .bottom)
+    }
+
+    func testIgnoresSafeAreaDefaultsInspection() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        else { throw XCTSkip() }
+        let sut = try EmptyView().ignoresSafeArea().inspect().emptyView().ignoresSafeArea()
+        XCTAssertEqual(sut.regions, .all)
+        XCTAssertEqual(sut.edges, .all)
+    }
 }
 
 // MARK: - ViewAligningTests
