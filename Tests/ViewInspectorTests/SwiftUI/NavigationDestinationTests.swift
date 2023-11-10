@@ -56,4 +56,15 @@ final class NavigationDestinationTests: XCTestCase {
         let sut = Color.blue.navigationDestination(isPresented: binding, destination: { Text("abc") })
         XCTAssertNoThrow(try sut.inspect().find(text: "abc"))
     }
+    
+    func testDestinationIsPresented() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+        else { throw XCTSkip() }
+        let binding = Binding(wrappedValue: true)
+        let sut = EmptyView().navigationDestination(isPresented: binding, destination: { EmptyView() })
+        let destination = try sut.inspect().emptyView().navigationDestination()
+        XCTAssertTrue(try destination.isPresented())
+        try destination.set(isPresented: false)
+        XCTAssertFalse(try destination.isPresented())
+    }
 }
