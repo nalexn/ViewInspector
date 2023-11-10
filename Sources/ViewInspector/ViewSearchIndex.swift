@@ -50,6 +50,7 @@ internal extension ViewSearch {
             ViewType.Menu.self,
             ViewType.MenuButton.self,
             ViewType.MultiDatePicker.self,
+            ViewType.NavigationDestination.self,
             ViewType.NavigationLink.self,
             ViewType.NavigationView.self,
             ViewType.NavigationSplitView.self,
@@ -341,6 +342,9 @@ internal extension ViewSearch {
         }),
         .init(name: ViewType.ConfirmationDialog.typePrefix, builder: { parent, index in
             try parent.content.confirmationDialog(parent: parent, index: index)
+        }),
+        .init(name: ViewType.NavigationDestination.typePrefix, builder: { parent, index in
+            try parent.content.navigationDestination(parent: parent, index: index)
         }),
         .init(name: ViewType.SafeAreaInset.typePrefix, builder: { parent, index in
             try parent.content.safeAreaInset(parent: parent, index: index)
