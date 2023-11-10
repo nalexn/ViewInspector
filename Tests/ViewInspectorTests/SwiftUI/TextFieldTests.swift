@@ -105,6 +105,21 @@ final class TextFieldTests: XCTestCase {
             "TextField is unresponsive: it is disabled")
         XCTAssertEqual(try sut.input(), "123")
     }
+    
+    func testPrompt() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let binding = Binding(wrappedValue: "")
+        let view1 = TextField("", text: binding, prompt: Text("test"))
+        let sut1 = try view1.inspect().textField().prompt().string()
+        XCTAssertEqual(sut1, "test")
+        let view2 = TextField("", text: binding)
+        XCTAssertThrows(try view2.inspect().textField().prompt(),
+                        "View for prompt is absent")
+        let view3 = AnyView(TextField("", text: binding, prompt: Text("abc")))
+        XCTAssertEqual(try view3.inspect().find(text: "abc").pathToRoot,
+                       "anyView().textField().prompt().text()")
+    }
 }
 
 // MARK: - View Modifiers

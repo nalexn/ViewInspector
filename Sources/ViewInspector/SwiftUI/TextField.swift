@@ -31,7 +31,25 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension ViewType.TextField: SupplementaryChildrenLabelView { }
+extension ViewType.TextField: SupplementaryChildren {
+    
+    static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
+            return .init(count: 2) { index in
+                switch index {
+                case 0:
+                    let child = try Inspector.attribute(path: "label", value: parent.content.view)
+                    let medium = parent.content.medium.resettingViewModifiers()
+                    let content = try Inspector.unwrap(content: Content(child, medium: medium))
+                    return try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: "labelView()")
+                default:
+                    let child = try Inspector.attribute(path: "prompt|some", value: parent.content.view)
+                    let medium = parent.content.medium.resettingViewModifiers()
+                    let content = try Inspector.unwrap(content: Content(child, medium: medium))
+                    return try InspectableView<ViewType.ClassifiedView>(content, parent: parent, call: "prompt()")
+                }
+            }
+        }
+}
 
 // MARK: - Custom Attributes
 
@@ -92,6 +110,16 @@ public extension InspectableView where View == ViewType.TextField {
             label = "text"
         }
         return try Inspector.attribute(label: label, value: content.view, type: Binding<String>.self)
+    }
+    
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func prompt() throws -> InspectableView<ViewType.Text> {
+        do {
+            return try View.supplementaryChildren(self).element(at: 1)
+                .asInspectableView(ofType: ViewType.Text.self)
+        } catch {
+            throw InspectionError.viewNotFound(parent: "prompt")
+        }
     }
 }
 
