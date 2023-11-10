@@ -235,7 +235,7 @@ gesture's `updating(_:body:)` method.
 Note, a `@GestureState` property wrapper updates the property while the user performs a
 gesture and reset the property back to its initial state when the gesture ends. While 
 **ViewInspector** provides the means to invoke the updating callbacks added to a gesture, 
-the the callback is not actually performing the gesture, and hence `@GestureState` properties
+the callback is not actually performing the gesture, and hence `@GestureState` properties
 alway read as their initital state.
 
 
