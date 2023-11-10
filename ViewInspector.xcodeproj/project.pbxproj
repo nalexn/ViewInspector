@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		1FA29F102AF0503000CCE6FA /* NavigationDestinationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA29F0F2AF0503000CCE6FA /* NavigationDestinationTests.swift */; };
+		1FA29F132AF051AD00CCE6FA /* NavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA29F112AF0515400CCE6FA /* NavigationDestination.swift */; };
 		355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */; };
 		520E915C26E64F210090BD1F /* EnvironmentInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E915B26E64F210090BD1F /* EnvironmentInjection.swift */; };
 		520E916226E69E540090BD1F /* PopupPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E916126E69E540090BD1F /* PopupPresenter.swift */; };
@@ -307,6 +309,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1FA29F0F2AF0503000CCE6FA /* NavigationDestinationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDestinationTests.swift; sourceTree = "<group>"; };
+		1FA29F112AF0515400CCE6FA /* NavigationDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDestination.swift; sourceTree = "<group>"; };
 		355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
 		520E915B26E64F210090BD1F /* EnvironmentInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentInjection.swift; sourceTree = "<group>"; };
 		520E916126E69E540090BD1F /* PopupPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPresenter.swift; sourceTree = "<group>"; };
@@ -720,6 +724,7 @@
 				F6C15A70254B68C0000240F1 /* Menu.swift */,
 				F6684BEF23AA504500DECCB3 /* MenuButton.swift */,
 				523E973C2A9B25FD002E8EB5 /* MultiDatePicker.swift */,
+				1FA29F112AF0515400CCE6FA /* NavigationDestination.swift */,
 				F6D9339E2385B46A00358E0E /* NavigationLink.swift */,
 				5296338929697C7D00EC6C81 /* NavigationSplitView.swift */,
 				529633852969672A00EC6C81 /* NavigationStack.swift */,
@@ -846,6 +851,7 @@
 				F6C15A6A254B669F000240F1 /* MenuTests.swift */,
 				F6684BED23AA4CF400DECCB3 /* MenuButtonTests.swift */,
 				523E973E2A9B2616002E8EB5 /* MultiDatePickerTests.swift */,
+				1FA29F0F2AF0503000CCE6FA /* NavigationDestinationTests.swift */,
 				F6D933A02385B48100358E0E /* NavigationLinkTests.swift */,
 				5296338B29697EB400EC6C81 /* NavigationSplitViewTests.swift */,
 				52963387296967ED00EC6C81 /* NavigationStackTests.swift */,
@@ -1179,6 +1185,7 @@
 				F653BDE3255698A6001FA688 /* TupleView.swift in Sources */,
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
 				F6C15A0D254A05A4000240F1 /* LazyVGrid.swift in Sources */,
+				1FA29F132AF051AD00CCE6FA /* NavigationDestination.swift in Sources */,
 				5250764B2651800800ADE4E7 /* ActionSheet.swift in Sources */,
 				F60EEBCD2382EED0007DB53A /* Inspector.swift in Sources */,
 				F64105C4257BF9A70033D82D /* ViewSearch.swift in Sources */,
@@ -1295,6 +1302,7 @@
 				F6ECF6D023A67D11000FC591 /* SizingModifiersTests.swift in Sources */,
 				F60EEBFF2382F004007DB53A /* DividerTests.swift in Sources */,
 				F639DBC523A7DFA6003A6FED /* TouchBarTests.swift in Sources */,
+				1FA29F102AF0503000CCE6FA /* NavigationDestinationTests.swift in Sources */,
 				F67540EF23A3D8B30022AC33 /* PositioningModifiersTests.swift in Sources */,
 				F6D933B52385ED2700358E0E /* VSplitViewTests.swift in Sources */,
 				52B71AA626EB5BED00B719D4 /* SafeAreaInsetTests.swift in Sources */,
