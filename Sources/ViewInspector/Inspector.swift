@@ -95,9 +95,19 @@ public struct Inspector {
     private static var replacedGenericParametersCache: [String : [String : String]] = [:]
     private static var sanitizedNamespacesCache: [String: String] = [:]
 
-    // swiftlint:disable force_try
-    private static let sanitizeNamespaceRegex = try! NSRegularExpression(pattern: "\\.\\(unknown context at ..........\\)")
-    // swiftlint:enable force_try
+    private static let sanitizeNamespacePatterns = [
+        "\\.\\(unknown context at ..........\\)",
+        // This pattern may be helpful to solve issue #268.
+        // It will remain disabled until it is confirmed.
+        // https://github.com/nalexn/ViewInspector/issues/268
+        //"\\(extension in [a-zA-Z0-9]*\\)\\:",
+    ]
+
+    private static let sanitizeNamespaceRegex = {
+        // swiftlint:disable force_try
+        try! NSRegularExpression(pattern: sanitizeNamespacePatterns.joined(separator: "|"))
+        // swiftlint:enable force_try
+    }()
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
