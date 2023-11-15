@@ -5,8 +5,8 @@ public struct Inspector {
 
     /// Removes the "(unknown context at <memory_address>)" portion of a type name.
     /// Calls to this method are memoized and retained for the lifetime of the program.
-    /// - Parameter typeName: The raw type name. (e.g. ``SomeTypeName.(unknown context at $138b3290c).SomePropertyName``)
-    /// - Returns: The sanitized type name. (e.g. ``SomeTypeName.SomePropertyName``)
+    /// - Parameter typeName: The raw type name. (e.g. `SomeTypeName.(unknown context at $138b3290c).SomePropertyName`)
+    /// - Returns: The sanitized type name. (e.g. `SomeTypeName.SomePropertyName`)
     static func sanitizeNamespace(ofTypeName typeName: String) -> String {
         var str = typeName
 
@@ -32,9 +32,9 @@ public struct Inspector {
     /// Replaces the generic types of a given type name with a string.
     /// Calls to this method are memoized and retained for the lifetime of the program.
     /// - Parameters:
-    ///   - typeName: The original type name. (e.g. ``SomeTypeName<SomeGenericTypeParameter>``)
+    ///   - typeName: The original type name. (e.g. `SomeTypeName<SomeGenericTypeParameter>`)
     ///   - replacement: The string to replace the generic parameters with. (e.g. "<EmptyView>")
-    /// - Returns: The type name with its generic parameters replaced. (e.g. ``SomeTypeName<EmptyView>``)
+    /// - Returns: The type name with its generic parameters replaced. (e.g. `SomeTypeName<EmptyView>`)
     static func replaceGenericParameters(inTypeName typeName: String,
                                          withReplacement replacement: String) -> String {
         // Check memoized value
@@ -96,11 +96,11 @@ public struct Inspector {
     private static var sanitizedNamespacesCache: [String: String] = [:]
 
     private static let sanitizeNamespacePatterns = [
-        "\\.\\(unknown context at ..........\\)",
+        "(\\.\\(unknown context at ..........\\))",
         // This pattern may be helpful to solve issue #268.
         // It will remain disabled until it is confirmed.
         // https://github.com/nalexn/ViewInspector/issues/268
-        //"\\(extension in [a-zA-Z0-9]*\\)\\:",
+        //"(\\(extension in [a-zA-Z0-9]*\\)\\:)",
     ]
 
     private static let sanitizeNamespaceRegex = {
