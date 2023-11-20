@@ -260,7 +260,7 @@ internal extension InspectableView {
                 return (modifier, [])
             case .composed:
                 return traverseComposedGesture(modifier, name, &modifiers)
-            case .state :
+            case .state:
                 return traverseStateGesture(modifier, name, &modifiers)
             }
         } else if modifier == name {
@@ -314,6 +314,7 @@ internal extension InspectableView {
             "RotationGesture": .simple,
             "SequenceGesture": .composed,
             "SimultaneousGesture": .composed,
+            "SpatialTapGesture": .simple,
             "TapGesture": .simple,
         ]
         return knownGestures[name]
@@ -427,4 +428,20 @@ public extension SimultaneousGesture.Value {
             Allocator(first: first, second: second),
             to: SimultaneousGesture.Value.self)
     }
+}
+
+@available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
+@available(tvOS, unavailable)
+public extension SpatialTapGesture.Value {
+
+    private struct Allocator {
+        var location: CGPoint
+    }
+
+    init(location: CGPoint) {
+        self = unsafeBitCast(
+            Allocator(location: location),
+            to: SpatialTapGesture.Value.self
+        )
+   }
 }

@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		1FA29F102AF0503000CCE6FA /* NavigationDestinationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA29F0F2AF0503000CCE6FA /* NavigationDestinationTests.swift */; };
 		1FA29F132AF051AD00CCE6FA /* NavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA29F112AF0515400CCE6FA /* NavigationDestination.swift */; };
+		1FFB701D2B0C21DC004975B3 /* SpatialTapGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFB701C2B0C21DC004975B3 /* SpatialTapGestureTests.swift */; };
 		355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */; };
 		520E915C26E64F210090BD1F /* EnvironmentInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E915B26E64F210090BD1F /* EnvironmentInjection.swift */; };
 		520E916226E69E540090BD1F /* PopupPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E916126E69E540090BD1F /* PopupPresenter.swift */; };
@@ -311,6 +312,7 @@
 /* Begin PBXFileReference section */
 		1FA29F0F2AF0503000CCE6FA /* NavigationDestinationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDestinationTests.swift; sourceTree = "<group>"; };
 		1FA29F112AF0515400CCE6FA /* NavigationDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDestination.swift; sourceTree = "<group>"; };
+		1FFB701C2B0C21DC004975B3 /* SpatialTapGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialTapGestureTests.swift; sourceTree = "<group>"; };
 		355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
 		520E915B26E64F210090BD1F /* EnvironmentInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentInjection.swift; sourceTree = "<group>"; };
 		520E916126E69E540090BD1F /* PopupPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPresenter.swift; sourceTree = "<group>"; };
@@ -630,6 +632,7 @@
 				CDA844B5262B7E6900C56C98 /* LongPressGestureTests.swift */,
 				CDA844BB262B7EA800C56C98 /* MagnificationGestureTests.swift */,
 				CDA844C1262B7EEE00C56C98 /* RotationGestureTests.swift */,
+				1FFB701C2B0C21DC004975B3 /* SpatialTapGestureTests.swift */,
 				CDA844C7262B7F3100C56C98 /* TapGestureTests.swift */,
 				CDA844CD262B817800C56C98 /* ExclusiveGestureTests.swift */,
 				CDA844D3262B81AB00C56C98 /* SequenceGestureTests.swift */,
@@ -1279,6 +1282,7 @@
 				CDA844A1262B747000C56C98 /* CommonGestureTests.swift in Sources */,
 				F64105CE257C3E1F0033D82D /* ViewSearchTests.swift in Sources */,
 				CDA844D4262B81AB00C56C98 /* SequenceGestureTests.swift in Sources */,
+				1FFB701D2B0C21DC004975B3 /* SpatialTapGestureTests.swift in Sources */,
 				F6D9339D2385ADA500358E0E /* GeometryReaderTests.swift in Sources */,
 				F6C15AAD254DB0AB000240F1 /* ScrollViewReaderTests.swift in Sources */,
 				CDA844E6262B84ED00C56C98 /* SequenceGestureChildrenTests.swift in Sources */,
