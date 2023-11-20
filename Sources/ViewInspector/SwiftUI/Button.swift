@@ -85,10 +85,12 @@ public extension InspectableView {
                 "ButtonStyleModifier",
             ].contains(where: { modifier.modifierType.hasPrefix($0) })
         }, call: "buttonStyle")
-        if let style = try? Inspector.attribute(path: "modifier|style|style", value: modifier) {
-            return style
+        
+        if #available(iOS 17, *) {
+            return try Inspector.attribute(path: "modifier|style", value: modifier)
+        } else {
+            return try Inspector.attribute(path: "modifier|style|style", value: modifier)
         }
-        return try Inspector.attribute(path: "modifier|style", value: modifier)
     }
 }
 
