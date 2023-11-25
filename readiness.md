@@ -564,7 +564,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|
 |:technologist:| `func contextMenu(...) -> some View` |
 |:technologist:| `func menuIndicator(_ visibility: Visibility) -> some View` |
-|:technologist:| `func help(...) -> some View` |
+|:white_check_mark:| `func help(...) -> some View` |
 
 ### Customizing Accessibility
 
