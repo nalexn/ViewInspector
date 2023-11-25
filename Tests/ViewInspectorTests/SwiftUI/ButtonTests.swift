@@ -163,7 +163,7 @@ final class ButtonStyleInspectionTests: XCTestCase {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestButtonStyle: ButtonStyle {
-    
+
     public func makeBody(configuration: TestButtonStyle.Configuration) -> some View {
         Group {
             configuration.label
@@ -175,7 +175,9 @@ private struct TestButtonStyle: ButtonStyle {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestPrimitiveButtonStyle: PrimitiveButtonStyle {
-    
+
+    let style: Int = 0
+
     func makeBody(configuration: PrimitiveButtonStyle.Configuration) -> some View {
         Group {
             TestButton(configuration: configuration)
