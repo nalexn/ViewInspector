@@ -92,7 +92,7 @@ public struct Inspector {
         return typeName
     }
 
-    private static var replacedGenericParametersCache: [String : [String : String]] = [:]
+    private static var replacedGenericParametersCache: [String: [String: String]] = [:]
     private static var sanitizedNamespacesCache: [String: String] = [:]
 
     private static let sanitizeNamespacePatterns = [
@@ -100,7 +100,7 @@ public struct Inspector {
         // This pattern may be helpful to solve issue #268.
         // It will remain disabled until it is confirmed.
         // https://github.com/nalexn/ViewInspector/issues/268
-        //"(\\(extension in [a-zA-Z0-9]*\\)\\:)",
+        // "(\\(extension in [a-zA-Z0-9]*\\)\\:)",
     ]
 
     private static let sanitizeNamespaceRegex = {
