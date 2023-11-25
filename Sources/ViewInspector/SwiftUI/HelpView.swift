@@ -36,15 +36,20 @@ public extension InspectableView {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
     func help(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.Text> {
-        if let text = try? modifierAttribute(
-            modifierName: ViewType.HelpView.Container.name,
-            path: "content|text", type: Any.self, call: "help()") {
-            let medium = self.medium.resettingViewModifiers()
-            var view = try InspectableView<ViewType.Text>(Content(text, medium: medium), parent: parent, call: "help()")
-            view.isUnwrappedSupplementaryChild = true
-            return view
-        }
-        throw InspectionError.notSupported("")
+        let text: Any = try {
+            if let text = try? modifierAttribute(
+                modifierName: ViewType.HelpView.Container.name,
+                path: "content|text", type: Any.self, call: "help()") {
+                return text
+            }
+            return try modifierAttribute(
+                modifierName: "_TooltipModifier", path: "modifier|text",
+                type: Any.self, call: "help()")
+        }()
+        let medium = self.medium.resettingViewModifiers()
+        var view = try InspectableView<ViewType.Text>(Content(text, medium: medium), parent: parent, call: "help()")
+        view.isUnwrappedSupplementaryChild = true
+        return view
     }
 }
 
