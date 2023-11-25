@@ -352,6 +352,9 @@ internal extension ViewSearch {
         .init(name: ViewType.Popover.standardModifierName, builder: { parent, index in
             try parent.content.popover(parent: parent, index: index)
         }),
+        .init(name: ViewType.HelpView.Container.name, builder: { parent, index in
+            try parent.content.help(parent: parent, index: index)
+        }),
         .init(name: "_MaskEffect", builder: { parent, index in
             try parent.content.mask(parent: parent, index: index)
         }),

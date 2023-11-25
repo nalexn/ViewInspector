@@ -67,6 +67,8 @@
 		5250764D265185A800ADE4E7 /* ActionSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5250764C265185A800ADE4E7 /* ActionSheetTests.swift */; };
 		52510DCE25E1486200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		52510DD325E1487200A84CB8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52510DC825E1485300A84CB8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		52759A1E2B1218FB00FDA5E6 /* HelpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52759A1D2B1218FB00FDA5E6 /* HelpTests.swift */; };
+		52759A202B121AF600FDA5E6 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52759A1F2B121AF600FDA5E6 /* HelpView.swift */; };
 		527C81EA2A016DCD00BCA8BC /* PopoverContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527C81E92A016DCD00BCA8BC /* PopoverContent.swift */; };
 		527C81EC2A01887A00BCA8BC /* PopoverContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527C81EB2A01887A00BCA8BC /* PopoverContentTests.swift */; };
 		529633862969672A00EC6C81 /* NavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529633852969672A00EC6C81 /* NavigationStack.swift */; };
@@ -355,6 +357,8 @@
 		5250764A2651800800ADE4E7 /* ActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheet.swift; sourceTree = "<group>"; };
 		5250764C265185A800ADE4E7 /* ActionSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetTests.swift; sourceTree = "<group>"; };
 		52510DC825E1485300A84CB8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		52759A1D2B1218FB00FDA5E6 /* HelpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTests.swift; sourceTree = "<group>"; };
+		52759A1F2B121AF600FDA5E6 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		527C81E92A016DCD00BCA8BC /* PopoverContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverContent.swift; sourceTree = "<group>"; };
 		527C81EB2A01887A00BCA8BC /* PopoverContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverContentTests.swift; sourceTree = "<group>"; };
 		529633852969672A00EC6C81 /* NavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStack.swift; sourceTree = "<group>"; };
@@ -708,6 +712,7 @@
 				523E97342A9A6A68002E8EB5 /* Grid.swift */,
 				F60EEBC62382EED0007DB53A /* Group.swift */,
 				F6D933AA2385EAD400358E0E /* GroupBox.swift */,
+				52759A1F2B121AF600FDA5E6 /* HelpView.swift */,
 				F6D933AE2385EBD900358E0E /* HSplitView.swift */,
 				F60EEBC82382EED0007DB53A /* HStack.swift */,
 				F609EFC023A432AA00B9256A /* IDView.swift */,
@@ -835,6 +840,7 @@
 				523E97362A9A6AEF002E8EB5 /* GridTests.swift */,
 				F60EEBF12382F004007DB53A /* GroupTests.swift */,
 				F6D933AC2385EB0100358E0E /* GroupBoxTests.swift */,
+				52759A1D2B1218FB00FDA5E6 /* HelpTests.swift */,
 				F6D933B02385EC5F00358E0E /* HSplitViewTests.swift */,
 				F60EEBE92382F004007DB53A /* HStackTests.swift */,
 				F609EFC423A4350700B9256A /* IDViewTests.swift */,
@@ -1225,6 +1231,7 @@
 				523E97432A9B30F7002E8EB5 /* ShareLink.swift in Sources */,
 				DDCA44AD26FA64F500138898 /* EllipticalGradient.swift in Sources */,
 				F60EEBD72382EED0007DB53A /* Form.swift in Sources */,
+				52759A202B121AF600FDA5E6 /* HelpView.swift in Sources */,
 				F6C2E4D623AB214A00C7308F /* VisualEffectModifiers.swift in Sources */,
 				F60EEBDD2382EED0007DB53A /* Button.swift in Sources */,
 				F6C15AA3254DA270000240F1 /* ProgressView.swift in Sources */,
@@ -1391,6 +1398,7 @@
 				F6684BFC23AA842000DECCB3 /* LinearGradientTests.swift in Sources */,
 				F62AEAFC23E705D6003E69D9 /* ViewHostingTests.swift in Sources */,
 				F6E4B4062386F511003E1534 /* OpaqueViewTests.swift in Sources */,
+				52759A1E2B1218FB00FDA5E6 /* HelpTests.swift in Sources */,
 				F60EEC082382F004007DB53A /* AnyViewTests.swift in Sources */,
 				F6684BEE23AA4CF400DECCB3 /* MenuButtonTests.swift in Sources */,
 				355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */,
