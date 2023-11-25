@@ -78,7 +78,7 @@ final class GridTests: XCTestCase {
     func testGridRowAlignmentInspection() throws {
         guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
-        let view = Grid() { GridRow(alignment: .bottom) { EmptyView() } }
+        let view = Grid { GridRow(alignment: .bottom) { EmptyView() } }
         let sut = try view.inspect().grid().gridRow(0).alignment()
         XCTAssertEqual(sut, .bottom)
     }
