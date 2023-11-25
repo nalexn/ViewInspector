@@ -350,6 +350,8 @@ internal extension Inspector {
             return try ViewType.OptionalContent.child(content)
         case "EquatableView":
             return try ViewType.EquatableView.child(content)
+        case "HelpView":
+            return try ViewType.HelpView.child(content)
         case "ModifiedContent":
             return try ViewType.ViewModifier<ViewType.Stub>.child(content)
         case "SubscriptionView":
