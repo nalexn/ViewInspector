@@ -176,6 +176,22 @@ final class InspectorTests: XCTestCase {
         let text = try (sut.view as? Text)?.inspect().text().string()
         XCTAssertEqual(text, testString)
     }
+
+    func test_isSystemType_customView_returnsFalse() {
+        XCTAssertFalse(Inspector.isSystemType(type: CustomViewForTestingIsSystemType.self))
+    }
+
+    func test_isSystemType_instanceOfCustomView_returnsFalse() {
+        XCTAssertFalse(Inspector.isSystemType(value: CustomViewForTestingIsSystemType()))
+    }
+
+    func test_isSystemType_systemView_returnsFalse() {
+        XCTAssertTrue(Inspector.isSystemType(type: Text.self))
+    }
+
+    func test_isSystemType_instanceOfSystemView_returnsFalse() {
+        XCTAssertTrue(Inspector.isSystemType(value: Text("Hello world")))
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -344,4 +360,8 @@ private class TestBaseClass {
 }
 private final class TestDerivedClass: TestBaseClass {
     var value: Int = 5
+}
+
+private struct CustomViewForTestingIsSystemType: View {
+    var body: some View { Text("Hello world") }
 }
