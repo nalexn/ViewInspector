@@ -149,6 +149,9 @@
 		524750AF2AA224BB005CD905 /* ViewPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524750232AA224BB005CD905 /* ViewPaddingTests.swift */; };
 		524750B02AA224BB005CD905 /* TransformingModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524750242AA224BB005CD905 /* TransformingModifiersTests.swift */; };
 		524750B82AA22795005CD905 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 524750B72AA22795005CD905 /* ViewInspector */; };
+		5260E91C2B1C7D15001ABA1B /* NavigationDestinationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260E91A2B1C7D15001ABA1B /* NavigationDestinationTests.swift */; };
+		5260E91D2B1C7D15001ABA1B /* HelpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260E91B2B1C7D15001ABA1B /* HelpTests.swift */; };
+		5260E91F2B1C7D2F001ABA1B /* SpatialTapGestureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260E91E2B1C7D2F001ABA1B /* SpatialTapGestureTests.swift */; };
 		52C3518A2AA20EA900FC0A1E /* App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 52C351892AA20EA900FC0A1E /* App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52C3518F2AA20EA900FC0A1E /* watchOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C3518E2AA20EA900FC0A1E /* watchOSApp.swift */; };
 		52C351932AA20EAB00FC0A1E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C351922AA20EAB00FC0A1E /* Assets.xcassets */; };
@@ -331,6 +334,9 @@
 		524750222AA224BB005CD905 /* EnvironmentModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentModifiersTests.swift; sourceTree = "<group>"; };
 		524750232AA224BB005CD905 /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
 		524750242AA224BB005CD905 /* TransformingModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformingModifiersTests.swift; sourceTree = "<group>"; };
+		5260E91A2B1C7D15001ABA1B /* NavigationDestinationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationDestinationTests.swift; sourceTree = "<group>"; };
+		5260E91B2B1C7D15001ABA1B /* HelpTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpTests.swift; sourceTree = "<group>"; };
+		5260E91E2B1C7D2F001ABA1B /* SpatialTapGestureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpatialTapGestureTests.swift; sourceTree = "<group>"; };
 		52C351832AA20EA900FC0A1E /* watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C351892AA20EA900FC0A1E /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C3518E2AA20EA900FC0A1E /* watchOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOSApp.swift; sourceTree = "<group>"; };
@@ -397,6 +403,7 @@
 				52474FAA2AA224BB005CD905 /* CommonComposedGestureEndedTests.swift */,
 				52474FAB2AA224BB005CD905 /* CommonComposedGestureChangedTests.swift */,
 				52474FAC2AA224BB005CD905 /* LongPressGestureTests.swift */,
+				5260E91E2B1C7D2F001ABA1B /* SpatialTapGestureTests.swift */,
 				52474FAD2AA224BB005CD905 /* CommonGestureTests.swift */,
 				52474FAE2AA224BB005CD905 /* MagnificationGestureTests.swift */,
 			);
@@ -426,6 +433,8 @@
 		52474FB62AA224BB005CD905 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				5260E91B2B1C7D15001ABA1B /* HelpTests.swift */,
+				5260E91A2B1C7D15001ABA1B /* NavigationDestinationTests.swift */,
 				52474FB72AA224BB005CD905 /* ZStackTests.swift */,
 				52474FB82AA224BB005CD905 /* LocationButtonTests.swift */,
 				52474FB92AA224BB005CD905 /* PreferenceTests.swift */,
@@ -781,6 +790,7 @@
 				524750A42AA224BB005CD905 /* EventsModifiersTests.swift in Sources */,
 				524750AD2AA224BB005CD905 /* VisualEffectModifiersTests.swift in Sources */,
 				5247508E2AA224BB005CD905 /* ToggleTests.swift in Sources */,
+				5260E91F2B1C7D2F001ABA1B /* SpatialTapGestureTests.swift in Sources */,
 				524750A22AA224BB005CD905 /* PresentationModifiersTests.swift in Sources */,
 				524750AB2AA224BB005CD905 /* AccessibilityModifiersTests.swift in Sources */,
 				5247508C2AA224BB005CD905 /* GroupTests.swift in Sources */,
@@ -797,6 +807,7 @@
 				5247507D2AA224BB005CD905 /* MapAnnotationTests.swift in Sources */,
 				5247509D2AA224BB005CD905 /* NavigationStackTests.swift in Sources */,
 				524750852AA224BB005CD905 /* TextFieldTests.swift in Sources */,
+				5260E91C2B1C7D15001ABA1B /* NavigationDestinationTests.swift in Sources */,
 				524750A62AA224BB005CD905 /* NestedModifiersTests.swift in Sources */,
 				5247509E2AA224BB005CD905 /* AnyViewTests.swift in Sources */,
 				5247504C2AA224BB005CD905 /* RadialGradientTests.swift in Sources */,
@@ -830,6 +841,7 @@
 				5247506A2AA224BB005CD905 /* FormTests.swift in Sources */,
 				524750442AA224BB005CD905 /* ZStackTests.swift in Sources */,
 				5247503B2AA224BB005CD905 /* SimultaneousGestureTests.swift in Sources */,
+				5260E91D2B1C7D15001ABA1B /* HelpTests.swift in Sources */,
 				524750402AA224BB005CD905 /* MagnificationGestureTests.swift in Sources */,
 				524750932AA224BB005CD905 /* OutlineGroupTests.swift in Sources */,
 				524750772AA224BB005CD905 /* ButtonTests.swift in Sources */,
