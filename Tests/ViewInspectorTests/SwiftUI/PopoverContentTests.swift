@@ -47,6 +47,9 @@ class PopoverContentTests: XCTestCase {
     }
 
     func testPopoverContent() throws {
+        guard #unavailable(macOS 14.0) else {
+            throw XCTSkip("Support discontinued for macOS 14.0")
+        }
         window.contentView = NSHostingView(rootView: WindowRootView(model: model))
         window.orderBack(nil)
         model.showPopover = true

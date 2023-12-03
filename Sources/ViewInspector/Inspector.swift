@@ -368,6 +368,8 @@ internal extension Inspector {
             return try ViewType.PreferenceReadingView.child(content)
         case "PopoverContent":
             return try ViewType.PopoverContent.child(content)
+        case "WrappedContent":
+            return try ViewType.WrappedContent.child(content)
         default:
             return content
         }
