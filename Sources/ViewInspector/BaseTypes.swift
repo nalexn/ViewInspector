@@ -80,10 +80,9 @@ internal extension String {
         return String(suffix(count - prefix.count))
     }
     
-    fileprivate func hasPrefix(regex: String, wholeMatch: Bool) -> Bool {
+    fileprivate func hasPrefix(regularExpression: NSRegularExpression, wholeMatch: Bool) -> Bool {
         let range = NSRange(location: 0, length: utf16.count)
-        guard let ex = try? NSRegularExpression(pattern: regex),
-              let match = ex.firstMatch(in: self, range: range)
+        guard let match = regularExpression.firstMatch(in: self, range: range)
         else { return false }
         if wholeMatch {
             return match.range == range
@@ -94,7 +93,11 @@ internal extension String {
 
 internal extension Array where Element == String {
     func containsPrefixRegex(matching name: String, wholeMatch: Bool = true) -> Bool {
-        return contains(where: { name.hasPrefix(regex: $0, wholeMatch: wholeMatch) })
+        return contains(where: { regex in
+            guard let regularExpression = try? NSRegularExpression(pattern: regex)
+            else { return false }
+            return name.hasPrefix(regularExpression: regularExpression, wholeMatch: wholeMatch)
+        })
     }
 }
 
