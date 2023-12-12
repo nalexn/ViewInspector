@@ -191,11 +191,7 @@ internal extension Inspector {
     }
 
     private static func isSystemType(name: String) -> Bool {
-        return [
-            String.swiftUINamespaceRegex, "Swift\\.",
-            "_CoreLocationUI_SwiftUI\\.", "_MapKit_SwiftUI\\.",
-            "_AuthenticationServices_SwiftUI\\.", "_AVKit_SwiftUI\\.",
-        ].containsPrefixRegex(matching: name, wholeMatch: false)
+        return systemTypePrefixRegularExpressions.containsPrefixRegex(matching: name, wholeMatch: false)
     }
 
     static func typeName(type: Any.Type,
@@ -214,6 +210,20 @@ internal extension Inspector {
                                             withReplacement: parameters)
         }
     }
+
+    // We memoize `NSRegularExpression` objects to improve performance.
+    private static let systemTypePrefixRegularExpressions = {
+        [
+            String.swiftUINamespaceRegex,
+            "Swift\\.",
+            "_CoreLocationUI_SwiftUI\\.",
+            "_MapKit_SwiftUI\\.",
+            "_AuthenticationServices_SwiftUI\\.",
+            "_AVKit_SwiftUI\\.",
+        ].compactMap {
+            try? NSRegularExpression(pattern: $0)
+        }
+    }()
 }
 
 // MARK: - Attributes lookup

@@ -101,6 +101,14 @@ internal extension Array where Element == String {
     }
 }
 
+internal extension Array where Element == NSRegularExpression {
+    func containsPrefixRegex(matching name: String, wholeMatch: Bool = true) -> Bool {
+        return contains(where: {
+            return name.hasPrefix(regularExpression: $0, wholeMatch: wholeMatch)
+        })
+    }
+}
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct ViewType { }
 
