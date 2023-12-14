@@ -177,6 +177,144 @@ final class ModifiedContentTests: XCTestCase {
         XCTAssertEqual(sut.content.medium.environmentModifiers.count, 1)
         XCTAssertEqual(sut.content.medium.environmentObjects.count, 0)
     }
+
+    func testMultipleTransitiveModifiers() throws {
+        let view = Text("str")
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+            .allowsHitTesting(true)
+
+        let sut = try view.inspect()
+        XCTAssertEqual(sut.content.medium.transitiveViewModifiers.count, 15)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
+    }
+
+    func testMultipleCustomTransitiveModifiers() throws {
+        let view = Text("str")
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+            .modifier(AllowHitTestingTransitiveModifier())
+
+        let sut = try view.inspect()
+        XCTAssertEqual(sut.content.medium.transitiveViewModifiers.count, 15)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 15)
+    }
+
+    func testMultipleEnvironmentModifiers() throws {
+        let view = Text("str")
+            .environment(\.font, .headline)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+            .environment(\.accessibilityEnabled, true)
+
+        let sut = try view.inspect()
+        XCTAssertEqual(sut.content.medium.environmentModifiers.count, 15)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
+    }
+
+    func testMultipleCustomEnvironmentModifiers() throws {
+        let view = Text("str")
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+            .modifier(AccessibilityEnabledEnvironmentModifier())
+
+        let sut = try view.inspect()
+        XCTAssertEqual(sut.content.medium.environmentModifiers.count, 15)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 15)
+    }
+
+    func testMultipleEnvironmentObjects() throws {
+        let view = Text("str")
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+            .environmentObject(ExternalState())
+
+        let sut = try view.inspect()
+        XCTAssertEqual(sut.content.medium.environmentObjects.count, 15)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 0)
+    }
+
+    func testMultipleCustomEnvironmentObjectModifiers() throws {
+        let view = Text("str")
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+            .modifier(ExternalStateEnvironmentObjectModifier())
+
+        let sut = try view.inspect()
+        XCTAssertEqual(sut.content.medium.environmentObjects.count, 15)
+        XCTAssertEqual(sut.content.medium.viewModifiers.count, 15)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -261,5 +399,32 @@ private struct TestEnvironmentalModifier: EnvironmentalModifier {
     
     func resolve(in environment: EnvironmentValues) -> some ViewModifier {
         return TestModifier()
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct AllowHitTestingTransitiveModifier: ViewModifier {
+
+    func body(content: Self.Content) -> some View {
+        content
+            .allowsHitTesting(true)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct AccessibilityEnabledEnvironmentModifier: ViewModifier {
+
+    func body(content: Self.Content) -> some View {
+        content
+            .environment(\.accessibilityEnabled, true)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct ExternalStateEnvironmentObjectModifier: ViewModifier {
+
+    func body(content: Self.Content) -> some View {
+        content
+            .environmentObject(ExternalState())
     }
 }
