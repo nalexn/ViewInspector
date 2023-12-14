@@ -85,24 +85,19 @@ internal extension Content {
                let modifierBodyView = try? InspectableView<ViewType.ClassifiedView>(modifierBodyContent, parent: nil),
                let viewModifierContent = try? modifierBodyView.find(ViewType.ViewModifierContent.self) {
                 let overlayModifiers = Set(ViewSearch.modifierIdentities.map({ $0.name }))
-                viewModifierContent.content.medium.viewModifiers
-                    .filter { modifier in
-                        return (modifier as? ModifierNameProvider)
-                            .map { $0.modifierType(prefixOnly: true) }
-                            .map { !overlayModifiers.contains($0) } ?? true
-                    }
-                    .forEach {
-                        medium = medium.appending(viewModifier: $0)
-                    }
-                viewModifierContent.content.medium.transitiveViewModifiers.forEach {
-                    medium = medium.appending(transitiveViewModifier: $0)
+                let viewModifierContentMedium = viewModifierContent.content.medium
+                let viewModifiers = medium.viewModifiers + viewModifierContentMedium.viewModifiers.filter { modifier in
+                    return (modifier as? ModifierNameProvider)
+                        .map { $0.modifierType(prefixOnly: true) }
+                        .map { !overlayModifiers.contains($0) } ?? true
                 }
-                viewModifierContent.content.medium.environmentModifiers.forEach {
-                    medium = medium.appending(environmentModifier: $0)
-                }
-                viewModifierContent.content.medium.environmentObjects.forEach {
-                    medium = medium.appending(environmentObject: $0)
-                }
+
+                // Recreates the medium to include any additional modifiers and objects that were found while unwrapping the custom modifier.
+                medium = .init(
+                    viewModifiers: viewModifiers,
+                    transitiveViewModifiers: viewModifierContentMedium.transitiveViewModifiers,
+                    environmentModifiers: viewModifierContentMedium.environmentModifiers,
+                    environmentObjects: viewModifierContentMedium.environmentObjects)
             }
         }
         return try Inspector.unwrap(view: view, medium: medium)
