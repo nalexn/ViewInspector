@@ -54,6 +54,9 @@ public extension InspectableView {
     }
 
     func fixedSize() throws -> (horizontal: Bool, vertical: Bool) {
+        if (try? modifier({ $0.modifierType == "_UniformFixedSizeLayout" }, call: "")) != nil {
+            return (true, true)
+        }
         let horizontal = try modifierAttribute(
             modifierName: "_FixedSizeLayout", path: "modifier|horizontal",
             type: Bool.self, call: "fixedSize")
