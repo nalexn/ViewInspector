@@ -335,7 +335,7 @@ private struct TestViewControllerRepresentable: NSViewControllerRepresentable {
     func updateNSViewController(_ uiViewController: NSViewControllerType, context: Context) {
     }
 }
-#elseif os(iOS) || os(tvOS)
+#elseif os(iOS) || os(tvOS) || os(visionOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct TestViewRepresentable: UIViewRepresentable {
     

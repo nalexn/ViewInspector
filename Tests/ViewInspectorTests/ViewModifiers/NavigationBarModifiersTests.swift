@@ -40,7 +40,7 @@ final class NavigationBarModifiersTests: XCTestCase {
     #endif
 }
 
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 @available(iOS 13.0, tvOS 13.0, *)
 final class NavigationBarItemsTests: XCTestCase {
     

@@ -142,7 +142,7 @@ public extension NSViewControllerRepresentable {
     }
 }
 
-#elseif os(iOS) || os(tvOS)
+#elseif os(iOS) || os(tvOS) || os(visionOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension UIViewRepresentable {
     func uiView() throws -> UIViewType {
