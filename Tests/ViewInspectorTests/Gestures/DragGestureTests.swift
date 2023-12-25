@@ -1,3 +1,5 @@
+#if !os(visionOS)
+
 import XCTest
 import SwiftUI
 import Combine
@@ -178,3 +180,4 @@ final class DragGestureTests: XCTestCase {
         XCTAssertEqual(value.translation, CGSize(width: 50, height: 50), file: file, line: line)
     }
 }
+#endif

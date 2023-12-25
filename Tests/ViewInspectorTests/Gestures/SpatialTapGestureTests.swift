@@ -1,3 +1,5 @@
+#if !os(visionOS)
+
 import XCTest
 import SwiftUI
 import Combine
@@ -142,3 +144,4 @@ final class SpatialTapGestureTests: XCTestCase {
         XCTAssertEqual(value, SpatialTapGesture.Value(location: spatialTapLocation!))
     }
 }
+#endif
