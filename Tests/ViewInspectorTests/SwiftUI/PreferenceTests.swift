@@ -56,7 +56,8 @@ final class PreferenceTests: XCTestCase {
         let sut1 = try view.inspect().text()
         XCTAssertEqual(sut1.content.medium.viewModifiers.count, 4)
         let sut2 = try view.inspect().overlayPreferenceValue().emptyView()
-        XCTAssertEqual(sut2.content.medium.viewModifiers.count, 1)
+        let count = sut2.content.medium.viewModifiers.count
+        XCTAssertTrue([1, 2].contains(count), "\(count)")
     }
     
     struct Key: PreferenceKey {

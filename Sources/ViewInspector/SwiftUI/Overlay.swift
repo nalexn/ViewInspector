@@ -59,12 +59,12 @@ internal extension Content {
             })
         }
         let hasMultipleOverlays = modifiers.count > 1
-        let apiName = api.first!.rawValue
+        let apiName = api.first!.call
         guard let (modifier, rootView) = modifiers.lazy.compactMap({ modifier -> (Any, Any)? in
             for anApi in api {
                 do {
-                    let rootView = try Inspector.attribute(path: anApi.rootViewPath, value: modifier)
-                    try anApi.verifySignature(content: rootView, hasMultipleOverlays: hasMultipleOverlays)
+                    let rootView = try anApi.extractOverlayView(modifier: modifier)
+                    try anApi.verifySignature(content: rootView, modifier: modifier, hasMultipleOverlays: hasMultipleOverlays)
                     return (modifier, rootView)
                 } catch { continue }
             }
@@ -94,14 +94,30 @@ internal extension Content {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType.Overlay {
-    enum API: String {
+    enum API: CaseIterable {
         case border
         case overlay
         case overlayStyle
-        case overlayPreferenceValue
+        case overlayPreferenceV1
+        case overlayPreferenceV2
         case background
         case backgroundStyle
-        case backgroundPreferenceValue
+        case backgroundPreferenceV1
+        case backgroundPreferenceV2
+
+        var call: String {
+            switch self {
+            case .border: return "border"
+            case .overlay: return "overlay"
+            case .overlayStyle: return "overlayStyle"
+            case .background: return "background"
+            case .backgroundStyle: return "backgroundStyle"
+            case .overlayPreferenceV1, .overlayPreferenceV2:
+                return "overlayPreferenceValue"
+            case .backgroundPreferenceV2, .backgroundPreferenceV1:
+                return "backgroundPreferenceValue"
+            }
+        }
     }
 }
 
@@ -110,29 +126,43 @@ internal extension ViewType.Overlay.API {
     
     var modifierName: String {
         switch self {
-        case .border, .overlay, .overlayPreferenceValue:
+        case .border, .overlay, .overlayPreferenceV1:
             return "_OverlayModifier"
         case .overlayStyle:
             return "_OverlayStyleModifier"
-        case .background, .backgroundPreferenceValue:
+        case .background, .backgroundPreferenceV1:
             return "_BackgroundModifier"
         case .backgroundStyle:
             return "_BackgroundStyleModifier"
+        case .overlayPreferenceV2:
+            return "_OverlayPreferenceModifier"
+        case .backgroundPreferenceV2:
+            return "_BackgroundPreferenceModifier"
         }
     }
     
     var rootViewPath: String {
         switch self {
-        case .border, .overlay, .overlayPreferenceValue:
+        case .border, .overlay, .overlayPreferenceV1:
             return "modifier|overlay"
-        case .background, .backgroundPreferenceValue:
+        case .overlayPreferenceV2, .backgroundPreferenceV2:
+            return "modifier"
+        case .background, .backgroundPreferenceV1:
             return "modifier|background"
         case .overlayStyle, .backgroundStyle:
             return "modifier|style"
         }
     }
-    
-    func verifySignature(content: Any, hasMultipleOverlays: Bool) throws {
+
+    func extractOverlayView(modifier: Any) throws -> Any {
+        let value = try Inspector.attribute(path: rootViewPath, value: modifier)
+        if let wrapper = value as? PreferenceProvider {
+            return try wrapper.view()
+        }
+        return value
+    }
+
+    func verifySignature(content: Any, modifier: Any, hasMultipleOverlays: Bool) throws {
         let reportFailure: () throws -> Void = {
             throw InspectionError.notSupported("Different view signature")
         }
@@ -145,21 +175,26 @@ internal extension ViewType.Overlay.API {
                 try reportFailure()
             }
         case .overlay:
-            let otherCases = [ViewType.Overlay.API.border, .overlayPreferenceValue]
+            let otherCases = [ViewType.Overlay.API.border, .overlayPreferenceV1, .overlayPreferenceV2]
             if hasMultipleOverlays, otherCases.contains(where: {
-                (try? $0.verifySignature(content: content, hasMultipleOverlays: hasMultipleOverlays)) != nil
+                (try? $0.verifySignature(content: content, modifier: modifier, hasMultipleOverlays: hasMultipleOverlays)) != nil
             }) {
                 try reportFailure()
             }
         case .background:
-            if (try? ViewType.Overlay.API.backgroundPreferenceValue
-                    .verifySignature(content: content, hasMultipleOverlays: hasMultipleOverlays)) != nil {
+            if (try? ViewType.Overlay.API.backgroundPreferenceV1
+                .verifySignature(content: content, modifier: modifier, hasMultipleOverlays: hasMultipleOverlays)) != nil {
                 try reportFailure()
             }
-        case .overlayPreferenceValue, .backgroundPreferenceValue:
+        case .overlayPreferenceV1, .backgroundPreferenceV1:
             if Inspector.typeName(value: content, generics: .remove) != "_PreferenceReadingView" {
                 try reportFailure()
             }
+        case .overlayPreferenceV2, .backgroundPreferenceV2:
+            if (try? Inspector.attribute(path: rootViewPath, value: modifier)) is PreferenceProvider {
+                break
+            }
+            try reportFailure()
         }
     }
 }
@@ -191,5 +226,26 @@ private extension ViewType.Overlay {
     struct Params {
         let alignment: Alignment
         let ignoresSafeAreaEdges: Edge.Set
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private protocol PreferenceProvider: SingleViewProvider { }
+
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+extension _OverlayPreferenceModifier: PreferenceProvider {
+    func view() throws -> Any {
+        typealias Closure = (Key.Value) -> Overlay
+        let closure = try Inspector.attribute(label: "transform", value: self, type: Closure.self)
+        return closure(Key.defaultValue)
+    }
+}
+
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+extension _BackgroundPreferenceModifier: PreferenceProvider {
+    func view() throws -> Any {
+        typealias Closure = (Key.Value) -> Overlay
+        let closure = try Inspector.attribute(label: "transform", value: self, type: Closure.self)
+        return closure(Key.defaultValue)
     }
 }

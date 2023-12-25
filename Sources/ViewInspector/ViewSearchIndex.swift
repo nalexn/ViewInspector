@@ -319,11 +319,7 @@ private extension Content {
 internal extension ViewType.Overlay.API {
     
     static var viewSearchModifierIdentities: [ViewSearch.ModifierIdentity] {
-        let apiToSearch: [ViewType.Overlay.API] = [
-            .overlayPreferenceValue, .backgroundPreferenceValue,
-            .overlay, .overlayStyle, .background, .backgroundStyle
-        ]
-        return apiToSearch
+        return ViewType.Overlay.API.allCases
             .map { api in
                 .init(name: api.modifierName, builder: { parent, index in
                     try parent.content.overlay(parent: parent, api: api, index: index)
