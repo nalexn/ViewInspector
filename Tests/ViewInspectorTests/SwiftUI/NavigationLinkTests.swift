@@ -213,6 +213,19 @@ final class NavigationLinkTests: XCTestCase {
         XCTAssertEqual(try view.inspect().find(text: "test").pathToRoot,
                        container + container + container + "text()")
     }
+
+    func testRecursiveTreeView() throws {
+        let sut = TestTreeView(item:
+                .init(name: "Root",
+                      childs: [
+                        .init(name: "A", childs: [.init(name: "A.1"), .init(name: "A.2")]),
+                      ]))
+        XCTAssertEqual(try sut.inspect().find(text: "A.2").pathToRoot,
+            """
+            view(TestTreeView.self).vStack().forEach(1).view(TestTreeView.self, \
+            0).vStack().forEach(1).view(TestTreeView.self, 1).vStack().text(0)
+            """)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -298,5 +311,23 @@ private struct TestRecursiveGenericView<T: View>: View {
     let view: T
     var body: some View {
         view
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 7.0, *)
+private struct TestTreeView: View {
+    struct Item: Identifiable {
+        var id: Int { name.hashValue }
+        var name: String
+        var childs: [Item] = []
+    }
+    var item: Item
+    var body: some View {
+        VStack {
+            Text(item.name)
+            ForEach(item.childs, id: \.name) {
+                TestTreeView(item: $0)
+            }
+        }
     }
 }

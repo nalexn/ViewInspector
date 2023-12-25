@@ -494,9 +494,14 @@ private extension UnwrappedView {
         guard content.isCustomView else { return true }
         let typeRef = type(of: content.view)
         var isDirectParent = true
-        return (try? findParent(condition: { parent in
+        if (try? findParent(condition: { parent in
             defer { isDirectParent = false }
             return typeRef == type(of: parent.content.view) && !isDirectParent
+        }, skipFound: 0)) == nil {
+            return true
+        }
+        return (try? findParent(condition: { parent in
+            return (try? parent.navigationLink()) != nil
         }, skipFound: 0)) == nil
     }
 }
