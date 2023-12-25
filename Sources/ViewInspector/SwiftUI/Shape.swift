@@ -118,7 +118,13 @@ private extension InspectableView {
     
     func shapeAttribute<T>(_ view: Any, _ shapeType: String, _ label: String, _ attributeType: T.Type
     ) throws -> T {
-        let shape = try lookupShape(view, typeName: shapeType, label: label)
+        let target: Any = try {
+            if view is InspectableIOS17Shape {
+                return try Inspector.attribute(path: "view|content", value: view)
+            }
+            return view
+        }()
+        let shape = try lookupShape(target, typeName: shapeType, label: label)
         return try Inspector.attribute(label: label, value: shape, type: attributeType)
     }
     
@@ -204,6 +210,30 @@ extension _TrimmedShape: InspectableShape { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension _ShapeView: InspectableShape {
+    public func path(in rect: CGRect) -> Path {
+        return shape.path(in: rect)
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal protocol InspectableIOS17Shape: InspectableShape { }
+
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+extension FillShapeView: InspectableIOS17Shape {
+    public func path(in rect: CGRect) -> Path {
+        return shape.path(in: rect)
+    }
+}
+
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+extension StrokeShapeView: InspectableIOS17Shape {
+    public func path(in rect: CGRect) -> Path {
+        return shape.path(in: rect)
+    }
+}
+
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+extension StrokeBorderShapeView: InspectableIOS17Shape {
     public func path(in rect: CGRect) -> Path {
         return shape.path(in: rect)
     }

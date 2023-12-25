@@ -347,7 +347,7 @@ internal extension InspectableView {
 @available(tvOS, unavailable)
 public extension DragGesture.Value {
     
-    private struct Allocator {
+    private struct Allocator56 {
         var time: Date
         var location: CGPoint
         var startLocation: CGPoint
@@ -355,14 +355,16 @@ public extension DragGesture.Value {
     }
 
     init(time: Date, location: CGPoint, startLocation: CGPoint, velocity: CGVector) {
-        self = unsafeBitCast(
-            Allocator(
-                time: time,
-                location: location,
-                startLocation: startLocation,
-                velocity: velocity),
-            to: DragGesture.Value.self
-        )
+        switch MemoryLayout<Self>.size {
+        case 56:
+            self = unsafeBitCast(Allocator56(time: time, location: location,
+                                             startLocation: startLocation,
+                                             velocity: velocity),
+                                 to: DragGesture.Value.self
+            )
+        default:
+            fatalError(MemoryLayout<Self>.actualSize())
+        }
    }
 }
 

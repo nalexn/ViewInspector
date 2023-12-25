@@ -319,8 +319,12 @@ public extension Font {
     
     func weight() throws -> Font.Weight {
         do {
-            return try Inspector
-                .attribute(path: "provider|base|weight", value: self, type: Font.Weight.self)
+            let weight = try Inspector
+                .attribute(path: "provider|base|weight", value: self)
+            if let optional = weight as? Font.Weight? {
+                return optional ?? .regular
+            }
+            return try Inspector.cast(value: weight, type: Font.Weight.self)
         } catch {
             throw InspectionError.attributeNotFound(label: "weight", type: "Font")
         }
@@ -328,8 +332,12 @@ public extension Font {
     
     func design() throws -> Font.Design {
         do {
-            return try Inspector
-                .attribute(path: "provider|base|design", value: self, type: Font.Design.self)
+            let design = try Inspector
+                .attribute(path: "provider|base|design", value: self)
+            if let optional = design as? Font.Design? {
+                return optional ?? .`default`
+            }
+            return try Inspector.cast(value: design, type: Font.Design.self)
         } catch {
             throw InspectionError.attributeNotFound(label: "design", type: "Font")
         }

@@ -180,7 +180,7 @@ final class ViewHoverTests: XCTestCase {
     */
     #endif
     
-    #if !os(iOS)
+    #if !os(iOS) && !os(visionOS)
     func testFocusable() throws {
         let sut = EmptyView().focusable(true) { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())

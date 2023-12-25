@@ -106,7 +106,7 @@ private extension ViewHosting {
     struct Hosted {
         #if os(macOS)
         let viewController: NSViewController
-        #elseif os(iOS) || os(tvOS)
+        #elseif os(iOS) || os(tvOS) || os(visionOS)
         let viewController: UIViewController
         #endif
         let medium: Content.Medium
@@ -114,7 +114,7 @@ private extension ViewHosting {
     private static var hosted: [ViewId: Hosted] = [:]
     #if os(macOS)
     static var window: NSWindow = makeWindow()
-    #elseif os(iOS) || os(tvOS)
+    #elseif os(iOS) || os(tvOS) || os(visionOS)
     static var window: UIWindow = makeWindow()
     #endif
     
@@ -132,9 +132,14 @@ private extension ViewHosting {
         window.layoutIfNeeded()
         return window
     }
-    #elseif os(iOS) || os(tvOS)
+    #elseif os(iOS) || os(tvOS) || os(visionOS)
     static func makeWindow() -> UIWindow {
-        let window = UIWindow(frame: UIScreen.main.bounds)
+        #if os(visionOS)
+        let frame = CGRect(x: 0, y: 0, width: 1280, height: 720)
+        #else
+        let frame = UIScreen.main.bounds
+        #endif
+        let window = UIWindow(frame: frame)
         window.rootViewController = UIViewController()
         window.rootViewController?.view.translatesAutoresizingMaskIntoConstraints = false
         window.makeKeyAndVisible()
@@ -152,7 +157,7 @@ private extension ViewHosting {
     static func hostVC<V>(_ view: V) -> NSHostingController<V> where V: View {
         NSHostingController(rootView: view)
     }
-    #elseif os(iOS) || os(tvOS)
+    #elseif os(iOS) || os(tvOS) || os(visionOS)
     static var rootViewController: UIViewController {
         window.rootViewController!
     }
@@ -168,7 +173,7 @@ private extension ViewHosting {
     }
     static func didMove(_ child: NSViewController, to parent: NSViewController?) {
     }
-    #elseif os(iOS) || os(tvOS)
+    #elseif os(iOS) || os(tvOS) || os(visionOS)
     static func willMove(_ child: UIViewController, to parent: UIViewController?) {
         child.willMove(toParent: parent)
     }
@@ -253,7 +258,7 @@ internal extension ViewHosting {
             else { throw InspectionError.viewNotFound(parent: name) }
             return vc
     }
-    #elseif os(iOS) || os(tvOS)
+    #elseif os(iOS) || os(tvOS) || os(visionOS)
     static func lookup<V>(_ view: V.Type) throws -> V.UIViewType
         where V: UIViewRepresentable {
             let name = Inspector.typeName(type: view)
@@ -337,7 +342,7 @@ private extension NSViewController {
         return presented + children
     }
 }
-#elseif os(iOS) || os(tvOS)
+#elseif os(iOS) || os(tvOS) || os(visionOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension UIView {
     func descendant(nameTraits: [String]) -> UIView? {

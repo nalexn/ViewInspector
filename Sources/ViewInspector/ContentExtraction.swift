@@ -56,7 +56,7 @@ internal struct ContentExtractor {
                 the contents of NSViewControllerRepresentable
                 """)
         #endif
-        #if os(iOS) || os(tvOS)
+        #if os(iOS) || os(tvOS) || os(visionOS)
         case is any UIViewRepresentable:
             throw InspectionError.notSupported(
                 """

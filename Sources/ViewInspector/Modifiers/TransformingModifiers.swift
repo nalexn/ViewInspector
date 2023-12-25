@@ -73,14 +73,25 @@ public extension InspectableView {
     }
     
     func scaleEffect() throws -> CGSize {
-        return try modifierAttribute(
+        if let size = try? modifierAttribute(
             modifierName: "_ScaleEffect", path: "modifier|scale",
-            type: CGSize.self, call: "scaleEffect")
+            type: CGSize.self, call: "scaleEffect") {
+            return size
+        }
+        let scale = try modifierAttribute(
+            modifierName: "_UniformScaleEffect", path: "modifier|scale",
+            type: CGFloat.self, call: "scaleEffect")
+        return CGSize(width: scale, height: scale)
     }
     
     func scaleEffectAnchor() throws -> UnitPoint {
-        return try modifierAttribute(
+        if let anchor = try? modifierAttribute(
             modifierName: "_ScaleEffect", path: "modifier|anchor",
+            type: UnitPoint.self, call: "scaleEffect") {
+            return anchor
+        }
+        return try modifierAttribute(
+            modifierName: "_UniformScaleEffect", path: "modifier|anchor",
             type: UnitPoint.self, call: "scaleEffect")
     }
     

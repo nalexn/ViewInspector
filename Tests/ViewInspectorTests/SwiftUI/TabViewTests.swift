@@ -134,7 +134,7 @@ final class GlobalModifiersForTabView: XCTestCase {
         XCTAssertNoThrow(try view.inspect().find(text: "abc"))
     }
     
-    #if os(iOS) || os(tvOS)
+    #if os(iOS) || os(tvOS) || os(visionOS)
     func testTabViewStyleInspection() throws {
         guard #available(iOS 14, macOS 11.0, tvOS 14.0, *)
         else { throw XCTSkip() }

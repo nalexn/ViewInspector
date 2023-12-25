@@ -123,7 +123,7 @@ final class ImageTests: XCTestCase {
     }
 }
 
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 extension UIColor {
     func image(_ size: CGSize) -> UIImage {
         let format = UIGraphicsImageRendererFormat()
