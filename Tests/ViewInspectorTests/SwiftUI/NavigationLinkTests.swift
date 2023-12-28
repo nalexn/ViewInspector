@@ -226,6 +226,48 @@ final class NavigationLinkTests: XCTestCase {
             0).vStack().forEach(1).view(TestTreeView.self, 1).vStack().text(0)
             """)
     }
+
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+    func testNavigationValue() throws {
+        let viewInt = NavigationLink("Go to value", value: 42)
+        XCTAssertEqual(try viewInt.inspect().navigationLink().value(Int.self), 42)
+        XCTAssertThrows(
+            try viewInt.inspect().navigationLink().value(String.self),
+            "Type mismatch: Int is not String"
+        )
+        let viewString = NavigationLink("Go to value", value: "Test string value")
+        XCTAssertEqual(try viewString.inspect().navigationLink().value(), "Test string value")
+        XCTAssertThrows(
+            try viewString.inspect().navigationLink().value(Int.self),
+            "Type mismatch: String is not Int"
+        )
+    }
+
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+    func testNavigationValueHashable() throws {
+        let sut = NavigationLink("Go to hashable", value: TestValueHashable())
+        XCTAssertEqual(try sut.inspect().navigationLink().value(), TestValueHashable())
+        XCTAssertThrows(
+            try sut.inspect().navigationLink().value(Int.self),
+            "Type mismatch: TestValueHashable is not Int"
+        )
+    }
+
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+    func testNavigationValueCodable() throws {
+        let sut = NavigationLink("Go to codable", value: TestValueCodable(val: 3))
+        XCTAssertEqual(try sut.inspect().navigationLink().value(), TestValueCodable(val: 3))
+        XCTAssertNotEqual(try sut.inspect().navigationLink().value(), TestValueCodable(val: 4))
+    }
+
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+    func testNavigationValueMissing() throws {
+        let sut = NavigationLink("Go to codable", destination: EmptyView.init)
+        XCTAssertThrows(
+            try sut.inspect().navigationLink().value(TestValueCodable.self),
+            "Optional<NavigationLinkPresentedValue> does not have 'some' attribute"
+        )
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -331,3 +373,11 @@ private struct TestTreeView: View {
         }
     }
 }
+
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+private struct TestValueCodable: Codable, Hashable {
+    let val: Int
+}
+
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+private struct TestValueHashable: Hashable {}

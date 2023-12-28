@@ -76,6 +76,11 @@ public extension InspectableView where View == ViewType.NavigationLink {
     func deactivate() throws {
         try content.set(isActive: false)
     }
+
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+    func value<Value>(_ type: Value.Type = Value.self) throws -> Value {
+        try content.value(type)
+    }
 }
 
 // MARK: - Private
@@ -113,5 +118,10 @@ private extension Content {
         }
         return try Inspector
             .attribute(label: "_externalIsActive", value: view, type: Binding<Bool>.self)
+    }
+
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+    func value<Value>(_ type: Value.Type) throws -> Value {
+        try Inspector.attribute(path: "presentedValue|some|v4|storage|data", value: view, type: Value.self)
     }
 }
