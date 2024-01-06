@@ -6,6 +6,18 @@ import SwiftUI
 @available(*, deprecated, message: "Conformance to Inspectable is no longer required")
 public protocol Inspectable { }
 
+/// A protocol for views that need to expose a custom view to `ViewInspector` that differs from its default inspectable
+/// representation.
+///
+/// A use case for this might be a `UIViewRepresentable`that contains some hosted SwiftUI views (consider a wrapped
+/// `UICollectionView`). You can return a custom SwiftUI view that sufficiently represents your view hierarchy to
+/// `ViewInspector`. Without this, `ViewInspector` would be unable to inspect the `UIViewRepresentable`.
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+public protocol CustomInspectable {
+    associatedtype View
+    var customInspectableContent: View { get }
+}
+
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public protocol SingleViewContent {
     static func child(_ content: Content) throws -> Content
@@ -127,7 +139,11 @@ public struct Content {
     let medium: Medium
     
     internal init(_ view: Any, medium: Medium = .empty) {
-        self.view = view
+        if let customInspectable = view as? any CustomInspectable {
+            self.view = customInspectable.customInspectableContent
+        } else {
+            self.view = view
+        }
         self.medium = medium
     }
 }
