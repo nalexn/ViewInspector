@@ -99,7 +99,7 @@ internal extension Array where Element == String {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public struct ViewType { }
+public enum ViewType { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension ViewType {
