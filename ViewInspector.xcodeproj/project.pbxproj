@@ -290,6 +290,7 @@
 		F6F08E7123A3BD0C001F04DF /* AccessibilityModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F08E7023A3BD0C001F04DF /* AccessibilityModifiersTests.swift */; };
 		F6FB7F5825476431006658EF /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FB7F5725476431006658EF /* ColorPicker.swift */; };
 		F6FB7F6225476480006658EF /* ColorPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FB7F6125476480006658EF /* ColorPickerTests.swift */; };
+		FD69836E2B48D86C003CB125 /* CustomInspectableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD69836D2B48D86C003CB125 /* CustomInspectableTests.swift */; };
 		OBJ_51 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* ViewInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ViewInspector::ViewInspector::Product" /* ViewInspector.framework */; };
 /* End PBXBuildFile section */
@@ -582,6 +583,7 @@
 		F6FEBEF5256AE732006C28F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Test.strings; sourceTree = "<group>"; };
 		F6FEBEFA256AEE09006C28F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Test.strings; sourceTree = "<group>"; };
 		F6FEBEFF256B0A3D006C28F5 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Test.strings"; sourceTree = "<group>"; };
+		FD69836D2B48D86C003CB125 /* CustomInspectableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInspectableTests.swift; sourceTree = "<group>"; };
 		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -793,6 +795,7 @@
 			isa = PBXGroup;
 			children = (
 				F60EEBE42382F004007DB53A /* BaseTypesTests.swift */,
+				FD69836D2B48D86C003CB125 /* CustomInspectableTests.swift */,
 				F6A35A4925B35F710068B8B2 /* LazyGroupTests.swift */,
 				F614E66525B36ACC000C4F66 /* InspectableViewTests.swift */,
 				F60EEBE52382F004007DB53A /* InspectorTests.swift */,
@@ -1379,6 +1382,7 @@
 				F6D933CD2385FFA300358E0E /* SliderTests.swift in Sources */,
 				F6C15A07254A0592000240F1 /* LazyVGridTests.swift in Sources */,
 				F6ECF6CC23A6702B000FC591 /* AnimationModifiersTests.swift in Sources */,
+				FD69836E2B48D86C003CB125 /* CustomInspectableTests.swift in Sources */,
 				CDA844B6262B7E6900C56C98 /* LongPressGestureTests.swift in Sources */,
 				CDA844E0262B84DC00C56C98 /* ExclusiveGestureChildrenTests.swift in Sources */,
 				F6A35A4A25B35F710068B8B2 /* LazyGroupTests.swift in Sources */,
