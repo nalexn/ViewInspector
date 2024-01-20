@@ -7,6 +7,7 @@
 - [Views using **@ObservedObject**](#views-using-observedobject)
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
 - [Custom **ViewModifier**](#custom-viewmodifier)
+- [Inspecting a mix of UIKit and SwiftUI](#inspecting-a-mix-of-uikit-and-swiftui)
 - [Advanced topics](#advanced-topics)
 
 ## The Basics
@@ -568,6 +569,19 @@ If your custom `ViewModifier` references an `@EnvironmentObject` or requires set
 let view = EmptyView().modifier(sut).environmentObject(envObject)
 ViewHosting.host(view: view)
 ```
+
+## Inspecting a mix of UIKit and SwiftUI
+
+If your custom view is `UIViewRepresentable` or `UIViewControllerRepresentable`, there is a possibility of accessing its genuine UIKit instance on screen:
+
+```swift
+let swiftuiView = try sut.inspect().find(MyCustomView.self)
+let uikitView = try swiftuiView.actualView().uiView() // or .viewController()
+```
+
+Note that UIKit hierarchy gets added on screen asynchronously - so you need to use one of the async inspection approaches discussed above. See some [examples in the tests](https://github.com/nalexn/ViewInspector/blob/master/Tests/ViewInspectorTests/ViewHostingTests.swift#L105C31-L105C31).
+
+From there you can use UIKit API to inspect subviews. However, if you're using UIKit just as a middleware and child content is again SwiftUI view, an easier way might be using the `CustomInspectable` protocol added as part of [this proposal](https://github.com/nalexn/ViewInspector/pull/288).
 
 ## Advanced topics
 
