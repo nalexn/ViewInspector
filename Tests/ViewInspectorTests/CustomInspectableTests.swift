@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+#if os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class CustomInspectableTests: XCTestCase {
 
@@ -33,3 +34,4 @@ private struct CustomViewRepresentable: UIViewRepresentable, CustomInspectable {
 
     func updateUIView(_ view: UIView, context: Context) { }
 }
+#endif
