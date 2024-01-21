@@ -36,9 +36,29 @@ public extension InspectableView {
 
     @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     func tint() throws -> Color? {
-        let reference = EmptyView().tint(nil)
-        let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
-        return try environment(keyPath, call: "tint")
+        do {
+            let reference = EmptyView().tint(nil)
+            let keyPath = try Inspector.environmentKeyPath(Optional<Color>.self, reference)
+            return try environment(keyPath, call: "tint")
+        } catch {
+            guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+            else { throw error }
+            var colorRef = Color.black
+            let reference = EmptyView().tint(colorRef)
+            let keyPath = try Inspector.environmentKeyPath(Optional<AnyShapeStyle>.self, reference)
+            guard let shape = try environment(keyPath, call: "tint")
+            else { return nil }
+            var colorBox = try Inspector.attribute(path: "storage|box", value: shape)
+            withUnsafeMutableBytes(of: &colorBox) { source in
+                withUnsafeMutableBytes(of: &colorRef) { destination in
+                    let src = source.baseAddress!.assumingMemoryBound(to: Int64.self)
+                    let dst = destination.baseAddress!.assumingMemoryBound(to: Int64.self)
+                    // Need to swap references to not break ARC
+                    swap(&src.pointee, &dst.pointee)
+                }
+            }
+            return colorRef
+        }
     }
     
     func colorScheme() throws -> ColorScheme {
