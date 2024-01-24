@@ -21,7 +21,7 @@ extension ViewType.PopoverContent: SingleViewContent {
 extension ViewType.WrappedContent: SingleViewContent {
 
     static func child(_ content: Content) throws -> Content {
-        let closure = try Inspector.attribute(label: "popoverContent", value: content.view)
+        let _ = try Inspector.attribute(label: "popoverContent", value: content.view)
         // Closure's type is () -> 'consumer view type', which we cannot
         // cast to without asking for the type from the caller side.
         // Discontinuing support for now
