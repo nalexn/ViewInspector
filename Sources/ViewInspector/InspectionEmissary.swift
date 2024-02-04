@@ -181,6 +181,21 @@ private extension InspectionEmissary {
             }
         }
     }
+    
+    @MainActor func setup(inspection: @escaping SubjectInspection,
+                function: String, file: StaticString, line: UInt) async throws {
+        try await withUnsafeThrowingContinuation { @MainActor continuation in
+            callbacks[line] = { view in
+                Task {
+                    do {
+                        continuation.resume(returning: try await inspection(view))
+                    } catch let error {
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        }
+    }
 }
 
 // MARK: - on keyPath inspection

@@ -160,15 +160,16 @@ final class InspectionEmissaryTests: XCTestCase {
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     func testAsyncViewInspectAfter() async throws {
         let sut = TestView(flag: false)
-        ViewHosting.host(view: sut)
-        try await sut.inspection.inspect { view in
-            let text = try view.button().labelView().text().string()
-            XCTAssertEqual(text, "false")
-            sut.publisher.send(true)
-        }
-        try await sut.inspection.inspect(after: .seconds(0.1)) { view in
-            let text = try view.button().labelView().text().string()
-            XCTAssertEqual(text, "true")
+        try await ViewHosting.host(sut) {
+            try await $0.inspection.inspect { view in
+                let text = try view.button().labelView().text().string()
+                XCTAssertEqual(text, "false")
+                sut.publisher.send(true)
+            }
+            try await $0.inspection.inspect(after: .seconds(0.1)) { view in
+                let text = try view.button().labelView().text().string()
+                XCTAssertEqual(text, "true")
+            }
         }
     }
     

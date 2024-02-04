@@ -15,6 +15,12 @@ public extension ViewHosting {
         var key: String { function }
     }
     
+    @MainActor static func host<V>(_ view: V, size: CGSize? = nil, function: String = #function, whileHosted: (V) async throws -> Void) async throws where V: View {
+        Self.host(view: view, size: size, function: function)
+        try await whileHosted(view)
+        Self.expel(function: function)
+    }
+    
     static func host<V>(view: V, size: CGSize? = nil, function: String = #function) where V: View {
         let viewId = ViewId(function: function)
         let medium = { () -> Content.Medium in
