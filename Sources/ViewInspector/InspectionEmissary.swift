@@ -85,6 +85,16 @@ public extension InspectionEmissary where V: ViewModifier {
         }
     }
     
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    func inspect(after delay: SuspendingClock.Duration = .seconds(0),
+                 function: String = #function, file: StaticString = #file, line: UInt = #line,
+                 _ inspection: @escaping ViewModifierInspection
+    ) async throws {
+        return try await inspect(after: delay, function: function, file: file, line: line) { view in
+            return try await inspection(try view.inspect(function: function))
+        }
+    }
+    
     @discardableResult
     func inspect<P>(onReceive publisher: P,
                     after delay: TimeInterval = 0,

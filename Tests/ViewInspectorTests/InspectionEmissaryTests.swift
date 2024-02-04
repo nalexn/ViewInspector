@@ -173,27 +173,27 @@ final class InspectionEmissaryTests: XCTestCase {
         }
     }
     
-//    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
-//    func testAsyncViewModifierInspectAfter() async throws {
-//        let binding = Binding(wrappedValue: false)
-//        let sut = TestViewModifier(flag: binding)
-//        let view = EmptyView()
-//            .modifier(sut)
-//            .environmentObject(ExternalState())
-//        ViewHosting.host(view: view)
-//        
-//        try await sut.inspection.inspect { view in
-//            let text = try view.hStack().button(1).labelView().text().string()
-//            XCTAssertEqual(text, "false")
-//            sut.publisher.send(true)
-//        }
-//        try await sut.inspection.inspect(after: .seconds(0.1)) { view in
-//            let texts = view.findAll(ViewType.Text.self)
-//            XCTAssertEqual(texts.count, 2)
-//            let text = try view.hStack().button(1).labelView().text().string()
-//            XCTAssertEqual(text, "true")
-//        }
-//    }
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    func testAsyncViewModifierInspectAfter() async throws {
+        let binding = Binding(wrappedValue: false)
+        let sut = TestViewModifier(flag: binding)
+        let view = EmptyView()
+            .modifier(sut)
+            .environmentObject(ExternalState())
+        try await ViewHosting.host(view) { _ in
+            try await sut.inspection.inspect { view in
+                let text = try view.hStack().button(1).labelView().text().string()
+                XCTAssertEqual(text, "false")
+                sut.publisher.send(true)
+            }
+            try await sut.inspection.inspect(after: .seconds(0.1)) { view in
+                let texts = view.findAll(ViewType.Text.self)
+                XCTAssertEqual(texts.count, 2)
+                let text = try view.hStack().button(1).labelView().text().string()
+                XCTAssertEqual(text, "true")
+            }
+        }
+    }
 //    
 //    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 //    func testAsyncViewInspectOnReceive() async throws {
