@@ -88,6 +88,7 @@
 		52F356AA267692D100695E43 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F356A9267692D100695E43 /* MapAnnotation.swift */; };
 		52F356AC2676940A00695E43 /* MapAnnotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F356AB2676940A00695E43 /* MapAnnotationTests.swift */; };
 		79069A6B238E8490000F6B58 /* OptionalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79069A6A238E8490000F6B58 /* OptionalContent.swift */; };
+		CA78B9872B700968009E8F64 /* LockExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA78B9862B700968009E8F64 /* LockExtensions.swift */; };
 		CA924CDC265DE87000976FEB /* MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA924CDB265DE87000976FEB /* MapTests.swift */; };
 		CA924CDF265DE9A000976FEB /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA924CDD265DE97800976FEB /* Map.swift */; };
 		CDA8444D262B6A7100C56C98 /* HitTestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8443D262B68E100C56C98 /* HitTestingTests.swift */; };
@@ -378,6 +379,7 @@
 		52F356A9267692D100695E43 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		52F356AB2676940A00695E43 /* MapAnnotationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotationTests.swift; sourceTree = "<group>"; };
 		79069A6A238E8490000F6B58 /* OptionalContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalContent.swift; sourceTree = "<group>"; };
+		CA78B9862B700968009E8F64 /* LockExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockExtensions.swift; sourceTree = "<group>"; };
 		CA924CDB265DE87000976FEB /* MapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTests.swift; sourceTree = "<group>"; };
 		CA924CDD265DE97800976FEB /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		CDA84433262B688F00C56C98 /* GestureModifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureModifierTests.swift; sourceTree = "<group>"; };
@@ -677,6 +679,7 @@
 				520E916126E69E540090BD1F /* PopupPresenter.swift */,
 				F68108A423A5833D00B32145 /* Modifiers */,
 				F60EEBBD2382EED0007DB53A /* SwiftUI */,
+				CA78B9862B700968009E8F64 /* LockExtensions.swift */,
 			);
 			path = ViewInspector;
 			sourceTree = "<group>";
@@ -1139,6 +1142,7 @@
 				F60EEBD92382EED0007DB53A /* Divider.swift in Sources */,
 				F6FB7F5825476431006658EF /* ColorPicker.swift in Sources */,
 				52A4A7642621F4AE0063E00B /* Overlay.swift in Sources */,
+				CA78B9872B700968009E8F64 /* LockExtensions.swift in Sources */,
 				523CD480277C98FC00D4FD3A /* VideoPlayer.swift in Sources */,
 				F60EEBDA2382EED0007DB53A /* HStack.swift in Sources */,
 				F64057ED238DB1530029D9BA /* ConditionalContent.swift in Sources */,

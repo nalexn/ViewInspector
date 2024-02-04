@@ -1,8 +1,10 @@
+import Foundation
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public struct Inspector {
-
+    private static let lock = NSRecursiveLock()
+    
     /// Removes the "(unknown context at <memory_address>)" portion of a type name.
     /// Calls to this method are memoized and retained for the lifetime of the program.
     /// - Parameter typeName: The raw type name. (e.g. `SomeTypeName.(unknown context at $138b3290c).SomePropertyName`)
@@ -10,12 +12,12 @@ public struct Inspector {
     static func sanitizeNamespace(ofTypeName typeName: String) -> String {
         var str = typeName
 
-        if let sanitized = sanitizedNamespacesCache[typeName] {
+        if let sanitized = lock.protect(sanitizedNamespacesCache[typeName]) {
             return sanitized
         }
 
         let range = NSRange(location: 0, length: str.utf16.count)
-        str = sanitizeNamespaceRegex.stringByReplacingMatches(in: str,
+        str = lock.protect(sanitizeNamespaceRegex).stringByReplacingMatches(in: str,
                                                               options: [],
                                                               range: range,
                                                               withTemplate: "")
@@ -23,7 +25,9 @@ public struct Inspector {
         // For Objective-C classes String(reflecting:) sometimes adds the namespace __C, drop it too
         str = str.replacingOccurrences(of: "<__C.", with: "<")
 
-        Inspector.sanitizedNamespacesCache[typeName] = str
+        lock.protect {
+            Inspector.sanitizedNamespacesCache[typeName] = str
+        }
 
         return str
 
@@ -38,7 +42,7 @@ public struct Inspector {
     static func replaceGenericParameters(inTypeName typeName: String,
                                          withReplacement replacement: String) -> String {
         // Check memoized value
-        if let typeNameDict = Inspector.replacedGenericParametersCache[typeName],
+        if let typeNameDict = lock.protect(Inspector.replacedGenericParametersCache[typeName]),
            let cachedResult = typeNameDict[replacement] {
             return cachedResult
         }
@@ -48,9 +52,11 @@ public struct Inspector {
                                                            withReplacement: replacement)
 
         // Store memoized value
-        var typeNameDict = Inspector.replacedGenericParametersCache[typeName] ?? [:]
+        var typeNameDict = lock.protect(Inspector.replacedGenericParametersCache[typeName]) ?? [:]
         typeNameDict[replacement] = result
-        Inspector.replacedGenericParametersCache[typeName] = typeNameDict
+        lock.protect {
+            Inspector.replacedGenericParametersCache[typeName] = typeNameDict
+        }
 
         return result
     }

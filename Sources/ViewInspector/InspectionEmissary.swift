@@ -77,7 +77,7 @@ public extension InspectionEmissary where V: ViewModifier {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension InspectionEmissary {
     
-    typealias SubjectInspection = (_ subject: V) throws -> Void
+    typealias SubjectInspection = @Sendable @MainActor (_ subject: V) async throws -> Void
     
     func inspect(after delay: TimeInterval,
                  function: String, file: StaticString, line: UInt,
@@ -113,15 +113,17 @@ private extension InspectionEmissary {
                expectation: XCTestExpectation,
                function: String, file: StaticString, line: UInt) {
         callbacks[line] = { [weak self] view in
-            do {
-                try inspection(view)
-            } catch let error {
-                XCTFail("\(error.localizedDescription)", file: file, line: line)
+            Task { [weak self] in
+                do {
+                    try await inspection(view)
+                } catch let error {
+                    XCTFail("\(error.localizedDescription)", file: file, line: line)
+                }
+                if self?.callbacks.count == 0 {
+                    await MainActor.run { ViewHosting.expel(function: function) }
+                }
+                expectation.fulfill()
             }
-            if self?.callbacks.count == 0 {
-                ViewHosting.expel(function: function)
-            }
-            expectation.fulfill()
         }
     }
 }
