@@ -15,7 +15,7 @@ public protocol InspectionEmissary: AnyObject {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectionEmissary where V: View {
     
-    typealias ViewInspection = (InspectableView<ViewType.View<V>>) throws -> Void
+    typealias ViewInspection = @Sendable @MainActor (InspectableView<ViewType.View<V>>) async throws -> Void
     
     @discardableResult
     func inspect(after delay: TimeInterval = 0,
@@ -25,7 +25,19 @@ public extension InspectionEmissary where V: View {
         return inspect(after: delay, function: function, file: file, line: line) { view in
             let unwrapped = try view.inspect(function: function)
                 .asInspectableView(ofType: ViewType.View<V>.self)
-            return try inspection(unwrapped)
+            return try await inspection(unwrapped)
+        }
+    }
+    
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    func inspect(after delay: SuspendingClock.Duration = .seconds(0),
+                 function: String = #function, file: StaticString = #file, line: UInt = #line,
+                 _ inspection: @escaping ViewInspection
+    ) async throws {
+        return try await inspect(after: delay, function: function, file: file, line: line) { view in
+            let unwrapped = try view.inspect(function: function)
+                .asInspectableView(ofType: ViewType.View<V>.self)
+            return try await inspection(unwrapped)
         }
     }
     
@@ -38,7 +50,20 @@ public extension InspectionEmissary where V: View {
         return inspect(onReceive: publisher, after: delay, function: function, file: file, line: line) { view in
             let unwrapped = try view.inspect(function: function)
                 .asInspectableView(ofType: ViewType.View<V>.self)
-            return try inspection(unwrapped)
+            return try await inspection(unwrapped)
+        }
+    }
+    
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    func inspect<P>(onReceive publisher: P,
+                    after delay: SuspendingClock.Duration = .seconds(0),
+                    function: String = #function, file: StaticString = #file, line: UInt = #line,
+                    _ inspection: @escaping ViewInspection
+    ) async throws where P: Publisher {
+        return try await inspect(onReceive: publisher, after: delay, function: function, file: file, line: line) { view in
+            let unwrapped = try view.inspect(function: function)
+                .asInspectableView(ofType: ViewType.View<V>.self)
+            return try await inspection(unwrapped)
         }
     }
 }
@@ -48,7 +73,7 @@ public extension InspectionEmissary where V: View {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension InspectionEmissary where V: ViewModifier {
     
-    typealias ViewModifierInspection = (InspectableView<ViewType.ViewModifier<V>>) throws -> Void
+    typealias ViewModifierInspection = @Sendable @MainActor (InspectableView<ViewType.ViewModifier<V>>) async throws -> Void
     
     @discardableResult
     func inspect(after delay: TimeInterval = 0,
@@ -56,7 +81,7 @@ public extension InspectionEmissary where V: ViewModifier {
                  _ inspection: @escaping ViewModifierInspection
     ) -> XCTestExpectation {
         return inspect(after: delay, function: function, file: file, line: line) { view in
-            return try inspection(try view.inspect(function: function))
+            return try await inspection(try view.inspect(function: function))
         }
     }
     
@@ -67,7 +92,7 @@ public extension InspectionEmissary where V: ViewModifier {
                     _ inspection: @escaping ViewModifierInspection
     ) -> XCTestExpectation where P: Publisher, P.Failure == Never {
         return inspect(onReceive: publisher, after: delay, function: function, file: file, line: line) { view in
-            return try inspection(try view.inspect(function: function))
+            return try await inspection(try view.inspect(function: function))
         }
     }
 }
@@ -91,6 +116,20 @@ private extension InspectionEmissary {
         return exp
     }
     
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    func inspect(after delay: SuspendingClock.Duration,
+                 function: String, file: StaticString, line: UInt,
+                 inspection: @escaping SubjectInspection
+    ) async throws {
+        async let setup: Void = try await setup(inspection: inspection, function: function, file: file, line: line)
+        Task { @MainActor [weak notice] in
+            let clock = SuspendingClock()
+            try await clock.sleep(until: clock.now + delay)
+            notice?.send(line)
+        }
+        try await setup
+    }
+    
     func inspect<P>(onReceive publisher: P,
                     after delay: TimeInterval,
                     function: String, file: StaticString, line: UInt,
@@ -107,6 +146,22 @@ private extension InspectionEmissary {
             }
         }
         return exp
+    }
+    
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    func inspect<P>(onReceive publisher: P,
+                    after delay: SuspendingClock.Duration,
+                    function: String, file: StaticString, line: UInt,
+                    inspection: @escaping SubjectInspection
+    ) async throws where P: Publisher {
+        async let setup: Void = try await setup(inspection: inspection, function: function, file: file, line: line)
+        Task { @MainActor [weak notice] in
+            _ = try await publisher.values.first { _ in true }
+            let clock = SuspendingClock()
+            try await clock.sleep(until: clock.now + delay)
+            notice?.send(line)
+        }
+        try await setup
     }
     
     func setup(inspection: @escaping SubjectInspection,

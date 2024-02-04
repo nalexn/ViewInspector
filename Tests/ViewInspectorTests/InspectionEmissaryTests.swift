@@ -156,6 +156,135 @@ final class InspectionEmissaryTests: XCTestCase {
         ViewHosting.host(view: view)
         wait(for: [exp1, exp2, exp3], timeout: 0.2)
     }
+    
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    func testAsyncViewInspectAfter() async throws {
+        let sut = TestView(flag: false)
+        ViewHosting.host(view: sut)
+        try await sut.inspection.inspect { view in
+            let text = try view.button().labelView().text().string()
+            XCTAssertEqual(text, "false")
+            sut.publisher.send(true)
+        }
+        try await sut.inspection.inspect(after: .seconds(0.1)) { view in
+            let text = try view.button().labelView().text().string()
+            XCTAssertEqual(text, "true")
+        }
+    }
+    
+//    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+//    func testAsyncViewModifierInspectAfter() async throws {
+//        let binding = Binding(wrappedValue: false)
+//        let sut = TestViewModifier(flag: binding)
+//        let view = EmptyView()
+//            .modifier(sut)
+//            .environmentObject(ExternalState())
+//        ViewHosting.host(view: view)
+//        
+//        try await sut.inspection.inspect { view in
+//            let text = try view.hStack().button(1).labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//            sut.publisher.send(true)
+//        }
+//        try await sut.inspection.inspect(after: .seconds(0.1)) { view in
+//            let texts = view.findAll(ViewType.Text.self)
+//            XCTAssertEqual(texts.count, 2)
+//            let text = try view.hStack().button(1).labelView().text().string()
+//            XCTAssertEqual(text, "true")
+//        }
+//    }
+//    
+//    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+//    func testAsyncViewInspectOnReceive() async throws {
+//        let sut = TestView(flag: false)
+//        let exp1 = sut.inspection.inspect { view in
+//            let text = try view.button().labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//            sut.publisher.send(true)
+//        }
+//        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
+//            let text = try view.button().labelView().text().string()
+//            XCTAssertEqual(text, "true")
+//            sut.publisher.send(false)
+//        }
+//        let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
+//            let text = try view.button().labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//        }
+//        ViewHosting.host(view: sut)
+//        wait(for: [exp1, exp2, exp3], timeout: 0.2)
+//    }
+//    
+//    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+//    func testAsyncViewInspectOnReceiveAfter() async throws {
+//        let sut = TestView(flag: false)
+//        let exp1 = sut.inspection.inspect { view in
+//            let text = try view.button().labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//            sut.publisher.send(true)
+//        }
+//        let exp2 = sut.inspection.inspect(onReceive: sut.publisher, after: 0.1) { view in
+//            let text = try view.button().labelView().text().string()
+//            XCTAssertEqual(text, "true")
+//            sut.publisher.send(false)
+//        }
+//        let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
+//            let text = try view.button().labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//        }
+//        ViewHosting.host(view: sut)
+//        wait(for: [exp1, exp2, exp3], timeout: 0.2)
+//    }
+//    
+//    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+//    func testAsyncViewModifierInspectOnReceive() async throws {
+//        let binding = Binding(wrappedValue: false)
+//        let sut = TestViewModifier(flag: binding)
+//        let exp1 = sut.inspection.inspect { view in
+//            let text = try view.hStack().button(1).labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//            sut.publisher.send(true)
+//        }
+//        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
+//            let text = try view.hStack().button(1).labelView().text().string()
+//            XCTAssertEqual(text, "true")
+//            sut.publisher.send(false)
+//        }
+//        let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
+//            let text = try view.hStack().button(1).labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//        }
+//        let view = EmptyView()
+//            .modifier(sut)
+//            .environmentObject(ExternalState())
+//        ViewHosting.host(view: view)
+//        wait(for: [exp1, exp2, exp3], timeout: 0.2)
+//    }
+//    
+//    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+//    func testAsyncViewModifierInspectOnReceiveAfter() async throws {
+//        let binding = Binding(wrappedValue: false)
+//        let sut = TestViewModifier(flag: binding)
+//        let exp1 = sut.inspection.inspect { view in
+//            let text = try view.hStack().button(1).labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//            sut.publisher.send(true)
+//        }
+//        let exp2 = sut.inspection.inspect(onReceive: sut.publisher, after: 0.1) { view in
+//            let text = try view.hStack().button(1).labelView().text().string()
+//            XCTAssertEqual(text, "true")
+//            sut.publisher.send(false)
+//        }
+//        let exp3 = sut.inspection.inspect(onReceive: sut.publisher.dropFirst()) { view in
+//            let text = try view.hStack().button(1).labelView().text().string()
+//            XCTAssertEqual(text, "false")
+//        }
+//        let view = EmptyView()
+//            .modifier(sut)
+//            .environmentObject(ExternalState())
+//        ViewHosting.host(view: view)
+//        wait(for: [exp1, exp2, exp3], timeout: 0.2)
+//    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
