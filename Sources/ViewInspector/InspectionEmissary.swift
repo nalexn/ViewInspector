@@ -105,6 +105,17 @@ public extension InspectionEmissary where V: ViewModifier {
             return try await inspection(try view.inspect(function: function))
         }
     }
+    
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    func inspect<P>(onReceive publisher: P,
+                    after delay: SuspendingClock.Duration = .seconds(0),
+                    function: String = #function, file: StaticString = #file, line: UInt = #line,
+                    _ inspection: @escaping ViewModifierInspection
+    ) async throws where P: Publisher {
+        return try await inspect(onReceive: publisher, after: delay, function: function, file: file, line: line) { view in
+            return try await inspection(try view.inspect(function: function))
+        }
+    }
 }
 
 // MARK: - Private
@@ -177,14 +188,14 @@ private extension InspectionEmissary {
     func setup(inspection: @escaping SubjectInspection,
                expectation: XCTestExpectation,
                function: String, file: StaticString, line: UInt) {
-        callbacks[line] = { [weak self] view in
-            Task { [weak self] in
+        callbacks[line] = { view in
+            Task {
                 do {
                     try await inspection(view)
                 } catch let error {
                     XCTFail("\(error.localizedDescription)", file: file, line: line)
                 }
-                if self?.callbacks.count == 0 {
+                if await MainActor.run(body: { [weak self] in self?.callbacks.count }) == 0 {
                     await MainActor.run { ViewHosting.expel(function: function) }
                 }
                 expectation.fulfill()
@@ -193,7 +204,7 @@ private extension InspectionEmissary {
     }
     
     @MainActor func setup(inspection: @escaping SubjectInspection,
-                function: String, file: StaticString, line: UInt) async throws {
+                          function: String, file: StaticString, line: UInt) async throws {
         try await withUnsafeThrowingContinuation { @MainActor continuation in
             callbacks[line] = { view in
                 Task {
@@ -219,8 +230,8 @@ public extension View {
     ) -> XCTestExpectation {
         return Inspector.injectInspectionCallback(
             value: &self, keyPath: keyPath, function: function, file: file, line: line) { body in
-            body.inspect(function: function, file: file, line: line, inspection: perform)
-        }
+                body.inspect(function: function, file: file, line: line, inspection: perform)
+            }
     }
 }
 
@@ -233,8 +244,8 @@ public extension ViewModifier {
     ) -> XCTestExpectation {
         return Inspector.injectInspectionCallback(
             value: &self, keyPath: keyPath, function: function, file: file, line: line) { body in
-            body.inspect(function: function, file: file, line: line, inspection: perform)
-        }
+                body.inspect(function: function, file: file, line: line, inspection: perform)
+            }
     }
 }
 
