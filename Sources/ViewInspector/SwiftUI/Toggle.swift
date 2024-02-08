@@ -63,7 +63,7 @@ public extension InspectableView where View == ViewType.Toggle {
     private func isOnBinding() throws -> Binding<Bool> {
         if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
             // In iOS16, the toggle state is no longer a bool - but an enum.
-            // ViewInspector equivalent of: https://github.com/soundcloud/Axt/blob/master/Sources/Axt/Native/Toggle.swift
+            // Inspector equivalent of: https://github.com/soundcloud/Axt/blob/master/Sources/Axt/Native/Toggle.swift
             let toggleStateBinding = try Inspector.attribute(label: "_toggleState", value: content.view)
             let toggleState = withUnsafePointer(to: toggleStateBinding) {
                 $0.withMemoryRebound(to: Binding<ToggleState>.self, capacity: 1) {
