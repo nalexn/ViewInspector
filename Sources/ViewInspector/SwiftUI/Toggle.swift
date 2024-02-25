@@ -62,13 +62,18 @@ public extension InspectableView where View == ViewType.Toggle {
     
     private func isOnBinding() throws -> Binding<Bool> {
         if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
-            throw InspectionError.notSupported(
-                """
-                Toggle's tap() and isOn() are currently unavailable for \
-                inspection on iOS 16. Situation may change with a minor \
-                OS version update. In the meanwhile, please add XCTSkip \
-                for iOS 16 and use an earlier OS version for testing.
-                """)
+            // In iOS16, the toggle state is no longer a bool - but an enum.
+            // Inspector equivalent of: https://github.com/soundcloud/Axt/blob/master/Sources/Axt/Native/Toggle.swift
+            let toggleStateBinding = try Inspector.attribute(label: "_toggleState", value: content.view)
+            let toggleState = withUnsafePointer(to: toggleStateBinding) {
+                $0.withMemoryRebound(to: Binding<ToggleState>.self, capacity: 1) {
+                    $0.pointee
+                }
+            }
+            return Binding(
+                get: { toggleState.wrappedValue == .on },
+                set: { toggleState.wrappedValue = $0 ? .on : .off }
+            )
         }
         if let binding = try? Inspector
             .attribute(label: "__isOn", value: content.view, type: Binding<Bool>.self) {
@@ -76,6 +81,13 @@ public extension InspectableView where View == ViewType.Toggle {
         }
         return try Inspector
             .attribute(label: "_isOn", value: content.view, type: Binding<Bool>.self)
+    }
+
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+    private enum ToggleState {
+        case on
+        case off
+        case mixed
     }
 }
 

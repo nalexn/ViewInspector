@@ -20,9 +20,6 @@ final class ToggleTests: XCTestCase {
     }
     
     func testTapAndIsOn() throws {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
-            throw XCTSkip()
-        }
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("") }
         let sut = try view.inspect().toggle()
@@ -34,9 +31,6 @@ final class ToggleTests: XCTestCase {
     }
     
     func testTapWhenDisabled() throws {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
-            throw XCTSkip()
-        }
         let binding = Binding(wrappedValue: false)
         let view = Toggle(isOn: binding) { Text("") }.disabled(true)
         let sut = try view.inspect().toggle()
