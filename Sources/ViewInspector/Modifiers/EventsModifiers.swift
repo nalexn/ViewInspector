@@ -55,4 +55,11 @@ public extension InspectableView {
             call: "onSubmit")
         callback()
     }
+    
+    func callTask() async throws {
+        let callback = try modifierAttribute(
+            modifierName: "_TaskModifier", path: "modifier|action",
+            type: (@Sendable () async -> Void).self, call: "task")
+        await callback()
+    }
 }

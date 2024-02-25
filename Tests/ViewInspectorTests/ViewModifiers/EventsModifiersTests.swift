@@ -141,6 +141,22 @@ final class ViewEventsTests: XCTestCase {
         try sut.inspect().callOnSubmit(of: .search)
         wait(for: [expSearch, expText], timeout: 0.1)
     }
+    
+    func testTask() throws {
+        guard #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) else { throw XCTSkip() }
+        let sut = EmptyView().task { }
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+    
+    func testTaskInspection() async throws {
+        guard #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) else { throw XCTSkip() }
+        let exp = XCTestExpectation(description: #function)
+        let sut = EmptyView().padding().task {
+            exp.fulfill()
+        }.padding().onDisappear(perform: { })
+        try await sut.inspect().emptyView().callTask()
+        await fulfillment(of: [exp], timeout: 0.1)
+    }
 }
 
 // MARK: - ViewPublisherEventsTests
