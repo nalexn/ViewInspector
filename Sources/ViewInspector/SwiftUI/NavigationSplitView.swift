@@ -50,6 +50,7 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.NavigationSplitView: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 2) { index in
@@ -72,13 +73,16 @@ extension ViewType.NavigationSplitView: SupplementaryChildren {
 // MARK: - Custom Attributes
 
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+@MainActor 
 public extension InspectableView where View == ViewType.NavigationSplitView {
     
+    @preconcurrency
     func detailView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
+    @preconcurrency
     func sidebarView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 1)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)

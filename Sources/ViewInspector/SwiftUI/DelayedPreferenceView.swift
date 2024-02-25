@@ -1,13 +1,16 @@
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension InspectableView {
 
+    @preconcurrency
     func overlayPreferenceValue(_ index: Int? = nil) throws -> InspectableView<ViewType.Overlay> {
         return try contentForModifierLookup
             .overlay(parent: self, api: [.overlayPreferenceV1, .overlayPreferenceV2], index: index)
     }
     
+    @preconcurrency
     func backgroundPreferenceValue(_ index: Int? = nil) throws -> InspectableView<ViewType.Overlay> {
         return try contentForModifierLookup
             .overlay(parent: self, api: [.backgroundPreferenceV1, .backgroundPreferenceV2], index: index)

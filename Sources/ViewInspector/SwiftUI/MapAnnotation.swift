@@ -42,18 +42,22 @@ public extension InspectableView where View == ViewType.MapAnnotation {
 // MARK: - SwiftUI MapAnnotation
 
 @available(iOS 14.0, tvOS 14.0, macOS 11.0, watchOS 7.0, *)
+@MainActor 
 public extension MapAnnotation {
     
+    @preconcurrency
     func coordinate() throws -> CLLocationCoordinate2D {
         return try Inspector.attribute(
             label: "coordinate", value: self, type: CLLocationCoordinate2D.self)
     }
     
+    @preconcurrency
     func anchorPoint() throws -> CGPoint {
         return try Inspector.attribute(
             label: "anchorPoint", value: self, type: CGPoint.self)
     }
     
+    @preconcurrency
     func contentView() throws -> InspectableView<ViewType.ClassifiedView> {
         let view = try Inspector.attribute(label: "content", value: self)
         let content = ViewInspector.Content(view, medium: .empty)

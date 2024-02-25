@@ -31,6 +31,7 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.TimelineView: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)

@@ -98,7 +98,9 @@ public extension InspectableView {
 // MARK: - ButtonStyle and PrimitiveButtonStyle inspection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension ButtonStyle {
+    @preconcurrency
     func inspect(isPressed: Bool) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ButtonStyleConfiguration(isPressed: isPressed)
         let view = try makeBody(configuration: config).inspect()
@@ -107,7 +109,9 @@ public extension ButtonStyle {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension PrimitiveButtonStyle {
+    @preconcurrency
     func inspect(onTrigger: @escaping () -> Void = { }) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = PrimitiveButtonStyleConfiguration(onTrigger: onTrigger)
         return try makeBody(configuration: config).inspect()

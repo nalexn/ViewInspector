@@ -203,8 +203,9 @@ private extension InspectionEmissary {
         }
     }
     
-    @MainActor func setup(inspection: @escaping SubjectInspection,
-                          function: String, file: StaticString, line: UInt) async throws {
+    @MainActor 
+    func setup(inspection: @escaping SubjectInspection,
+               function: String, file: StaticString, line: UInt) async throws {
         try await withUnsafeThrowingContinuation { @MainActor continuation in
             callbacks[line] = { view in
                 Task {
@@ -222,8 +223,10 @@ private extension InspectionEmissary {
 // MARK: - on keyPath inspection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor
 public extension View {
     @discardableResult
+    @preconcurrency
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
                      perform: @escaping ((InspectableView<ViewType.View<Self>>) throws -> Void)
@@ -236,8 +239,10 @@ public extension View {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension ViewModifier {
     @discardableResult
+    @preconcurrency
     mutating func on(_ keyPath: WritableKeyPath<Self, ((Self) -> Void)?>,
                      function: String = #function, file: StaticString = #file, line: UInt = #line,
                      perform: @escaping ((InspectableView<ViewType.ViewModifier<Self>>) throws -> Void)
@@ -250,6 +255,7 @@ public extension ViewModifier {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 private extension Inspector {
     static func injectInspectionCallback<T>(
         value: inout T, keyPath: WritableKeyPath<T, ((T) -> Void)?>,

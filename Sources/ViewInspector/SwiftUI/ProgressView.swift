@@ -31,6 +31,7 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.ProgressView: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 2) { index in
@@ -55,8 +56,10 @@ extension ViewType.ProgressView: SupplementaryChildren {
 // MARK: - Custom Attributes
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+@MainActor 
 public extension InspectableView where View == ViewType.ProgressView {
     
+    @preconcurrency
     func fractionCompleted() throws -> Double? {
         do {
             return try Inspector
@@ -67,6 +70,7 @@ public extension InspectableView where View == ViewType.ProgressView {
             .attribute(path: "base|custom|fractionCompleted", value: content.view, type: Double?.self)
     }
     
+    @preconcurrency
     func progress() throws -> Progress {
         if let value = try? Inspector
             .attribute(path: "base|observing|_progress|wrappedValue|base",
@@ -78,11 +82,13 @@ public extension InspectableView where View == ViewType.ProgressView {
                        value: content.view, type: Progress.self)
     }
     
+    @preconcurrency
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
+    @preconcurrency
     func currentValueLabelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 1)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
@@ -105,7 +111,9 @@ public extension InspectableView {
 // MARK: - ProgressViewStyle inspection
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+@MainActor 
 public extension ProgressViewStyle {
+    @preconcurrency
     func inspect(fractionCompleted: Double? = nil) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ProgressViewStyleConfiguration(fractionCompleted: fractionCompleted)
         let view = try makeBody(configuration: config).inspect()

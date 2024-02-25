@@ -4,7 +4,7 @@ import Combine
 @testable import ViewInspector
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-final class InspectorTests: XCTestCase {
+@MainActor final class InspectorTests: XCTestCase {
     
     private let testString = "abc"
     private let testValue = Struct1(value1: "abc", value2: .init(value3: 42))

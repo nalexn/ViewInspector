@@ -31,6 +31,7 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.Label: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 2) { index in
@@ -83,7 +84,9 @@ public extension InspectableView {
 // MARK: - LabelStyle inspection
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+@MainActor 
 public extension LabelStyle {
+    @preconcurrency
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let config = LabelStyleConfiguration()
         let view = try makeBody(configuration: config).inspect()

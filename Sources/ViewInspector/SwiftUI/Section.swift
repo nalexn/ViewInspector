@@ -42,6 +42,7 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.Section: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 2) { index in
@@ -62,13 +63,16 @@ extension ViewType.Section: SupplementaryChildren {
 // MARK: - Custom Attributes
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension InspectableView where View == ViewType.Section {
     
+    @preconcurrency
     func header() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
+    @preconcurrency
     func footer() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 1)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)

@@ -33,6 +33,7 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.ShareLink: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         guard #available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
@@ -65,8 +66,10 @@ extension ViewType.ShareLink: SupplementaryChildren {
 
 @available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
 @available(tvOS, unavailable)
+@MainActor 
 public extension InspectableView where View == ViewType.ShareLink {
     
+    @preconcurrency
     func item<T>(type: T.Type) throws -> T {
         do {
             return try Inspector.attribute(
@@ -82,25 +85,30 @@ public extension InspectableView where View == ViewType.ShareLink {
         }
     }
     
+    @preconcurrency
     func items() throws -> Any {
         return try Inspector.attribute(label: "items", value: content.view)
     }
     
+    @preconcurrency
     func labelView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 0)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
+    @preconcurrency
     func messageView() throws -> InspectableView<ViewType.Text> {
         return try View.supplementaryChildren(self).element(at: 1)
             .asInspectableView(ofType: ViewType.Text.self)
     }
     
+    @preconcurrency
     func subjectView() throws -> InspectableView<ViewType.Text> {
         return try View.supplementaryChildren(self).element(at: 2)
             .asInspectableView(ofType: ViewType.Text.self)
     }
     
+    @preconcurrency
     func sharePreview<DataElement, PreviewImage, PreviewIcon>(
         for element: DataElement, imageType: PreviewImage.Type, iconType: PreviewIcon.Type
     ) throws -> SharePreview<PreviewImage, PreviewIcon> {
@@ -112,17 +120,21 @@ public extension InspectableView where View == ViewType.ShareLink {
 
 @available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
 @available(tvOS, unavailable)
+@MainActor 
 public extension SharePreview {
     
+    @preconcurrency
     func title() throws -> InspectableView<ViewType.Text> {
         let text = try Inspector.attribute(path: "title|some", value: self, type: Text.self)
         return try .init(Content(text), parent: nil)
     }
     
+    @preconcurrency
     func image() throws -> Image {
         return try Inspector.attribute(path: "image|some", value: self, type: Image.self)
     }
     
+    @preconcurrency
     func icon() throws -> Icon {
         return try Inspector.attribute(path: "icon|some", value: self, type: Icon.self)
     }
