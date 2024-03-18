@@ -8,13 +8,13 @@
 import Foundation
 
 extension NSRecursiveLock {
-    func protect<T>(_ instructions: () throws -> T) rethrows -> T {
+    @discardableResult func protect<T>(_ instructions: () throws -> T) rethrows -> T {
         lock()
         defer { unlock() }
         return try instructions()
     }
     
-    func protect<T>(_ instructions: @autoclosure () throws -> T) rethrows -> T {
+    @discardableResult func protect<T>(_ instructions: @autoclosure () throws -> T) rethrows -> T {
         lock()
         defer { unlock() }
         return try instructions()

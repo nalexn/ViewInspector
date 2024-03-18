@@ -192,7 +192,7 @@ private extension InspectionEmissary {
             Task {
                 do {
                     try await inspection(view)
-                } catch let error {
+                } catch {
                     XCTFail("\(error.localizedDescription)", file: file, line: line)
                 }
                 if await MainActor.run(body: { [weak self] in self?.callbacks.count }) == 0 {
@@ -211,7 +211,7 @@ private extension InspectionEmissary {
                 Task {
                     do {
                         continuation.resume(returning: try await inspection(view))
-                    } catch let error {
+                    } catch {
                         continuation.resume(throwing: error)
                     }
                 }

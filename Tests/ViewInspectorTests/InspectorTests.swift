@@ -239,7 +239,7 @@ final class InspectableViewModifiersTests: XCTestCase {
         do {
             _ = try sut.parent().group()
             XCTFail("Expected to throw")
-        } catch let error {
+        } catch {
             let message = error.localizedDescription
             XCTAssertTrue(message
                 .hasPrefix("anyView().group().emptyView(1).overlay().hStack().group() found "))

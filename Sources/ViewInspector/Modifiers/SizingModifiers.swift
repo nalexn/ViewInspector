@@ -88,7 +88,7 @@ public extension InspectableView {
                          leading: try attr.cumulativeValue(edge: .leading) ?? 0,
                          bottom: try attr.cumulativeValue(edge: .bottom) ?? 0,
                          trailing: try attr.cumulativeValue(edge: .trailing) ?? 0)
-        } catch let error {
+        } catch {
             if attr.allSatisfy({ $0.edges == .all }) {
                 throw InspectionError.notSupported(
                     "Please use `hasPadding(_:)` for inspecting padding without explicit value.")
