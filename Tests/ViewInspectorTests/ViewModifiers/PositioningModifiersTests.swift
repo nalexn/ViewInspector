@@ -78,14 +78,14 @@ final class ViewPositioningTests: XCTestCase {
     }
 
     func testIgnoresSafeArea() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView().ignoresSafeArea()
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 
     func testIgnoresSafeAreaInspection() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { throw XCTSkip() }
         let sut = try EmptyView().ignoresSafeArea(.container, edges: .bottom).inspect().emptyView().ignoresSafeArea()
         XCTAssertEqual(sut.regions, .container)
@@ -93,7 +93,7 @@ final class ViewPositioningTests: XCTestCase {
     }
 
     func testIgnoresSafeAreaDefaultsInspection() throws {
-        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { throw XCTSkip() }
         let sut = try EmptyView().ignoresSafeArea().inspect().emptyView().ignoresSafeArea()
         XCTAssertEqual(sut.regions, .all)

@@ -4,7 +4,7 @@ import Combine
 @testable import ViewInspector
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-final class InspectorTests: XCTestCase {
+@MainActor final class InspectorTests: XCTestCase {
     
     private let testString = "abc"
     private let testValue = Struct1(value1: "abc", value2: .init(value3: 42))
@@ -239,7 +239,7 @@ final class InspectableViewModifiersTests: XCTestCase {
         do {
             _ = try sut.parent().group()
             XCTFail("Expected to throw")
-        } catch let error {
+        } catch {
             let message = error.localizedDescription
             XCTAssertTrue(message
                 .hasPrefix("anyView().group().emptyView(1).overlay().hStack().group() found "))

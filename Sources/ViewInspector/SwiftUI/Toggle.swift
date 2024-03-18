@@ -107,7 +107,9 @@ public extension InspectableView {
 // MARK: - ToggleStyle inspection
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension ToggleStyle {
+    @preconcurrency
     func inspect(isOn: Bool) throws -> InspectableView<ViewType.ClassifiedView> {
         let config = ToggleStyleConfiguration(isOn: isOn)
         let view = try makeBody(configuration: config).inspect()

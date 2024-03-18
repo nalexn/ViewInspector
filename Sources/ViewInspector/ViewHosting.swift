@@ -5,9 +5,12 @@ import UIKit
 #endif
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@preconcurrency 
+@MainActor
 public enum ViewHosting { }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@MainActor
 public extension ViewHosting {
     
     struct ViewId: Hashable {
@@ -15,6 +18,14 @@ public extension ViewHosting {
         var key: String { function }
     }
     
+    @preconcurrency 
+    static func host<V>(_ view: V, size: CGSize? = nil, function: String = #function, whileHosted: (V) async throws -> Void) async throws where V: View {
+        Self.host(view: view, size: size, function: function)
+        try await whileHosted(view)
+        Self.expel(function: function)
+    }
+    
+    @preconcurrency
     static func host<V>(view: V, size: CGSize? = nil, function: String = #function) where V: View {
         let viewId = ViewId(function: function)
         let medium = { () -> Content.Medium in
@@ -57,6 +68,7 @@ public extension ViewHosting {
         #endif
     }
     
+    @preconcurrency
     static func expel(function: String = #function) {
         let viewId = ViewId(function: function)
         #if os(watchOS)
@@ -73,6 +85,7 @@ public extension ViewHosting {
     }
     
     #if os(watchOS)
+    @preconcurrency
     private static func watchOS(host view: AnyView?, viewId: ViewId) throws {
         typealias Subject = CurrentValueSubject<[(String, AnyView)], Never>
         guard let subject: Subject = try subjectForWatchOS(type: Subject.self) else {

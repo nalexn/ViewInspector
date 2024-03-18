@@ -31,6 +31,7 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.AsyncImage: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
@@ -74,23 +75,28 @@ internal extension AsyncImagePhase {
 // MARK: - Custom Attributes
 
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+@MainActor 
 public extension InspectableView where View == ViewType.AsyncImage {
     
+    @preconcurrency 
     func url() throws -> URL? {
         return try Inspector.attribute(
             label: "url", value: content.view, type: URL?.self)
     }
     
+    @preconcurrency 
     func scale() throws -> CGFloat {
         return try Inspector.attribute(
             label: "scale", value: content.view, type: CGFloat.self)
     }
     
+    @preconcurrency 
     func transaction() throws -> Transaction {
         return try Inspector.attribute(
             label: "transaction", value: content.view, type: Transaction.self)
     }
     
+    @preconcurrency 
     func contentView(_ phase: AsyncImagePhase) throws -> InspectableView<ViewType.ClassifiedView> {
         return try ViewType.AsyncImage.view(for: phase, parent: self)
     }

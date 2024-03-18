@@ -44,6 +44,7 @@ extension ViewType.Overlay: MultipleViewContent {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 internal extension Content {
     
     func overlay(parent: UnwrappedView, api: ViewType.Overlay.API, index: Int?
@@ -122,6 +123,7 @@ internal extension ViewType.Overlay {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 internal extension ViewType.Overlay.API {
     
     var modifierName: String {

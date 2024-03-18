@@ -3,8 +3,10 @@ import SwiftUI
 // MARK: - ViewGraphicalEffects
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension InspectableView {
     
+    @preconcurrency
     func blur() throws -> (radius: CGFloat, isOpaque: Bool) {
         let radius = try modifierAttribute(
             modifierName: "_BlurEffect", path: "modifier|radius",
@@ -15,60 +17,70 @@ public extension InspectableView {
         return (radius, isOpaque)
     }
     
+    @preconcurrency
     func opacity() throws -> Double {
         return try modifierAttribute(
             modifierName: "_OpacityEffect", path: "modifier|opacity",
             type: Double.self, call: "opacity")
     }
     
+    @preconcurrency
     func brightness() throws -> Double {
         return try modifierAttribute(
             modifierName: "_BrightnessEffect", path: "modifier|amount",
             type: Double.self, call: "brightness")
     }
     
+    @preconcurrency
     func contrast() throws -> Double {
         return try modifierAttribute(
             modifierName: "_ContrastEffect", path: "modifier|amount",
             type: Double.self, call: "contrast")
     }
     
+    @preconcurrency
     func colorInvert() throws {
         _ = try modifierAttribute(
             modifierName: "_ColorInvertEffect", path: "modifier",
             type: Any.self, call: "colorInvert")
     }
     
+    @preconcurrency
     func colorMultiply() throws -> Color {
         return try modifierAttribute(
             modifierName: "_ColorMultiplyEffect", path: "modifier|color",
             type: Color.self, call: "colorMultiply")
     }
     
+    @preconcurrency
     func saturation() throws -> Double {
         return try modifierAttribute(
             modifierName: "_SaturationEffect", path: "modifier|amount",
             type: Double.self, call: "saturation")
     }
     
+    @preconcurrency
     func grayscale() throws -> Double {
         return try modifierAttribute(
             modifierName: "_GrayscaleEffect", path: "modifier|amount",
             type: Double.self, call: "grayscale")
     }
     
+    @preconcurrency
     func hueRotation() throws -> Angle {
         return try modifierAttribute(
             modifierName: "_HueRotationEffect", path: "modifier|angle",
             type: Angle.self, call: "hueRotation")
     }
     
+    @preconcurrency
     func luminanceToAlpha() throws {
         _ = try modifierAttribute(
             modifierName: "_LuminanceToAlphaEffect", path: "modifier",
             type: Any.self, call: "luminanceToAlpha")
     }
     
+    @preconcurrency
     func shadow() throws -> (color: Color, radius: CGFloat, offset: CGSize) {
         let color = try modifierAttribute(
             modifierName: "_ShadowEffect", path: "modifier|color",
@@ -82,6 +94,7 @@ public extension InspectableView {
         return (color, radius, offset)
     }
     
+    @preconcurrency
     func border<S: ShapeStyle>(_ style: S.Type) throws -> (shapeStyle: S, width: CGFloat) {
         let shape = try contentForModifierLookup
             .overlay(parent: self, api: .border, index: nil)
@@ -91,6 +104,7 @@ public extension InspectableView {
         return (shapeStyle, width)
     }
     
+    @preconcurrency
     func blendMode() throws -> BlendMode {
         return try modifierAttribute(
             modifierName: "_BlendModeEffect", path: "modifier|blendMode",
@@ -101,8 +115,10 @@ public extension InspectableView {
 // MARK: - ViewMasking
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension InspectableView {
     
+    @preconcurrency
     func clipShape<S>(_ shape: S.Type) throws -> S where S: Shape {
         return try clipShape(shape, call: "clipShape")
     }
@@ -114,23 +130,27 @@ public extension InspectableView {
         return try Inspector.cast(value: shapeValue, type: S.self)
     }
     
+    @preconcurrency
     func clipStyle() throws -> FillStyle {
         return try modifierAttribute(
             modifierName: "_ClipEffect", path: "modifier|style",
             type: FillStyle.self, call: "clipStyle")
     }
     
+    @preconcurrency
     func cornerRadius() throws -> CGFloat {
         let shape = try clipShape(RoundedRectangle.self, call: "cornerRadius")
         return shape.cornerSize.width
     }
     
+    @preconcurrency
     func mask(_ index: Int? = nil) throws -> InspectableView<ViewType.ClassifiedView> {
         return try contentForModifierLookup.mask(parent: self, index: index)
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 internal extension Content {
     func mask(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ClassifiedView> {
         let rootView = try modifierAttribute(

@@ -2,6 +2,8 @@ import SwiftUI
 import XCTest
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@preconcurrency 
+@MainActor
 public struct InspectableView<View> where View: BaseViewType {
     
     internal let content: Content
@@ -71,6 +73,7 @@ public struct InspectableView<View> where View: BaseViewType {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension UnwrappedView {
     func implicitCustomViewChild(index: Int, call: String) throws
     -> (content: Content, parent: InspectableView<ViewType.View<ViewType.Stub>>)? {
@@ -103,6 +106,7 @@ extension InspectableView: UnwrappedView {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 internal extension UnwrappedView {
     func asInspectableView() throws -> InspectableView<ViewType.ClassifiedView> {
         return try .init(content, parent: parentView, call: inspectionCall, index: inspectionIndex)
@@ -191,14 +195,16 @@ internal extension InspectableView where View: MultipleViewContent {
 // MARK: - Inspection of a Custom View
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-public extension View {
+@MainActor public extension View {
     
+    @preconcurrency 
     func inspect(function: String = #function) throws -> InspectableView<ViewType.ClassifiedView> {
         let medium = ViewHosting.medium(function: function)
         let content = try Inspector.unwrap(view: self, medium: medium)
         return try .init(content, parent: nil, call: "")
     }
     
+    @preconcurrency
     func inspect(function: String = #function, file: StaticString = #file, line: UInt = #line,
                  inspection: (InspectableView<ViewType.View<Self>>) throws -> Void) {
         do {
@@ -214,14 +220,17 @@ public extension View {
 // MARK: - Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension ViewModifier {
     
+    @preconcurrency
     func inspect(function: String = #function) throws -> InspectableView<ViewType.ViewModifier<Self>> {
         let medium = ViewHosting.medium(function: function)
         let content = try Inspector.unwrap(view: self, medium: medium)
         return try .init(content, parent: nil, call: "")
     }
     
+    @preconcurrency
     func inspect(function: String = #function, file: StaticString = #file, line: UInt = #line,
                  inspection: (InspectableView<ViewType.ViewModifier<Self>>) throws -> Void) {
         do {

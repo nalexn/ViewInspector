@@ -3,8 +3,10 @@ import SwiftUI
 // MARK: - Accessibility
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension InspectableView {
     
+    @preconcurrency 
     func accessibilityLabel() throws -> InspectableView<ViewType.Text> {
         if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *),
            let text = content.view as? Text,
@@ -35,6 +37,7 @@ public extension InspectableView {
         return try .init(try Inspector.unwrap(content: Content(text, medium: medium)), parent: self)
     }
     
+    @preconcurrency 
     func accessibilityValue() throws -> InspectableView<ViewType.Text> {
         let text: Text
         let call = "accessibilityValue"
@@ -56,6 +59,7 @@ public extension InspectableView {
         return try .init(try Inspector.unwrap(content: Content(text, medium: medium)), parent: self)
     }
     
+    @preconcurrency 
     func accessibilityHint() throws -> InspectableView<ViewType.Text> {
         let text: Text
         let call = "accessibilityHint"
@@ -74,6 +78,7 @@ public extension InspectableView {
         return try .init(try Inspector.unwrap(content: Content(text, medium: medium)), parent: self)
     }
     
+    @preconcurrency 
     func accessibilityHidden() throws -> Bool {
         let call = "accessibilityHidden"
         if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
@@ -93,6 +98,7 @@ public extension InspectableView {
         }
     }
     
+    @preconcurrency 
     func accessibilityIdentifier() throws -> String {
         let call = "accessibilityIdentifier"
         if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
@@ -107,6 +113,7 @@ public extension InspectableView {
         }
     }
     
+    @preconcurrency 
     func accessibilitySortPriority() throws -> Double {
         let call = "accessibilitySortPriority"
         if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
@@ -121,12 +128,14 @@ public extension InspectableView {
     @available(macOS, deprecated, introduced: 10.15)
     @available(tvOS, deprecated, introduced: 13.0)
     @available(watchOS, deprecated, introduced: 6)
+    @preconcurrency 
     func accessibilitySelectionIdentifier() throws -> AnyHashable {
         return try v2AccessibilityElement(
             "SelectionIdentifierKey", type: AnyHashable.self,
             call: "accessibility(selectionIdentifier:)")
     }
     
+    @preconcurrency 
     func accessibilityActivationPoint() throws -> UnitPoint {
         if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
             return try v3AccessibilityElement(
@@ -143,10 +152,12 @@ public extension InspectableView {
         }
     }
     
+    @preconcurrency 
     func callAccessibilityAction<S>(_ named: S) throws where S: StringProtocol {
         try callAccessibilityAction(AccessibilityActionKind(named: Text(named)))
     }
     
+    @preconcurrency 
     func callAccessibilityAction(_ kind: AccessibilityActionKind) throws {
         let shortName: String = {
             if let name = try? kind.name().string() {
@@ -167,6 +178,7 @@ public extension InspectableView {
         callback(())
     }
     
+    @preconcurrency 
     func callAccessibilityAdjustableAction(_ direction: AccessibilityAdjustmentDirection = .increment) throws {
         typealias Callback = (AccessibilityAdjustmentDirection) -> Void
         let callback: Callback
@@ -184,6 +196,7 @@ public extension InspectableView {
         callback(direction)
     }
     
+    @preconcurrency 
     func callAccessibilityScrollAction(_ edge: Edge) throws {
         typealias Callback = (Edge) -> Void
         let callback: Callback
@@ -205,6 +218,7 @@ public extension InspectableView {
 // MARK: - Private
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 private extension AccessibilityActionKind {
     func name() throws -> InspectableView<ViewType.Text> {
         let view: Any = try {
@@ -226,6 +240,8 @@ private extension AccessibilityActionKind {
 }
 
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+@preconcurrency 
+@MainActor
 private struct AccessibilityProperty {
     
     let keyPointerValue: UInt64
@@ -258,7 +274,9 @@ private struct AccessibilityProperty {
 }
 
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-private extension InspectableView {
+@MainActor 
+private
+extension InspectableView {
     func v3AccessibilityElement<V, T>(
         path: String? = nil, type: T.Type, call: String, _ reference: (EmptyView) -> V
     ) throws -> T where V: SwiftUI.View {
@@ -372,6 +390,7 @@ extension Dictionary: AccessibilityKeyValues {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 private extension InspectableView {
     
     func v2AccessibilityElement<T>(_ name: String, path: String = "value|some",

@@ -78,7 +78,9 @@ public extension InspectableView {
 @available(iOS 14.0, macOS 11.0, *)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
+@MainActor 
 public extension GroupBoxStyle {
+    @preconcurrency
     func inspect() throws -> InspectableView<ViewType.ClassifiedView> {
         let config = GroupBoxStyleConfiguration()
         let view = try makeBody(configuration: config).inspect()

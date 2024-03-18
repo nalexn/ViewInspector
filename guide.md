@@ -8,6 +8,7 @@
 - [Views using **@State**, **@Environment** or **@EnvironmentObject**](#views-using-state-environment-or-environmentobject)
 - [Custom **ViewModifier**](#custom-viewmodifier)
 - [Inspecting a mix of UIKit and SwiftUI](#inspecting-a-mix-of-uikit-and-swiftui)
+- [Async inspection](#async-inspection)
 - [Advanced topics](#advanced-topics)
 
 ## The Basics
@@ -582,6 +583,46 @@ let uikitView = try swiftuiView.actualView().uiView() // or .viewController()
 Note that UIKit hierarchy gets added on screen asynchronously - so you need to use one of the async inspection approaches discussed above. See some [examples in the tests](https://github.com/nalexn/ViewInspector/blob/master/Tests/ViewInspectorTests/ViewHostingTests.swift#L105C31-L105C31).
 
 From there you can use UIKit API to inspect subviews. However, if you're using UIKit just as a middleware and child content is again SwiftUI view, an easier way might be using the `CustomInspectable` protocol added as part of [this proposal](https://github.com/nalexn/ViewInspector/pull/288).
+
+## Async inspection
+
+If you're writing an `async` test some of the APIs change slightly. The biggest change is to `ViewHosting` which now uses a closure.
+
+```swift
+let sut = TestView(flag: false)
+try await ViewHosting.host(sut) { hostedView in
+    try await hostedView.inspection.inspect { view in
+        let text = try view.button().labelView().text().string()
+        XCTAssertEqual(text, "false")
+        sut.publisher.send(true)
+    }
+}
+```
+
+For instances where a test is `async` but the view utilizes Combine to listen to publisher changes there can be a situation where you need to make sure that inspection subscribes to a publisher in time. In these cases, it's advisable to use a task group.
+
+```swift
+let sut = TestView(flag: false)
+try await ViewHosting.host(sut) { sut in
+    try await withThrowingDiscardingTaskGroup { group in
+        group.addTask {
+            try await sut.inspection.inspect { view in
+                let text = try view.button().labelView().text().string()
+                XCTAssertEqual(text, "false")
+                sut.publisher.send(true)
+            }
+        }
+        
+        group.addTask {
+            try await sut.inspection.inspect(onReceive: sut.publisher) { view in
+                let text = try view.button().labelView().text().string()
+                XCTAssertEqual(text, "true")
+                sut.publisher.send(false)
+            }
+        }
+    }
+}
+```
 
 ## Advanced topics
 

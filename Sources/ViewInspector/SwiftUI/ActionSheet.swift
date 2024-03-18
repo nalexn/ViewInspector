@@ -25,8 +25,10 @@ public extension InspectableView {
 
 @available(iOS 13.0, tvOS 13.0, *)
 @available(macOS, unavailable)
+@MainActor 
 internal extension Content {
     
+    @preconcurrency 
     func actionSheet(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ActionSheet> {
         return try popup(parent: parent, index: index,
                          modifierPredicate: isActionSheetBuilder(modifier:),
@@ -92,6 +94,7 @@ public extension InspectableView where View == ViewType.ActionSheet {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.ActionSheet: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         let buttons = try Inspector.attribute(

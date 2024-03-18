@@ -98,7 +98,9 @@ public extension ItemPopupPresenter where Popup == ActionSheet {
 // MARK: - Popover, Sheet & FullScreenCover
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension ViewModifier where Self: BasePopupPresenter {
+    @preconcurrency
     func content() throws -> ViewInspector.Content {
         let view = body(content: _ViewModifier_Content())
         return try view.inspect().viewModifierContent().content
@@ -106,20 +108,26 @@ public extension ViewModifier where Self: BasePopupPresenter {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension ViewModifier where Self: PopupPresenter {
+    @preconcurrency
     var isPopoverPresenter: Bool {
         return (try? content().standardPopoverModifier()) != nil
     }
+    @preconcurrency
     var isSheetPresenter: Bool {
         return (try? content().standardSheetModifier()) != nil
     }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension ViewModifier where Self: ItemPopupPresenter {
+    @preconcurrency
     var isPopoverPresenter: Bool {
         return (try? content().standardPopoverModifier()) != nil
     }
+    @preconcurrency
     var isSheetPresenter: Bool {
         return (try? content().standardSheetModifier()) != nil
     }
@@ -160,6 +168,7 @@ internal extension ViewType.PopupContainer {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 internal extension Content {
     func popup<Popup: KnownViewType>(
         parent: UnwrappedView, index: Int?,

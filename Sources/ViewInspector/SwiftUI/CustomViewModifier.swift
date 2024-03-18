@@ -18,8 +18,10 @@ public extension ViewType {
 // MARK: - Extraction from SingleViewContent parent
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension InspectableView {
 
+    @preconcurrency
     func modifier<T>(_ type: T.Type, _ index: Int? = nil) throws -> InspectableView<ViewType.ViewModifier<T>>
     where T: ViewModifier {
         let name = Inspector.typeName(type: type)
@@ -41,8 +43,10 @@ public extension InspectableView {
 // MARK: - Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.ViewModifier: SingleViewContent {
     
+    @preconcurrency
     public static func child(_ content: Content) throws -> Content {
         if content.isCustomView {
             return try content.extractCustomView()
@@ -62,6 +66,7 @@ extension ViewType.ViewModifier: MultipleViewContent {
 // MARK: - Internal
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 internal extension Content {
     func unwrappedModifiedContent() throws -> Content {
         let view = try Inspector.attribute(label: "content", value: self.view)

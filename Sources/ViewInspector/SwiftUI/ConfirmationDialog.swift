@@ -24,6 +24,7 @@ public extension InspectableView {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 internal extension Content {
     
     func confirmationDialog(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ConfirmationDialog> {
@@ -52,6 +53,7 @@ internal extension Content {
 // MARK: - Non Standard Children
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension ViewType.ConfirmationDialog: SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {
         return .init(count: 3) { index in
@@ -80,28 +82,34 @@ extension ViewType.ConfirmationDialog: SupplementaryChildren {
 // MARK: - Custom Attributes
 
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+@MainActor 
 public extension InspectableView where View == ViewType.ConfirmationDialog {
     
+    @preconcurrency
     func title() throws -> InspectableView<ViewType.Text> {
         return try View.supplementaryChildren(self).element(at: 0)
             .asInspectableView(ofType: ViewType.Text.self)
     }
     
+    @preconcurrency
     func message() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 1)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
+    @preconcurrency
     func actions() throws -> InspectableView<ViewType.ClassifiedView> {
         return try View.supplementaryChildren(self).element(at: 2)
             .asInspectableView(ofType: ViewType.ClassifiedView.self)
     }
     
+    @preconcurrency
     func titleVisibility() throws -> Visibility {
         return try Inspector.attribute(
             label: "titleVisibility", value: content.view, type: Visibility.self)
     }
     
+    @preconcurrency
     func dismiss() throws {
         try isPresentedBinding().wrappedValue = false
     }

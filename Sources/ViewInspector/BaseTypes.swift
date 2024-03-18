@@ -19,11 +19,15 @@ public protocol CustomInspectable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@preconcurrency 
+@MainActor
 public protocol SingleViewContent {
     static func child(_ content: Content) throws -> Content
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@preconcurrency 
+@MainActor
 public protocol MultipleViewContent {
     static func children(_ content: Content) throws -> LazyGroup<Content>
 }
@@ -32,6 +36,8 @@ public protocol MultipleViewContent {
 internal typealias SupplementaryView = UnwrappedView
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@preconcurrency 
+@MainActor
 internal protocol SupplementaryChildren {
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView>
 }
@@ -42,6 +48,7 @@ internal protocol SupplementaryChildrenLabelView: SupplementaryChildren {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 extension SupplementaryChildrenLabelView {
     static var labelViewPath: String { "label" }
     static func supplementaryChildren(_ parent: UnwrappedView) throws -> LazyGroup<SupplementaryView> {

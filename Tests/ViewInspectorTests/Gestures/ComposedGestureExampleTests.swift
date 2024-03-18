@@ -22,7 +22,7 @@ final class ComposedGestureExampleTests: XCTestCase {
             sut.publisher.send()
         }
         
-        let exp2 = sut.inspection.inspect { view in
+        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
             XCTAssertEqual(try view.actualView().scale, 2.0)
         }
 
@@ -44,7 +44,7 @@ final class ComposedGestureExampleTests: XCTestCase {
             sut.publisher.send()
         }
         
-        let exp2 = sut.inspection.inspect { view in
+        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
             XCTAssertEqual(try view.actualView().angle, Angle(degrees: 5))
         }
 
@@ -66,7 +66,7 @@ final class ComposedGestureExampleTests: XCTestCase {
             sut.publisher.send()
         }
         
-        let exp2 = sut.inspection.inspect { view in
+        let exp2 = sut.inspection.inspect(onReceive: sut.publisher) { view in
             XCTAssertEqual(try view.actualView().scale, 2.0)
         }
 

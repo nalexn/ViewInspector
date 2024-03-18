@@ -53,19 +53,23 @@ public extension InspectableView where View: MultipleViewContent {
 // MARK: - Global View Modifiers
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 public extension InspectableView {
     
+    @preconcurrency
     func tag() throws -> AnyHashable {
         return try modifierAttribute(
             modifierName: "TagValueTraitKey",
             path: "modifier|value|tagged", type: AnyHashable.self, call: "tag")
     }
     
+    @preconcurrency
     func tabItem() throws -> InspectableView<ViewType.ClassifiedView> {
         return try contentForModifierLookup.tabItem(parent: self, index: 0)
     }
 
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, *)
+    @preconcurrency
     func tabViewStyle() throws -> Any {
         let modifier = try self.modifier({ modifier -> Bool in
             return modifier.modifierType.hasPrefix("_TabViewStyleWriter")
@@ -75,6 +79,7 @@ public extension InspectableView {
     
     @available(iOS 14.0, tvOS 14.0, *)
     @available(macOS, unavailable)
+    @preconcurrency
     func indexViewStyle() throws -> Any {
         let modifier = try self.modifier({ modifier -> Bool in
             return modifier.modifierType.hasPrefix("IndexViewStyleModifier")
@@ -84,6 +89,7 @@ public extension InspectableView {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@MainActor 
 internal extension Content {
     
     func tabItem(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ClassifiedView> {
