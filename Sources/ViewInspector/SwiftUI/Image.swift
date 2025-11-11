@@ -122,6 +122,24 @@ public extension SwiftUI.Image {
             type: TemplateRenderingMode?.self, call: "renderingMode")
     }
     
+    func resizableParameters() throws -> (capInsets: EdgeInsets, resizingMode: Image.ResizingMode) {
+        let capInsets = try imageContent().modifierAttribute(
+            modifierName: "ResizableProvider",
+            path: "provider|capInsets",
+            type: EdgeInsets.self,
+            call: "capInsets"
+        )
+
+        let resizingMode = try imageContent().modifierAttribute(
+            modifierName: "ResizableProvider",
+            path: "provider|resizingMode",
+            type: Image.ResizingMode.self,
+            call: "resizingMode"
+        )
+        
+        return (capInsets, resizingMode)
+    }
+    
     private func rawImage() throws -> Any {
         return try Inspector.attribute(path: "provider|base", value: try imageContent().view)
     }
