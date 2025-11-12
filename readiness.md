@@ -61,7 +61,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| HSplitView | `contained view` |
 |:white_check_mark:| HStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |
 |:white_check_mark:| Image | `label view`, `actualImage: Image` |
-|:white_check_mark:| Image (*) | `rootImage: Image`, `name: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `renderingMode: Image.TemplateRenderingMode` |
+|:white_check_mark:| Image (*) | `rootImage: Image`, `name: String?`, `(ui,ns,cg)Image: (UI,NS,CG)Image`, `orientation: Image.Orientation`, `scale: CGFloat`, `renderingMode: Image.TemplateRenderingMode`, `resizableParameters: (capInsets: EdgeInsets, resizingMode: Image.ResizingMode)`|
 |:white_check_mark:| Label | `title view`, `icon view` |
 |:white_check_mark:| LabeledContent | `contained view`, `label view` |
 |:white_check_mark:| LabelStyleConfiguration.Icon | |
