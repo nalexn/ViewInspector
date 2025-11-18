@@ -6,7 +6,7 @@ import SwiftUI
 @MainActor
 internal extension ViewSearch {
     private static let index: [String: [ViewIdentity]] = {
-        let knownViewTypes: [KnownViewType.Type] = [
+        var knownViewTypes: [KnownViewType.Type] = [
             ViewType.ActionSheet.self,
             ViewType.ActionSheet.self,
             ViewType.Alert.self,
@@ -47,7 +47,6 @@ internal extension ViewSearch {
             ViewType.Link.self,
             ViewType.List.self,
             ViewType.LocationButton.self,
-            ViewType.Map.self,
             ViewType.Menu.self,
             ViewType.MenuButton.self,
             ViewType.MultiDatePicker.self,
@@ -67,7 +66,6 @@ internal extension ViewSearch {
             ViewType.ScrollViewReader.self,
             ViewType.Section.self,
             ViewType.SecureField.self,
-            ViewType.SignInWithAppleButton.self,
             ViewType.ShareLink.self,
             ViewType.Sheet.self,
             ViewType.Slider.self,
@@ -89,13 +87,19 @@ internal extension ViewSearch {
             ViewType.Toolbar.self,
             ViewType.Toolbar.Item.self,
             ViewType.Toolbar.ItemGroup.self,
-            ViewType.VideoPlayer.self,
             ViewType.ViewModifierContent.self,
             ViewType.ViewThatFits.self,
             ViewType.VSplitView.self,
             ViewType.VStack.self,
             ViewType.ZStack.self,
         ]
+        #if !os(macOS)
+        knownViewTypes.append(contentsOf: [
+            ViewType.Map.self,
+            ViewType.SignInWithAppleButton.self,
+            ViewType.VideoPlayer.self,
+        ])
+        #endif
         let identities = knownViewTypes.map { $0.viewSearchIdentity() }
         var index = [String: [ViewIdentity]](minimumCapacity: 26) // alphabet
         identities.forEach { identity in

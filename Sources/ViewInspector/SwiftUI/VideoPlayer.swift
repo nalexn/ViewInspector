@@ -1,3 +1,4 @@
+#if !os(macOS)
 import SwiftUI
 #if canImport(AVKit)
 import AVKit
@@ -89,4 +90,5 @@ extension VideoPlayer: SingleViewProvider {
     }
 }
 
+#endif
 #endif

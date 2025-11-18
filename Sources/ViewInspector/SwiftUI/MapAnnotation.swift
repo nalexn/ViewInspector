@@ -1,4 +1,4 @@
-#if canImport(MapKit)
+#if !os(macOS) && canImport(MapKit)
 import MapKit
 import SwiftUI
 

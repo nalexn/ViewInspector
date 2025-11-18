@@ -1,3 +1,4 @@
+#if !os(macOS)
 import SwiftUI
 #if canImport(AuthenticationServices)
 import AuthenticationServices
@@ -162,4 +163,5 @@ public extension ASAuthorizationAppleIDCredential {
         setValue(realUserStatus.rawValue, forKey: "realUserStatus")
     }
 }
+#endif
 #endif
