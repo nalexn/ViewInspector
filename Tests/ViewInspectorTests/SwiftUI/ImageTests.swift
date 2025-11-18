@@ -53,6 +53,33 @@ final class ImageTests: XCTestCase {
         XCTAssertEqual(renderingMode, .template)
     }
     
+    func testResizableCapInsets() throws {
+        let capInsets = EdgeInsets(
+            top: 1.1,
+            leading: 2.2,
+            bottom: 3.3,
+            trailing: 4.4
+        )
+        let view = AnyView(imageView().resizable(capInsets: capInsets))
+        let resizable = try view.inspect().anyView().image().actualImage().resizableParameters()
+        
+        XCTAssertEqual(
+            capInsets,
+            resizable.capInsets
+        )
+    }
+    
+    func testResizableResizingMode() throws {
+        let resizingMode: Image.ResizingMode = .stretch
+        let view = AnyView(imageView().resizable(resizingMode: resizingMode))
+        let resizable = try view.inspect().anyView().image().actualImage().resizableParameters()
+        
+        XCTAssertEqual(
+            resizingMode,
+            resizable.resizingMode
+        )
+    }
+    
     func testExtractionCGImage() throws {
         let cgImage = testImage.cgImage!
         let image = Image(cgImage, scale: 2.0, orientation: .down, label: Text("CGImage").bold())
