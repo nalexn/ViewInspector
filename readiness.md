@@ -102,6 +102,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ProgressViewStyleConfiguration.Label | |
 |:white_check_mark:| RadialGradient | `gradient: Gradient`, `center: UnitPoint`, `startRadius: CGFloat`, `endRadius: CGFloat` |
 |:technologist:| RenameButton | |
+|:white_check_mark:| SafeAreaBar | `edge: SafeAreaBarEdge`, `alignment: SafeAreaBarAlignment`, `spacing: CGFloat?` |
 |:white_check_mark:| SafeAreaInset | `regions: SafeAreaRegions`, `spacing: CGFloat?`, `edge: Edge` |
 |:technologist:| SceneView | |
 |:white_check_mark:| ScrollView | `contained view`, `axes: Axis.Set`, `showsIndicators: Bool` |
