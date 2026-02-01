@@ -79,3 +79,15 @@ Async view testing requires `ViewHosting.host(view:)` and callback-based inspect
 - SwiftLint configuration in `.swiftlint.yml`
 - Line length warning at 130 chars, error at 200
 - Minimum identifier length: 2 characters
+
+## Skills
+
+### /new-api-support
+
+Use `/new-api-support <entity_name>` to add introspection support for a SwiftUI API. The skill guides through:
+1. Locating the API in the iOS SDK and cataloging all related overloads
+2. Determining appropriate file placement
+3. Reverse engineering internal structure via `Inspector.print()`
+4. Implementing introspection code with proper `@available` attributes
+5. Adding comprehensive tests
+6. Updating `readiness.md`
