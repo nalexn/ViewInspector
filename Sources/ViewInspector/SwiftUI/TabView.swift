@@ -12,9 +12,47 @@ public extension ViewType {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension ViewType.TabView: MultipleViewContent {
-    
+
     public static func children(_ content: Content) throws -> LazyGroup<Content> {
         let view = try Inspector.attribute(label: "content", value: content.view)
+
+        // Check if this is the new iOS 18+ Tab-based TabView
+        // With multiple Tabs: Content<_TupleTabContent<Never, (...modifiedtabs...)>>
+        // With single Tab: Content<Tab<...>>
+        let fullTypeName = Inspector.typeName(value: view, generics: .keep)
+        if #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *) {
+            if fullTypeName.hasPrefix("Content<_TupleTabContent<") {
+                // Multiple Tabs
+                let children = try ViewType.Tab.childrenFromTupleTabContent(Content(view, medium: content.medium))
+                guard let selectedValue = content.tabViewSelectionValue() else {
+                    return children
+                }
+                return .init(count: children.count) { index in
+                    let child = try children.element(at: index)
+                    if let viewTag = try? InspectableView<ViewType.ClassifiedView>(child, parent: nil).tag(),
+                       viewTag != selectedValue {
+                        throw InspectionError.viewNotFound(parent: "tab with tag \(viewTag)")
+                    }
+                    return child
+                }
+            } else if fullTypeName.hasPrefix("Content<Tab<") {
+                // Single Tab - extract the tab directly
+                let children = try ViewType.Tab.childFromSingleTabContent(Content(view, medium: content.medium))
+                guard let selectedValue = content.tabViewSelectionValue() else {
+                    return children
+                }
+                return .init(count: children.count) { index in
+                    let child = try children.element(at: index)
+                    if let viewTag = try? InspectableView<ViewType.ClassifiedView>(child, parent: nil).tag(),
+                       viewTag != selectedValue {
+                        throw InspectionError.viewNotFound(parent: "tab with tag \(viewTag)")
+                    }
+                    return child
+                }
+            }
+        }
+
+        // Fall back to traditional TabView content extraction
         let children = try Inspector.viewsInContainer(view: view, medium: content.medium)
         guard let selectedValue = content.tabViewSelectionValue() else {
             return children

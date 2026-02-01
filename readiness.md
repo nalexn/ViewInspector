@@ -54,6 +54,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| Gauge | |
 |:white_check_mark:| FullScreenCover | `dismiss()` |
 |:white_check_mark:| GeometryReader | `contained view` |
+|:white_check_mark:| GlassEffectContainer | `contained view`, `spacing: CGFloat?` |
 |:white_check_mark:| Grid | `alignment: Alignment`, `horizontalSpacing: CGFloat?`, `verticalSpacing: CGFloat?` |
 |:white_check_mark:| GridRow | `alignment: VerticalAlignment?` |
 |:white_check_mark:| Group | `contained view` |
@@ -121,6 +122,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| SpriteView | |
 |:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:white_check_mark:| SubscriptionView | |
+|:white_check_mark:| Tab | `contained view`, `labelView()`, `role()` |
 |:technologist:| Table | |
 |:white_check_mark:| TabView | `contained view` |
 |:technologist:| Table | |
@@ -285,6 +287,10 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func hueRotation(Angle) -> some View` |
 |:white_check_mark:| `func luminanceToAlpha() -> some View` |
 |:white_check_mark:| `func shadow(color: Color, radius: CGFloat, x: CGFloat, y: CGFloat) -> some View` |
+|:white_check_mark:| `func glassEffect(_ glass: Glass, in shape: some Shape) -> some View` | `glassEffect() -> ViewType.GlassEffect` with `.tintColor() -> Color?`, `.shape<S: Shape>(S.Type) -> S`, `.isInteractive() -> Bool` |
+|:white_check_mark:| `func glassEffectTransition(_ transition: GlassEffectTransition) -> some View` | `glassEffectTransition() -> GlassEffectTransition` |
+|:white_check_mark:| `func glassEffectID(_ id: some Hashable, in namespace: Namespace.ID) -> some View` | `glassEffectID() -> (id: AnyHashable?, namespace: Namespace.ID)` |
+|:white_check_mark:| `func glassEffectUnion(id: some Hashable, namespace: Namespace.ID) -> some View` | `glassEffectUnion() -> (id: AnyHashable?, namespace: Namespace.ID?)` |
 
 ### Compositing Views
 
