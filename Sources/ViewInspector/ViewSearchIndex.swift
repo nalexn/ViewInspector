@@ -30,6 +30,7 @@ internal extension ViewSearch {
             ViewType.ForEach.self,
             ViewType.Form.self,
             ViewType.GeometryReader.self,
+            ViewType.GlassEffectContainer.self,
             ViewType.Grid.self,
             ViewType.GridRow.self,
             ViewType.Group.self,
