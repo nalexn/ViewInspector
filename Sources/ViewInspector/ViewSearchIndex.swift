@@ -63,6 +63,7 @@ internal extension ViewSearch {
             ViewType.Popover.self,
             ViewType.ProgressView.self,
             ViewType.RadialGradient.self,
+            ViewType.SafeAreaBar.self,
             ViewType.SafeAreaInset.self,
             ViewType.ScrollView.self,
             ViewType.ScrollViewReader.self,
@@ -348,6 +349,9 @@ internal extension ViewSearch {
         }),
         .init(name: ViewType.NavigationDestination.typePrefix, builder: { parent, index in
             try parent.content.navigationDestination(parent: parent, index: index)
+        }),
+        .init(name: ViewType.SafeAreaBar.typePrefix, builder: { parent, index in
+            try parent.content.safeAreaBar(parent: parent, index: index)
         }),
         .init(name: ViewType.SafeAreaInset.typePrefix, builder: { parent, index in
             try parent.content.safeAreaInset(parent: parent, index: index)
