@@ -79,6 +79,7 @@ internal extension ViewSearch {
             ViewType.StyleConfiguration.Title.self,
             ViewType.StyleConfiguration.Icon.self,
             ViewType.StyleConfiguration.CurrentValueLabel.self,
+            ViewType.Tab.self,
             ViewType.TabView.self,
             ViewType.Text.self,
             ViewType.TextEditor.self,

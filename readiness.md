@@ -121,6 +121,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| SpriteView | |
 |:white_check_mark:| Stepper | `label view`, `increment()`, `decrement()`, `callOnEditingChanged()` |
 |:white_check_mark:| SubscriptionView | |
+|:white_check_mark:| Tab | `contained view`, `labelView()`, `role()` |
 |:technologist:| Table | |
 |:white_check_mark:| TabView | `contained view` |
 |:technologist:| Table | |

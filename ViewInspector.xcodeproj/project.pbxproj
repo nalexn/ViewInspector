@@ -30,6 +30,8 @@
 		355B2D57BFF536BCD0B555B8 /* ViewPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */; };
 		4816514F2F2FAA3C00843718 /* GlassEffectContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4816514E2F2FAA3C00843718 /* GlassEffectContainer.swift */; };
 		481651512F2FABA000843718 /* GlassEffectContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481651502F2FABA000843718 /* GlassEffectContainerTests.swift */; };
+		481651532F2FD04000843718 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481651522F2FD04000843718 /* Tab.swift */; };
+		481651552F2FD06100843718 /* TabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481651542F2FD06100843718 /* TabTests.swift */; };
 		520E915C26E64F210090BD1F /* EnvironmentInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E915B26E64F210090BD1F /* EnvironmentInjection.swift */; };
 		520E916226E69E540090BD1F /* PopupPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E916126E69E540090BD1F /* PopupPresenter.swift */; };
 		520F8C13266D0E600026BC57 /* CustomViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F8C12266D0E600026BC57 /* CustomViewModifier.swift */; };
@@ -327,6 +329,8 @@
 		355B2B0F773087003E9F5A49 /* ViewPaddingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPaddingTests.swift; sourceTree = "<group>"; };
 		4816514E2F2FAA3C00843718 /* GlassEffectContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassEffectContainer.swift; sourceTree = "<group>"; };
 		481651502F2FABA000843718 /* GlassEffectContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassEffectContainerTests.swift; sourceTree = "<group>"; };
+		481651522F2FD04000843718 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		481651542F2FD06100843718 /* TabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTests.swift; sourceTree = "<group>"; };
 		520E915B26E64F210090BD1F /* EnvironmentInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentInjection.swift; sourceTree = "<group>"; };
 		520E916126E69E540090BD1F /* PopupPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPresenter.swift; sourceTree = "<group>"; };
 		520F8C12266D0E600026BC57 /* CustomViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewModifier.swift; sourceTree = "<group>"; };
@@ -695,6 +699,7 @@
 		F60EEBBD2382EED0007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				481651522F2FD04000843718 /* Tab.swift */,
 				5250764A2651800800ADE4E7 /* ActionSheet.swift */,
 				52507625264FC0F400ADE4E7 /* Alert.swift */,
 				F6684BF523AA587700DECCB3 /* AngularGradient.swift */,
@@ -826,6 +831,7 @@
 		F60EEBE62382F004007DB53A /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				481651542F2FD06100843718 /* TabTests.swift */,
 				5250764C265185A800ADE4E7 /* ActionSheetTests.swift */,
 				525076272650000600ADE4E7 /* AlertTests.swift */,
 				F6684BF723AA58F200DECCB3 /* AngularGradientTests.swift */,
@@ -1209,6 +1215,7 @@
 				F64C4E2C250CD60800A69FF9 /* Color.swift in Sources */,
 				520E915C26E64F210090BD1F /* EnvironmentInjection.swift in Sources */,
 				F682A016254776F2005F1B70 /* DisclosureGroup.swift in Sources */,
+				481651532F2FD04000843718 /* Tab.swift in Sources */,
 				F6119FF4254A00FC0000C54A /* LazyHGrid.swift in Sources */,
 				F653BDE3255698A6001FA688 /* TupleView.swift in Sources */,
 				F60EEBDE2382EED0007DB53A /* ForEach.swift in Sources */,
@@ -1362,6 +1369,7 @@
 				5296338C29697EB400EC6C81 /* NavigationSplitViewTests.swift in Sources */,
 				F6ECF6D823A69CB5000FC591 /* VisualEffectModifiersTests.swift in Sources */,
 				F6DB5A0B253510CC0056FC83 /* TextInputModifiersTests.swift in Sources */,
+				481651552F2FD06100843718 /* TabTests.swift in Sources */,
 				F609EFC323A4342400B9256A /* PreferenceTests.swift in Sources */,
 				F6F08E6423A29FA1001F04DF /* SubscriptionViewTests.swift in Sources */,
 				EDC6031C2A95260E0072E420 /* ViewThatFitsTests.swift in Sources */,
