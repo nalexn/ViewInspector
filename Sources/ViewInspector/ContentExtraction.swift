@@ -10,24 +10,30 @@ internal struct ContentExtractor {
         self.contentSource = try Self.contentSource(from: source)
     }
 
-    internal func extractContent(environmentObjects: [AnyObject]) throws -> Any {
+    internal func extractContent(environmentObjects: [AnyObject],
+                                   environmentModifiers: [EnvironmentModifier] = []) throws -> Any {
         #if swift(>=6.0)
-        return try isolatedExtractContent(environmentObjects: environmentObjects)
+        return try isolatedExtractContent(environmentObjects: environmentObjects,
+                                          environmentModifiers: environmentModifiers)
         #else
         return try MainActor.assumeIsolated {
-            try isolatedExtractContent(environmentObjects: environmentObjects)
+            try isolatedExtractContent(environmentObjects: environmentObjects,
+                                       environmentModifiers: environmentModifiers)
         }
         #endif
     }
 
     @MainActor
-    private func isolatedExtractContent(environmentObjects: [AnyObject]) throws -> Any {
+    private func isolatedExtractContent(environmentObjects: [AnyObject],
+                                        environmentModifiers: [EnvironmentModifier]) throws -> Any {
         try validateSourceBeforeExtraction()
         switch contentSource {
         case .view(let view):
-            return try view.extractContent(environmentObjects: environmentObjects)
+            return try view.extractContent(environmentObjects: environmentObjects,
+                                           environmentModifiers: environmentModifiers)
         case .viewModifier(let viewModifier):
-            return try viewModifier.extractContent(environmentObjects: environmentObjects)
+            return try viewModifier.extractContent(environmentObjects: environmentObjects,
+                                                   environmentModifiers: environmentModifiers)
         case .gesture(let gesture):
             return try gesture.extractContent(environmentObjects: environmentObjects)
         }
@@ -131,6 +137,15 @@ private extension ViewModifier {
 public extension View {
     @MainActor
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
+        try extractContent(environmentObjects: environmentObjects, environmentModifiers: [])
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension View {
+    @MainActor
+    func extractContent(environmentObjects: [AnyObject],
+                        environmentModifiers: [EnvironmentModifier]) throws -> Any {
         var copy = self
         environmentObjects.forEach { copy = EnvironmentInjection.inject(environmentObject: $0, into: copy) }
         let missingObjects = EnvironmentInjection.missingEnvironmentObjects(for: copy)
@@ -138,6 +153,10 @@ public extension View {
             let view = Inspector.typeName(value: self)
             throw InspectionError
                 .missingEnvironmentObjects(view: view, objects: missingObjects)
+        }
+        if ViewInspectorConfig.resolveEnvironmentValues {
+            let env = EnvironmentInjection.environmentValues(from: environmentModifiers)
+            copy = EnvironmentInjection.resolveEnvironmentProperties(in: copy, using: env)
         }
         return copy.body
     }
@@ -147,6 +166,15 @@ public extension View {
 public extension ViewModifier {
     @MainActor
     func extractContent(environmentObjects: [AnyObject]) throws -> Any {
+        try extractContent(environmentObjects: environmentObjects, environmentModifiers: [])
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+internal extension ViewModifier {
+    @MainActor
+    func extractContent(environmentObjects: [AnyObject],
+                        environmentModifiers: [EnvironmentModifier]) throws -> Any {
         var copy = self
         environmentObjects.forEach { copy = EnvironmentInjection.inject(environmentObject: $0, into: copy) }
         let missingObjects = EnvironmentInjection.missingEnvironmentObjects(for: copy)
@@ -157,10 +185,15 @@ public extension ViewModifier {
         }
         if let envModifier = copy as? (any EnvironmentalModifier) {
             let resolved = envModifier.resolve(in: EnvironmentValues())
-            return try resolved.extractContent(environmentObjects: environmentObjects)
+            return try resolved.extractContent(environmentObjects: environmentObjects,
+                                               environmentModifiers: environmentModifiers)
         }
         guard copy.hasBody else {
             return "<Never>"
+        }
+        if ViewInspectorConfig.resolveEnvironmentValues {
+            let env = EnvironmentInjection.environmentValues(from: environmentModifiers)
+            copy = EnvironmentInjection.resolveEnvironmentProperties(in: copy, using: env)
         }
         return copy.body()
     }

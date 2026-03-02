@@ -32,6 +32,7 @@
 		520E916226E69E540090BD1F /* PopupPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E916126E69E540090BD1F /* PopupPresenter.swift */; };
 		520F8C13266D0E600026BC57 /* CustomViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F8C12266D0E600026BC57 /* CustomViewModifier.swift */; };
 		5214800325F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */; };
+		77315AF38AB5D351033E996D /* EnvironmentInjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B1D96EDC6349C9F90F650 /* EnvironmentInjectionTests.swift */; };
 		5214802B25F803B7002D974D /* CustomStyleModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214802A25F803B7002D974D /* CustomStyleModifiers.swift */; };
 		5214803A25F803DC002D974D /* CustomStyleModifiersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */; };
 		5220903E27748CAD001A899A /* NavigationBarModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5220903D27748CAD001A899A /* NavigationBarModifiers.swift */; };
@@ -327,6 +328,7 @@
 		520E916126E69E540090BD1F /* PopupPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPresenter.swift; sourceTree = "<group>"; };
 		520F8C12266D0E600026BC57 /* CustomViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewModifier.swift; sourceTree = "<group>"; };
 		5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentObjectInjectionTests.swift; sourceTree = "<group>"; };
+		5C3B1D96EDC6349C9F90F650 /* EnvironmentInjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentInjectionTests.swift; sourceTree = "<group>"; };
 		5214802A25F803B7002D974D /* CustomStyleModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiers.swift; sourceTree = "<group>"; };
 		5214803025F803D5002D974D /* CustomStyleModifiersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleModifiersTests.swift; sourceTree = "<group>"; };
 		5220903D27748CAD001A899A /* NavigationBarModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifiers.swift; sourceTree = "<group>"; };
@@ -844,6 +846,7 @@
 				DD421B5E26FA6648008EFE05 /* EllipticalGradientTests.swift */,
 				F6D933A82385E9F700358E0E /* EquatableViewTests.swift */,
 				F64057F0238DBB120029D9BA /* EmptyViewTests.swift */,
+				5C3B1D96EDC6349C9F90F650 /* EnvironmentInjectionTests.swift */,
 				5214800225F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift */,
 				F60EEBED2382F004007DB53A /* ForEachTests.swift */,
 				F60EEBEB2382F004007DB53A /* FormTests.swift */,
@@ -1346,6 +1349,7 @@
 				F60EEC032382F004007DB53A /* VStackTests.swift in Sources */,
 				F6C15A17254A0BB5000240F1 /* LazyHStackTests.swift in Sources */,
 				CDA8449B262B723D00C56C98 /* SimultaneousGestureModifierTests.swift in Sources */,
+				77315AF38AB5D351033E996D /* EnvironmentInjectionTests.swift in Sources */,
 				5214800325F4EA4F002D974D /* EnvironmentObjectInjectionTests.swift in Sources */,
 				5214803A25F803DC002D974D /* CustomStyleModifiersTests.swift in Sources */,
 				F6DFD88623830EB80028E84D /* ListTests.swift in Sources */,

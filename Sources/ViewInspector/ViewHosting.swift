@@ -25,7 +25,7 @@ public extension ViewHosting {
                         whileHosted: @MainActor (V) async throws -> Void
     ) async throws where V: View {
         let viewId = ViewId(function: function)
-        host(view: view, size: size, viewId: viewId)
+        hostResolvingIfNeeded(view: view, size: size, viewId: viewId)
         try await whileHosted(view)
         expel(viewId: viewId)
     }
@@ -43,6 +43,19 @@ public extension ViewHosting {
     static func host<V>(view: V, size: CGSize? = nil, function: String = #function) where V: View {
         let viewId = ViewId(function: function)
         MainActor.assumeIsolated {
+            hostResolvingIfNeeded(view: view, size: size, viewId: viewId)
+        }
+    }
+
+    @MainActor
+    private static func hostResolvingIfNeeded<V>(view: V, size: CGSize? = nil, viewId: ViewId) where V: View {
+        if ViewInspectorConfig.resolveEnvironmentValues {
+            if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
+                host(view: EnvironmentInjection.viewWithResolvedEnvironment(view), size: size, viewId: viewId)
+            } else {
+                host(view: EnvironmentInjection.viewWithResolvedEnvironmentBase(view), size: size, viewId: viewId)
+            }
+        } else {
             host(view: view, size: size, viewId: viewId)
         }
     }

@@ -55,14 +55,18 @@ internal extension Content {
     
     func extractCustomView() throws -> Content {
         let contentExtractor = try ContentExtractor(source: view)
-        let view = try contentExtractor.extractContent(environmentObjects: medium.environmentObjects)
+        let view = try contentExtractor.extractContent(
+            environmentObjects: medium.environmentObjects,
+            environmentModifiers: medium.environmentModifiers)
         let medium = self.medium.resettingViewModifiers()
         return try Inspector.unwrap(view: view, medium: medium)
     }
-    
+
     func extractCustomViewGroup() throws -> LazyGroup<Content> {
         let contentExtractor = try ContentExtractor(source: view)
-        let view = try contentExtractor.extractContent(environmentObjects: medium.environmentObjects)
+        let view = try contentExtractor.extractContent(
+            environmentObjects: medium.environmentObjects,
+            environmentModifiers: medium.environmentModifiers)
         return try Inspector.viewsInContainer(view: view, medium: medium)
     }
 }
