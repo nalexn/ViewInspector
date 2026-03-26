@@ -85,20 +85,37 @@ public extension InspectableView {
     }
     
     func callTask() async throws {
-        let callback = try modifierAttribute(
-            modifierName: "_TaskModifier", path: "modifier|action",
-            type: (@Sendable () async -> Void).self, call: "task")
-        await callback()
+        if #available(iOS 26.4, macOS 26.4, tvOS 26.4, watchOS 26.4, visionOS 26.4, *) {
+            let callback = try modifierAttribute(
+                modifierName: "_TaskModifier2", path: "modifier|action",
+                type: (@isolated(any) () async -> Void).self, call: "task")
+            await callback()
+        } else {
+            let callback = try modifierAttribute(
+                modifierName: "_TaskModifier", path: "modifier|action",
+                type: (@Sendable () async -> Void).self, call: "task")
+            await callback()
+        }
     }
 
     func callTask(id: some Equatable, index: Int = 0) async throws {
         let typeName = Inspector.typeName(type: type(of: id))
-        let callback = try modifierAttribute(
-            modifierName: "_TaskValueModifier<\(typeName)>",
-            path: "modifier|action",
-            type: (@Sendable () async -> Void).self,
-            call: "task",
-            index: index)
-        await callback()
+        if #available(iOS 26.4, macOS 26.4, tvOS 26.4, watchOS 26.4, visionOS 26.4, *) {
+            let callback = try modifierAttribute(
+                modifierName: "_TaskValueModifier2<\(typeName)>",
+                path: "modifier|action",
+                type: (@isolated(any) () async -> Void).self,
+                call: "task",
+                index: index)
+            await callback()
+        } else {
+            let callback = try modifierAttribute(
+                modifierName: "_TaskValueModifier<\(typeName)>",
+                path: "modifier|action",
+                type: (@Sendable () async -> Void).self,
+                call: "task",
+                index: index)
+            await callback()
+        }
     }
 }
