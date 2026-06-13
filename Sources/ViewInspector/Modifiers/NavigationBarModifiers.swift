@@ -38,6 +38,23 @@ public extension InspectableView {
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     func statusBarHidden() throws -> Bool {
+        // iOS 27+: reimplemented as a ToolbarAppearanceModifier carrying a Visibility
+        // for the statusBar placement (.hidden == hidden, .visible == shown).
+        if #available(iOS 27.0, *) {
+            let lookup: (ModifierNameProvider) -> Bool = { modifier in
+                guard modifier.modifierType.contains("ToolbarAppearanceModifier"),
+                      let bars = try? Inspector.attribute(path: "modifier|bars", value: modifier) as? [Any],
+                      let firstBar = bars.first,
+                      let role = try? Inspector.attribute(path: "storage|role", value: firstBar),
+                      String(describing: role) == "statusBar"
+                else { return false }
+                return true
+            }
+            let modifier = try modifier(lookup, call: "statusBar(hidden:)")
+            let visibility = try Inspector.attribute(path: "modifier|visibility", value: modifier)
+            return String(describing: visibility).contains("hidden")
+        }
+        // iOS 13...26: stored as a Bool inside TransactionalPreferenceModifier<Bool, StatusBarKey>.
         return try modifierAttribute(
             modifierName: "TransactionalPreferenceModifier<Bool, StatusBarKey>",
             path: "modifier|value", type: Bool.self, call: "statusBar(hidden:)")

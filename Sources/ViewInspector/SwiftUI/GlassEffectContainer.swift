@@ -20,6 +20,12 @@ public extension ViewType {
 
         /// Returns the tint color applied to the glass effect, if any.
         public func tintColor() throws -> SwiftUI.Color? {
+            // iOS 27 moved the glass parameters into a `glass.storage` dictionary
+            // keyed by an enum (`tint`, `options`); iOS 26 used named members.
+            if #available(iOS 27.0, macOS 27.0, tvOS 27.0, watchOS 27.0, *) {
+                guard let value = glassStorageValue(forKey: "tint") else { return nil }
+                return try? Inspector.attribute(label: "tint", value: value, type: SwiftUI.Color.self)
+            }
             return try? Inspector.attribute(
                 path: "glass|tintColor|some", value: config, type: SwiftUI.Color.self)
         }
@@ -33,9 +39,33 @@ public extension ViewType {
 
         /// Returns whether the glass effect is interactive.
         public func isInteractive() throws -> Bool {
-            let rawValue = try Inspector.attribute(
-                path: "glass|options|rawValue", value: config, type: Int.self)
+            let rawValue: Int
+            if #available(iOS 27.0, macOS 27.0, tvOS 27.0, watchOS 27.0, *) {
+                if let value = glassStorageValue(forKey: "options"),
+                   let raw = try? Inspector.attribute(
+                    path: "options|rawValue", value: value, type: Int.self) {
+                    rawValue = raw
+                } else {
+                    rawValue = 0
+                }
+            } else {
+                rawValue = try Inspector.attribute(
+                    path: "glass|options|rawValue", value: config, type: Int.self)
+            }
             return (rawValue & 1) != 0
+        }
+
+        /// iOS 27: looks up a value in the `glass.storage` dictionary by its enum key name.
+        private func glassStorageValue(forKey key: String) -> Any? {
+            guard let storage = try? Inspector.attribute(path: "glass|storage", value: config)
+            else { return nil }
+            for child in Mirror(reflecting: storage).children {
+                let pair = Array(Mirror(reflecting: child.value).children)
+                guard pair.count == 2, String(describing: pair[0].value) == key
+                else { continue }
+                return pair[1].value
+            }
+            return nil
         }
     }
 }
@@ -80,6 +110,11 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView where View == ViewType.GlassEffectContainer {
 
     func spacing() throws -> CGFloat? {
+        // iOS 27 wraps the spacing in a `Smoothness` struct; iOS 26 stored a CGFloat? directly.
+        if #available(iOS 27.0, macOS 27.0, tvOS 27.0, watchOS 27.0, *) {
+            return try Inspector.attribute(
+                path: "base|config|smoothness|value", value: content.view, type: CGFloat.self)
+        }
         return try Inspector.attribute(
             path: "base|config|smoothness", value: content.view, type: CGFloat?.self)
     }
@@ -93,6 +128,13 @@ public extension InspectableView {
 
     /// Returns the glass effect configuration for inspection.
     func glassEffect() throws -> ViewType.GlassEffect {
+        // iOS 27 wraps GlassEffectModifier in a StaticIf, nesting the config under `trueBody`.
+        if #available(iOS 27.0, macOS 27.0, tvOS 27.0, watchOS 27.0, *) {
+            let config = try modifierAttribute(
+                modifierName: "GlassEffectModifier", path: "modifier|trueBody|config",
+                type: Any.self, call: "glassEffect")
+            return ViewType.GlassEffect(config: config)
+        }
         let config = try modifierAttribute(
             modifierName: "GlassEffectModifier", path: "modifier|config",
             type: Any.self, call: "glassEffect")
@@ -105,7 +147,7 @@ public extension InspectableView {
             modifierName: "GlassEffectTransitionModifier", path: "modifier|transition|kind",
             type: Any.self, call: "glassEffectTransition")
         let description = String(describing: kind)
-        if description == "materialize" {
+        if description.hasPrefix("materialize") {
             return .materialize
         } else if description.hasPrefix("matchedGeometry") {
             return .matchedGeometry

@@ -80,6 +80,12 @@ internal extension AsyncImagePhase {
 public extension InspectableView where View == ViewType.AsyncImage {
      
     func url() throws -> URL? {
+        // iOS 27+: moved into an optional AsyncImageSource.
+        if #available(iOS 27.0, macOS 27.0, tvOS 27.0, watchOS 27.0, *) {
+            return try Inspector.attribute(
+                path: "source|some|url", value: content.view, type: URL.self)
+        }
+        // iOS 15...26: stored as a top-level `url` attribute.
         return try Inspector.attribute(
             label: "url", value: content.view, type: URL?.self)
     }
