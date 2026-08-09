@@ -44,20 +44,34 @@ extension ViewType.LazyVStack: MultipleViewContent {
 public extension InspectableView where View == ViewType.LazyVStack {
     
     func alignment() throws -> HorizontalAlignment {
+        guard let layout = try? lazyVStackLayout() else {
+            return try Inspector.attribute(
+                label: "alignment", value: content.view, type: HorizontalAlignment.self)
+        }
         return try Inspector.attribute(
-            path: "base|alignment", value: lazyVStackLayout(), type: HorizontalAlignment.self)
+            path: "base|alignment", value: layout, type: HorizontalAlignment.self)
     }
-    
+
     func spacing() throws -> CGFloat? {
+        guard let layout = try? lazyVStackLayout() else {
+            return try Inspector.attribute(
+                label: "spacing", value: content.view, type: CGFloat?.self)
+        }
         return try Inspector.attribute(
-            path: "base|spacing", value: lazyVStackLayout(), type: CGFloat?.self)
+            path: "base|spacing", value: layout, type: CGFloat?.self)
     }
-    
+
     func pinnedViews() throws -> PinnedScrollableViews {
+        guard let layout = try? lazyVStackLayout() else {
+            return try Inspector.attribute(
+                label: "pinnedViews", value: content.view, type: PinnedScrollableViews.self)
+        }
         return try Inspector.attribute(
-            label: "pinnedViews", value: lazyVStackLayout(), type: PinnedScrollableViews.self)
+            label: "pinnedViews", value: layout, type: PinnedScrollableViews.self)
     }
-    
+
+    // Absent on iOS 27, where these values live directly on the view.
+
     private func lazyVStackLayout() throws -> Any {
         if let layout = try? Inspector.attribute(path: "tree|content|root", value: content.view) {
             return layout
