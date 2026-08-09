@@ -50,8 +50,11 @@ function_parameter_count:
   warning: 6
   error: 10
 
+cyclomatic_complexity:
+  warning: 12
+
 line_length:
-  warning: 130
+  warning: 140
   error: 200
 
 custom_rules:

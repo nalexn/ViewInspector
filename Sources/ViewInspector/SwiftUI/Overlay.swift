@@ -150,7 +150,7 @@ internal extension ViewType.Overlay.API {
         case .backgroundPreferenceV2:
             return "_BackgroundPreferenceModifier"
         case .accessibilityActions:
-            return "AccessibilityProxyTransformModifier";
+            return "AccessibilityProxyTransformModifier"
         }
     }
     
@@ -183,7 +183,6 @@ internal extension ViewType.Overlay.API {
     #if swift(>=6.0)
     @MainActor
     #endif
-    // swiftlint:disable:next cyclomatic_complexity
     func verifySignature(content: Any, modifier: Any, hasMultipleOverlays: Bool) throws {
         let reportFailure: () throws -> Void = {
             throw InspectionError.notSupported("Different view signature")

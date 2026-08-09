@@ -155,7 +155,7 @@ public extension InspectableView where View == ViewType.Popover {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension PopoverAttachmentAnchor: Equatable {
+extension PopoverAttachmentAnchor: @retroactive Equatable {
     public static func == (lhs: PopoverAttachmentAnchor, rhs: PopoverAttachmentAnchor) -> Bool {
         switch (lhs, rhs) {
         case let (.rect(lhsAnchor), .rect(rhsAnchor)):
@@ -169,7 +169,7 @@ extension PopoverAttachmentAnchor: Equatable {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension Anchor.Source: Equatable where Value == CGRect {
+extension Anchor.Source: @retroactive Equatable where Value == CGRect {
     public static func == (lhs: Anchor<Value>.Source, rhs: Anchor<Value>.Source) -> Bool {
         return String(describing: lhs) == String(describing: rhs)
     }

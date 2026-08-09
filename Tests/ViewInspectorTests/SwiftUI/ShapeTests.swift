@@ -140,7 +140,6 @@ final class ShapeTests: XCTestCase {
         XCTAssertEqual(sut, fillStyle)
     }
     
-    
     func testStrokeContent() throws {
         let content = Color.blue
         let view = Ellipse().stroke(content, lineWidth: 1)

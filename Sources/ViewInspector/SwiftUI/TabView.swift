@@ -165,8 +165,8 @@ internal extension Content {
 #endif
 @available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 @available(macOS, unavailable)
-extension PageTabViewStyle: Equatable {
-    
+extension PageTabViewStyle: @retroactive Equatable {
+
     public var indexDisplayMode: PageTabViewStyle.IndexDisplayMode {
         return (try? Inspector.attribute(label: "indexDisplayMode", value: self,
                                          type: PageTabViewStyle.IndexDisplayMode.self)
@@ -183,7 +183,7 @@ extension PageTabViewStyle: Equatable {
 #endif
 @available(iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 @available(macOS, unavailable)
-extension PageTabViewStyle.IndexDisplayMode: Equatable {
+extension PageTabViewStyle.IndexDisplayMode: @retroactive Equatable {
     public static func == (lhs: PageTabViewStyle.IndexDisplayMode, rhs: PageTabViewStyle.IndexDisplayMode) -> Bool {
         let lhsBacking = try? Inspector.attribute(label: "backing", value: lhs)
         let rhsBacking = try? Inspector.attribute(label: "backing", value: rhs)

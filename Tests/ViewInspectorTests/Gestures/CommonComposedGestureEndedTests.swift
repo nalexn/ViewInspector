@@ -66,7 +66,7 @@ final class CommonComposedGestureEndedTests<U: Gesture> {
         (_EndedGesture<_ChangedGesture<MagnificationGesture>>,
          _EndedGesture<_ChangedGesture<RotationGesture>>) -> T
 
-    func callEndedNotFirstTest<T: Gesture> (
+    func callEndedNotFirstTest<T: Gesture>(
         _ order: InspectableView<ViewType.Gesture<T>>.GestureOrder,
         file: StaticString = #filePath, line: UInt = #line,
         _ factory: ComposedGestureEndedNotFirst<T>) throws {

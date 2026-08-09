@@ -175,7 +175,7 @@ final class ViewGraphicalEffectsTests: XCTestCase {
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-extension LinearGradient: BinaryEquatable { }
+extension LinearGradient: @retroactive BinaryEquatable { }
 
 // MARK: - ViewMaskingTests
 
