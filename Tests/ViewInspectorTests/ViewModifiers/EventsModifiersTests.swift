@@ -93,7 +93,7 @@ final class ViewEventsTests: XCTestCase {
     func testOnChangeOldValueNewValueInspection() throws {
         guard #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
         else { throw XCTSkip() }
-        let val = Optional(Inspector.TestValue(value: "initial"))
+        let val = Optional(Inspector.TestValue(value: "inferred type"))
         let exp = XCTestExpectation(description: #function)
         let sut = EmptyView().padding().onChange(of: val) { oldValue, newValue in
             XCTAssertEqual(oldValue, Inspector.TestValue(value: "initial"))
@@ -101,7 +101,10 @@ final class ViewEventsTests: XCTestCase {
             exp.fulfill()
         }.padding()
         try sut.inspect().emptyView()
-            .callOnChange(oldValue: val, newValue: Inspector.TestValue(value: "expected"))
+            .callOnChange(
+                oldValue: Inspector.TestValue(value: "initial"),
+                newValue: Inspector.TestValue(value: "expected")
+            )
         wait(for: [exp], timeout: 0.1)
     }
 
