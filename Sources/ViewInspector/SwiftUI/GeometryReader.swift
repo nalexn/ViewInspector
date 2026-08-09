@@ -54,18 +54,16 @@ extension GeometryReader: SingleViewProvider {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension GeometryProxy {
-    struct Allocator48 {
-        let data: (Int64, Int64, Int64, Int64, Int64, Int64) = (0, 0, 0, 0, 0, 0)
-    }
-    struct Allocator52 {
-        let data: (Allocator48, Int32) = (.init(), 0)
-    }
-    
+    // GeometryProxy has no public initializer, so we fabricate one by zero-filling
+    // a block of memory matching its runtime layout. The exact size has changed
+    // across SwiftUI versions (e.g. 48 / 52 bytes), so allocate dynamically rather
+    // than unsafeBitCast-ing a fixed-size struct, which traps when sizes differ.
     init() {
-        if MemoryLayout<GeometryProxy>.size == 52 {
-            self = unsafeBitCast(Allocator52(), to: GeometryProxy.self)
-            return
-        }
-        self = unsafeBitCast(Allocator48(), to: GeometryProxy.self)
+        let size = MemoryLayout<GeometryProxy>.size
+        let alignment = MemoryLayout<GeometryProxy>.alignment
+        let pointer = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: alignment)
+        defer { pointer.deallocate() }
+        pointer.initializeMemory(as: UInt8.self, repeating: 0, count: size)
+        self = pointer.load(as: GeometryProxy.self)
     }
 }

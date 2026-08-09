@@ -113,15 +113,21 @@ public extension InspectableView where View == ViewType.Toolbar {
     }
     
     private func element(_ index: Int) throws -> Any {
-        do {
-            return try Inspector.attribute(path: "content|value|.\(index)", value: content.view)
-        } catch {
-            if index == 0, let value = try? Inspector
+        if let value = try? Inspector
+            .attribute(path: "content|value|.\(index)", value: content.view) {
+            return value
+        }
+        if index == 0 {
+            if let value = try? Inspector
                 .attribute(path: "content|value", value: content.view) {
                 return value
             }
-            throw InspectionError.viewNotFound(parent: "toolbar item at index \(index)")
+            // iOS 27+: a single implicit item is stored directly under `content`.
+            if let value = try? Inspector.attribute(path: "content", value: content.view) {
+                return value
+            }
         }
+        throw InspectionError.viewNotFound(parent: "toolbar item at index \(index)")
     }
 }
 
@@ -134,7 +140,9 @@ private extension Content {
             index += 1
             couldLocateItem = (try? Inspector.attribute(path: "content|value|.\(index)", value: view)) != nil
         } while couldLocateItem
-        if index == 0, (try? Inspector.attribute(path: "content|value", value: view)) != nil {
+        if index == 0,
+           (try? Inspector.attribute(path: "content|value", value: view)) != nil
+            || (try? Inspector.attribute(path: "content", value: view)) != nil {
             return 1
         }
         return index
