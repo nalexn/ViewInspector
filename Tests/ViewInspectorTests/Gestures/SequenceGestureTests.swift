@@ -23,22 +23,26 @@ final class SequenceGestureTests: XCTestCase {
     var gestureTests: CommonGestureTests<SequenceGesture<MagnificationGesture, RotationGesture>>?
     
     override func setUpWithError() throws {
-        magnificationMagnifyBy = 10
-        magnificationValue = MagnificationGesture.Value(magnifyBy: magnificationMagnifyBy!)
-        sequenceGestureValue = SequenceGesture<MagnificationGesture, RotationGesture>.Value.first(magnificationValue!)
+        MainActor.assumeIsolated {
+            magnificationMagnifyBy = 10
+            magnificationValue = MagnificationGesture.Value(magnifyBy: magnificationMagnifyBy!)
+            sequenceGestureValue = SequenceGesture<MagnificationGesture, RotationGesture>.Value.first(magnificationValue!)
 
-        gestureTests = CommonGestureTests<SequenceGesture<MagnificationGesture, RotationGesture>>(
-            testCase: self,
-            gesture: SequenceGesture(MagnificationGesture(), RotationGesture()),
-            value: sequenceGestureValue!,
-            assert: assertSequenceGestureValue)
+            gestureTests = CommonGestureTests<SequenceGesture<MagnificationGesture, RotationGesture>>(
+                testCase: self,
+                gesture: SequenceGesture(MagnificationGesture(), RotationGesture()),
+                value: sequenceGestureValue!,
+                assert: assertSequenceGestureValue)
+        }
     }
     
     override func tearDownWithError() throws {
-        magnificationMagnifyBy = nil
-        magnificationValue = nil
-        sequenceGestureValue = nil
-        gestureTests = nil
+        MainActor.assumeIsolated {
+            magnificationMagnifyBy = nil
+            magnificationValue = nil
+            sequenceGestureValue = nil
+            gestureTests = nil
+        }
     }
 
     func testCreateSequenceGestureValue() throws {
@@ -155,4 +159,5 @@ final class SequenceGestureTests: XCTestCase {
     }
 }
 
+extension SequenceGestureTests: @unchecked Sendable { }
 #endif

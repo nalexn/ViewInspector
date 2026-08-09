@@ -18,19 +18,23 @@ final class SpatialTapGestureTests: XCTestCase {
     var gestureTests: CommonGestureTests<SpatialTapGesture>?
 
     override func setUpWithError() throws {
-        spatialTapLocation = CGPoint(x: 100, y: 100)
-        spatialTapValue = SpatialTapGesture.Value(location: spatialTapLocation!)
+        MainActor.assumeIsolated {
+            spatialTapLocation = CGPoint(x: 100, y: 100)
+            spatialTapValue = SpatialTapGesture.Value(location: spatialTapLocation!)
 
-        gestureTests = CommonGestureTests<SpatialTapGesture>(testCase: self,
-                                                             gesture: SpatialTapGesture(),
-                                                             value: spatialTapValue!,
-                                                             assert: assertSpatialTapValue)
+            gestureTests = CommonGestureTests<SpatialTapGesture>(testCase: self,
+                                                                 gesture: SpatialTapGesture(),
+                                                                 value: spatialTapValue!,
+                                                                 assert: assertSpatialTapValue)
+        }
     }
 
     override func tearDownWithError() throws {
-        spatialTapLocation = nil
-        spatialTapValue = nil
-        gestureTests = nil
+        MainActor.assumeIsolated {
+            spatialTapLocation = nil
+            spatialTapValue = nil
+            gestureTests = nil
+        }
     }
 
     func testCreateSpatialTapGestureValue() throws {
@@ -145,4 +149,7 @@ final class SpatialTapGestureTests: XCTestCase {
         XCTAssertEqual(value, SpatialTapGesture.Value(location: spatialTapLocation!))
     }
 }
+
+@available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
+extension SpatialTapGestureTests: @unchecked Sendable { }
 #endif

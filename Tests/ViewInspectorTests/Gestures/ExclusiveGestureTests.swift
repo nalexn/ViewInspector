@@ -23,21 +23,25 @@ final class ExclusiveGestureTests: XCTestCase {
     var gestureTests: CommonGestureTests<ExclusiveGesture<MagnificationGesture, RotationGesture>>?
 
     override func setUpWithError() throws {
-        magnificationMagnifyBy = 10
-        magnificationValue = MagnificationGesture.Value(magnifyBy: magnificationMagnifyBy!)
-        exclusiveGestureValue = ExclusiveGesture<MagnificationGesture, RotationGesture>.Value.first(magnificationValue!)
+        MainActor.assumeIsolated {
+            magnificationMagnifyBy = 10
+            magnificationValue = MagnificationGesture.Value(magnifyBy: magnificationMagnifyBy!)
+            exclusiveGestureValue = ExclusiveGesture<MagnificationGesture, RotationGesture>.Value.first(magnificationValue!)
 
-        gestureTests = CommonGestureTests<ExclusiveGesture<MagnificationGesture, RotationGesture>>(
-            testCase: self,
-            gesture: ExclusiveGesture(MagnificationGesture(), RotationGesture()),
-            value: exclusiveGestureValue!,
-            assert: assertExclusiveGestureValue)
+            gestureTests = CommonGestureTests<ExclusiveGesture<MagnificationGesture, RotationGesture>>(
+                testCase: self,
+                gesture: ExclusiveGesture(MagnificationGesture(), RotationGesture()),
+                value: exclusiveGestureValue!,
+                assert: assertExclusiveGestureValue)
+        }
     }
     
     override func tearDownWithError() throws {
-        magnificationMagnifyBy = nil
-        magnificationValue = nil
-        exclusiveGestureValue = nil
+        MainActor.assumeIsolated {
+            magnificationMagnifyBy = nil
+            magnificationValue = nil
+            exclusiveGestureValue = nil
+        }
     }
 
     func testCreateExclusiveGestureValue() throws {
@@ -154,4 +158,5 @@ final class ExclusiveGestureTests: XCTestCase {
     }
 }
 
+extension ExclusiveGestureTests: @unchecked Sendable { }
 #endif

@@ -19,32 +19,36 @@ final class MagnifyGestureTests: XCTestCase {
     var gestureTests: CommonGestureTests<MagnifyGesture>?
     
     override func setUpWithError() throws {
-        magnifyTime = Date()
-        magnifyMagnification = 10
-        magnifyVelocity = 2.5
-        magnifyStartAnchor = .center
-        magnifyStartLocation = CGPoint(x: 5, y: 5)
-        magnifyValue = MagnifyGesture.Value(
-            time: magnifyTime!,
-            magnification: magnifyMagnification!,
-            velocity: magnifyVelocity!,
-            startAnchor: magnifyStartAnchor!,
-            startLocation: magnifyStartLocation!
-        )
-        gestureTests = CommonGestureTests<MagnifyGesture>(testCase: self,
-                                                          gesture: MagnifyGesture(),
-                                                          value: magnifyValue!,
-                                                          assert: assertMagnifyValue)
+        MainActor.assumeIsolated {
+            magnifyTime = Date()
+            magnifyMagnification = 10
+            magnifyVelocity = 2.5
+            magnifyStartAnchor = .center
+            magnifyStartLocation = CGPoint(x: 5, y: 5)
+            magnifyValue = MagnifyGesture.Value(
+                time: magnifyTime!,
+                magnification: magnifyMagnification!,
+                velocity: magnifyVelocity!,
+                startAnchor: magnifyStartAnchor!,
+                startLocation: magnifyStartLocation!
+            )
+            gestureTests = CommonGestureTests<MagnifyGesture>(testCase: self,
+                                                              gesture: MagnifyGesture(),
+                                                              value: magnifyValue!,
+                                                              assert: assertMagnifyValue)
+        }
     }
     
     override func tearDownWithError() throws {
-        magnifyTime = nil
-        magnifyMagnification = nil
-        magnifyVelocity = nil
-        magnifyStartAnchor = nil
-        magnifyStartLocation = nil
-        magnifyValue = nil
-        gestureTests = nil
+        MainActor.assumeIsolated {
+            magnifyTime = nil
+            magnifyMagnification = nil
+            magnifyVelocity = nil
+            magnifyStartAnchor = nil
+            magnifyStartLocation = nil
+            magnifyValue = nil
+            gestureTests = nil
+        }
     }
     
     func testMagnifyGestureValueAllocator() throws {
@@ -188,4 +192,6 @@ final class MagnifyGestureTests: XCTestCase {
     }
 }
 
+@available(iOS 17.0, macOS 14.0, *)
+extension MagnifyGestureTests: @unchecked Sendable { }
 #endif

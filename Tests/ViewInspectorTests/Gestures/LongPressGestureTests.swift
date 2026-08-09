@@ -24,20 +24,24 @@ final class LongPressGestureTests: XCTestCase {
     }
     
     override func setUpWithError() throws {
-        guard #available(tvOS 14.0, *) else { throw XCTSkip() }
-        longPressFinished = false
-        _longPressValue = LongPressGesture.Value(finished: longPressFinished!)
+        try MainActor.assumeIsolated {
+            guard #available(tvOS 14.0, *) else { throw XCTSkip() }
+            longPressFinished = false
+            _longPressValue = LongPressGesture.Value(finished: longPressFinished!)
         
-        _gestureTests = CommonGestureTests<LongPressGesture>(testCase: self,
-                                                            gesture: LongPressGesture(),
-                                                            value: try longPressValue(),
-                                                            assert: assertLongPressValue)
+            _gestureTests = CommonGestureTests<LongPressGesture>(testCase: self,
+                                                                gesture: LongPressGesture(),
+                                                                value: try longPressValue(),
+                                                                assert: assertLongPressValue)
+        }
     }
     
     override func tearDownWithError() throws {
-        longPressFinished = nil
-        _longPressValue = nil
-        _gestureTests = nil
+        MainActor.assumeIsolated {
+            longPressFinished = nil
+            _longPressValue = nil
+            _gestureTests = nil
+        }
     }
 
     func testCreateLongPressGestureValue() throws {
@@ -174,3 +178,5 @@ final class LongPressGestureTests: XCTestCase {
         XCTAssertEqual(value, longPressFinished!)
     }
 }
+
+extension LongPressGestureTests: @unchecked Sendable { }

@@ -21,30 +21,34 @@ final class DragGestureTests: XCTestCase {
     var gestureTests: CommonGestureTests<DragGesture>?
     
     override func setUpWithError() throws {
-        dragTime = Date()
-        dragLocation = CGPoint(x: 100, y: 100)
-        dragStartLocation = CGPoint(x: 50, y: 50)
-        dragVelocity = CGVector(dx: 8, dy: 8)
+        MainActor.assumeIsolated {
+            dragTime = Date()
+            dragLocation = CGPoint(x: 100, y: 100)
+            dragStartLocation = CGPoint(x: 50, y: 50)
+            dragVelocity = CGVector(dx: 8, dy: 8)
         
-        dragValue = DragGesture.Value(
-            time: dragTime!,
-            location: dragLocation!,
-            startLocation: dragStartLocation!,
-            velocity: dragVelocity!)
+            dragValue = DragGesture.Value(
+                time: dragTime!,
+                location: dragLocation!,
+                startLocation: dragStartLocation!,
+                velocity: dragVelocity!)
         
-        gestureTests = CommonGestureTests<DragGesture>(testCase: self,
-                                                       gesture: DragGesture(),
-                                                       value: dragValue!,
-                                                       assert: assertDragValue)
+            gestureTests = CommonGestureTests<DragGesture>(testCase: self,
+                                                           gesture: DragGesture(),
+                                                           value: dragValue!,
+                                                           assert: assertDragValue)
+        }
     }
     
     override func tearDownWithError() throws {
-        dragTime = nil
-        dragLocation = nil
-        dragStartLocation = nil
-        dragVelocity = nil
-        dragValue = nil
-        gestureTests = nil
+        MainActor.assumeIsolated {
+            dragTime = nil
+            dragLocation = nil
+            dragStartLocation = nil
+            dragVelocity = nil
+            dragValue = nil
+            gestureTests = nil
+        }
     }
     
     func testDragGestureValueAllocator() throws {
@@ -181,4 +185,6 @@ final class DragGestureTests: XCTestCase {
         XCTAssertEqual(value.translation, CGSize(width: 50, height: 50), file: file, line: line)
     }
 }
+
+extension DragGestureTests: @unchecked Sendable { }
 #endif

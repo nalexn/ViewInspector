@@ -303,7 +303,7 @@ private extension Inspector {
     }
 }
 
-private final class XCFlagExpectation: XCTestExpectation {
+private final class XCFlagExpectation: XCTestExpectation, @unchecked Sendable {
     
     private(set) var isFulfilled: Bool = false
 

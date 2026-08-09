@@ -26,28 +26,32 @@ final class SimultaneousGestureTests: XCTestCase {
     var gestureTests: CommonGestureTests<SimultaneousGesture<MagnificationGesture, RotationGesture>>?
     
     override func setUpWithError() throws {
-        magnificationMagnifyBy = 10
-        magnificationValue = MagnificationGesture.Value(magnifyBy: magnificationMagnifyBy!)
-        rotationAngle = Angle(degrees: 90)
-        rotationValue = RotationGesture.Value(angle: rotationAngle!)
-        simultaneousGestureValue = SimultaneousGesture<MagnificationGesture, RotationGesture>.Value(
-            first: magnificationValue,
-            second: rotationValue)
+        MainActor.assumeIsolated {
+            magnificationMagnifyBy = 10
+            magnificationValue = MagnificationGesture.Value(magnifyBy: magnificationMagnifyBy!)
+            rotationAngle = Angle(degrees: 90)
+            rotationValue = RotationGesture.Value(angle: rotationAngle!)
+            simultaneousGestureValue = SimultaneousGesture<MagnificationGesture, RotationGesture>.Value(
+                first: magnificationValue,
+                second: rotationValue)
 
-        gestureTests = CommonGestureTests<SimultaneousGesture<MagnificationGesture, RotationGesture>>(
-            testCase: self,
-            gesture: SimultaneousGesture(MagnificationGesture(), RotationGesture()),
-            value: simultaneousGestureValue!,
-            assert: assertSimultaneousGestureValue)
+            gestureTests = CommonGestureTests<SimultaneousGesture<MagnificationGesture, RotationGesture>>(
+                testCase: self,
+                gesture: SimultaneousGesture(MagnificationGesture(), RotationGesture()),
+                value: simultaneousGestureValue!,
+                assert: assertSimultaneousGestureValue)
+        }
     }
     
     override func tearDownWithError() throws {
-        magnificationMagnifyBy = nil
-        magnificationValue = nil
-        rotationAngle = nil
-        rotationValue = nil
-        simultaneousGestureValue = nil
-        gestureTests = nil
+        MainActor.assumeIsolated {
+            magnificationMagnifyBy = nil
+            magnificationValue = nil
+            rotationAngle = nil
+            rotationValue = nil
+            simultaneousGestureValue = nil
+            gestureTests = nil
+        }
     }
 
     func testCreateSimultaneousGestureValue() throws {
@@ -165,4 +169,5 @@ final class SimultaneousGestureTests: XCTestCase {
     }
 }
 
+extension SimultaneousGestureTests: @unchecked Sendable { }
 #endif

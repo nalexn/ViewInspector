@@ -45,7 +45,7 @@ internal struct ContentExtractor {
             }
             return .view(view)
         case let viewModifier as any ViewModifier:
-            guard viewModifier.hasBody else {
+            guard MainActor.assumeIsolated({ viewModifier.hasBody }) else {
                 throw InspectionError.notSupported("ViewModifier without the body")
             }
             return .viewModifier(viewModifier)
