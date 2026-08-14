@@ -483,6 +483,29 @@ For the case of `@Environment` or `@EnvironmentObject`, you can perform the inje
 ViewHosting.host(view: sut.environmentObject(...))
 ```
 
+Objects taken from the environment with the `@Observable` macro are supported as well, and they don't require hosting the view: the injection works with synchronous inspection:
+
+```swift
+@Observable class Router {
+    var routes: [Route] = []
+}
+
+struct LoginScreen: View {
+
+    @Environment(Router.self) private var router
+
+    var body: some View {
+        Button("Login") { router.navigate(to: .dashboard) }
+    }
+}
+
+// The test:
+let router = Router()
+let sut = LoginScreen().environment(router)
+try sut.inspect().find(button: "Login").tap()
+XCTAssertEqual(router.routes, [.dashboard])
+```
+
 ## Custom **ViewModifier**
 
 You can inspect custom `ViewModifier` independently, or together with the parent view hierarchy, to which the `ViewModifier` is applied using `.modifier(...)`. Consider an example:

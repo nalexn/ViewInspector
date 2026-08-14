@@ -70,7 +70,8 @@ internal extension Content {
            modifier.qualifiesAsEnvironmentModifier() {
             if let value = try? modifier.value(),
                let object = try? Inspector.attribute(label: "some", value: value, type: AnyObject.self),
-               object is any ObservableObject {
+               object is any ObservableObject
+                || EnvironmentInjection.environmentKeyPaths(for: object).count > 0 {
                 medium = self.medium.appending(environmentObject: object)
             } else {
                 medium = self.medium.appending(environmentModifier: modifier)
