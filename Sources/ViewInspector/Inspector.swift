@@ -337,7 +337,7 @@ internal extension Inspector {
             dict[childName + ": " + childType] = value
         }
         if let contentExtractor = try? ContentExtractor(source: value),
-           let content = try? contentExtractor.extractContent(environmentObjects: medium.environmentObjects) {
+           let content = try? contentExtractor.extractContent(medium: medium) {
             let childType = typeName(value: content)
             dict["body: " + childType] = attributesTree(value: content, medium: medium, visited: visited)
         }

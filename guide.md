@@ -506,6 +506,29 @@ try sut.inspect().find(button: "Login").tap()
 XCTAssertEqual(router.routes, [.dashboard])
 ```
 
+Values of any type provided with `.environment(keyPath, value)` are injected in the `@Environment(keyPath)` properties of the views underneath, so the views' `body` reads the injected value instead of the `EnvironmentKey`'s default one. This works without hosting the view as well:
+
+```swift
+struct ProfileScreen: View {
+
+    @Environment(\.isPremiumUser) private var isPremiumUser
+
+    var body: some View {
+        if isPremiumUser {
+            Text("Premium")
+        } else {
+            Button("Upgrade") { ... }
+        }
+    }
+}
+
+// The test:
+let sut = ProfileScreen().environment(\.isPremiumUser, true)
+XCTAssertNoThrow(try sut.inspect().find(text: "Premium"))
+```
+
+The innermost `.environment(keyPath, value)` modifier takes precedence, just like it does in the running app. Properties not covered by a modifier keep reading the `EnvironmentKey`'s default value.
+
 ## Custom **ViewModifier**
 
 You can inspect custom `ViewModifier` independently, or together with the parent view hierarchy, to which the `ViewModifier` is applied using `.modifier(...)`. Consider an example:

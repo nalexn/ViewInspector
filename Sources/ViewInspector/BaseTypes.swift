@@ -171,6 +171,20 @@ internal extension Content {
         let environmentModifiers: [EnvironmentModifier]
         let environmentObjects: [AnyObject]
         
+        /// The values of the enclosing `.environment(keyPath, value)` modifiers,
+        /// in the order of their application, for injecting in the `@Environment` properties.
+        #if swift(>=6.0)
+        @MainActor
+        #endif
+        var environmentValues: [EnvironmentValueInjection] {
+            return environmentModifiers.compactMap { modifier in
+                guard let keyPath = (try? modifier.keyPath()) as? AnyKeyPath,
+                      let value = try? modifier.value()
+                else { return nil }
+                return (keyPath, value)
+            }
+        }
+
         static var empty: Medium {
             return .init(viewModifiers: [],
                          transitiveViewModifiers: [],
