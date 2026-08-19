@@ -609,8 +609,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| `func accessibilityElement(children: AccessibilityChildBehavior) -> some View` |
 |:technologist:| `func accessibilityChildren<V>(children: () -> V) -> some View` |
 |:technologist:| `func accessibilityInputLabels(...) -> some View` |
-|:technologist:| `func accessibilityAddTraits(AccessibilityTraits) -> some View` |
-|:technologist:| `func accessibilityRemoveTraits(AccessibilityTraits) -> some View` |
+|:white_check_mark:| `func accessibilityAddTraits(AccessibilityTraits) -> some View` |
+|:white_check_mark:| `func accessibilityRemoveTraits(AccessibilityTraits) -> some View` |
 |:technologist:| `func accessibilityLinkedGroup<ID>(id: ID, in: Namespace.ID) -> some View` |
 |:technologist:| `func accessibilityShowsLargeContentViewer(...) -> some View` |
 |:technologist:| `func speechAdjustedPitch(_ value: Double) -> some View` |
