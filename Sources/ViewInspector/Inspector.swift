@@ -442,6 +442,10 @@ internal extension Inspector {
             return try ViewType.PopoverContent.child(content)
         case "WrappedContent":
             return try ViewType.WrappedContent.child(content)
+        case "GroupElementsOfContent":
+            return try ViewType.GroupElementsOfContent.child(content)
+        case "GroupSectionsOfContent":
+            return try ViewType.GroupSectionsOfContent.child(content)
         default:
             return content
         }
