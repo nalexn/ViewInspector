@@ -6,11 +6,11 @@
 - [FullScreenCover](#fullscreencover)
 - [Popover](#popover)
 
-These five types of views have many in common, so is their inspection mechanism. Due to limited capabilities of what can be achieved in reflection, the native SwiftUI modifiers for presenting these views (`.alert`, `.actionSheet`, `.sheet`, `.fullScreenCover`, `.popover`) cannot be inspected as-is by the ViewInspector.
+These five types of views have many in common, so is their inspection mechanism. Due to limited capabilities of what can be achieved in reflection, some of the native SwiftUI modifiers for presenting these views (`.alert`, `.actionSheet`, `.popover`) cannot be inspected as-is by the ViewInspector.
 
 This section discusses how you still can gain the full access to the internals of these views by adding a couple of code snippets to your source code while not making ViewInspector a dependency for the main target.
 
-*Note*: ViewInspector fully supports `confirmationDialog` inspection without any code tweaking.
+*Note*: ViewInspector fully supports `confirmationDialog`, `sheet` and `fullScreenCover` inspection without any code tweaking.
 
 ## `Alert`
 
@@ -156,9 +156,29 @@ Make sure to use `actionSheet2` in your view's body (or a different name of your
 
 ## `Sheet`
 
-Similarly to the `Alert` and `ActionSheet`, there are two APIs for presenting the `Sheet` thus two sets of snippets to add to the project, depending on your needs.
+Both the `isPresented: Binding<Bool>` and the `item: Binding<Item?>` variants of the native `.sheet` modifier are supported as-is - no changes in the main target are needed:
 
-#### Variant with `isPresented: Binding<Bool>` - main target snippet:
+```swift
+func testSheetExample() throws {
+    let binding = Binding(wrappedValue: true)
+    let sut = EmptyView().sheet(isPresented: binding) {
+        Text("Sheet content")
+        Button("Close", action: { binding.wrappedValue = false })
+    }
+    let sheet = try sut.inspect().emptyView().sheet()
+    XCTAssertEqual(try sheet.text(0).string(), "Sheet content")
+    try sheet.button(1).tap()
+    XCTAssertFalse(binding.wrappedValue)
+}
+```
+
+Calling `sheet()` throws an error when the sheet is not presented, and `dismiss()` unpresents it, calling the `onDismiss` closure:
+
+```swift
+try sut.inspect().emptyView().sheet().dismiss()
+```
+
+If you're targeting a SwiftUI version that does not expose the sheet's content to the reflection, use the following snippet in the main target and `sheet2` in place of `sheet` in your views:
 
 ```swift
 extension View {
@@ -186,7 +206,7 @@ Test target:
 extension InspectableSheet: PopupPresenter { }
 ```
 
-#### Variant with `item: Binding<Item?>` - main target snippet:
+And the corresponding snippet for the `item: Binding<Item?>` variant - main target:
 
 ```swift
 extension View {
@@ -214,13 +234,19 @@ Test target:
 extension InspectableSheetWithItem: ItemPopupPresenter { }
 ```
 
-Don't forget that you'll need to use `sheet2` in place of `sheet` in your views.
-
 ## `FullScreenCover`
 
-Similarly to the `Alert` and `Sheet`, there are two APIs for presenting the `FullScreenCover` thus two sets of snippets to add to the project, depending on your needs.
+The native `.fullScreenCover` modifier is supported as-is, just like the `.sheet` - use the `fullScreenCover()` inspection call:
 
-#### Variant with `isPresented: Binding<Bool>` - main target snippet:
+```swift
+func testFullScreenCoverExample() throws {
+    let binding = Binding(wrappedValue: true)
+    let sut = EmptyView().fullScreenCover(isPresented: binding) { Text("Cover content") }
+    XCTAssertEqual(try sut.inspect().emptyView().fullScreenCover().text().string(), "Cover content")
+}
+```
+
+For the SwiftUI versions that don't expose the content to the reflection, use the `fullScreenCover2` snippets - main target:
 
 ```swift
 extension View {
@@ -248,7 +274,7 @@ Test target:
 extension InspectableFullScreenCover: PopupPresenter { }
 ```
 
-#### Variant with `item: Binding<Item?>` - main target snippet:
+And for the `item: Binding<Item?>` variant - main target:
 
 ```swift
 extension View {
@@ -275,8 +301,6 @@ Test target:
 ```swift
 extension InspectableFullScreenCoverWithItem: ItemPopupPresenter { }
 ```
-
-Don't forget that you'll need to use `fullScreenCover2` in place of `fullScreenCover` in your views.
 
 ## `Popover`
 
