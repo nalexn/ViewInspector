@@ -183,12 +183,16 @@ internal extension Content {
                 type: BasePopupPresenter.self, call: "", index: index ?? 0)
         else {
             _ = try standardPredicate(name)
-            throw InspectionError.notSupported(
-                """
-                Please refer to the Guide for inspecting the \(name): \
-                https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#\(name.lowercased())
-                """)
+            throw popupNotSupportedError(name)
         }
+        return try popup(parent: parent, index: index, name: name, popupPresenter: popupPresenter)
+    }
+
+    func popup<Popup: KnownViewType>(
+        parent: UnwrappedView, index: Int?,
+        name: String = Inspector.typeName(type: Popup.self),
+        popupPresenter: BasePopupPresenter
+    ) throws -> InspectableView<Popup> {
         #if swift(>=6.0)
         let popup = try build(popupPresenter: popupPresenter, name: name)
         #else
@@ -202,6 +206,14 @@ internal extension Content {
         let call = ViewType.inspectionCall(
             base: Popup.inspectionCall(typeName: name), index: index)
         return try .init(content, parent: parent, call: call, index: index)
+    }
+
+    func popupNotSupportedError(_ name: String) -> InspectionError {
+        return .notSupported(
+            """
+            Please refer to the Guide for inspecting the \(name): \
+            https://github.com/nalexn/ViewInspector/blob/master/guide_popups.md#\(name.lowercased())
+            """)
     }
 
     @MainActor
