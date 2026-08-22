@@ -174,7 +174,10 @@ internal extension ViewType.Sheet {
         var isSheetPresenter: Bool { true }
 
         private func body() throws -> Any {
-            return try ContentExtractor(source: modifier).extractContent(environmentObjects: [])
+            return try ContentExtractor(source: modifier)
+                .extractContent(medium: .init(
+                    viewModifiers: [], transitiveViewModifiers: [],
+                    environmentModifiers: [], environmentObjects: []))
         }
 
         /// Unwraps the `AnyView` and `SheetContent` wrappers SwiftUI puts around the user's view.
