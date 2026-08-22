@@ -49,7 +49,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| EquatableView | `contained view` |
 |:technologist:| FamilyActivityPicker | |
 |:white_check_mark:| Font (*) | `size: CGFloat`, `isFixedSize: Bool`, `name: String`, `weight: Font.Weight`, `design: Font.Design`, `style: Font.TextStyle` |
-|:white_check_mark:| ForEach | `contained view`, `callOnDelete`, `callOnMove`, `callOnInsert` |
+|:white_check_mark:| ForEach | `contained view`, `callOnDelete`, `callOnMove`, `callOnInsert`, `ForEach(subviews:)`, `ForEach(sections:)` |
 |:white_check_mark:| Form | `contained view` |
 |:technologist:| Gauge | |
 |:white_check_mark:| FullScreenCover | `dismiss()` |
@@ -57,7 +57,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| GlassEffectContainer | `contained view`, `spacing: CGFloat?` |
 |:white_check_mark:| Grid | `alignment: Alignment`, `horizontalSpacing: CGFloat?`, `verticalSpacing: CGFloat?` |
 |:white_check_mark:| GridRow | `alignment: VerticalAlignment?` |
-|:white_check_mark:| Group | `contained view` |
+|:white_check_mark:| Group | `contained view`, `Group(subviews:)`, `Group(sections:)` |
 |:white_check_mark:| GroupBox | `contained view`, `label view` |
 |:white_check_mark:| HSplitView | `contained view` |
 |:white_check_mark:| HStack | `contained view`, `alignment: VerticalAlignment`, `spacing: CGFloat?` |

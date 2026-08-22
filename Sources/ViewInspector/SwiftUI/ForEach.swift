@@ -92,6 +92,26 @@ extension ForEach: MultipleViewProvider {
         typealias Builder = (Data.Element) -> Content
         let data = try Inspector
             .attribute(label: "data", value: self, type: Data.self)
+
+        // `ForEach(subviews:)` and `ForEach(sections:)` store a collection that only the
+        // SwiftUI rendering engine can enumerate - touching it here would crash. Both keep
+        // a substitute view, `Group(subviews:)` or `Group(sections:)`, that is inspected instead.
+        switch Inspector.typeName(value: data, generics: .remove) {
+        case "ForEachSubviewCollection", "ForEachSectionCollection":
+            // The substitute view is boxed in an `AnyView` that no one wrote in the
+            // view hierarchy, so it is skipped to keep the inspection paths clean.
+            let substituteView = try {
+                if let unboxed = try? Inspector.attribute(
+                    path: "substituteView|storage|view", value: data) {
+                    return unboxed
+                }
+                return try Inspector.attribute(label: "substituteView", value: data)
+            }()
+            return LazyGroup(count: 1) { _ in substituteView }
+        default:
+            break
+        }
+
         let builder = try Inspector
             .attribute(label: "content", value: self, type: Builder.self)
         
