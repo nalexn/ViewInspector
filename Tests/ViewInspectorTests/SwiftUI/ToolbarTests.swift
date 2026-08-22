@@ -2,10 +2,22 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private extension ToolbarContent {
+    @ToolbarContentBuilder
+    func vi_conditionallyHideSharedBackground() -> some ToolbarContent {
+        if #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *) {
+            sharedBackgroundVisibility(.hidden)
+        } else {
+            self
+        }
+    }
+}
+
 @MainActor
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class ToolbarTests: XCTestCase {
-    
+
     func testToolbarItemPlacementEquatable() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { throw XCTSkip() }
@@ -96,6 +108,48 @@ final class ToolbarTests: XCTestCase {
                         "View for toolbar item at index 2 is absent")
     }
     
+    // https://github.com/nalexn/ViewInspector/issues/409
+    // `if #available { ... } else { ... }` inside a `@ToolbarContentBuilder` compiles to
+    // `_ConditionalContent<TrueBranch, FalseBranch>`. When the true branch calls an
+    // availability-limited API (like `sharedBackgroundVisibility`, iOS 26+), the compiler
+    // further wraps it in `LimitedAvailabilityToolbarContent`. Previously `item(_:)`/
+    // `itemGroup(_:)` handed this wrapper straight to `guardType`, which rejected it because
+    // it isn't literally `ToolbarItem`/`ToolbarItemGroup`, regardless of what the caller was
+    // searching for downstream.
+    @available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
+    func testToolbarItemWrappedByAvailabilityGatedModifier() throws {
+        let sut = EmptyView()
+            .toolbar {
+                ToolbarItem { Text("abc") }
+                    .sharedBackgroundVisibility(.hidden)
+            }
+        let text = try sut.inspect().toolbar().item().text().string()
+        XCTAssertEqual(text, "abc")
+    }
+
+    @available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
+    func testToolbarItemGroupWrappedByAvailabilityGatedModifier() throws {
+        let sut = EmptyView()
+            .toolbar {
+                ToolbarItemGroup { Text("abc") }
+                    .sharedBackgroundVisibility(.hidden)
+            }
+        let text = try sut.inspect().toolbar().itemGroup().text().string()
+        XCTAssertEqual(text, "abc")
+    }
+
+    // Reproduces the exact shape from #409: the availability check lives in a helper
+    // extension the caller applies inline, rather than at the `.toolbar { }` call site.
+    func testToolbarItemWrappedByConditionallyCompiledModifier() throws {
+        let sut = EmptyView()
+            .toolbar {
+                ToolbarItem { Text("abc") }
+                    .vi_conditionallyHideSharedBackground()
+            }
+        let text = try sut.inspect().toolbar().item().text().string()
+        XCTAssertEqual(text, "abc")
+    }
+
     func testImplicitToolbarItemGroup() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { throw XCTSkip() }
