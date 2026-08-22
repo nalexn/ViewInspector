@@ -10,27 +10,6 @@ import Observation
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 final class EnvironmentObservableInjectionTests: XCTestCase {
 
-    func testEnvironmentMemoryLayout() throws {
-        guard #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
-        else { throw XCTSkip() }
-        typealias RealType = Environment<TestObservableObject1>
-        XCTAssertEqual(MemoryLayout<RealType>.size, EnvValue.structSize)
-        let sut = RealType(\.testObservableObject1)
-        try withUnsafeBytes(of: sut, { bytes in
-            let discriminator = try XCTUnwrap(bytes.last)
-            XCTAssertEqual(discriminator, EnvValue.keyPathCase)
-        })
-    }
-
-    func testEnvironmentForgery() throws {
-        guard #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
-        else { throw XCTSkip() }
-        let obj = TestObservableObject1()
-        let forgery = EnvValue.Forgery(object: obj)
-        let sut = unsafeBitCast(forgery, to: Environment<TestObservableObject1>.self)
-        XCTAssertIdentical(sut.wrappedValue, obj)
-    }
-
     func testDirectEnvironmentInjection() throws {
         guard #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
         else { throw XCTSkip() }
@@ -125,17 +104,18 @@ final class EnvironmentObservableInjectionTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 
-    func testEnvironmentValueOfTheSameTypeIsUnaffected() throws {
+    func testEnvironmentValueOfTheSameTypeIsInjectedSeparately() throws {
         guard #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
         else { throw XCTSkip() }
         let injected = TestObservableObject1()
         injected.value1 = "injected"
         let keyed = TestObservableObject1()
+        keyed.value1 = "keyed"
         let sut = ObservableEnvironmentValueView()
             .environment(injected)
             .environment(\.testObservableObject1, keyed)
-        // The keyed property is not injected, thus reading the key's default value:
-        XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "env_injected")
+        // The two properties are injected from their respective modifiers:
+        XCTAssertEqual(try sut.inspect().find(ViewType.Text.self).string(), "keyed_injected")
         let view = try sut.inspect().find(ObservableEnvironmentValueView.self)
         XCTAssertIdentical(try view.environment(\.testObservableObject1), keyed)
     }

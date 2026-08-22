@@ -421,7 +421,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:---:|---|
 |:white_check_mark:| `func environmentObject<B>(B) -> some View` |
 |:white_check_mark:| `func environment<T>(T?) -> some View where T: AnyObject, T: Observable` |
-|:technologist:| `func environment<V>(WritableKeyPath<EnvironmentValues, V>, V) -> some View` |
+|:white_check_mark:| `func environment<V>(WritableKeyPath<EnvironmentValues, V>, V) -> some View` |
 |:technologist:| `func transformEnvironment<V>(WritableKeyPath<EnvironmentValues, V>, transform: (inout V) -> Void) -> some View` |
 
 ### Setting View Colors

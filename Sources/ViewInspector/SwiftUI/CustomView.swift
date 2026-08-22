@@ -55,14 +55,14 @@ internal extension Content {
     
     func extractCustomView() throws -> Content {
         let contentExtractor = try ContentExtractor(source: view)
-        let view = try contentExtractor.extractContent(environmentObjects: medium.environmentObjects)
+        let view = try contentExtractor.extractContent(medium: medium)
         let medium = self.medium.resettingViewModifiers()
         return try Inspector.unwrap(view: view, medium: medium)
     }
     
     func extractCustomViewGroup() throws -> LazyGroup<Content> {
         let contentExtractor = try ContentExtractor(source: view)
-        let view = try contentExtractor.extractContent(environmentObjects: medium.environmentObjects)
+        let view = try contentExtractor.extractContent(medium: medium)
         return try Inspector.viewsInContainer(view: view, medium: medium)
     }
 }
@@ -123,7 +123,7 @@ public extension InspectableView where View: CustomViewType {
         content.medium.environmentObjects.forEach {
             view = EnvironmentInjection.inject(environmentObject: $0, into: view)
         }
-        return view
+        return EnvironmentInjection.inject(environmentValues: content.medium.environmentValues, into: view)
     }
 }
 
