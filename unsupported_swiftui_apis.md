@@ -102,23 +102,20 @@ QuickLookPreview
 
 These views have basic support but are missing specific initializers or APIs.
 
-### Group
+### Group / ForEach subviews and sections
 
 ```
 Group(subviews:transform:)
 Group(sections:transform:)
+ForEach(subviews:content:)
+ForEach(sections:content:)
 ```
 
-Current support: Basic `Group(@ViewBuilder content:)` only.
-
-### ForEach
-
-```
-ForEach(subviewOf:content:)
-ForEach(sectionOf:content:)
-```
-
-Current support: Basic collection-based ForEach.
+Current support: the views are traversable, exposing the subviews (or sections) of the
+view they were given. The `transform` / `content` closure is not called: it takes a
+`SubviewsCollection` or a `SectionCollection`, which only the SwiftUI rendering engine
+can produce, so anything the closure adds around a subview (modifiers, wrapping
+containers) is not visible for inspection.
 
 ### ScrollView
 
@@ -580,7 +577,6 @@ Below are prioritized items that can be directly used with the skill:
 ### Partial Support Improvements
 
 ```
-/new-api-support "Group(subviews:)"
 /new-api-support "ScrollView scrollPosition"
 /new-api-support "List swipeActions"
 /new-api-support "NavigationStack navigationDestination"
