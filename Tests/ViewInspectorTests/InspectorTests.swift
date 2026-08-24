@@ -168,8 +168,9 @@ final class InspectorTests: XCTestCase {
     func testTupleView() throws {
         let view = HStack { Text(""); Text("") }
         let content = try Inspector.attribute(path: "_tree|content", value: view)
-        XCTAssertTrue(Inspector.isTupleView(content))
-        XCTAssertFalse(Inspector.isTupleView((0, 2)))
+        // ViewBuilder produces `TupleContent` instead of `TupleView` since iOS 27
+        XCTAssertTrue(Inspector.isViewTuple(content))
+        XCTAssertFalse(Inspector.isViewTuple((0, 2)))
     }
     
     func testGuardType() throws {

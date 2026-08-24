@@ -389,14 +389,26 @@ internal extension Inspector {
     #endif
     static func viewsInContainer(view: Any, medium: Content.Medium) throws -> LazyGroup<Content> {
         let unwrappedContainer = try Inspector.unwrap(content: Content(view, medium: medium.resettingViewModifiers()))
-        guard Inspector.isTupleView(unwrappedContainer.view) else {
-            return LazyGroup(count: 1) { _ in unwrappedContainer }
+        if Inspector.isTupleView(unwrappedContainer.view) {
+            return try ViewType.TupleView.children(unwrappedContainer)
         }
-        return try ViewType.TupleView.children(unwrappedContainer)
+        if Inspector.isTupleContentView(unwrappedContainer.view) {
+            return try ViewType.TupleContentView.children(unwrappedContainer)
+        }
+        return LazyGroup(count: 1) { _ in unwrappedContainer }
     }
 
     static func isTupleView(_ view: Any) -> Bool {
         return Inspector.typeName(value: view, generics: .remove) == ViewType.TupleView.typePrefix
+    }
+
+    static func isTupleContentView(_ view: Any) -> Bool {
+        return Inspector.typeName(value: view, generics: .remove) == ViewType.TupleContentView.typePrefix
+    }
+
+    /// `ViewBuilder` wraps multiple children in `TupleView`, or in `TupleContent` since iOS 27
+    static func isViewTuple(_ view: Any) -> Bool {
+        return isTupleView(view) || isTupleContentView(view)
     }
 
     #if swift(>=6.0)
