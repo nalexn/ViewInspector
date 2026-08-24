@@ -114,7 +114,7 @@ public extension InspectableView where View == ViewType.Toolbar {
     
     private func element(_ index: Int) throws -> Any {
         if let value = try? Inspector
-            .attribute(path: "content|value|.\(index)", value: content.view) {
+            .attribute(path: "\(content.toolbarElementsPath)|.\(index)", value: content.view) {
             return value
         }
         if index == 0 {
@@ -133,12 +133,22 @@ public extension InspectableView where View == ViewType.Toolbar {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private extension Content {
+    /// Multiple toolbar elements are stored in a tuple, which since iOS 27
+    /// is `TupleContent` (keeping the tuple under `content`) instead of
+    /// `TupleView` (keeping it under `value`)
+    var toolbarElementsPath: String {
+        guard let root = try? Inspector.attribute(label: "content", value: view),
+              Inspector.isTupleContentView(root)
+        else { return "content|value" }
+        return "content|content"
+    }
+
     func toolbarElementsCount() -> Int {
         var index: Int = -1
         var couldLocateItem = false
         repeat {
             index += 1
-            couldLocateItem = (try? Inspector.attribute(path: "content|value|.\(index)", value: view)) != nil
+            couldLocateItem = (try? Inspector.attribute(path: "\(toolbarElementsPath)|.\(index)", value: view)) != nil
         } while couldLocateItem
         if index == 0,
            (try? Inspector.attribute(path: "content|value", value: view)) != nil
