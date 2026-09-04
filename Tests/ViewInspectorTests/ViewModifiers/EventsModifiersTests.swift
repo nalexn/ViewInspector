@@ -286,6 +286,76 @@ final class ViewEventsTests: XCTestCase {
     }
 }
 
+// MARK: - ViewScrollEventsTests
+
+@MainActor
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+final class ViewScrollEventsTests: XCTestCase {
+
+    func testOnScrollVisibilityChange() throws {
+        let sut = EmptyView().onScrollVisibilityChange { _ in }
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testOnScrollVisibilityChangeInspection() throws {
+        let exp1 = XCTestExpectation(description: "\(#function)_visible")
+        let exp2 = XCTestExpectation(description: "\(#function)_hidden")
+        let sut = ScrollView {
+            VStack {
+                Text("abc")
+                    .onScrollVisibilityChange { isVisible in
+                        if isVisible {
+                            exp1.fulfill()
+                        } else {
+                            exp2.fulfill()
+                        }
+                    }
+            }
+        }
+        let text = try sut.inspect().find(text: "abc")
+        try text.callOnScrollVisibilityChange(true)
+        try text.callOnScrollVisibilityChange(false)
+        wait(for: [exp1, exp2], timeout: 0.1)
+    }
+
+    func testOnScrollVisibilityChangeArgumentDelivery() throws {
+        var received: [Bool] = []
+        let sut = EmptyView().onScrollVisibilityChange { received.append($0) }
+        let view = try sut.inspect().emptyView()
+        try view.callOnScrollVisibilityChange(false)
+        try view.callOnScrollVisibilityChange(true)
+        try view.callOnScrollVisibilityChange(false)
+        XCTAssertEqual(received, [false, true, false])
+    }
+
+    func testOnScrollVisibilityChangeMultipleModifiers() throws {
+        var received: [String] = []
+        let sut = EmptyView()
+            .onScrollVisibilityChange(threshold: 0.1) { received.append("first: \($0)") }
+            .onScrollVisibilityChange(threshold: 0.9) { received.append("second: \($0)") }
+        let view = try sut.inspect().emptyView()
+        XCTAssertEqual(try view.onScrollVisibilityChangeThreshold(), 0.1)
+        XCTAssertEqual(try view.onScrollVisibilityChangeThreshold(index: 1), 0.9)
+        try view.callOnScrollVisibilityChange(true)
+        try view.callOnScrollVisibilityChange(false, index: 1)
+        XCTAssertEqual(received, ["first: true", "second: false"])
+    }
+
+    func testOnScrollVisibilityChangeThreshold() throws {
+        let sut = EmptyView().padding()
+            .onScrollVisibilityChange(threshold: 0.3) { _ in }
+            .padding()
+        XCTAssertEqual(try sut.inspect().emptyView().onScrollVisibilityChangeThreshold(), 0.3)
+    }
+
+    func testOnScrollVisibilityChangeMissingModifierError() throws {
+        let sut = EmptyView().padding()
+        XCTAssertThrows(
+            try sut.inspect().emptyView().callOnScrollVisibilityChange(true),
+            "EmptyView does not have 'onScrollVisibilityChange' modifier")
+    }
+}
+
 // MARK: - ViewPublisherEventsTests
 
 @MainActor
