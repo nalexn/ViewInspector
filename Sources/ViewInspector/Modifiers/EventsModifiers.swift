@@ -127,3 +127,34 @@ public extension InspectableView {
         }
     }
 }
+
+// MARK: - ViewScrollEvents
+
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+public extension InspectableView {
+
+    func callOnScrollVisibilityChange(_ isVisible: Bool, index: Int = 0) throws {
+        let action = try modifierAttribute(
+            modifierName: "OnScrollVisibilityChangeModifier", path: "modifier|action",
+            type: Any.self, call: "onScrollVisibilityChange", index: index)
+        // SwiftUI stores the callback with the concrete `(Bool) -> Void` calling convention.
+        // Casting it to that closure type reabstracts it and corrupts the argument, so the
+        // callback is rebound to a container that preserves the original convention.
+        guard type(of: action) == ((Bool) -> Void).self,
+              let container = withUnsafeBytes(of: action, {
+                  $0.bindMemory(to: BoolActionContainer.self).first
+              })
+        else { throw InspectionError.typeMismatch(action, ((Bool) -> Void).self) }
+        container.action(isVisible)
+    }
+
+    func onScrollVisibilityChangeThreshold(index: Int = 0) throws -> Double {
+        return try modifierAttribute(
+            modifierName: "OnScrollVisibilityChangeModifier", path: "modifier|threshold",
+            type: Double.self, call: "onScrollVisibilityChange", index: index)
+    }
+}
+
+private struct BoolActionContainer {
+    let action: (Bool) -> Void
+}
