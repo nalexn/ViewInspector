@@ -20,8 +20,8 @@ final class ChartTests: XCTestCase {
         guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
         let view = HStack {
-            Chart { }
-            Chart { }
+            Chart { BarMark(x: .value("a", 1), y: .value("b", 2)) }
+            Chart { BarMark(x: .value("a", 2), y: .value("b", 3)) }
         }
         XCTAssertNoThrow(try view.inspect().hStack().chart(0))
         XCTAssertNoThrow(try view.inspect().hStack().chart(1))
@@ -31,7 +31,7 @@ final class ChartTests: XCTestCase {
     func testSearch() throws {
         guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
         else { throw XCTSkip() }
-        let view = HStack { Chart { } }
+        let view = HStack { Chart { BarMark(x: .value("a", 1), y: .value("b", 2)) } }
         XCTAssertEqual(try view.inspect().find(ViewType.Chart.self).pathToRoot,
                        "hStack().chart(0)")
     }
