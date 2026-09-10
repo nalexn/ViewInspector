@@ -16,6 +16,7 @@ internal extension ViewSearch {
             ViewType.AsyncImage.self,
             ViewType.Button.self,
             ViewType.Canvas.self,
+            ViewType.Chart.self,
             ViewType.Color.self,
             ViewType.ColorPicker.self,
             ViewType.ConfirmationDialog.self,

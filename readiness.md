@@ -27,7 +27,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| ButtonStyleConfiguration.Label | |
 |:technologist:| CameraView | |
 |:white_check_mark:| Canvas | `symbols view`, `colorMode: ColorRenderingMode`, `opaque: Bool`, `rendersAsynchronously: Bool` |
-|:technologist:| Chart | |
+|:white_check_mark:| Chart | opaque view: the contents are `ChartContent`, not `View`, so there is nothing to inspect inside |
 |:white_check_mark:| Color | `value: Color`, `rgba: (Float, Float, Float, Float)`, `name: String` |
 |:white_check_mark:| ColorPicker | `label view`, `select(color: Color)` |
 |:white_check_mark:| ControlGroup | |
