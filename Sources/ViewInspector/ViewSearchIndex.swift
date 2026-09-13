@@ -89,6 +89,7 @@ internal extension ViewSearch {
             ViewType.Toggle.self,
             ViewType.TouchBar.self,
             ViewType.TupleView.self,
+            ViewType.TupleContentView.self,
             ViewType.Toolbar.self,
             ViewType.Toolbar.Item.self,
             ViewType.Toolbar.ItemGroup.self,
@@ -215,7 +216,7 @@ internal extension ViewSearch {
                 let descendants = try supplementary(parent)
                 return .init(count: descendants.count) { index -> UnwrappedView in
                     var view = try descendants.element(at: index)
-                    if Inspector.isTupleView(view.content.view) ||
+                    if Inspector.isViewTuple(view.content.view) ||
                         !(view is InspectableView<ViewType.ClassifiedView>) {
                         view.isUnwrappedSupplementaryChild = true
                         return view
