@@ -351,6 +351,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| `func onDrop(of: [UTType], ...) -> some View` |
 |:technologist:| `func deleteDisabled(Bool) -> some View` |
 |:technologist:| `func moveDisabled(Bool) -> some View` |
+|:white_check_mark:| `func onScrollVisibilityChange(threshold: Double, (Bool) -> Void) -> some View` |
+|:technologist:| `func onScrollTargetVisibilityChange<ID>(idType: ID.Type, threshold: Double, ([ID]) -> Void) -> some View` |
 
 ### Handling Publisher Events
 

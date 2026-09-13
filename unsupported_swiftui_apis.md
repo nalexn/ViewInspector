@@ -312,6 +312,7 @@ scrollPosition(id:anchor:)
 scrollTargetBehavior(_:)
 scrollTargetLayout(isEnabled:)
 scrollTransition(_:)
+onScrollTargetVisibilityChange(idType:threshold:_:)
 ```
 
 ### Accessibility
