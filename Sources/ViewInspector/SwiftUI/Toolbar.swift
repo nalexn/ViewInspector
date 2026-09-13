@@ -103,12 +103,12 @@ public extension InspectableView where View == ViewType.Toolbar {
     }
 
     func item(_ index: Int = 0) throws -> InspectableView<ViewType.Toolbar.Item> {
-        let element = try Inspector.resolveTransparentToolbarWrapper(self.element(index))
+        let element = try Inspector.unwrapTransparentToolbarWrapper(self.element(index))
         return try .init(Content(element, medium: content.medium), parent: self, index: index)
     }
 
     func itemGroup(_ index: Int = 0) throws -> InspectableView<ViewType.Toolbar.ItemGroup> {
-        let element = try Inspector.resolveTransparentToolbarWrapper(self.element(index))
+        let element = try Inspector.unwrapTransparentToolbarWrapper(self.element(index))
         return try .init(Content(element, medium: content.medium), parent: self, index: index)
     }
     
@@ -134,40 +134,21 @@ public extension InspectableView where View == ViewType.Toolbar {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Inspector {
 
-    /// Peels away compiler-synthesized wrappers that a `#available`-gated `ToolbarContent`
-    /// modifier (e.g. `.sharedBackgroundVisibility(_:)`, introduced in iOS 26) inserts around
-    /// a `ToolbarItem`/`ToolbarItemGroup`, so `item(_:)`/`itemGroup(_:)` can hand a real
-    /// `ToolbarItem`/`ToolbarItemGroup` value to `guardType`.
-    ///
-    /// `if #available { ... } else { ... }` inside a `@ToolbarContentBuilder` compiles to
-    /// `_ConditionalContent<TrueBranch, FalseBranch>`. When the true branch calls an
-    /// availability-limited API (as `sharedBackgroundVisibility` does), the compiler further
-    /// wraps it in `LimitedAvailabilityToolbarContent`, whose payload is boxed inside a
-    /// single-element `TupleToolbarContent` and then a `ToolbarModifiedContent` pairing the
-    /// original `ToolbarItem` with the applied modifier. None of these three types are
-    /// `ToolbarItem`/`ToolbarItemGroup` themselves, so `guardType` rejects them outright
-    /// (see https://github.com/nalexn/ViewInspector/issues/409) unless resolved first.
-    ///
-    /// Resolution is best-effort: if a hop's expected shape isn't found (e.g. a future SDK
-    /// changes the internal layout), the value from before that hop is returned as-is so
-    /// existing behavior for plain `ToolbarItem`/`ToolbarItemGroup` values is unaffected.
-    static func resolveTransparentToolbarWrapper(_ value: Any) throws -> Any {
+    static func unwrapTransparentToolbarWrapper(_ value: Any) throws -> Any {
         var current = value
-        for _ in 0..<10 {
+        var unwrapped = false
+        while !unwrapped {
             switch Inspector.typeName(value: current, generics: .remove) {
             case "TupleToolbarContent":
-                // Only the single-element shape (wrapping one of the other transparent
-                // wrappers below) is transparent here; the general multi-element tuple case
-                // is already handled positionally by `element(_:)` above.
-                guard let next = try? resolveSingleElementTupleToolbarContent(current) else { return current }
+                guard let next = try? unwrapSingleElementTupleToolbarContent(current) else { return current }
                 current = next
             case "_ConditionalContent":
-                guard let next = try? resolveConditionalToolbarContent(current) else { return current }
+                guard let next = try? unwrapConditionalToolbarContent(current) else { return current }
                 current = next
             case "LimitedAvailabilityToolbarContent":
                 guard let storage = try? Inspector.attribute(label: "storage", value: current),
                       let boxedContent = try? Inspector.attribute(label: "content", value: storage),
-                      let next = try? resolveSingleElementTupleToolbarContent(boxedContent) else {
+                      let next = try? unwrapSingleElementTupleToolbarContent(boxedContent) else {
                     return current
                 }
                 current = next
@@ -175,13 +156,14 @@ internal extension Inspector {
                 guard let next = try? Inspector.attribute(label: "content", value: current) else { return current }
                 current = next
             default:
+                unwrapped = true
                 return current
             }
         }
         return current
     }
 
-    private static func resolveConditionalToolbarContent(_ value: Any) throws -> Any {
+    private static func unwrapConditionalToolbarContent(_ value: Any) throws -> Any {
         let storage = try Inspector.attribute(label: "storage", value: value)
         if let trueContent = try? Inspector.attribute(label: "trueContent", value: storage) {
             return trueContent
@@ -189,10 +171,7 @@ internal extension Inspector {
         return try Inspector.attribute(label: "falseContent", value: storage)
     }
 
-    /// `TupleToolbarContent` wrapping a single element stores it directly under `value`
-    /// rather than as a Swift tuple needing positional (`.0`) access — mirrors the
-    /// single-item fallback already used by `element(_:)` above.
-    private static func resolveSingleElementTupleToolbarContent(_ value: Any) throws -> Any {
+    private static func unwrapSingleElementTupleToolbarContent(_ value: Any) throws -> Any {
         return try Inspector.attribute(label: "value", value: value)
     }
 }

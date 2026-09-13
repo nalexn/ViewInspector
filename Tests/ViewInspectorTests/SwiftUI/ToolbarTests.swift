@@ -2,7 +2,7 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 private extension ToolbarContent {
     @ToolbarContentBuilder
     func vi_conditionallyHideSharedBackground() -> some ToolbarContent {
@@ -138,8 +138,7 @@ final class ToolbarTests: XCTestCase {
         XCTAssertEqual(text, "abc")
     }
 
-    // Reproduces the exact shape from #409: the availability check lives in a helper
-    // extension the caller applies inline, rather than at the `.toolbar { }` call site.
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
     func testToolbarItemWrappedByConditionallyCompiledModifier() throws {
         let sut = EmptyView()
             .toolbar {
