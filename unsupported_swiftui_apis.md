@@ -315,11 +315,6 @@ scrollTransition(_:)
 onScrollTargetVisibilityChange(idType:threshold:_:)
 ```
 
-Note: `onScrollVisibilityChange(threshold:_:)` is supported.
-`onScrollTargetVisibilityChange(idType:threshold:_:)` is not: SwiftUI stores its
-`([ID]) -> Void` callback with a calling convention that cannot be reproduced from
-Swift, so invoking it corrupts the array of ids.
-
 ### Accessibility
 
 ```
