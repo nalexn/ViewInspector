@@ -359,7 +359,7 @@ Here is a code snippet that you need to include in the **build** target to make 
 import Combine
 import SwiftUI
 
-internal final class Inspection<V> {
+internal final class Inspection<V>: @unchecked Sendable {
 
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
@@ -373,6 +373,8 @@ internal final class Inspection<V> {
 ```
 
 This code is intentionally not included in the **ViewInspector** so that your build target could remain independent from the framework, and since it requires `internal` access level it doesn't leave a trace.
+
+> Note: `InspectionEmissary` requires conformance to `Sendable`. Since the conformance is added in a separate extension in the **test target**, Swift 6 requires the `Inspection<V>` class itself to already satisfy `Sendable` at its declaration site — hence the `@unchecked Sendable` above. Without it you'll see errors like *"conformance to 'Sendable' must occur in the same source file as generic class 'Inspection'"*.
 
 After you add that `class Inspection<V>` to the build target, you should extend it in the **test target** with conformance to `InspectionEmissary` protocol:
 
