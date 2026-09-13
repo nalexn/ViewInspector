@@ -1,4 +1,6 @@
+#if canImport(Charts)
 import SwiftUI
+import Charts
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 public extension ViewType {
@@ -36,3 +38,5 @@ public extension InspectableView where View: MultipleViewContent {
         return try .init(try child(at: index), parent: self, index: index)
     }
 }
+
+#endif
