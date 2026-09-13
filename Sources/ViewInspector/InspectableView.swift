@@ -28,8 +28,9 @@ public struct InspectableView<View> where View: BaseViewType {
     
     private static func build(content: Content, parent: UnwrappedView?, call: String, index: Int?) throws -> Self {
         if !View.typePrefix.isEmpty,
-           Inspector.isTupleView(content.view),
-           View.self != ViewType.TupleView.self {
+           Inspector.isViewTuple(content.view),
+           View.self != ViewType.TupleView.self,
+           View.self != ViewType.TupleContentView.self {
             throw InspectionError.notSupported(
                 "Unable to extract \(View.typePrefix): please specify its index inside parent view")
         }
@@ -204,10 +205,11 @@ internal extension InspectableView where View: MultipleViewContent {
             throw InspectionError.viewIndexOutOfBounds(index: index, count: viewes.count)
         }
         let child = try viewes.element(at: index)
-        if !isTupleExtraction && Inspector.isTupleView(child.view) {
+        if !isTupleExtraction && Inspector.isViewTuple(child.view) {
+            let call = Inspector.isTupleContentView(child.view) ? "tupleContentView" : "tupleView"
             throw InspectionError.notSupported(
                 // swiftlint:disable:next line_length
-                "Please insert .tupleView(\(index)) after \(Inspector.typeName(type: View.self)) for inspecting its children at index \(index)")
+                "Please insert .\(call)(\(index)) after \(Inspector.typeName(type: View.self)) for inspecting its children at index \(index)")
         }
         return child
     }
