@@ -155,3 +155,15 @@ extension TextInputAutocapitalization {
     }
 }
 #endif
+
+// MARK: - ViewTextCase
+
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+public extension InspectableView {
+
+    func textCase() throws -> Text.Case? {
+        let reference = EmptyView().textCase(.uppercase)
+        let keyPath = try Inspector.environmentKeyPath(Optional<Text.Case>.self, reference)
+        return try environment(keyPath, call: "textCase")
+    }
+}

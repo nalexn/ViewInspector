@@ -205,7 +205,6 @@ dynamicTypeSize(_:)
 ### Text
 
 ```
-textCase(_:)
 monospacedDigit()
 textInputAutocapitalization(_:)
 textSelection(_:)
