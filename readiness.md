@@ -297,8 +297,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:white_check_mark:| `func blendMode(BlendMode) -> some View` |
-|:technologist:| `func compositingGroup() -> some View` |
-|:technologist:| `func drawingGroup(opaque: Bool, colorMode: ColorRenderingMode) -> some View` |
+|:white_check_mark:| `func compositingGroup() -> some View` |
+|:white_check_mark:| `func drawingGroup(opaque: Bool, colorMode: ColorRenderingMode) -> some View` |
 
 ### Adding Animations to a View
 

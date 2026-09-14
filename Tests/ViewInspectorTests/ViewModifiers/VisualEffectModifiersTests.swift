@@ -283,3 +283,44 @@ final class ViewHidingTests: XCTestCase {
         XCTAssertFalse(try sut3.inspect().emptyView().isDisabled())
     }
 }
+
+// MARK: - ViewCompositingTests
+
+@MainActor
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+final class ViewCompositingTests: XCTestCase {
+
+    func testCompositingGroup() throws {
+        let sut = EmptyView().compositingGroup()
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testCompositingGroupInspection() throws {
+        let sut = try EmptyView().compositingGroup().inspect().emptyView()
+        XCTAssertNoThrow(try sut.compositingGroup())
+    }
+
+    func testCompositingGroupInspectionError() throws {
+        let sut = try EmptyView().inspect()
+        XCTAssertThrows(try sut.compositingGroup(),
+                        "EmptyView does not have 'compositingGroup' modifier")
+    }
+
+    func testDrawingGroup() throws {
+        let sut = EmptyView().drawingGroup(opaque: true, colorMode: .extendedLinear)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testDrawingGroupInspection() throws {
+        XCTAssertEqual(try EmptyView().drawingGroup(opaque: true, colorMode: .extendedLinear)
+            .inspect().emptyView().drawingGroup(), .extendedLinear)
+        XCTAssertEqual(try EmptyView().drawingGroup()
+            .inspect().emptyView().drawingGroup(), .nonLinear)
+    }
+
+    func testDrawingGroupInspectionError() throws {
+        let sut = try EmptyView().inspect()
+        XCTAssertThrows(try sut.drawingGroup(),
+                        "EmptyView does not have 'drawingGroup' modifier")
+    }
+}
