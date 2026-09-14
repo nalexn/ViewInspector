@@ -208,7 +208,6 @@ dynamicTypeSize(_:)
 textCase(_:)
 monospacedDigit()
 textInputAutocapitalization(_:)
-textSelection(_:)
 writingToolsBehavior(_:)
 ```
 
