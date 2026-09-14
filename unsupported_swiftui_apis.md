@@ -195,8 +195,6 @@ keyframeAnimator(initialValue:repeating:content:keyframes:)
 ### Graphics & Effects
 
 ```
-compositingGroup()
-drawingGroup(opaque:colorMode:)
 symbolRenderingMode(_:)
 symbolVariant(_:)
 dynamicTypeSize(_:)
