@@ -162,3 +162,30 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().emptyView().flipsForRightToLeftLayoutDirection(), true)
     }
 }
+
+// MARK: - ViewTextCaseTests
+
+@MainActor
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+final class ViewTextCaseTests: XCTestCase {
+
+    func testTextCase() throws {
+        let sut = EmptyView().textCase(.uppercase)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testTextCaseInspection() throws {
+        XCTAssertEqual(try EmptyView().textCase(.uppercase)
+            .inspect().emptyView().textCase(), .uppercase)
+        XCTAssertEqual(try EmptyView().textCase(.lowercase)
+            .inspect().emptyView().textCase(), .lowercase)
+        XCTAssertNil(try EmptyView().textCase(nil)
+            .inspect().emptyView().textCase())
+    }
+
+    func testTextCaseInspectionError() throws {
+        let sut = try EmptyView().inspect()
+        XCTAssertThrows(try sut.textCase(),
+                        "EmptyView does not have 'textCase' modifier")
+    }
+}

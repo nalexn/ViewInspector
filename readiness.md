@@ -469,7 +469,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func allowsTightening(Bool) -> some View` |
 |:white_check_mark:| `func textContentType(UITextContentType?) -> some View` |
 |:technologist:| `func textContentType(UITextContentType?) -> some View` |
-|:technologist:| `func textCase(Text.Case?) -> some View` |
+|:white_check_mark:| `func textCase(Text.Case?) -> some View` |
 |:white_check_mark:| `func flipsForRightToLeftLayoutDirection(Bool) -> some View` |
 |:white_check_mark:| `func autocapitalization(UITextAutocapitalizationType) -> some View` |
 |:white_check_mark:| `func disableAutocorrection(Bool?) -> some View` |
