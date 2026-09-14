@@ -343,6 +343,39 @@ final class ViewAccessibilityActionTests: XCTestCase {
         XCTAssertEqual(sut5, AccessibilityTraits())
     }
 
+    func testAccessibilityEmptyTraitsMergedWithSiblingModifier() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { return }
+        /* SwiftUI merges adjacent accessibility modifiers into a single
+           `AccessibilityAttachmentModifier`, and an empty trait set leaves no value in it. */
+        let sut1 = try EmptyView().accessibilityLabel(Text("abc")).accessibilityAddTraits([])
+            .inspect().emptyView().accessibilityTraits()
+        XCTAssertEqual(sut1, AccessibilityTraits())
+        let sut2 = try EmptyView().accessibilityAddTraits([]).accessibilityLabel(Text("abc"))
+            .inspect().emptyView().accessibilityTraits()
+        XCTAssertEqual(sut2, AccessibilityTraits())
+        let sut3 = try EmptyView().accessibilityHidden(true).accessibilityAddTraits([])
+            .inspect().emptyView().accessibilityTraits()
+        XCTAssertEqual(sut3, AccessibilityTraits())
+        let sut4 = try EmptyView().accessibilityLabel(Text("abc")).accessibilityRemoveTraits([])
+            .inspect().emptyView().accessibilityTraits()
+        XCTAssertEqual(sut4, AccessibilityTraits())
+    }
+
+    func testAccessibilityConditionalTraitsMergedWithSiblingModifier() throws {
+        guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+        else { return }
+        func view(isSelected: Bool) -> some View {
+            EmptyView()
+                .accessibilityLabel(Text("abc"))
+                .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+        }
+        let sut1 = try view(isSelected: false).inspect().emptyView().accessibilityTraits()
+        XCTAssertEqual(sut1, AccessibilityTraits())
+        let sut2 = try view(isSelected: true).inspect().emptyView().accessibilityTraits()
+        XCTAssertEqual(sut2, .isSelected)
+    }
+
     func testAccessibilityEmptyAndNonEmptyTraitsInspection() throws {
         let sut1 = try EmptyView()
             .accessibility(addTraits: AccessibilityTraits())
@@ -383,11 +416,18 @@ final class ViewAccessibilityActionTests: XCTestCase {
     }
     
     func testMissingAccessibilityTraits() throws {
-        let sut = try EmptyView().accessibility(label: Text("abc"))
-            .inspect().emptyView()
+        let sut = try EmptyView().inspect().emptyView()
         XCTAssertThrows(
             try sut.accessibilityTraits(),
             "EmptyView does not have 'accessibilityAddTraits' modifier")
+    }
+
+    func testAccessibilityTraitsWithoutTraitModifier() throws {
+        /* An accessibility modifier that stores no trait value is indistinguishable
+           from a trait modifier resolving to an empty set, so it reports an empty set. */
+        let sut = try EmptyView().accessibility(label: Text("abc"))
+            .inspect().emptyView().accessibilityTraits()
+        XCTAssertEqual(sut, AccessibilityTraits())
     }
     
     func testAccessibilitySortPriority() throws {
