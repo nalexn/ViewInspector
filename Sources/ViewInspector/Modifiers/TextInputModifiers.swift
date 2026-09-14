@@ -155,3 +155,15 @@ extension TextInputAutocapitalization {
     }
 }
 #endif
+
+// MARK: - ViewSubmitLabel
+
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+public extension InspectableView {
+
+    func submitLabel() throws -> SubmitLabel {
+        let reference = EmptyView().submitLabel(.done)
+        let keyPath = try Inspector.environmentKeyPath(SubmitLabel.self, reference)
+        return try environment(keyPath, call: "submitLabel")
+    }
+}

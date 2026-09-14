@@ -162,3 +162,31 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().emptyView().flipsForRightToLeftLayoutDirection(), true)
     }
 }
+
+// MARK: - ViewSubmitLabelTests
+
+@MainActor
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+final class ViewSubmitLabelTests: XCTestCase {
+
+    func testSubmitLabel() throws {
+        let sut = EmptyView().submitLabel(.send)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testSubmitLabelInspection() throws {
+        XCTAssertEqual(try EmptyView().submitLabel(.send)
+            .inspect().emptyView().submitLabel(), .send)
+        XCTAssertEqual(try EmptyView().submitLabel(.search)
+            .inspect().emptyView().submitLabel(), .search)
+    }
+
+    func testSubmitLabelInspectionError() throws {
+        let sut = try EmptyView().inspect()
+        XCTAssertThrows(try sut.submitLabel(),
+                        "EmptyView does not have 'submitLabel' modifier")
+    }
+}
+
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+extension SubmitLabel: @retroactive BinaryEquatable { }
