@@ -125,7 +125,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| Tab | `contained view`, `labelView()`, `role()` |
 |:technologist:| Table | |
 |:white_check_mark:| TabView | `contained view` |
-|:technologist:| Table | |
 |:white_check_mark:| Text | `string(locale: Locale) -> String`, `attributes: TextAttributes`, `attributedString: AttributedString`, `images: [Image]` |
 |:white_check_mark:| TextEditor | `input: String`, `setInput(_: String)`, `attributedInput: AttributedString`, `setInput(_: AttributedString)`, `selection: TextSelection?`, `setSelection(_: TextSelection?)`, `attributedSelection: AttributedTextSelection?`, `setSelection(_: AttributedTextSelection)` |
 |:white_check_mark:| TextField | `label view`, `prompt`, `callOnEditingChanged()`, `callOnCommit()`, `input: String`, `setInput(_: String)` |
@@ -159,7 +158,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| `@FocusedObject` |
 |:technologist:| `@FocusedValue` |
 |:technologist:| `@FocusState` |
-|:technologist:| `@FocusedValue` |
 |:white_check_mark:| `@GestureState` |
 |:technologist:| `@Namespace` |
 |:technologist:| `@NSApplicationDelegateAdaptor` |
@@ -223,8 +221,11 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func offset(...) -> some View` |
 |:white_check_mark:| `func edgesIgnoringSafeArea(Edge.Set) -> some View` |
 |:white_check_mark:| `func coordinateSpace<T>(name: T) -> some View` |
-|:technologist:| `func ignoresSafeArea(SafeAreaRegions, edges: Edge.Set) -> some View` |
-|:technologist:| `func safeAreaInset(edge: VerticalEdge, alignment: HorizontalAlignment, spacing: CGFloat?, content: () -> V) -> some View` |
+|:white_check_mark:| `func ignoresSafeArea(SafeAreaRegions, edges: Edge.Set) -> some View` |
+|:white_check_mark:| `func safeAreaInset(edge: VerticalEdge, alignment: HorizontalAlignment, spacing: CGFloat?, content: () -> V) -> some View` |
+|:white_check_mark:| `func safeAreaInset(edge: HorizontalEdge, alignment: VerticalAlignment, spacing: CGFloat?, content: () -> V) -> some View` |
+|:white_check_mark:| `func safeAreaBar(edge: VerticalEdge, alignment: HorizontalAlignment, spacing: CGFloat?, content: () -> V) -> some View` |
+|:white_check_mark:| `func safeAreaBar(edge: HorizontalEdge, alignment: VerticalAlignment, spacing: CGFloat?, content: () -> V) -> some View` |
 |:technologist:| `func alignmentGuide(...) -> some View` |
 |:white_check_mark:| `func padding(...) -> some View` |
 |:technologist:| `func scenePadding(_ edges: Edge.Set) -> some View` |
@@ -341,12 +342,12 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func onDisappear(perform: (() -> Void)?) -> some View` |
 |:white_check_mark:| `func onCutCommand(perform: (() -> [NSItemProvider])?) -> some View` |
 |:white_check_mark:| `func onCopyCommand(perform: (() -> [NSItemProvider])?) -> some View` |
-|:technologist:| `func onPasteCommand(...) -> some View` |
+|:white_check_mark:| `func onPasteCommand(...) -> some View` |
 |:white_check_mark:| `func onDeleteCommand(perform: (() -> Void)?) -> some View` |
 |:white_check_mark:| `func onMoveCommand(perform: ((MoveCommandDirection) -> Void)?) -> some View` |
 |:white_check_mark:| `func onExitCommand(perform: (() -> Void)?) -> some View` |
 |:technologist:| `func onPlayPauseCommand(perform: (() -> Void)?) -> some View` |
-|:technologist:| `func onCommand(Selector, perform: (() -> Void)?) -> some View` |
+|:white_check_mark:| `func onCommand(Selector, perform: (() -> Void)?) -> some View` |
 |:technologist:| `func onDrag(() -> NSItemProvider) -> some View` |
 |:technologist:| `func onDrop(of: [UTType], ...) -> some View` |
 |:technologist:| `func deleteDisabled(Bool) -> some View` |
@@ -468,14 +469,13 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func truncationMode(Text.TruncationMode) -> some View` |
 |:white_check_mark:| `func allowsTightening(Bool) -> some View` |
 |:white_check_mark:| `func textContentType(UITextContentType?) -> some View` |
-|:technologist:| `func textContentType(UITextContentType?) -> some View` |
 |:technologist:| `func textCase(Text.Case?) -> some View` |
 |:white_check_mark:| `func flipsForRightToLeftLayoutDirection(Bool) -> some View` |
 |:white_check_mark:| `func autocapitalization(UITextAutocapitalizationType) -> some View` |
 |:white_check_mark:| `func disableAutocorrection(Bool?) -> some View` |
 |:technologist:| `func monospacedDigit() -> some View` |
 |:technologist:| `func textInputAutocapitalization(_ autocapitalization: TextInputAutocapitalization?) -> some View` |
-|:technologist:| `func onSubmit(of triggers: SubmitTriggers, _ action: @escaping (() -> Void)) -> some View` |
+|:white_check_mark:| `func onSubmit(of triggers: SubmitTriggers, _ action: @escaping (() -> Void)) -> some View` |
 |:technologist:| `func submitLabel(_ submitLabel: SubmitLabel) -> some View` |
 |:technologist:| `func submitScope(_ isBlocking: Bool) -> some View` |
 |:technologist:| `func textSelection<S>(_ selectability: S) -> some View` |
@@ -518,7 +518,6 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func toggleStyle<S>(S) -> some View` |
 |:technologist:| `func controlGroupStyle<S>(S) -> some View` |
 |:technologist:| `func gaugeStyle<S>(S) -> some View` |
-|:technologist:| `func signInWithAppleButtonStyle(S) -> some View` |
 |:technologist:| `func buttonBorderShape(_ shape: ButtonBorderShape) -> some View` |
 
 ### Configuring a List View
