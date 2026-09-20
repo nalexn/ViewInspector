@@ -477,7 +477,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:technologist:| `func monospacedDigit() -> some View` |
 |:technologist:| `func textInputAutocapitalization(_ autocapitalization: TextInputAutocapitalization?) -> some View` |
 |:white_check_mark:| `func onSubmit(of triggers: SubmitTriggers, _ action: @escaping (() -> Void)) -> some View` |
-|:technologist:| `func submitLabel(_ submitLabel: SubmitLabel) -> some View` |
+|:white_check_mark:| `func submitLabel(_ submitLabel: SubmitLabel) -> some View` |
 |:technologist:| `func submitScope(_ isBlocking: Bool) -> some View` |
 |:white_check_mark:| `func textSelection<S>(_ selectability: S) -> some View` |
 
