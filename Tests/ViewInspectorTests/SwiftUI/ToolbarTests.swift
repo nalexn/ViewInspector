@@ -116,8 +116,9 @@ final class ToolbarTests: XCTestCase {
     // `itemGroup(_:)` handed this wrapper straight to `guardType`, which rejected it because
     // it isn't literally `ToolbarItem`/`ToolbarItemGroup`, regardless of what the caller was
     // searching for downstream.
-    @available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
     func testToolbarItemWrappedByAvailabilityGatedModifier() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar {
                 ToolbarItem { Text("abc") }
@@ -127,8 +128,9 @@ final class ToolbarTests: XCTestCase {
         XCTAssertEqual(text, "abc")
     }
 
-    @available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
     func testToolbarItemGroupWrappedByAvailabilityGatedModifier() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar {
                 ToolbarItemGroup { Text("abc") }
@@ -138,8 +140,9 @@ final class ToolbarTests: XCTestCase {
         XCTAssertEqual(text, "abc")
     }
 
-    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
     func testToolbarItemWrappedByConditionallyCompiledModifier() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar {
                 ToolbarItem { Text("abc") }

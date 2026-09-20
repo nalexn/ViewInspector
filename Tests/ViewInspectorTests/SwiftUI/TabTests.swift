@@ -3,12 +3,13 @@ import SwiftUI
 @testable import ViewInspector
 
 @MainActor
-@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
 final class TabTests: XCTestCase {
 
     // MARK: - TabView with Tabs Count
 
     func testTabViewWithTabsReturnsCorrectCount() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Tab("Received", systemImage: "tray.and.arrow.down.fill") {
                 Text("ReceivedView")
@@ -28,6 +29,8 @@ final class TabTests: XCTestCase {
     // MARK: - Tab Extraction
 
     func testTabExtractionFromTabView() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Tab("First", systemImage: "1.circle") {
                 Text("First Content")
@@ -42,6 +45,8 @@ final class TabTests: XCTestCase {
     }
 
     func testTabExtractionFromAnyView() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         // Tab is not a View - it's a TabContent, so it can only be inside TabView
         // This test verifies tab extraction from a TabView wrapped in AnyView
         let sut = AnyView(
@@ -57,6 +62,8 @@ final class TabTests: XCTestCase {
     // MARK: - Tab Content Inspection
 
     func testTabContentInspection() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Tab("First", systemImage: "1.circle") {
                 Text("First Content")
@@ -75,6 +82,8 @@ final class TabTests: XCTestCase {
     }
 
     func testTabWithComplexContent() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Tab("Complex", systemImage: "star") {
                 VStack {
@@ -93,6 +102,8 @@ final class TabTests: XCTestCase {
     // MARK: - Tab Label Inspection
 
     func testTabLabelViewInspection() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Tab("My Tab", systemImage: "star.fill") {
                 Text("Content")
@@ -108,6 +119,8 @@ final class TabTests: XCTestCase {
     // MARK: - Tab Role
 
     func testTabRoleNil() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Tab("Test", systemImage: "star") {
                 Text("Content")
@@ -119,6 +132,8 @@ final class TabTests: XCTestCase {
     }
 
     func testTabRoleSearch() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Tab("Search", systemImage: "magnifyingglass", role: .search) {
                 Text("Search Content")
@@ -132,6 +147,8 @@ final class TabTests: XCTestCase {
     // MARK: - Search Tests
 
     func testSearchForTabContent() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Tab("First", systemImage: "1.circle") {
                 Text("FindMe")
@@ -147,6 +164,8 @@ final class TabTests: XCTestCase {
     }
 
     func testSearchForTabInHierarchy() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = VStack {
             TabView {
                 Tab("First", systemImage: "1.circle") {
@@ -163,6 +182,8 @@ final class TabTests: XCTestCase {
     // MARK: - Traditional TabView still works
 
     func testTraditionalTabViewStillWorks() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = TabView {
             Text("First")
                 .tabItem { Label("First", systemImage: "1.circle") }

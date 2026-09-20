@@ -289,15 +289,18 @@ final class ViewEventsTests: XCTestCase {
 // MARK: - ViewScrollEventsTests
 
 @MainActor
-@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
 final class ViewScrollEventsTests: XCTestCase {
 
     func testOnScrollVisibilityChange() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().onScrollVisibilityChange { _ in }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 
     func testOnScrollVisibilityChangeInspection() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let exp1 = XCTestExpectation(description: "\(#function)_visible")
         let exp2 = XCTestExpectation(description: "\(#function)_hidden")
         let sut = ScrollView {
@@ -319,6 +322,8 @@ final class ViewScrollEventsTests: XCTestCase {
     }
 
     func testOnScrollVisibilityChangeArgumentDelivery() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         var received: [Bool] = []
         let sut = EmptyView().onScrollVisibilityChange { received.append($0) }
         let view = try sut.inspect().emptyView()
@@ -329,6 +334,8 @@ final class ViewScrollEventsTests: XCTestCase {
     }
 
     func testOnScrollVisibilityChangeMultipleModifiers() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         var received: [String] = []
         let sut = EmptyView()
             .onScrollVisibilityChange(threshold: 0.1) { received.append("first: \($0)") }
@@ -342,6 +349,8 @@ final class ViewScrollEventsTests: XCTestCase {
     }
 
     func testOnScrollVisibilityChangeThreshold() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().padding()
             .onScrollVisibilityChange(threshold: 0.3) { _ in }
             .padding()
@@ -349,6 +358,8 @@ final class ViewScrollEventsTests: XCTestCase {
     }
 
     func testOnScrollVisibilityChangeMissingModifierError() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().padding()
         XCTAssertThrows(
             try sut.inspect().emptyView().callOnScrollVisibilityChange(true),

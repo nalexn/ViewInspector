@@ -3,12 +3,13 @@ import SwiftUI
 @testable import ViewInspector
 
 @MainActor
-@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
 final class SubviewsTests: XCTestCase {
 
     // MARK: - Group(subviews:)
 
     func testGroupSubviewsSingleSubview() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = Group(subviews: HStack { Text("First"); Text("Second") }) { subviews in
             ForEach(Array(subviews.enumerated()), id: \.offset) { _, subview in subview }
         }
@@ -20,6 +21,8 @@ final class SubviewsTests: XCTestCase {
     }
 
     func testGroupSubviewsMultipleSubviews() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = SubviewsContainer { Text("First"); Text("Second"); Text("Third") }
         let sut = try view.inspect().view(SubviewsContainer<TupleView<(Text, Text, Text)>>.self).group()
         XCTAssertEqual(sut.count, 3)
@@ -28,12 +31,16 @@ final class SubviewsTests: XCTestCase {
     }
 
     func testGroupSubviewsSearch() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = AnyView(Group(subviews: VStack { Text("First") }) { $0 })
         XCTAssertEqual(try view.inspect().find(text: "First").pathToRoot,
                        "anyView().group().vStack(0).text(0)")
     }
 
     func testGroupSubviewsTransformIsNotApplied() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = Group(subviews: VStack { Text("First") }) { subviews in
             ForEach(Array(subviews.enumerated()), id: \.offset) { index, subview in
                 subview.accessibilityIdentifier("subview-\(index)")
@@ -49,6 +56,8 @@ final class SubviewsTests: XCTestCase {
     // MARK: - Group(sections:)
 
     func testGroupSectionsContent() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = Group(sections: VStack {
             Section { Text("Content 1") } header: { Text("Header 1") }
             Section { Text("Content 2") } header: { Text("Header 2") }
@@ -64,6 +73,8 @@ final class SubviewsTests: XCTestCase {
     }
 
     func testGroupSectionsSearch() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = AnyView(Group(sections: VStack { Section { Text("First") } }) { _ in EmptyView() })
         XCTAssertEqual(try view.inspect().find(text: "First").pathToRoot,
                        "anyView().group().vStack(0).section(0).text(0)")
@@ -72,6 +83,8 @@ final class SubviewsTests: XCTestCase {
     // MARK: - ForEach(subviews:)
 
     func testForEachSubviews() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = ForEach(subviews: HStack { Text("First"); Text("Second") }) { subview in
             subview.border(Color.red)
         }
@@ -81,6 +94,8 @@ final class SubviewsTests: XCTestCase {
     }
 
     func testForEachSubviewsSearch() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = ForEach(subviews: VStack { Text("First") }) { $0 }
         XCTAssertEqual(try view.inspect().find(text: "First").pathToRoot,
                        "forEach().vStack(0).text(0)")
@@ -89,6 +104,8 @@ final class SubviewsTests: XCTestCase {
     // MARK: - ForEach(sections:)
 
     func testForEachSections() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = ForEach(sections: VStack {
             Section { Text("Content 1") } header: { Text("Header 1") }
         }) { section in
@@ -100,6 +117,8 @@ final class SubviewsTests: XCTestCase {
     }
 
     func testForEachSectionsSearch() throws {
+        guard #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *)
+        else { throw XCTSkip() }
         let view = ForEach(sections: VStack { Section { Text("First") } }) { _ in EmptyView() }
         XCTAssertEqual(try view.inspect().find(text: "First").pathToRoot,
                        "forEach().group(0).vStack(0).section(0).text(0)")

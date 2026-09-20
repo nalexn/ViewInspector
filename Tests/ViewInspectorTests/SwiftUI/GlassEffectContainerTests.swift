@@ -5,17 +5,20 @@ import SwiftUI
 @testable import ViewInspector
 
 @MainActor
-@available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
 final class GlassEffectContainerTests: XCTestCase {
 
     // MARK: - GlassEffectContainer Tests
 
     func testExtractionFromSingleViewContainer() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let view = AnyView(GlassEffectContainer { Text("Test") })
         XCTAssertNoThrow(try view.inspect().anyView().glassEffectContainer())
     }
 
     func testExtractionFromMultipleViewContainer() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let view = HStack {
             GlassEffectContainer { Text("First") }
             GlassEffectContainer { Text("Second") }
@@ -25,6 +28,8 @@ final class GlassEffectContainerTests: XCTestCase {
     }
 
     func testContentExtraction() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = GlassEffectContainer {
             Text("Hello")
             Text("World")
@@ -36,6 +41,8 @@ final class GlassEffectContainerTests: XCTestCase {
     }
 
     func testSpacingCustom() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = GlassEffectContainer(spacing: 20) {
             Text("Test")
         }
@@ -44,6 +51,8 @@ final class GlassEffectContainerTests: XCTestCase {
     }
 
     func testSearchForChildInsideGlassEffectContainer() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let view = VStack {
             Text("Before")
             GlassEffectContainer {
@@ -60,23 +69,31 @@ final class GlassEffectContainerTests: XCTestCase {
     // MARK: - glassEffect Modifier Tests
 
     func testGlassEffectModifier() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffect()
         XCTAssertNoThrow(try sut.inspect().text().glassEffect())
     }
 
     func testGlassEffectTintColorNil() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffect()
         let glass = try sut.inspect().text().glassEffect()
         XCTAssertNil(try glass.tintColor())
     }
 
     func testGlassEffectTintColorRed() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffect(.regular.tint(.red))
         let glass = try sut.inspect().text().glassEffect()
         XCTAssertEqual(try glass.tintColor(), .red)
     }
 
     func testGlassEffectShape() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffect(in: RoundedRectangle(cornerRadius: 10))
         let glass = try sut.inspect().text().glassEffect()
         let shape = try glass.shape(RoundedRectangle.self)
@@ -87,18 +104,24 @@ final class GlassEffectContainerTests: XCTestCase {
     // MARK: - glassEffectTransition Modifier Tests
 
     func testGlassEffectTransitionMaterialize() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffectTransition(.materialize)
         let transition = try sut.inspect().text().glassEffectTransition()
         XCTAssertEqual(transition, .materialize)
     }
 
     func testGlassEffectTransitionMatchedGeometry() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffectTransition(.matchedGeometry)
         let transition = try sut.inspect().text().glassEffectTransition()
         XCTAssertEqual(transition, .matchedGeometry)
     }
 
     func testGlassEffectTransitionIdentity() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffectTransition(.identity)
         let transition = try sut.inspect().text().glassEffectTransition()
         XCTAssertEqual(transition, .identity)
@@ -109,6 +132,8 @@ final class GlassEffectContainerTests: XCTestCase {
     @Namespace var ns
 
     func testGlassEffectID() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffectID("testID", in: ns)
         let result = try sut.inspect().text().glassEffectID()
         XCTAssertEqual(result.id, AnyHashable("testID"))
@@ -118,6 +143,8 @@ final class GlassEffectContainerTests: XCTestCase {
     // MARK: - glassEffectUnion Modifier Tests
 
     func testGlassEffectUnion() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffectUnion(id: "unionID", namespace: ns)
         let result = try sut.inspect().text().glassEffectUnion()
         XCTAssertEqual(result.id, AnyHashable("unionID"))
@@ -127,18 +154,24 @@ final class GlassEffectContainerTests: XCTestCase {
     // MARK: - glassEffect isInteractive Tests
 
     func testGlassEffectIsInteractiveDefault() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffect()
         let glass = try sut.inspect().text().glassEffect()
         XCTAssertFalse(try glass.isInteractive())
     }
 
     func testGlassEffectIsInteractiveTrue() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffect(.regular.interactive(true))
         let glass = try sut.inspect().text().glassEffect()
         XCTAssertTrue(try glass.isInteractive())
     }
 
     func testGlassEffectIsInteractiveFalse() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = Text("Test").glassEffect(.regular.interactive(false))
         let glass = try sut.inspect().text().glassEffect()
         XCTAssertFalse(try glass.isInteractive())
@@ -147,6 +180,8 @@ final class GlassEffectContainerTests: XCTestCase {
     // MARK: - Chained Glass Methods Tests
 
     func testGlassEffectChainedTintOverwrites() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         // Chaining tint() calls overwrites - last one wins
         let sut = Text("Test").glassEffect(.regular.tint(.red).tint(.blue))
         let glass = try sut.inspect().text().glassEffect()
@@ -154,6 +189,8 @@ final class GlassEffectContainerTests: XCTestCase {
     }
 
     func testGlassEffectChainedDifferentMethods() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         // Chaining different methods preserves all values
         let sut = Text("Test").glassEffect(.regular.tint(.red).interactive(true))
         let glass = try sut.inspect().text().glassEffect()
@@ -162,6 +199,8 @@ final class GlassEffectContainerTests: XCTestCase {
     }
 
     func testGlassEffectChainedAllMethods() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         // Chain all available methods
         let sut = Text("Test").glassEffect(
             .regular.tint(.green).interactive(true),
@@ -176,6 +215,8 @@ final class GlassEffectContainerTests: XCTestCase {
     // MARK: - Missing Modifier Error Tests
 
     func testGlassEffectMissingModifierError() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().padding()
         XCTAssertThrows(
             try sut.inspect().emptyView().glassEffect(),
@@ -183,6 +224,8 @@ final class GlassEffectContainerTests: XCTestCase {
     }
 
     func testGlassEffectTransitionMissingModifierError() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().padding()
         XCTAssertThrows(
             try sut.inspect().emptyView().glassEffectTransition(),
@@ -190,6 +233,8 @@ final class GlassEffectContainerTests: XCTestCase {
     }
 
     func testGlassEffectIDMissingModifierError() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().padding()
         XCTAssertThrows(
             try sut.inspect().emptyView().glassEffectID(),
@@ -197,6 +242,8 @@ final class GlassEffectContainerTests: XCTestCase {
     }
 
     func testGlassEffectUnionMissingModifierError() throws {
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+        else { throw XCTSkip() }
         let sut = EmptyView().padding()
         XCTAssertThrows(
             try sut.inspect().emptyView().glassEffectUnion(),
