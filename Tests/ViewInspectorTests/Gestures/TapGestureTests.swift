@@ -122,4 +122,5 @@ final class TapGestureTests: XCTestCase {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 16.0, *)
 extension TapGestureTests: @unchecked Sendable { }
