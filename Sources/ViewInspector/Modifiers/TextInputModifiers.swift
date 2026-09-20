@@ -155,3 +155,25 @@ extension TextInputAutocapitalization {
     }
 }
 #endif
+
+// MARK: - ViewTextSelection
+
+#if !os(tvOS) && !os(watchOS)
+@available(iOS 15.0, macOS 12.0, *)
+public extension InspectableView {
+
+    /// `true` when the view allows selecting the text it displays.
+    /// `TextSelectability` set with `textSelection` modifier
+    func textSelectability() throws -> Bool {
+        let modifiers = modifiersMatching({ modifier -> Bool in
+            modifier.modifierType.hasPrefix("TextSelectabilityModifier")
+        })
+        guard let modifier = modifiers.first else {
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: content.view),
+                modifier: "textSelection", index: 0)
+        }
+        return modifier.modifierType.contains("<EnabledTextSelectability")
+    }
+}
+#endif

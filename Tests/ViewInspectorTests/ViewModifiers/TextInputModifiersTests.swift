@@ -162,3 +162,30 @@ final class TextInputModifiersTests: XCTestCase {
         XCTAssertEqual(try sut.inspect().emptyView().flipsForRightToLeftLayoutDirection(), true)
     }
 }
+
+// MARK: - ViewTextSelectionTests
+
+#if !os(tvOS) && !os(watchOS)
+@MainActor
+@available(iOS 15.0, macOS 12.0, *)
+final class ViewTextSelectionTests: XCTestCase {
+
+    func testTextSelection() throws {
+        let sut = EmptyView().textSelection(.enabled)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testTextSelectionInspection() throws {
+        XCTAssertTrue(try EmptyView().textSelection(.enabled)
+            .inspect().emptyView().textSelectability())
+        XCTAssertFalse(try EmptyView().textSelection(.disabled)
+            .inspect().emptyView().textSelectability())
+    }
+
+    func testTextSelectionInspectionError() throws {
+        let sut = try EmptyView().inspect()
+        XCTAssertThrows(try sut.textSelectability(),
+                        "EmptyView does not have 'textSelection' modifier")
+    }
+}
+#endif
