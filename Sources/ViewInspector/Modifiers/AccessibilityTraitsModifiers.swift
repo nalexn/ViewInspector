@@ -14,9 +14,10 @@ public extension InspectableView {
         let call = "accessibilityAddTraits"
         let traitSets = accessibilityTraitSets()
         guard !traitSets.isEmpty else {
-            /* A trait modifier that resolves to an empty set may leave no trait value
-               behind at all, in which case the empty set is still the correct answer. */
-            guard hasPropertylessAccessibilityAttachment() else {
+            /* A trait modifier resolving to an empty set contributes no value to the
+               accessibility attachment it is merged into, so an attachment carrying no
+               trait value is indistinguishable from an empty set, and reports one. */
+            guard !accessibilityAttachmentModifiers().isEmpty else {
                 throw InspectionError
                     .modifierNotFound(parent: Inspector.typeName(value: content.view),
                                       modifier: call, index: 0)
@@ -109,35 +110,6 @@ private extension InspectableView {
 
     func accessibilityAttachmentModifiers() -> [ModifierNameProvider] {
         return modifiersMatching { $0.modifierType.contains("AccessibilityAttachmentModifier") }
-    }
-
-    /**
-     Newer versions of SwiftUI keep the accessibility properties in a type-keyed collection,
-     and a trait modifier that resolves to an empty set contributes no entry to it. Such a
-     modifier is only recognizable by the fact that it carries no accessibility properties
-     at all: every other accessibility modifier stores a value under its own key.
-     */
-    func hasPropertylessAccessibilityAttachment() -> Bool {
-        return accessibilityAttachmentModifiers().contains { modifier in
-            InspectableView.accessibilityPropertyStorages(in: modifier, depth: 0)
-                .contains { storage in
-                    let mirror = Mirror(reflecting: storage)
-                    return mirror.displayStyle == .collection && mirror.children.isEmpty
-                }
-        }
-    }
-
-    /// The values backing every `AccessibilityProperties` found in the modifier
-    private static func accessibilityPropertyStorages(in value: Any, depth: Int) -> [Any] {
-        if Inspector.typeName(value: value).contains("AccessibilityProperties") {
-            return Mirror(reflecting: value).children
-                .filter { $0.label == "storage" }
-                .map { $0.value }
-        }
-        guard depth < 8 else { return [] }
-        return Mirror(reflecting: value).children.flatMap {
-            accessibilityPropertyStorages(in: $0.value, depth: depth + 1)
-        }
     }
     
     private static func accessibilityTraitSets(in value: Any, depth: Int) -> [AccessibilityTraitSetValue] {
