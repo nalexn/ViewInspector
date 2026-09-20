@@ -58,7 +58,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "52C351882AA20EA900FC0A1E"
             BuildableName = "App.app"
-            BlueprintName = "App"
             ReferencedContainer = "container:watchOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

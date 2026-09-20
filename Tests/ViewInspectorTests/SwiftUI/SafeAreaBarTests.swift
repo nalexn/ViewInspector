@@ -7,14 +7,14 @@ import SwiftUI
 final class SafeAreaBarTests: XCTestCase {
 
     func testInspectionNotBlocked() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView().safeAreaBar(edge: VerticalEdge.top) { Text("") }
         XCTAssertNoThrow(try sut.inspect().emptyView())
     }
 
     func testInspectionErrorNoModifier() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView().offset()
         XCTAssertThrows(try sut.inspect().emptyView().safeAreaBar(),
@@ -22,7 +22,7 @@ final class SafeAreaBarTests: XCTestCase {
     }
 
     func testSimpleUnwrap() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView().safeAreaBar(edge: VerticalEdge.top) { Text("") }
         XCTAssertEqual(try sut.inspect().emptyView().safeAreaBar().pathToRoot,
@@ -30,7 +30,7 @@ final class SafeAreaBarTests: XCTestCase {
     }
 
     func testContentUnwrap() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView().safeAreaBar(edge: VerticalEdge.top) { Text("abc") }
         let text = try sut.inspect().safeAreaBar().text()
@@ -38,7 +38,7 @@ final class SafeAreaBarTests: XCTestCase {
     }
 
     func testVerticalEdge() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView().safeAreaBar(edge: VerticalEdge.bottom) { Text("") }
         XCTAssertEqual(try sut.inspect().safeAreaBar().edge(),
@@ -46,7 +46,7 @@ final class SafeAreaBarTests: XCTestCase {
     }
 
     func testHorizontalEdge() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView().safeAreaBar(edge: HorizontalEdge.leading) { Text("") }
         XCTAssertEqual(try sut.inspect().safeAreaBar().edge(),
@@ -54,7 +54,7 @@ final class SafeAreaBarTests: XCTestCase {
     }
 
     func testAlignment() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut1 = EmptyView().safeAreaBar(edge: VerticalEdge.bottom, alignment: .leading) {
             Text("")
@@ -69,7 +69,7 @@ final class SafeAreaBarTests: XCTestCase {
     }
 
     func testSpacing() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut1 = EmptyView().safeAreaBar(edge: VerticalEdge.top, spacing: 19) { Text("") }
         let sut2 = EmptyView().safeAreaBar(edge: VerticalEdge.top) { Text("") }
@@ -78,7 +78,7 @@ final class SafeAreaBarTests: XCTestCase {
     }
 
     func testSearch() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0, *)
         else { throw XCTSkip() }
         let sut = Group {
             EmptyView()
