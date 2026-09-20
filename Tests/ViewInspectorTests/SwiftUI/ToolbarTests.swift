@@ -2,17 +2,19 @@ import XCTest
 import SwiftUI
 @testable import ViewInspector
 
-@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+#if !os(tvOS) && !os(watchOS) && !os(visionOS)
+@available(iOS 16.0, macOS 13.0, *)
 private extension ToolbarContent {
     @ToolbarContentBuilder
     func vi_conditionallyHideSharedBackground() -> some ToolbarContent {
-        if #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             sharedBackgroundVisibility(.hidden)
         } else {
             self
         }
     }
 }
+#endif
 
 @MainActor
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -116,8 +118,9 @@ final class ToolbarTests: XCTestCase {
     // `itemGroup(_:)` handed this wrapper straight to `guardType`, which rejected it because
     // it isn't literally `ToolbarItem`/`ToolbarItemGroup`, regardless of what the caller was
     // searching for downstream.
+#if !os(tvOS) && !os(watchOS) && !os(visionOS)
     func testToolbarItemWrappedByAvailabilityGatedModifier() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar {
@@ -129,7 +132,7 @@ final class ToolbarTests: XCTestCase {
     }
 
     func testToolbarItemGroupWrappedByAvailabilityGatedModifier() throws {
-        guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
+        guard #available(iOS 26.0, macOS 26.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar {
@@ -141,7 +144,7 @@ final class ToolbarTests: XCTestCase {
     }
 
     func testToolbarItemWrappedByConditionallyCompiledModifier() throws {
-        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+        guard #available(iOS 16.0, macOS 13.0, *)
         else { throw XCTSkip() }
         let sut = EmptyView()
             .toolbar {
@@ -151,6 +154,7 @@ final class ToolbarTests: XCTestCase {
         let text = try sut.inspect().toolbar().item().text().string()
         XCTAssertEqual(text, "abc")
     }
+#endif
 
     func testImplicitToolbarItemGroup() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)

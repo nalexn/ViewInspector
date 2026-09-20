@@ -145,7 +145,9 @@ internal extension ViewType.Sheet {
         }
 
         func buildPopup() throws -> Any {
-            guard let view = try? Inspector.attribute(path: "modifier|content|some", value: body())
+            let body = try body()
+            let paths = ["modifier|content|some", "content|modifier|content|some"]
+            guard let view = paths.lazy.compactMap({ try? Inspector.attribute(path: $0, value: body) }).first
             else { throw InspectionError.viewNotFound(parent: name) }
             return try Self.unwrapPopupContent(view)
         }

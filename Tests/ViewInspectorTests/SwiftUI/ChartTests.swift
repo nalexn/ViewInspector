@@ -1,4 +1,4 @@
-#if canImport(Charts)
+#if canImport(Charts) && !os(visionOS)
 import XCTest
 import SwiftUI
 import Charts
