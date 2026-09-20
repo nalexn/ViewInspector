@@ -177,14 +177,14 @@ final class ViewTextSelectionTests: XCTestCase {
 
     func testTextSelectionInspection() throws {
         XCTAssertTrue(try EmptyView().textSelection(.enabled)
-            .inspect().emptyView().textSelection())
+            .inspect().emptyView().textSelectability())
         XCTAssertFalse(try EmptyView().textSelection(.disabled)
-            .inspect().emptyView().textSelection())
+            .inspect().emptyView().textSelectability())
     }
 
     func testTextSelectionInspectionError() throws {
         let sut = try EmptyView().inspect()
-        XCTAssertThrows(try sut.textSelection(),
+        XCTAssertThrows(try sut.textSelectability(),
                         "EmptyView does not have 'textSelection' modifier")
     }
 }

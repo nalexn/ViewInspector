@@ -163,7 +163,8 @@ extension TextInputAutocapitalization {
 public extension InspectableView {
 
     /// `true` when the view allows selecting the text it displays.
-    func textSelection() throws -> Bool {
+    /// `TextSelectability` set with `textSelection` modifier
+    func textSelectability() throws -> Bool {
         let modifiers = modifiersMatching({ modifier -> Bool in
             modifier.modifierType.hasPrefix("TextSelectabilityModifier")
         })
