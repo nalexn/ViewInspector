@@ -94,15 +94,18 @@ public extension InspectableView where View: MultipleViewContent {
 public extension InspectableView {
     
     func tag() throws -> AnyHashable {
-        if #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *) {
-            return try modifierAttribute(
-                modifierName: "_TagTraitWritingModifier",
-                path: "modifier|tag", type: AnyHashable.self, call: "tag")
-        } else {
-            return try modifierAttribute(
-                modifierName: "TagValueTraitKey",
-                path: "modifier|value|tagged", type: AnyHashable.self, call: "tag")
+        if let value = try? modifierAttribute(
+            modifierName: "_TagTraitWritingModifier",
+            path: "modifier|tag", type: AnyHashable.self, call: "tag") {
+            return value
         }
+        let matches = modifiersMatching { $0.modifierType.contains("TagValueTraitKey") }
+        guard let modifier = matches.first(where: { !$0.modifierType.contains("Optional") }) ?? matches.first
+        else {
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: content.view), modifier: "tag", index: 0)
+        }
+        return try Inspector.attribute(path: "modifier|value|tagged", value: modifier, type: AnyHashable.self)
     }
     
     func tabItem() throws -> InspectableView<ViewType.ClassifiedView> {

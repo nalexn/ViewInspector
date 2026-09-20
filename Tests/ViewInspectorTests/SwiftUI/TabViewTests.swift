@@ -112,8 +112,9 @@ final class GlobalModifiersForTabView: XCTestCase {
     
     func testTagInspection() throws {
         let tag = "abc"
-        let sut = try EmptyView().tag(tag).inspect().emptyView().tag()
-        XCTAssertEqual(sut, tag)
+        let sut = EmptyView().tag(tag)
+        let value = try sut.inspect().emptyView().tag()
+        XCTAssertEqual(value, tag)
     }
     
     @available(watchOS 7.0, *)
