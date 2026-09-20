@@ -214,7 +214,6 @@ writingToolsBehavior(_:)
 
 ```
 onSubmit(of:_:)
-submitLabel(_:)
 submitScope(_:)
 focused(_:)
 focusedValue(_:_:)
