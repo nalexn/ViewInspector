@@ -82,6 +82,39 @@ final class ViewHostingTests: XCTestCase {
         defer { ViewHosting.expel() }
         wait(for: [exp], timeout: 0.2)
     }
+
+    func testNSViewControllerExtractionWhenNestedInBackground() throws {
+        let exp = XCTestExpectation(description: "extractNSViewController")
+        let sut = NSTestVC.BackgroundWrapperView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            sut.inspect { view in
+                XCTAssertNoThrow(try view.find(NSTestVC.self).actualView().viewController())
+                ViewHosting.expel()
+                exp.fulfill()
+            }
+        }
+        ViewHosting.host(view: sut)
+        defer { ViewHosting.expel() }
+        wait(for: [exp], timeout: 0.2)
+    }
+
+    func testNSViewControllerExtractionWhenRepresentableTypeIsPlainViewController() throws {
+        let exp = XCTestExpectation(description: "extractNSViewController")
+        let sut = NSTestPlainVC.BackgroundWrapperView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            sut.inspect { view in
+                XCTAssertEqual(
+                    try view.find(NSTestPlainVC.self).actualView().viewController().title,
+                    NSTestPlainVC.title,
+                    "the controller created by the representable is returned")
+                ViewHosting.expel()
+                exp.fulfill()
+            }
+        }
+        ViewHosting.host(view: sut)
+        defer { ViewHosting.expel() }
+        wait(for: [exp], timeout: 0.2)
+    }
 }
 #elseif os(iOS) || os(tvOS)
 @MainActor
@@ -157,6 +190,100 @@ final class ViewHostingTests: XCTestCase {
         ViewHosting.host(view: sut)
         defer { ViewHosting.expel() }
         wait(for: [exp], timeout: 0.2)
+    }
+
+    func testUIViewControllerExtractionWhenNestedInBackground() throws {
+        let sut = UITestVC.BackgroundWrapperView()
+        whileHosted(sut) {
+            sut.inspect { view in
+                XCTAssertEqual(
+                    try view.find(UITestVC.self).actualView().viewController().title,
+                    UITestVC.title,
+                    "the controller created by the representable is returned")
+            }
+        }
+    }
+
+    func testUIViewControllerExtractionWhenNestedInStack() throws {
+        let sut = UITestVC.StackWrapperView()
+        whileHosted(sut) {
+            sut.inspect { view in
+                XCTAssertEqual(
+                    try view.find(UITestVC.self).actualView().viewController().title,
+                    UITestVC.title,
+                    "the controller created by the representable is returned")
+            }
+        }
+    }
+
+    func testUIViewControllerExtractionWhenRepresentableTypeIsPlainViewController() throws {
+        let sut = UITestPlainVC.BackgroundWrapperView()
+        whileHosted(sut) {
+            sut.inspect { view in
+                XCTAssertEqual(
+                    try view.find(UITestPlainVC.self).actualView().viewController().title,
+                    UITestPlainVC.title,
+                    "the controller created by the representable is returned")
+            }
+        }
+    }
+
+    func testUIViewControllerExtractionWhenSubclassOfDeclaredTypeIsInNavigationView() throws {
+        let sut = UITestSubclassVC.NavigationViewWrapperView()
+        whileHosted(sut) {
+            sut.inspect { view in
+                let vc = try? view.find(UITestSubclassVC.self).actualView().viewController()
+                XCTAssertEqual(
+                    vc?.title, UITestSubclassVC.title,
+                    "the controller created by the representable is returned")
+                XCTAssertTrue(
+                    vc is UITestSubclassVC.SubVC,
+                    "the controller is an instance of the subclass created by the representable")
+            }
+        }
+    }
+
+    func testUIViewControllerExtractionWhenNestedInNavigationStack() throws {
+        guard #available(iOS 16.0, tvOS 16.0, *) else { throw XCTSkip() }
+        let sut = UITestVC.NavigationStackWrapperView()
+        whileHosted(sut) {
+            sut.inspect { view in
+                XCTAssertEqual(
+                    try view.find(UITestVC.self).actualView().viewController().title,
+                    UITestVC.title,
+                    "the controller created by the representable is returned")
+            }
+        }
+    }
+
+    func testUIViewControllerExtractionWhenNotHosted() throws {
+        XCTAssertThrows(
+            try UITestVC().viewController(),
+            "View for UITestVC is absent")
+    }
+
+    func testUIViewControllerExtractionWhenAnotherRepresentableIsHosted() throws {
+        whileHosted(UITestPlainVC.BackgroundWrapperView()) {
+            XCTAssertThrows(
+                try UITestSubclassVC().viewController(),
+                "View for UITestSubclassVC is absent")
+        }
+    }
+
+    func testUIViewControllerExtractionOfSecondDifferentRepresentable() throws {
+        let sut = UITestSubclassVC.SideBySideWrapperView()
+        whileHosted(sut) {
+            sut.inspect { view in
+                XCTAssertEqual(
+                    try view.find(UITestPlainVC.self).actualView().viewController().title,
+                    UITestPlainVC.title,
+                    "the first representable returns its own controller")
+                XCTAssertEqual(
+                    try view.find(UITestSubclassVC.self).actualView().viewController().title,
+                    UITestSubclassVC.title,
+                    "the second representable returns its own controller")
+            }
+        }
     }
 }
 #elseif os(watchOS)
@@ -336,21 +463,110 @@ private struct NSTestVC: NSViewControllerRepresentable {
     func updateNSViewController(_ nsViewController: TestVC, context: UpdateContext) {
     }
 }
+
+extension NSTestVC {
+    struct BackgroundWrapperView: View {
+        var body: some View { Text("abc").background(NSTestVC()) }
+    }
+}
+
+private struct NSTestPlainVC: NSViewControllerRepresentable {
+    
+    static let title = "plain"
+    
+    func makeNSViewController(context: Context) -> NSViewController {
+        let vc = NSViewController()
+        vc.view = NSView()
+        vc.title = NSTestPlainVC.title
+        return vc
+    }
+
+    func updateNSViewController(_ nsViewController: NSViewController, context: Context) { }
+    
+    struct BackgroundWrapperView: View {
+        var body: some View { Text("abc").background(NSTestPlainVC()) }
+    }
+}
 #elseif os(iOS) || os(tvOS)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct UITestVC: UIViewControllerRepresentable {
     
     class TestVC: UIViewController { }
     
+    static let title = "marker"
+    
     typealias UpdateContext = UIViewControllerRepresentableContext<Self>
     
     func makeUIViewController(context: UpdateContext) -> TestVC {
         let vc = TestVC()
+        vc.title = UITestVC.title
         updateUIViewController(vc, context: context)
         return vc
     }
 
     func updateUIViewController(_ uiViewController: TestVC, context: UpdateContext) {
+    }
+}
+
+// The type names of the wrapper views must not contain the name of the representable,
+// otherwise the first attempt of the lookup matches and the fallback is not exercised.
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension UITestVC {
+    struct BackgroundWrapperView: View {
+        var body: some View { Text("abc").background(UITestVC()) }
+    }
+    
+    struct StackWrapperView: View {
+        var body: some View { VStack { Text("abc"); UITestVC() } }
+    }
+}
+
+@available(iOS 16.0, tvOS 16.0, *)
+extension UITestVC {
+    struct NavigationStackWrapperView: View {
+        var body: some View { NavigationStack { Text("abc").background(UITestVC()) } }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct UITestPlainVC: UIViewControllerRepresentable {
+    
+    static let title = "plain"
+    
+    func makeUIViewController(context: Context) -> UIViewController {
+        let vc = UIViewController()
+        vc.title = UITestPlainVC.title
+        return vc
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
+    
+    struct BackgroundWrapperView: View {
+        var body: some View { Text("abc").background(UITestPlainVC()) }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct UITestSubclassVC: UIViewControllerRepresentable {
+    
+    class SubVC: UIViewController { }
+    
+    static let title = "plainSub"
+    
+    func makeUIViewController(context: Context) -> UIViewController {
+        let vc = SubVC()
+        vc.title = UITestSubclassVC.title
+        return vc
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
+    
+    struct NavigationViewWrapperView: View {
+        var body: some View { NavigationView { Text("abc").background(UITestSubclassVC()) } }
+    }
+    
+    struct SideBySideWrapperView: View {
+        var body: some View { VStack { Text("abc").background(UITestPlainVC()); UITestSubclassVC() } }
     }
 }
 #endif
