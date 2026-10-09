@@ -73,6 +73,105 @@ final class InspectorTests: XCTestCase {
         XCTAssertEqual(name3, "ModifiedContent")
     }
     
+    func testTypeNameOfViewDeclaredInCrossModuleExtension() {
+        let namespaced = "ViewInspector.Inspector.ExtensionNestedView"
+        XCTAssertTrue(
+            String(reflecting: Inspector.ExtensionNestedView.self).hasPrefix("(extension in "),
+            "fixture must reflect with an extension context, otherwise the checks below are vacuous")
+        XCTAssertEqual(
+            Inspector.typeName(type: Inspector.ExtensionNestedView.self, namespaced: true),
+            namespaced, "namespaced name of a type, extension context is dropped")
+        XCTAssertEqual(
+            Inspector.typeName(value: Inspector.ExtensionNestedView(), namespaced: true),
+            namespaced, "namespaced name of a value, extension context is dropped")
+        XCTAssertEqual(
+            Inspector.typeName(type: Inspector.ExtensionNestedView.self),
+            "ExtensionNestedView", "name without namespace is unaffected")
+        XCTAssertEqual(
+            Inspector.typeName(type: Inspector.ExtensionNestedGenericView<Text>.self,
+                               namespaced: true, generics: .remove),
+            "ViewInspector.Inspector.ExtensionNestedGenericView",
+            "namespaced name of a generic type without generic parameters")
+    }
+    
+    func testSanitizeNamespaceDropsExtensionContext() {
+        XCTAssertEqual(
+            Inspector.sanitizeNamespace(
+                ofTypeName: "(extension in ViewInspectorTests):ViewInspector.Inspector.ExtensionNestedView"),
+            "ViewInspector.Inspector.ExtensionNestedView",
+            "context of a module name made of letters is dropped")
+        XCTAssertEqual(
+            Inspector.sanitizeNamespace(
+                ofTypeName: "(extension in ViewInspector_Unit_Tests):Host.Host.Nested"),
+            "Host.Host.Nested",
+            "context of a module name with underscores is dropped")
+        XCTAssertEqual(
+            Inspector.sanitizeNamespace(ofTypeName: "(extension in Module2):Host.Host.Nested"),
+            "Host.Host.Nested",
+            "context of a module name with digits is dropped")
+        // Module names are identifiers, so they may contain non-ASCII letters.
+        // This one is the Cyrillic word for "module", spelled with escapes to keep the source ASCII.
+        let unicodeModule = "\u{41C}\u{43E}\u{434}\u{443}\u{43B}\u{44C}"
+        XCTAssertEqual(
+            Inspector.sanitizeNamespace(
+                ofTypeName: "(extension in \(unicodeModule)):Host.Host.Nested"),
+            "Host.Host.Nested",
+            "context of a non-ASCII module name is dropped")
+        // Module names may contain characters that are not word characters, such as emoji.
+        let emojiModule = "Mod\u{1F600}"
+        XCTAssertEqual(
+            Inspector.sanitizeNamespace(
+                ofTypeName: "(extension in \(emojiModule)):Host.Host.Nested"),
+            "Host.Host.Nested",
+            "context of a module name with an emoji is dropped")
+        XCTAssertEqual(
+            Inspector.sanitizeNamespace(ofTypeName: """
+                SwiftUI.ModifiedContent<(extension in ViewInspectorTests):\
+                ViewInspector.Inspector.ExtensionNestedView, SwiftUI._PaddingLayout>
+                """),
+            "SwiftUI.ModifiedContent<ViewInspector.Inspector.ExtensionNestedView, SwiftUI._PaddingLayout>",
+            "context inside generic parameters is dropped")
+        XCTAssertEqual(
+            Inspector.sanitizeNamespace(
+                ofTypeName: "(extension in App):Host.Host.(unknown context at $104a1b2c8).Nested"),
+            "Host.Host.Nested",
+            "context together with an unknown context fragment is dropped")
+        XCTAssertEqual(
+            Inspector.sanitizeNamespace(ofTypeName: "ViewInspector.Inspector.ExtensionNestedView"),
+            "ViewInspector.Inspector.ExtensionNestedView",
+            "name without the context is unchanged")
+    }
+    
+    func testIsSystemTypeUsesTheDeclaringModule() {
+        XCTAssertFalse(
+            Inspector.isSystemType(type: Text.ExtensionOfSystemTypeView.self),
+            "type declared by this module in an extension of a SwiftUI type is custom")
+        XCTAssertFalse(
+            Inspector.isSystemType(value: Text.ExtensionOfSystemTypeView()),
+            "value declared by this module in an extension of a SwiftUI type is custom")
+        XCTAssertTrue(
+            Inspector.isSystemType(type: Text.self),
+            "type declared by SwiftUI is a system type")
+        XCTAssertTrue(
+            Inspector.isSystemType(value: Text("")),
+            "value declared by SwiftUI is a system type")
+        XCTAssertFalse(
+            Inspector.isSystemType(type: Inspector.ExtensionNestedView.self),
+            "type declared by this module in an extension of a library type is custom")
+        XCTAssertFalse(
+            Inspector.isSystemType(value: Inspector.ExtensionNestedView()),
+            "value declared by this module in an extension of a library type is custom")
+        XCTAssertTrue(
+            String(reflecting: AttributeScopes.SwiftUIAttributes.self).hasPrefix("(extension in "),
+            "fixture must reflect with an extension context, otherwise the next check is vacuous")
+        XCTAssertTrue(
+            Inspector.isSystemType(type: AttributeScopes.SwiftUIAttributes.self),
+            "type declared by SwiftUI in an extension of a Foundation type is a system type")
+        XCTAssertFalse(
+            Inspector.isSystemType(value: Text.self),
+            "a type reference passed as a value is not a system type")
+    }
+    
     func testPrintValue() {
         let sut = TestPrintView()
         #if compiler(<6) || compiler(>=6.1)

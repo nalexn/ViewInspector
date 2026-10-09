@@ -296,6 +296,50 @@ final class CustomViewTests: XCTestCase {
             """)
     }
 
+    func testExtensionNestedViewExtractionByType() throws {
+        let sut = Group { Inspector.ExtensionNestedView() }
+        let text = try sut.inspect().group().view(Inspector.ExtensionNestedView.self, 0)
+            .implicitAnyView().text().string()
+        XCTAssertEqual(text, "ext")
+    }
+
+    func testExtensionNestedViewSearch() throws {
+        let sut = Group { Inspector.ExtensionNestedView() }
+        let text = try sut.inspect().find(Inspector.ExtensionNestedView.self)
+            .implicitAnyView().text().string()
+        XCTAssertEqual(text, "ext")
+    }
+
+    func testExtensionNestedViewInspectionClosure() {
+        let sut = Inspector.ExtensionNestedView()
+        sut.inspect { view in
+            let text = try view.implicitAnyView().text().string()
+            XCTAssertEqual(text, "ext")
+        }
+    }
+
+    func testExtensionNestedGenericViewExtraction() throws {
+        let sut = Group { Inspector.ExtensionNestedGenericView(content: Text("inner")) }
+        let text = try sut.inspect()
+            .find(Inspector.ExtensionNestedGenericView<Text>.self)
+            .implicitAnyView().text().string()
+        XCTAssertEqual(text, "inner")
+    }
+
+    func testViewDeclaredInExtensionOfSystemTypeSearch() throws {
+        let sut = HStack { Text.ExtensionOfSystemTypeView() }
+        XCTAssertEqual(
+            try sut.inspect().find(text: "badge").string(), "badge",
+            "text is found inside a view declared in an extension of a SwiftUI type")
+        XCTAssertEqual(
+            try sut.inspect().find(Text.ExtensionOfSystemTypeView.self)
+                .implicitAnyView().text().string(), "badge",
+            "the view is found by its type")
+        XCTAssertNoThrow(
+            try sut.inspect().hStack().view(Text.ExtensionOfSystemTypeView.self, 0),
+            "the view is extracted by its type and index")
+    }
+
     func testTestViews() {
         XCTAssertNoThrow(SimpleTestView().body)
         XCTAssertNoThrow(ObservedStateTestView(viewModel: ExternalState()).body)
@@ -477,5 +521,23 @@ private extension GenericContainer {
         var body: some View {
             Text("")
         }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension Inspector {
+    struct ExtensionNestedView: View {
+        var body: some View { Text("ext") }
+    }
+    struct ExtensionNestedGenericView<Content: View>: View {
+        let content: Content
+        var body: some View { content }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+extension Text {
+    struct ExtensionOfSystemTypeView: View {
+        var body: some View { Text("badge") }
     }
 }
