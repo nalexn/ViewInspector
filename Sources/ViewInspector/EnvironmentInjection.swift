@@ -74,28 +74,81 @@ internal enum EnvironmentInjection {
     /// the injected value instead of the `EnvironmentKey`'s default one.
     static func inject<T>(environmentValues: [EnvironmentValueInjection], into entity: T) -> T {
         guard !environmentValues.isEmpty else { return entity }
+        // Reflection reports the value of a property however it is stored, so an `Any` that holds a wrapper
+        // looks like one. Whether the value is in the bytes of the view depends on its size, a large one is
+        // boxed outside of them, so only a property declared as a wrapper counts.
+        // The function is local, as a private static generic method crashes swift-frontend 6.3.3 here.
+        func isDeclaredAsWrapper<Declared>(_ value: Declared) -> Bool {
+            return Declared.self is EnvironmentPropertyWrapper.Type
+        }
         let wrappers = Mirror(reflecting: entity).children
             .compactMap { child -> (keyPath: AnyKeyPath, wrapper: EnvironmentPropertyWrapper)? in
-                guard let wrapper = child.value as? EnvironmentPropertyWrapper,
+                guard _openExistential(child.value, do: isDeclaredAsWrapper),
+                      let wrapper = child.value as? EnvironmentPropertyWrapper,
                       let keyPath = wrapper.injectionKeyPath
                 else { return nil }
                 return (keyPath, wrapper)
             }
         guard !wrappers.isEmpty else { return entity }
+        // A custom mirror does not have to describe the stored properties.
+        let isReflectedFaithfully = !(entity is CustomReflectable)
         var copy = entity
-        var injectedKeyPaths: [AnyKeyPath] = []
-        for (keyPath, wrapper) in wrappers where !injectedKeyPaths.contains(keyPath) {
-            injectedKeyPaths.append(keyPath)
-            let candidates = environmentValues.filter { $0.keyPath == keyPath }.map { $0.value }
-            guard !candidates.isEmpty else { continue }
-            // Properties declared with the same key path share the byte pattern
-            // and are all expected to receive the value.
-            let expectedMatches = wrappers.filter { $0.keyPath == keyPath }.count
-            withUnsafeMutableBytes(of: &copy) { bytes in
-                wrapper.injectValue(candidates: candidates, into: bytes, expectedMatches: expectedMatches)
+        withUnsafeMutableBytes(of: &copy) { bytes in
+            for properties in locateProperties(of: wrappers, in: bytes, discardingLookAlikes: isReflectedFaithfully) {
+                let candidates = environmentValues.filter { $0.keyPath == properties.keyPath }.map { $0.value }
+                guard !candidates.isEmpty else { continue }
+                properties.wrapper.injectValue(candidates: candidates, into: bytes, at: properties.offsets)
             }
         }
         return copy
+    }
+
+    /// The properties declared with the same key path object, and where they are in the view.
+    private struct Properties {
+        let keyPath: AnyKeyPath
+        let wrapper: EnvironmentPropertyWrapper
+        let size: Int
+        var offsets: [Int]
+        var count = 1
+    }
+
+    /// Locates the properties by the byte pattern they have while they hold the key path: the key path
+    /// reference at the front and the case discriminator at the back. The pattern is not unique to them,
+    /// the padding and the neighbouring properties of the view can look the same. What this relies on is that
+    /// every property is in the bytes of the view with the pattern of its key path object, and that properties
+    /// do not overlap. So a pattern that is found exactly as many times as there are properties declared with
+    /// that very object is found at them, and a match of another pattern that overlaps one of these is not
+    /// a property. A pattern that is left with as many matches as properties is found at them, too, which can
+    /// free the next pattern from its false matches. What stays ambiguous is left out, and the injection into
+    /// it is skipped, as it is when the layout does not meet the expectations.
+    /// All the patterns are searched before anything is written. Nothing is discarded unless the view is
+    /// reflected faithfully, since a property that only the mirror knows is not in the bytes to be found.
+    private static func locateProperties(
+        of wrappers: [(keyPath: AnyKeyPath, wrapper: EnvironmentPropertyWrapper)],
+        in bytes: UnsafeMutableRawBufferPointer,
+        discardingLookAlikes: Bool
+    ) -> [Properties] {
+        var all: [Properties] = []
+        for (keyPath, wrapper) in wrappers {
+            if let index = all.firstIndex(where: { $0.keyPath === keyPath }) {
+                all[index].count += 1
+            } else if let matches = wrapper.signatureMatches(in: bytes) {
+                all.append(Properties(keyPath: keyPath, wrapper: wrapper, size: matches.size, offsets: matches.offsets))
+            }
+        }
+        var changed = discardingLookAlikes
+        while changed {
+            changed = false
+            let certain = all.filter { $0.offsets.count == $0.count }
+                .flatMap { found in found.offsets.map { $0..<$0 + found.size } }
+            for index in all.indices where all[index].offsets.count > all[index].count {
+                let size = all[index].size
+                let kept = all[index].offsets.filter { offset in !certain.contains { $0.overlaps(offset..<offset + size) } }
+                changed = changed || kept.count < all[index].offsets.count
+                all[index].offsets = kept
+            }
+        }
+        return all.filter { $0.offsets.count == $0.count }
     }
 
     /// The key paths SwiftUI uses for referencing the object in `EnvironmentValues`, for both
@@ -136,13 +189,14 @@ internal protocol EnvironmentPropertyWrapper {
     /// or `nil` when it already holds a resolved value.
     var injectionKeyPath: AnyKeyPath? { get }
 
-    /// Replaces the `keyPath` case of every matching property found in `bytes` with the
-    /// innermost of the `candidates` that matches the property's value type.
-    ///
-    /// The properties are located by the byte pattern of the key path reference and the
-    /// enum's case discriminator. The injection is skipped altogether unless the number of
-    /// the matches is the expected one, or if the layout does not meet the expectations.
-    func injectValue(candidates: [Any], into bytes: UnsafeMutableRawBufferPointer, expectedMatches: Int)
+    /// Where the byte pattern of a property that holds the key path is found in `bytes`, and its size:
+    /// the key path reference at the front and the case discriminator at the back. Other bytes of
+    /// the view can look the same. `nil` if the layout does not meet the expectations.
+    func signatureMatches(in bytes: UnsafeMutableRawBufferPointer) -> (offsets: [Int], size: Int)?
+
+    /// Replaces the `keyPath` case of the properties at `offsets` with the innermost
+    /// of the `candidates` that matches the property's value type.
+    func injectValue(candidates: [Any], into bytes: UnsafeMutableRawBufferPointer, at offsets: [Int])
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
@@ -152,15 +206,20 @@ extension SwiftUI.Environment: EnvironmentPropertyWrapper {
         return try? Inspector.attribute(path: "content|keyPath", value: self, type: AnyKeyPath.self)
     }
 
-    func injectValue(candidates: [Any], into bytes: UnsafeMutableRawBufferPointer, expectedMatches: Int) {
+    func signatureMatches(in bytes: UnsafeMutableRawBufferPointer) -> (offsets: [Int], size: Int)? {
+        guard let keyPath = injectionKeyPath as? KeyPath<EnvironmentValues, Value>,
+              let pattern = Pattern(wrapper: self, keyPath: keyPath)
+        else { return nil }
+        return (pattern.offsets(in: bytes), pattern.size)
+    }
+
+    func injectValue(candidates: [Any], into bytes: UnsafeMutableRawBufferPointer, at offsets: [Int]) {
         // A `transformEnvironment` modifier provides a transform closure instead of a value,
         // and is skipped by this type check.
         guard let value = candidates.reversed().lazy.compactMap({ $0 as? Value }).first,
               let keyPath = injectionKeyPath as? KeyPath<EnvironmentValues, Value>,
               let pattern = Pattern(wrapper: self, keyPath: keyPath)
         else { return }
-        let offsets = pattern.offsets(in: bytes)
-        guard offsets.count == expectedMatches else { return }
         let source = UnsafeMutablePointer<EnvironmentContent<Value>>.allocate(capacity: 1)
         defer { source.deallocate() }
         offsets.forEach { offset in
