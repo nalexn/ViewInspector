@@ -27,9 +27,10 @@ public extension Inspector {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Inspector {
-    /// Removes the "(unknown context at <memory_address>)" portion of a type name.
+    /// Removes the "(unknown context at <memory_address>)" and "(extension in <Module>):" portions of a type name.
     /// Calls to this method are memoized and retained for the lifetime of the program.
-    /// - Parameter typeName: The raw type name. (e.g. `SomeTypeName.(unknown context at $138b3290c).SomePropertyName`)
+    /// - Parameter typeName: The raw type name. (e.g. `SomeTypeName.(unknown context at $138b3290c).SomePropertyName`
+    ///   or `(extension in SomeModule):SomeTypeName.SomePropertyName`)
     /// - Returns: The sanitized type name. (e.g. `SomeTypeName.SomePropertyName`)
     static func sanitizeNamespace(ofTypeName typeName: String) -> String {
         var str = typeName
@@ -134,10 +135,7 @@ internal extension Inspector {
 
     private static let sanitizeNamespacePatterns = [
         "(\\.\\(unknown context at ..........\\))",
-        // This pattern may be helpful to solve issue #268.
-        // It will remain disabled until it is confirmed.
-        // https://github.com/nalexn/ViewInspector/issues/268
-        // "(\\(extension in [a-zA-Z0-9]*\\)\\:)",
+        "(\\(extension in [^)]+\\):)",
     ]
 
     private static let sanitizeNamespaceRegex = {
@@ -234,13 +232,23 @@ internal extension Inspector {
     }
 
     static func isSystemType(value: Any) -> Bool {
-        let name = typeName(value: value, namespaced: true)
-        return isSystemType(name: name)
+        if value is Any.Type {
+            // Accessing Type reference causes EXC_BAD_ACCESS
+            return false
+        }
+        return isSystemType(type: type(of: value))
     }
 
     static func isSystemType(type: Any.Type) -> Bool {
-        let name = typeName(type: type, namespaced: true)
-        return isSystemType(name: name)
+        let reflectedName = String(reflecting: type)
+        let extensionContext = "(extension in "
+        if reflectedName.hasPrefix(extensionContext), let end = reflectedName.range(of: "):") {
+            // A type declared in an extension belongs to the module of the extension,
+            // not to the module of the extended type.
+            let module = reflectedName[..<end.lowerBound].dropFirst(extensionContext.count)
+            return isSystemType(name: String(module) + ".")
+        }
+        return isSystemType(name: sanitizeNamespace(ofTypeName: reflectedName))
     }
 
     private static func isSystemType(name: String) -> Bool {
