@@ -332,8 +332,21 @@ internal extension ViewHosting {
         where V: UIViewControllerRepresentable {
             let name = Inspector.typeName(type: viewController)
             let hostVC = window.rootViewController?.descendant(nameTraits: ["UIHostingController", name])
-            guard let vc = hostVC?.descendants.compactMap({ $0 as? V.UIViewControllerType })
-                .first else { throw InspectionError.viewNotFound(parent: name) }
+            if let vc = hostVC?.descendants.compactMap({ $0 as? V.UIViewControllerType }).first {
+                return vc
+            }
+            // The representable is not the hosted root view. SwiftUI hosts a representable in a view that is
+            // generic over the represented type, so that view is matched by its exact reflected type.
+            // The controller is accepted only when it owns the subview of the host view, so that a
+            // responder chain that was redirected cannot hand back another controller. As with `uiView()`,
+            // the first match wins when several representables of this type are hosted (issue #166).
+            let adaptor = "RepresentableAdaptor<" + String(reflecting: viewController) + ">"
+            guard let vc = window.firstDescendant({ view -> V.UIViewControllerType? in
+                guard String(reflecting: type(of: view)).contains(adaptor) else { return nil }
+                return view.subviews.lazy.compactMap { subview in
+                    (subview.next as? V.UIViewControllerType).flatMap { $0.viewIfLoaded === subview ? $0 : nil }
+                }.first
+            }) else { throw InspectionError.viewNotFound(parent: name) }
             return vc
     }
     #elseif os(watchOS)
@@ -421,6 +434,14 @@ private extension UIView {
         return subviews.lazy
             .compactMap { $0.descendant(nameTraits: nameTraits) }
             .first
+    }
+    
+    func firstDescendant<T>(_ transform: (UIView) -> T?) -> T? {
+        if let result = transform(self) { return result }
+        for subview in subviews {
+            if let result = subview.firstDescendant(transform) { return result }
+        }
+        return nil
     }
 }
 
