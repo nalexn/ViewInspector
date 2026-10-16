@@ -360,6 +360,26 @@ final class InspectionEmissaryTests: XCTestCase {
             }
         }
     }
+
+    @MainActor
+    func testAsyncHostExpelsViewWhenClosureThrows() async throws {
+        struct ClosureError: Error { }
+        defer { ViewHosting.expel() }
+        let view = TestView(flag: false).environmentObject(ExternalState())
+        var thrown: Error?
+        do {
+            try await ViewHosting.host(view) {
+                XCTAssertEqual(ViewHosting.medium().environmentObjects.count, 1,
+                               "The view is hosted while the closure runs")
+                throw ClosureError()
+            }
+        } catch {
+            thrown = error
+        }
+        XCTAssertTrue(thrown is ClosureError, "The error of the closure reaches the caller")
+        XCTAssertEqual(ViewHosting.medium().environmentObjects.count, 0,
+                       "The view is no longer hosted after the closure threw")
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
