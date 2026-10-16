@@ -11,6 +11,7 @@ public extension ViewType {
 
     /// A wrapper for inspecting glass effect modifier parameters.
     @available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
+    @available(visionOS, unavailable)
     struct GlassEffect {
         private let config: Any
 
