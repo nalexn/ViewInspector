@@ -306,7 +306,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 | Status | Modifier |
 |:---:|---|
 |:technologist:| `func animation(Animation?) -> some View` |
-|:technologist:| `func animation<V>(Animation?, value: V) -> some View` |
+|:white_check_mark:| `func animation<V>(Animation?, value: V) -> some View` |
 |:technologist:| `func animation(_ animation: Animation?) -> some ViewModifier` |
 |:white_check_mark:| `func transition(AnyTransition) -> some View` |
 |:white_check_mark:| `func transaction((inout Transaction) -> Void) -> some View` |

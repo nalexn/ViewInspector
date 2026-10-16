@@ -185,7 +185,6 @@ visualEffect(_:)
 
 ```
 animation(_:) - deprecated but used
-animation(_:value:)
 matchedGeometryEffect(id:in:properties:anchor:isSource:)
 contentTransition(_:)
 phaseAnimator(_:content:animation:)
