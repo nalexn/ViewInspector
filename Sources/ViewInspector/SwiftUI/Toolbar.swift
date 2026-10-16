@@ -145,6 +145,11 @@ internal extension Inspector {
             case "_ConditionalContent":
                 guard let next = try? unwrapConditionalToolbarContent(current) else { return current }
                 current = next
+            case "Optional":
+                guard let next = try? Inspector.attribute(label: "some", value: current) else {
+                    throw InspectionError.viewNotFound(parent: "toolbar item")
+                }
+                current = next
             case "LimitedAvailabilityToolbarContent":
                 guard let storage = try? Inspector.attribute(label: "storage", value: current),
                       let boxedContent = try? Inspector.attribute(label: "content", value: storage),

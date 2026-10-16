@@ -156,6 +156,81 @@ final class ToolbarTests: XCTestCase {
     }
 #endif
 
+    // https://github.com/nalexn/ViewInspector/issues/265
+    // `if` without `else` in a `@ToolbarContentBuilder` compiles to `Optional<...>` content.
+    func testToolbarItemInIfWithoutElse() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+        else { throw XCTSkip() }
+        func makeSUT(_ flag: Bool) -> some View {
+            EmptyView().toolbar {
+                if flag { ToolbarItem { Text("abc") } }
+            }
+        }
+        let shown = makeSUT(true)
+        XCTAssertEqual(try shown.inspect().toolbar().item().text().string(), "abc",
+                       "item() reaches the content of an `if` that is taken")
+        XCTAssertEqual(try shown.inspect().find(text: "abc").pathToRoot,
+                       "emptyView().toolbar().item(0).text()",
+                       "find(text:) reaches the content of an `if` that is taken")
+        let hidden = makeSUT(false)
+        XCTAssertThrows(try hidden.inspect().toolbar().item(),
+                        "View for toolbar item is absent")
+        XCTAssertThrows(try hidden.inspect().find(text: "abc"),
+                        "Search did not find a match")
+    }
+
+    func testToolbarItemGroupInIfWithoutElse() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+        else { throw XCTSkip() }
+        func makeSUT(_ flag: Bool) -> some View {
+            EmptyView().toolbar {
+                if flag { ToolbarItemGroup { Text("abc") } }
+            }
+        }
+        XCTAssertEqual(try makeSUT(true).inspect().toolbar().itemGroup().text().string(), "abc",
+                       "itemGroup() reaches the content of an `if` that is taken")
+        XCTAssertThrows(try makeSUT(false).inspect().toolbar().itemGroup(),
+                        "View for toolbar item is absent")
+    }
+
+    func testToolbarItemInIfWithoutElseAfterAnotherItem() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+        else { throw XCTSkip() }
+        func makeSUT(_ flag: Bool) -> some View {
+            EmptyView().toolbar {
+                ToolbarItem { Text("first") }
+                if flag { ToolbarItem { Text("second") } }
+            }
+        }
+        let shown = try makeSUT(true).inspect().toolbar()
+        XCTAssertEqual(try shown.item(0).text().string(), "first",
+                       "the item before an `if` that is taken")
+        XCTAssertEqual(try shown.item(1).text().string(), "second",
+                       "the item in an `if` that is taken")
+        let hidden = try makeSUT(false).inspect().toolbar()
+        XCTAssertEqual(try hidden.item(0).text().string(), "first",
+                       "the item before an `if` that is not taken")
+        XCTAssertThrows(try hidden.item(1), "View for toolbar item is absent")
+    }
+
+    func testToolbarItemInIfElse() throws {
+        guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+        else { throw XCTSkip() }
+        func makeSUT(_ flag: Bool) -> some View {
+            EmptyView().toolbar {
+                if flag { ToolbarItem { Text("true") } } else { ToolbarItem { Text("false") } }
+            }
+        }
+        for flag in [true, false] {
+            let sut = makeSUT(flag)
+            XCTAssertEqual(try sut.inspect().toolbar().item().text().string(), "\(flag)",
+                           "item() reaches the branch for \(flag)")
+            XCTAssertEqual(try sut.inspect().find(text: "\(flag)").pathToRoot,
+                           "emptyView().toolbar().item(0).text()",
+                           "find(text:) reaches the branch for \(flag)")
+        }
+    }
+
     func testImplicitToolbarItemGroup() throws {
         guard #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         else { throw XCTSkip() }
