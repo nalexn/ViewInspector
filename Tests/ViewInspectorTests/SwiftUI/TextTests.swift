@@ -330,10 +330,14 @@ extension Bundle {
     private static let testResources: Bundle = {
         let bundleName = "ViewInspector_ViewInspectorTests"
         let bundle = Bundle(for: TextTests.self)
-        if let resourcePath = bundle.resourceURL?
-            .appendingPathComponent(bundleName + ".bundle"),
-           let resources = Bundle(url: resourcePath) {
-            return resources
+        // `swift test` puts the resource bundle next to the test bundle,
+        // while Xcode builds copy the resources into the test bundle itself.
+        let directories = [bundle.resourceURL, bundle.bundleURL.deletingLastPathComponent()]
+        for directory in directories {
+            if let resourcePath = directory?.appendingPathComponent(bundleName + ".bundle"),
+               let resources = Bundle(url: resourcePath) {
+                return resources
+            }
         }
         return bundle
     }()
