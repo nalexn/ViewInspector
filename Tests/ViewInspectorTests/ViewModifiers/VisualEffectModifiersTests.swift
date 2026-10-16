@@ -249,6 +249,80 @@ final class ViewMaskingTests: XCTestCase {
         let view = EmptyView().mask(Text("test"))
         XCTAssertNoThrow(try view.inspect().find(text: "test"))
     }
+
+    func testMaskInspectionError() throws {
+        let sut = try EmptyView().inspect()
+        XCTAssertThrows(try sut.mask(), "EmptyView does not have 'mask' modifier")
+    }
+
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func testMaskClosureInspection() throws {
+        let sut = try EmptyView().mask { Text("abc") }.inspect().emptyView()
+        XCTAssertEqual(try sut.mask().text().string(), "abc")
+    }
+
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func testMaskAlignmentClosureInspection() throws {
+        let sut = try EmptyView().mask(alignment: .bottomTrailing) { Text("abc") }
+            .inspect().emptyView()
+        XCTAssertEqual(try sut.mask().text().string(), "abc")
+    }
+
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func testMaskClosureMultipleViewsInspection() throws {
+        let sut = try EmptyView().mask { Text("1"); Text("2") }.inspect().emptyView()
+        XCTAssertEqual(try sut.mask().text(0).string(), "1", "the first view of the mask closure")
+        XCTAssertEqual(try sut.mask().text(1).string(), "2", "the second view of the mask closure")
+    }
+
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func testMaskClosureSearch() throws {
+        let view = EmptyView().mask { Text("test") }
+        XCTAssertEqual(try view.inspect().find(text: "test").pathToRoot,
+                       "emptyView().mask().text()", "path to the content of a closure mask")
+        XCTAssertEqual(try view.inspect().findAll(ViewType.Text.self).count, 1,
+                       "a closure mask is reported once")
+    }
+
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func testMasksOfClosureOverloadInspection() throws {
+        let view = EmptyView().mask { Text("X") }.mask { Text("Y") }
+        let sut = try view.inspect().emptyView()
+        XCTAssertEqual(try sut.mask(0).text().string(), "X", "the closure mask applied first")
+        XCTAssertEqual(try sut.mask(1).text().string(), "Y", "the closure mask applied second")
+        XCTAssertEqual(try view.inspect().findAll(ViewType.Text.self).count, 2,
+                       "each closure mask is reported once")
+    }
+
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func testMasksOfBothOverloadsOldFirstInspection() throws {
+        let view = EmptyView().mask(Text("A")).mask { Text("B") }
+        let sut = try view.inspect().emptyView()
+        XCTAssertEqual(try sut.mask(0).text().string(), "A", "the mask(_:) mask")
+        XCTAssertEqual(try sut.mask(1).text().string(), "B", "the closure mask")
+        XCTAssertThrows(try sut.mask(2), "EmptyView does not have 'mask' modifier at index 2")
+        XCTAssertEqual(try view.inspect().findAll(ViewType.Text.self).count, 2,
+                       "each mask is reported once")
+        XCTAssertEqual(try view.inspect().find(text: "A").pathToRoot,
+                       "emptyView().mask().text()", "path to the mask(_:) mask")
+        XCTAssertTrue(try view.inspect().find(text: "B").pathToRoot.hasPrefix("emptyView().mask(1)"),
+                      "path to the closure mask goes through mask(1)")
+    }
+
+    // The masks of `mask(_:)` keep their indexes, the masks of the closure overload follow them
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func testMasksOfBothOverloadsClosureFirstInspection() throws {
+        let view = EmptyView().mask { Text("B") }.mask(Text("A"))
+        let sut = try view.inspect().emptyView()
+        XCTAssertEqual(try sut.mask(0).text().string(), "A", "the mask(_:) mask keeps index 0")
+        XCTAssertEqual(try sut.mask(1).text().string(), "B", "the closure mask follows")
+        XCTAssertEqual(try view.inspect().findAll(ViewType.Text.self).count, 2,
+                       "each mask is reported once")
+        XCTAssertEqual(try view.inspect().find(text: "A").pathToRoot,
+                       "emptyView().mask().text()", "path to the mask(_:) mask")
+        XCTAssertTrue(try view.inspect().find(text: "B").pathToRoot.hasPrefix("emptyView().mask(1)"),
+                      "path to the closure mask goes through mask(1)")
+    }
 }
 
 // MARK: - ViewHidingTests
