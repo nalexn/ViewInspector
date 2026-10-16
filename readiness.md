@@ -250,7 +250,7 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func clipShape<S>(S, style: FillStyle) -> some View` |
 |:white_check_mark:| `func cornerRadius(CGFloat, antialiased: Bool) -> some View` |
 |:white_check_mark:| `func mask<Mask>(Mask) -> some View` |
-|:technologist:| `func mask(alignment: Alignment = .center, mask: () -> Mask) -> some View` |
+|:white_check_mark:| `func mask(alignment: Alignment = .center, mask: () -> Mask) -> some View` |
 |:technologist:| `func containerShape<T>(_ shape: T) -> some View` |
 
 ### Scaling Views

@@ -176,7 +176,6 @@ contentMargins(_:for:)
 overlay(_:ignoresSafeAreaEdges:) - style variant
 background(_:ignoresSafeAreaEdges:) - style variant
 badge(_:)
-mask(alignment:_:) - closure variant
 containerShape(_:)
 visualEffect(_:)
 ```

@@ -368,7 +368,10 @@ internal extension ViewSearch {
             try parent.content.help(parent: parent, index: index)
         }),
         .init(name: "_MaskEffect", builder: { parent, index in
-            try parent.content.mask(parent: parent, index: index)
+            try parent.content.mask(parent: parent, index: index, modifierName: "_MaskEffect")
+        }),
+        .init(name: "_MaskAlignmentEffect", builder: { parent, index in
+            try parent.content.mask(parent: parent, index: index, modifierName: "_MaskAlignmentEffect")
         }),
         .init(name: "_TraitWritingModifier<TabItemTraitKey>", builder: { parent, index in
             try parent.content.tabItem(parent: parent, index: index)

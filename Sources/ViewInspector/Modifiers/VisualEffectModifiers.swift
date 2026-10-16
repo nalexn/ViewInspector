@@ -165,10 +165,24 @@ public extension InspectableView {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal extension Content {
-    func mask(parent: UnwrappedView, index: Int?) throws -> InspectableView<ViewType.ClassifiedView> {
-        let rootView = try modifierAttribute(
-            modifierName: "_MaskEffect", path: "modifier|mask",
-            type: Any.self, call: "mask", index: index ?? 0)
+    func mask(parent: UnwrappedView, index: Int?, modifierName: String? = nil
+    ) throws -> InspectableView<ViewType.ClassifiedView> {
+        // The masks of `mask(_:)` come first, then the masks of `mask(alignment:_:)`
+        let masks = ["_MaskEffect", "_MaskAlignmentEffect"].flatMap { name in
+            modifiersMatching({ modifier in
+                modifier.modifierType(prefixOnly: true) == name
+                    && (try? Inspector.attribute(path: "modifier|mask", value: modifier)) != nil
+            })
+        }
+        let position = index ?? 0
+        // The view search asks for the masks of one kind at a time, with the index among all masks
+        guard position < masks.count,
+              modifierName.map({ masks[position].modifierType(prefixOnly: true) == $0 }) ?? true
+        else {
+            throw InspectionError.modifierNotFound(
+                parent: Inspector.typeName(value: view), modifier: "mask", index: position)
+        }
+        let rootView = try Inspector.attribute(path: "modifier|mask", value: masks[position])
         let medium = self.medium.resettingViewModifiers()
         let call = ViewType.inspectionCall(
             base: "mask(\(ViewType.indexPlaceholder))", index: index)
