@@ -436,7 +436,8 @@ This document reflects the current status of the [ViewInspector](https://github.
 |:white_check_mark:| `func accentColor(Color?) -> some View` |
 |:white_check_mark:| `func tint(Color?) -> some View` |
 |:white_check_mark:| `func listItemTint(Color?) -> some View` |
-|:technologist:| `func symbolRenderingMode(_ mode: SymbolRenderingMode?) -> some View` |
+|:white_check_mark:| `func symbolRenderingMode(_ mode: SymbolRenderingMode?) -> some View` |
+|:technologist:| `func symbolRenderingMode(_ mode: SymbolRenderingMode?) -> Image` |
 |:technologist:| `func symbolVariant(_ variant: SymbolVariants) -> some View` |
 |:white_check_mark:| `func colorScheme(ColorScheme) -> some View` |
 |:white_check_mark:| `func preferredColorScheme(ColorScheme?) -> some View` |

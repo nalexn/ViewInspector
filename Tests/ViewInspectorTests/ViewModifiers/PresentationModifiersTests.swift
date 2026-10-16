@@ -70,6 +70,50 @@ final class ViewColorTests: XCTestCase {
                         "EmptyView does not have 'tint' modifier")
     }
     
+    func testSymbolRenderingMode() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = EmptyView().symbolRenderingMode(.hierarchical)
+        XCTAssertNoThrow(try sut.inspect().emptyView())
+    }
+
+    func testSymbolRenderingModeInspection() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        XCTAssertEqual(try EmptyView().symbolRenderingMode(.monochrome)
+            .inspect().emptyView().symbolRenderingMode(), .monochrome, "monochrome")
+        XCTAssertEqual(try EmptyView().symbolRenderingMode(.multicolor)
+            .inspect().emptyView().symbolRenderingMode(), .multicolor, "multicolor")
+        XCTAssertEqual(try EmptyView().symbolRenderingMode(.hierarchical)
+            .inspect().emptyView().symbolRenderingMode(), .hierarchical, "hierarchical")
+        XCTAssertEqual(try EmptyView().symbolRenderingMode(.palette)
+            .inspect().emptyView().symbolRenderingMode(), .palette, "palette")
+        XCTAssertNil(try EmptyView().symbolRenderingMode(nil)
+            .inspect().emptyView().symbolRenderingMode(), "nil")
+        XCTAssertNotEqual(SymbolRenderingMode.hierarchical, SymbolRenderingMode.palette,
+                          "different modes are not equal")
+    }
+
+    func testSymbolRenderingModeInheritanceInspection() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        let sut = VStack {
+            Image(systemName: "star")
+            Text("abc").symbolRenderingMode(.monochrome)
+        }.symbolRenderingMode(.palette)
+        let stack = try sut.inspect().vStack()
+        XCTAssertEqual(try stack.symbolRenderingMode(), .palette, "the mode set on the container")
+        XCTAssertEqual(try stack.image(0).symbolRenderingMode(), .palette, "the mode reaches an Image")
+        XCTAssertEqual(try stack.text(1).symbolRenderingMode(), .monochrome, "the mode of the inner view wins")
+    }
+
+    func testSymbolRenderingModeInspectionError() throws {
+        guard #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+        else { throw XCTSkip() }
+        XCTAssertThrows(try EmptyView().inspect().symbolRenderingMode(),
+                        "EmptyView does not have 'symbolRenderingMode' modifier")
+    }
+
     func testColorScheme() throws {
         let sut = EmptyView().colorScheme(.light)
         XCTAssertNoThrow(try sut.inspect().emptyView())
@@ -155,3 +199,6 @@ final class ViewPreviewTests: XCTestCase {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 extension PreviewLayout: @retroactive BinaryEquatable { }
+
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+extension SymbolRenderingMode: @retroactive BinaryEquatable { }
