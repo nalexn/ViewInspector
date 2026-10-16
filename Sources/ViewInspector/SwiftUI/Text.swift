@@ -222,10 +222,12 @@ private extension ViewType.Text {
             .attribute(label: "bundle", value: localizedTextStorage, type: Bundle.self)
         let table = try? Inspector
             .attribute(label: "table", value: localizedTextStorage, type: String?.self)
-        let localized = (bundle ?? Bundle.main)?
-            .path(forResource: locale.identifier
-                    .replacingOccurrences(of: "_", with: "-"),
-                  ofType: "lproj").flatMap({ Bundle(path: $0) })?
+        let identifier = locale.identifier.replacingOccurrences(of: "_", with: "-")
+        let resources = bundle ?? Bundle.main
+        // SwiftPM writes the localization directories of processed resources in lower case
+        let localized = (resources.path(forResource: identifier, ofType: "lproj")
+                         ?? resources.path(forResource: identifier.lowercased(), ofType: "lproj"))
+            .flatMap({ Bundle(path: $0) })?
             .localizedString(forKey: format, value: format, table: table) ?? format
         guard hasFormatting else { return localized }
         let arguments = try formattingArguments(stringContainer, locale: locale)
