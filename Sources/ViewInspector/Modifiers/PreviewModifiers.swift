@@ -61,6 +61,13 @@ public extension InspectableView {
         }
     }
     
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    func symbolRenderingMode() throws -> SymbolRenderingMode? {
+        let reference = EmptyView().symbolRenderingMode(.hierarchical)
+        let keyPath = try Inspector.environmentKeyPath(Optional<SymbolRenderingMode>.self, reference)
+        return try environment(keyPath, call: "symbolRenderingMode")
+    }
+
     func colorScheme() throws -> ColorScheme {
         let reference = EmptyView().colorScheme(.light)
         do {

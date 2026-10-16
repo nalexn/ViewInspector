@@ -195,7 +195,7 @@ keyframeAnimator(initialValue:repeating:content:keyframes:)
 ### Graphics & Effects
 
 ```
-symbolRenderingMode(_:)
+Image.symbolRenderingMode(_:) - Image variant
 symbolVariant(_:)
 dynamicTypeSize(_:)
 ```
@@ -552,7 +552,6 @@ Below are prioritized items that can be directly used with the skill:
 /new-api-support badge
 /new-api-support matchedGeometryEffect
 /new-api-support contentTransition
-/new-api-support symbolRenderingMode
 /new-api-support ignoresSafeArea
 ```
 
