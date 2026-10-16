@@ -26,8 +26,8 @@ public extension ViewHosting {
     ) async throws where V: View {
         let viewId = ViewId(function: function)
         host(view: view, size: size, viewId: viewId)
+        defer { expel(viewId: viewId) }
         try await whileHosted(view)
-        expel(viewId: viewId)
     }
 
     @MainActor
