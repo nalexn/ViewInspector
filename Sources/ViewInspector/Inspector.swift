@@ -240,7 +240,7 @@ internal extension Inspector {
     }
 
     static func isSystemType(type: Any.Type) -> Bool {
-        let reflectedName = String(reflecting: type)
+        let reflectedName = _typeName(type, qualified: true)
         let extensionContext = "(extension in "
         if reflectedName.hasPrefix(extensionContext), let end = reflectedName.range(of: "):") {
             // A type declared in an extension belongs to the module of the extension,
@@ -262,7 +262,10 @@ internal extension Inspector {
     static func typeName(type: Any.Type,
                          namespaced: Bool = false,
                          generics: GenericParameters = .keep) -> String {
-        let typeName = namespaced ? sanitizeNamespace(ofTypeName: String(reflecting: type)) : String(describing: type)
+        // Same names as String(reflecting:) and String(describing:), read from type metadata without their
+        // protocol casts, which scan every conformance in the process the first time each type is seen.
+        let typeName = namespaced ? sanitizeNamespace(ofTypeName: _typeName(type, qualified: true))
+            : _typeName(type, qualified: false)
         switch generics {
         case .keep:
             return typeName
