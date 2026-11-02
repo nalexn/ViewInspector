@@ -81,20 +81,26 @@ internal enum EnvironmentInjection {
         func isDeclaredAsWrapper<Declared>(_ value: Declared) -> Bool {
             return Declared.self is EnvironmentPropertyWrapper.Type
         }
-        let wrappers = Mirror(reflecting: entity).children
-            .compactMap { child -> (keyPath: AnyKeyPath, wrapper: EnvironmentPropertyWrapper)? in
-                guard _openExistential(child.value, do: isDeclaredAsWrapper),
-                      let wrapper = child.value as? EnvironmentPropertyWrapper,
+        let children = Array(Mirror(reflecting: entity).children)
+        let wrappers = children.indices
+            .compactMap { index -> (index: Int, keyPath: AnyKeyPath, wrapper: EnvironmentPropertyWrapper)? in
+                let value = children[index].value
+                guard _openExistential(value, do: isDeclaredAsWrapper),
+                      let wrapper = value as? EnvironmentPropertyWrapper,
                       let keyPath = wrapper.injectionKeyPath
                 else { return nil }
-                return (keyPath, wrapper)
+                return (index, keyPath, wrapper)
             }
         guard !wrappers.isEmpty else { return entity }
         // A custom mirror does not have to describe the stored properties.
         let isReflectedFaithfully = !(entity is CustomReflectable)
         var copy = entity
         withUnsafeMutableBytes(of: &copy) { bytes in
-            for properties in locateProperties(of: wrappers, in: bytes, discardingLookAlikes: isReflectedFaithfully) {
+            let located = (isReflectedFaithfully
+                ? storedProperties(of: T.self, count: children.count, wrappers: wrappers, in: bytes) : nil)
+                ?? locateProperties(of: wrappers.map { ($0.keyPath, $0.wrapper) }, in: bytes,
+                                    discardingLookAlikes: isReflectedFaithfully)
+            for properties in located {
                 let candidates = environmentValues.filter { $0.keyPath == properties.keyPath }.map { $0.value }
                 guard !candidates.isEmpty else { continue }
                 properties.wrapper.injectValue(candidates: candidates, into: bytes, at: properties.offsets)
@@ -110,6 +116,23 @@ internal enum EnvironmentInjection {
         let size: Int
         var offsets: [Int]
         var count = 1
+    }
+
+    /// Locates the properties at their stored offsets, which the Swift runtime reports for a struct in the order
+    /// of the mirror's children. A property is located where its byte pattern is at its offset, so a look-alike
+    /// anywhere else in the view, in padding, in a plain field or in the unused payload of an enum, makes no
+    /// difference. `nil` when the offsets are not available; the properties are then searched for by their pattern.
+    private static func storedProperties(
+        of type: Any.Type, count: Int,
+        wrappers: [(index: Int, keyPath: AnyKeyPath, wrapper: EnvironmentPropertyWrapper)],
+        in bytes: UnsafeMutableRawBufferPointer
+    ) -> [Properties]? {
+        guard !(type is AnyClass), count > 0, StoredProperties.count(of: type) == count else { return nil }
+        return wrappers.compactMap { index, keyPath, wrapper in
+            let offset = StoredProperties.offset(of: type, at: index)
+            guard let matches = wrapper.signatureMatches(in: bytes), matches.offsets.contains(offset) else { return nil }
+            return Properties(keyPath: keyPath, wrapper: wrapper, size: matches.size, offsets: [offset])
+        }
     }
 
     /// Locates the properties by the byte pattern they have while they hold the key path: the key path
@@ -266,6 +289,24 @@ extension SwiftUI.Environment: EnvironmentPropertyWrapper {
         }
     }
 }
+
+/// The stored properties of a type as the Swift runtime reports them, through the functions behind
+/// the standard library's `_forEachField`, which is not available outside of it.
+internal enum StoredProperties {
+    static func count(of type: Any.Type) -> Int {
+        return reflectionMirrorRecursiveCount(type)
+    }
+
+    static func offset(of type: Any.Type, at index: Int) -> Int {
+        return reflectionMirrorRecursiveChildOffset(type, index: index)
+    }
+}
+
+@_silgen_name("swift_reflectionMirror_recursiveCount")
+private func reflectionMirrorRecursiveCount(_ type: Any.Type) -> Int
+
+@_silgen_name("swift_reflectionMirror_recursiveChildOffset")
+private func reflectionMirrorRecursiveChildOffset(_ type: Any.Type, index: Int) -> Int
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 internal struct EnvObject {
