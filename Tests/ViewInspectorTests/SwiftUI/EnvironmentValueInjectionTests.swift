@@ -48,8 +48,8 @@ final class EnvironmentValueInjectionTests: XCTestCase {
         XCTAssertEqual(before, keyPath, "the field before the property is untouched")
         XCTAssertEqual(after, keyPath, "the field after the property is untouched")
         XCTAssertEqual(
-            result.target.injectionKeyPath, keyPath,
-            "the property is not injected either, as nothing tells it from the fields that look like it")
+            result.target.wrappedValue.number, 7.0,
+            "the property is injected at its stored offset, which tells it from the fields that look like it")
     }
 
     func testInjectionIgnoresSignatureAroundAnotherProperty() throws {
@@ -128,6 +128,8 @@ final class EnvironmentValueInjectionTests: XCTestCase {
         XCTAssertEqual(result.stringReference, sut.stringReference, "the string look-alike is untouched")
         XCTAssertEqual(result.filler, sut.filler, "the string look-alike is untouched")
         XCTAssertEqual(result.stringTag, sut.stringTag, "the string look-alike is untouched")
+        XCTAssertEqual(result.string.wrappedValue, "injected", "the string property is injected at its stored offset")
+        XCTAssertEqual(result.payload.wrappedValue.number, 7.0, "the payload property is injected at its stored offset")
     }
 
     func testInjectionLocatesPropertiesOneAfterAnother() throws {
@@ -195,8 +197,31 @@ final class EnvironmentValueInjectionTests: XCTestCase {
         XCTAssertEqual(result.filler, sut.filler, "the string look-alike is untouched")
         XCTAssertEqual(result.stringTag, sut.stringTag, "the string look-alike is untouched")
         XCTAssertEqual(
-            result.string.injectionKeyPath, stringKeyPath,
-            "the string property is not injected, as nothing tells it from its look-alike")
+            result.string.wrappedValue, "injected",
+            "the string property is injected at its stored offset, which tells it from its look-alike")
+    }
+
+    func testInjectionIgnoresALookAlikeInBytesThatNoPropertyOwns() throws {
+        let keyPath = \EnvironmentValues.injectedString
+        var sut = StaleBytesFixture(spare: nil, string: Environment(keyPath))
+        let layout = MemoryLayout<StaleBytesFixture>.self
+        let spareOffset = try XCTUnwrap(layout.offset(of: \.spare))
+        let stringOffset = try XCTUnwrap(layout.offset(of: \.string))
+        let size = MemoryLayout<Environment<String>>.size
+        XCTAssertLessThanOrEqual(size, MemoryLayout<Big>.size, "the unused payload of the optional can hold the property")
+        // Bytes that no property owns keep whatever the memory held before, which can be a copy of the property.
+        withUnsafeMutableBytes(of: &sut) { bytes in
+            let property = Array(bytes[stringOffset..<stringOffset + size])
+            UnsafeMutableRawBufferPointer(rebasing: bytes[spareOffset..<spareOffset + size]).copyBytes(from: property)
+        }
+        XCTAssertNil(sut.spare, "the optional is still empty")
+        XCTAssertEqual(
+            matches(of: sut.string, in: sut), [spareOffset, stringOffset],
+            "the signature is found in the unused payload of the optional and at the property")
+        let result = EnvironmentInjection.inject(environmentValues: [(keyPath, "injected")], into: sut)
+        XCTAssertEqual(
+            result.string.wrappedValue, "injected",
+            "the property is injected although its signature also appears in bytes that no property owns")
     }
 
     func testInjectionDoesNotTrustCustomMirrorToDiscardLookAlikes() throws {
@@ -432,8 +457,8 @@ private struct ValueTypesView: View {
 }
 
 /// Has two fields with the byte signature of the `Environment<Payload>` property (the key path reference
-/// and the case) before and after the only real property. Only the declared types of the fields tell them
-/// apart, and the bytes do not, so the injection can only leave the property alone and not write into the fields.
+/// and the case) before and after the only real property. The bytes do not tell them apart, the stored offset
+/// of the property does, so the injection writes into the property and not into the fields.
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
 private struct SignatureDecoysFixture {
     var before: EnvironmentContent<Payload>
@@ -515,6 +540,13 @@ private struct FabricatedMirrorFixture: CustomReflectable {
     var customMirror: Mirror {
         Mirror(self, children: ["string": string, "payload": Environment(\EnvironmentValues.injectedStruct)])
     }
+}
+
+/// The payload of an empty optional is not owned by any property, as padding is not.
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
+private struct StaleBytesFixture {
+    var spare: Big?
+    var string: Environment<String>
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
